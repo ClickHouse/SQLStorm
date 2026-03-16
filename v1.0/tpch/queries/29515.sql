@@ -17,7 +17,7 @@ AggregatedData AS (
         s.s_name,
         COUNT(DISTINCT sp.p_partkey) AS unique_parts,
         AVG(sp.name_length) AS avg_name_length,
-        STRING_AGG(sp.modified_comment, ', ') AS all_modified_comments
+        arrayStringConcat(groupArray(assumeNotNull(sp.modified_comment)), ', ') AS all_modified_comments
     FROM 
         StringProcessing sp
     JOIN 

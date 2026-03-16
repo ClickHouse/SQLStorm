@@ -3,8 +3,8 @@ SELECT
     p.p_type,
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
-    ARRAY_AGG(DISTINCT CONCAT('OrderID:', o.o_orderkey, ' Date:', o.o_orderdate, ' Status:', o.o_orderstatus)) AS order_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
+    arrayDistinct(groupArray(assumeNotNull(CONCAT('OrderID:', o.o_orderkey, ' Date:', o.o_orderdate, ' Status:', o.o_orderstatus)))) AS order_details
 FROM 
     part p
 JOIN 

@@ -6,7 +6,7 @@ SELECT
     COUNT(l.l_orderkey) AS total_orders,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_price,
-    STRING_AGG(DISTINCT c.c_mktsegment, '; ') AS market_segments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), '; ') AS market_segments
 FROM 
     part p
 JOIN 

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
     GROUP BY 
         p.Id
 ),
@@ -21,7 +21,7 @@ PostHistoryStats AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryCount,
-        STRING_AGG(DISTINCT COALESCE(pht.Name, 'Unknown'), ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(pht.Name, 'Unknown')))), ', ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LatestEdit
     FROM 
         PostHistory ph
@@ -33,7 +33,7 @@ PostHistoryStats AS (
 PostWithFurtherLinks AS (
     SELECT 
         p.PostId,
-        ARRAY_AGG(DISTINCT pl.RelatedPostId) AS RelatedPosts
+        arrayDistinct(groupArray(assumeNotNull(pl.RelatedPostId))) AS RelatedPosts
     FROM 
         PostLinks pl
     JOIN 
@@ -87,4 +87,4 @@ WHERE
     ))
 ORDER BY 
     EngagementType, LatestEdit DESC
-OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

@@ -1,7 +1,7 @@
 WITH MovieGenres AS (
     SELECT 
         t.id AS movie_id,
-        STRING_AGG(DISTINCT kt.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS genres
     FROM 
         aka_title t
     JOIN 

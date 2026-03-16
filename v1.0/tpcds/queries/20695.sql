@@ -58,11 +58,11 @@ final_report AS (
         ss.net_sales,
         CASE 
             WHEN ss.total_sales = 0 THEN NULL
-            ELSE ROUND((COALESCE(ss.total_returns, 0)::DECIMAL / NULLIF(ss.total_sales, 0)) * 100, 2) 
+            ELSE ROUND((COALESCE(ss.total_returns, 0, CAST() AS DECIMAL) / NULLIF(ss.total_sales, 0)) * 100, 2) 
         END AS return_percentage,
         (
             SELECT 
-                STRING_AGG(CONCAT(c.c_first_name, ' ', c.c_last_name), '; ')
+                arrayStringConcat(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name))), '; ')
             FROM customer c 
             INNER JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
             WHERE cd.cd_marital_status = 'M'

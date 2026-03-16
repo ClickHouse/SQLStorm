@@ -5,14 +5,14 @@ WITH RankedPosts AS (
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         p.ViewCount,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.ViewCount DESC) AS YearlyRank
+        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.ViewCount DESC) AS YearlyRank
     FROM
         Posts p
     JOIN
         Users u ON p.OwnerUserId = u.Id
     WHERE
         p.PostTypeId = 1
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '5 years'
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 5 YEAR
 ),
 TopPosts AS (
     SELECT *

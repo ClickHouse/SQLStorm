@@ -39,7 +39,7 @@ highlights AS (
     SELECT 
         tm.movie_id,
         MAX(tm.actor_count) AS max_actor_count,
-        STRING_AGG(DISTINCT tm.actor_name, ', ') AS all_actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tm.actor_name))), ', ') AS all_actors
     FROM 
         top_movies tm
     WHERE 

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments com ON p.Id = com.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
 ),
@@ -44,14 +44,14 @@ ActiveUsers AS (
     JOIN 
         UserReputation ur ON u.Id = ur.UserId
     WHERE 
-        u.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        u.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 )
 SELECT 
     au.DisplayName,
     au.Reputation,
     au.BadgeCount,
     COALESCE(rp.Title, 'No Recent Posts') AS RecentPostTitle,
-    COALESCE(rp.CreationDate::date, NULL) AS RecentPostDate,
+    COALESCE(CAST(rp.CreationDate AS date), NULL) AS RecentPostDate,
     COALESCE(rp.Score, 0) AS RecentPostScore,
     CASE 
         WHEN rp.CommentCount > 0 THEN 'Comments present' 

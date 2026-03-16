@@ -13,20 +13,20 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year' 
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '>')) AS TagName, 
+        arrayJoin(splitByString('>', Tags)) AS TagName, 
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         Tags IS NOT NULL
     GROUP BY 
-        UNNEST(string_to_array(Tags, '>'))
+        arrayJoin(splitByString('>', Tags))
     HAVING 
         COUNT(*) > 5
 ),
@@ -57,7 +57,7 @@ FROM
 LEFT JOIN 
     UserReputation ut ON rp.PostId = (SELECT p.Id FROM Posts p WHERE p.OwnerUserId = ut.UserId LIMIT 1)
 LEFT JOIN 
-    PopularTags pt ON pt.TagName IN (SELECT unnest(string_to_array(rp.Title, ' '))) 
+    PopularTags pt ON pt.TagName IN (SELECT arrayJoin(splitByString(' ', rp.Title))) 
 WHERE 
     rp.RankScore <= 10
 ORDER BY 

@@ -8,7 +8,7 @@ SELECT
         END) AS avg_comment_length,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     supplier s
 JOIN 

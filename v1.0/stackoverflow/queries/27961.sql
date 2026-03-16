@@ -4,7 +4,7 @@ WITH TagStatistics AS (
         COUNT(P.Id) AS PostCount,
         SUM(COALESCE(P.ViewCount, 0)) AS TotalViews,
         AVG(COALESCE(P.Score, 0)) AS AverageScore,
-        STRING_AGG(DISTINCT U.DisplayName, ', ') AS TopUsers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS TopUsers,
         COUNT(DISTINCT C.Id) AS CommentCount
     FROM 
         Tags T

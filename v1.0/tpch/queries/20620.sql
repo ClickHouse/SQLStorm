@@ -46,7 +46,7 @@ SELECT
     r.r_name,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     SUM(l.total_sales) AS total_order_sales,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     AVG(CASE WHEN c.c_custkey IS NULL THEN 0 ELSE c.c_acctbal END) AS avg_customer_balance,
     CASE 
         WHEN COUNT(DISTINCT o.o_orderkey) > 0 THEN 'Active'
@@ -73,4 +73,4 @@ GROUP BY
     r.r_name
 ORDER BY 
     total_order_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

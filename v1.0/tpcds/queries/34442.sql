@@ -53,4 +53,4 @@ SELECT
 FROM CustomerSales cs
 WHERE cs.avg_net_profit IS NOT NULL
 ORDER BY profit_rank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -39,7 +39,7 @@ SELECT
     ad.ca_state,
     agg.total_customers,
     agg.avg_name_length,
-    STRING_AGG(ad.full_name || ' (' || ad.cd_gender || ')', '; ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(ad.full_name || ' (' || ad.cd_gender || ')')), '; ') AS customer_names
 FROM
     ProcessedData ad
 JOIN

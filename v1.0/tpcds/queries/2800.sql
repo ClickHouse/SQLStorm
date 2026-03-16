@@ -62,4 +62,4 @@ WHERE
     c.c_birth_year BETWEEN 1980 AND 1990
 ORDER BY 
     cs.total_sales DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

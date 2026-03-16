@@ -48,7 +48,7 @@ OrderLineItems AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate < DATE '1998-10-01' - INTERVAL '30' DAY
+        l.l_shipdate < toDate('1998-10-01') - INTERVAL '30' DAY
 )
 SELECT 
     p.p_name,

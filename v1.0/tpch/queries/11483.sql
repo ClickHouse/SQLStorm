@@ -7,8 +7,8 @@ FROM
 JOIN 
     lineitem l ON p.p_partkey = l.l_partkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' AND 
-    l.l_shipdate < DATE '1998-01-01' AND
+    l.l_shipdate >= toDate('1997-01-01') AND 
+    l.l_shipdate < toDate('1998-01-01') AND
     p.p_size = 15
 GROUP BY 
     p.p_brand, p.p_type

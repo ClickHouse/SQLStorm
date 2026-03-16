@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Body AS post_body,
         p.CreationDate AS post_creation_date,
         COUNT(v.Id) AS vote_count,
-        STRING_AGG(t.TagName, ', ') AS tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -37,7 +37,7 @@ SELECT
     fp.vote_count,  -- corrected from votes_count to vote_count
     fp.tags,
     CONCAT('<div>', SUBSTRING(fp.post_body, 1, 200), '...</div>') AS excerpt,
-    (SELECT STRING_AGG(DISTINCT u.DisplayName, ', ')
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ')
      FROM Users u 
      JOIN Comments c ON c.PostId = fp.post_id
      WHERE c.UserId = u.Id) AS commenters,

@@ -38,7 +38,7 @@ ActorDetails AS (
 MovieCompanyDetails AS (
     SELECT 
         mc.movie_id,
-        COALESCE(ARRAY_AGG(DISTINCT cn.name ORDER BY cn.name), ARRAY[]::text[]) AS companies,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(cn.name ORDER BY cn.name))), ARRAY[]::text[]) AS companies,
         COUNT(DISTINCT mc.company_id) AS company_count
     FROM 
         movie_companies mc

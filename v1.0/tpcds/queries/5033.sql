@@ -41,4 +41,4 @@ JOIN
     (SELECT DISTINCT w.w_warehouse_id FROM warehouse w) wd ON sd.w_warehouse_id = wd.w_warehouse_id
 ORDER BY 
     sd.total_revenue DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

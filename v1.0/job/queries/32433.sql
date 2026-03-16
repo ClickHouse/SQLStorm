@@ -40,7 +40,7 @@ movie_info_with_keywords AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        ARRAY_AGG(DISTINCT kw.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords
     FROM 
         aka_title m
     LEFT JOIN 

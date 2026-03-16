@@ -34,9 +34,9 @@ JOIN part p ON ps.ps_partkey = p.p_partkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey
 LEFT JOIN TopCustomers tc ON o.o_custkey = tc.c_custkey
-WHERE lo.l_shipdate < DATE '1998-10-01' - INTERVAL '30 days'
+WHERE lo.l_shipdate < toDate('1998-10-01') - INTERVAL 30 DAY
   AND (tc.total_spent IS NOT NULL OR r.r_name IS NOT NULL)
 GROUP BY r.r_name, n.n_name, s.s_name, p.p_name, r.r_regionkey
 HAVING SUM(lo.l_extendedprice * (1 - lo.l_discount)) > 1000
 ORDER BY Revenue DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -33,7 +33,7 @@ LEFT JOIN PartSummary ps ON rh.s_nationkey = ps.p_partkey
 LEFT JOIN HighValueOrders ho ON ho.o_orderkey IN (
     SELECT l.l_orderkey
     FROM lineitem l
-    WHERE l.l_discount > 0.05 AND l.l_shipdate < cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE l.l_discount > 0.05 AND l.l_shipdate < cast('1998-10-01' as date) - INTERVAL 1 YEAR
 )
 LEFT JOIN RankedSuppliers r ON rh.s_suppkey = r.s_suppkey
 WHERE r.rank <= 5 OR r.s_suppkey IS NULL

@@ -27,7 +27,7 @@ TopMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -44,7 +44,7 @@ SELECT
      WHERE cc.movie_id = tm.movie_id 
        AND cc.status_id IS NULL
     ) AS unknown_status_count,
-    (SELECT string_agg(DISTINCT c.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') 
      FROM cast_info ci 
      JOIN aka_name c ON ci.person_id = c.person_id 
      WHERE ci.movie_id = tm.movie_id

@@ -34,7 +34,7 @@ SELECT
     region_name, 
     nation_name, 
     supplier_name, 
-    STRING_AGG(part_name, ', ') AS top_parts
+    arrayStringConcat(groupArray(assumeNotNull(part_name)), ', ') AS top_parts
 FROM 
     TopParts
 GROUP BY 

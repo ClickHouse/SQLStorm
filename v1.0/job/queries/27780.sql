@@ -32,7 +32,7 @@ SELECT
     ak.name AS actor_name,
     ak.md5sum AS actor_md5sum,
     ct.kind AS company_type,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM
     TopMovies m
 JOIN

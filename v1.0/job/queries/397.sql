@@ -54,7 +54,7 @@ SELECT
     SUBSTRING(md.title, 1, LENGTH(md.title) - 6) AS simplified_title,
     COALESCE((
         SELECT 
-            STRING_AGG(name.name, ', ' ORDER BY cast_info.nr_order) 
+            arrayStringConcat(groupArray(assumeNotNull(name.name)), ', ' ORDER BY cast_info.nr_order) 
         FROM 
             cast_info 
         JOIN 

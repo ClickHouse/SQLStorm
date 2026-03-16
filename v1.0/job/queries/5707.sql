@@ -31,7 +31,7 @@ ActorSummary AS (
         actor_name,
         actor_gender,
         COUNT(movie_title) AS movie_count,
-        ARRAY_AGG(DISTINCT movie_title) AS movies
+        arrayDistinct(groupArray(assumeNotNull(movie_title))) AS movies
     FROM 
         MovieDetails
     GROUP BY 

@@ -39,7 +39,7 @@ CastInfo AS (
 MovieGenres AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS genres
     FROM 
         movie_keyword mk 
     JOIN 

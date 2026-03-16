@@ -3,7 +3,7 @@ SELECT
     p.p_name, 
     CONCAT('Manufacturer: ', p.p_mfgr, ' - Brand: ', p.p_brand, ' - Type: ', p.p_type) AS description,
     SUM(CASE 
-        WHEN l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 days' THEN l.l_extendedprice * (1 - l.l_discount) 
+        WHEN l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY THEN l.l_extendedprice * (1 - l.l_discount) 
         ELSE 0 
     END) AS recent_sales,
     COUNT(DISTINCT c.c_custkey) AS unique_customers

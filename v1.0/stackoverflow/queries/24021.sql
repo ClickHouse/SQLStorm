@@ -14,14 +14,14 @@ RecentVotes AS (
         SUM(CASE WHEN VoteTypeId IN (2, 4) THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes
     FROM Votes
-    WHERE CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+    WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY PostId, VoteTypeId
 ),
 PostSummary AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        COALESCE(ARRAY_AGG(DISTINCT t.TagName) FILTER (WHERE t.TagName IS NOT NULL), ARRAY[]::VARCHAR[]) AS Tags,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(t.TagName))) FILTER (WHERE t.TagName IS NOT NULL), ARRAY[]::VARCHAR[]) AS Tags,
         SUM(rv.UpVotes) AS TotalUpVotes,
         COUNT(c.Id) AS CommentCount,
         COALESCE(MAX(b.Class), 0) AS HighestBadgeClass
@@ -31,7 +31,7 @@ PostSummary AS (
     LEFT JOIN RecentVotes rv ON p.Id = rv.PostId
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Badges b ON p.OwnerUserId = b.UserId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title
 ),
 ClosedPosts AS (

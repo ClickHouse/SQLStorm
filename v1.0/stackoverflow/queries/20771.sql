@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score > 0
 ),
 PostVoteSummary AS (
@@ -39,7 +39,7 @@ PostHistoryDetails AS (
         ph.PostId,
         MIN(ph.CreationDate) AS FirstModification,
         MAX(ph.CreationDate) AS LastModification,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS ChangeTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS ChangeTypes
     FROM 
         PostHistory ph
     JOIN 
@@ -59,7 +59,7 @@ FilteredPosts AS (
         phd.FirstModification,
         phd.LastModification,
         phd.ChangeTypes,
-        (EXTRACT(EPOCH FROM TIMESTAMP '2024-10-01 12:34:56' - rp.CreationDate) / 3600) AS AgeInHours
+        (toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - rp.CreationDate) / 3600) AS AgeInHours
     FROM 
         RankedPosts rp
     LEFT JOIN 

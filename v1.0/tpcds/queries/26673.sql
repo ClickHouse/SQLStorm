@@ -8,7 +8,7 @@ WITH CustomerStats AS (
         cd.cd_education_status,
         SUM(COALESCE(CASE WHEN ts.transaction_amount IS NULL THEN 0 ELSE 1 END, 0)) AS total_transactions,
         AVG(COALESCE(ts.transaction_amount, 0)) AS average_spent,
-        STRING_AGG(DISTINCT CONCAT(a.ca_street_number, ' ', a.ca_street_name, ' ', a.ca_street_type, ', ', a.ca_city, ', ', a.ca_state, ' ', a.ca_zip), '; ') AS full_address
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.ca_street_number, ' ', a.ca_street_name, ' ', a.ca_street_type, ', ', a.ca_city, ', ', a.ca_state, ' ', a.ca_zip)))), '; ') AS full_address
     FROM 
         customer AS c
     JOIN 

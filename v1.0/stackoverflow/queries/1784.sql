@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, a.Score
 ),
@@ -49,7 +49,7 @@ SELECT
     END AS ActivityLevel,
     COALESCE((
         SELECT 
-            STRING_AGG(b.Name, ', ') 
+            arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
         FROM 
             Badges b 
         WHERE 
@@ -61,4 +61,4 @@ WHERE
     trp.ViewCount > 100
 ORDER BY 
     trp.ViewCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

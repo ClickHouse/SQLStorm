@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL '5 years'
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL 5 YEAR
 ),
 UserReputation AS (
     SELECT 
@@ -32,7 +32,7 @@ UserReputation AS (
 PostMeta AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, ', ') AS EditHistory,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS EditHistory,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph

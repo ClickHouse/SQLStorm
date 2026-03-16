@@ -3,7 +3,7 @@ SELECT
     a.name AS actor_name,
     t.title AS movie_title,
     t.production_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     ci.role_id AS role_id,
     COUNT(DISTINCT ci.id) AS num_cast_entries
 FROM 

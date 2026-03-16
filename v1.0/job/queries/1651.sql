@@ -43,4 +43,4 @@ AND
 ORDER BY 
     rm.production_year DESC, 
     rm.actor_name ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -18,7 +18,7 @@ WITH RankedOrders AS (
     JOIN 
         supplier s ON ps.ps_suppkey = s.s_suppkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
     GROUP BY 
         o.o_orderkey, c.c_name, s.s_name, l.l_orderkey
 ),

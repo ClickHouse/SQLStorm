@@ -25,7 +25,7 @@ WITH RankedSuppliers AS (
 SELECT ns.n_nationkey, ns.n_name, 
        COUNT(DISTINCT fs.l_orderkey) AS fulfilled_orders,
        SUM(COALESCE(rs.s_acctbal, 0)) AS total_acctbal,
-       STRING_AGG(DISTINCT CONCAT(rs.s_name, ': ', rs.acct_status), ', ') AS supplier_statuses
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(rs.s_name, ': ', rs.acct_status)))), ', ') AS supplier_statuses
 FROM NationDetails ns
 LEFT JOIN FilteredOrders fo ON ns.n_nationkey = fo.o_custkey
 LEFT JOIN RankedSuppliers rs ON rs.rank = 1 AND rs.s_suppkey IN (

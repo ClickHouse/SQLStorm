@@ -4,7 +4,7 @@ WITH address_stats AS (
         ca_state,
         COUNT(*) AS address_count,
         AVG(ca_gmt_offset) AS avg_gmt_offset,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities
     FROM customer_address
     GROUP BY ca_state
 ),

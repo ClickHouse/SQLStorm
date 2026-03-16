@@ -28,7 +28,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     CHAR_LENGTH(p.p_name) > 5
-    AND l.l_shipdate >= DATE '1997-01-01'
+    AND l.l_shipdate >= toDate('1997-01-01')
 GROUP BY 
     p.p_name, s.s_name, r.r_name, n.n_name, o.o_orderstatus, p.p_comment
 HAVING 

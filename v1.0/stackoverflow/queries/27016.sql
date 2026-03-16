@@ -6,7 +6,7 @@ WITH PostTagCounts AS (
         COUNT(P.Id) AS TagCount
     FROM 
         Posts P
-    CROSS JOIN UNNEST(STRING_TO_ARRAY(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2), '><')) AS value
+    CROSS JOIN arrayJoin(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2))) AS value
     WHERE 
         P.Tags IS NOT NULL
     GROUP BY 

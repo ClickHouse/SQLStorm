@@ -55,4 +55,4 @@ LEFT JOIN
     promotion_details pd ON pd.promo_order_count > 0
 ORDER BY 
     hvc.sales_rank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

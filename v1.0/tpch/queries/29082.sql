@@ -12,7 +12,7 @@ WITH StringProcessing AS (
         p.p_size > 10
 )
 SELECT 
-    STRING_AGG(detailed_info, '; ') AS aggregated_info,
+    arrayStringConcat(groupArray(assumeNotNull(detailed_info)), '; ') AS aggregated_info,
     AVG(comment_length) AS avg_comment_length,
     MAX(upper_part_name) AS max_upper_part_name,
     MIN(lower_brand) AS min_lower_brand

@@ -62,7 +62,7 @@ SELECT
         WHEN fps.overall_rank <= 10 THEN 'Top 10 Posts'
         ELSE 'Other Posts'
     END AS PostCategory,
-    STRING_AGG(t.TagName, ', ') AS TagsList,
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList,
     CASE 
         WHEN fps.history_count > 5 THEN 'Frequent Edits'
         ELSE 'Infrequent Edits'

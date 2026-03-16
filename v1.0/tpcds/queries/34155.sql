@@ -64,4 +64,4 @@ HAVING
     SUM(ms.max_sales) > (SELECT AVG(max_sales) FROM max_sales)
 ORDER BY 
     grand_total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

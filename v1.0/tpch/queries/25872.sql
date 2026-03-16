@@ -5,7 +5,7 @@ SELECT
     AVG(l.l_extendedprice) AS avg_extended_price,
     MAX(l.l_discount) AS max_discount,
     MIN(l.l_tax) AS min_tax,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_phone, ')'), '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')')))), '; ') AS supplier_details
 FROM
     part p
 JOIN 

@@ -19,7 +19,7 @@ movie_info_with_keywords AS (
     SELECT 
         m.id AS movie_id,
         m.title,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         aka_title m
     LEFT JOIN 

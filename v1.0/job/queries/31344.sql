@@ -18,7 +18,7 @@ WITH RECURSIVE MovieHierarchy AS (
 CastDetails AS (
     SELECT c.movie_id,
            COUNT(CASE WHEN c.role_id IS NOT NULL THEN 1 END) AS total_roles,
-           STRING_AGG(DISTINCT CONCAT(a.name, '(', rt.role, ')'), ', ') AS cast_list
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, '(', rt.role, ')')))), ', ') AS cast_list
     FROM cast_info c
     LEFT JOIN aka_name a ON c.person_id = a.person_id
     LEFT JOIN role_type rt ON c.role_id = rt.id

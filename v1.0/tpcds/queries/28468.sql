@@ -3,7 +3,7 @@ WITH AddressCount AS (
     SELECT 
         ca_city,
         COUNT(*) AS city_address_count,
-        STRING_AGG(ca_street_name, ', ') AS street_names
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names
     FROM 
         customer_address
     GROUP BY 

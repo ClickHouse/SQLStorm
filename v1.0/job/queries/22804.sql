@@ -70,7 +70,7 @@ SELECT
         ELSE 'Previous Movie'
     END AS movie_status,
     a.name AS actor_name,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM
     ranking r
 JOIN

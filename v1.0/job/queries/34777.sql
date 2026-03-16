@@ -29,7 +29,7 @@ SELECT
     h.title,
     h.production_year,
     COUNT(cc.id) AS total_cast_members,
-    STRING_AGG(DISTINCT an.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actor_names,
     COALESCE(COUNT(DISTINCT kw.keyword), 0) AS keyword_count,
     AVG(CASE 
         WHEN mt.production_year < 2000 THEN 5.0

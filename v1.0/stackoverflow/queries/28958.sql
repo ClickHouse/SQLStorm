@@ -7,13 +7,13 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         p.Body,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS RankPerUser,
         p.OwnerUserId
     FROM 
         Posts p
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(p.Tags, '|')) AS tag_array ON TRUE
+        arrayJoin(splitByString('|', p.Tags)) AS tag_array ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag_array)
     WHERE 

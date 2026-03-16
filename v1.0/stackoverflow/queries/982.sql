@@ -42,13 +42,13 @@ ClosedPosts AS (
     SELECT 
         p.Id AS PostId,
         COUNT(ph.Id) AS CloseReasonCount,
-        STRING_AGG(DISTINCT crt.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS CloseReasons
     FROM 
         Posts p
     INNER JOIN 
         PostHistory ph ON p.Id = ph.PostId
     INNER JOIN 
-        CloseReasonTypes crt ON (CAST(ph.Comment AS jsonb)->>'CloseReasonId')::int = crt.Id
+        CloseReasonTypes crt ON (CAST(ph.Comment AS jsonb)->>'CloseReasonId'CAST() AS int) = crt.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11)
     GROUP BY 

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score > 0
 ), TopPosts AS (
     SELECT 
@@ -28,7 +28,7 @@ WITH RankedPosts AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, ' | ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS Comments
     FROM 
         Comments c
     GROUP BY 
@@ -36,7 +36,7 @@ WITH RankedPosts AS (
 ), PostBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeList
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeList
     FROM 
         Badges b
     INNER JOIN 

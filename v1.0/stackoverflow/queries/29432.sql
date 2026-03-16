@@ -40,7 +40,7 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date > CURRENT_DATE - INTERVAL '6 MONTH'
+        b.Date > CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         b.UserId
 )

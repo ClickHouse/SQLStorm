@@ -7,7 +7,7 @@ SELECT
         WHEN cd_gender = 'F' THEN ws_net_profit
         ELSE NULL 
     END) AS avg_female_profit,
-    STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), '; ') AS female_customers_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), '; ') AS female_customers_names,
     MAX(d_year) AS latest_year
 FROM 
     customer_address ca

@@ -5,17 +5,17 @@ WITH FilteredPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag_name
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag_name
     ON 
         true
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
 ),
@@ -33,7 +33,7 @@ PostVoteCounts AS (
 PostBadges AS (
     SELECT 
         u.Id AS UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 

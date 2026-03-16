@@ -44,7 +44,7 @@ SELECT
     ns.n_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     COALESCE(AVG(o.total_value), 0) AS avg_order_value,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS notable_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS notable_parts
 FROM 
     nation ns
 LEFT JOIN 
@@ -63,5 +63,4 @@ HAVING
     COUNT(DISTINCT o.o_orderkey) > 10 OR AVG(s.s_acctbal) > 10000
 ORDER BY 
     total_orders DESC, ns.n_name ASC
-OFFSET 5 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

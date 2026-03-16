@@ -57,7 +57,7 @@ FROM
 JOIN 
     CustomerDetails cd ON cd.c_customer_sk = ad.ca_address_sk
 JOIN 
-    SalesData sd ON sd.ws_item_sk = RANDOM()  
+    SalesData sd ON sd.ws_item_sk = rand()  
 LEFT JOIN 
     ReturnData rd ON rd.wr_item_sk = sd.ws_item_sk
 ORDER BY 

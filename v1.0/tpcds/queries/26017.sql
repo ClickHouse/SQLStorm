@@ -7,7 +7,7 @@ WITH AddressStats AS (
         MAX(LENGTH(ca_street_name)) AS max_street_length,
         MIN(LENGTH(ca_street_name)) AS min_street_length,
         AVG(LENGTH(ca_street_name)) AS avg_street_length,
-        STRING_AGG(DISTINCT ca_street_name, ', ') AS unique_streets
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), ', ') AS unique_streets
     FROM 
         customer_address
     GROUP BY 
@@ -19,7 +19,7 @@ CustomerStats AS (
         COUNT(*) AS customer_count,
         SUM(cd_dep_count) AS total_dependencies,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT c_first_name || ' ' || c_last_name, '; ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c_first_name || ' ' || c_last_name))), '; ') AS customer_names
     FROM 
         customer 
     JOIN 

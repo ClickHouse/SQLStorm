@@ -61,7 +61,7 @@ SELECT
 FROM 
     HighlyActiveUsers
 WHERE 
-    LastPostDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    LastPostDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ORDER BY 
     TotalScore DESC, PostCount DESC
 LIMIT 10;

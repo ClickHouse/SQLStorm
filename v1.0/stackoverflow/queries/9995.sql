@@ -16,7 +16,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.ANSWERCOUNT, u.DisplayName
 ),
@@ -57,7 +57,7 @@ SELECT
     tp.CommentCount,
     COALESCE(tp.Upvotes, 0) AS Upvotes,
     COALESCE(tp.Downvotes, 0) AS Downvotes,
-    ROUND((COALESCE(tp.Upvotes, 0)::FLOAT / NULLIF(COALESCE(tp.Upvotes, 0) + COALESCE(tp.Downvotes, 0), 0)) * 100, 2) AS UpvotePercentage
+    ROUND((COALESCE(tp.Upvotes, 0, CAST() AS FLOAT) / NULLIF(COALESCE(tp.Upvotes, 0) + COALESCE(tp.Downvotes, 0), 0)) * 100, 2) AS UpvotePercentage
 FROM 
     TopPosts tp
 ORDER BY 

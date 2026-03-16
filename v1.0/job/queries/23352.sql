@@ -64,7 +64,7 @@ SELECT
         WHEN qa.award_count IS NOT NULL THEN 'Awarded'
         ELSE 'No Award'
     END AS award_status,
-    EXTRACT(YEAR FROM cast('2024-10-01' as date)) - qa.production_year AS years_since_release
+    toYear(cast('2024-10-01' as date)) - qa.production_year AS years_since_release
 FROM 
     QualifiedActors qa
 ORDER BY 

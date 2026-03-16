@@ -55,7 +55,7 @@ SELECT
     fr.AnswerCount,
     fr.BadgeCount,
     fr.TotalTags,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     Users u
 JOIN 
@@ -63,7 +63,7 @@ JOIN
 LEFT JOIN 
     Posts p ON p.OwnerUserId = u.Id
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS t(TagName) ON t.TagName IS NOT NULL
+    arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
 WHERE 
     u.Reputation >= 1000  
 GROUP BY 

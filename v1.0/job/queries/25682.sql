@@ -40,8 +40,8 @@ TopActors AS (
 SELECT 
     ta.actor_name,
     ta.movie_count,
-    ARRAY_AGG(DISTINCT rm.movie_title) AS top_movies,
-    STRING_AGG(DISTINCT CAST(rm.production_year AS TEXT), ', ') AS production_years
+    arrayDistinct(groupArray(assumeNotNull(rm.movie_title))) AS top_movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(rm.production_year AS TEXT)))), ', ') AS production_years
 FROM 
     TopActors ta
 JOIN 

@@ -6,7 +6,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= (cast('1998-10-01' as date) - INTERVAL '1 year')
+        o.o_orderdate >= (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
 ),
 SupplierAvailability AS (
     SELECT 
@@ -63,4 +63,4 @@ WHERE
 ORDER BY 
     availability DESC, 
     order_total_price DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

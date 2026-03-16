@@ -33,7 +33,7 @@ SELECT
     mc.title,
     mc.production_year,
     COUNT(DISTINCT mc.actor_name) AS actor_count,
-    STRING_AGG(DISTINCT mc.actor_name, ', ') AS actors_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.actor_name))), ', ') AS actors_list,
     (SELECT COUNT(*) FROM movie_companies mc2 WHERE mc2.movie_id = (SELECT id FROM aka_title WHERE title = mc.title LIMIT 1)) AS company_count,
     MAX(CASE WHEN mc.production_year < 2000 THEN 'Classic' ELSE 'Modern' END) AS movie_era
 FROM 

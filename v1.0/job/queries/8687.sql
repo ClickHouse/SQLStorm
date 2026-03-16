@@ -5,8 +5,8 @@ SELECT
     m.production_year,
     c.role_id,
     r.role AS role_name,
-    STRING_AGG(DISTINCT k.keyword, ', ' ORDER BY k.keyword) AS keywords,
-    STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ' ORDER BY k.keyword) AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) AS company_names
 FROM 
     cast_info c
 JOIN 

@@ -7,7 +7,7 @@ WITH ranked_parts AS (
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
     JOIN nation n ON s.s_nationkey = n.n_nationkey
     WHERE n.n_regionkey = (SELECT r.r_regionkey FROM region r WHERE r.r_name = 'ASIA')
-      AND l.l_shipdate >= DATE '1996-01-01' AND l.l_shipdate < DATE '1997-01-01'
+      AND l.l_shipdate >= toDate('1996-01-01') AND l.l_shipdate < toDate('1997-01-01')
     GROUP BY p.p_partkey, p.p_name, p.p_brand
 ), top_parts AS (
     SELECT p.*, brand_rank

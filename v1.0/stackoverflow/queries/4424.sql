@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score
 ),
@@ -44,7 +44,7 @@ SELECT
     pwb.ViewCount,
     pwb.Score,
     pwb.BadgeName,
-    'Total Posts in Last Year: ' || (SELECT COUNT(*) FROM Posts WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year') AS TotalPosts,
+    'Total Posts in Last Year: ' || (SELECT COUNT(*) FROM Posts WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR) AS TotalPosts,
     CASE 
         WHEN pwb.Score > 100 THEN 'Highly Rated'
         WHEN pwb.Score BETWEEN 51 AND 100 THEN 'Moderately Rated'

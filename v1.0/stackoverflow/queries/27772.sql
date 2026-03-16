@@ -14,11 +14,11 @@ WITH StringProcessing AS (
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
         ph.PostHistoryTypeId IN (4, 5, 6) 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
 ),
 TagAnalysis AS (
     SELECT 
-        unnest(string_to_array(Tags, '><')) AS Tag,
+        arrayJoin(splitByString('><', Tags)) AS Tag,
         COUNT(*) AS UsageCount
     FROM 
         StringProcessing
@@ -32,7 +32,7 @@ RecentComments AS (
     FROM 
         Comments
     WHERE 
-        CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month' 
+        CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH 
     GROUP BY 
         PostId
 ),
@@ -49,7 +49,7 @@ Engagement AS (
     LEFT JOIN 
         RecentComments rc ON sp.PostId = rc.PostId
     LEFT JOIN 
-        TagAnalysis ta ON ta.Tag = ANY(string_to_array(sp.Tags, '><'))
+        TagAnalysis ta ON ta.Tag = ANY(splitByString('><', sp.Tags))
 ),
 Ranking AS (
     SELECT 

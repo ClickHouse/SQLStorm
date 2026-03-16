@@ -18,7 +18,7 @@ RecentPosts AS (
            COALESCE(p.AcceptedAnswerId, 0) AS AcceptedAnswer,
            ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RecentPostRank
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostVoteSummary AS (
     SELECT v.PostId, 
@@ -41,8 +41,8 @@ SELECT u.DisplayName,
        u.Reputation, 
        COUNT(DISTINCT rp.PostId) AS RecentPostCount,
        SUM(ps.Upvotes) - SUM(ps.Downvotes) AS NetVotes,
-       STRING_AGG(DISTINCT cp.Comment, '; ') AS CloseComments,
-       STRING_AGG(DISTINCT COALESCE(CAST(cp.ClosedPostId AS TEXT), 'N/A'), ', ') AS ClosedPostIds,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cp.Comment))), '; ') AS CloseComments,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(CAST(cp.ClosedPostId AS TEXT), 'N/A')))), ', ') AS ClosedPostIds,
        SUM(CASE WHEN rp.RecentPostRank = 1 THEN 1 ELSE 0 END) AS MostRecentPostExists
 FROM UserReputation u
 LEFT JOIN RecentPosts rp ON u.UserId = rp.OwnerUserId

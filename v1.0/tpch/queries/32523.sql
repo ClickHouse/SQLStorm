@@ -26,7 +26,7 @@ RecentOrders AS (
     SELECT o.o_orderkey, SUM(li.l_extendedprice * (1 - li.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem li ON o.o_orderkey = li.l_orderkey
-    WHERE o.o_orderdate >= DATE '1998-10-01' - INTERVAL '30 days'
+    WHERE o.o_orderdate >= toDate('1998-10-01') - INTERVAL 30 DAY
     GROUP BY o.o_orderkey
 )
 SELECT 

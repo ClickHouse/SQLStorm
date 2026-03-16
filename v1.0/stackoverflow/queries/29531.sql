@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.Body,
         p.CreationDate,
         p.ViewCount,
-        STRING_AGG(t.TagName, ', ') AS Tags,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
         COUNT(c.Id) AS CommentCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
@@ -43,7 +43,7 @@ TopPosts AS (
 PostEdits AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name || ': ' || ph.Text, '; ') AS Edits,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name || ': ' || ph.Text))), '; ') AS Edits,
         COUNT(ph.Id) AS EditCount
     FROM 
         PostHistory ph

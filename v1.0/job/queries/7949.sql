@@ -38,7 +38,7 @@ SELECT
     f.company_count,
     f.keyword_count,
     a.name AS top_actor,
-    ARRAY_AGG(DISTINCT cn.name) AS production_companies
+    arrayDistinct(groupArray(assumeNotNull(cn.name))) AS production_companies
 FROM 
     filtered_movies f
 JOIN 

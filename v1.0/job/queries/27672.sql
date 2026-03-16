@@ -33,9 +33,9 @@ title_with_company AS (
 SELECT 
     twc.title,
     twc.production_year,
-    STRING_AGG(twc.actor_name, ', ') AS actor_list,
+    arrayStringConcat(groupArray(assumeNotNull(twc.actor_name)), ', ') AS actor_list,
     COUNT(DISTINCT tc.kind) AS distinct_company_types,
-    STRING_AGG(DISTINCT twc.company_note, '; ') AS company_notes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(twc.company_note))), '; ') AS company_notes
 FROM 
     title_with_company twc
 JOIN 

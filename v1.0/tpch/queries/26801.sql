@@ -1,7 +1,7 @@
 WITH StringAggregation AS (
     SELECT 
         p.p_partkey,
-        STRING_AGG(CONCAT(p.p_name, ' - ', s.s_name, ' (', s.s_phone, ')'), '; ') AS suppliers_info,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(p.p_name, ' - ', s.s_name, ' (', s.s_phone, ')'))), '; ') AS suppliers_info,
         SUM(ps.ps_supplycost) AS total_supply_cost
     FROM 
         part p
@@ -17,7 +17,7 @@ FilteredRegions AS (
         n.n_nationkey,
         r.r_name,
         r.r_comment,
-        STRING_AGG(n.n_name, ', ') AS nations
+        arrayStringConcat(groupArray(assumeNotNull(n.n_name)), ', ') AS nations
     FROM 
         nation n
     JOIN 

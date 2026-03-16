@@ -47,7 +47,7 @@ SELECT
     AVG(total_sales) AS avg_sales_per_customer,
     MAX(total_sales) AS max_sales_value,
     MIN(total_sales) AS min_sales_value,
-    STRING_AGG(full_name, ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names
 FROM BenchmarkData
 GROUP BY ca_state
 ORDER BY total_sales_value DESC;

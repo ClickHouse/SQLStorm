@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -37,11 +37,11 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         MIN(ph.CreationDate) AS FirstClosedDate,
-        STRING_AGG(DISTINCT c.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes c ON ph.Comment::int = c.Id
+        CloseReasonTypes c ON CAST(ph.Comment AS int) = c.Id
     WHERE 
         ph.PostHistoryTypeId = 10
     GROUP BY 
@@ -67,7 +67,7 @@ LEFT JOIN
 WHERE 
     rp.Rank <= 10
     AND rp.Score > 0 
-    AND (cp.FirstClosedDate IS NULL OR cp.FirstClosedDate >= cast('2024-10-01' as date) - INTERVAL '3 months')
+    AND (cp.FirstClosedDate IS NULL OR cp.FirstClosedDate >= cast('2024-10-01' as date) - INTERVAL 3 MONTH)
 ORDER BY 
     rp.Score DESC, 
     rp.ViewCount DESC;

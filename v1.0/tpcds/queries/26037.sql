@@ -8,7 +8,7 @@ SELECT
     CD.cd_marital_status,
     COUNT(DISTINCT C.c_customer_sk) AS customer_count,
     SUM(CD.cd_purchase_estimate) AS total_purchase_estimate,
-    STRING_AGG(DISTINCT CONCAT_WS(', ', C.c_first_name, C.c_last_name), '; ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(', ', C.c_first_name, C.c_last_name)))), '; ') AS customer_names
 FROM 
     customer_address CA
 JOIN 

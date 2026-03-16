@@ -32,7 +32,7 @@ PostStatistics AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
+        P.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         P.OwnerUserId
 ),
@@ -74,7 +74,7 @@ FROM
 LEFT JOIN 
     UserPosts UP ON U.Id = UP.UserId
 WHERE 
-    U.LastAccessDate > cast('2024-10-01' as date) - INTERVAL '6 months'
+    U.LastAccessDate > cast('2024-10-01' as date) - INTERVAL 6 MONTH
 ORDER BY 
     TotalScore DESC NULLS LAST, 
     NumberOfPosts DESC, 

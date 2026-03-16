@@ -9,7 +9,7 @@ WITH UserStatistics AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswersCount,
         SUM(CASE WHEN p.PostTypeId = 2 AND p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswersCount,
         MAX(u.CreationDate) AS AccountCreationDate,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - c.CreationDate)) / 60) AS AvgTimeToEngagement
+        AVG(toUnixTimestamp((p.LastActivityDate - c.CreationDate)) / 60) AS AvgTimeToEngagement
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Comments c ON p.Id = c.PostId

@@ -88,7 +88,7 @@ LEFT JOIN (
         ps.ps_suppkey
 ) AS supply_info ON ss.s_suppkey = supply_info.ps_suppkey
 WHERE 
-    os.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    os.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 ORDER BY 
     os.order_total DESC, 
     c.c_name ASC;

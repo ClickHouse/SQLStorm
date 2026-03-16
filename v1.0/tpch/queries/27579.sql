@@ -20,9 +20,9 @@ benchmark_results AS (
     SELECT 
         COUNT(*) AS total_parts,
         AVG(description_length) AS avg_description_length,
-        STRING_AGG(short_comment, ', ') AS all_short_comments,
-        STRING_AGG(modified_comment, '; ') AS all_modified_comments,
-        STRING_AGG(upper_type, ', ') AS all_upper_types
+        arrayStringConcat(groupArray(assumeNotNull(short_comment)), ', ') AS all_short_comments,
+        arrayStringConcat(groupArray(assumeNotNull(modified_comment)), '; ') AS all_modified_comments,
+        arrayStringConcat(groupArray(assumeNotNull(upper_type)), ', ') AS all_upper_types
     FROM string_benchmark
 )
 SELECT 

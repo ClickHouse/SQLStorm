@@ -29,12 +29,12 @@ TopMovies AS (
 SELECT 
     tm.title,
     tm.production_year,
-    COALESCE(STRING_AGG(DISTINCT ak.name, ', '), 'No Cast') AS cast_names,
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', '), 'No Cast') AS cast_names,
     (SELECT COUNT(*) 
      FROM movie_info mi 
      WHERE mi.movie_id = tm.movie_id AND mi.info_type_id = 2) AS num_reviews,
     COALESCE((SELECT 
-                  STRING_AGG(DISTINCT kw.keyword, ', ') 
+                  arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') 
               FROM 
                   movie_keyword mk 
               JOIN 

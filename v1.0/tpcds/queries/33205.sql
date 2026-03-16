@@ -54,4 +54,4 @@ LEFT JOIN
     CustomerCounts AS cc ON cc.cd_gender IS NOT NULL
 ORDER BY 
     rs.Total_Sales DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

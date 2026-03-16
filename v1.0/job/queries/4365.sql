@@ -46,7 +46,7 @@ SELECT
     mcs.total_roles,
     mcs.total_distinct_roles,
     COALESCE(a.name, 'Unknown') AS actor_name,
-    COALESCE(STRING_AGG(DISTINCT ar.role_name, ', '), 'No roles') AS roles_played
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ar.role_name))), ', '), 'No roles') AS roles_played
 FROM 
     MovieCastStats mcs
 JOIN 

@@ -4,7 +4,7 @@ WITH MovieDetails AS (
         t.production_year,
         k.keyword,
         COUNT(ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(ci.person_id) DESC) AS rn
     FROM 
         aka_title t
@@ -53,7 +53,7 @@ CurrentYearMovies AS (
     FROM 
         RankedMovies
     WHERE 
-        production_year = EXTRACT(YEAR FROM cast('2024-10-01' as date))
+        production_year = toYear(cast('2024-10-01' as date))
 ),
 DistinctYears AS (
     SELECT DISTINCT 

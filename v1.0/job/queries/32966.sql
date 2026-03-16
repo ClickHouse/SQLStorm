@@ -26,7 +26,7 @@ SELECT
     COUNT(DISTINCT mc.company_id) AS company_count,
     SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS cast_notes_count,
     ROW_NUMBER() OVER (PARTITION BY ak.person_id ORDER BY at.production_year DESC) AS movie_rank,
-    STRING_AGG(DISTINCT ki.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ki.keyword))), ', ') AS keywords,
     COALESCE(pi.info, 'No info available') AS person_info
 FROM 
     cast_info ci

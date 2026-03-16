@@ -4,7 +4,7 @@ WITH TagStats AS (
         COUNT(p.Id) AS PostCount,
         SUM(COALESCE(c.Score, 0)) AS TotalCommentScore,
         COUNT(DISTINCT v.UserId) AS UniqueVoters,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS VoterDisplayNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS VoterDisplayNames
     FROM 
         Tags t
     LEFT JOIN 

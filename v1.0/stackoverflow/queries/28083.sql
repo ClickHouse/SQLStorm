@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p
@@ -18,12 +18,12 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag(tagname) 
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS tag(tagname) 
         ON tag.tagname IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag.tagname
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.LastActivityDate, p.OwnerUserId, u.DisplayName
 ),

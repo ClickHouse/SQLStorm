@@ -8,15 +8,15 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.AnswerCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS ScoreRank,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag_name ON TRUE
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
-        p.CreationDate > DATE('2024-10-01') - INTERVAL '30 days'
+        p.CreationDate > DATE('2024-10-01') - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount
 ),

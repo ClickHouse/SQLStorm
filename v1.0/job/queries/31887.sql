@@ -17,7 +17,7 @@ Actor_Info AS (
 ),
 Company_CTE AS (
     SELECT m.id AS movie_id, 
-           ARRAY_AGG(DISTINCT cn.name) AS company_names,
+           arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
            COUNT(DISTINCT m.id) AS company_count
     FROM movie_companies m
     JOIN company_name cn ON m.company_id = cn.id

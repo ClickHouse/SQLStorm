@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY RANDOM()) AS random_rank,
+        ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY rand()) AS random_rank,
         COUNT(DISTINCT ka.person_id) AS cast_count
     FROM
         aka_title t

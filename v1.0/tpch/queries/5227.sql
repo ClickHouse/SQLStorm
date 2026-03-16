@@ -63,4 +63,4 @@ WHERE
     os.total_orders > 5
 ORDER BY 
     os.total_spent DESC, ss.total_supply_cost ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

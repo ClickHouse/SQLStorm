@@ -46,7 +46,7 @@ SELECT
     tm.keyword_status,
     COALESCE(mci.movie_count, 0) AS movie_company_count,
     COALESCE(aka.name, 'Unknown') AS actor_name,
-    ARRAY_AGG(DISTINCT k.keyword) AS associated_keywords
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS associated_keywords
 FROM 
     TopMovies tm
 LEFT JOIN 

@@ -4,7 +4,7 @@ SELECT
     ca.ca_city AS city,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid) AS total_spent,
-    STRING_AGG(DISTINCT CONCAT(ws.ws_ship_mode_sk, ': ', sm.sm_type), '; ') AS shipping_methods,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ws.ws_ship_mode_sk, ': ', sm.sm_type)))), '; ') AS shipping_methods,
     d.d_date AS last_order_date
 FROM 
     customer AS c
@@ -17,7 +17,7 @@ JOIN
 JOIN 
     date_dim AS d ON ws.ws_sold_date_sk = d.d_date_sk
 WHERE 
-    d.d_date >= cast('2002-10-01' as date) - INTERVAL '1 year'
+    d.d_date >= cast('2002-10-01' as date) - INTERVAL 1 YEAR
 GROUP BY 
     c.c_first_name, c.c_last_name, ca.ca_city, d.d_date
 HAVING 

@@ -22,11 +22,11 @@ PostStatistics AS (
         COUNT(DISTINCT P.Id) AS PostCount,
         COUNT(DISTINCT COALESCE(P.AcceptedAnswerId, -1)) AS AcceptedAnswerCount,
         SUM(P.Score) AS TotalScore,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS AssociatedTags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS AssociatedTags
     FROM 
         Posts P
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(P.Tags, ',')) AS T(TagName) ON TRUE 
+        arrayJoin(splitByString(',', P.Tags)) AS T(TagName) ON TRUE 
     GROUP BY 
         P.OwnerUserId
 ),
@@ -55,7 +55,7 @@ SELECT
     CASE 
         WHEN UEng.ReputationRank <= 10 THEN 'Top User'
         WHEN UEng.ReputationRank <= 50 THEN 'Average User'
-        WHEN EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM U.CreationDate) < 1 THEN 'New User'
+        WHEN toYear(CURRENT_DATE) - toYear(U.CreationDate) < 1 THEN 'New User'
         ELSE 'Experienced User'
     END AS UserCategory,
     UEng.AssociatedTags,
@@ -71,7 +71,7 @@ FROM
 JOIN 
     UserEngagement UEng ON U.Id = UEng.UserId
 WHERE 
-    U.LastAccessDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
+    U.LastAccessDate > now64(6) - INTERVAL 30 DAY
 ORDER BY 
     UEng.ReputationRank ASC, UEng.TotalScore DESC
 LIMIT 50;

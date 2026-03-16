@@ -33,8 +33,8 @@ actor_summary AS (
     SELECT 
         actor_name,
         COUNT(DISTINCT movie_id) AS total_movies,
-        STRING_AGG(DISTINCT movie_title, ', ') AS movies_list,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_title))), ', ') AS movies_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords
     FROM 
         movie_details
     GROUP BY 

@@ -30,7 +30,7 @@ SELECT
     at.production_year,
     COUNT(ct.kind) AS comp_cast_count,
     SUM(CASE WHEN ci.note IS NULL THEN 1 ELSE 0 END) AS null_notes_count,
-    STRING_AGG(DISTINCT ki.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ki.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY na.person_id ORDER BY at.production_year DESC) AS actor_rank
 FROM 
     aka_name na

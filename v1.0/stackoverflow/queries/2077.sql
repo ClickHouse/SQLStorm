@@ -31,7 +31,7 @@ PostScoreRanked AS (
          FROM Comments
          GROUP BY PostId) C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title, P.Score
 ),
@@ -39,11 +39,11 @@ ClosedPosts AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(CT.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CT.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 
-        CloseReasonTypes CT ON PH.Comment::int = CT.Id
+        CloseReasonTypes CT ON CAST(PH.Comment AS int) = CT.Id
     WHERE 
         PH.PostHistoryTypeId = 10
     GROUP BY 

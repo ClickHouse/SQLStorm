@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -36,7 +36,7 @@ PostHistoryWithCloseReasons AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        STRING_AGG(cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     LEFT JOIN 

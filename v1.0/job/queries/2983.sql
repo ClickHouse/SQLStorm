@@ -39,7 +39,7 @@ MoviesWithInfo AS (
     SELECT 
         m.title,
         m.production_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title m
     LEFT JOIN 

@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     SUM(CASE WHEN o.o_orderstatus = 'F' THEN l.l_extendedprice ELSE 0 END) AS total_fully_filled,
     AVG(CASE WHEN l.l_discount > 0 THEN l.l_extendedprice * (1 - l.l_discount) ELSE l.l_extendedprice END) AS avg_price_after_discount,
-    string_agg(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     part p 
 JOIN 

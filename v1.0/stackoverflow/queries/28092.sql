@@ -2,7 +2,7 @@ WITH TagSummary AS (
     SELECT 
         t.TagName,
         COUNT(DISTINCT p.Id) AS PostCount,
-        ARRAY_AGG(DISTINCT p.Title) AS PostTitles,
+        arrayDistinct(groupArray(assumeNotNull(p.Title))) AS PostTitles,
         SUM(COALESCE(c.CommentCount, 0)) AS TotalComments,
         SUM(COALESCE(v.VoteCount, 0)) AS TotalVotes,
         SUM(p.ViewCount) AS TotalViews

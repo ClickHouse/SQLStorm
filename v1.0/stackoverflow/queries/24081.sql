@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score IS NOT NULL
 ),
 FilteredPosts AS (
@@ -33,7 +33,7 @@ SubqueryComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS Comments
     FROM 
         Comments c
     GROUP BY 
@@ -79,5 +79,4 @@ WHERE
     OR f.Score < 50
 ORDER BY 
     f.Score DESC, f.CreationDate DESC
-OFFSET 0 ROWS 
-FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 0;

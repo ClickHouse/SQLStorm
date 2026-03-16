@@ -40,7 +40,7 @@ UserSummary AS (
 )
 SELECT 
     US.DisplayName,
-    EXTRACT(YEAR FROM CURRENT_DATE - US.CreationDate) AS AccountAge,
+    toYear(CURRENT_DATE - US.CreationDate) AS AccountAge,
     US.TotalBounty,
     US.TotalPosts,
     US.TotalScore,

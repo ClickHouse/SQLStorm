@@ -39,7 +39,7 @@ FinalResults AS (
     SELECT 
         sm.title,
         sm.production_year,
-        STRING_AGG(sm.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(sm.keyword)), ', ') AS keywords
     FROM 
         SelectedMovies sm
     GROUP BY 

@@ -38,7 +38,7 @@ KeywordCounts AS (
 MovieInfoAggregated AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS info_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS info_details
     FROM 
         movie_info mi
     GROUP BY 

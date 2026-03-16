@@ -41,7 +41,7 @@ SELECT
     md.company_name,
     md.role,
     md.actor_name,
-    STRING_AGG(kd.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(kd.keyword)), ', ') AS keywords
 FROM 
     MovieDetails AS md
 LEFT JOIN 

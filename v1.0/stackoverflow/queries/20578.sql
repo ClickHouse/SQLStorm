@@ -13,18 +13,18 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.Score
 ),
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT crt.Name, ', ') AS Reasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS Reasons
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes crt ON ph.Comment::int = crt.Id
+        CloseReasonTypes crt ON CAST(ph.Comment AS int) = crt.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11)  
     GROUP BY 
@@ -36,7 +36,7 @@ UserStatistics AS (
         u.DisplayName,
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(p.Score) AS TotalScore,
-        AVG(COALESCE(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)), 0)) AS AvgPostAgeInSeconds
+        AVG(COALESCE(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)), 0)) AS AvgPostAgeInSeconds
     FROM 
         Users u
     LEFT JOIN 
@@ -77,7 +77,7 @@ SELECT
          WHEN fr.AvgPostAgeInSeconds < 604800 THEN 'Newly Active'
          ELSE 'Long-Term User' 
      END) AS UserType,
-    STRING_AGG(DISTINCT fr.Reasons, '; ') AS CloseReasons
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fr.Reasons))), '; ') AS CloseReasons
 FROM 
     FinalReport fr
 GROUP BY 

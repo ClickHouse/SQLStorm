@@ -45,8 +45,8 @@ SELECT
     movie_title,
     production_year,
     aka_name,
-    STRING_AGG(DISTINCT person_name, ', ') AS actors,
-    STRING_AGG(DISTINCT keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(person_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords
 FROM 
     CombinedData
 GROUP BY 

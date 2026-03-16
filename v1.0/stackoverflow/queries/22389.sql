@@ -61,7 +61,7 @@ FROM UserVoteStatistics uvs
 JOIN RankedPosts rp ON uvs.UserId IN (
     SELECT DISTINCT p.OwnerUserId 
     FROM Posts p 
-    WHERE p.CreationDate < NOW() - INTERVAL '30 days'
+    WHERE p.CreationDate < NOW() - INTERVAL 30 DAY
 )
 WHERE uvs.VoteRank <= 10
 ORDER BY uvs.UpVotesCount - uvs.DownVotesCount DESC, rp.ViewCount DESC;

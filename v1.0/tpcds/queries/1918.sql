@@ -41,5 +41,5 @@ WHERE
 ORDER BY 
     swr.total_sales DESC NULLS LAST, 
     swr.total_quantity DESC NULLS LAST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;
 

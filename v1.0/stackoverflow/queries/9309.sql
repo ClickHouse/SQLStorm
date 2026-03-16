@@ -53,7 +53,7 @@ SELECT
     U.UpVotes,
     U.DownVotes,
     COALESCE(UB.BadgeCount, 0) AS BadgeCount,
-    ARRAY_AGG(DISTINCT PT.TagName) AS PopularTags
+    arrayDistinct(groupArray(assumeNotNull(PT.TagName))) AS PopularTags
 FROM 
     UserStats U
 LEFT JOIN 

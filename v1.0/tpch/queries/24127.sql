@@ -64,7 +64,7 @@ LEFT JOIN SubqueryTotalPrice tt ON tt.o_orderkey = (
         orders 
     ORDER BY 
         o_orderdate DESC 
-    FETCH FIRST 1 ROW ONLY
+    LIMIT 1
 )
 JOIN TopNations tn ON tn.n_nationkey = (
     SELECT 

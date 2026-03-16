@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
@@ -28,12 +28,12 @@ UserBadges AS (
 PostHistoryTags AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(pt.Name, ', ') AS PostHistoryTypes
+        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostHistoryTypes
     FROM 
         PostHistory ph
     JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         ph.PostId
 )

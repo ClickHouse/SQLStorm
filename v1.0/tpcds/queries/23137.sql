@@ -80,7 +80,7 @@ SELECT
     COUNT(fr.c_customer_sk) AS num_customers,
     AVG(fr.total_net_profit) AS avg_net_profit,
     SUM(fr.total_return_quantity) AS total_returns,
-    STRING_AGG(fr.cd_gender, ',') AS gender_distribution
+    arrayStringConcat(groupArray(assumeNotNull(fr.cd_gender)), ',') AS gender_distribution
 FROM FinalReport fr
 GROUP BY fr.ca_city, fr.ca_state
 HAVING SUM(fr.total_return_quantity) > 0 

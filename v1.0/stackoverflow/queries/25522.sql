@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        ARRAY_LENGTH(STRING_TO_ARRAY(p.Tags, '>'), 1) AS TagCount,
+        length(splitByString('>', p.Tags), 1) AS TagCount,
         u.Reputation,
         ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY p.CreationDate DESC) AS UserPostRank
     FROM 
@@ -53,7 +53,7 @@ PostStatistics AS (
         tp.ViewCount,
         pvc.UpVotes,
         pvc.DownVotes,
-        tp.Reputation / (EXTRACT(EPOCH FROM cast('2024-10-01 12:34:56' as timestamp) - tp.CreationDate)/3600) AS ReputationPerHour 
+        tp.Reputation / (toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - tp.CreationDate)/3600) AS ReputationPerHour 
     FROM 
         TopPosts tp
     LEFT JOIN 

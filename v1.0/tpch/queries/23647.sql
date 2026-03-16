@@ -11,7 +11,7 @@ WITH RECURSIVE supplier_rank AS (
     SELECT o.o_orderkey, o.o_orderdate, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_price
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate >= DATE '1997-01-01'
+    WHERE l.l_shipdate >= toDate('1997-01-01')
     GROUP BY o.o_orderkey, o.o_orderdate
 ), customer_activity AS (
     SELECT c.c_custkey, COUNT(DISTINCT o.o_orderkey) AS order_count
@@ -34,4 +34,4 @@ LEFT JOIN order_summary os ON os.o_orderdate = cast('1998-10-01' as date)
 LEFT JOIN customer_activity ca ON ca.c_custkey = s.s_suppkey
 WHERE sr.rank <= 3 AND (pa.total_availqty IS NULL OR pa.total_availqty > 0)
 ORDER BY supplier_name, part_name
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

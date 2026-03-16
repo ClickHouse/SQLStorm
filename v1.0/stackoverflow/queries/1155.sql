@@ -26,7 +26,7 @@ SELECT U.DisplayName,
        COALESCE(PS.TotalViews, 0) AS TotalViews,
        COALESCE(PS.TotalScore, 0) AS TotalScore,
        COUNT(DISTINCT CP.PostId) AS ClosedPostCount,
-       STRING_AGG(CP.Title, ', ') AS ClosedPostTitles
+       arrayStringConcat(groupArray(assumeNotNull(CP.Title)), ', ') AS ClosedPostTitles
 FROM Users U
 LEFT JOIN UserBadgeCounts UB ON U.Id = UB.UserId
 LEFT JOIN PostStats PS ON U.Id = PS.OwnerUserId

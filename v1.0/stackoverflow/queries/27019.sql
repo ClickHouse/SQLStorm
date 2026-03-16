@@ -3,7 +3,7 @@ WITH UserTags AS (
         U.Id AS UserId,
         U.DisplayName AS UserDisplayName,
         COUNT(DISTINCT T.Id) AS TagCount,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS TagNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagNames
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     LEFT JOIN TAGS T ON POSITION(T.TagName IN P.Tags) > 0
@@ -13,7 +13,7 @@ UserBadges AS (
     SELECT 
         B.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames,
         MAX(B.Date) AS LastBadgeDate
     FROM Badges B
     GROUP BY B.UserId

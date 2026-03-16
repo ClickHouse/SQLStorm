@@ -3,7 +3,7 @@ WITH MovieAwards AS (
         title.id AS movie_id,
         title.title,
         COUNT(DISTINCT movie_info.info) AS award_count,
-        STRING_AGG(DISTINCT movie_info.info, ', ') AS awards_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_info.info))), ', ') AS awards_list
     FROM 
         title
     JOIN 

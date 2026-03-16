@@ -26,8 +26,8 @@ complete_movie_details AS (
         top_movies.title,
         top_movies.production_year,
         top_movies.actor_count,
-        STRING_AGG(DISTINCT aka_name.name, ', ') AS actor_names,
-        STRING_AGG(DISTINCT keyword.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aka_name.name))), ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword.keyword))), ', ') AS keywords
     FROM top_movies
     LEFT JOIN cast_info ON top_movies.movie_id = cast_info.movie_id
     LEFT JOIN aka_name ON cast_info.person_id = aka_name.person_id

@@ -13,7 +13,7 @@ WITH RecentPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 UserScores AS (
     SELECT 
@@ -60,6 +60,6 @@ LEFT JOIN
 LEFT JOIN 
     TopUsers TU ON T.Id = TU.Id
 WHERE 
-    RP.ClosedDate IS NULL OR RP.ClosedDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days'
+    RP.ClosedDate IS NULL OR RP.ClosedDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY
 ORDER BY 
     RP.Score DESC, RP.ViewCount DESC;

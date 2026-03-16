@@ -52,10 +52,10 @@ SELECT
     sales.total_tax,
     gender.cd_gender,
     gender.customer_count,
-    STRING_AGG(proc.full_customer_name, ', ') AS full_customer_names,
-    STRING_AGG(proc.email_prefix, ', ') AS email_prefixes,
-    STRING_AGG(proc.upper_customer_id, ', ') AS upper_customer_ids,
-    STRING_AGG(proc.full_address, ', ') AS full_addresses
+    arrayStringConcat(groupArray(assumeNotNull(proc.full_customer_name)), ', ') AS full_customer_names,
+    arrayStringConcat(groupArray(assumeNotNull(proc.email_prefix)), ', ') AS email_prefixes,
+    arrayStringConcat(groupArray(assumeNotNull(proc.upper_customer_id)), ', ') AS upper_customer_ids,
+    arrayStringConcat(groupArray(assumeNotNull(proc.full_address)), ', ') AS full_addresses
 FROM 
     Address_Summary addr
 JOIN 

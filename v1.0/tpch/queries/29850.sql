@@ -8,7 +8,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     MAX(l.l_shipdate) AS latest_ship_date,
     MIN(l.l_shipdate) AS earliest_ship_date,
-    STRING_AGG(DISTINCT l.l_comment, '; ') AS comments_aggregated
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_comment))), '; ') AS comments_aggregated
 FROM 
     part p
 JOIN 
@@ -22,7 +22,7 @@ JOIN
 WHERE 
     p.p_retailprice BETWEEN 10.00 AND 100.00
     AND c.c_mktsegment = 'BUILDING'
-    AND l.l_shipdate >= DATE '1997-01-01'
+    AND l.l_shipdate >= toDate('1997-01-01')
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey
 ORDER BY 

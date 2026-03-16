@@ -34,7 +34,7 @@ FROM
 JOIN
     customer c ON tc.c_customer_id = c.c_customer_id
 JOIN
-    date_dim d ON DATE_PART('year', d.d_date) = 2023
+    date_dim d ON datePart('year', d.d_date) = 2023
 WHERE
     tc.rank <= 10
 ORDER BY

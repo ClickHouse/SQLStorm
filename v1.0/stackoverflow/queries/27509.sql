@@ -44,7 +44,7 @@ CTE_TopTags AS (
         COUNT(*) AS TagCount
     FROM 
         Posts, 
-        UNNEST(string_to_array(Tags, ',')) AS value
+        arrayJoin(splitByString(',', Tags)) AS value
     WHERE 
         PostTypeId = 1
     GROUP BY 
@@ -69,9 +69,9 @@ FROM
 JOIN 
     CTE_LastEdits le ON cp.PostId = le.PostId
 JOIN 
-    CTE_TopTags tt ON tt.Tag = ANY(string_to_array(cp.Tags, ','))
+    CTE_TopTags tt ON tt.Tag = ANY(splitByString(',', cp.Tags))
 WHERE 
-    cp.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+    cp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ORDER BY 
     cp.VoteCount DESC, 
     cp.CreationDate DESC;

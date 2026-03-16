@@ -71,4 +71,4 @@ WHERE
     AND COALESCE(sp.total_available, 0) > 0
 ORDER BY 
     total_sales_revenue DESC, top_supplier_balance DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

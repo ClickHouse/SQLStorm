@@ -41,7 +41,7 @@ RecentComments AS (
     JOIN 
         Users u ON c.UserId = u.Id
     WHERE 
-        c.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days'
+        c.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY
 )
 SELECT 
     rp.PostId, 

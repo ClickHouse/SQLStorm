@@ -33,7 +33,7 @@ SELECT
     md.title,
     md.production_year,
     md.cast_size,
-    (SELECT STRING_AGG(DISTINCT ak.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') 
      FROM aka_name ak 
      JOIN cast_info ci ON ak.person_id = ci.person_id 
      WHERE ci.movie_id = md.movie_id) AS cast_names,

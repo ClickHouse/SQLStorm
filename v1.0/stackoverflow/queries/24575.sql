@@ -27,7 +27,7 @@ ActiveUserPosts AS (
            (SELECT COUNT(*) FROM Comments C WHERE C.PostId = P.Id) AS CommentCount
     FROM Users U
     JOIN Posts P ON U.Id = P.OwnerUserId
-    WHERE P.LastActivityDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
+    WHERE P.LastActivityDate > now64(6) - INTERVAL 30 DAY
 ),
 RankedPosts AS (
     SELECT A.UserId,

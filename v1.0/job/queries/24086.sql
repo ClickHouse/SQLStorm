@@ -14,7 +14,7 @@ MovieDetails AS (
     SELECT 
         cc.movie_id,
         COUNT(DISTINCT mc.company_id) AS number_of_companies,
-        STRING_AGG(DISTINCT c.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS company_names,
         MAX(CASE 
             WHEN ci.note IS NOT NULL AND ci.note LIKE '%Featured%' THEN 1 
             ELSE 0 
@@ -67,4 +67,4 @@ ORDER BY
     r.production_year DESC, 
     m.number_of_companies DESC,
     k.keyword_count DESC
-OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 0;

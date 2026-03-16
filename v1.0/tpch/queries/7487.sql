@@ -15,8 +15,8 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    l.l_shipdate >= DATE '1995-01-01'
-    AND l.l_shipdate < DATE '1996-01-01'
+    l.l_shipdate >= toDate('1995-01-01')
+    AND l.l_shipdate < toDate('1996-01-01')
     AND n.n_name IN ('FRANCE', 'GERMANY')
 GROUP BY 
     n.n_name

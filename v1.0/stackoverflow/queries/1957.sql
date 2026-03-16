@@ -45,7 +45,7 @@ RecentPostHistory AS (
         ROW_NUMBER() OVER (PARTITION BY PH.PostId ORDER BY PH.CreationDate DESC) AS rn
     FROM PostHistory PH
     JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
-    WHERE PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 
 SELECT 
@@ -67,6 +67,6 @@ LEFT JOIN UserVoteStats UVS ON PS.OwnerUserId = UVS.UserId
 LEFT JOIN RecentPostHistory RP ON PS.PostId = RP.PostId AND RP.rn = 1
 WHERE PS.Score > 0
   AND PS.ViewCount > 100
-  AND (PS.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month' 
+  AND (PS.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
        OR PS.OwnerUserId IS NULL)
 ORDER BY PS.Score DESC, PS.ViewCount DESC;

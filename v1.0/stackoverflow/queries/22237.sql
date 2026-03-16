@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - interval '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
 ),
 PopularUsers AS (

@@ -6,7 +6,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price,
     COUNT(DISTINCT o.o_custkey) AS unique_customers,
-    STRING_AGG(DISTINCT c.c_phone, ', ') AS customer_phones
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_phone))), ', ') AS customer_phones
 FROM
     supplier s
 JOIN

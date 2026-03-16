@@ -47,4 +47,4 @@ WHERE
     h.total_spent IS NOT NULL
 ORDER BY 
     h.total_spent DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

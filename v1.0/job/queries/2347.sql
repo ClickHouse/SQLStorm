@@ -39,7 +39,7 @@ MoviesWithKeywords AS (
         fm.title,
         fm.production_year,
         fm.total_cast,
-        STRING_AGG(mk.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keywords
     FROM 
         FilteredMovies fm
     LEFT JOIN 

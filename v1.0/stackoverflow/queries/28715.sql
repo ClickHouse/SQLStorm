@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 RecentEdits AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CONCAT(ph.CreationDate, ' - ', ph.Comment), '; ') AS EditHistory
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.CreationDate, ' - ', ph.Comment))), '; ') AS EditHistory
     FROM 
         PostHistory ph
     WHERE 

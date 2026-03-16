@@ -19,7 +19,7 @@ UserStats AS (
         u.DisplayName,
         u.Reputation,
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounties,
-        COALESCE(SUM(CASE WHEN v.CreationDate <= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS YearlyUpvotes
+        COALESCE(SUM(CASE WHEN v.CreationDate <= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS YearlyUpvotes
     FROM 
         Users u
     LEFT JOIN 

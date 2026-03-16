@@ -32,7 +32,7 @@ SELECT
     mh.production_year,
     mh.sequel_title,
     COUNT(c.id) AS cast_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
     AVG(p.info_length) AS avg_person_info_length,
     COUNT(DISTINCT CASE WHEN c.movie_id IS NOT NULL THEN c.movie_id END) AS movies_with_roles
 FROM 
@@ -42,7 +42,7 @@ LEFT JOIN
 LEFT JOIN 
     aka_name ak ON ak.person_id = c.person_id
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
             LENGTH(info) AS info_length
         FROM 

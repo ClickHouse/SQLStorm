@@ -23,7 +23,7 @@ WITH UserStatistics AS (
 CloseReasonSummary AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(CASE WHEN PHT.Name IS NOT NULL THEN PHT.Name END, ', ') AS CloseReasons,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PHT.Name IS NOT NULL THEN PHT.Name END)), ', ') AS CloseReasons,
         COUNT(DISTINCT PH.UserId) AS NumOfCloseVotes
     FROM 
         PostHistory PH
@@ -79,5 +79,4 @@ WHERE
     AND U.Reputation > (SELECT AVG(Reputation) FROM Users)
 ORDER BY 
     U.TotalUpvotes DESC, U.DisplayName
-OFFSET 10 ROWS
-FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

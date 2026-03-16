@@ -18,7 +18,7 @@ WITH ActiveUsers AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        u.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation
 ),
@@ -55,7 +55,7 @@ RecentEdits AS (
     JOIN 
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     ORDER BY 
         ph.CreationDate DESC
 )

@@ -55,4 +55,4 @@ WHERE (cd.cd_gender = 'M' OR cd.cd_gender IS NULL)
 AND (er.total_returned_qty IS NULL OR er.total_returned_qty <= 50)
 AND cd.cd_purchase_estimate BETWEEN 1000 AND 5000
 ORDER BY total_profit DESC NULLS LAST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

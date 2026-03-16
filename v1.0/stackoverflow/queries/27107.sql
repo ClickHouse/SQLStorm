@@ -76,4 +76,4 @@ LEFT JOIN
 ORDER BY 
     pm.ViewCount DESC,
     pm.Score DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

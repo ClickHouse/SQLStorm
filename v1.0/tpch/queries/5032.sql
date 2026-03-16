@@ -9,7 +9,7 @@ WITH RankedSuppliers AS (
     SELECT c.c_custkey, c.c_name, COUNT(o.o_orderkey) AS OrderCount, SUM(o.o_totalprice) AS TotalSpent
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
     GROUP BY c.c_custkey, c.c_name
 ), TopCustomers AS (
     SELECT c.c_custkey, c.c_name, COALESCE(co.OrderCount, 0) AS OrderCount, COALESCE(co.TotalSpent, 0) AS TotalSpent

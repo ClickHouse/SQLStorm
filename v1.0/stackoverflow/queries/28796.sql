@@ -9,20 +9,20 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.Score,
         COALESCE(u.DisplayName, 'Community User') AS OwnerName,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
-                unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '>.<')) AS TagName
+                arrayJoin(splitByString('>.<', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
         ) AS t ON TRUE
     WHERE 
         p.PostTypeId = 1 AND  
         p.Score > 0 AND       
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, p.AnswerCount, p.Score, u.DisplayName
 ),
@@ -82,4 +82,4 @@ FROM
     FinalResults
 ORDER BY 
     Score DESC, ViewCount DESC, CreationDate DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

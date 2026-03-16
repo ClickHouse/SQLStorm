@@ -57,4 +57,4 @@ WHERE
     AND (i.i_current_price > 0 OR sp.total_sales IS NOT NULL)
 ORDER BY 
     sales_percentage DESC, total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

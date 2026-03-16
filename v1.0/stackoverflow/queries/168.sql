@@ -49,7 +49,7 @@ FinalMetrics AS (
         rpa.LastActivity,
         CASE 
             WHEN rpa.LastActivity IS NULL THEN 'Inactive' 
-            WHEN rpa.LastActivity < (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year') THEN 'Dormant' 
+            WHEN rpa.LastActivity < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) THEN 'Dormant' 
             ELSE 'Active' 
         END AS ActivityStatus
     FROM ActiveUsers au

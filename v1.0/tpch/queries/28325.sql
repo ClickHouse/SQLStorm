@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS distinct_suppliers, 
     SUM(ps.ps_availqty) AS total_available_quantity, 
     MAX(p.p_retailprice) AS max_price, 
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     REPLACE(p.p_comment, 'special', 'premium') AS updated_comment
 FROM 
     part p

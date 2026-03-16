@@ -29,7 +29,7 @@ MoviesWithActorDetails AS (
         rm.movie_id,
         rm.title,
         rm.production_year,
-        STRING_AGG(aw.actor_name, ', ') AS actors,
+        arrayStringConcat(groupArray(assumeNotNull(aw.actor_name)), ', ') AS actors,
         MAX(rm.rn) AS max_rank,
         SUM(CASE WHEN aw.role LIKE '%Lead%' THEN 1 ELSE 0 END) AS lead_roles,
         CASE 

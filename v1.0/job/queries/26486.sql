@@ -19,7 +19,7 @@ ActorInfo AS (
         a.name AS actor_name,
         c.movie_id,
         MIN(c.nr_order) AS first_role_order,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles_played
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles_played
     FROM 
         cast_info c
     JOIN 

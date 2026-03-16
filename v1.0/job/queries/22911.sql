@@ -62,8 +62,8 @@ LostActors AS (
 SELECT 
     rt.title,
     rt.production_year,
-    STRING_AGG(DISTINCT la.name, ', ') AS lost_actors,
-    STRING_AGG(DISTINCT ci.company_name || ' (' || ci.company_type || '): ' || ci.movie_info, '; ') AS companies_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(la.name))), ', ') AS lost_actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.company_name || ' (' || ci.company_type || '): ' || ci.movie_info))), '; ') AS companies_info,
     COUNT(DISTINCT ad.person_id) AS total_actors
 FROM 
     RankedTitles rt

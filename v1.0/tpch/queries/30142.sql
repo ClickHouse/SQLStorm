@@ -26,7 +26,7 @@ FROM part p
 LEFT JOIN supply_costs s ON p.p_partkey = s.ps_partkey
 LEFT JOIN ranked_lineitems r ON r.l_partkey = p.p_partkey
 LEFT JOIN filtered_orders fo ON fo.o_orderkey = r.l_orderkey
-WHERE p.p_size > 10 AND (fo.o_orderdate >= DATE '1997-01-01' OR fo.o_orderdate IS NULL)
+WHERE p.p_size > 10 AND (fo.o_orderdate >= toDate('1997-01-01') OR fo.o_orderdate IS NULL)
 GROUP BY p.p_name
 HAVING SUM(s.ps_supplycost * r.l_quantity) IS NOT NULL
 ORDER BY total_supply_cost DESC, p.p_name;

@@ -29,7 +29,7 @@ SELECT ca_state,
        COUNT(DISTINCT c_customer_sk) AS unique_customers,
        SUM(CASE WHEN ws_ext_sales_price > 0 THEN ws_ext_sales_price ELSE 0 END) AS total_revenue,
        AVG(CASE WHEN total_orders > 0 THEN total_sales / total_orders ELSE NULL END) AS avg_sales_per_order,
-       STRING_AGG(i_product_name, ', ') AS top_products
+       arrayStringConcat(groupArray(assumeNotNull(i_product_name)), ', ') AS top_products
 FROM customer_address 
 LEFT JOIN customer ON customer.c_current_addr_sk = customer_address.ca_address_sk
 LEFT JOIN web_sales ON customer.c_customer_sk = web_sales.ws_bill_customer_sk

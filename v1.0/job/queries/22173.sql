@@ -36,7 +36,7 @@ SELECT
     tm.production_year,
     tm.country_code,
     (SELECT COUNT(*) FROM cast_info ci WHERE ci.movie_id = tm.movie_id) AS actor_count,
-    (SELECT STRING_AGG(DISTINCT a.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') 
      FROM cast_info ci 
      JOIN aka_name a ON ci.person_id = a.person_id
      WHERE ci.movie_id = tm.movie_id
@@ -53,5 +53,5 @@ WHERE
         AND mi.info_type_id IN (SELECT id FROM info_type WHERE info = 'Box Office')
     )
 ORDER BY
-    RANDOM() 
+    rand() 
 LIMIT 10;

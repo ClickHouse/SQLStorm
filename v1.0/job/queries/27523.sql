@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        ARRAY_AGG(a.name) AS actors,
+        groupArray(assumeNotNull(a.name)) AS actors,
         COUNT(DISTINCT kc.keyword_id) AS keyword_count,
         ROW_NUMBER() OVER (PARTITION BY m.production_year ORDER BY COUNT(DISTINCT kc.keyword_id) DESC) AS rank_with_keywords
     FROM 
@@ -33,7 +33,7 @@ SELECT
     sm.movie_id,
     sm.title,
     sm.production_year,
-    string_agg(sm.actors::text, ', ') AS actor_list,
+    arrayStringConcat(groupArray(assumeNotNull(CAST(sm.actors AS text))), ', ') AS actor_list,
     sm.keyword_count
 FROM 
     SelectedMovies sm

@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice) AS total_revenue,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(l.l_shipmode, ', ') AS unique_shipping_modes
+    arrayStringConcat(groupArray(assumeNotNull(l.l_shipmode)), ', ') AS unique_shipping_modes
 FROM 
     supplier s
 JOIN 

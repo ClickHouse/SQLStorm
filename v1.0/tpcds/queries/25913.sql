@@ -19,7 +19,7 @@ address_summary AS (
     SELECT 
         ca_state, 
         COUNT(DISTINCT c.c_customer_id) AS associated_customers,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities_list
     FROM 
         customer_address ca 
     JOIN 

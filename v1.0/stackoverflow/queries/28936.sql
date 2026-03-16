@@ -53,12 +53,12 @@ ClosedPostDetails AS (
 SELECT 
     cpd.PostId,
     cpd.Title,
-    EXTRACT(YEAR FROM cpd.CreationDate) AS CreationYear,
+    toYear(cpd.CreationDate) AS CreationYear,
     cpd.UpVotes,
     cpd.DownVotes,
     cpd.TagCount,
     cpd.CloseVotes,
-    DATE_PART('day', cpd.LastChangeDate - cpd.FirstChangeDate) AS DurationInDays
+    datePart('day', cpd.LastChangeDate - cpd.FirstChangeDate) AS DurationInDays
 FROM 
     ClosedPostDetails cpd
 WHERE 

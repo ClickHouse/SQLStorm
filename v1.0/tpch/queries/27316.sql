@@ -29,7 +29,7 @@ TopProducts AS (
 )
 SELECT 
     tp.p_brand,
-    STRING_AGG(tp.p_name, ', ') AS product_names,
+    arrayStringConcat(groupArray(assumeNotNull(tp.p_name)), ', ') AS product_names,
     SUM(tp.total_available_qty) AS total_qty,
     COUNT(tp.supplier_count) AS unique_suppliers
 FROM 

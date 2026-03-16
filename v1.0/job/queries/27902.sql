@@ -1,8 +1,8 @@
 WITH NameAgg AS (
   SELECT 
     ak.person_id,
-    STRING_AGG(DISTINCT ak.name, ', ') AS ak_names,
-    STRING_AGG(DISTINCT c.name, ', ') AS char_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS ak_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS char_names
   FROM
     aka_name ak
   LEFT JOIN
@@ -16,8 +16,8 @@ MovieAgg AS (
   SELECT 
     m.id AS movie_id,
     m.title AS movie_title,
-    STRING_AGG(DISTINCT co.name, ', ') AS production_companies,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS production_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
   FROM 
     aka_title m
   LEFT JOIN 

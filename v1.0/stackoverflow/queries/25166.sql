@@ -6,9 +6,9 @@ WITH RankedTags AS (
     FROM 
         Posts 
     JOIN 
-        LATERAL (SELECT unnest(string_to_array(substring(Posts.Tags, 2, length(Posts.Tags) - 2), '><')) AS TagName) AS Tags ON true 
+        (SELECT arrayJoin(splitByString('><', substring(Posts.Tags, 2, length(Posts.Tags) - 2))) AS TagName) AS Tags ON true 
     WHERE 
-        Posts.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        Posts.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         Tags.TagName 
     HAVING 
@@ -21,11 +21,11 @@ PopularPosts AS (
         Posts.Score, 
         Posts.ViewCount, 
         Posts.CreationDate, 
-        ARRAY_AGG(Tags.TagName) AS PostTags 
+        groupArray(assumeNotNull(Tags.TagName)) AS PostTags 
     FROM 
         Posts 
     JOIN 
-        LATERAL (SELECT unnest(string_to_array(substring(Posts.Tags, 2, length(Posts.Tags) - 2), '><')) AS TagName) AS Tags ON true 
+        (SELECT arrayJoin(splitByString('><', substring(Posts.Tags, 2, length(Posts.Tags) - 2))) AS TagName) AS Tags ON true 
     WHERE 
         Posts.PostTypeId = 1 
         AND Posts.Score > 10 
@@ -64,11 +64,11 @@ PostInsights AS (
     LEFT JOIN 
         Users ON Posts.OwnerUserId = Users.Id 
     LEFT JOIN 
-        RankedTags ON RankedTags.TagName = ANY(string_to_array(Posts.Tags, '>')) 
+        RankedTags ON RankedTags.TagName = ANY(splitByString('>', Posts.Tags)) 
     LEFT JOIN 
         UserEngagement ON UserEngagement.UserId = Posts.OwnerUserId 
     WHERE 
-        Posts.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        Posts.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 )
 SELECT 
     PostInsights.*, 

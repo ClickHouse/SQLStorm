@@ -31,7 +31,7 @@ GenreTitles AS (
 TopActorGenres AS (
     SELECT 
         rt.actor_name,
-        STRING_AGG(DISTINCT gt.genre_keyword, ', ') AS genres,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(gt.genre_keyword))), ', ') AS genres,
         COUNT(DISTINCT rt.movie_title) AS movie_count
     FROM 
         RankedTitles rt

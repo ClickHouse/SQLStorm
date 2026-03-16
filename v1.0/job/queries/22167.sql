@@ -21,7 +21,7 @@ movie_details AS (
         m.production_year,
         kt.kind AS genre,
         (SELECT COUNT(*) FROM movie_keyword mk WHERE mk.movie_id = m.id) AS keyword_count,
-        (SELECT STRING_AGG(k.keyword, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') 
          FROM movie_keyword mk 
          JOIN keyword k ON mk.keyword_id = k.id 
          WHERE mk.movie_id = m.id) AS keywords
@@ -38,7 +38,7 @@ SELECT
     md.keyword_count,
     md.keywords,
     COUNT(DISTINCT ma.person_id) AS actor_count,
-    STRING_AGG(DISTINCT ma.display_name, ', ') AS actors_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ma.display_name))), ', ') AS actors_list,
     AVG(ma.actor_order) AS avg_actor_order,
     MAX(CASE WHEN ma.actor_order = 1 THEN ma.display_name END) AS first_actor
 FROM 

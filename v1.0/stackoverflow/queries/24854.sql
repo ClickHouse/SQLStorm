@@ -19,7 +19,7 @@ WITH RankedPosts AS (
         Badges b ON b.UserId = p.OwnerUserId
     WHERE 
         p.ViewCount IS NOT NULL 
-        AND p.CreationDate < TIMESTAMP '2024-10-01 12:34:56' 
+        AND p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId
 ),

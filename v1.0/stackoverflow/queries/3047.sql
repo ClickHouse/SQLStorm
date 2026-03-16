@@ -62,4 +62,4 @@ WHERE
     um.TotalScore IS NOT NULL
 ORDER BY 
     um.TotalScore DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

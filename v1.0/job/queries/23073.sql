@@ -28,7 +28,7 @@ FilteredMovies AS (
 ActorDetails AS (
     SELECT 
         r.movie_id,
-        ARRAY_AGG(DISTINCT r.actor_name) AS actors_list,
+        arrayDistinct(groupArray(assumeNotNull(r.actor_name))) AS actors_list,
         MAX(r.actor_order) AS max_actor_order
     FROM 
         RecursiveActors r

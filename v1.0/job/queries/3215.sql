@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY RANDOM()) AS rn
+        ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY rand()) AS rn
     FROM 
         aka_title t
     WHERE 
@@ -40,7 +40,7 @@ FavoriteActors AS (
 MovieCompanyInfo AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM 
         movie_companies m
     JOIN 

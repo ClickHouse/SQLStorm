@@ -28,7 +28,7 @@ TopMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -41,7 +41,7 @@ SELECT
     COALESCE(mk.keywords, 'No Keywords') AS keywords,
     COALESCE(COUNT(DISTINCT mc.company_id), 0) AS company_count,
     AVG(CASE WHEN co.kind IS NOT NULL THEN 1 ELSE 0 END) AS avg_company_type,
-    STRING_AGG(DISTINCT n.name, ', ') AS actor_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS actor_names
 FROM 
     TopMovies tm
 LEFT JOIN 

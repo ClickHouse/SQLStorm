@@ -48,7 +48,7 @@ CombinedResults AS (
     FROM 
         SalesByDemographics sbd
     JOIN 
-        SalesByDate sd ON sd.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) AND sd.d_month_seq = EXTRACT(MONTH FROM cast('2002-10-01' as date))
+        SalesByDate sd ON sd.d_year = toYear(cast('2002-10-01' as date)) AND sd.d_month_seq = toMonth(cast('2002-10-01' as date))
 )
 SELECT 
     cd_gender,

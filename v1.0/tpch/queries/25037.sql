@@ -25,7 +25,7 @@ WITH AggregatedData AS (
         region r ON n.n_regionkey = r.r_regionkey
     WHERE 
         r.r_name LIKE '%West%' 
-        AND l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+        AND l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     GROUP BY 
         p.p_partkey, p.p_name, s.s_name, r.r_name
 ), RankedData AS (

@@ -64,4 +64,4 @@ WHERE
     OR fr.customer_category = 'Top Customer'
 ORDER BY 
     fr.total_sales DESC
-FETCH FIRST 1000 ROWS ONLY;
+LIMIT 1000;

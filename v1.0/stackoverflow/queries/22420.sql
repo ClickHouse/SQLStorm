@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
@@ -29,7 +29,7 @@ PostActivity AS (
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN ph.PostHistoryTypeId = 10 THEN 1 ELSE 0 END) AS CloseCount,
         SUM(CASE WHEN ph.PostHistoryTypeId = 11 THEN 1 ELSE 0 END) AS ReopenCount,
-        AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate))) AS AverageResponseTime
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate))) AS AverageResponseTime
     FROM 
         Posts p
     LEFT JOIN 

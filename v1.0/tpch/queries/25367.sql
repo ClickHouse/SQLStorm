@@ -30,7 +30,7 @@ OrdersInfo AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01'
+        o.o_orderdate >= toDate('1997-01-01')
 ),
 AggregateData AS (
     SELECT 
@@ -57,10 +57,10 @@ SELECT
     ad.p_name,
     COUNT(DISTINCT ad.o_orderkey) AS total_orders,
     AVG(ad.p_retailprice) AS avg_retail_price,
-    STRING_AGG(ad.s_name, ', ') AS supplier_names,
+    arrayStringConcat(groupArray(assumeNotNull(ad.s_name)), ', ') AS supplier_names,
     MIN(ad.o_orderdate) AS first_order_date,
     MAX(ad.o_orderdate) AS last_order_date,
-    STRING_AGG(ad.short_comment, '; ') AS comments_concatenated
+    arrayStringConcat(groupArray(assumeNotNull(ad.short_comment)), '; ') AS comments_concatenated
 FROM 
     AggregateData ad
 GROUP BY 

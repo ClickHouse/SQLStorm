@@ -38,11 +38,11 @@ aggregated_data AS (
     SELECT 
         movie_title,
         production_year,
-        STRING_AGG(DISTINCT actor_name, ', ') AS actors,
-        STRING_AGG(DISTINCT role_description, ', ') AS roles,
-        STRING_AGG(DISTINCT company_type, ', ') AS companies,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT person_info, ', ') AS person_infos
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(role_description))), ', ') AS roles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(person_info))), ', ') AS person_infos
     FROM 
         movie_details
     GROUP BY 

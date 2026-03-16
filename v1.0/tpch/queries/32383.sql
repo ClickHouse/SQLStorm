@@ -2,7 +2,7 @@
 WITH RECURSIVE OrderHierarchy AS (
     SELECT o_orderkey, o_custkey, o_totalprice, o_orderdate
     FROM orders
-    WHERE o_orderdate >= DATE '1997-01-01'
+    WHERE o_orderdate >= toDate('1997-01-01')
     
     UNION ALL
     
@@ -24,7 +24,7 @@ AggregatedData AS (
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
     JOIN lineitem l ON p.p_partkey = l.l_partkey
     LEFT JOIN OrderHierarchy o ON l.l_orderkey = o.o_orderkey
-    WHERE l.l_shipdate < DATE '1998-10-01'
+    WHERE l.l_shipdate < toDate('1998-10-01')
     GROUP BY s.s_name, p.p_name
 ),
 FinalOutput AS (

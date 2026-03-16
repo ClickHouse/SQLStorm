@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'  
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR  
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, u.DisplayName, p.PostTypeId
 ),
@@ -42,7 +42,7 @@ TopPosts AS (
 ),
 TopTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '><')) AS TagName
+        arrayJoin(splitByString('><', Tags)) AS TagName
     FROM 
         Posts
     WHERE 

@@ -21,7 +21,7 @@ Actor_Performance AS (
     SELECT 
         actor_name,
         COUNT(*) AS movie_count,
-        STRING_AGG(title, ', ') AS movies,
+        arrayStringConcat(groupArray(assumeNotNull(title)), ', ') AS movies,
         MIN(production_year) AS first_movie_year,
         MAX(production_year) AS last_movie_year
     FROM 

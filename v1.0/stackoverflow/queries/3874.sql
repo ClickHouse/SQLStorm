@@ -5,15 +5,15 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn,
-        COALESCE(CAST(STRING_AGG(DISTINCT t.TagName, ', ') AS varchar), 'No Tags') AS TagList
+        COALESCE(CAST(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS varchar), 'No Tags') AS TagList
     FROM 
         Posts p
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS tag ON TRUE
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
 ),
@@ -28,7 +28,7 @@ PopularUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName
     HAVING 

@@ -5,8 +5,8 @@ WITH MovieDetails AS (
         t.production_year,
         a.name AS actor_name,
         a.imdb_index AS actor_index,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         aka_title t
         JOIN cast_info ci ON t.id = ci.movie_id

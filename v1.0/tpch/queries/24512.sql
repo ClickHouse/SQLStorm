@@ -48,7 +48,7 @@ SELECT
     COUNT(DISTINCT rp.p_partkey) AS high_value_parts,
     SUM(ts.total_revenue) AS total_revenue_from_parts,
     COALESCE(ROUND(AVG(ts.total_revenue), 2), 0) AS avg_revenue_per_part,
-    STRING_AGG(DISTINCT rp.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.p_name))), ', ') AS part_names
 FROM NationDetails np
 JOIN SupplierParts sp ON np.supplier_count > sp.total_availqty
 LEFT JOIN RankedParts rp ON sp.ps_partkey = rp.p_partkey AND rp.rn <= 3

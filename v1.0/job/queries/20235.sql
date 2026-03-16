@@ -29,7 +29,7 @@ CastDetails AS (
 CompanyDetails AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT comp.name || ' (' || ct.kind || ')', ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(comp.name || ' (' || ct.kind || ')'))), ', ') AS companies
     FROM 
         movie_companies m
     JOIN 

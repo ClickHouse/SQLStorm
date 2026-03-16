@@ -99,4 +99,4 @@ WHERE
     hvc.customer_total > (SELECT AVG(customer_total) FROM high_value_customers)
 ORDER BY 
     hvc.customer_total DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -32,7 +32,7 @@ SELECT
     mt.production_year,
     COUNT(DISTINCT c.id) AS total_cast,
     AVG(CASE WHEN c.nr_order IS NOT NULL THEN c.nr_order ELSE 0 END) AS avg_order,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     SUM(CASE 
         WHEN mci.note IS NOT NULL THEN 1 
         ELSE 0

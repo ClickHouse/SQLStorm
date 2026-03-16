@@ -30,7 +30,7 @@ SELECT
     ak.name AS actor_name,
     COUNT(DISTINCT mh.movie_id) AS movie_count,
     AVG(CASE WHEN mh.production_year IS NOT NULL THEN mh.production_year END) AS avg_production_year, 
-    STRING_AGG(DISTINCT kt.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ak.person_id ORDER BY COUNT(DISTINCT mh.movie_id) DESC) AS row_num
 FROM 
     cast_info ci

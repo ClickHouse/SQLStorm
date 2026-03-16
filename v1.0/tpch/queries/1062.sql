@@ -7,7 +7,7 @@ WITH RankedOrders AS (
         o.o_clerk,
         DENSE_RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rnk
     FROM orders o
-    WHERE o.o_orderdate > DATE '1997-01-01'
+    WHERE o.o_orderdate > toDate('1997-01-01')
 ),
 SupplierStats AS (
     SELECT 

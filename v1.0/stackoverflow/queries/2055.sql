@@ -67,4 +67,4 @@ WHERE
     U.ReputationRank <= 20
 ORDER BY 
     U.Reputation DESC, U.DisplayName ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

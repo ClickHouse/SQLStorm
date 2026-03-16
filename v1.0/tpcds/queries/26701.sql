@@ -17,7 +17,7 @@ SELECT
     ca_state,
     COUNT(*) AS address_count,
     AVG(street_name_length) AS avg_street_name_length,
-    STRING_AGG(full_address, '; ') AS unique_addresses
+    arrayStringConcat(groupArray(assumeNotNull(full_address)), '; ') AS unique_addresses
 FROM 
     processed_addresses
 GROUP BY 

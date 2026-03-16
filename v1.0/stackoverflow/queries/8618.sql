@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id
 ),
@@ -33,7 +33,7 @@ ActiveUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate >= cast('2024-10-01' as date) - INTERVAL '2 years'
+        u.CreationDate >= cast('2024-10-01' as date) - INTERVAL 2 YEAR
     GROUP BY 
         u.Id
 )

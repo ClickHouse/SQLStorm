@@ -28,8 +28,8 @@ LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
 LEFT JOIN lineitem l ON ps.ps_partkey = l.l_partkey
 WHERE l.l_returnflag = 'N'
   AND l.l_discount BETWEEN 0.05 AND 0.2
-  AND l.l_shipdate >= DATE '1997-01-01'
-  AND l.l_shipdate <= DATE '1997-12-31'
+  AND l.l_shipdate >= toDate('1997-01-01')
+  AND l.l_shipdate <= toDate('1997-12-31')
 GROUP BY n.n_name
 HAVING COUNT(DISTINCT s.s_suppkey) > 5
   AND SUM(ps.ps_availqty) > 500

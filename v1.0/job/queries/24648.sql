@@ -16,7 +16,7 @@ cast_summary AS (
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
         SUM(CASE WHEN ci.person_role_id IS NOT NULL THEN 1 ELSE 0 END) AS lead_role_count,
-        STRING_AGG(aka.name, ', ') AS cast_names
+        arrayStringConcat(groupArray(assumeNotNull(aka.name)), ', ') AS cast_names
     FROM cast_info ci
     JOIN aka_name aka ON aka.person_id = ci.person_id
     GROUP BY ci.movie_id

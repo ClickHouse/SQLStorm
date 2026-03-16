@@ -37,7 +37,7 @@ promotional_activity AS (
     SELECT 
         p.p_promo_id,
         SUM(CASE WHEN p.p_discount_active = 'Y' THEN p.p_cost ELSE 0 END) AS active_discount_cost,
-        STRING_AGG(p.p_promo_name, ', ') AS promo_names
+        arrayStringConcat(groupArray(assumeNotNull(p.p_promo_name)), ', ') AS promo_names
     FROM 
         promotion p
     WHERE 

@@ -55,4 +55,4 @@ LEFT JOIN SupplierPerformance sp ON rh.s_name = sp.s_name
 LEFT JOIN RichCustomers rc ON rc.total_spent > 5000
 WHERE rh.level >= 1
 ORDER BY total_supply_value DESC, rc.total_spent DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

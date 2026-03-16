@@ -5,7 +5,7 @@ WITH ranked_movies AS (
         a.production_year,
         a.id AS movie_id,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         MAX(CASE WHEN k.keyword IS NOT NULL THEN k.keyword END) AS first_keyword,
         CHAR_LENGTH(a.title) AS title_length
     FROM 

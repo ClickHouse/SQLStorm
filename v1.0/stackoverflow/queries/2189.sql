@@ -56,4 +56,4 @@ WHERE
     rp.rn = 1
 ORDER BY 
     rp.CreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -40,9 +40,9 @@ SELECT
     tu.WikiPostCount,
     tu.TotalViews,
     tu.TotalScore,
-    (SELECT STRING_AGG(t.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
      FROM Posts p 
-     JOIN UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag ON TRUE
+     JOIN arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
      JOIN Tags t ON t.TagName = tag 
      WHERE p.OwnerUserId = tu.UserId) AS AssociatedTags
 FROM 

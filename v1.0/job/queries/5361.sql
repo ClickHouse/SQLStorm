@@ -51,8 +51,8 @@ DetailedMovieInfo AS (
 SELECT 
     title,
     production_year,
-    STRING_AGG(DISTINCT actor_name || ' as ' || role_name, ', ') AS actors_and_roles,
-    STRING_AGG(DISTINCT company_name || ' (' || company_type || ')', ', ') AS production_companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name || ' as ' || role_name))), ', ') AS actors_and_roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name || ' (' || company_type || ')'))), ', ') AS production_companies
 FROM 
     DetailedMovieInfo
 GROUP BY 

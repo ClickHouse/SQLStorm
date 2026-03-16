@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
         AND p.PostTypeId = 1 
 ),
 UserReputation AS (
@@ -53,7 +53,7 @@ SELECT
     ur.GoldBadges,
     ur.SilverBadges,
     ur.BronzeBadges,
-    STRING_AGG(pc.Text, '; ') AS RecentComments
+    arrayStringConcat(groupArray(assumeNotNull(pc.Text)), '; ') AS RecentComments
 FROM 
     RankedPosts rp
 JOIN 

@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 QuestionTags AS (
     SELECT 
         rp.PostId,
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags)-2))) AS Tag
     FROM 
         RankedPosts rp
 ),

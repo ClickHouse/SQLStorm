@@ -39,7 +39,7 @@ SELECT
     COUNT(DISTINCT co.c_custkey) AS unique_customers,
     SUM(COALESCE(rs.total_supply_cost, 0)) AS total_cost,
     MAX(co.order_rank) AS highest_order_rank,
-    STRING_AGG(co.c_name, ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(co.c_name)), ', ') AS customer_names
 FROM 
     region r
 LEFT JOIN 

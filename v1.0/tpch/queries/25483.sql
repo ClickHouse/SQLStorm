@@ -3,7 +3,7 @@ SELECT
     p.p_name,
     s.s_name,
     SUM(ps.ps_availqty) AS total_available_quantity,
-    STRING_AGG(CONCAT('Region: ', r.r_name, ' - Comment: ', r.r_comment), '; ') AS region_comments,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT('Region: ', r.r_name, ' - Comment: ', r.r_comment))), '; ') AS region_comments,
     SUBSTRING(p.p_comment, 1, 20) AS abbreviated_comment
 FROM 
     part p

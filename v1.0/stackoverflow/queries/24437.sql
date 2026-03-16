@@ -58,7 +58,7 @@ SELECT
     COUNT(*) AS PostCount,
     SUM(CASE WHEN f.PostStatus = 'Closed' THEN 1 ELSE 0 END) AS ClosedPostCount,
     SUM(f.ViewCount) AS TotalViews,
-    STRING_AGG(f.Title, '; ') AS TopPostTitles
+    arrayStringConcat(groupArray(assumeNotNull(f.Title)), '; ') AS TopPostTitles
 FROM 
     FilteredPosts f
 GROUP BY 

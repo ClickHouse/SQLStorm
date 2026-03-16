@@ -51,8 +51,8 @@ MovieDetails AS (
 SELECT 
     md.title,
     md.production_year,
-    STRING_AGG(DISTINCT md.role, ', ') AS roles,
-    STRING_AGG(DISTINCT md.company_name, '; ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.role))), ', ') AS roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.company_name))), '; ') AS companies,
     COUNT(DISTINCT md.person_id) AS total_persons,
     COUNT(md.company_name) FILTER (WHERE md.company_type = 'Distributor') AS distributor_count
 FROM 

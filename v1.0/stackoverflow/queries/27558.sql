@@ -1,14 +1,14 @@
 
 WITH TagCounts AS (
     SELECT 
-        unnest(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        unnest(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><'))
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))
 ),
 UserReputation AS (
     SELECT 
@@ -47,14 +47,14 @@ UserActivity AS (
     JOIN 
         Posts p ON ur.UserId = p.OwnerUserId
     JOIN 
-        TopTags tt ON tt.TagName = ANY(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'))
+        TopTags tt ON tt.TagName = ANY(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
 )
 SELECT 
     ua.UserId,
     ua.DisplayName,
     ua.Reputation,
     ua.Activity,
-    ARRAY_AGG(DISTINCT ua.TagName) AS RelatedTags
+    arrayDistinct(groupArray(assumeNotNull(ua.TagName))) AS RelatedTags
 FROM 
     UserActivity ua
 GROUP BY 

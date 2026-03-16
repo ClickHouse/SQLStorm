@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserReputation AS (
     SELECT 
@@ -36,7 +36,7 @@ VotesSummary AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, ', ') AS EditComments
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS EditComments
     FROM 
         PostHistory ph
     WHERE 

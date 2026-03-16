@@ -34,7 +34,7 @@ CombinedDetails AS (
         rm.production_year,
         ad.actor_name,
         ad.role_note,
-        STRING_AGG(rm.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(rm.keyword)), ', ') AS keywords
     FROM 
         RankedMovies rm
     LEFT JOIN 

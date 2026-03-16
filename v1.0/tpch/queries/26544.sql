@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(l.l_quantity) AS avg_quantity,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     supplier s
 JOIN 
@@ -20,7 +20,7 @@ JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     r.r_name LIKE 'A%' 
-    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     s.s_name, n.n_name, r.r_name
 HAVING 

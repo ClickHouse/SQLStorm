@@ -12,7 +12,7 @@ CastInfoAggregated AS (
   SELECT 
     c.movie_id,
     COUNT(DISTINCT c.person_id) AS actor_count,
-    STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
     MAX(ct.kind) AS primary_role
   FROM 
     cast_info c

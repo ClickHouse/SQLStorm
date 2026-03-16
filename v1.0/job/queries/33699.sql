@@ -22,12 +22,12 @@ recent_movies AS (
     FROM 
         popular_movies 
     WHERE 
-        production_year >= EXTRACT(YEAR FROM DATE '2024-10-01') - 5
+        production_year >= toYear(toDate('2024-10-01')) - 5
 ),
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

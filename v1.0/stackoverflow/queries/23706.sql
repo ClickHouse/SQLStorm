@@ -77,13 +77,13 @@ JOIN
     Users u ON ups.UserId = u.Id
 LEFT JOIN 
     TagPostCount tpc ON tpc.TagId = (
-        SELECT id FROM Tags ORDER BY RANDOM() LIMIT 1
+        SELECT id FROM Tags ORDER BY rand() LIMIT 1
     )
 LEFT JOIN 
     UserBadges ub ON ub.UserId = u.Id
 LEFT JOIN 
     PostHistoryAnalytics pha ON pha.PostId = (
-        SELECT id FROM Posts ORDER BY RANDOM() LIMIT 1
+        SELECT id FROM Posts ORDER BY rand() LIMIT 1
     )
 WHERE 
     (u.Reputation >= 100 OR ups.TotalVotes > 10)

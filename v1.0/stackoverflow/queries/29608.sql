@@ -12,7 +12,7 @@ WITH TagStats AS (
     JOIN 
         Users ON Posts.OwnerUserId = Users.Id
     WHERE 
-        Posts.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        Posts.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         Tags.TagName
 ),
@@ -47,7 +47,7 @@ RecentPostEdits AS (
         Posts ON PostHistory.PostId = Posts.Id
     WHERE 
         PostHistory.PostHistoryTypeId IN (4, 5) 
-        AND PostHistory.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        AND PostHistory.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
 )
 SELECT 
     ts.TagName,

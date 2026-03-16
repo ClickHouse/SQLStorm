@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON c.PostId = p.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -61,6 +61,6 @@ LEFT JOIN
     PostHistory ph ON ph.PostId = p.Id AND ph.PostHistoryTypeId = 10 
 WHERE 
     p.Score > 0
-    AND (ph.CreationDate IS NULL OR ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
+    AND (ph.CreationDate IS NULL OR ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ORDER BY 
     tp.Score DESC, BadgeCount DESC;

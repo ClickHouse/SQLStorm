@@ -24,7 +24,7 @@ PartSupplierDetails AS (
         ps.ps_availqty,
         ps.ps_supplycost,
         CONCAT(p.p_name, ' (', p.p_brand, ') supplied by ', 
-            (SELECT STRING_AGG(s.s_name, ', ') 
+            (SELECT arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') 
              FROM SupplierDetails s 
              WHERE s.s_suppkey = ps.ps_suppkey),
             ' available:', CAST(ps.ps_availqty AS VARCHAR), 

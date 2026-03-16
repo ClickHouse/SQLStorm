@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 PostDetails AS (
     SELECT 
@@ -45,7 +45,7 @@ PostDetails AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph 
     JOIN 

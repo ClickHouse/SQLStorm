@@ -48,11 +48,11 @@ MoviesWithCast AS (
 SELECT 
     mwc.title,
     mwc.production_year,
-    STRING_AGG(mwc.actor_name || ' (' || mwc.role_name || ')', ', ') AS cast_list
+    arrayStringConcat(groupArray(assumeNotNull(mwc.actor_name || ' (' || mwc.role_name || ')')), ', ') AS cast_list
 FROM 
     MoviesWithCast mwc
 GROUP BY 
     mwc.movie_id, mwc.title, mwc.production_year
 ORDER BY 
     mwc.production_year DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -17,7 +17,7 @@ WITH ranked_orders AS (
     JOIN 
         supplier s ON ps.ps_suppkey = s.s_suppkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
         AND l.l_shipdate <= o.o_orderdate
     GROUP BY 
         o.o_orderkey, o.o_orderdate, o.o_totalprice, c.c_name, s.s_name

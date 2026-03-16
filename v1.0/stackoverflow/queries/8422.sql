@@ -13,13 +13,13 @@ WITH PostDetails AS (
             FROM Comments c 
             WHERE c.PostId = p.Id
         ), 0) AS CommentCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     JOIN 
-        UNNEST(STRING_TO_ARRAY(p.Tags, '<>')) AS tag ON true
+        arrayJoin(splitByString('<>', p.Tags)) AS tag ON true
     JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

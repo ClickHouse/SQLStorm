@@ -9,7 +9,7 @@ SELECT
     AVG(ws.ws_sales_price) AS average_order_value,
     MAX(ws.ws_sales_price) AS max_order_value,
     MIN(ws.ws_sales_price) AS min_order_value,
-    STRING_AGG(DISTINCT cp.cp_department, ', ') AS departments_purchased_from,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cp.cp_department))), ', ') AS departments_purchased_from,
     COUNT(DISTINCT ws.ws_web_page_sk) AS unique_web_pages_visited
 FROM 
     customer AS c

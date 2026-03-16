@@ -3,9 +3,9 @@ SELECT
     COUNT(DISTINCT p.p_partkey) AS unique_parts,
     SUM(ps.ps_availqty) AS total_available_quantity,
     ROUND(AVG(p.p_retailprice), 2) AS avg_retail_price,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nation_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nation_names,
     r.r_name AS region_name
 FROM 
     part p

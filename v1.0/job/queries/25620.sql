@@ -31,9 +31,9 @@ FullMovieDetails AS (
         m.movie_id,
         m.title,
         m.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT km.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT rt.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(km.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS roles
     FROM 
         MostPopularMovies m
     LEFT JOIN 

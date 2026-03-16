@@ -34,7 +34,7 @@ SELECT
     cn.name AS company_name,
     COUNT(DISTINCT mc.company_id) AS total_companies,
     AVG(mi.info_length) AS avg_info_length,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ak.person_id ORDER BY mt.production_year DESC) AS rank_by_year
 FROM 
     cast_info ci

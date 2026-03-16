@@ -20,7 +20,7 @@ WITH RecursiveCTE AS (
 ActorTitles AS (
     SELECT 
         person_id,
-        STRING_AGG(DISTINCT aka_name, ', ') AS titles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aka_name))), ', ') AS titles,
         COUNT(*) AS title_count
     FROM 
         RecursiveCTE

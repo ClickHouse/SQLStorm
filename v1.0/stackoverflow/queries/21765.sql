@@ -32,7 +32,7 @@ CTE_RecentPosts AS (
         Posts A
     WHERE 
         A.PostTypeId = 2 AND 
-        A.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        A.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
 ),
 CTE_PostLinks AS (
     SELECT 
@@ -98,4 +98,4 @@ WHERE
     END) IN ('Highly Liked', 'Disliked') 
 ORDER BY 
     Reputation DESC, UpVoteCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

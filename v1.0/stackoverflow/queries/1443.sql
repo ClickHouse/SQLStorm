@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
 ),
 UserReputation AS (
     SELECT 
@@ -40,7 +40,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    UserReputation ur ON rp.PostId IN (SELECT b.UserId FROM Badges b WHERE b.Date >= cast('2024-10-01' as date) - INTERVAL '6 months')
+    UserReputation ur ON rp.PostId IN (SELECT b.UserId FROM Badges b WHERE b.Date >= cast('2024-10-01' as date) - INTERVAL 6 MONTH)
 WHERE 
     rp.PostRank = 1
 AND 

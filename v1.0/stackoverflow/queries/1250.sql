@@ -38,7 +38,7 @@ TopUsers AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId, 
-        STRING_AGG(DISTINCT ctr.Name, ', ') AS ClosedReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS ClosedReasons
     FROM 
         PostHistory ph
     JOIN 

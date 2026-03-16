@@ -2,7 +2,7 @@ SELECT
     p.p_mfgr,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     CASE 
         WHEN AVG(ps.ps_supplycost) < 100 THEN 'Low Cost'
         WHEN AVG(ps.ps_supplycost) BETWEEN 100 AND 500 THEN 'Medium Cost'

@@ -42,9 +42,9 @@ SELECT
     f.movie_id,
     f.title,
     f.production_year,
-    STRING_AGG(DISTINCT ad.actor_name, ', ') AS top_actors,
-    STRING_AGG(DISTINCT f.keyword, ', ') AS associated_keywords,
-    STRING_AGG(DISTINCT f.company_name, ', ') AS production_companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ad.actor_name))), ', ') AS top_actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.keyword))), ', ') AS associated_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.company_name))), ', ') AS production_companies
 FROM 
     filtered_movies f
 LEFT JOIN 

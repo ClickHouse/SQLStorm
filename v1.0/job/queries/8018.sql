@@ -43,7 +43,7 @@ MovieDetails AS (
 SELECT 
     td.title,
     td.company_name,
-    STRING_AGG(DISTINCT td.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(td.keyword))), ', ') AS keywords
 FROM 
     MovieDetails td
 GROUP BY 

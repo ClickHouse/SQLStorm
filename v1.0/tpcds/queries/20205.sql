@@ -27,7 +27,7 @@ SelectedItems AS (
                 cr_item_sk = i.i_item_sk 
             ORDER BY 
                 cr_return_quantity DESC 
-            FETCH FIRST 1 ROW ONLY
+            LIMIT 1
         )
     JOIN 
         inventory inv ON inv.inv_item_sk = i.i_item_sk

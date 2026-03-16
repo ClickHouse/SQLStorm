@@ -10,7 +10,7 @@ WITH processed_data AS (
             WHEN cd.cd_purchase_estimate BETWEEN 10000 AND 50000 THEN 'Medium'
             ELSE 'High'
         END AS purchase_estimate_category,
-        STRING_AGG(DISTINCT wp.wp_url, ', ') AS web_page_urls,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp.wp_url))), ', ') AS web_page_urls,
         COUNT(DISTINCT ws.ws_order_number) AS order_count
     FROM 
         customer c

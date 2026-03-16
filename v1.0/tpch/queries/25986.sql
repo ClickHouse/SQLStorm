@@ -3,7 +3,7 @@ SELECT
     r.r_name AS region_name,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS distinct_part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS distinct_part_names,
     AVG(s.s_acctbal) AS average_supplier_account_balance,
     MIN(p.p_retailprice) AS min_part_retail_price,
     MAX(p.p_retailprice) AS max_part_retail_price

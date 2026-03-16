@@ -67,7 +67,7 @@ JOIN
         SELECT cs_ship_mode_sk 
         FROM catalog_sales 
         WHERE cs_ship_mode_sk IS NOT NULL 
-        ORDER BY RANDOM() 
+        ORDER BY rand() 
         LIMIT 1
     )
 LEFT JOIN 

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, p.OwnerUserId, p.ViewCount, p.Tags
 ),
@@ -31,7 +31,7 @@ ActiveUsers AS (
     FROM 
         Users u
     WHERE 
-        u.LastAccessDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '3 months'
+        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
 ),
 PostHistoryDetails AS (
     SELECT 
@@ -40,7 +40,7 @@ PostHistoryDetails AS (
         ph.CreationDate AS HistoryDate,
         ph.UserId AS EditorUserId,
         ph.Comment,
-        STRING_AGG(COALESCE(pht.Name, 'Unknown'), ', ') AS HistoryTypeNames
+        arrayStringConcat(groupArray(assumeNotNull(COALESCE(pht.Name, 'Unknown'))), ', ') AS HistoryTypeNames
     FROM 
         PostHistory ph
     LEFT JOIN 
@@ -69,9 +69,9 @@ WHERE
     rp.PostRank = 1
     AND rp.ViewCount > 10
     AND u.Reputation BETWEEN 100 AND 1000
-    AND (ph.PostHistoryTypeId IS NULL OR ph.HistoryDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months')
+    AND (ph.PostHistoryTypeId IS NULL OR ph.HistoryDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
 GROUP BY 
     rp.PostId, rp.Title, rp.Score, rp.CommentCount, u.DisplayName, u.Reputation, ph.HistoryTypeNames, ph.HistoryDate
 ORDER BY 
     rp.Score DESC, u.Reputation DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -13,7 +13,7 @@ cast_summary AS (
     SELECT
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS num_actors,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM 
         cast_info c
     JOIN 
@@ -24,7 +24,7 @@ cast_summary AS (
 keyword_info AS (
     SELECT 
         m.movie_id, 
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword m
     JOIN 
@@ -54,4 +54,4 @@ WHERE
     AND (cs.num_actors IS NOT NULL OR ki.keywords IS NOT NULL)
 ORDER BY 
     rm.year_rank, cs.num_actors DESC NULLS LAST, rm.title
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -29,7 +29,7 @@ ActorDetails AS (
     SELECT 
         ak.name AS actor_name, 
         ta.total_movies,
-        STRING_AGG(am.movie_title || ' (' || am.production_year || ')', ', ') AS recent_movies
+        arrayStringConcat(groupArray(assumeNotNull(am.movie_title || ' (' || am.production_year || ')')), ', ') AS recent_movies
     FROM 
         TopActors ta
     JOIN 

@@ -63,10 +63,10 @@ SELECT
     US.NetVotes,
     (SELECT COUNT(*) FROM Votes V WHERE V.PostId = PS.PostId AND V.VoteTypeId = 2) AS UpVotes,
     (SELECT COUNT(*) FROM Votes V WHERE V.PostId = PS.PostId AND V.VoteTypeId = 3) AS DownVotes,
-    EXTRACT(DAY FROM TIMESTAMP '2024-10-01 12:34:56' - PS.CreationDate) AS AgeInDays,
+    toDayOfMonth(toDateTime64('2024-10-01 12:34:56', 6) - PS.CreationDate) AS AgeInDays,
     CASE
-        WHEN EXTRACT(DAY FROM TIMESTAMP '2024-10-01 12:34:56' - PS.CreationDate) <= 30 THEN 'New'
-        WHEN EXTRACT(DAY FROM TIMESTAMP '2024-10-01 12:34:56' - PS.CreationDate) <= 90 THEN 'Somewhat New'
+        WHEN toDayOfMonth(toDateTime64('2024-10-01 12:34:56', 6) - PS.CreationDate) <= 30 THEN 'New'
+        WHEN toDayOfMonth(toDateTime64('2024-10-01 12:34:56', 6) - PS.CreationDate) <= 90 THEN 'Somewhat New'
         ELSE 'Old'
     END AS PostAgeCategory
 FROM PopularPosts PS

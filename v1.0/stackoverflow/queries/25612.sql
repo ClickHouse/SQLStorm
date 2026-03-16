@@ -22,7 +22,7 @@ TagStatistics AS (
         COUNT(P.Id) AS PostCount,
         SUM(P.ViewCount) AS TotalViews,
         AVG(P.Score) AS AverageScore,
-        STRING_AGG(DISTINCT U.DisplayName, ', ') AS Users
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS Users
     FROM 
         Tags T
     JOIN 

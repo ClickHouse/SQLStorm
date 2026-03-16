@@ -57,7 +57,7 @@ PostDetails AS (
         (SELECT COUNT(*) FROM Votes V WHERE V.PostId = P.Id AND V.VoteTypeId = 3) AS Downvotes
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+    WHERE P.CreationDate >= now64(6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 

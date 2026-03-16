@@ -18,7 +18,7 @@ WITH RankedTitles AS (
 SELECT 
     r.aka_name,
     COUNT(DISTINCT r.title_id) AS title_count,
-    STRING_AGG(DISTINCT r.title, ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.title))), ', ') AS titles,
     MIN(r.production_year) AS earliest_year,
     MAX(r.production_year) AS latest_year
 FROM 

@@ -43,7 +43,7 @@ SELECT
     afc.actor_name,
     afc.film_count,
     md.company_type,
-    STRING_AGG(md.movie_keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(md.movie_keyword)), ', ') AS keywords
 FROM 
     MovieDetails md
 JOIN 

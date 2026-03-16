@@ -36,7 +36,7 @@ customer_orders AS (
     LEFT JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year' OR o.o_orderdate IS NULL
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR OR o.o_orderdate IS NULL
     GROUP BY 
         c.c_custkey
 )
@@ -44,7 +44,7 @@ SELECT
     r.r_name,
     COUNT(DISTINCT l.l_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_retailprice, ')'), '; ') AS part_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_retailprice, ')')))), '; ') AS part_details,
     cs.total_spent,
     rs.s_name AS top_supplier
 FROM 

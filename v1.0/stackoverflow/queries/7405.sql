@@ -22,7 +22,7 @@ PostStats AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         P.OwnerUserId
 ),

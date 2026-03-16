@@ -48,7 +48,7 @@ SELECT
     T.AnswerCount,
     (
         SELECT 
-            STRING_AGG(CONCAT(U.DisplayName, ': ', V.CreationDate), ', ') 
+            arrayStringConcat(groupArray(assumeNotNull(CONCAT(U.DisplayName, ': ', V.CreationDate))), ', ') 
         FROM 
             Votes V 
         JOIN 

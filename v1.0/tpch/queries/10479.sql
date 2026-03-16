@@ -20,8 +20,8 @@ JOIN
 JOIN 
     region r ON r.r_regionkey = n.n_regionkey
 WHERE 
-    o.o_orderdate >= DATE '1995-01-01' AND 
-    o.o_orderdate < DATE '1996-01-01' 
+    o.o_orderdate >= toDate('1995-01-01') AND 
+    o.o_orderdate < toDate('1996-01-01') 
 GROUP BY 
     p.p_brand, p.p_type, p.p_size
 ORDER BY 

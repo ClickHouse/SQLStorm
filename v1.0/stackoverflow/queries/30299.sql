@@ -41,7 +41,7 @@ UserBadges AS (
         UserId,
         COUNT(*) AS BadgeCount,
         MAX(Date) AS LastBadgeDate,
-        STRING_AGG(Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames
     FROM Badges
     WHERE Class = 1 
     GROUP BY UserId

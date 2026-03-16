@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     MAX(o.o_totalprice) AS max_order_price,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     AVG(o.o_totalprice) AS avg_order_price
 FROM 
     supplier s

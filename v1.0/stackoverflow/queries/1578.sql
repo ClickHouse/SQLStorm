@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS rn,
         p.OwnerUserId,
         u.DisplayName AS OwnerDisplayName,
-        COALESCE(COALESCE((SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id), 0)::text, '0') || ' comments' AS CommentCount,
+        COALESCE(COALESCE((SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id), 0, CAST() AS text), '0') || ' comments' AS CommentCount,
         COALESCE((SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2), 0) AS Upvotes,
         COALESCE((SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3), 0) AS Downvotes
     FROM 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 

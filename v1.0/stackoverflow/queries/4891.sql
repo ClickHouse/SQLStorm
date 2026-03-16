@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), 
 UserActivity AS (
     SELECT 
@@ -32,7 +32,7 @@ SELECT
     COUNT(DISTINCT rp.PostId) AS PostsRanked,
     SUM(NULLIF(rp.Score, 0)) AS TotalScore,
     AVG(COALESCE(ua.UpVotes, 0) - COALESCE(ua.DownVotes, 0)) AS AverageVoteBalance,
-    STRING_AGG(DISTINCT CASE WHEN rp.Rank <= 3 THEN rp.Title END, ', ') AS TopPosts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN rp.Rank <= 3 THEN rp.Title END))), ', ') AS TopPosts
 FROM 
     RankedPosts rp
 LEFT JOIN 

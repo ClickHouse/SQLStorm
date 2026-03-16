@@ -67,8 +67,8 @@ SELECT
     production_year,
     COALESCE(unique_role_count, 0) AS unique_roles,
     COALESCE(null_role_count, 0) AS null_roles,
-    STRING_AGG(DISTINCT company_name, ', ') AS companies,
-    STRING_AGG(DISTINCT company_type, ', ') AS company_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS company_types
 FROM 
     FinalResults
 GROUP BY 

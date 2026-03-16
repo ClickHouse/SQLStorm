@@ -43,7 +43,7 @@ TopItems AS (
         i.i_item_id
     ORDER BY 
         total_quantity_sold DESC
-    FETCH FIRST 5 ROWS ONLY
+    LIMIT 5
 )
 SELECT 
     hvc.c_customer_id,

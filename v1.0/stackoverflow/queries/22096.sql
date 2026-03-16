@@ -62,9 +62,9 @@ SELECT
     tp.TotalLinks,
     COUNT(DISTINCT cp.PostId) AS ClosedPostsCount,
     SUM(tp.ViewCount) AS AggregateViewCount,
-    STRING_AGG(DISTINCT cp.Comment, '; ') AS CloseReasonComments,
-    ARRAY_AGG(DISTINCT CASE WHEN up.UpVotes IS NOT NULL THEN up.UpVotes ELSE 0 END) AS UpVotesArray,
-    ARRAY_AGG(DISTINCT CASE WHEN up.DownVotes IS NOT NULL THEN up.DownVotes ELSE 0 END) AS DownVotesArray,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cp.Comment))), '; ') AS CloseReasonComments,
+    arrayDistinct(groupArray(assumeNotNull(CASE WHEN up.UpVotes IS NOT NULL THEN up.UpVotes ELSE 0 END))) AS UpVotesArray,
+    arrayDistinct(groupArray(assumeNotNull(CASE WHEN up.DownVotes IS NOT NULL THEN up.DownVotes ELSE 0 END))) AS DownVotesArray,
     MAX(CASE WHEN up.VoteBalance > 0 THEN up.VoteBalance ELSE 0 END) AS PositiveVoteBalance
 FROM UserVoteStats AS up
 FULL OUTER JOIN TopPosts AS tp ON tp.PostId = up.UserId

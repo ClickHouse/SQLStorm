@@ -25,7 +25,7 @@ WITH RECURSIVE MovieHierarchy AS (
 SELECT 
     pi.person_id,
     ak.name AS actor_name,
-    STRING_AGG(DISTINCT mh.movie_title, ', ') AS movies_linked,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mh.movie_title))), ', ') AS movies_linked,
     COUNT(DISTINCT mh.movie_id) AS total_linked_movies,
     AVG(m.production_year) AS avg_production_year
 FROM 

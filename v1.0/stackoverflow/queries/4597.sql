@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         FROM Comments
         GROUP BY PostId
     ) cm ON p.Id = cm.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostWithMaxVotes AS (
     SELECT 
@@ -29,9 +29,9 @@ RecentBadges AS (
     SELECT 
         b.UserId, 
         COUNT(*) AS BadgeCount, 
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM Badges b
-    WHERE b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months' 
+    WHERE b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH 
     GROUP BY b.UserId
 )
 SELECT 

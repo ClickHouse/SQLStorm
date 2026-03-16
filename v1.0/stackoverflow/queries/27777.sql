@@ -45,11 +45,11 @@ TaggedPosts AS (
         tp.UpVotes,
         tp.DownVotes,
         tp.CreationDate,
-        string_agg(t.TagName, ', ') AS TagList
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagList
     FROM 
         TopPosts tp
     JOIN 
-        Tags t ON t.TagName = ANY(string_to_array(tp.Tags, '><'))
+        Tags t ON t.TagName = ANY(splitByString('><', tp.Tags))
     GROUP BY 
         tp.PostId, tp.Title, tp.Body, tp.Tags, tp.CommentCount, tp.UpVotes, tp.DownVotes, tp.CreationDate
 )

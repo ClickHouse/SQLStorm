@@ -28,7 +28,7 @@ MovieDetails AS (
         mh.level,
         mh.path,
         COALESCE(AVG(mk_count.keyword_count), 0) AS avg_keywords,
-        STRING_AGG(DISTINCT c.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS cast_names
     FROM MovieHierarchy mh
     LEFT JOIN (
         SELECT 

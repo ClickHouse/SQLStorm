@@ -46,5 +46,5 @@ LEFT JOIN SupplierStats ss ON ss.ps_partkey = p.p_partkey
 WHERE p.p_size BETWEEN 1 AND 50 
   AND (p.p_retailprice IS NOT NULL OR p.p_comment LIKE '%Special%')
 ORDER BY p.p_partkey DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;
 

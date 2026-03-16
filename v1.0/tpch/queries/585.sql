@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01'
+        o.o_orderdate >= toDate('1997-01-01')
 ),
 SupplierCostSummary AS (
     SELECT 
@@ -59,4 +59,4 @@ WHERE
     c.c_acctbal > 0 OR (s.total_supply_cost BETWEEN 1000 AND 5000)
 ORDER BY 
     total_spent DESC, r.o_orderdate ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

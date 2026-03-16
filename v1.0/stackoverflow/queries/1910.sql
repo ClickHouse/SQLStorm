@@ -31,7 +31,7 @@ RecentPosts AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        P.CreationDate >= now64(6) - INTERVAL 30 DAY
     GROUP BY 
         P.Id, P.Title, P.CreationDate
 ),
@@ -53,7 +53,7 @@ SELECT
     RP.EditHistoryCount,
     (SELECT COUNT(*) 
      FROM Votes V 
-     WHERE V.UserId = TU.UserId AND V.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 month') AS RecentVotes
+     WHERE V.UserId = TU.UserId AND V.CreationDate >= now64(6) - INTERVAL 1 MONTH) AS RecentVotes
 FROM 
     TopUsers TU
 JOIN 

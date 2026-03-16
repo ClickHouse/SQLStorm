@@ -19,13 +19,13 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.CreationDate, p.OwnerUserId, p.ViewCount
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '> <')) AS TagName,
+        arrayJoin(splitByString('> <', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         COUNT(*) AS UseCount
     FROM 
         Posts

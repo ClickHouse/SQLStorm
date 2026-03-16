@@ -64,7 +64,7 @@ SELECT
   f.actor_count,
   f.company_count,
   f.actor_category,
-  STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+  arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
   COUNT(DISTINCT ml.linked_movie_id) AS linked_movies
 FROM 
   FilteredMovies f

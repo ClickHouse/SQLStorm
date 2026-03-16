@@ -8,13 +8,13 @@ WITH ranked_movies AS (
     HAVING COUNT(ci.person_id) > 5
 ),
 movie_keywords AS (
-    SELECT mk.movie_id, STRING_AGG(k.keyword, ', ') AS keywords
+    SELECT mk.movie_id, arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id
 ),
 movie_companies AS (
-    SELECT mc.movie_id, STRING_AGG(cn.name, ', ') AS company_names
+    SELECT mc.movie_id, arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS company_names
     FROM movie_companies mc
     JOIN company_name cn ON mc.company_id = cn.id
     GROUP BY mc.movie_id

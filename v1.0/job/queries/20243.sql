@@ -38,7 +38,7 @@ ActorsWithRoles AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -51,8 +51,8 @@ SELECT
     t.production_year,
     COUNT(DISTINCT a.actor_name) AS actor_count,
     COALESCE(COUNT(DISTINCT mc.movie_id), 0) AS company_count,
-    COALESCE(STRING_AGG(DISTINCT mk.keywords, '; '), 'No keywords') AS all_keywords,
-    STRING_AGG(DISTINCT ct.kind, ', ') AS company_types,
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.keywords))), '; '), 'No keywords') AS all_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types,
     CASE 
         WHEN COUNT(DISTINCT a.actor_name) > 5 THEN 'Popular'
         WHEN COUNT(DISTINCT a.actor_name) BETWEEN 3 AND 5 THEN 'Moderate'

@@ -53,7 +53,7 @@ FilteredMovies AS (
             WHEN em.keyword IS NOT NULL THEN em.keyword 
             ELSE 'Unknown' 
         END AS keyword_final,
-        EXTRACT(YEAR FROM cast('2024-10-01' as date)) - m.production_year AS age_of_movie
+        toYear(cast('2024-10-01' as date)) - m.production_year AS age_of_movie
     FROM 
         ExtendedMovieInfo em
     JOIN 

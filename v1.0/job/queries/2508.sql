@@ -18,7 +18,7 @@ WITH RankedMovies AS (
 CompanyInfo AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) AS companies 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) AS companies 
     FROM 
         movie_companies m
     JOIN 

@@ -8,15 +8,15 @@ WITH RankedPosts AS (
         p.AnswerCount,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RankByUser,
         COUNT(c.Id) AS CommentCount,
-        ARRAY_AGG(t.TagName) AS Tags
+        groupArray(assumeNotNull(t.TagName)) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        LATERAL (SELECT unnest(string_to_array(p.Tags, '>')) AS TagName) t ON true
+        (SELECT arrayJoin(splitByString('>', p.Tags)) AS TagName) t ON true
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id
 ),
@@ -32,7 +32,7 @@ RecentUserEngagement AS (
     FROM 
         Users u
     LEFT JOIN 
-        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
@@ -44,7 +44,7 @@ PostHistoryAnalysis AS (
     SELECT 
         p.Id AS PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT ph.Comment, '; ') AS EditComments,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS EditComments,
         COUNT(DISTINCT CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.Id END) AS TotalCloseHistory
     FROM 
         Posts p

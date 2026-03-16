@@ -21,7 +21,7 @@ JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     s.s_comment LIKE '%reliable%'
-    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     s.s_name, p.p_name, l.l_returnflag
 ORDER BY 

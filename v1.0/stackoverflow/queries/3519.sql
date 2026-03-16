@@ -56,4 +56,4 @@ WHERE
     rp.rn = 1
 ORDER BY 
     rp.Score DESC, rp.CreationDate DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

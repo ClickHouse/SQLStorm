@@ -13,7 +13,7 @@ CastWithRoles AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS actor_count,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles
     FROM 
         cast_info c
     JOIN 

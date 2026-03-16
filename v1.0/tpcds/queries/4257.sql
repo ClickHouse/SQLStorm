@@ -49,7 +49,7 @@ SELECT
     c.c_last_name,
     COALESCE(hvc.customer_tier, 'None') AS customer_tier,
     COALESCE(SUM(ws.ws_net_profit), 0) AS total_profit,
-    COALESCE(STRING_AGG(DISTINCT i.i_product_name, ', ' ORDER BY i.i_product_name), 'No Products') AS featured_products
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), ', ' ORDER BY i.i_product_name), 'No Products') AS featured_products
 FROM 
     customer c
 LEFT JOIN 

@@ -7,7 +7,7 @@ WITH PostDetails AS (
         p.LastActivityDate,
         p.ViewCount,
         u.DisplayName AS OwnerName,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'), 1) AS TagCount,
+        length(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId IN (2, 3)) AS VoteCount,
         COALESCE((
             SELECT COUNT(*) 

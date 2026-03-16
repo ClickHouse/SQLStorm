@@ -20,14 +20,14 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     WHERE 
         p.PostTypeId = 1 
-          AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+          AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, p.Score, p.Tags
 ),
 
 PopularTags AS (
     SELECT 
-        UNNEST(string_to_array(p.Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', p.Tags)) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -61,7 +61,7 @@ SELECT
     rp.UpVotes,
     rp.DownVotes,
     (SELECT COUNT(*) FROM PostLinks pl WHERE pl.PostId = rp.PostId) AS RelatedLinksCount,
-    (SELECT STRING_AGG(b.Name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
      FROM Badges b 
      JOIN Users u ON b.UserId = u.Id 
      WHERE u.Id IN (SELECT DISTINCT OwnerUserId FROM Posts WHERE Id = rp.PostId)) AS OwnerBadges

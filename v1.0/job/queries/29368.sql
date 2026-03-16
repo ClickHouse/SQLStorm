@@ -18,7 +18,7 @@ MovieStatistics AS (
         movie_title,
         production_year,
         COUNT(actor_name) AS total_actors,
-        STRING_AGG(actor_name, ', ') AS actor_list
+        arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS actor_list
     FROM
         RankedMovies
     GROUP BY

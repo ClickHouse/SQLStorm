@@ -25,7 +25,7 @@ RecentPostHistory AS (
         ROW_NUMBER() OVER (PARTITION BY ph.PostId ORDER BY ph.CreationDate DESC) AS CommentRank
     FROM PostHistory ph
     JOIN Posts p ON ph.PostId = p.Id
-    WHERE ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 
 SELECT 

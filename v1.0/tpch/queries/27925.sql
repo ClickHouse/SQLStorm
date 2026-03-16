@@ -3,7 +3,7 @@ SELECT
     s.s_name AS Supplier_Name,
     COUNT(DISTINCT o.o_orderkey) AS Total_Orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS Total_Revenue,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', c.c_acctbal, ')'), '; ') AS Customer_Details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', c.c_acctbal, ')')))), '; ') AS Customer_Details,
     r.r_name AS Region,
     n.n_name AS Nation,
     p.p_comment AS Part_Comment

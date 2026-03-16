@@ -40,4 +40,4 @@ LEFT JOIN
 ORDER BY 
     upc.PostCount DESC, 
     u.Reputation DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

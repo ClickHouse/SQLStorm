@@ -31,7 +31,7 @@ SalesData AS (
         ws.ws_item_sk,
         SUM(ws.ws_quantity) AS total_sold,
         SUM(ws.ws_net_profit) AS total_profit,
-        ARRAY_AGG(DISTINCT sm.sm_type) AS ship_modes
+        arrayDistinct(groupArray(assumeNotNull(sm.sm_type))) AS ship_modes
     FROM 
         web_sales ws
     LEFT JOIN 

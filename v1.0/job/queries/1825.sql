@@ -25,8 +25,8 @@ TopMovies AS (
 AdditionalInfo AS (
     SELECT 
         cm.movie_id,
-        STRING_AGG(DISTINCT cname.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cname.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_companies cm
     LEFT JOIN 

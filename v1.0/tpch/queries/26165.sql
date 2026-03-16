@@ -10,7 +10,7 @@ SELECT
      FROM orders o 
      JOIN lineitem l ON o.o_orderkey = l.l_orderkey 
      WHERE l.l_partkey = p.p_partkey AND o.o_orderstatus = 'F') AS total_fulfilled_orders,
-    string_agg(DISTINCT n.n_name, ', ') AS nations_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied
 FROM 
     part p
 JOIN 

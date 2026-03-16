@@ -1,8 +1,8 @@
 SELECT 
     p.p_partkey,
     p.p_name,
-    STRING_AGG(CONCAT_WS(' - ', s.s_name, s.s_address), '; ') AS supplier_details,
-    STRING_AGG(CONCAT_WS(' ', o.o_orderstatus, o.o_orderpriority, o.o_comment), ', ') AS order_summary,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT_WS(' - ', s.s_name, s.s_address))), '; ') AS supplier_details,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT_WS(' ', o.o_orderstatus, o.o_orderpriority, o.o_comment))), ', ') AS order_summary,
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,

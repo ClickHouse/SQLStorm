@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-          AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+          AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
 ),
 
 TopAnswers AS (
@@ -58,7 +58,7 @@ SELECT
     ps.AnswerCommentCount,
     ps.AnswerUpVotes,
     ps.AnswerDownVotes,
-    EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - ps.CreationDate)) AS AgeInSeconds
+    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - ps.CreationDate)) AS AgeInSeconds
 FROM 
     PostStats ps
 WHERE 

@@ -3,8 +3,8 @@ WITH AddressStatistics AS (
     SELECT 
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT ca_street_type, ', ') AS street_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_type))), ', ') AS street_types,
         AVG(ca_gmt_offset) AS avg_gmt_offset
     FROM customer_address
     GROUP BY ca_state
@@ -13,7 +13,7 @@ DemographicStatistics AS (
     SELECT 
         cd_marital_status,
         COUNT(*) AS demographic_count,
-        STRING_AGG(DISTINCT cd_gender, ', ') AS genders,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_gender))), ', ') AS genders,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate
     FROM customer_demographics
     GROUP BY cd_marital_status

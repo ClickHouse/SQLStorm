@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
         AND p.Score >= 0 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.DisplayName, p.PostTypeId

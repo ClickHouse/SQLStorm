@@ -50,13 +50,13 @@ ActivityHistory AS (
         ph.CreationDate,
         ph.Comment,
         ph.PostHistoryTypeId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypeNames
     FROM
         PostHistory ph
     JOIN
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE
-        ph.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        ph.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY
         ph.PostId, ph.UserDisplayName, ph.CreationDate, ph.Comment, ph.PostHistoryTypeId
 )

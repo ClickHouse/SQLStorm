@@ -33,7 +33,7 @@ TopSuppliers AS (
 SELECT
     region_name,
     nation_name,
-    STRING_AGG(s_name || ' (Available Qty: ' || total_avail_qty || ', Supply Cost: ' || total_supply_cost || ')', '; ') AS suppliers_info
+    arrayStringConcat(groupArray(assumeNotNull(s_name || ' (Available Qty: ' || total_avail_qty || ', Supply Cost: ' || total_supply_cost || ')')), '; ') AS suppliers_info
 FROM
     TopSuppliers
 GROUP BY

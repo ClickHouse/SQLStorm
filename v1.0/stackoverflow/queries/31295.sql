@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName, p.Score, p.ViewCount
 ), PopularTags AS (
@@ -43,7 +43,7 @@ WITH RankedPosts AS (
     JOIN 
         Posts p ON p.Id = ph.PostId
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL '1 month'
+        ph.CreationDate >= CURRENT_DATE - INTERVAL 1 MONTH
 )
 
 SELECT 
@@ -54,7 +54,7 @@ SELECT
     rp.Score,
     rp.ViewCount,
     rp.CommentCount,
-    (SELECT STRING_AGG(tag.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ') 
         FROM PopularTags tag 
         JOIN Posts post ON post.Tags LIKE '%' || tag.TagName || '%'
         WHERE post.Id = rp.PostId) AS PopularTags,

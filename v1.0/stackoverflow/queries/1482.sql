@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId 
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), 
 TopUsers AS (
     SELECT 
@@ -34,7 +34,7 @@ PostHistorySummary AS (
         ph.PostId,
         COUNT(*) AS EditCount,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(ph.Comment, '; ' ORDER BY ph.CreationDate) AS EditComments
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ' ORDER BY ph.CreationDate) AS EditComments
     FROM 
         PostHistory ph 
     WHERE 

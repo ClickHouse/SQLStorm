@@ -25,7 +25,7 @@ MovieCast AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -40,7 +40,7 @@ SELECT
     COALESCE(mk.keywords, 'No keywords') AS keywords,
     (SELECT COUNT(*) FROM MovieCast WHERE movie_id = rm.movie_id) AS actor_count,
     (
-        SELECT STRING_AGG(mca.actor_name, ', ')
+        SELECT arrayStringConcat(groupArray(assumeNotNull(mca.actor_name)), ', ')
         FROM MovieCast mca
         WHERE mca.movie_id = rm.movie_id
     ) AS actors,

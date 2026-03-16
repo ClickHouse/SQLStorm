@@ -36,8 +36,8 @@ CastRoles AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(CASE WHEN it.info = 'budget' THEN mi.info END, ', ') AS budgets,
-        STRING_AGG(CASE WHEN it.info = 'box office' THEN mi.info END, ', ') AS box_offices
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN it.info = 'budget' THEN mi.info END)), ', ') AS budgets,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN it.info = 'box office' THEN mi.info END)), ', ') AS box_offices
     FROM 
         movie_info mi
     JOIN 

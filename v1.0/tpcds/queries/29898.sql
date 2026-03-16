@@ -50,4 +50,4 @@ WHERE
     pa.state_upper = 'CA'
 ORDER BY 
     sd.total_quantity DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

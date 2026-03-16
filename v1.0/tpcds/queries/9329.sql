@@ -49,4 +49,4 @@ JOIN
     top_items ti ON cs.total_spent > 1000
 ORDER BY 
     cs.total_spent DESC, ti.total_sales DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 PostScoreDetails AS (
     SELECT 
@@ -30,11 +30,11 @@ PostScoreDetails AS (
 PopulatedTags AS (
     SELECT 
         P.Id AS PostId,
-        STRING_AGG(T.TagName, ', ') AS TagsList
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagsList
     FROM 
         Posts P
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(P.Tags, '<>')) AS T(TagName) ON P.Id = P.Id
+        arrayJoin(splitByString('<>', P.Tags)) AS T(TagName) ON P.Id = P.Id
     GROUP BY 
         P.Id
 ),

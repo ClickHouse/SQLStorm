@@ -13,11 +13,11 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS TagName
+        arrayJoin(splitByString(',', Tags)) AS TagName
     FROM 
         Posts 
     WHERE 
@@ -48,7 +48,7 @@ PostWithTopTags AS (
     JOIN 
         Posts p ON rp.PostId = p.Id
     JOIN 
-        TopTags rt ON rt.TagName = ANY (string_to_array(p.Tags, ','))
+        TopTags rt ON rt.TagName = ANY (splitByString(',', p.Tags))
 )
 SELECT 
     pwap.*,

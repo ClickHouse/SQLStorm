@@ -6,13 +6,13 @@ WITH RankedPosts AS (
         p.Score,
         ROW_NUMBER() OVER(PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) as rn,
         COUNT(c.Id) OVER(PARTITION BY p.Id) as CommentCount,
-        STRING_AGG(t.TagName, ', ') FILTER (WHERE t.TagName IS NOT NULL) OVER(PARTITION BY p.Id) as Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') FILTER (WHERE t.TagName IS NOT NULL) OVER(PARTITION BY p.Id) as Tags
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        LATERAL (SELECT unnest(string_to_array(p.Tags, ',')) as TagName) t ON TRUE
+        (SELECT arrayJoin(splitByString(',', p.Tags)) as TagName) t ON TRUE
     WHERE 
         p.Score IS NOT NULL
 ), UserActivity AS (
@@ -44,7 +44,7 @@ WITH RankedPosts AS (
     JOIN 
         PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10  
     WHERE 
-        ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     u.UserId,

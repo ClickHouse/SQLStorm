@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes AS v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id
 ),
@@ -63,4 +63,4 @@ WHERE
     AND (rp.Score > 10 OR rp.ViewCount > 100) 
 ORDER BY 
     rp.Rank
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

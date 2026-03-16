@@ -58,4 +58,4 @@ WHERE
     css.total_sales IS NOT NULL
 ORDER BY 
     css.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

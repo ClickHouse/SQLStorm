@@ -4,7 +4,7 @@ SELECT
     SUM(l_quantity) AS total_quantity,
     AVG(ps_supplycost) AS avg_supply_cost,
     COUNT(DISTINCT c_custkey) AS unique_customers,
-    STRING_AGG(DISTINCT CONCAT(c_name, ':', c_address), '; ') AS customers_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_name, ':', c_address)))), '; ') AS customers_info,
     r_name AS region_name
 FROM 
     supplier s

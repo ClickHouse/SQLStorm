@@ -58,4 +58,4 @@ WHERE
     r.total_sales > 0
 ORDER BY 
     r.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

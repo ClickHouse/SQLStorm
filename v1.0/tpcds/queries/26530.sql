@@ -62,7 +62,7 @@ SELECT
     COUNT(DISTINCT s.full_name) AS unique_customers,
     SUM(s.total_quantity) AS total_units_sold,
     ROUND(SUM(s.total_sales_price), 2) AS total_sales,
-    STRING_AGG(DISTINCT CONCAT(s.ca_city, ', ', s.ca_state), '; ') AS cities_involved
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.ca_city, ', ', s.ca_state)))), '; ') AS cities_involved
 FROM 
     sales_summary s
 GROUP BY 

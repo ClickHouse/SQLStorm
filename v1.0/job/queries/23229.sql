@@ -49,7 +49,7 @@ SELECT
     pm.production_year,
     pm.cast_count,
     pm.casting_status,
-    (SELECT ARRAY_AGG(DISTINCT cn.name) FROM char_name cn WHERE cn.imdb_id IN (SELECT DISTINCT person_id FROM cast_info ci WHERE ci.movie_id = pm.movie_id)) AS leading_actors,
+    (SELECT arrayDistinct(groupArray(assumeNotNull(cn.name))) FROM char_name cn WHERE cn.imdb_id IN (SELECT DISTINCT person_id FROM cast_info ci WHERE ci.movie_id = pm.movie_id)) AS leading_actors,
     COALESCE((
         SELECT COUNT(DISTINCT mc.company_id) 
         FROM movie_companies mc 

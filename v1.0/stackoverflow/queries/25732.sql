@@ -19,11 +19,11 @@ WITH FilteredPosts AS (
 PostTags AS (
     SELECT 
         p.PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         FilteredPosts p
     CROSS JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Body FROM 2 FOR LENGTH(p.Body) - 2), '><')) AS tags
+        arrayJoin(splitByString('><', SUBSTRING(p.Body FROM 2 FOR LENGTH(p.Body) - 2))) AS tags
     JOIN 
         Tags t ON t.TagName = tags
     GROUP BY 
@@ -32,7 +32,7 @@ PostTags AS (
 PostHistoryAggregation AS (
     SELECT 
         ph.PostId,
-        ARRAY_AGG(DISTINCT ph.PostHistoryTypeId) AS HistoryTypes,
+        arrayDistinct(groupArray(assumeNotNull(ph.PostHistoryTypeId))) AS HistoryTypes,
         COUNT(*) AS RevisionCount
     FROM 
         PostHistory ph

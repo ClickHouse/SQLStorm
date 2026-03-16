@@ -8,7 +8,7 @@ WITH TotalSales AS (
         JOIN customer c ON o.o_custkey = c.c_custkey
         JOIN nation n ON c.c_nationkey = n.n_nationkey
     WHERE
-        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1996-01-01' + INTERVAL '1 year'
+        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1996-01-01') + INTERVAL 1 YEAR
         AND l.l_returnflag = 'N'
     GROUP BY
         n.n_name

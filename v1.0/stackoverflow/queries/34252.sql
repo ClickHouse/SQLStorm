@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, p.PostTypeId
 ), PostHistoryData AS (
@@ -29,7 +29,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON ph.UserId = u.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '3 months'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
         AND ph.PostHistoryTypeId IN (10, 11, 12)  
 ), BadgeCounts AS (
     SELECT 

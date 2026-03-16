@@ -17,7 +17,7 @@ keyworded_movies AS (
     SELECT 
         rm.movie_id,
         rm.movie_title,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM relevant_movies rm
     JOIN movie_keyword mk ON rm.movie_id = mk.movie_id
     JOIN keyword k ON mk.keyword_id = k.id
@@ -27,7 +27,7 @@ keyworded_movies AS (
 cast_details AS (
     SELECT 
         rm.movie_id,
-        STRING_AGG(DISTINCT CONCAT(a.name, ' as ', r.role), ', ') AS cast_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' as ', r.role)))), ', ') AS cast_info
     FROM relevant_movies rm
     JOIN cast_info ci ON rm.movie_id = ci.movie_id
     JOIN aka_name a ON ci.person_id = a.person_id

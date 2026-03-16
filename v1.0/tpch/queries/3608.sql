@@ -60,7 +60,7 @@ LEFT JOIN
         WHERE o_orderdate = (
             SELECT MAX(o_orderdate) 
             FROM orders 
-            WHERE o_orderdate < cast('1998-10-01' as date) - INTERVAL '30 days'
+            WHERE o_orderdate < cast('1998-10-01' as date) - INTERVAL 30 DAY
         )
         LIMIT 1
     )

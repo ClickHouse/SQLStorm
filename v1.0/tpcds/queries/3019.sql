@@ -65,4 +65,4 @@ WHERE
 ORDER BY 
     total_sales DESC, 
     c.c_last_name ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

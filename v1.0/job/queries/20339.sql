@@ -42,7 +42,7 @@ SELECT
     am.person_id,
     COUNT(DISTINCT am.movie_id) AS total_movies,
     MAX(am.production_year) AS last_movie_year,
-    STRING_AGG(DISTINCT am.title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(am.title))), ', ') AS movie_titles,
     CASE
         WHEN COUNT(DISTINCT am.movie_id) > 10 THEN 'Prolific'
         WHEN COUNT(DISTINCT am.movie_id) BETWEEN 5 AND 10 THEN 'Intermediate'

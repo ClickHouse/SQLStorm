@@ -6,13 +6,13 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS PostRank,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Tags t ON t.WikiPostId = p.Id OR t.ExcerptPostId = p.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id
 ),

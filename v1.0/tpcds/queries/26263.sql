@@ -4,7 +4,7 @@ WITH CustomerAddressStats AS (
         ca_city,
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), ', ') AS unique_addresses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type)))), ', ') AS unique_addresses
     FROM 
         customer_address
     GROUP BY 
@@ -15,7 +15,7 @@ CustomerDemoStats AS (
         cd_gender,
         cd_marital_status,
         COUNT(*) AS demo_count,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS unique_education_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS unique_education_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -25,7 +25,7 @@ DateStats AS (
     SELECT 
         d_year,
         COUNT(*) AS date_count,
-        STRING_AGG(DISTINCT d_day_name, ', ') AS unique_days
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d_day_name))), ', ') AS unique_days
     FROM 
         date_dim 
     GROUP BY 

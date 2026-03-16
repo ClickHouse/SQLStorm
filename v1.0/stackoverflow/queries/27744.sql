@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.ViewCount > 100
 ),
 UserStats AS (
@@ -40,7 +40,7 @@ UserStats AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeList,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeList,
         COUNT(b.Id) AS BadgeCount
     FROM 
         Badges b

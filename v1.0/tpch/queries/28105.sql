@@ -21,7 +21,7 @@ CustomerOrders AS (
 AggregatedData AS (
     SELECT np.n_name, COUNT(DISTINCT co.o_orderkey) AS total_orders,
            SUM(l.l_extendedprice - l.l_discount) AS total_revenue,
-           STRING_AGG(DISTINCT pp.p_name, ', ') AS part_names
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pp.p_name))), ', ') AS part_names
     FROM nation np
     JOIN supplier s ON np.n_nationkey = s.s_nationkey
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey

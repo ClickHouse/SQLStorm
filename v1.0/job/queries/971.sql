@@ -40,7 +40,7 @@ distinct_movies AS (
 )
 SELECT 
     actor_name,
-    string_agg(movie_title || ' (' || production_year || ')', ', ') AS movie_list,
+    arrayStringConcat(groupArray(assumeNotNull(movie_title || ' (' || production_year || ')')), ', ') AS movie_list,
     COUNT(*) AS movie_count,
     MIN(production_year) AS first_year,
     MAX(production_year) AS last_year

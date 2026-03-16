@@ -10,7 +10,7 @@ WITH RECURSIVE SupplierHierarchy AS (
 FrequentOrders AS (
     SELECT o.o_custkey, COUNT(o.o_orderkey) AS order_count
     FROM orders o
-    WHERE o.o_orderstatus = 'O' AND o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE o.o_orderstatus = 'O' AND o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY o.o_custkey
     HAVING COUNT(o.o_orderkey) > (
         SELECT AVG(order_count)
@@ -31,7 +31,7 @@ TopSuppliers AS (
 )
 SELECT p.p_name, p.p_brand, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
        COUNT(DISTINCT o.o_orderkey) AS order_count,
-       ARRAY_AGG(DISTINCT n.n_name) FILTER (WHERE n.n_name IS NOT NULL) AS supplier_nations
+       arrayDistinct(groupArray(assumeNotNull(n.n_name))) FILTER (WHERE n.n_name IS NOT NULL) AS supplier_nations
 FROM part p
 JOIN lineitem l ON p.p_partkey = l.l_partkey
 JOIN orders o ON l.l_orderkey = o.o_orderkey

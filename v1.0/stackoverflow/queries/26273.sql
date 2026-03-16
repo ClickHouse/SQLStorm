@@ -27,15 +27,15 @@ WITH RankedPosts AS (
 RecentActivity AS (
     SELECT 
         p.Id AS PostId,
-        (SELECT STRING_AGG(DISTINCT CONCAT(u.DisplayName, ' (', h.CreationDate, ')'), '; ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' (', h.CreationDate, ')')))), '; ') 
          FROM PostHistory h 
          JOIN Users u ON h.UserId = u.Id 
          WHERE h.PostId = p.Id 
-         AND h.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')) AS RecentEdits,
+         AND h.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)) AS RecentEdits,
         (SELECT COUNT(*) 
          FROM Comments c 
          WHERE c.PostId = p.Id 
-         AND c.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')) AS RecentCommentCount
+         AND c.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)) AS RecentCommentCount
     FROM 
         Posts p
     WHERE 

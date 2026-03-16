@@ -28,8 +28,8 @@ MovieDetails AS (
     SELECT 
         ft.aka_name,
         COUNT(mk.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT ft.movie_title, '; ') AS movie_list,
-        STRING_AGG(DISTINCT CONCAT(ft.movie_title, ' (', ft.production_year, ')'), '; ') AS detailed_movie_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ft.movie_title))), '; ') AS movie_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ft.movie_title, ' (', ft.production_year, ')')))), '; ') AS detailed_movie_list
     FROM 
         FilteredTitles ft 
     LEFT JOIN 
@@ -45,7 +45,7 @@ SELECT
     md.movie_list,
     md.detailed_movie_list,
     COUNT(DISTINCT ci.role_id) AS unique_roles,
-    STRING_AGG(DISTINCT rt.role, ', ') AS roles_played
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS roles_played
 FROM 
     MovieDetails md
 LEFT JOIN 

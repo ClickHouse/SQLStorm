@@ -40,7 +40,7 @@ cast_stats AS (
         c.movie_id,
         c.role_id,
         COUNT(*) AS total_cast,
-        STRING_AGG(DISTINCT p.name, ', ') AS cast_members
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_members
     FROM
         cast_info c
     JOIN

@@ -5,7 +5,7 @@ WITH TagStats AS (
         COUNT(DISTINCT P.Id) AS PostCount,
         SUM(P.ViewCount) AS TotalViews,
         AVG(P.Score) AS AverageScore,
-        ARRAY_AGG(DISTINCT U.DisplayName) AS TopContributors,
+        arrayDistinct(groupArray(assumeNotNull(U.DisplayName))) AS TopContributors,
         COUNT(DISTINCT B.Id) AS BadgeCount
     FROM 
         Tags T

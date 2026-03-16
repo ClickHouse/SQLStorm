@@ -37,8 +37,8 @@ SELECT
     fm.production_year,
     fm.cast_count,
     fm.keyword_count,
-    ARRAY_AGG(DISTINCT ak.name) AS actor_names,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     FilteredMovies fm
 JOIN 

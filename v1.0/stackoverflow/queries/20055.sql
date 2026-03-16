@@ -62,15 +62,15 @@ SELECT
         WHEN FPI.TotalUserVotes BETWEEN 6 AND 15 THEN 'Intermediate Editor'
         ELSE 'Veteran Editor'
     END AS EditorExperienceLevel,
-    STRING_AGG(DISTINCT T.TagName, ', ') AS RelatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS RelatedTags
 FROM 
     FilteredPostInfo FPI
 LEFT JOIN 
     Posts P ON FPI.PostId = P.Id
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(P.Tags, ',')) AS TagName
+            arrayJoin(splitByString(',', P.Tags)) AS TagName
     ) AS T ON TRUE
 GROUP BY 
     FPI.PostId, FPI.Title, FPI.EditorName, FPI.TotalUserVotes

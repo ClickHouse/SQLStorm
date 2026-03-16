@@ -65,4 +65,4 @@ JOIN
      WHERE c.c_birth_month = 12 OR c.c_birth_month IS NULL) as customers_with_special_birthday ON s.c_customer_id = customers_with_special_birthday.c_customer_id
 ORDER BY 
     total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

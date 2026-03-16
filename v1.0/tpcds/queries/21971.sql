@@ -55,4 +55,4 @@ SELECT
 FROM high_spenders hs
 WHERE hs.rn <= 50
 ORDER BY (hs.total_web_sales + hs.total_catalog_sales + hs.total_store_sales) DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

@@ -16,7 +16,7 @@ WITH movie_actors AS (
 movie_keywords AS (
     SELECT
         t.title AS movie_title,
-        array_agg(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM
         movie_keyword mk
     JOIN

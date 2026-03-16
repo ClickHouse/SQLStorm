@@ -32,7 +32,7 @@ TopPosts AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS EditTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS EditTypes,
         COUNT(*) AS EditCount,
         MAX(ph.CreationDate) AS LastEditDate
     FROM PostHistory ph

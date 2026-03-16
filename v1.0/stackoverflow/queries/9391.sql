@@ -14,7 +14,7 @@ WITH UserActivity AS (
     LEFT JOIN Badges b ON u.Id = b.UserId
     LEFT JOIN Votes v ON u.Id = v.UserId
     WHERE 
-        u.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY u.Id, u.DisplayName
 ),
 PostStats AS (
@@ -28,7 +28,7 @@ PostStats AS (
         (SELECT COUNT(*) FROM Votes WHERE PostId = p.Id AND VoteTypeId = 2) AS UpvoteCount,
         (SELECT COUNT(*) FROM Votes WHERE PostId = p.Id AND VoteTypeId = 3) AS DownvoteCount
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 )
 SELECT 
     u.DisplayName,

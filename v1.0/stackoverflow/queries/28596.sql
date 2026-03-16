@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 FilteredRanks AS (
     SELECT 
@@ -36,7 +36,7 @@ SELECT
     fr.ViewCount,
     fr.OwnerDisplayName,
     (SELECT 
-        STRING_AGG(DISTINCT c.Text, '; ') 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Text))), '; ') 
      FROM 
         Comments c 
      WHERE 

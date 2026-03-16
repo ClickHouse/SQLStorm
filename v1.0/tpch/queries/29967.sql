@@ -25,8 +25,8 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_name LIKE 'S%' 
-    AND o.o_orderdate >= DATE '1997-01-01'
-    AND o.o_orderdate < DATE '1997-12-31'
+    AND o.o_orderdate >= toDate('1997-01-01')
+    AND o.o_orderdate < toDate('1997-12-31')
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey, r.r_name
 HAVING 

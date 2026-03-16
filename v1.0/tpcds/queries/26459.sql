@@ -41,8 +41,8 @@ TotalSales AS (
         cad.ca_country,
         SUM(sd.ws_net_paid) AS total_sales,
         COUNT(sd.ws_order_number) AS order_count,
-        EXTRACT(MONTH FROM sd.sale_date) AS sale_month,
-        EXTRACT(YEAR FROM sd.sale_date) AS sale_year
+        toMonth(sd.sale_date) AS sale_month,
+        toYear(sd.sale_date) AS sale_year
     FROM 
         CustomerAddressDetails cad
     JOIN 

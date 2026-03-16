@@ -56,6 +56,6 @@ SELECT
 FROM 
     PostDetails pd
 WHERE 
-    pd.LatestActivityDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' AND TIMESTAMP '2024-10-01 12:34:56'
+    pd.LatestActivityDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY AND toDateTime64('2024-10-01 12:34:56', 6)
 ORDER BY 
     pd.UpVotes DESC, pd.CommentCount DESC;

@@ -14,7 +14,7 @@ company_casts AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT cc.person_id) AS total_cast,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM 
         movie_companies mc
     JOIN 
@@ -61,7 +61,7 @@ final_benchmark AS (
 SELECT 
     mb.movie_id,
     mb.title,
-    COALESCE(mb.production_year::TEXT, 'Unknown Year') AS production_year,
+    COALESCE(CAST(mb.production_year AS TEXT), 'Unknown Year') AS production_year,
     COALESCE(mb.total_cast, 0) AS total_cast,
     mb.company_names,
     mb.info_count,

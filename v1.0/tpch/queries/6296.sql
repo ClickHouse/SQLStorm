@@ -7,7 +7,7 @@ WITH RankedSuppliers AS (
     SELECT o.o_orderkey, o.o_orderdate, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_price
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
     GROUP BY o.o_orderkey, o.o_orderdate
 ), SupplierRanking AS (
     SELECT r.s_suppkey, r.s_name, ROW_NUMBER() OVER (ORDER BY r.total_supplycost DESC) AS rank

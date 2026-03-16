@@ -6,7 +6,7 @@ SELECT
             WHEN l.l_discount BETWEEN 0.05 AND 0.10 THEN l.l_extendedprice 
             ELSE 0 
         END) AS avg_discounted_price,
-    STRING_AGG(DISTINCT p.p_type, ', ') AS part_types_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS part_types_supplied,
     MAX(o.o_totalprice) AS max_order_value
 FROM
     supplier s

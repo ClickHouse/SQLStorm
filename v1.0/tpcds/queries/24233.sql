@@ -44,8 +44,8 @@ SELECT
     COALESCE(SUM(c_r.total_returns), 0) AS total_returns,
     c.c_birth_year,
     CASE 
-        WHEN EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c.c_birth_year < 30 THEN 'Young'
-        WHEN EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c.c_birth_year BETWEEN 30 AND 60 THEN 'Middle-aged'
+        WHEN toYear(cast('2002-10-01' as date)) - c.c_birth_year < 30 THEN 'Young'
+        WHEN toYear(cast('2002-10-01' as date)) - c.c_birth_year BETWEEN 30 AND 60 THEN 'Middle-aged'
         ELSE 'Senior'
     END AS age_group
 FROM 

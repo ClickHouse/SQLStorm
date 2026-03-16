@@ -13,7 +13,7 @@ CustomerStats AS (
         cd_marital_status,
         COUNT(DISTINCT c_customer_sk) AS TotalCustomers,
         AVG(cd_purchase_estimate) AS AvgPurchaseEstimate,
-        STRING_AGG(DISTINCT ca_country, ', ') AS UniqueCountries
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_country))), ', ') AS UniqueCountries
     FROM 
         customer AS c
     JOIN 

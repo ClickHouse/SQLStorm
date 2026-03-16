@@ -16,7 +16,7 @@ WITH UserStats AS (
 ), TopBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS TopBadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS TopBadgeNames
     FROM 
         Badges b
     WHERE 

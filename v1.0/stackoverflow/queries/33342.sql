@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
     AND 
         p.Score > 0 
 ),

@@ -91,7 +91,7 @@ SELECT
     mc.total_cast,
     mc.keyword_count,
     (SELECT 
-        STRING_AGG(DISTINCT a.name, ', ') 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') 
      FROM 
         aka_name a 
      JOIN 

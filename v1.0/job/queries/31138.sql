@@ -56,7 +56,7 @@ SELECT
     mh.movie_id,
     mh.title AS movie_title,
     mh.production_year,
-    ARRAY_AGG(DISTINCT cr.actor_name) AS actor_names,
+    arrayDistinct(groupArray(assumeNotNull(cr.actor_name))) AS actor_names,
     kc.keyword_total,
     mh.depth
 FROM 

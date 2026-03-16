@@ -4,7 +4,7 @@ WITH RecursiveMovieCTE AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT a.name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actors,
         COUNT(c.id) AS cast_count,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.title) AS year_rank,
         COUNT(DISTINCT kc.keyword) AS keyword_count

@@ -40,7 +40,7 @@ PostDetails AS (
     JOIN (
         SELECT OwnerUserId AS PostedBy, Id
         FROM Posts
-        WHERE PostTypeId = 1 AND CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
+        WHERE PostTypeId = 1 AND CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     ) pct ON p.OwnerUserId = pct.PostedBy
 )
 SELECT 

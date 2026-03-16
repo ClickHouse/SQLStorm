@@ -38,7 +38,7 @@ SELECT
         ELSE 
             0
     END AS AveragePostScore,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     Users u
 LEFT JOIN 
@@ -46,9 +46,9 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(p.Tags, ',')) AS TagName
+            arrayJoin(splitByString(',', p.Tags)) AS TagName
     ) t ON TRUE
 LEFT JOIN 
     UserReputationCTE ur ON u.Id = ur.UserId

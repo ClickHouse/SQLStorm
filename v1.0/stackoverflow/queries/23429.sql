@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId IN (1, 2) 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserReputation AS (
     SELECT 
@@ -39,7 +39,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         COUNT(DISTINCT ph.Id) AS CloseCount, 
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     INNER JOIN 
@@ -62,7 +62,7 @@ SELECT
     (SELECT COUNT(*) 
      FROM Comments c 
      WHERE c.PostId = rp.PostId 
-     AND c.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month') AS RecentComments
+     AND c.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH) AS RecentComments
 FROM 
     UserReputation up
 JOIN 

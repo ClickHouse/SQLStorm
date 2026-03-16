@@ -21,7 +21,7 @@ company_movie_info AS (
     SELECT
         c.name AS company_name,
         m.production_year,
-        STRING_AGG(DISTINCT t.title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movie_titles
     FROM movie_companies mc
     JOIN company_name c ON mc.company_id = c.id
     JOIN aka_title t ON mc.movie_id = t.movie_id

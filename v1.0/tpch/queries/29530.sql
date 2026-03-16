@@ -4,7 +4,7 @@ WITH StringAggregation AS (
         CONCAT(p.p_name, ' - ', p.p_mfgr, ' ', p.p_brand) AS combined_info,
         COUNT(DISTINCT s.s_name) AS supplier_count,
         SUM(ps.ps_availqty) AS total_available_quantity,
-        STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments
     FROM 
         part p
     JOIN 
@@ -20,7 +20,7 @@ CustomerOrderDetails AS (
         c.c_name,
         COUNT(o.o_orderkey) AS total_orders,
         SUM(o.o_totalprice) AS total_spent,
-        STRING_AGG(DISTINCT o.o_orderpriority, ', ') AS order_priorities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(o.o_orderpriority))), ', ') AS order_priorities
     FROM 
         customer c
     JOIN 

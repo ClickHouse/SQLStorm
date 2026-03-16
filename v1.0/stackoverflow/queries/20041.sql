@@ -30,7 +30,7 @@ PopularTags AS (
         t.TagName,
         COUNT(*) AS TagCount
     FROM 
-        (SELECT UNNEST(string_to_array(Tags, '>')) AS TagName FROM Posts WHERE Tags IS NOT NULL) AS t
+        (SELECT arrayJoin(splitByString('>', Tags)) AS TagName FROM Posts WHERE Tags IS NOT NULL) AS t
     GROUP BY 
         t.TagName
     ORDER BY 
@@ -57,7 +57,7 @@ SELECT
     COALESCE(bs.GoldCount, 0) AS GoldBadges,
     COALESCE(bs.SilverCount, 0) AS SilverBadges,
     COALESCE(bs.BronzeCount, 0) AS BronzeBadges,
-    ARRAY_AGG(pt.TagName) AS PopularTags,
+    groupArray(assumeNotNull(pt.TagName)) AS PopularTags,
     phc.HistoryTypeCount,
     phc.LastActivity
 FROM 

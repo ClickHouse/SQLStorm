@@ -42,7 +42,7 @@ SELECT
     fp.OwnerReputation,
     pt.Name AS PostTypeName,
     b.Name AS BadgeName,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     FilteredPosts fp
 JOIN 

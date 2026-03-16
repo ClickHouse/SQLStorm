@@ -12,7 +12,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS Unique_Customers,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS Total_Revenue,
     AVG(s.s_acctbal) AS Average_Supplier_Balance,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS Product_Names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS Product_Names,
     DENSE_RANK() OVER (PARTITION BY r.r_name ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS Revenue_Rank
 FROM 
     region r

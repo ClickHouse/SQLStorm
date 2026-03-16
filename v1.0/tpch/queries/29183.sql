@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(l.l_quantity) AS total_quantity,
     AVG(p.p_retailprice) AS average_price,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
     r.r_name AS region_name
 FROM 
     part p
@@ -18,7 +18,7 @@ JOIN
 JOIN 
     lineitem l ON p.p_partkey = l.l_partkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND LENGTH(p.p_comment) > 10
 GROUP BY 
     short_name, r.r_name

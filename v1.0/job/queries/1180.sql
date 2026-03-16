@@ -24,7 +24,7 @@ FilteredMovies AS (
 SELECT 
     fm.title, 
     fm.production_year,
-    COALESCE((SELECT STRING_AGG(an.name, ', ') 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(an.name)), ', ') 
                FROM aka_name an 
                JOIN cast_info ci ON an.person_id = ci.person_id 
                WHERE ci.movie_id IN (SELECT movie_id FROM complete_cast cc WHERE cc.status_id = 1)

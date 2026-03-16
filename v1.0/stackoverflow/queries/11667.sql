@@ -18,7 +18,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 WHERE 
-    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'  
+    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH  
 GROUP BY 
     p.Id, u.Id
 ORDER BY 

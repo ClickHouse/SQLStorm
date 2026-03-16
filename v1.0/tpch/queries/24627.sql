@@ -59,7 +59,7 @@ SELECT
     pp.p_name,
     SUM(CASE WHEN pp.price_rank = 1 THEN li.l_extendedprice ELSE 0 END) AS top_price_sum,
     COUNT(DISTINCT o.o_orderkey) AS high_value_orders_count,
-    STRING_AGG(DISTINCT si.supplier_comments, '; ') AS distinct_supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(si.supplier_comments))), '; ') AS distinct_supplier_comments
 FROM 
     RankedParts pp
 JOIN 

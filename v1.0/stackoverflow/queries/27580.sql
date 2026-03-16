@@ -13,7 +13,7 @@ WITH StringBenchmark AS (
         PH.UserId,
         PH.UserDisplayName AS EditorDisplayName,
         PT.Name AS PostType,
-        (SELECT STRING_AGG(T.TagName, '; ')
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), '; ')
          FROM Tags T 
          WHERE P.Tags LIKE CONCAT('%', T.TagName, '%')) AS RelatedTags,
         LENGTH(P.Body) AS BodyLength,
@@ -31,14 +31,13 @@ WITH StringBenchmark AS (
         PH.PostHistoryTypeId IN (1, 4, 5)  
 )
 SELECT 
-    STRING_AGG(CONCAT('Post ID: ', PostId, 
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT('Post ID: ', PostId, 
                       '; Post Title: ', Title,
                       '; Length of Title: ', TitleLength,
                       '; Length of Body: ', BodyLength,
                       '; Last Editor: ', EditorDisplayName,
                       '; Date Edited: ', CreationDate,
-                      '; Tags: ', RelatedTags), 
-                ' | ') AS PostSummary,
+                      '; Tags: ', RelatedTags))), ' | ') AS PostSummary,
     UserDisplayName
 FROM 
     StringBenchmark

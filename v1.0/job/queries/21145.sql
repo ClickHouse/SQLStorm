@@ -58,7 +58,7 @@ AllMovies AS (
         mt.production_year,
         COALESCE(mkc.KeywordCount, 0) AS TotalKeywords,
         mh.MoviePath,
-        ARRAY_LENGTH(mh.MoviePath, 1) AS PathLength,
+        length(mh.MoviePath, 1) AS PathLength,
         mt.id AS movie_id -- Added movie_id to ensure it's selected for the main query
     FROM 
         aka_title mt
@@ -78,7 +78,7 @@ SELECT
         WHEN am.PathLength = 1 THEN 'Standalone Movie'
         ELSE 'Medium Series'
     END) AS SeriesType,
-    (SELECT STRING_AGG(DISTINCT c.note, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.note))), ', ') 
      FROM cast_info c 
      WHERE c.movie_id = am.movie_id AND c.note IS NOT NULL) AS CastNotes
 FROM 

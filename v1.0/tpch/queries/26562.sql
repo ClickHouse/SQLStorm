@@ -32,7 +32,7 @@ TopSuppliers AS (
 )
 SELECT 
     t.nation_name,
-    STRING_AGG(t.s_name, ', ') AS top_supplier_names,
+    arrayStringConcat(groupArray(assumeNotNull(t.s_name)), ', ') AS top_supplier_names,
     SUM(t.total_available_qty) AS total_qty,
     SUM(t.unique_parts_count) AS unique_parts_count
 FROM 

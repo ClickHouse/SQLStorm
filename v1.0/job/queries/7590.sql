@@ -48,7 +48,7 @@ SELECT
     ar.role, 
     cd.company_name, 
     cd.company_type, 
-    array_agg(mk.keyword) AS keywords 
+    groupArray(assumeNotNull(mk.keyword)) AS keywords 
 FROM 
     LatestMovies lm 
 LEFT JOIN 

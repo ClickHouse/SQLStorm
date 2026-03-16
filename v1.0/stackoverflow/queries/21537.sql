@@ -69,7 +69,7 @@ SELECT
         ELSE 'Equal Upvotes and Downvotes' 
     END) AS VoteBalance,
     (SELECT COUNT(*) FROM Posts pt WHERE pt.OwnerUserId = p.OwnerUserId) AS UserPostCount,
-    (SELECT STRING_AGG(CONCAT(t.TagName, ' (' , t.Count, ')'), ', ') FROM Tags t WHERE p.Tags LIKE '%' || t.TagName || '%') AS AssociatedTags
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(CONCAT(t.TagName, ' (' , t.Count, ')'))), ', ') FROM Tags t WHERE p.Tags LIKE '%' || t.TagName || '%') AS AssociatedTags
 FROM 
     PostStatistics ps
 JOIN 

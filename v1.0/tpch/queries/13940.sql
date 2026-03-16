@@ -10,8 +10,8 @@ JOIN
 JOIN 
     partsupp ps ON p.p_partkey = ps.ps_partkey AND s.s_suppkey = ps.ps_suppkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' 
-    AND l.l_shipdate < DATE '1997-02-01'
+    l.l_shipdate >= toDate('1997-01-01') 
+    AND l.l_shipdate < toDate('1997-02-01')
 GROUP BY 
     p.p_name
 ORDER BY 

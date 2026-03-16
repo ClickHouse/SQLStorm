@@ -66,4 +66,4 @@ GROUP BY
     ss.total_net_profit
 ORDER BY 
     cust.total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

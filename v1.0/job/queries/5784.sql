@@ -47,7 +47,7 @@ SELECT
     amd.actor_id,
     amd.actor_name,
     COUNT(DISTINCT amd.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT amd.movie_title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(amd.movie_title))), ', ') AS movie_titles,
     AVG(pm.production_year) AS average_production_year
 FROM 
     actor_movie_details amd

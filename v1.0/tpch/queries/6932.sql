@@ -37,7 +37,7 @@ RecentOrders AS (
     JOIN 
         lineitem li ON o.o_orderkey = li.l_orderkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         o.o_orderkey, o.o_custkey, o.o_orderdate
 )

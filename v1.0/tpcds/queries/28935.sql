@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c.c_customer_id) AS unique_customers,
     AVG(COALESCE(cd.cd_purchase_estimate, 0)) AS avg_purchase_estimate,
     SUM(ss.ss_quantity) AS total_store_sales,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), '; ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), '; ') AS customer_names,
     MIN(d.d_date) AS first_purchase_date,
     MAX(d.d_date) AS last_purchase_date
 FROM 

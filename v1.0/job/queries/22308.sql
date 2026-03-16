@@ -35,7 +35,7 @@ FilteredMovies AS (
 
 SELECT 
     fm.production_year,
-    STRING_AGG(fm.actor_name, ', ') AS top_actors,
+    arrayStringConcat(groupArray(assumeNotNull(fm.actor_name)), ', ') AS top_actors,
     MAX(fm.movie_count_per_year) AS total_movies,
     SUM(CASE 
             WHEN fm.cast_type IS NULL THEN 1 

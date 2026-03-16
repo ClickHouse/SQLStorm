@@ -21,7 +21,7 @@ actor_statistics AS (
     SELECT 
         actor_name,
         COUNT(DISTINCT movie_id) AS movies_count,
-        STRING_AGG(title, ', ') AS movies_list,
+        arrayStringConcat(groupArray(assumeNotNull(title)), ', ') AS movies_list,
         MIN(production_year) AS first_appearance,
         MAX(production_year) AS last_appearance
     FROM 

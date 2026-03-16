@@ -38,7 +38,7 @@ ActorsWithRoles AS (
 MovieActors AS (
     SELECT 
         movie_title,
-        STRING_AGG(DISTINCT actor_name, ', ') AS actor_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actor_list,
         COUNT(DISTINCT actor_name) AS actor_count
     FROM 
         ActorsWithRoles

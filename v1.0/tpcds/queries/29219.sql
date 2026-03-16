@@ -3,13 +3,13 @@ SELECT
     ca_city,
     ca_state,
     COUNT(DISTINCT c_first_name || ' ' || c_last_name) AS unique_customers,
-    STRING_AGG(DISTINCT c_email_address, ', ') AS all_emails,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c_email_address))), ', ') AS all_emails,
     MAX(cd_purchase_estimate) AS highest_purchase_estimate,
     MIN(cd_dep_count) AS lowest_dependents_count,
     AVG(cd_dep_employed_count) AS average_dependent_employed_count,
     SUM(ws_quantity) AS total_quantity_sold,
     SUM(ws_net_paid) AS total_net_paid,
-    STRING_AGG(DISTINCT i_product_name, '; ') AS sold_product_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i_product_name))), '; ') AS sold_product_names
 FROM 
     customer_address
 JOIN 

@@ -32,9 +32,9 @@ AggregatedResults AS (
     SELECT 
         movie_title,
         production_year,
-        ARRAY_AGG(DISTINCT actor_name) AS actors,
-        ARRAY_AGG(DISTINCT company_name) AS production_companies,
-        ARRAY_AGG(DISTINCT movie_keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(actor_name))) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(company_name))) AS production_companies,
+        arrayDistinct(groupArray(assumeNotNull(movie_keyword))) AS keywords,
         COUNT(DISTINCT cast_role) AS role_count
     FROM 
         MovieDetails

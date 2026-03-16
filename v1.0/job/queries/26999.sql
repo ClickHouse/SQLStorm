@@ -29,9 +29,9 @@ FinalResults AS (
     SELECT 
         rt.title,
         rt.production_year,
-        STRING_AGG(cd.actor_name, ', ') AS actor_names,
+        arrayStringConcat(groupArray(assumeNotNull(cd.actor_name)), ', ') AS actor_names,
         COUNT(DISTINCT cd.unique_actors) AS unique_actors,
-        CONCAT(rt.title, ' (', rt.production_year, ') - Starring: ', STRING_AGG(cd.actor_name, ', ')) AS full_description
+        CONCAT(rt.title, ' (', rt.production_year, ') - Starring: ', arrayStringConcat(groupArray(assumeNotNull(cd.actor_name)), ', ')) AS full_description
     FROM 
         RankedTitles rt
     JOIN 

@@ -39,7 +39,7 @@ ranked_cast AS (
 movies_with_keywords AS (
     SELECT 
         m.id AS movie_id,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         aka_title m 
     JOIN 

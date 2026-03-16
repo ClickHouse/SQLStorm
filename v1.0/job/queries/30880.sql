@@ -25,7 +25,7 @@ WITH RECURSIVE movie_hierarchy AS (
 cast_aggregates AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         COUNT(DISTINCT c.person_id) AS actor_count,
         MAX(c.nr_order) AS max_order
     FROM 
@@ -54,7 +54,7 @@ filtered_movies AS (
 keyword_filter AS (
     SELECT 
         mvk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mvk
     JOIN 

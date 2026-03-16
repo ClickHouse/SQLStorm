@@ -8,8 +8,8 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid_inc_tax) AS total_spent,
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT wp.wp_url, ', ') AS visited_websites,
-    STRING_AGG(DISTINCT CONCAT(p.p_promo_name, ' (', p.p_channel_details, ')'), '; ') AS promotions_used
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp.wp_url))), ', ') AS visited_websites,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_promo_name, ' (', p.p_channel_details, ')')))), '; ') AS promotions_used
 FROM 
     customer c
 JOIN 

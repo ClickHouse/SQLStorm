@@ -26,12 +26,12 @@ TopMovies AS (
 SELECT 
     t.title,
     t.production_year,
-    STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
     (SELECT COUNT(DISTINCT c.id) 
      FROM cast_info c 
      WHERE c.movie_id = (SELECT id FROM aka_title WHERE title = t.title AND production_year = t.production_year LIMIT 1)) AS actor_count,
     (SELECT 
-         STRING_AGG(DISTINCT k.keyword, ', ') 
+         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
      FROM 
          movie_keyword mk 
      JOIN 

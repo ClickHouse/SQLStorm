@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
 ),
 TopCustomers AS (
     SELECT 
@@ -55,7 +55,7 @@ LEFT JOIN
 LEFT JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1997-01-01'
+    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1997-01-01')
     AND o.o_orderstatus IN (SELECT DISTINCT o_orderstatus FROM RankedOrders WHERE order_rank <= 3)
     AND c.c_custkey IN (SELECT c_custkey FROM TopCustomers)
     AND r.r_name IS NOT NULL
@@ -63,4 +63,4 @@ GROUP BY
     r.r_name
 ORDER BY 
     total_orders DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

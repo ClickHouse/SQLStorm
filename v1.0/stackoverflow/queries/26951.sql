@@ -15,11 +15,11 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 TagStatistics AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS Tag,
+        arrayJoin(splitByString('>', Tags)) AS Tag,
         COUNT(*) AS PostCount,
         SUM(Score) AS TotalScore,
         AVG(ViewCount) AS AverageViews
@@ -28,7 +28,7 @@ TagStatistics AS (
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        unnest(string_to_array(Tags, '>'))
+        arrayJoin(splitByString('>', Tags))
 ),
 TopTags AS (
     SELECT 
@@ -54,7 +54,7 @@ SELECT
 FROM 
     TopTags tp
 JOIN 
-    RankedPosts rp ON tp.Tag = ANY(string_to_array(rp.Tags, '>'))
+    RankedPosts rp ON tp.Tag = ANY(splitByString('>', rp.Tags))
 WHERE 
     rp.RankByScore = 1 
 ORDER BY 

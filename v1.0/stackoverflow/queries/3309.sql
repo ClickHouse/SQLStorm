@@ -20,7 +20,7 @@ RecentPosts AS (
         P.Score,
         RANK() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    WHERE P.CreationDate >= now64(6) - INTERVAL 30 DAY
 ),
 CombinedData AS (
     SELECT 
@@ -54,4 +54,4 @@ WHERE
 ORDER BY 
     C.BadgeCount DESC,
     C.RecentPostDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

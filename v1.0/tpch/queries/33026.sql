@@ -29,7 +29,7 @@ SELECT
     p.p_brand,
     COALESCE(SUM(l.l_extendedprice * (1 - l.l_discount)), 0) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ': ', s.s_name), '; ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ': ', s.s_name)))), '; ') AS supplier_names
 FROM 
     part p
 LEFT JOIN 

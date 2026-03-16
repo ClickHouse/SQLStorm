@@ -26,7 +26,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges B ON U.Id = B.UserId
 WHERE 
-    P.CreationDate >= DATE '2023-01-01'
+    P.CreationDate >= toDate('2023-01-01')
 GROUP BY 
     P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount, P.AnswerCount, P.CommentCount, 
     U.Id, U.DisplayName, U.Reputation, PH.PostHistoryTypeId, PH.CreationDate

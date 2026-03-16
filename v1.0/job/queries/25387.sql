@@ -4,8 +4,8 @@ WITH MovieDetails AS (
         t.title AS movie_title,
         t.production_year,
         t.kind_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
-        STRING_AGG(DISTINCT c.kind, ', ') AS company_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_types,
         k.keyword AS movie_keyword
     FROM
         title t

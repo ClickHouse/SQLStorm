@@ -8,7 +8,7 @@ SELECT
         ELSE 0 
     END) AS total_returned_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     CONCAT('Brand: ', p.p_brand, ' | Type: ', p.p_type) AS branding_info
 FROM 
     part p

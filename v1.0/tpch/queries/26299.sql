@@ -47,6 +47,6 @@ CombinedData AS (
 SELECT 
     COUNT(*) AS Total_Entries, 
     AVG(p_retailprice) AS Average_Retail_Price, 
-    STRING_AGG(CONCAT_WS(' - ', p_name, s_name, s_address), '; ') AS Part_Supplier_Info
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT_WS(' - ', p_name, s_name, s_address))), '; ') AS Part_Supplier_Info
 FROM 
     CombinedData;

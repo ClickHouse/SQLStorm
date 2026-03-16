@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        ROW_NUMBER() OVER (PARTITION BY m.production_year ORDER BY RANDOM()) AS rn
+        ROW_NUMBER() OVER (PARTITION BY m.production_year ORDER BY rand()) AS rn
     FROM 
         aka_title m
     WHERE 
@@ -26,7 +26,7 @@ CastDetails AS (
 KeywordSummary AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword m
     JOIN 

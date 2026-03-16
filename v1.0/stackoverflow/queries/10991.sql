@@ -15,7 +15,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes V ON P.Id = V.PostId 
 WHERE 
-    P.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+    P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
 GROUP BY 
     PT.Name
 ORDER BY 

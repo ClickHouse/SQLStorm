@@ -68,7 +68,7 @@ SELECT
     role_name, 
     company_name, 
     company_type, 
-    string_agg(keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords
 FROM 
     FinalResults
 GROUP BY 

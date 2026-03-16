@@ -4,8 +4,8 @@ SELECT
     t.title AS movie_title,
     t.production_year,
     c.role_id,
-    STRING_AGG(k.keyword, ',') AS keywords,
-    STRING_AGG(DISTINCT cn.name, ',') AS company_names
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ',') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ',') AS company_names
 FROM 
     cast_info c
 JOIN 

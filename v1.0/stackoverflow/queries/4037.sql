@@ -48,10 +48,10 @@ PostStats AS (
 SELECT 
     ps.*,
     CASE 
-        WHEN ps.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 'Older'
+        WHEN ps.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Older'
         ELSE 'Recent'
     END AS PostAge,
-    ARRAY_LENGTH(string_to_array(ps.Title, ' '), 1) AS TitleWordCount
+    length(splitByString(' ', ps.Title), 1) AS TitleWordCount
 FROM 
     PostStats ps
 WHERE 

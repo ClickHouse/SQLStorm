@@ -27,7 +27,7 @@ CompaniesRanked AS (
 CompleteCast AS (
     SELECT 
         cc.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS full_cast,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS full_cast,
         COUNT(DISTINCT a.id) AS cast_count
     FROM 
         complete_cast cc

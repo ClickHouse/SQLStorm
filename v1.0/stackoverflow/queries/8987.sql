@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -63,4 +63,4 @@ FROM
     PostWithVotes pwv
 ORDER BY 
     NetVotes DESC, pwv.Score DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

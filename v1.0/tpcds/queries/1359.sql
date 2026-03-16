@@ -58,4 +58,4 @@ FROM
     SalesSummary AS ss
 ORDER BY 
     ss.net_sales_after_returns DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -28,7 +28,7 @@ WITH RankedMovies AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT c.id) AS company_count,
-        STRING_AGG(DISTINCT c.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS company_names
     FROM 
         movie_companies mc
     JOIN 
@@ -54,4 +54,4 @@ WHERE
 ORDER BY 
     md.production_year DESC,
     md.title ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

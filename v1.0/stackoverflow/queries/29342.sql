@@ -6,7 +6,7 @@ WITH TagStats AS (
         SUM(COALESCE(P.ViewCount, 0)) AS TotalViews,
         SUM(COALESCE(P.Score, 0)) AS TotalScore,
         AVG(COALESCE(P.ANSWERCOUNT, 0)) AS AvgAnswerCount,
-        ARRAY_AGG(DISTINCT U.DisplayName) AS ContributingUsers
+        arrayDistinct(groupArray(assumeNotNull(U.DisplayName))) AS ContributingUsers
     FROM 
         Tags T
     LEFT JOIN 
@@ -30,7 +30,7 @@ MostActiveTags AS (
         PostCount > 10
     ORDER BY 
         TotalScore DESC
-    FETCH FIRST 5 ROWS ONLY
+    LIMIT 5
 ),
 UserStats AS (
     SELECT 
@@ -48,7 +48,7 @@ UserStats AS (
         U.DisplayName
     ORDER BY 
         QuestionsAnswered DESC
-    FETCH FIRST 10 ROWS ONLY
+    LIMIT 10
 )
 SELECT 
     M.TagName,

@@ -33,7 +33,7 @@ TagSummary AS (
         SUM(UpvoteCount - DownvoteCount) AS NetVotes
     FROM 
         RankedPosts,
-        UNNEST(string_to_array(Tags, '>')) AS value
+        arrayJoin(splitByString('>', Tags)) AS value
     WHERE 
         RankPerTag = 1 
     GROUP BY 

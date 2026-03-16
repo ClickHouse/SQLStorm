@@ -56,7 +56,7 @@ SELECT
     END AS ScoreCategory,
     CASE 
         WHEN rp.CommentCount > 0 THEN
-            (SELECT STRING_AGG(c.Text, '; ') 
+            (SELECT arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') 
              FROM Comments c 
              WHERE c.PostId = rp.PostId 
              LIMIT 3) 

@@ -71,4 +71,4 @@ WHERE
 ORDER BY 
     id.i_current_price DESC, 
     id.total_sales_quantity ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -1,6 +1,6 @@
 
 WITH MovieYear AS (
-    SELECT t.id AS movie_id, t.title, t.production_year, STRING_AGG(DISTINCT k.keyword, ',') AS keywords
+    SELECT t.id AS movie_id, t.title, t.production_year, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',') AS keywords
     FROM aka_title t
     JOIN movie_keyword mk ON t.id = mk.movie_id
     JOIN keyword k ON mk.keyword_id = k.id

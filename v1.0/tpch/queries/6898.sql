@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     JOIN 
         lineitem li ON o.o_orderkey = li.l_orderkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
+        o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
     GROUP BY 
         o.o_orderkey, o.o_orderdate, o.o_orderstatus
 ),

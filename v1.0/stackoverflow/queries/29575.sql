@@ -44,7 +44,7 @@ SELECT
     AVG(f.CommentCount) AS AverageComments,
     AVG(f.UpVoteCount) AS AverageUpVotes,
     AVG(f.DownVoteCount) AS AverageDownVotes,
-    STRING_AGG(DISTINCT f.OwnerDisplayName, ', ') AS TopAuthors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.OwnerDisplayName))), ', ') AS TopAuthors
 FROM 
     FilteredPosts f
 GROUP BY 

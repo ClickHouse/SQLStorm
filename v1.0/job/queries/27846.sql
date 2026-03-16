@@ -19,7 +19,7 @@ TopMovies AS (
         movie_id,
         title,
         production_year,
-        STRING_AGG(movie_keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(movie_keyword)), ', ') AS keywords
     FROM 
         RankedMovies
     WHERE 
@@ -31,7 +31,7 @@ ActorInfo AS (
     SELECT 
         p.id AS person_id,
         p.name AS actor_name,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles
     FROM 
         aka_name p
     JOIN 
@@ -47,7 +47,7 @@ MovieDetails AS (
         tm.title,
         tm.production_year,
         tm.keywords,
-        STRING_AGG(DISTINCT ai.actor_name || ' (' || ai.roles || ')', '; ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ai.actor_name || ' (' || ai.roles || ')'))), '; ') AS actors
     FROM 
         TopMovies tm
     LEFT JOIN 

@@ -4,7 +4,7 @@ SELECT
     CONCAT(c.c_first_name, ' ', c.c_last_name) AS full_name,
     ca.ca_city,
     ca.ca_state,
-    STRING_AGG(DISTINCT wp.wp_url, ', ') AS aggregated_urls,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp.wp_url))), ', ') AS aggregated_urls,
     COUNT(DISTINCT ws.ws_order_number) AS total_web_orders,
     SUM(ws.ws_sales_price) AS total_sales,
     MAX(d.d_date) AS last_order_date

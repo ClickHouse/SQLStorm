@@ -33,7 +33,7 @@ JOIN
 JOIN 
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND s.s_comment LIKE '%tocol%' 
 ORDER BY 
     p.p_retailprice DESC, 

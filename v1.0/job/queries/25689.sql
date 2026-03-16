@@ -60,7 +60,7 @@ SELECT
     cmd.production_year,
     cmd.movie_keyword,
     COUNT(DISTINCT cmd.actor_name) AS actress_count,
-    STRING_AGG(DISTINCT cmd.actor_name, ', ') AS actresses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cmd.actor_name))), ', ') AS actresses
 FROM 
     complete_movie_data cmd
 GROUP BY 

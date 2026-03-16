@@ -32,7 +32,7 @@ PostStatistics AS (
         MAX(P.CreationDate) as LatestPostDate
     FROM Posts P
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY P.Id, P.Title
 ),
 
@@ -59,7 +59,7 @@ SELECT
     CS.TotalVotes,
     CS.TotalBounty,
     CASE 
-        WHEN CS.LatestPostDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month' THEN 'Active'
+        WHEN CS.LatestPostDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN 'Active'
         ELSE 'Inactive'
     END AS PostActivityStatus
 FROM CombinedStats CS

@@ -40,10 +40,10 @@ SalesVolatility AS (
     SELECT 
         s_store_id,
         AVG(total_sales) AS avg_sales,
-        STDDEV(total_sales) AS sales_std_dev,
+        stddevPop(total_sales) AS sales_std_dev,
         CASE
             WHEN AVG(total_sales) IS NULL THEN 'No Sales'
-            WHEN STDDEV(total_sales) > (0.1 * AVG(total_sales)) THEN 'High volatility'
+            WHEN stddevPop(total_sales) > (0.1 * AVG(total_sales)) THEN 'High volatility'
             ELSE 'Stable'
         END AS volatility_status
     FROM 

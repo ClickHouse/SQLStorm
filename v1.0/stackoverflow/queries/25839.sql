@@ -22,20 +22,20 @@ WITH PostDetails AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.CreationDate, u.DisplayName
 ),
 TagStats AS (
     SELECT 
-        UNNEST(string_to_array(LOWER(p.Tags), '><')) AS TagName,
+        arrayJoin(splitByString('><', LOWER(p.Tags))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts p
     WHERE 
         p.Tags IS NOT NULL
     GROUP BY 
-        UNNEST(string_to_array(LOWER(p.Tags), '><'))
+        arrayJoin(splitByString('><', LOWER(p.Tags)))
 ),
 TopTags AS (
     SELECT 
@@ -61,7 +61,7 @@ SELECT
 FROM 
     PostDetails pd
 JOIN 
-    TopTags tt ON tt.TagName = ANY(string_to_array(pd.Tags, '><'))
+    TopTags tt ON tt.TagName = ANY(splitByString('><', pd.Tags))
 WHERE 
     tt.TagRank <= 5 
 ORDER BY 

@@ -68,7 +68,7 @@ SELECT
     r.r_name,
     COUNT(DISTINCT fr.c_custkey) AS high_value_customer_count,
     AVG(fr.total_spent) AS avg_customer_spending,
-    STRING_AGG(fr.s_name, ', ') AS suppliers_in_report
+    arrayStringConcat(groupArray(assumeNotNull(fr.s_name)), ', ') AS suppliers_in_report
 FROM 
     FinalReport fr
 JOIN 

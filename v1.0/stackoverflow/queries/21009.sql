@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, u.Reputation
 ), 
@@ -44,11 +44,11 @@ HistoricalBadges AS (
         b.UserId,
         MIN(b.Date) AS FirstBadgeDate,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
-        b.Date >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        b.Date >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 ) 

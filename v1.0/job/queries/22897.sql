@@ -22,7 +22,7 @@ actor_info AS (
     SELECT 
         ak.name AS actor_name,
         ak.person_id,
-        STRING_AGG(DISTINCT mt.title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mt.title))), ', ') AS movie_titles
     FROM 
         aka_name ak
     JOIN 

@@ -28,7 +28,7 @@ MovieDetails AS (
         sm.movie_id,
         sm.title,
         sm.production_year,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
         COUNT(DISTINCT mc.company_id) AS company_count,
         SUM(CASE WHEN ci.role_id IS NOT NULL THEN 1 ELSE 0 END) AS role_count
     FROM 

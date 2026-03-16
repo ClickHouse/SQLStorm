@@ -49,7 +49,7 @@ ExternalCompanies AS (
 MoviesWithMultipleCompanies AS (
     SELECT 
         movie_id,
-        ARRAY_AGG(DISTINCT company_name) AS companies
+        arrayDistinct(groupArray(assumeNotNull(company_name))) AS companies
     FROM 
         ExternalCompanies
     GROUP BY 

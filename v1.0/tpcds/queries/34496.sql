@@ -38,7 +38,7 @@ SELECT
         WHEN r.total_quantity > 0 THEN 'Positive Sales'
         ELSE 'No Sales'
     END AS sales_status,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customer_names
 FROM 
     RecentSales r
 JOIN 

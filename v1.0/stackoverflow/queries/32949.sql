@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 YEAR' 
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
         AND (P.ViewCount IS NOT NULL AND P.ViewCount > 0)
 ),
 TopPosts AS (
@@ -84,7 +84,7 @@ SELECT
         ELSE 'Low Scoring'
     END AS ScoreCategory,
     CASE 
-        WHEN LastEditDate >= cast('2024-10-01' as date) - INTERVAL '1 MONTH' THEN 'Recently Edited'
+        WHEN LastEditDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH THEN 'Recently Edited'
         ELSE 'Stale'
     END AS EditStatus
 FROM 

@@ -34,7 +34,7 @@ FilteredMovies AS (
 MovieInfo AS (
     SELECT 
         fm.movie_id,
-        STRING_AGG(mi.info, '; ') AS all_info
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS all_info
     FROM 
         FilteredMovies fm
     LEFT JOIN 

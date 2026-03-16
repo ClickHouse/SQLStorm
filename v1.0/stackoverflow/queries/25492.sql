@@ -14,20 +14,20 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TagStatistics AS (
     SELECT 
-        unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag,
         COUNT(*) AS TotalCount,
         SUM(p.ViewCount) AS TotalViews
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
-        unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'))
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
 ),
 TopTags AS (
     SELECT 
@@ -49,7 +49,7 @@ SELECT
 FROM 
     TopTags tp
 JOIN 
-    RankedPosts rp ON tp.Tag = ANY(string_to_array(SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2), '><'))
+    RankedPosts rp ON tp.Tag = ANY(splitByString('><', SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2)))
 WHERE 
     tp.Rank <= 10
     AND rp.TagRank = 1

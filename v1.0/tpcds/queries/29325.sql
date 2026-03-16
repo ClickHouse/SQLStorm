@@ -44,7 +44,7 @@ SELECT
     city_upper,
     COUNT(*) AS address_count,
     AVG(zip_length) AS avg_zip_length,
-    STRING_AGG(DISTINCT gender_description, ', ') AS gender_distribution,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(gender_description))), ', ') AS gender_distribution,
     SUM(gender_count) AS total_gender_count
 FROM 
     Combined_Analysis

@@ -25,11 +25,11 @@ WITH UserActivity AS (
 PostsWithTags AS (
     SELECT 
         P.*,
-        STRING_AGG(T.TagName, ', ') AS TagsAggregated
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagsAggregated
     FROM Posts P
-    LEFT JOIN LATERAL (
+    LEFT JOIN (
         SELECT 
-            unnest(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) AS TagName
+            arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) AS TagName
     ) T ON TRUE
     GROUP BY P.Id
 ),
@@ -58,6 +58,6 @@ JOIN TopPosts TP ON UA.UserId = TP.OwnerUserId
 WHERE UA.Reputation > 1000 
     AND TP.Rank <= 3
     AND (TP.ClosedDate IS NULL OR 
-    (TP.ClosedDate IS NOT NULL AND TP.CreationDate < '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'))
+    (TP.ClosedDate IS NOT NULL AND TP.CreationDate < CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR))
 ORDER BY UA.Reputation DESC, TP.ViewCount DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

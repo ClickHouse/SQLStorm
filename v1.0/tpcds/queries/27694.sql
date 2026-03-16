@@ -7,7 +7,7 @@ SELECT
     COUNT(DISTINCT ss.ss_ticket_number) AS total_store_sales,
     COUNT(DISTINCT ws.ws_order_number) AS total_web_sales,
     MAX(CASE WHEN ss.ss_sales_price > 50 THEN 'High' ELSE 'Low' END) AS sales_price_category,
-    STRING_AGG(DISTINCT CONCAT(i.i_item_desc, ' (', i.i_item_id, ')'), ', ') AS items_purchased
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(i.i_item_desc, ' (', i.i_item_id, ')')))), ', ') AS items_purchased
 FROM 
     customer c
 JOIN 

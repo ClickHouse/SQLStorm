@@ -46,4 +46,4 @@ LEFT JOIN OrderInfo O ON O.o_orderkey = (SELECT MAX(o2.o_orderkey) FROM orders o
 WHERE R.rank = 1
     OR R.p_name LIKE '%widget%'
 ORDER BY R.p_retailprice DESC, revenue_category
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -21,7 +21,7 @@ ActorCounts AS (
 MovieGenres AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS genres
     FROM 
         aka_title m
     LEFT JOIN 
@@ -34,7 +34,7 @@ MovieGenres AS (
 CompanyInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 

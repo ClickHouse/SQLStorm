@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 
 SELECT
@@ -23,14 +23,14 @@ SELECT
     COUNT(rp.PostId) AS TotalPosts,
     SUM(CASE WHEN rp.RankByViews = 1 THEN 1 ELSE 0 END) AS TopViewPostCount,
     SUM(CASE WHEN rp.RankByScore = 1 THEN 1 ELSE 0 END) AS TopScorePostCount,
-    ARRAY_AGG(rp.Title) AS PostTitles,
-    STRING_AGG(DISTINCT tag.TagName, ', ') AS TagsUsed
+    groupArray(assumeNotNull(rp.Title)) AS PostTitles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag.TagName))), ', ') AS TagsUsed
 FROM 
     RankedPosts rp
 LEFT JOIN 
     (SELECT 
         p.Id, 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '> <')) AS TagName
+        arrayJoin(splitByString('> <', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
      FROM 
         Posts p) tag ON rp.PostId = tag.Id
 GROUP BY 

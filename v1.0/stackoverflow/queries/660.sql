@@ -20,7 +20,7 @@ TopTagUsers AS (
         COUNT(T.Tag) AS TagCount
     FROM Users U
     JOIN Posts P ON U.Id = P.OwnerUserId
-    CROSS JOIN LATERAL (SELECT unnest(string_to_array(P.Tags, '><')) AS Tag) T
+    CROSS JOIN (SELECT arrayJoin(splitByString('><', P.Tags)) AS Tag) T
     GROUP BY U.Id, U.DisplayName
     HAVING COUNT(T.Tag) > 10
 ),
@@ -32,7 +32,7 @@ PopularPosts AS (
         P.AnswerCount,
         RANK() OVER (ORDER BY P.Score DESC, P.AnswerCount DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 )
 SELECT 
     US.UserId,
@@ -55,4 +55,4 @@ LEFT JOIN PopularPosts PP ON PP.PostId IN (
 )
 WHERE US.Reputation > 1000
 ORDER BY US.Reputation DESC, PP.Score DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

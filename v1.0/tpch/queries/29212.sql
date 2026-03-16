@@ -38,7 +38,7 @@ SELECT
     sr.region_name,
     COUNT(DISTINCT sr.s_suppkey) AS supplier_count,
     AVG(rp.p_retailprice) AS avg_price,
-    STRING_AGG(rp.p_comment, '; ') AS combined_comments
+    arrayStringConcat(groupArray(assumeNotNull(rp.p_comment)), '; ') AS combined_comments
 FROM 
     RankedParts rp
 JOIN 

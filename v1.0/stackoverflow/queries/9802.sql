@@ -45,7 +45,7 @@ MostActivePosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        P.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title
     ORDER BY 

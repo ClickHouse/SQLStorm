@@ -30,7 +30,7 @@ WITH RECURSIVE ParentMovies AS (
 CastAggregates AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(DISTINCT an.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actor_names,
         COUNT(DISTINCT ci.person_id) AS actor_count
     FROM 
         cast_info AS ci
@@ -43,8 +43,8 @@ CastAggregates AS (
 MovieCompanyDetails AS (
     SELECT 
         mc.movie_id, 
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types
     FROM 
         movie_companies AS mc
     JOIN 

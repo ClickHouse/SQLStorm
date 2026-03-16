@@ -1,8 +1,8 @@
 
 SELECT 
     t.title AS movie_title, 
-    ARRAY_AGG(DISTINCT ak.name) AS aka_names, 
-    ARRAY_AGG(DISTINCT c.name) AS cast_names, 
+    arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aka_names, 
+    arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_names, 
     COUNT(DISTINCT mc.company_id) AS production_companies, 
     COUNT(DISTINCT kw.keyword) AS keywords, 
     COUNT(DISTINCT mi.info) AS additional_info

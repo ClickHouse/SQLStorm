@@ -36,7 +36,7 @@ LineItemSummary AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year'
+        l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         l.l_orderkey
 )

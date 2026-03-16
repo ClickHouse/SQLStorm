@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ), UserBadges AS (
@@ -52,11 +52,11 @@ LEFT JOIN
 LEFT JOIN (
     SELECT 
         PostId,
-        STRING_AGG(CASE 
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
             WHEN VoteTypeId = 2 THEN 'Upvote'
             WHEN VoteTypeId = 3 THEN 'Downvote'
             ELSE 'Other Vote'
-        END, ', ') AS VoteType
+        END)), ', ') AS VoteType
     FROM 
         Votes
     GROUP BY 
@@ -66,4 +66,4 @@ WHERE
     ub.BadgeCount > 0
 ORDER BY 
     up.Reputation DESC, rp.CreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

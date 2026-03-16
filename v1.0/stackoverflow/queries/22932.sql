@@ -27,7 +27,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.LastAccessDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation
 ),

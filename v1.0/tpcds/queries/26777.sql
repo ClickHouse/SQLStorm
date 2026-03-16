@@ -42,7 +42,7 @@ CombinedDetails AS (
 SELECT 
     upper_city,
     COUNT(*) AS number_of_customers,
-    STRING_AGG(CONCAT(full_name, ' (', cd_gender, ', ', cd_marital_status, ')'), ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(full_name, ' (', cd_gender, ', ', cd_marital_status, ')'))), ', ') AS customer_names
 FROM 
     CombinedDetails
 GROUP BY 

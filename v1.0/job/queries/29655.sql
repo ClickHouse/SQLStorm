@@ -34,8 +34,8 @@ summary AS (
         md.production_year,
         COUNT(DISTINCT md.person_name) AS actor_count,
         COUNT(DISTINCT md.keyword) AS keyword_count,
-        STRING_AGG(DISTINCT md.person_name, ', ') AS actor_names,
-        STRING_AGG(DISTINCT md.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.person_name))), ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keyword))), ', ') AS keywords
     FROM 
         movie_data md
     GROUP BY 

@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         t.title AS movie_title,
         t.production_year,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ' ORDER BY a.name) AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ' ORDER BY a.name) AS actors,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS rn
     FROM 
         aka_title t
@@ -24,7 +24,7 @@ WITH RankedMovies AS (
         rm.production_year,
         rm.cast_count,
         rm.actors,
-        COALESCE(STRING_AGG(k.keyword, ', '), '') AS keywords
+        COALESCE(arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', '), '') AS keywords
     FROM 
         RankedMovies rm
     LEFT JOIN 

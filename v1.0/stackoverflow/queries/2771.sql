@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score > 10
 ),
 PostComments AS (
@@ -28,7 +28,7 @@ PostComments AS (
 PostCloseReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(crt.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(crt.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

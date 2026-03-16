@@ -82,4 +82,4 @@ WHERE
     TotalPosts > 0
 ORDER BY 
     TotalViews DESC, TotalPosts DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

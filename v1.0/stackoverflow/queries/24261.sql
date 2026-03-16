@@ -6,13 +6,13 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS RankByScore,
         COUNT(v.Id) AS VoteCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsAggregated,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsAggregated,
         MAX(CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.CreationDate END) AS LastClosedDate
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    LEFT JOIN unnest(string_to_array(p.Tags, '>')) AS t(TagName) ON TRUE
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    LEFT JOIN arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON TRUE
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Score, p.OwnerUserId
 ),
 UserBadges AS (
@@ -42,7 +42,7 @@ HighScoringUsers AS (
     INNER JOIN RankedPosts rp ON u.Id = rp.OwnerUserId
     LEFT JOIN UserBadges ub ON u.Id = ub.UserId
     WHERE rp.RankByScore = 1 
-      AND (rp.LastClosedDate IS NULL OR rp.LastClosedDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
+      AND (rp.LastClosedDate IS NULL OR rp.LastClosedDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 )
 SELECT 
     hsu.UserId,

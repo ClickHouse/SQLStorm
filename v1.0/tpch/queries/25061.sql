@@ -17,7 +17,7 @@ WITH RankedSuppliers AS (
 TopSuppliers AS (
     SELECT 
         p_type,
-        STRING_AGG(s_name, ', ') AS supplier_names 
+        arrayStringConcat(groupArray(assumeNotNull(s_name)), ', ') AS supplier_names 
     FROM 
         RankedSuppliers 
     WHERE 

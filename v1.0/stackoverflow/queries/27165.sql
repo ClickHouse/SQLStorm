@@ -21,11 +21,11 @@ WITH RankedPosts AS (
     WHERE 
         p.PostTypeId = 1 
     AND 
-        p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 FilteredTags AS (
     SELECT 
-        DISTINCT UNNEST(string_to_array(Tags, '><')) AS Tag
+        DISTINCT arrayJoin(splitByString('><', Tags)) AS Tag
     FROM 
         RankedPosts
 )

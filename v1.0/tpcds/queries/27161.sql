@@ -22,10 +22,10 @@ CitySummary AS (
         ci.ca_city,
         ci.ca_state,
         COUNT(*) AS customer_count,
-        STRING_AGG(ci.full_name, ', ') AS customer_names,
-        STRING_AGG(ci.cd_gender, ', ') AS genders,
-        STRING_AGG(ci.cd_marital_status, ', ') AS marital_statuses,
-        STRING_AGG(ci.cd_education_status, ', ') AS education_statuses
+        arrayStringConcat(groupArray(assumeNotNull(ci.full_name)), ', ') AS customer_names,
+        arrayStringConcat(groupArray(assumeNotNull(ci.cd_gender)), ', ') AS genders,
+        arrayStringConcat(groupArray(assumeNotNull(ci.cd_marital_status)), ', ') AS marital_statuses,
+        arrayStringConcat(groupArray(assumeNotNull(ci.cd_education_status)), ', ') AS education_statuses
     FROM 
         CustomerInfo ci
     GROUP BY 

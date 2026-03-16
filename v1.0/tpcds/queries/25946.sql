@@ -41,7 +41,7 @@ SELECT
     g.cd_gender,
     g.gender_net_profit,
     g.gender_order_count,
-    STRING_AGG(CONCAT('Customer ID: ', c.c_customer_sk, ', Full Name: ', c.full_name), '; ') AS customer_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT('Customer ID: ', c.c_customer_sk, ', Full Name: ', c.full_name))), '; ') AS customer_details
 FROM 
     GenderProfitSummary g
     JOIN CustomerDetails c ON g.cd_gender = c.cd_gender

@@ -6,7 +6,7 @@ SELECT
     o.o_orderkey, 
     o.o_orderdate, 
     o.o_totalprice, 
-    STRING_AGG(l.l_comment, '; ') AS line_comments
+    arrayStringConcat(groupArray(assumeNotNull(l.l_comment)), '; ') AS line_comments
 FROM 
     part p
 JOIN 

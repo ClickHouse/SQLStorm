@@ -4,7 +4,7 @@ WITH UserStats AS (
         AVG(Reputation) AS AverageReputation,
         MAX(Reputation) AS MaxReputation,
         MIN(Reputation) AS MinReputation,
-        COUNT(CASE WHEN LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR' THEN 1 END) AS ActiveUsers
+        COUNT(CASE WHEN LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 1 END) AS ActiveUsers
     FROM 
         Users
 ),

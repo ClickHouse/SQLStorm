@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS total_actors,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         SUM(CASE WHEN c.note IS NOT NULL THEN 1 ELSE 0 END) AS noted_cast
     FROM 
         aka_title t

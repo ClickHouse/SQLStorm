@@ -7,13 +7,13 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.ViewCount DESC) AS RowNum,
-        ARRAY_AGG(t.TagName) AS TagsArray
+        groupArray(assumeNotNull(t.TagName)) AS TagsArray
     FROM 
         Posts p
     LEFT JOIN 
         Tags t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount
 ),
@@ -25,7 +25,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         v.PostId
 ),
@@ -59,7 +59,7 @@ RankedMetrics AS (
 SELECT 
     rm.*,
     (SELECT COUNT(*) FROM PostHistory ph WHERE ph.PostId = rm.PostId AND ph.CreationDate > rm.CreationDate) AS PostHistoryCount,
-    (SELECT STRING_AGG(DISTINCT CONCAT('Tag: ', tag), '; ') FROM UNNEST(rm.TagsArray) AS tag) AS FormattedTags,
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Tag: ', tag)))), '; ') FROM arrayJoin(rm.TagsArray) AS tag) AS FormattedTags,
     CASE 
         WHEN u.LastAccessDate IS NULL OR u.LastAccessDate < rm.CreationDate THEN 'Inactive'
         ELSE 'Active'

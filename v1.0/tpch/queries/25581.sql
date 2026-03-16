@@ -29,7 +29,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_name LIKE '%rubber%' AND 
-    o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
+    o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
 GROUP BY 
     p.p_name, s.s_name, c.c_name, c.c_address, n.n_name, r.r_name, p.p_comment
 ORDER BY 

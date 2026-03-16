@@ -23,7 +23,7 @@ PartSupplierDetails AS (
         (SELECT SUM(l.l_extendedprice) 
          FROM lineitem l 
          WHERE l.l_partkey = ps.ps_partkey 
-           AND l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31') AS total_sales_1996
+           AND l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')) AS total_sales_1996
     FROM 
         partsupp ps
 ), 
@@ -39,7 +39,7 @@ CustomerOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     GROUP BY 
         o.o_orderkey, o.o_custkey, o.o_orderstatus
 ), 
@@ -82,7 +82,7 @@ FROM
 LEFT JOIN 
     SupplierStats ss ON ss.total_supply_cost > 1000
 LEFT JOIN 
-    NationRegion ns ON cs.o_custkey = (SELECT c.c_custkey FROM customer c WHERE c.c_nationkey = ns.n_nationkey FETCH FIRST 1 ROW ONLY)
+    NationRegion ns ON cs.o_custkey = (SELECT c.c_custkey FROM customer c WHERE c.c_nationkey = ns.n_nationkey LIMIT 1)
 WHERE 
     cs.o_orderstatus = 'O'
 AND (cs.total_price IS NOT NULL OR ss.total_supply_cost IS NULL)

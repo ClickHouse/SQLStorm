@@ -41,7 +41,7 @@ benchmark AS (
         si.total_sales,
         si.total_orders
     FROM customer_info ci
-    JOIN date_info di ON di.d_year BETWEEN EXTRACT(YEAR FROM DATE '2002-10-01') - 3 AND EXTRACT(YEAR FROM DATE '2002-10-01')
+    JOIN date_info di ON di.d_year BETWEEN toYear(toDate('2002-10-01')) - 3 AND toYear(toDate('2002-10-01'))
     LEFT JOIN sales_info si ON ci.c_customer_sk = si.ws_bill_customer_sk
 )
 SELECT 

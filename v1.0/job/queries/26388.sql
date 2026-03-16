@@ -4,9 +4,9 @@ WITH movie_rank AS (
         mt.id AS movie_id,
         mt.title,
         mt.production_year,
-        ARRAY_AGG(DISTINCT ak.name ORDER BY ak.name) AS aka_names,
+        arrayDistinct(groupArray(assumeNotNull(ak.name ORDER BY ak.name))) AS aka_names,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies,
         COUNT(DISTINCT k.keyword) AS keyword_count
     FROM 
         aka_title mt
@@ -58,4 +58,4 @@ WHERE
     rm.cast_count >= 5
 ORDER BY 
     rm.movie_rank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

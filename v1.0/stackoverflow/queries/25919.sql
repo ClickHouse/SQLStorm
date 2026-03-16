@@ -4,7 +4,7 @@ WITH UserBadges AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -19,7 +19,7 @@ PostAnalysis AS (
         p.ViewCount,
         COALESCE(p.AnswerCount, 0) AS AnswerCount,
         COALESCE(p.CommentCount, 0) AS CommentCount,
-        STRING_AGG(DISTINCT SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), ', ') AS UniqueTags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))), ', ') AS UniqueTags
     FROM 
         Posts p
     GROUP BY 

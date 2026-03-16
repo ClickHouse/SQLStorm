@@ -18,7 +18,7 @@ TopSuppliers AS (
         SELECT s.s_suppkey, s.s_name
         FROM supplier s
         ORDER BY s.s_acctbal DESC
-        FETCH FIRST 5 ROWS ONLY
+        LIMIT 5
     ) s ON sp.s_suppkey = s.s_suppkey
 ),
 TopCustomers AS (
@@ -28,7 +28,7 @@ TopCustomers AS (
         SELECT c.c_custkey
         FROM customer c
         ORDER BY c.c_acctbal DESC
-        FETCH FIRST 5 ROWS ONLY
+        LIMIT 5
     ) top_c ON c.c_custkey = top_c.c_custkey
 )
 SELECT tc.c_name AS top_customer, ts.sc_name AS top_supplier, ts.product_count

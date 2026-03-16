@@ -14,7 +14,7 @@ PartInfo AS (
 LineItemAnalytics AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
            COUNT(DISTINCT l.l_partkey) AS unique_parts,
-           STRING_AGG(DISTINCT p.full_description, '; ') AS all_parts
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.full_description))), '; ') AS all_parts
     FROM lineitem l
     JOIN PartInfo p ON l.l_partkey = p.p_partkey
     GROUP BY l.l_orderkey

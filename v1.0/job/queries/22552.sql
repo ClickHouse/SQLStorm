@@ -16,7 +16,7 @@ cast_details AS (
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS total_cast,
         AVG(CASE WHEN CHAR_LENGTH(a.name) > 0 THEN 1 ELSE 0 END) AS avg_name_length,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names
     FROM 
         cast_info c
     JOIN 
@@ -47,7 +47,7 @@ keyword_stats AS (
     SELECT 
         mk.movie_id,
         COUNT(DISTINCT k.keyword) AS unique_keywords,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keyword_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keyword_list
     FROM 
         movie_keyword mk
     JOIN 

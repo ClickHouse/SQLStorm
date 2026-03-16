@@ -49,7 +49,7 @@ info_summary AS (
         m.title,
         COUNT(DISTINCT mc.company_id) AS production_companies,
         COUNT(DISTINCT km.keyword) AS associated_keywords,
-        STRING_AGG(DISTINCT p.info, ', ') AS person_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.info))), ', ') AS person_info
     FROM 
         aka_title m
     LEFT JOIN 

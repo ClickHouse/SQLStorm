@@ -68,7 +68,7 @@ SELECT s.s_store_name,
         WHERE si.total_sales > s.total_sales) AS higher_sales_count
 FROM store_info s 
 JOIN date_info d 
-ON d.d_month_seq = EXTRACT(MONTH FROM cast('2002-10-01' as date))
+ON d.d_month_seq = toMonth(cast('2002-10-01' as date))
 WHERE s.total_sales > (SELECT AVG(total_sales) FROM store_info)
   AND d.d_year = (SELECT MAX(d_year) FROM date_info)
 ORDER BY sales_rank, total_sales DESC 

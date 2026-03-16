@@ -4,7 +4,7 @@ SELECT
     N.n_name AS Nation,
     COUNT(DISTINCT C.c_custkey) AS Unique_Customers,
     SUM(L.l_extendedprice * (1 - L.l_discount)) AS Total_Sales,
-    STRING_AGG(DISTINCT P.p_name, ', ') AS Part_Names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(P.p_name))), ', ') AS Part_Names,
     LEFT(S.s_comment, 30) || '...' AS Short_Comment
 FROM 
     supplier S
@@ -22,8 +22,8 @@ JOIN
     nation N ON S.s_nationkey = N.n_nationkey
 WHERE 
     P.p_brand LIKE 'Brand#%'
-    AND L.l_shipdate >= DATE '1997-01-01'
-    AND L.l_shipdate < DATE '1998-01-01'
+    AND L.l_shipdate >= toDate('1997-01-01')
+    AND L.l_shipdate < toDate('1998-01-01')
 GROUP BY 
     S.s_name, N.n_name, S.s_comment
 ORDER BY 

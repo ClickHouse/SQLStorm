@@ -70,8 +70,8 @@ FinalOutput AS (
 SELECT
     title,
     production_year,
-    STRING_AGG(DISTINCT keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT company_name || ' (' || company_type || ')', '; ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name || ' (' || company_type || ')'))), '; ') AS companies,
     cast_count
 FROM
     FinalOutput

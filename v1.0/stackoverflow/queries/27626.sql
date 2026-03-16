@@ -8,7 +8,7 @@ WITH StringStats AS (
         U.DisplayName AS OwnerDisplayName,
         LENGTH(P.Body) AS BodyLength,
         LENGTH(P.Title) AS TitleLength,
-        CARDINALITY(string_to_array(SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2), '><')) AS TagCount,
+        CARDINALITY(splitByString('><', SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2))) AS TagCount,
         COUNT(DISTINCT C.Id) AS CommentCount,
         COUNT(DISTINCT V.Id) AS VoteCount
     FROM 
@@ -20,7 +20,7 @@ WITH StringStats AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '1 year'
+        P.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title, P.Body, P.CreationDate, U.DisplayName
 ),

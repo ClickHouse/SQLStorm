@@ -7,7 +7,7 @@ WITH RecentPosts AS (
         p.Body,
         u.DisplayName AS Owner,
         COUNT(a.Id) AS AnswerCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     JOIN 
@@ -15,7 +15,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
     LEFT JOIN 
-        unnest(string_to_array(p.Tags, '>')) AS tag ON true
+        arrayJoin(splitByString('>', p.Tags)) AS tag ON true
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
     WHERE 

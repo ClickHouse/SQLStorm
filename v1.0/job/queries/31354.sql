@@ -42,7 +42,7 @@ movies_aggregated AS (
         mh.title,
         mh.production_year,
         COUNT(cd.actor_name) AS total_actors,
-        STRING_AGG(cd.actor_name, ', ') AS actor_list
+        arrayStringConcat(groupArray(assumeNotNull(cd.actor_name)), ', ') AS actor_list
     FROM 
         movie_hierarchy mh
     LEFT JOIN 

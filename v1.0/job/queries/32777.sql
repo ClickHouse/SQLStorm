@@ -29,7 +29,7 @@ SELECT
     mt.production_year,
     COALESCE(ci.nr_order, 0) AS cast_order,
     ROW_NUMBER() OVER (PARTITION BY mt.id ORDER BY COALESCE(ci.nr_order, 999)) AS movie_rank,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS movie_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS movie_keywords,
     CASE 
         WHEN mt.production_year < 2010 THEN 'Old'
         ELSE 'New'

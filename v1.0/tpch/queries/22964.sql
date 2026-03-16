@@ -33,7 +33,7 @@ SELECT
     rs.r_name,
     COALESCE(ROUND(AVG(os.total_revenue), 2), 0) AS avg_order_revenue,
     MAX(os.order_rank) AS max_order_rank,
-    STRING_AGG(s.s_name, ', ') AS orphaned_suppliers,
+    arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS orphaned_suppliers,
     COUNT(DISTINCT CASE WHEN os.o_orderstatus = 'F' THEN os.o_orderkey END) AS finished_orders,
     SUM(CASE 
             WHEN s.s_acctbal IS NOT NULL THEN s.s_acctbal

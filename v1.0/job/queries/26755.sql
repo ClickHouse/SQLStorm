@@ -3,7 +3,7 @@ WITH movie_rankings AS (
         a.title AS movie_title,
         a.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
         k.keyword AS genre
     FROM 
         aka_title a

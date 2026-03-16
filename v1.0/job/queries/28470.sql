@@ -4,7 +4,7 @@ WITH ranked_movies AS (
         t.title AS movie_title,
         t.production_year,
         k.keyword AS movie_keyword,
-        STRING_AGG(a.name, ', ') AS cast_names,
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS cast_names,
         t.id AS movie_id
     FROM 
         title t

@@ -35,7 +35,7 @@ PostHistoryDetails AS (
         ph.PostId,
         COUNT(DISTINCT ph.Id) AS EditCount,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
     FROM 
         PostHistory ph
     JOIN 
@@ -68,4 +68,4 @@ WHERE
     pe.ViewCount > (SELECT AVG(ViewCount) FROM Posts) OR pe.Score > (SELECT AVG(Score) FROM Posts)
 ORDER BY 
     pe.EngagementScore DESC, pe.CreationDate DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

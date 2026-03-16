@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - interval '1 year'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ),
@@ -55,4 +55,4 @@ WHERE
 ORDER BY 
     fp.CommentCount DESC, 
     fp.UpVoteCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

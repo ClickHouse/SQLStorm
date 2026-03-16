@@ -28,7 +28,7 @@ person_with_roles AS (
 filtered_movies AS (
     SELECT mh.movie_id, mh.title, mh.production_year, 
            COUNT(mkd.keyword) AS keyword_count,
-           STRING_AGG(DISTINCT pwr.actor_name, ', ') AS actors_list,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pwr.actor_name))), ', ') AS actors_list,
            MAX(pwr.actor_rank) AS max_actor_rank
     FROM movie_hierarchy mh
     LEFT JOIN movie_key_data mkd ON mh.movie_id = mkd.movie_id

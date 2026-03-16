@@ -24,7 +24,7 @@ order_summary AS (
            COUNT(DISTINCT l.l_partkey) AS unique_parts
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
+    WHERE l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
     GROUP BY o.o_orderkey
 ),
 nation_sales AS (

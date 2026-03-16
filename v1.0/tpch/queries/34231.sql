@@ -38,7 +38,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS number_of_orders,
     SUM(o.o_totalprice) AS total_revenue,
     AVG(o.o_totalprice) AS average_order_value,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     r.price_category
 FROM part p
 JOIN partsupp ps ON p.p_partkey = ps.ps_partkey

@@ -33,7 +33,7 @@ RecentVotes AS (
     FROM 
         Votes V
     WHERE 
-        V.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        V.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     GROUP BY 
         V.PostId
 )

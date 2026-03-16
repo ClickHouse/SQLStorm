@@ -62,4 +62,4 @@ WHERE
     TC.total_sales_amt > 1000
 ORDER BY 
     TC.total_sales_amt DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

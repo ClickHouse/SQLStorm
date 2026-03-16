@@ -70,4 +70,4 @@ ON
     shipping_modes.sm_ship_mode_id IS NOT NULL
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

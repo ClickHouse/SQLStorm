@@ -26,7 +26,7 @@ SELECT
     c.c_name AS customer_name,
     SUBSTRING(c.c_address FROM 1 FOR 15) AS short_address,
     r.r_name AS region_name,
-    STRING_AGG(DISTINCT st.s_name, ', ') AS suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(st.s_name))), ', ') AS suppliers
 FROM 
     customer c
 JOIN 

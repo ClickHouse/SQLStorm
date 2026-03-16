@@ -37,7 +37,7 @@ SELECT
     m.title,
     m.production_year,
     COUNT(DISTINCT fc.actor_name) AS total_cast,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     MIN(m.title_rank) AS min_title_rank
 FROM 
     RankedMovies m

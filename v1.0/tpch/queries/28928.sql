@@ -8,7 +8,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(o.o_totalprice) AS total_sales,
     AVG(l.l_quantity) AS average_quantity,
-    STRING_AGG(DISTINCT p.p_comment, ', ') AS all_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), ', ') AS all_comments
 FROM 
     part p
 JOIN 
@@ -27,7 +27,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     p.p_size BETWEEN 10 AND 50
-    AND l.l_shipdate >= DATE '1997-01-01'
+    AND l.l_shipdate >= toDate('1997-01-01')
     AND n.n_name LIKE 'A%'
 GROUP BY 
     p.p_partkey, p.p_name, p.p_mfgr, p.p_brand, r.r_name, n.n_name, s.s_name

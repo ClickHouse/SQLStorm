@@ -10,9 +10,9 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_profit) AS total_profit,
     AVG(ws.ws_sales_price) AS avg_item_price,
-    STRING_AGG(DISTINCT CONCAT(i.i_product_name, ' (', i.i_item_id, ')'), ', ') AS purchased_items,
-    DATE_PART('year', d.d_date) AS purchase_year,
-    DATE_PART('month', d.d_date) AS purchase_month
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(i.i_product_name, ' (', i.i_item_id, ')')))), ', ') AS purchased_items,
+    datePart('year', d.d_date) AS purchase_year,
+    datePart('month', d.d_date) AS purchase_month
 FROM 
     customer c
 JOIN 

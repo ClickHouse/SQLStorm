@@ -25,8 +25,8 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_retailprice BETWEEN 10.00 AND 100.00
-    AND o.o_orderdate >= DATE '1996-01-01'
-    AND o.o_orderdate < DATE '1997-01-01'
+    AND o.o_orderdate >= toDate('1996-01-01')
+    AND o.o_orderdate < toDate('1997-01-01')
 GROUP BY 
     s.s_name, p.p_name, n.n_name, r.r_name
 HAVING 

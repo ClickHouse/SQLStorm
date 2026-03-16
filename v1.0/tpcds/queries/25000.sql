@@ -46,7 +46,7 @@ SELECT
     AVG(cd_purchase_estimate) AS Average_Purchase_Estimate,
     MIN(Full_City_State_Zip) AS Lexical_Min_City_State_Zip,
     MAX(Full_City_State_Zip) AS Lexical_Max_City_State_Zip,
-    STRING_AGG(Full_Street_Address, '; ') AS All_Full_Street_Addresses
+    arrayStringConcat(groupArray(assumeNotNull(Full_Street_Address)), '; ') AS All_Full_Street_Addresses
 FROM 
     JoinedData
 WHERE 

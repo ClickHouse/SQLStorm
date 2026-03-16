@@ -27,7 +27,7 @@ high_cast_movies AS (
 keyword_movies AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mt
     JOIN 

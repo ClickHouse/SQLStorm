@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, u.DisplayName
 ),
@@ -63,7 +63,7 @@ SELECT
     ad.AvgScore,
     ad.ClosedCount,
     COALESCE(
-        (SELECT COUNT(*) FROM Posts p WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month' AND p.Score IS NULL), 
+        (SELECT COUNT(*) FROM Posts p WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH AND p.Score IS NULL), 
         0
     ) AS NewZeroScorePosts
 FROM 

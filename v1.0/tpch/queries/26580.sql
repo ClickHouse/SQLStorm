@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS unique_suppliers,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT SUBSTRING(s.s_name FROM 1 FOR 10), ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(s.s_name FROM 1 FOR 10)))), ', ') AS supplier_names,
     ROW_NUMBER() OVER (ORDER BY SUM(ps.ps_supplycost) DESC) AS rank_by_cost
 FROM 
     part p

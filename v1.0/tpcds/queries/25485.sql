@@ -16,7 +16,7 @@ WITH ProcessedAddresses AS (
         ca_state, 
         COUNT(*) AS address_count, 
         AVG(street_name_length) AS avg_street_name_length, 
-        STRING_AGG(DISTINCT city_upper, ', ') AS unique_cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(city_upper))), ', ') AS unique_cities
     FROM 
         ProcessedAddresses
     GROUP BY 

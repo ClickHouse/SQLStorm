@@ -40,7 +40,7 @@ SELECT
     ca_city AS "City",
     ca_state AS "State",
     COUNT(*) AS "Number of Top Customers",
-    STRING_AGG(full_name, ', ') AS "Top Customer Names"
+    arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS "Top Customer Names"
 FROM 
     TopCustomers
 GROUP BY 

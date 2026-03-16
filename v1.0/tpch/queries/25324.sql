@@ -7,8 +7,8 @@ SELECT
     SUM(l.l_extendedprice) AS total_extended_price,
     AVG(l.l_discount) AS average_discount,
     MAX(l.l_shipdate) AS latest_ship_date,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
-    STRING_AGG(DISTINCT p.p_comment, '|') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '|') AS part_comments
 FROM 
     part p
 JOIN 
@@ -28,7 +28,7 @@ JOIN
 WHERE 
     p.p_size > 10 AND
     s.s_acctbal > 500 AND
-    o.o_orderdate >= DATE '1997-01-01' AND
+    o.o_orderdate >= toDate('1997-01-01') AND
     o.o_orderstatus = 'O'
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey

@@ -27,7 +27,7 @@ ActiveUsers AS (
         US.BadgesCount
     FROM Users U
     JOIN UserStats US ON U.Id = US.UserId
-    WHERE U.LastAccessDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' AND US.PostsCount > 5
+    WHERE U.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND US.PostsCount > 5
 ),
 TopUsers AS (
     SELECT 

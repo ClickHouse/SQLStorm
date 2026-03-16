@@ -33,7 +33,7 @@ PopularPosts AS (
     WHERE 
         p.Score > 10
     AND 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount
 ),

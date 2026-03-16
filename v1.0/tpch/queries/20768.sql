@@ -73,4 +73,4 @@ WHERE
 ORDER BY 
     rp.p_retailprice ASC, 
     sd.s_name DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

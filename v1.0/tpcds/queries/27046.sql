@@ -32,7 +32,7 @@ SELECT
     ca_city,
     cd_gender,
     COUNT(*) AS customer_count,
-    STRING_AGG(full_name, ', ') AS top_customers_list
+    arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS top_customers_list
 FROM 
     TopCustomers
 GROUP BY 

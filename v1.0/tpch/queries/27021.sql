@@ -10,7 +10,7 @@ SELECT
     MAX(CASE 
         WHEN c.c_mktsegment = 'AUTOMOBILE' THEN l.l_discount 
         END) AS max_discount_automobile,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     CONCAT(p.p_name, ' (', p.p_mfgr, ')') AS part_description
 FROM 
     part p

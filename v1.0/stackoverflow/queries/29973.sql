@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts
     WHERE PostTypeId = 1 
@@ -35,7 +35,7 @@ UserTopTags AS (
         TT.PostCount
     FROM UserStats U
     JOIN Posts P ON U.UserId = P.OwnerUserId
-    JOIN TagCounts TC ON TC.TagName = ANY(string_to_array(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2), '><'))
+    JOIN TagCounts TC ON TC.TagName = ANY(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2)))
     JOIN TopTags TT ON TC.TagName = TT.TagName
     WHERE U.TotalPosts > 0
 ),
@@ -47,7 +47,7 @@ FinalResult AS (
         U.Answers,
         U.Wikis,
         U.AvgReputation,
-        ARRAY_AGG(DISTINCT UTT.TagName) AS TopTags
+        arrayDistinct(groupArray(assumeNotNull(UTT.TagName))) AS TopTags
     FROM UserStats U
     LEFT JOIN UserTopTags UTT ON U.UserId = UTT.UserId
     GROUP BY U.UserId, U.DisplayName, U.TotalPosts, U.Questions, U.Answers, U.Wikis, U.AvgReputation

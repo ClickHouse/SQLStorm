@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         t.id AS title_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT a.name) AS aka_names,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS aka_names,
         COUNT(DISTINCT cc.person_id) AS cast_count,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(DISTINCT cc.person_id) DESC) AS popularity_rank
     FROM 
@@ -48,7 +48,7 @@ SELECT
     md.production_year,
     md.cast_count,
     md.aka_names,
-    STRING_AGG(DISTINCT CONCAT(md.company_name, ' (', md.company_type, ')'), ', ') AS production_companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(md.company_name, ' (', md.company_type, ')')))), ', ') AS production_companies
 FROM 
     MovieDetails md
 WHERE 

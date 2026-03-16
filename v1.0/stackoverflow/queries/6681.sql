@@ -14,16 +14,16 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= '2023-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        P.CreationDate >= CAST('2023-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
 ),
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        STRING_AGG(T.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM 
         Posts P
     JOIN 
-        UNNEST(string_to_array(P.Tags, '<>')) AS T(TagName) ON T.TagName IS NOT NULL
+        arrayJoin(splitByString('<>', P.Tags)) AS T(TagName) ON T.TagName IS NOT NULL
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 

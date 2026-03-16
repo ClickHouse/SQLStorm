@@ -2,8 +2,8 @@
 WITH String_Aggregation AS (
     SELECT 
         p.p_partkey,
-        STRING_AGG(DISTINCT p.p_name, '; ') AS aggregated_names,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), '; ') AS aggregated_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
         COUNT(DISTINCT c.c_custkey) AS unique_customers
     FROM 
         part p

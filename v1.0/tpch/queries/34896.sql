@@ -16,7 +16,7 @@ CustomerOrders AS (
     WHERE o.o_totalprice > (
         SELECT AVG(o2.o_totalprice) 
         FROM orders o2 
-        WHERE o2.o_orderdate >= DATE '1997-01-01'
+        WHERE o2.o_orderdate >= toDate('1997-01-01')
     )
 ),
 OrderLineItems AS (

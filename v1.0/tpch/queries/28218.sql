@@ -49,7 +49,7 @@ SELECT
     SUM(oli.l_quantity) AS total_quantity,
     SUM(oli.l_extendedprice) AS total_sales,
     AVG(oli.l_discount) AS avg_discount,
-    STRING_AGG(oli.order_line_info, ', ') AS detailed_order_lines
+    arrayStringConcat(groupArray(assumeNotNull(oli.order_line_info)), ', ') AS detailed_order_lines
 FROM 
     SupplierDetails sd
 JOIN 

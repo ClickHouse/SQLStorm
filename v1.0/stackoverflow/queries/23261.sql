@@ -3,7 +3,7 @@ WITH UserBadges AS (
     SELECT 
         u.Id AS UserId, 
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -27,7 +27,7 @@ PostStatistics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.OwnerUserId
 ),
@@ -63,15 +63,15 @@ SELECT
         WHEN up.TotalBadges > 0 THEN 'Badges: ' || up.TotalBadges 
         ELSE 'No Badges' 
     END AS BadgeSummary,
-    STRING_AGG(DISTINCT tag.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag.TagName))), ', ') AS Tags
 FROM 
     UserPostStats up
 LEFT JOIN 
     Posts p ON up.PostId = p.Id
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(p.Tags, '><')) AS TagName
+            arrayJoin(splitByString('><', p.Tags)) AS TagName
     ) AS tag ON TRUE
 GROUP BY 
     up.DisplayName, up.PostId, up.Score, up.ViewCount, up.CommentCount, up.UpVotes, up.DownVotes, up.TotalBadges

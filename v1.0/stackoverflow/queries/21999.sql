@@ -16,17 +16,17 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
         PH.PostId, 
         PH.CreationDate,
-        STRING_AGG(CT.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CT.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 
-        CloseReasonTypes CT ON PH.Comment::INTEGER = CT.Id
+        CloseReasonTypes CT ON CAST(PH.Comment AS INTEGER) = CT.Id
     WHERE 
         PH.PostHistoryTypeId = 10 
     GROUP BY 
@@ -42,7 +42,7 @@ ActiveBadges AS (
     JOIN 
         Users U ON B.UserId = U.Id
     WHERE 
-        B.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        B.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         U.Id, B.Name
 ),

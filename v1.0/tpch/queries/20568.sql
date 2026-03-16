@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL '2 years')
+        o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL 2 YEAR)
 ),
 HighValueCustomers AS (
     SELECT 

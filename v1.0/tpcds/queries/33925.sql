@@ -56,7 +56,7 @@ SELECT
     MAX(bh.total_net_profit) AS max_profit,
     SUM(bh.total_orders) AS total_orders,
     COUNT(DISTINCT c.c_customer_id) AS unique_customers,
-    STRING_AGG(DISTINCT c.c_email_address, ', ') AS customer_emails
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_email_address))), ', ') AS customer_emails
 FROM 
     BestSellingItems bh
 LEFT JOIN 

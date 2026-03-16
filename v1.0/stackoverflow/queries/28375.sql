@@ -6,7 +6,7 @@ WITH TagCount AS (
         SUM(Posts.ViewCount) AS TotalViews,
         SUM(Posts.AnswerCount) AS TotalAnswers,
         AVG(Users.Reputation) AS AvgReputation,
-        STRING_AGG(DISTINCT Users.DisplayName, ', ') AS ActiveUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Users.DisplayName))), ', ') AS ActiveUsers
     FROM 
         Posts
     JOIN 
@@ -62,7 +62,7 @@ FROM
     TopTags T
 LEFT JOIN 
     ClosedPostDetails CP ON T.TagName IN (
-        SELECT UNNEST(STRING_TO_ARRAY(Posts.Tags, '>')) 
+        SELECT arrayJoin(splitByString('>', Posts.Tags)) 
         FROM Posts 
         WHERE Posts.PostTypeId = 1
     )

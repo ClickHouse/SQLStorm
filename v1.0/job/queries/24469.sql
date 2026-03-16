@@ -8,7 +8,7 @@ WITH RankedMovies AS (
     FROM 
         aka_title t
     WHERE 
-        EXTRACT(YEAR FROM DATE '2024-10-01') - t.production_year <= 10
+        toYear(toDate('2024-10-01')) - t.production_year <= 10
 ),
 CastSummary AS (
     SELECT 
@@ -27,7 +27,7 @@ CastSummary AS (
 MovieCompanies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT co.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS company_names,
         COUNT(DISTINCT co.id) AS company_count
     FROM 
         movie_companies mc

@@ -38,7 +38,7 @@ MovieInfo AS (
     SELECT 
         mt.title,
         mt.production_year,
-        ARRAY_AGG(DISTINCT ak.name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actors,
         COUNT(DISTINCT mi.info) AS info_count
     FROM 
         aka_title mt

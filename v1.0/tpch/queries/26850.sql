@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price_after_discount,
     COUNT(DISTINCT o.o_orderkey) AS number_of_orders,
-    STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS market_segments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS market_segments,
     CONCAT(r.r_name, ': ', r.r_comment) AS region_with_comment
 FROM 
     part p

@@ -18,7 +18,7 @@ WITH RankedMovies AS (
 CastWithRoles AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) AS actors,
         COUNT(c.person_id) AS num_actors,
         SUM(CASE WHEN c.role_id IS NOT NULL THEN 1 ELSE 0 END) AS named_roles,
         COUNT(DISTINCT c.role_id) AS unique_roles

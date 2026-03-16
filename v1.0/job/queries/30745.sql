@@ -32,7 +32,7 @@ SELECT
     COUNT(cc.person_id) AS total_cast,
     SUM(CASE WHEN cc.note IS NOT NULL THEN 1 ELSE 0 END) AS cast_with_notes,
     AVG(CASE WHEN p.gender = 'F' THEN 1 ELSE 0 END) * 100 AS female_percentage,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     aka_name a
 JOIN 

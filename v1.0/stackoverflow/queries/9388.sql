@@ -8,7 +8,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
         SUM(p.ViewCount) AS TotalViews,
         SUM(p.Score) AS TotalScore,
-        AVG(COALESCE(ROUND(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) / 3600.0), 0)) AS AverageAgeHours
+        AVG(COALESCE(ROUND(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 3600.0), 0)) AS AverageAgeHours
     FROM 
         Users u
     LEFT JOIN 

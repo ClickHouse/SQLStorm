@@ -54,7 +54,7 @@ SELECT
     cd.movie_id,
     cd.movie_title,
     cd.actor_name,
-    STRING_AGG(cd.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(cd.keyword)), ', ') AS keywords
 FROM 
     CompositeData cd
 GROUP BY 

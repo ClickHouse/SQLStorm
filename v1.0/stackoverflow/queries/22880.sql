@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 years'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
 ),
 UserReputation AS (
     SELECT 
@@ -55,13 +55,13 @@ PopularPosts AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT CONCAT(pt.Name, ': ', ph.Comment), '; ') AS HistoryComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(pt.Name, ': ', ph.Comment)))), '; ') AS HistoryComments
     FROM 
         PostHistory ph
     JOIN 
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND 
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND 
         ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY 
         ph.PostId

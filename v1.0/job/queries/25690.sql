@@ -29,10 +29,10 @@ WITH movie_data AS (
 SELECT 
     movie_title,
     production_year,
-    STRING_AGG(DISTINCT actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT role, ', ') AS roles,
-    STRING_AGG(DISTINCT production_company, ', ') AS production_companies,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(role))), ', ') AS roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(production_company))), ', ') AS production_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords
 FROM 
     movie_data
 GROUP BY 

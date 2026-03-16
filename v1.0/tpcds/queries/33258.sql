@@ -29,4 +29,4 @@ WHERE ca.ca_city IS NOT NULL
 GROUP BY ca.ca_city
 HAVING COUNT(DISTINCT c.c_customer_sk) > 10
 ORDER BY total_customers DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

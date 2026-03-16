@@ -41,7 +41,7 @@ SELECT
     fb.ca_city,
     COUNT(*) AS customer_count,
     MAX(fb.cd_education_status) AS highest_education,
-    STRING_AGG(fb.full_name, ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(fb.full_name)), ', ') AS customer_names
 FROM 
     FinalBenchmark fb
 GROUP BY 

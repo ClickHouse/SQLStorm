@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
         COALESCE(p.AcceptedAnswerId, 0) AS HasAcceptedAnswer,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM 
         Posts p
@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS t (TagName) ON TRUE
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS t (TagName) ON TRUE
     WHERE 
         p.PostTypeId IN (1, 2) 
     GROUP BY 
@@ -47,7 +47,7 @@ PostHistorySummary AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId
 )

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (DATE '2024-10-01' - INTERVAL '2 years')
+        p.CreationDate >= (toDate('2024-10-01') - INTERVAL 2 YEAR)
 ),
 UserVoteSummary AS (
     SELECT 
@@ -65,10 +65,10 @@ SELECT
     SUM(u.UpVotesCount) AS TotalUpVotes,
     SUM(u.DownVotesCount) AS TotalDownVotes,
     COUNT(vwu.VoterName) AS TotalVoters,
-    ARRAY_AGG(DISTINCT vwu.VoterName) AS VoterNames,
-    STRING_AGG(DISTINCT CASE WHEN phd.PostHistoryTypeId = 10 
+    arrayDistinct(groupArray(assumeNotNull(vwu.VoterName))) AS VoterNames,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN phd.PostHistoryTypeId = 10 
                               THEN phd.CloseReasonName 
-                              ELSE NULL END, ', ') AS CloseReasons
+                              ELSE NULL END))), ', ') AS CloseReasons
 FROM 
     RankedPosts rp
 LEFT JOIN 

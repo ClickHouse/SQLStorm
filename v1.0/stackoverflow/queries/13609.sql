@@ -8,7 +8,7 @@ SELECT
     COUNT(v.Id) AS VoteCount,
     COUNT(c.Id) AS CommentCount,
     COUNT(b.Id) AS BadgeCount,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
     u.Reputation,
     u.DisplayName AS OwnerDisplayName,
     u.Location
@@ -23,11 +23,11 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON u.Id = b.UserId
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag_name ON true
+    arrayJoin(splitByString(',', p.Tags)) AS tag_name ON true
 LEFT JOIN 
     Tags t ON t.TagName = tag_name
 WHERE 
-    p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, 
     u.Reputation, u.DisplayName, u.Location

@@ -2,7 +2,7 @@ SELECT
     p.p_name, 
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     AVG(ps.ps_supplycost) AS avg_supplycost,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     RANK() OVER (ORDER BY AVG(ps.ps_supplycost) DESC) AS supply_rank
 FROM 
     part p

@@ -57,7 +57,7 @@ JOIN
                 WHERE 
                     c2.c_nationkey = c.c_nationkey
             )
-        FETCH FIRST 1 ROWS ONLY
+        LIMIT 1
     )
 WHERE 
     p.p_retailprice > 50.00 

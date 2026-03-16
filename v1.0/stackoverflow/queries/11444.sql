@@ -17,14 +17,14 @@ WITH Benchmark AS (
     JOIN 
         Users U ON PH.UserId = U.Id
     WHERE 
-        PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 )
 SELECT 
     PostType,
     COUNT(*) AS TotalHistoryEntries,
     MIN(HistoryCreationDate) AS FirstEntryDate,
     MAX(HistoryCreationDate) AS LastEntryDate,
-    AVG(EXTRACT(EPOCH FROM HistoryCreationDate - PostCreationDate)) AS AvgTimeToHistoryEntry
+    AVG(toUnixTimestamp(HistoryCreationDate - PostCreationDate)) AS AvgTimeToHistoryEntry
 FROM 
     Benchmark
 GROUP BY 

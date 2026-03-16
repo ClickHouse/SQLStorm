@@ -28,7 +28,7 @@ MovieDetails AS (
         t.title,
         COALESCE(mg.name, 'Unknown') AS genre,
         t.production_year,
-        (SELECT STRING_AGG(DISTINCT k.keyword, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
          FROM movie_keyword mk 
          JOIN keyword k ON mk.keyword_id = k.id 
          WHERE mk.movie_id = t.id) AS keywords

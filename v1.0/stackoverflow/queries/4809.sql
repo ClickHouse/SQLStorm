@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),

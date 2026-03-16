@@ -4,8 +4,8 @@ WITH MovieInfo AS (
         m.id AS movie_id, 
         m.title, 
         m.production_year, 
-        STRING_AGG(DISTINCT k.keyword, ',') AS keywords,
-        STRING_AGG(DISTINCT c.name, ',') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ',') AS companies
     FROM 
         title m
     LEFT JOIN 
@@ -25,7 +25,7 @@ PersonInfo AS (
     SELECT 
         a.person_id, 
         a.name AS actor_name, 
-        STRING_AGG(DISTINCT r.role, ',') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ',') AS roles
     FROM 
         aka_name a
     JOIN 
@@ -60,8 +60,8 @@ SELECT
     c.title,
     c.production_year,
     c.keywords,
-    STRING_AGG(DISTINCT c.actor_name, ',') AS co_actors,
-    STRING_AGG(DISTINCT c.roles, ',') AS co_roles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.actor_name))), ',') AS co_actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.roles))), ',') AS co_roles
 FROM 
     CombinedInfo c
 GROUP BY 

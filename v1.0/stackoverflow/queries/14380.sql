@@ -5,7 +5,7 @@ WITH RankedQuestions AS (
         p.Title,
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
-        STRING_AGG(t.TagName, ', ') AS Tags,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
         ROW_NUMBER() OVER (ORDER BY p.ViewCount DESC) AS Rank
     FROM 
         Posts p

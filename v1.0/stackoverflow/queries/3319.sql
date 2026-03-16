@@ -28,7 +28,7 @@ PostDetails AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - interval '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
@@ -52,7 +52,7 @@ SELECT
     COALESCE(up.UpVotes, 0) AS UserUpVotes,
     COALESCE(up.DownVotes, 0) AS UserDownVotes,
     cp.FirstClosedDate,
-    EXTRACT(EPOCH FROM (cp.FirstClosedDate - pd.CreationDate)) AS TimeToClose 
+    toUnixTimestamp((cp.FirstClosedDate - pd.CreationDate)) AS TimeToClose 
 FROM 
     PostDetails pd
 LEFT JOIN 

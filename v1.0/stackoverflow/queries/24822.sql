@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year') 
+        p.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR) 
         AND p.Score IS NOT NULL
 ),
 PostDetail AS (
@@ -33,7 +33,7 @@ PostDetail AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeList
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeList
     FROM 
         Badges b
     GROUP BY 

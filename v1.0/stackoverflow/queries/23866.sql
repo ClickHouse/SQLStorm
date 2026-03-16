@@ -10,13 +10,13 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -32,7 +32,7 @@ PostActivities AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months' 
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH 
         AND ph.PostHistoryTypeId IN (10, 11, 12, 13) 
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId

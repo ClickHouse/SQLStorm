@@ -29,8 +29,8 @@ SELECT
     a.actor_name, 
     COUNT(DISTINCT mk.keyword) AS keyword_count, 
     MAX(csi.total_movies) AS max_movies,
-    STRING_AGG(DISTINCT mk.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT ci.company_name, ', ') AS companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.company_name))), ', ') AS companies
 FROM actor_movie_info a
 LEFT JOIN movie_keywords mk ON a.movie_id = mk.movie_id
 LEFT JOIN company_info ci ON a.movie_id = ci.movie_id

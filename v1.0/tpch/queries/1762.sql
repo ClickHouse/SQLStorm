@@ -5,7 +5,7 @@ WITH TotalSales AS (
     FROM
         lineitem
     WHERE
-        l_shipdate >= DATE '1997-01-01' AND l_shipdate < DATE '1998-01-01'
+        l_shipdate >= toDate('1997-01-01') AND l_shipdate < toDate('1998-01-01')
     GROUP BY
         l_partkey
 ),
@@ -62,4 +62,4 @@ GROUP BY
     rp.p_partkey, rp.p_name, rp.total_sales, rp.total_supply_cost, rp.profit, rp.sales_rank
 ORDER BY
     rp.sales_rank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

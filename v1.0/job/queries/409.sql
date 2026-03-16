@@ -31,8 +31,8 @@ company_movie_count AS (
 featured_movie_info AS (
     SELECT 
         m.id AS movie_id,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT i.info) AS movie_info
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(i.info))) AS movie_info
     FROM 
         title m
     LEFT JOIN 

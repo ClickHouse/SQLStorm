@@ -76,8 +76,7 @@ LEFT JOIN
     RankedPosts rp ON pp.Id = rp.PostId
 WHERE 
     ups.AvgPostScore > COALESCE((SELECT AVG(AvgPostScore) FROM UserPostStats), 0)
-    AND pp.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    AND pp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ORDER BY 
     ups.TotalScore DESC, pp.ViewCount DESC
-OFFSET 5 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

@@ -37,7 +37,7 @@ SELECT
     sm.title,
     sm.production_year,
     sm.kind_name,
-    STRING_AGG(cn.actor_name, ', ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(cn.actor_name)), ', ') AS actors
 FROM
     SelectedMovies sm
 LEFT JOIN

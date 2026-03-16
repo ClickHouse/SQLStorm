@@ -18,7 +18,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 WHERE 
-    p.CreationDate >= DATE '2022-01-01'
+    p.CreationDate >= toDate('2022-01-01')
 GROUP BY 
     p.Title, p.CreationDate, u.DisplayName, pt.Name
 ORDER BY 

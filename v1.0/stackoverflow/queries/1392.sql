@@ -63,7 +63,7 @@ SELECT
     us.SilverBadges,
     us.BronzeBadges,
     COALESCE(trp.Title, 'No Posts') AS LatestPostTitle,
-    COALESCE(trp.CreationDate, DATE '1900-01-01') AS LatestPostDate,
+    COALESCE(trp.CreationDate, toDate('1900-01-01')) AS LatestPostDate,
     COALESCE(trp.ViewCount, 0) AS LatestPostViewCount,
     COALESCE(trp.CommentCount, 0) AS LatestPostCommentCount,
     COALESCE(trp.UpVotes, 0) AS LatestPostUpVotes,

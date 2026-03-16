@@ -39,7 +39,7 @@ RankedOrders AS (
 
 SELECT rh.hierarchy, pd.p_name, pd.total_supply_cost, co.order_count, 
        COUNT(DISTINCT ro.o_orderkey) AS total_orders,
-       STRING_AGG(DISTINCT co.c_name, ', ') AS customer_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.c_name))), ', ') AS customer_names
 FROM SupplierHierarchy rh
 JOIN PartDetails pd ON rh.s_nationkey = (SELECT n.n_nationkey FROM nation n WHERE n.n_name = 'USA') 
 JOIN CustomerOrders co ON co.order_count > 5

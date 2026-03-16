@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Users U ON U.Id = P.OwnerUserId
     WHERE
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
     GROUP BY
         P.Id, U.Reputation
 ),

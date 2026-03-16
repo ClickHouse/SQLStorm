@@ -52,4 +52,4 @@ FROM
     AggregatedData
 ORDER BY 
     ReputationRank
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -26,7 +26,7 @@ SELECT
     an.name AS actor_name,
     COUNT(DISTINCT pm.movie_id) AS movies_with_multiple_actors,
     MAX(tt.production_year) AS most_recent_movie_year,
-    STRING_AGG(DISTINCT at.title, ', ') AS movies_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(at.title))), ', ') AS movies_titles,
     SUM(pm.actor_count) AS total_actors_in_popular_movies
 FROM aka_name an
 JOIN cast_info ci ON an.person_id = ci.person_id

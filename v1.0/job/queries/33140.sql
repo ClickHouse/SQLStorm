@@ -43,7 +43,7 @@ DistinctMovies AS (
 SELECT
     dm.production_year,
     dm.title,
-    ARRAY_AGG(DISTINCT dm.actor_name) AS actors,
+    arrayDistinct(groupArray(assumeNotNull(dm.actor_name))) AS actors,
     COUNT(*) OVER (PARTITION BY dm.production_year) AS movie_count,
     COALESCE(mh.level, 0) AS sequel_level
 FROM
@@ -53,7 +53,7 @@ LEFT JOIN
 WHERE
     dm.production_year IS NOT NULL
 AND
-    EXTRACT(YEAR FROM cast('2024-10-01' as date)) - dm.production_year < 10  
+    toYear(cast('2024-10-01' as date)) - dm.production_year < 10  
 GROUP BY
     dm.production_year, dm.title, mh.level
 ORDER BY

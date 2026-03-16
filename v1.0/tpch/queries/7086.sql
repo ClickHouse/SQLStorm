@@ -11,7 +11,7 @@ WITH ranked_orders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
+        o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
 ), aggregated_shipping AS (
     SELECT 
         l.l_shipmode,

@@ -51,7 +51,7 @@ SELECT
     tu.QuestionCount,
     tu.AnswerCount,
     tu.TotalScore,
-    ARRAY_AGG(DISTINCT cp.Title) AS ClosedPostsTitles,
+    arrayDistinct(groupArray(assumeNotNull(cp.Title))) AS ClosedPostsTitles,
     COUNT(DISTINCT cp.PostId) AS TotalClosedPosts,
     COALESCE(AVG(CASE WHEN cp.ReasonRank = 1 THEN 1 ELSE 0 END), 0) AS ReopenedPostsCount
 FROM 

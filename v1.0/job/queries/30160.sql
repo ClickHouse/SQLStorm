@@ -35,7 +35,7 @@ WITH RECURSIVE ActorHierarchies AS (
 SELECT
     ah.actor_name,
     COUNT(DISTINCT ah.movie_title) AS movie_count,
-    STRING_AGG(DISTINCT ah.movie_title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ah.movie_title))), ', ') AS movie_titles,
     MAX(ah.hierarchy_level) AS max_hierarchy_level
 FROM
     ActorHierarchies ah

@@ -52,8 +52,8 @@ SELECT
     fp.UpVotes,
     fp.DownVotes,
     CONCAT('Upvotes: ', fp.UpVotes, ', Downvotes: ', fp.DownVotes) AS VoteSummary,
-    ARRAY_LENGTH(string_to_array(fp.Body, ' '), 1) AS WordCount,
-    DATE_PART('year', AGE(fp.CreationDate)) AS AgeInYears,
+    length(splitByString(' ', fp.Body), 1) AS WordCount,
+    datePart('year', AGE(fp.CreationDate)) AS AgeInYears,
     CASE
         WHEN fp.UpVotes > fp.DownVotes THEN 'Positive Engagement'
         WHEN fp.UpVotes < fp.DownVotes THEN 'Negative Engagement'

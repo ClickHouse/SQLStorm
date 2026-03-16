@@ -22,7 +22,7 @@ JOIN
 JOIN
     part p ON l.l_partkey = p.p_partkey
 WHERE
-    o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     AND l.l_shipmode IN ('AIR', 'SHIP')
 GROUP BY
     c.c_name, n.n_name, s.s_name, p.p_name, p.p_brand

@@ -58,7 +58,7 @@ INNER JOIN
     UserReputation ur ON tp.OwnerUserId = ur.UserId
 WHERE 
     tp.Score > (SELECT AVG(Score) FROM Posts) 
-    AND tp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    AND tp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ORDER BY 
     tp.Score DESC
 LIMIT 10;

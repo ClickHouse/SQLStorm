@@ -2,7 +2,7 @@ SELECT
     LEFT(p.p_name, 10) AS short_name,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ' - ', region.r_name), '; ') AS supplier_regions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ' - ', region.r_name)))), '; ') AS supplier_regions,
     SUM(l.l_quantity) AS total_quantity,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
 FROM 
@@ -20,7 +20,7 @@ JOIN
 JOIN 
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
+    o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
 GROUP BY 
     short_name
 HAVING 

@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT p.p_partkey) AS unique_parts,
     SUM(ps.ps_availqty) AS total_avail_qty,
     AVG(p.p_retailprice) AS avg_retail_price,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
     CONCAT('Region: ', r.r_name, ' (', COUNT(DISTINCT n.n_nationkey), ' Nations)') AS region_info
 FROM 
     part p

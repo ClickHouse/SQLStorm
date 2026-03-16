@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 AcceptedAnswers AS (
     SELECT 
@@ -29,8 +29,8 @@ UserActivity AS (
         u.DisplayName,
         COUNT(DISTINCT p.Id) AS TotalPosts,
         COUNT(DISTINCT c.Id) AS TotalComments,
-        (SUM(coalesce(v.VoteTypeId::int, 0)) FILTER (WHERE v.VoteTypeId = 2) - 
-        SUM(coalesce(v.VoteTypeId::int, 0)) FILTER (WHERE v.VoteTypeId = 3)) AS NetVotes
+        (SUM(coalesce(CAST(v.VoteTypeId AS int), 0)) FILTER (WHERE v.VoteTypeId = 2) - 
+        SUM(coalesce(CAST(v.VoteTypeId AS int), 0)) FILTER (WHERE v.VoteTypeId = 3)) AS NetVotes
     FROM 
         Users u
     LEFT JOIN 

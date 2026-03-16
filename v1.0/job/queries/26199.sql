@@ -38,9 +38,9 @@ WITH movie_summary AS (
 SELECT 
     movie_title,
     production_year,
-    STRING_AGG(DISTINCT company_name, ', ') AS companies,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT CONCAT(person_name, ' as ', role_name), ', ') AS cast_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(person_name, ' as ', role_name)))), ', ') AS cast_list,
     cast_count
 FROM 
     movie_summary

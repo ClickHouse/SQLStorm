@@ -70,4 +70,4 @@ GROUP BY
     d.cd_gender
 ORDER BY
     avg_spent DESC
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;

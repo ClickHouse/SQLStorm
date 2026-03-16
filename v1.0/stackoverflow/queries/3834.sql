@@ -14,18 +14,18 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id
 ), 
 PostWithTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        LATERAL UNNEST(string_to_array(p.Tags, ',')) AS tag ON TRUE
+        arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
     JOIN 
         Tags t ON TRIM(tag) = t.TagName
     GROUP BY 
@@ -40,7 +40,7 @@ SELECT
     pwt.Tags,
     CASE 
         WHEN ps.LastActivity IS NOT NULL THEN 
-            EXTRACT(EPOCH FROM (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - ps.LastActivity)) / 3600 
+            toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - ps.LastActivity)) / 3600 
         ELSE NULL 
     END AS HoursSinceLastActivity
 FROM 

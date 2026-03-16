@@ -33,7 +33,7 @@ PostStatistics AS (
         P.Score,
         P.AnswerCount,
         P.CommentCount,
-        ARRAY_AGG(DISTINCT T.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS Tags
     FROM 
         Posts P
     JOIN 
@@ -58,7 +58,7 @@ RecentActivity AS (
     JOIN 
         Posts P ON PH.PostId = P.Id
     WHERE 
-        PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     ORDER BY 
         PH.CreationDate DESC
 )

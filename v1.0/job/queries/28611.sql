@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         t.id AS movie_id,
         t.title AS movie_title,
         t.production_year,
-        RANK() OVER (PARTITION BY t.production_year ORDER BY RANDOM()) AS title_rank
+        RANK() OVER (PARTITION BY t.production_year ORDER BY rand()) AS title_rank
     FROM 
         aka_title t
     WHERE 

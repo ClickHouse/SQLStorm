@@ -15,7 +15,7 @@ TopSuppliers AS (
         r.r_name AS region_name, 
         COUNT(rs.s_suppkey) AS supplier_count, 
         SUM(rs.s_acctbal) AS total_acct_bal,
-        STRING_AGG(rs.short_comment, '; ') AS comments_summary
+        arrayStringConcat(groupArray(assumeNotNull(rs.short_comment)), '; ') AS comments_summary
     FROM 
         RankedSuppliers rs
     JOIN 

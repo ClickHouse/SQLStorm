@@ -2,7 +2,7 @@ WITH CustomerAddressSummary AS (
     SELECT 
         ca_state,
         COUNT(DISTINCT c_customer_sk) AS customer_count,
-        STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), '; ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), '; ') AS customer_names
     FROM 
         customer_address ca
     JOIN 
@@ -16,7 +16,7 @@ SalesSummary AS (
     SELECT 
         d_year,
         SUM(ws_ext_sales_price) AS total_sales,
-        STRING_AGG(DISTINCT CONCAT(sm_carrier, ' - ', sm_type), '; ') AS shipping_modes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(sm_carrier, ' - ', sm_type)))), '; ') AS shipping_modes
     FROM 
         web_sales ws
     JOIN 

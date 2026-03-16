@@ -20,7 +20,7 @@ SupplierWithDetails AS (
         r.r_name AS supplier_region,
         s.s_acctbal,
         s.s_phone,
-        STRING_AGG(DISTINCT rp.p_name, ', ') AS supplied_parts
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.p_name))), ', ') AS supplied_parts
     FROM 
         supplier s
     JOIN 

@@ -4,8 +4,8 @@ SELECT
     t.title AS movie_title,
     a.production_year,
     COUNT(DISTINCT mi.movie_id) AS movie_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS associated_keywords,
-    STRING_AGG(DISTINCT ct.kind, ', ') AS company_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS associated_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types
 FROM 
     aka_name n
 JOIN 

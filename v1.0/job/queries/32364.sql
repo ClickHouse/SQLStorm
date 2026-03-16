@@ -39,7 +39,7 @@ FormattedTitles AS (
 MovieKeywords AS (
     SELECT 
         k.movie_id,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         movie_keyword k
     JOIN 
@@ -51,7 +51,7 @@ MovieKeywords AS (
 MovieCompanies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 

@@ -39,6 +39,6 @@ SELECT
     sup.total_supply_cost
 FROM CustomerOrders cus
 JOIN HighCostSuppliers sup ON cus.total_spent > (SELECT AVG(total_supply_cost) FROM HighCostSuppliers)
-WHERE cus.o_orderdate >= DATE '1997-01-01'
+WHERE cus.o_orderdate >= toDate('1997-01-01')
 ORDER BY cus.total_spent DESC, sup.total_supply_cost DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

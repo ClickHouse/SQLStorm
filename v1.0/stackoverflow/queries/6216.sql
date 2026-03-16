@@ -27,8 +27,8 @@ PostDetails AS (
         p.Score,
         p.ViewCount,
         p.Tags,
-        ARRAY_AGG(c.Text) AS Comments,
-        ARRAY_AGG(DISTINCT ph.PostHistoryTypeId) AS HistoryTypes,
+        groupArray(assumeNotNull(c.Text)) AS Comments,
+        arrayDistinct(groupArray(assumeNotNull(ph.PostHistoryTypeId))) AS HistoryTypes,
         CASE 
             WHEN EXISTS (SELECT 1 FROM Posts pp WHERE pp.AcceptedAnswerId = p.Id) THEN 1
             ELSE 0

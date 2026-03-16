@@ -17,7 +17,7 @@ SELECT
     COUNT(DISTINCT cs.cs_order_number) AS total_catalog_orders,
     SUM(cs.cs_ext_sales_price) AS total_catalog_sales,
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customers,
     SUM(CASE WHEN c.c_birth_country IS NULL THEN 1 ELSE 0 END) AS null_birth_country_count
 FROM 
     customer_address ca

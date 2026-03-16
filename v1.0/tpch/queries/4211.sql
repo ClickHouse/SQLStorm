@@ -27,7 +27,7 @@ RecentOrders AS (
     WHERE 
         o.o_orderstatus IN ('F', 'P')
     AND 
-        l.l_shipdate >= DATE '1998-10-01' - INTERVAL '1 year'
+        l.l_shipdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
     GROUP BY 
         o.o_orderkey, o.o_custkey, o.o_orderdate
 )
@@ -49,7 +49,7 @@ LEFT JOIN
         FROM partsupp ps 
         WHERE ps.ps_partkey = p.p_partkey 
         ORDER BY ps.ps_supplycost ASC 
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
 LEFT JOIN 
     RecentOrders ro ON ro.o_custkey = (
@@ -60,7 +60,7 @@ LEFT JOIN
             FROM nation n 
             WHERE n.n_name = 'USA'
         )
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
 WHERE 
     p.p_size IN (SELECT DISTINCT p_size FROM part WHERE p_retailprice > 200)

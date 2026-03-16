@@ -8,8 +8,8 @@ WITH SupplierDetails AS (
         COUNT(DISTINCT ps.ps_partkey) AS part_count,
         SUM(ps.ps_availqty) AS total_availqty,
         SUM(ps.ps_supplycost) AS total_supplycost,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
-        STRING_AGG(DISTINCT p.p_brand, ', ') AS part_brands
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_brand))), ', ') AS part_brands
     FROM 
         supplier s
     JOIN 

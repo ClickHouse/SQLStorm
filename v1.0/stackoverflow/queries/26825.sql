@@ -16,19 +16,19 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 
 TagStats AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '>')) AS TagName, 
+        arrayJoin(splitByString('>', Tags)) AS TagName, 
         COUNT(*) AS TagUsageCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        UNNEST(string_to_array(Tags, '>'))
+        arrayJoin(splitByString('>', Tags))
 ),
 
 TopTags AS (

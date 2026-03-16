@@ -29,7 +29,7 @@ SELECT
     t.production_year,
     COUNT(DISTINCT ah.person_id) AS total_cast,
     AVG(ah.level) AS average_cast_level,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     ActorHierarchy ah
 JOIN 

@@ -41,7 +41,7 @@ SELECT
     tc.cd_gender,
     tc.cd_marital_status,
     tc.cd_purchase_estimate,
-    STRING_AGG(CONCAT(ca.ca_street_name, ', ', ca.ca_city, ', ', ca.ca_state, ' ', ca.ca_zip), '; ') AS address_list
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(ca.ca_street_name, ', ', ca.ca_city, ', ', ca.ca_state, ' ', ca.ca_zip))), '; ') AS address_list
 FROM 
     top_customers tc
 LEFT JOIN 

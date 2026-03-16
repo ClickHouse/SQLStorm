@@ -4,7 +4,7 @@ WITH AddressStats AS (
         ca_city,
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT CONCAT(ca_street_name, ' ', ca_street_number, ' ', ca_street_type), ', ') AS full_street_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_name, ' ', ca_street_number, ' ', ca_street_type)))), ', ') AS full_street_names
     FROM 
         customer_address
     GROUP BY 
@@ -14,8 +14,8 @@ DemographicStats AS (
     SELECT 
         cd_gender,
         COUNT(*) AS demographic_count,
-        STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_levels
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_levels
     FROM 
         customer_demographics
     GROUP BY 
@@ -26,7 +26,7 @@ SalesStats AS (
         'web' AS sales_channel,
         SUM(ws_quantity) AS total_quantity,
         SUM(ws_sales_price) AS total_sales,
-        STRING_AGG(DISTINCT CAST(ws_web_page_sk AS VARCHAR), ', ') AS web_page_ids
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws_web_page_sk AS VARCHAR)))), ', ') AS web_page_ids
     FROM 
         web_sales
     GROUP BY 
@@ -36,7 +36,7 @@ SalesStats AS (
         'store' AS sales_channel,
         SUM(ss_quantity) AS total_quantity,
         SUM(ss_sales_price) AS total_sales,
-        STRING_AGG(DISTINCT CAST(ss_store_sk AS VARCHAR), ', ') AS store_ids
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ss_store_sk AS VARCHAR)))), ', ') AS store_ids
     FROM 
         store_sales
     GROUP BY 

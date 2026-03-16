@@ -5,8 +5,8 @@ SELECT
         WHEN p.p_size BETWEEN 1 AND 10 THEN ps.ps_availqty 
         ELSE 0 
     END) AS small_parts_available,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_address, ')'), '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_address, ')')))), '; ') AS supplier_details
 FROM 
     nation n
 JOIN 

@@ -13,7 +13,7 @@ WITH RankedMovies AS (
 ), CompanyInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 
@@ -23,7 +23,7 @@ WITH RankedMovies AS (
 ), MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

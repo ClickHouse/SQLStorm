@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Tags,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS Rank,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS ContributingUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS ContributingUsers
     FROM 
         Posts p
     JOIN 
@@ -17,13 +17,13 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON v.UserId = u.Id
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.Tags, pt.Name
 ),
 PostTagStats AS (
     SELECT 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts p
@@ -44,7 +44,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    PostTagStats pts ON pts.Tag = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags)-2), '><'))
+    PostTagStats pts ON pts.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
 WHERE 
     rp.Rank <= 5 
 ORDER BY 

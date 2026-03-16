@@ -26,12 +26,12 @@ PostHistoryDetails AS (
         MIN(PH.CreationDate) AS FirstEntityChange,
         MAX(PH.CreationDate) AS LastEntityChange,
         COUNT(CASE WHEN PH.PostHistoryTypeId IN (10, 11) THEN 1 END) AS CloseReopenCount,
-        STRING_AGG(DISTINCT PH.UserDisplayName, ', ') AS UsersInvolved,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.UserDisplayName))), ', ') AS UsersInvolved,
         COUNT(*) AS HistoryCount
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate BETWEEN DATE '2024-10-01' - INTERVAL '1 year' AND DATE '2024-10-01'
+        PH.CreationDate BETWEEN toDate('2024-10-01') - INTERVAL 1 YEAR AND toDate('2024-10-01')
     GROUP BY 
         PH.PostId
 )
@@ -69,4 +69,4 @@ WHERE
     U.Reputation IS NOT NULL
 ORDER BY 
     U.Reputation DESC, U.UserId ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

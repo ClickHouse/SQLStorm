@@ -5,7 +5,7 @@ SELECT
     SUM(o.o_totalprice) AS total_revenue, 
     AVG(l.l_extendedprice) AS avg_lineitem_price, 
     MAX(p.p_retailprice) AS max_part_price, 
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names_list 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names_list 
 FROM 
     region r 
 JOIN 
@@ -24,8 +24,8 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey 
 WHERE 
     p.p_type LIKE '%metal%' 
-    AND o.o_orderdate >= DATE '1996-01-01' 
-    AND o.o_orderdate < DATE '1997-01-01' 
+    AND o.o_orderdate >= toDate('1996-01-01') 
+    AND o.o_orderdate < toDate('1997-01-01') 
 GROUP BY 
     r.r_name, n.n_name 
 ORDER BY 

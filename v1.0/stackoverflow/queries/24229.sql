@@ -20,7 +20,7 @@ PostMetrics AS (
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.OwnerUserId
 ),
 UserPostStats AS (
@@ -66,5 +66,4 @@ JOIN Users u ON u.Id = MS.OwnerUserId
 JOIN UserBadgeCounts UBC ON UBC.UserId = u.Id
 WHERE (UBC.GoldBadges + UBC.SilverBadges + UBC.BronzeBadges) > 0
 ORDER BY MS.TotalViews DESC, MS.AvgScore DESC
-OFFSET 0 ROWS
-FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 0;

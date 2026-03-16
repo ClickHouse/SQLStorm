@@ -73,7 +73,7 @@ FROM
     FinalReport fr
 WHERE 
     fr.high_value_part IS NOT NULL
-    AND fr.o_orderdate >= CURRENT_DATE - INTERVAL '3 months'
+    AND fr.o_orderdate >= CURRENT_DATE - INTERVAL 3 MONTH
     AND fr.item_count BETWEEN (SELECT AVG(item_count) FROM FinalReport) AND (SELECT MAX(item_count) FROM FinalReport)
 ORDER BY 
     fr.o_orderdate DESC;

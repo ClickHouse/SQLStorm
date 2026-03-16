@@ -7,7 +7,7 @@ WITH PostStatistics AS (
         COUNT(A.Id) AS AnswerCount,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        AVG(EXTRACT(EPOCH FROM V.CreationDate)) AS AverageVoteDate
+        AVG(toUnixTimestamp(V.CreationDate)) AS AverageVoteDate
     FROM 
         Posts P
     LEFT JOIN 

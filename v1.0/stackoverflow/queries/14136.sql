@@ -4,7 +4,7 @@ SELECT
     COUNT(p.Id) AS TotalPosts,
     AVG(p.Score) AS AverageScore,
     SUM(p.ViewCount) AS TotalViewCount,
-    AVG(EXTRACT(EPOCH FROM (COALESCE(p.LastActivityDate, '2024-10-01 12:34:56'::timestamp) - p.CreationDate))) AS AverageTimeToActivity,
+    AVG(toUnixTimestamp((COALESCE(p.LastActivityDate, CAST('2024-10-01 12:34:56' AS timestamp)) - p.CreationDate))) AS AverageTimeToActivity,
     COUNT(DISTINCT u.Id) AS UniqueUsers
 FROM 
     Posts p

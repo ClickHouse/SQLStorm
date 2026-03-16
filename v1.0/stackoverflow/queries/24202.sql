@@ -34,7 +34,7 @@ WITH PostDetails AS (
             ParentId
     ) AS Answers ON p.Id = Answers.ParentId
     WHERE
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 UsersRanked AS (
     SELECT 
@@ -51,7 +51,7 @@ UsersRanked AS (
 PostedTags AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(p.Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', p.Tags)) AS Tag
     FROM 
         Posts p
 ),

@@ -5,7 +5,7 @@ WITH ranked_orders AS (
         o.o_totalprice,
         RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) as order_rank
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1994-01-01'
+    WHERE o.o_orderdate >= toDate('1994-01-01')
 ),
 supplier_details AS (
     SELECT 
@@ -55,7 +55,7 @@ JOIN coalesced_part_details cp ON cp.p_partkey = cpli.l_partkey
 WHERE 
     r.order_rank <= 10 
     AND (sd.balance_category = 'High Balance' OR sd.balance_category IS NULL)
-    AND r.o_totalprice > (SELECT AVG(o.o_totalprice) FROM orders o WHERE o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31')
+    AND r.o_totalprice > (SELECT AVG(o.o_totalprice) FROM orders o WHERE o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31'))
 ORDER BY 
     r.o_orderdate DESC, 
     r.o_totalprice DESC;

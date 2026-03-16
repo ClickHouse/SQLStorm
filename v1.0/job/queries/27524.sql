@@ -34,8 +34,8 @@ detailed_info AS (
         tr.title,
         tr.production_year,
         tr.cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies
     FROM 
         top_ranked_titles tr
     LEFT JOIN 

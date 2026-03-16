@@ -30,7 +30,7 @@ SupplierStats AS (
 )
 SELECT r.r_name, COUNT(DISTINCT p.p_partkey) AS num_parts,
        SUM(COALESCE(ts.total, 0)) AS total_sales,
-       STRING_AGG(DISTINCT sh.s_name, ', ') AS suppliers,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sh.s_name))), ', ') AS suppliers,
        MAX(sh.level) AS max_supplier_level,
        COUNT(DISTINCT ss.num_suppliers) AS total_nations
 FROM region r

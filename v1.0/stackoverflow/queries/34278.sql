@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserActivity AS (
     SELECT 
@@ -50,7 +50,7 @@ PostLinksSummary AS (
     SELECT 
         pl.PostId,
         COUNT(DISTINCT pl.RelatedPostId) AS TotalLinks,
-        STRING_AGG(DISTINCT lt.Name, ', ') AS LinkTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lt.Name))), ', ') AS LinkTypes
     FROM 
         PostLinks pl 
     JOIN 

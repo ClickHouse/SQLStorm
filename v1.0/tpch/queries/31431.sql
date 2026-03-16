@@ -13,7 +13,7 @@ lineitem_summary AS (
            SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
            COUNT(l.l_orderkey) AS total_items
     FROM lineitem l
-    WHERE l.l_shipdate >= DATE '1996-01-01'
+    WHERE l.l_shipdate >= toDate('1996-01-01')
     GROUP BY l.l_orderkey
 ),
 customer_orders AS (

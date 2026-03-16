@@ -11,7 +11,7 @@ WITH RecentPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount
 ),
 TopUsers AS (

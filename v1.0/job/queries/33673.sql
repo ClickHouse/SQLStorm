@@ -32,7 +32,7 @@ SELECT
     mh.path,
     mh.production_year,
     COUNT(DISTINCT c.person_id) AS num_cast,
-    STRING_AGG(DISTINCT a.name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
     COUNT(DISTINCT k.keyword) AS keywords,
     MAX(CASE 
         WHEN mi.info_type_id = (SELECT id FROM info_type WHERE info='duration') THEN mi.info 

@@ -17,4 +17,4 @@ GROUP BY
     p.Id, p.Title, p.CreationDate, u.DisplayName 
 ORDER BY 
     p.CreationDate DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

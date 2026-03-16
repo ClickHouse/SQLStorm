@@ -7,7 +7,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     MAX(o.o_totalprice) AS max_order_value,
     AVG(o.o_totalprice) AS avg_order_value,
-    STRING_AGG(DISTINCT o.o_orderstatus, ', ') AS unique_order_statuses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(o.o_orderstatus))), ', ') AS unique_order_statuses
 FROM 
     part p
 JOIN 

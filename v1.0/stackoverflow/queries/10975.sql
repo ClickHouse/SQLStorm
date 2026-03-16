@@ -3,7 +3,7 @@ SELECT
     COUNT(*) AS RevisionCount,
     MIN(ph.CreationDate) AS FirstRevisionDate,
     MAX(ph.CreationDate) AS LastRevisionDate,
-    STRING_AGG(DISTINCT p.Title, ', ') AS PostTitles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), ', ') AS PostTitles,
     COUNT(DISTINCT c.Id) AS CommentCount,
     COUNT(DISTINCT v.Id) AS VoteCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (8, 9) 
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.AnswerCount
 ),
@@ -44,7 +44,7 @@ SELECT
         WHERE c.PostId = fp.PostId AND c.UserId IS NOT NULL
     ) AS HasComments,
     (SELECT 
-        STRING_AGG(b.Name, ', ') 
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
      FROM 
         Badges b 
      WHERE 

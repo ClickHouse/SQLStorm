@@ -36,7 +36,7 @@ SELECT
     tm.title,
     tm.production_year,
     COALESCE(mkc.keyword_count, 0) AS keyword_count,
-    COALESCE(STRING_AGG(DISTINCT k.keyword, ', '), 'No Keywords') AS keywords,
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'No Keywords') AS keywords,
     c.kind AS company_type
 FROM
     TopMovies tm

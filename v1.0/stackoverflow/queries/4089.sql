@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year' 
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR 
         AND p.Score > 0
 ),
 UserStatistics AS (

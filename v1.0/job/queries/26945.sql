@@ -17,7 +17,7 @@ WITH FilteredMovies AS (
 MovieCast AS (
     SELECT 
         cm.movie_id,
-        STRING_AGG(a.name, ', ') AS cast_names
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS cast_names
     FROM 
         complete_cast cm
     JOIN 
@@ -30,7 +30,7 @@ MovieCast AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(CONCAT(it.info, ': ', mi.info), '; ') AS info_details
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(it.info, ': ', mi.info))), '; ') AS info_details
     FROM 
         movie_info mi
     JOIN 

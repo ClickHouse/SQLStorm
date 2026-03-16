@@ -37,4 +37,4 @@ SELECT
     COALESCE(cs.customer_count, 0) AS total_customers
 FROM CustomerSummary cs
 ORDER BY cs.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

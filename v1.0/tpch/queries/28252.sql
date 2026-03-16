@@ -3,7 +3,7 @@ SELECT
     COUNT(*) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(s.s_acctbal) AS average_supplier_account_balance,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     MAX(ps.ps_supplycost) AS max_supply_cost,
     MIN(ps.ps_supplycost) AS min_supply_cost
 FROM 

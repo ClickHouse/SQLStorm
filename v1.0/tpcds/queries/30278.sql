@@ -55,4 +55,4 @@ WHERE r.total_returned IS NOT NULL
   AND r.total_return_value > 1000
   AND ci.cd_gender = 'F'
 ORDER BY r.total_return_value DESC, ci.avg_purchase ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

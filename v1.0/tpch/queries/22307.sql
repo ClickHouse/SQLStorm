@@ -46,7 +46,7 @@ SELECT
     SUM(t.total_revenue) AS sales_total,
     AVG(c.total_spent) AS avg_customer_spent,
     COUNT(DISTINCT CASE WHEN r.ship_rank = 1 THEN r.l_orderkey END) AS unique_top_sales_orders,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM TotalSales t
 JOIN RankedLineItems r ON t.l_orderkey = r.l_orderkey
 JOIN part p ON r.l_partkey = p.p_partkey

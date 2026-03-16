@@ -21,7 +21,7 @@ SELECT
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
     AVG(si.total_sales) AS avg_sales_per_item,
     SUM(CASE WHEN cd.cd_marital_status = 'M' THEN 1 ELSE 0 END) AS married_count,
-    STRING_AGG(DISTINCT i.i_category, ', ') AS popular_categories
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_category))), ', ') AS popular_categories
 FROM customer c
 JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk
 JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk

@@ -31,10 +31,10 @@ SELECT
         ELSE 'Year ' || CAST(at.production_year AS TEXT) 
     END AS year_statement,
     COUNT(DISTINCT mc.company_id) AS company_count,
-    ARRAY_AGG(DISTINCT kw.keyword) FILTER (WHERE kw.keyword IS NOT NULL) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(kw.keyword))) FILTER (WHERE kw.keyword IS NOT NULL) AS keywords,
     ROW_NUMBER() OVER (PARTITION BY an.id ORDER BY at.production_year DESC) AS actor_movie_rank,
     SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS note_count,
-    STRING_AGG(DISTINCT ci.note, '; ') AS all_notes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), '; ') AS all_notes
 FROM 
     aka_name an 
 LEFT JOIN 

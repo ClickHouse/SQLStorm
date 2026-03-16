@@ -13,7 +13,7 @@ WITH RankedMovies AS (
 ), MovieCast AS (
     SELECT 
         cm.movie_id,
-        STRING_AGG(CONCAT(a.name, ' (', r.role, ')'), ', ') AS cast
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.name, ' (', r.role, ')'))), ', ') AS cast
     FROM 
         cast_info cm
     JOIN 

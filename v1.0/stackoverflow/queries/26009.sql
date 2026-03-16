@@ -17,7 +17,7 @@ UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -47,7 +47,7 @@ PopularTags AS (
         COUNT(*) AS TagCount
     FROM (
         SELECT 
-            UNNEST(string_to_array(Tags, '><')) AS TagName  
+            arrayJoin(splitByString('><', Tags)) AS TagName  
         FROM 
             Posts 
         WHERE 
@@ -71,6 +71,6 @@ SELECT
 FROM 
     TopQuestions tq
 JOIN 
-    PopularTags pt ON pt.TagName IN (SELECT UNNEST(string_to_array(tq.Tags, '><')))  
+    PopularTags pt ON pt.TagName IN (SELECT arrayJoin(splitByString('><', tq.Tags)))  
 ORDER BY 
     tq.Score DESC, tq.CreationDate DESC;

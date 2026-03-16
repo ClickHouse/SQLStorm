@@ -38,7 +38,7 @@ PostActivity AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate >= (CURRENT_DATE - INTERVAL '1 year')
+        p.CreationDate >= (CURRENT_DATE - INTERVAL 1 YEAR)
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
 ),
@@ -55,7 +55,7 @@ BizarreLogic AS (
         SUM(CASE WHEN ups.TotalUpvotes > ups.TotalDownvotes THEN 1 ELSE 0 END) AS PositiveContributions,
         SUM(CASE WHEN ups.TotalDownvotes > ups.TotalUpvotes THEN 1 ELSE 0 END) AS NegativeContributions,
         COUNT(DISTINCT rp.PostId) AS ContributingPosts,
-        STRING_AGG(rp.Title, '; ') AS PostTitles
+        arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS PostTitles
     FROM 
         UserStats ups
     LEFT JOIN 

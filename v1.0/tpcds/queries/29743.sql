@@ -22,7 +22,7 @@ AggregatedData AS (
         cd_gender,
         cd_marital_status,
         COUNT(*) AS customer_count,
-        STRING_AGG(full_address, '; ') AS condensed_addresses
+        arrayStringConcat(groupArray(assumeNotNull(full_address)), '; ') AS condensed_addresses
     FROM 
         AddressComponents
     GROUP BY 

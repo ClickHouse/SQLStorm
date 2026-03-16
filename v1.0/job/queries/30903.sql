@@ -45,7 +45,7 @@ SELECT
     md.production_year,
     md.level,
     md.company_id,
-    STRING_AGG(DISTINCT md.actor_name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name))), ', ') AS actors,
     COUNT(DISTINCT md.actor_id) AS actor_count,
     CASE
         WHEN COUNT(md.actor_id) > 3 THEN 'Ensemble Cast'

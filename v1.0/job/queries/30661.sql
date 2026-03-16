@@ -32,7 +32,7 @@ SELECT
             WHEN c.nr_order = 1 THEN 1 
             ELSE 0 
         END) AS lead_actors,
-    STRING_AGG(DISTINCT CONCAT(mh.title, ' (', mh.production_year, ')'), ', ') AS movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(mh.title, ' (', mh.production_year, ')')))), ', ') AS movies,
     COALESCE(SUM(CASE 
             WHEN mi.info_type_id = 1 THEN LENGTH(mi.info) 
             ELSE 0 

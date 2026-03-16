@@ -7,7 +7,7 @@ WITH UserStats AS (
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         SUM(COALESCE(V.BountyAmount, 0)) AS TotalBounty,
-        AVG(EXTRACT(EPOCH FROM (CAST('2024-10-01 12:34:56' AS timestamp) - U.CreationDate))) AS AvgAccountAgeInSeconds
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - U.CreationDate))) AS AvgAccountAgeInSeconds
     FROM 
         Users U
     LEFT JOIN 
@@ -24,7 +24,7 @@ PostHistoryStats AS (
         PH.UserId,
         COUNT(*) AS EditCount,
         MAX(PH.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryTypes
     FROM 
         PostHistory PH
     JOIN 

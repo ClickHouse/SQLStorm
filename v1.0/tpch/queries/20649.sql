@@ -53,7 +53,7 @@ SELECT
     sr.region,
     COUNT(DISTINCT sr.s_suppkey) AS supplier_count,
     ROUND(AVG(fr.total_net_price), 2) AS avg_order_value,
-    STRING_AGG(sr.nation, ', ') AS nations_list,
+    arrayStringConcat(groupArray(assumeNotNull(sr.nation)), ', ') AS nations_list,
     CASE 
         WHEN AVG(fr.total_net_price) > 10000 THEN 'High Value'
         WHEN AVG(fr.total_net_price) BETWEEN 5000 AND 10000 THEN 'Medium Value'
@@ -63,7 +63,7 @@ FROM
     FilteredOrders fr
 JOIN SupplierRegion sr ON fr.o_orderkey = sr.s_suppkey
 WHERE
-    fr.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    fr.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY
     fr.o_orderdate, sr.region
 HAVING

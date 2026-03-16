@@ -6,7 +6,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(s.s_acctbal) AS average_supplier_account_balance,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     part p
 JOIN 

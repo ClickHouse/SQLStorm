@@ -69,4 +69,4 @@ LEFT JOIN
     total_sales ts ON th.c_customer_sk = ts.c_customer_sk
 ORDER BY 
     total_spent DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

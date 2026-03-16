@@ -6,7 +6,7 @@ SELECT
     SUM(CASE WHEN cd.cd_gender = 'F' THEN 1 ELSE 0 END) AS female_customers,
     SUM(CASE WHEN cd.cd_gender = 'M' THEN 1 ELSE 0 END) AS male_customers,
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT i.i_category, ', ') AS unique_categories,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_category))), ', ') AS unique_categories,
     CONCAT(ca.ca_city, ', ', ca.ca_state) AS location
 FROM customer_address ca
 JOIN customer c ON ca.ca_address_sk = c.c_current_addr_sk

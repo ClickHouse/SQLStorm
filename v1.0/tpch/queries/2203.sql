@@ -8,8 +8,8 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' 
-        AND o.o_orderdate < DATE '1997-12-31'
+        o.o_orderdate >= toDate('1997-01-01') 
+        AND o.o_orderdate < toDate('1997-12-31')
 ),
 SupplierCosts AS (
     SELECT 
@@ -62,4 +62,4 @@ HAVING
     AVG(cp.total_spent) > 1000
 ORDER BY 
     r.r_name
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

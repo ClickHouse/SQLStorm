@@ -58,4 +58,4 @@ SELECT
 FROM FilteredPosts FP
 WHERE FP.CommentCount > 5 OR (FP.BadgeCount > 0 AND FP.RelatedPostCount > 10)
 ORDER BY FP.ReputationCategory, FP.UpVotes DESC
-OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

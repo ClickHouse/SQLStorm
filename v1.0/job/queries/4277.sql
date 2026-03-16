@@ -37,7 +37,7 @@ CompanyDetails AS (
 SELECT 
     tm.title,
     tm.production_year,
-    ARRAY_AGG(DISTINCT cd.company_name) AS companies,
+    arrayDistinct(groupArray(assumeNotNull(cd.company_name))) AS companies,
     COUNT(DISTINCT mi.info) AS info_count,
     COALESCE(SUM(CASE WHEN LENGTH(mi.info) > 50 THEN 1 ELSE 0 END), 0) AS long_info_count
 FROM 

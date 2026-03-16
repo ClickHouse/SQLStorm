@@ -55,10 +55,10 @@ combined_summary AS (
 )
 SELECT 
     CONCAT('In ', ca_state, ', there are ', unique_addresses, ' unique addresses among ', unique_cities, ' cities, with ', unique_streets, ' unique street combinations. ',
-    'The demographic analysis shows ', demographic_count, ' individuals of gender ', cd_gender, ' with ', total_dependents, ' dependents, averaging a purchase estimate of $', ROUND(avg_purchase_estimate::numeric, 2), '. ',
+    'The demographic analysis shows ', demographic_count, ' individuals of gender ', cd_gender, ' with ', total_dependents, ' dependents, averaging a purchase estimate of $', ROUND(CAST(avg_purchase_estimate AS numeric), 2), '. ',
     'In the year ', d_year, ', there were ', active_days, ' active days with an average day of the month being ', avg_day_of_month, ' and ', holiday_count, ' holidays recorded.') AS benchmark_report
 FROM 
     combined_summary
 ORDER BY 
     unique_addresses DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

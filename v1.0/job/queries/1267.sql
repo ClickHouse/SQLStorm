@@ -4,7 +4,7 @@ WITH MovieDetails AS (
         m.title,
         COALESCE(CAST(m.production_year AS VARCHAR), 'Unknown') AS production_year,
         COUNT(DISTINCT c.person_id) AS actor_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM 
         aka_title m
     LEFT JOIN 
@@ -19,7 +19,7 @@ WITH MovieDetails AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COUNT(DISTINCT mc.company_id) AS company_count
     FROM 
         movie_companies mc
@@ -31,7 +31,7 @@ CompanyDetails AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS additional_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS additional_info
     FROM 
         movie_info mi
     WHERE 

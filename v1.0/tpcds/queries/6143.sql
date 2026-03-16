@@ -55,11 +55,11 @@ SELECT
 FROM 
     customer_summary cs
 JOIN 
-    monthly_sales ms ON EXTRACT(YEAR FROM DATE '2002-10-01') = ms.d_year
+    monthly_sales ms ON toYear(toDate('2002-10-01')) = ms.d_year
 LEFT JOIN 
     customer_best_return cb ON cs.c_customer_sk = cb.c_customer_sk AND cb.rank = 1
 WHERE 
     cs.total_returns > 0
 ORDER BY 
     cs.total_return_amount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

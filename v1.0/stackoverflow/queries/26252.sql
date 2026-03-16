@@ -22,7 +22,7 @@ UserActivity AS (
     SELECT
         u.Id AS UserId,
         COUNT(DISTINCT b.Id) AS BadgeCount,
-        SUM(CASE WHEN p.LastActivityDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR' THEN 1 ELSE 0 END) AS RecentActivity,
+        SUM(CASE WHEN p.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 1 ELSE 0 END) AS RecentActivity,
         SUM(CASE WHEN p.Score > 0 THEN p.Score ELSE 0 END) AS TotalScore
     FROM Users u
     LEFT JOIN Badges b ON b.UserId = u.Id

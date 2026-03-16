@@ -38,7 +38,7 @@ WITH RankedPosts AS (
 ), CountTags AS (
     SELECT 
         p.Id AS PostId,
-        CARDINALITY(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagCount
+        CARDINALITY(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagCount
     FROM 
         Posts p
     WHERE 
@@ -73,4 +73,4 @@ WHERE
 ORDER BY 
     rp.Score DESC,
     rp.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

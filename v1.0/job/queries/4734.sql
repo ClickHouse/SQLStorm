@@ -33,7 +33,7 @@ SELECT
     md.title,
     md.production_year,
     md.actor_count,
-    STRING_AGG(a.name, ', ') AS actor_names
+    arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actor_names
 FROM 
     MovieDetails md
 LEFT JOIN 

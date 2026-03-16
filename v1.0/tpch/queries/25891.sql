@@ -50,7 +50,7 @@ WITH SupplierParts AS (
 )
 SELECT 
     sp.s_name,
-    STRING_AGG(DISTINCT sp.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sp.p_name))), ', ') AS part_names,
     COUNT(DISTINCT co.o_orderkey) AS total_orders,
     SUM(co.o_totalprice) AS total_revenue,
     AVG(li.l_quantity) AS avg_quantity_sold,

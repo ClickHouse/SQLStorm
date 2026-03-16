@@ -12,17 +12,17 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON ph.Comment::INT = cr.Id
+        CloseReasonTypes cr ON CAST(ph.Comment AS INT) = cr.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
     GROUP BY 

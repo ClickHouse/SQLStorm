@@ -3,7 +3,7 @@ WITH AddressCounts AS (
     SELECT 
         ca_city,
         COUNT(*) AS address_count,
-        STRING_AGG(ca_street_name, ', ') AS street_names
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names
     FROM 
         customer_address
     GROUP BY 
@@ -14,7 +14,7 @@ DemographicStats AS (
         cd_gender,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
         MAX(cd_dep_count) AS max_dependents,
-        STRING_AGG(cd_marital_status, ', ') AS marital_statuses
+        arrayStringConcat(groupArray(assumeNotNull(cd_marital_status)), ', ') AS marital_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -24,7 +24,7 @@ DateAnalysis AS (
     SELECT 
         d_year,
         COUNT(*) AS total_dates,
-        STRING_AGG(d_day_name, ', ') AS days_in_year
+        arrayStringConcat(groupArray(assumeNotNull(d_day_name)), ', ') AS days_in_year
     FROM 
         date_dim
     GROUP BY 

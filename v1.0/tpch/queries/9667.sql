@@ -15,7 +15,7 @@ WITH regional_spending AS (
     JOIN 
         region r ON n.n_regionkey = r.r_regionkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
         AND l.l_returnflag = 'N'
     GROUP BY 
         n.n_name, r.r_name

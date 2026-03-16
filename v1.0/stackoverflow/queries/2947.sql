@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id AND v.VoteTypeId IN (2, 3)  
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),
@@ -48,7 +48,7 @@ SELECT
         WHEN t.Score > 100 THEN 'Hot Post' 
         ELSE 'Regular Post' 
     END AS PostStatus,
-    STRING_AGG(CONCAT('User: ', u.DisplayName, ' voted ', CASE WHEN v.VoteTypeId = 2 THEN 'up' ELSE 'down' END), '; ') AS VoterDetails
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT('User: ', u.DisplayName, ' voted ', CASE WHEN v.VoteTypeId = 2 THEN 'up' ELSE 'down' END))), '; ') AS VoterDetails
 FROM 
     TopPosts t
 LEFT JOIN 

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId IN (1, 2) AND 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostSummary AS (
     SELECT 
@@ -43,7 +43,7 @@ SELECT
     ps.TopPostCount,
     ps.TotalScore,
     ps.TotalViews,
-    ARRAY_AGG(tp.TagName) AS AssociatedTags
+    groupArray(assumeNotNull(tp.TagName)) AS AssociatedTags
 FROM 
     PostSummary ps
 LEFT JOIN 

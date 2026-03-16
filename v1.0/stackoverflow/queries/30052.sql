@@ -28,7 +28,7 @@ InactivePosts AS (
         COALESCE(P.ViewCount, 0) AS ViewCount,
         DENSE_RANK() OVER (PARTITION BY P.OwnerUserId ORDER BY P.LastActivityDate DESC) AS RecentActivityRank
     FROM Posts P
-    WHERE P.LastActivityDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months' 
+    WHERE P.LastActivityDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH 
 ),
 
 ClosedPosts AS (

@@ -31,7 +31,7 @@ MoviesWithDetails AS (
         ta.actor_name,
         ta.role_count,
         (SELECT COUNT(*) FROM movie_info mi WHERE mi.movie_id = rm.movie_id) AS info_count,
-        (SELECT STRING_AGG(DISTINCT kw.keyword, ', ') FROM movie_keyword mk JOIN keyword kw ON mk.keyword_id = kw.id WHERE mk.movie_id = rm.movie_id) AS keywords
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') FROM movie_keyword mk JOIN keyword kw ON mk.keyword_id = kw.id WHERE mk.movie_id = rm.movie_id) AS keywords
     FROM 
         RankedMovies rm
     LEFT JOIN 

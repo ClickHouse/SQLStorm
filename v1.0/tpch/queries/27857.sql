@@ -7,7 +7,7 @@ SELECT
             WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) 
             ELSE 0 
         END) AS avg_returned_value, 
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     part p
 JOIN 

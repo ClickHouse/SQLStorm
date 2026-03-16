@@ -9,7 +9,7 @@ SELECT
     AVG(ws.ws_sales_price) AS average_order_value,
     MIN(ws.ws_sales_price) AS min_order_value,
     MAX(ws.ws_sales_price) AS max_order_value,
-    STRING_AGG(DISTINCT i.i_category, ', ') AS purchased_categories
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_category))), ', ') AS purchased_categories
 FROM 
     customer c
 JOIN 

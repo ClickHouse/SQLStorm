@@ -51,7 +51,7 @@ SELECT
     tm.production_year,
     COUNT(DISTINCT cd.actor_name) AS total_actors,
     COALESCE(SUM(cd.info_count), 0) AS total_actor_info,
-    STRING_AGG(DISTINCT cd.role_type, ', ') AS roles_played
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.role_type))), ', ') AS roles_played
 FROM 
     TopMovies tm
 LEFT JOIN 

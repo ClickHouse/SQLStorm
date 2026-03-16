@@ -59,7 +59,7 @@ FinalBenchmark AS (
         rm.title,
         rm.production_year,
         cc.cast_count,
-        ARRAY_AGG(DISTINCT cr.role) AS frequent_roles,
+        arrayDistinct(groupArray(assumeNotNull(cr.role))) AS frequent_roles,
         cd.company_name,
         cd.company_type,
         mti.synopsis,

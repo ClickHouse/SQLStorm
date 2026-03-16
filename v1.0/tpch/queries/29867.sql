@@ -4,7 +4,7 @@ SELECT
     CONCAT(r.r_name, ' - ', n.n_name) AS location, 
     SUM(ps.ps_availqty) AS total_available_quantity, 
     AVG(p.p_retailprice) AS avg_retail_price, 
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS aggregated_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS aggregated_comments
 FROM 
     part p
 JOIN 

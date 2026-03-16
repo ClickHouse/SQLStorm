@@ -35,7 +35,7 @@ PostSummaries AS (
 ),
 TagPostCounts AS (
     SELECT 
-        unnest(string_to_array(P.Tags, '>')) AS TagName,
+        arrayJoin(splitByString('>', P.Tags)) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts P
     GROUP BY TagName
@@ -61,8 +61,8 @@ SELECT
     UR.ReputationLevel
 FROM PostSummaries PS
 LEFT JOIN ClosedPosts CP ON PS.PostId = CP.PostId
-LEFT JOIN TagPostCounts TPC ON TPC.TagName = ANY(string_to_array(PS.Title, ' '))
-LEFT JOIN UserReputations UR ON PS.DisplayName = UR.UserId::varchar
+LEFT JOIN TagPostCounts TPC ON TPC.TagName = ANY(splitByString(' ', PS.Title))
+LEFT JOIN UserReputations UR ON PS.DisplayName = CAST(UR.UserId AS varchar)
 WHERE PS.RN = 1
 ORDER BY PS.CreationDate DESC
 LIMIT 100;

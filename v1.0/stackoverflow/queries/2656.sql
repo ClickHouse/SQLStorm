@@ -7,7 +7,7 @@ RecentPosts AS (
     SELECT P.Id, P.Title, P.OwnerUserId, P.CreationDate, P.ViewCount,
            RANK() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RecentRank
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 TopUsers AS (
     SELECT U.Id, U.DisplayName, U.Reputation,

@@ -10,7 +10,7 @@ WITH PostMetrics AS (
         p.Score,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList,
         u.DisplayName AS OwnerDisplayName,
         u.Reputation AS OwnerReputation,
         p.OwnerUserId  -- Added to GROUP BY
@@ -21,7 +21,7 @@ WITH PostMetrics AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        LATERAL (SELECT UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS TagName) t ON TRUE
+        (SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName) t ON TRUE
     WHERE 
         p.PostTypeId = 1  
     GROUP BY 
@@ -31,7 +31,7 @@ WITH PostMetrics AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(*) FILTER (WHERE b.Class = 1) AS GoldBadges,
         COUNT(*) FILTER (WHERE b.Class = 2) AS SilverBadges,
         COUNT(*) FILTER (WHERE b.Class = 3) AS BronzeBadges

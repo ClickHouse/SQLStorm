@@ -4,7 +4,7 @@ SELECT
     r.r_name AS region_name,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     SUM(l.l_quantity) AS total_quantity_sold,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     AVG(o.o_totalprice) AS average_order_value
 FROM 
     supplier s

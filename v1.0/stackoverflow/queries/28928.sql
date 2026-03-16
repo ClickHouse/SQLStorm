@@ -17,13 +17,13 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' AND 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND 
         p.Score > 0
 ),
 RelevantTags AS (
     SELECT 
         PostId,
-        UNNEST(string_to_array(Substring(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', Substring(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS Tag
     FROM 
         RankedPosts
 ),
@@ -56,7 +56,7 @@ SELECT
     tp.ViewCount,
     tp.OwnerDisplayName,
     tp.PostTypeName,
-    STRING_AGG(DISTINCT tc.Tag, ', ') AS RelatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tc.Tag))), ', ') AS RelatedTags
 FROM 
     TopPosts tp
 JOIN 

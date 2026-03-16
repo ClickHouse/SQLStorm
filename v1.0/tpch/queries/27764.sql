@@ -30,7 +30,7 @@ SELECT
     SUM(number_of_parts) AS total_parts,
     SUM(total_available_quantity) AS total_quantity,
     AVG(total_supply_cost) AS avg_supply_cost,
-    STRING_AGG(supplier_name, ', ' ORDER BY total_supply_cost DESC) AS suppliers
+    arrayStringConcat(groupArray(assumeNotNull(supplier_name)), ', ' ORDER BY total_supply_cost DESC) AS suppliers
 FROM 
     HighValueSuppliers
 WHERE 

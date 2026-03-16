@@ -63,4 +63,4 @@ WHERE
     AND (s.cd_gender = 'F' OR s.cd_gender IS NULL)
 ORDER BY 
     s.max_web_sale DESC, s.order_count ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

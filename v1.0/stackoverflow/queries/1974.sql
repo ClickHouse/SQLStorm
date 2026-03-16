@@ -6,7 +6,7 @@ WITH UserBadges AS (
         COUNT(b.Id) FILTER (WHERE b.Class = 2) AS SilverBadges,
         COUNT(b.Id) FILTER (WHERE b.Class = 3) AS BronzeBadges,
         COUNT(b.Id) AS TotalBadges,
-        SUM(CASE WHEN b.Date >= DATE '2024-10-01' - INTERVAL '1 year' THEN 1 ELSE 0 END) AS RecentBadges
+        SUM(CASE WHEN b.Date >= toDate('2024-10-01') - INTERVAL 1 YEAR THEN 1 ELSE 0 END) AS RecentBadges
     FROM Users u
     LEFT JOIN Badges b ON u.Id = b.UserId
     GROUP BY u.Id
@@ -27,7 +27,7 @@ RecentComments AS (
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT c.PostId) AS PostsCommented
     FROM Comments c
-    WHERE c.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
+    WHERE c.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
     GROUP BY c.UserId
 )
 SELECT 

@@ -59,11 +59,11 @@ HighScoringPosts AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        UNNEST(string_to_array(p.Tags, ',')) AS tag ON p.Id = p.Id
+        arrayJoin(splitByString(',', p.Tags)) AS tag ON p.Id = p.Id
     JOIN 
         Tags t ON LOWER(TRIM(tag)) = LOWER(t.TagName)
     GROUP BY 

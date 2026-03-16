@@ -23,7 +23,7 @@ TopMovies AS (
 MovieKeywords AS (
     SELECT 
         m.movie_id, 
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword m
     JOIN 
@@ -36,7 +36,7 @@ MovieDetails AS (
         tm.title,
         tm.production_year,
         COALESCE(mk.keywords, 'No keywords') AS keywords,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors
     FROM 
         TopMovies tm
     LEFT JOIN 

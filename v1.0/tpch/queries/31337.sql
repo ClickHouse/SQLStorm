@@ -33,7 +33,7 @@ LEFT JOIN (
     JOIN orders o ON l.l_orderkey = o.o_orderkey
     JOIN customer c ON o.o_custkey = c.c_custkey
     JOIN nation n ON c.c_nationkey = n.n_nationkey
-    WHERE l.l_shipdate > DATE '1998-10-01' - INTERVAL '1 year'
+    WHERE l.l_shipdate > toDate('1998-10-01') - INTERVAL 1 YEAR
     GROUP BY n.n_name
 ) b ON a.n_name = b.n_name
 ORDER BY a.TotalSupplyCost DESC

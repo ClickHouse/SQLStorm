@@ -45,7 +45,7 @@ SELECT
      FROM lineitem l
      JOIN orders o ON l.l_orderkey = o.o_orderkey
      WHERE o.o_custkey = co.c_custkey) AS distinct_parts_ordered,
-    (SELECT STRING_AGG(DISTINCT s.s_name, ', ')
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ')
      FROM HighValueSuppliers s
      JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
      JOIN lineitem l ON ps.ps_partkey = l.l_partkey

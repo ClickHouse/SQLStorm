@@ -53,7 +53,7 @@ SELECT
     COALESCE(SUM(od.total_revenue), 0) AS total_revenue,
     COALESCE(MAX(ss.total_cost), 0) AS supplier_cost,
     COUNT(DISTINCT cr.c_custkey) AS customer_count,
-    STRING_AGG(DISTINCT cr.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.c_name))), ', ') AS customer_names
 FROM 
     SupplierSummary ss
 LEFT JOIN 
@@ -71,4 +71,4 @@ HAVING
     COUNT(DISTINCT cr.c_custkey) > 5
 ORDER BY 
     total_revenue DESC, supplier_cost ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

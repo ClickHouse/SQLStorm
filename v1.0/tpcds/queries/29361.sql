@@ -8,7 +8,7 @@ SELECT
     CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type) AS full_address,
     TRIM(COALESCE(MAX(cd_marital_status), 'Unknown')) AS marital_status,
     MAX(d_year) AS latest_year,
-    STRING_AGG(DISTINCT cd_education_status, ', ') AS education_levels
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_levels
 FROM 
     customer AS c 
 JOIN 

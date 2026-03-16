@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId
 ),
@@ -38,7 +38,7 @@ PostHistorySummary AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         ph.PostId, 
         ph.PostHistoryTypeId
@@ -68,7 +68,7 @@ SELECT
             END
         ELSE 'No Changes'
     END AS ActivityLevel,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Tags t 
      JOIN Posts p2 ON p2.Tags LIKE '%' || t.TagName || '%' 
      WHERE p2.Id = tp.PostId) AS Tags

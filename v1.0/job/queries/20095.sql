@@ -32,7 +32,7 @@ Top_Actors AS (
 Companies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         COALESCE(MIN(ct.kind), 'Unknown') AS company_type
     FROM 
         movie_companies mc

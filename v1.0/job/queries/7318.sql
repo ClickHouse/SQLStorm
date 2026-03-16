@@ -3,8 +3,8 @@ SELECT
     a.name AS actor_name,
     t.title AS movie_title,
     t.production_year,
-    STRING_AGG(DISTINCT c.kind, ', ') AS company_types,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     p.info AS actor_info
 FROM 
     aka_name a

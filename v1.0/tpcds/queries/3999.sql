@@ -5,7 +5,7 @@ WITH recent_sales AS (
     FROM web_sales 
     WHERE ws_sold_date_sk IN (SELECT d_date_sk 
                                FROM date_dim 
-                               WHERE d_date >= cast('2002-10-01' as date) - INTERVAL '3 MONTH')
+                               WHERE d_date >= cast('2002-10-01' as date) - INTERVAL 3 MONTH)
     GROUP BY ws_item_sk
 ), high_income_customers AS (
     SELECT c.c_customer_sk, 

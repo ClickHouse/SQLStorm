@@ -11,7 +11,7 @@ SELECT
     COUNT(DISTINCT CASE 
         WHEN ws.ws_order_number IS NOT NULL THEN ws.ws_order_number 
         END) AS order_count,
-    STRING_AGG(DISTINCT CONCAT_WS(', ', p.p_promo_name), '; ') AS applied_promotions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(', ', p.p_promo_name)))), '; ') AS applied_promotions
 FROM 
     customer c
 JOIN 

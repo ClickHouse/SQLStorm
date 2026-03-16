@@ -60,7 +60,7 @@ SELECT
 FROM 
     CustomerStats cs
 JOIN 
-    PromotionalImpact pi ON cs.c_customer_sk = (SELECT c.c_customer_sk FROM customer c ORDER BY RANDOM() LIMIT 1)
+    PromotionalImpact pi ON cs.c_customer_sk = (SELECT c.c_customer_sk FROM customer c ORDER BY rand() LIMIT 1)
 JOIN 
     DailySales ds ON ds.d_date BETWEEN '2023-01-01' AND '2023-12-31'
 ORDER BY 

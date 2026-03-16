@@ -19,7 +19,7 @@ RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserPostDetails AS (
     SELECT 
@@ -47,7 +47,7 @@ SELECT
         ELSE 'Inactive'
     END AS ActivityLevel,
     COALESCE(SUM(b.Id), 0) AS TotalBadges,
-    ARRAY_AGG(DISTINCT pt.Name) AS PostTypes
+    arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypes
 FROM 
     UserPostDetails ud
 LEFT JOIN 

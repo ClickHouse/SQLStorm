@@ -35,7 +35,7 @@ SELECT
     mh.episode_nr,
     COALESCE(c.role_id, 0) AS role_count,
     COUNT(DISTINCT m_know.keyword) AS keyword_count,
-    STRING_AGG(DISTINCT cc.kind, ', ') AS company_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cc.kind))), ', ') AS company_types,
     MAX(pi.info) AS director_info
 FROM 
     MovieHierarchy mh

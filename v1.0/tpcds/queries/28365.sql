@@ -42,8 +42,8 @@ CustomerInfo AS (
 SELECT 
     cd.cd_gender,
     COUNT(*) AS total_customers,
-    STRING_AGG(ci.full_address, '; ') AS customer_addresses,
-    STRING_AGG(ci.full_name, ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(ci.full_address)), '; ') AS customer_addresses,
+    arrayStringConcat(groupArray(assumeNotNull(ci.full_name)), ', ') AS customer_names
 FROM 
     CustomerInfo ci
 JOIN 

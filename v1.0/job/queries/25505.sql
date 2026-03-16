@@ -21,7 +21,7 @@ WITH MovieTitles AS (
 UniqueKeywords AS (
     SELECT 
         mk.movie_id,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords_list
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords_list
     FROM 
         movie_keyword mk
     JOIN 

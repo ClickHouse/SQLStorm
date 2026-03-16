@@ -5,7 +5,7 @@ WITH MovieStats AS (
         a.production_year,
         COUNT(DISTINCT c.person_id) AS actor_count,
         AVG(CASE WHEN c.nr_order IS NOT NULL THEN c.nr_order ELSE 0 END) AS avg_order,
-        STRING_AGG(DISTINCT cn.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS cast_names
     FROM 
         aka_title a
     LEFT JOIN 

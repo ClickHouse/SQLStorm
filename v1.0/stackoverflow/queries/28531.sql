@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 )
 , PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts
@@ -40,7 +40,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(string_to_array(rp.Tags, ','))
+    PopularTags pt ON pt.TagName = ANY(splitByString(',', rp.Tags))
 WHERE 
     rp.PostRank = 1 
 ORDER BY 

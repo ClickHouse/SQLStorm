@@ -24,7 +24,7 @@ JOIN
     customer C ON O.o_custkey = C.c_custkey
 WHERE 
     P.p_comment LIKE '%special%'
-    AND O.o_orderdate >= DATE '1997-01-01'
+    AND O.o_orderdate >= toDate('1997-01-01')
 GROUP BY 
     P.p_name, S.s_name, C.c_name, R.r_name, P.p_brand, P.p_type
 ORDER BY 

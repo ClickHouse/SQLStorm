@@ -1,14 +1,14 @@
 
 WITH RECURSIVE YearlySales AS (
     SELECT 
-        EXTRACT(YEAR FROM o.o_orderdate) AS order_year,
+        toYear(o.o_orderdate) AS order_year,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales
     FROM 
         orders o
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     GROUP BY 
-        EXTRACT(YEAR FROM o.o_orderdate)
+        toYear(o.o_orderdate)
     UNION ALL
     SELECT 
         ys.order_year + 1,
@@ -16,7 +16,7 @@ WITH RECURSIVE YearlySales AS (
     FROM 
         YearlySales ys
     JOIN 
-        orders o ON EXTRACT(YEAR FROM o.o_orderdate) = ys.order_year + 1
+        orders o ON toYear(o.o_orderdate) = ys.order_year + 1
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     GROUP BY 
@@ -68,7 +68,7 @@ FROM
 LEFT JOIN 
     (
         SELECT 
-            EXTRACT(YEAR FROM o.o_orderdate) AS year,
+            toYear(o.o_orderdate) AS year,
             SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,
             l.l_suppkey
         FROM 
@@ -76,7 +76,7 @@ LEFT JOIN
         JOIN 
             lineitem l ON o.o_orderkey = l.l_orderkey
         GROUP BY 
-            EXTRACT(YEAR FROM o.o_orderdate), l.l_suppkey
+            toYear(o.o_orderdate), l.l_suppkey
     ) t ON t.year = ys.order_year
 LEFT JOIN 
     TopSuppliers ts ON t.l_suppkey = ts.s_suppkey

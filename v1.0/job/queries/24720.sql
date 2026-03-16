@@ -32,7 +32,7 @@ cast_summary AS (
 genres AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, ', ') AS genre_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS genre_list
     FROM 
         movie_info AS mi
     WHERE 

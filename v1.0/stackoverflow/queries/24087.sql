@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
 ),
@@ -31,7 +31,7 @@ UserBadges AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons,
         ph.CreationDate AS ClosedDate
     FROM 
         PostHistory ph

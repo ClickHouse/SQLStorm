@@ -43,7 +43,7 @@ PostDetails AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
+        p.CreationDate > now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, p.ViewCount
 )

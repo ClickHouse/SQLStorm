@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         COUNT(c.Id) AS CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.CreationDate DESC) AS Rank,
-        STRING_AGG(DISTINCT CONCAT(u.DisplayName, ' (', u.Reputation, ')'), ', ') AS Commenters
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' (', u.Reputation, ')')))), ', ') AS Commenters
     FROM 
         Posts p
     LEFT JOIN 
@@ -31,11 +31,11 @@ RecentQuestions AS (
     FROM 
         RankedPosts rp
     WHERE 
-        rp.Rank = 1 AND rp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
+        rp.Rank = 1 AND rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
 ),
 KeywordTagCount AS (
     SELECT 
-        unnest(string_to_array(t.TagName, ',')) AS Tag,
+        arrayJoin(splitByString(',', t.TagName)) AS Tag,
         COUNT(pt.Id) AS PostCount
     FROM 
         Tags t

@@ -8,7 +8,7 @@ WITH PostStatistics AS (
         p.ViewCount,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS VoteCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH PostStatistics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '><')) AS tag_name ON true
+        arrayJoin(splitByString('><', p.Tags)) AS tag_name ON true
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     GROUP BY 

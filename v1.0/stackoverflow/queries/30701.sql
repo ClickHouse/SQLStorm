@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 UserStatistics AS (
     SELECT 
@@ -37,7 +37,7 @@ RecentClosedPosts AS (
         p.Title,
         ph.CreationDate AS ClosedDate,
         ph.UserDisplayName AS ClosedBy,
-        STRING_AGG(c.Text, '; ') AS CloseComments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS CloseComments
     FROM 
         Posts p
     INNER JOIN 
@@ -45,7 +45,7 @@ RecentClosedPosts AS (
     LEFT JOIN 
         Comments c ON c.PostId = p.Id
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        ph.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         p.Id, p.Title, ph.CreationDate, ph.UserDisplayName
 )

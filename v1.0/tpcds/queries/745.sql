@@ -20,7 +20,7 @@ recent_web_sales AS (
     JOIN 
         date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
     WHERE 
-        d.d_date > cast('2002-10-01' as date) - INTERVAL '1 year'
+        d.d_date > cast('2002-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         ws.ws_bill_customer_sk
 ),

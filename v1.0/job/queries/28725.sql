@@ -15,7 +15,7 @@ ActorDetails AS (
         a.id AS aka_id,
         a.name AS actor_name,
         p.gender,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_name a
     JOIN 
@@ -34,7 +34,7 @@ ActorDetails AS (
 MovieCompanyInfo AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies,
         MAX(ct.kind) AS company_type
     FROM 
         movie_companies m

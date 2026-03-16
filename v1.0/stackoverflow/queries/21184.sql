@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserReputation AS (
     SELECT 
@@ -48,7 +48,7 @@ FilteredPostHistory AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months' 
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH 
         AND ph.PostHistoryTypeId IN (10, 11, 12) 
 ),
 LatestPostComments AS (

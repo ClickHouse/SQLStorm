@@ -7,7 +7,7 @@ SELECT
     SUM(ws.ws_quantity) AS total_quantity,
     SUM(ws.ws_ext_sales_price) AS total_sales,
     AVG(ws.ws_net_profit) AS average_net_profit,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
     COUNT(DISTINCT ws.ws_order_number) AS order_count
 FROM 
     customer c 

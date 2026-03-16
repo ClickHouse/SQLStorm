@@ -1,6 +1,6 @@
 
 WITH RECURSIVE sales_hierarchy AS (
-    SELECT s_store_sk, s_store_name, NULL::integer AS parent_store_sk, 0 AS level
+    SELECT s_store_sk, s_store_name, CAST(NULL AS integer) AS parent_store_sk, 0 AS level
     FROM store
     WHERE s_country = 'USA'
     UNION ALL

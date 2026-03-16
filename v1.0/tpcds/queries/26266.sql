@@ -29,8 +29,8 @@ Customer_and_Address AS (
 String_Benchmark AS (
     SELECT
         c.ca_state,
-        STRING_AGG(DISTINCT c.ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT c.c_first_name || ' ' || c.c_last_name, '; ') AS full_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.ca_city))), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_first_name || ' ' || c.c_last_name))), '; ') AS full_names,
         MAX(street_name_length) AS longest_street_name,
         MIN(street_name_length) AS shortest_street_name,
         a.unique_addresses

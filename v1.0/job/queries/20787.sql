@@ -45,7 +45,7 @@ SELECT
         WHEN mn.unique_name_count IS NULL THEN 'No Names'
         ELSE CAST(mn.unique_name_count AS TEXT)
     END AS name_count,
-    STRING_AGG(DISTINCT c.note, ', ') AS cast_notes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.note))), ', ') AS cast_notes,
     DENSE_RANK() OVER (PARTITION BY m.production_year ORDER BY m.rank_count DESC) AS dense_rank
 FROM
     ranked_movies m

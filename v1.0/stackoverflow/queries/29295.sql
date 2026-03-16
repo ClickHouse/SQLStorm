@@ -58,7 +58,7 @@ LEFT JOIN
 LEFT JOIN 
     TagStatistics TS ON TS.TagName IN (
         SELECT 
-            unnest(string_to_array(P.Tags, '><')) 
+            arrayJoin(splitByString('><', P.Tags)) 
         FROM 
             Posts P 
         WHERE 

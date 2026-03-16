@@ -26,7 +26,7 @@ actor_summary AS (
         actor_name,
         COUNT(movie_title) AS movie_count,
         MAX(production_year) AS latest_year,
-        STRING_AGG(DISTINCT movie_info, '; ') AS movie_infos
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_info))), '; ') AS movie_infos
     FROM 
         ranked_titles
     WHERE 
@@ -38,7 +38,7 @@ movies_with_keywords AS (
     SELECT 
         t.id AS movie_id,
         t.title,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         aka_title t
     LEFT JOIN 

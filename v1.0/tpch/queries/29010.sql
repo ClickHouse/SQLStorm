@@ -6,7 +6,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     AVG(s.s_acctbal) AS avg_supplier_balance,
-    MAX(DATE_PART('year', o.o_orderdate)) AS latest_order_year
+    MAX(datePart('year', o.o_orderdate)) AS latest_order_year
 FROM 
     part p
 JOIN 

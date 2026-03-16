@@ -42,10 +42,10 @@ UserBadges AS (
 CloseReasons AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(CR.Name, ', ') AS CloseReasonNames,
+        arrayStringConcat(groupArray(assumeNotNull(CR.Name)), ', ') AS CloseReasonNames,
         COUNT(*) AS CloseCount
     FROM PostHistory PH
-    JOIN CloseReasonTypes CR ON PH.Comment::int = CR.Id
+    JOIN CloseReasonTypes CR ON CAST(PH.Comment AS int) = CR.Id
     WHERE PH.PostHistoryTypeId IN (10, 11)
     GROUP BY PH.PostId
 )
@@ -65,6 +65,6 @@ JOIN UserBadges UB ON U.Id = UB.UserId
 JOIN PostsWithTags PT ON U.Id = PT.OwnerUserId
 LEFT JOIN CloseReasons CR ON PT.PostId = CR.PostId
 WHERE U.Reputation >= 1000
-    AND PT.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+    AND PT.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     AND (UB.BadgeCount IS NULL OR UB.BadgeCount > 2)
 ORDER BY U.Reputation DESC, PT.CreationDate DESC;

@@ -14,13 +14,13 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users au ON p.OwnerUserId = au.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS ClosedDate,
-        STRING_AGG(ct.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(ct.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

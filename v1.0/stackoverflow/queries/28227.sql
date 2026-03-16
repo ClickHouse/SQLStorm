@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         Badges b ON U.Id = b.UserId
     WHERE 
         p.PostTypeId = 1 AND  
-        p.CreationDate > DATE '2024-10-01' - INTERVAL '1 year' 
+        p.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, U.DisplayName, p.Title, p.Body, p.Score, p.CreationDate
 ),
@@ -53,11 +53,11 @@ SELECT
         WHEN tp.Score > 0 THEN 'Popular'
         ELSE 'New'
     END AS PostCategory,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
-    unnest(string_to_array(substring(tp.Body, 2, length(tp.Body)-2), '> <')) AS tag ON tag LIKE 'tag-%'  
+    arrayJoin(splitByString('> <', substring(tp.Body, 2, length(tp.Body)-2))) AS tag ON tag LIKE 'tag-%'  
 LEFT JOIN 
     Tags t ON LOWER(t.TagName) = LOWER(tag)  
 GROUP BY 

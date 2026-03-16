@@ -3,7 +3,7 @@ WITH AddressDetails AS (
     SELECT 
         ca_country,
         COUNT(*) AS AddressCount,
-        STRING_AGG(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), ', ') AS FullAddressList
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type))), ', ') AS FullAddressList
     FROM 
         customer_address
     GROUP BY 
@@ -14,7 +14,7 @@ Demographics AS (
         cd_gender,
         MAX(cd_purchase_estimate) AS MaxPurchaseEstimate,
         MIN(cd_credit_rating) AS MinCreditRating,
-        STRING_AGG(CONCAT(cd_demo_sk, ': ', cd_gender), ', ') AS DemoDetails
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(cd_demo_sk, ': ', cd_gender))), ', ') AS DemoDetails
     FROM 
         customer_demographics
     GROUP BY 

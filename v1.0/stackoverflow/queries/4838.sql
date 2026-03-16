@@ -9,7 +9,7 @@ WITH UserActivity AS (
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE U.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE U.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY U.Id, U.DisplayName
 ),
 ActiveUsers AS (

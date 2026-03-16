@@ -37,7 +37,7 @@ MovieInfoExtended AS (
         rm.title,
         rm.production_year,
         cd.cast_count,
-        STRING_AGG(cd.name, ', ') AS female_cast,
+        arrayStringConcat(groupArray(assumeNotNull(cd.name)), ', ') AS female_cast,
         rt.kind AS movie_genre
     FROM 
         RankedMovies rm

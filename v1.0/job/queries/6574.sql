@@ -1,7 +1,7 @@
 
 WITH movie_details AS (
-    SELECT t.title, t.production_year, STRING_AGG(DISTINCT k.keyword, ', ') AS keywords, 
-           STRING_AGG(DISTINCT c.name, ', ') AS companies
+    SELECT t.title, t.production_year, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords, 
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies
     FROM title t
     JOIN movie_companies mc ON t.id = mc.movie_id
     JOIN company_name c ON mc.company_id = c.id
@@ -23,7 +23,7 @@ combined_details AS (
     FROM movie_details md
     JOIN actor_details ad ON md.title = ad.title AND md.production_year = ad.production_year
 )
-SELECT title, production_year, keywords, companies, STRING_AGG(DISTINCT actor_name || ' as ' || role, ', ') AS actors
+SELECT title, production_year, keywords, companies, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name || ' as ' || role))), ', ') AS actors
 FROM combined_details
 GROUP BY title, production_year, keywords, companies
 ORDER BY production_year DESC, title;

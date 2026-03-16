@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, u.DisplayName
 ),
@@ -57,7 +57,7 @@ SELECT
         ELSE 'Neutral'
     END AS VoteCategory,
     COALESCE(pwz.CommentCount, 0) AS TotalComments,
-    STRING_AGG(DISTINCT pht.Name, ', ') AS PostHistoryTypes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS PostHistoryTypes
 FROM 
     PostsWithVotes pwv
 LEFT JOIN 
@@ -80,4 +80,4 @@ HAVING
     COUNT(DISTINCT ph.Id) > 0 OR COALESCE(pwz.CommentCount, 0) > 0
 ORDER BY 
     pwv.NetVotes DESC, pwv.CreationDate ASC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

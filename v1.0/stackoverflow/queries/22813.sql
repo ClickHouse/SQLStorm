@@ -47,7 +47,7 @@ SELECT
         ELSE 'No Comments'
     END AS CommentStatus,
     CASE 
-        WHEN rp.CreationDate < (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') THEN 'Old'
+        WHEN rp.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) THEN 'Old'
         ELSE 'New'
     END AS PostAgeStatus
 FROM RankedPosts rp

@@ -10,7 +10,7 @@ SELECT
     SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
     SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
     SUM(CASE WHEN b.Id IS NOT NULL THEN 1 ELSE 0 END) AS TotalBadges,
-    AVG(EXTRACT(EPOCH FROM COALESCE(p.LastActivityDate, p.CreationDate) - p.CreationDate)) AS AvgPostAgeSeconds,
+    AVG(toUnixTimestamp(COALESCE(p.LastActivityDate, p.CreationDate) - p.CreationDate)) AS AvgPostAgeSeconds,
     AVG(p.ViewCount) AS AvgViewsPerPost,
     SUM(p.Score) AS TotalScore
 FROM 

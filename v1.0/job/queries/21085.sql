@@ -17,7 +17,7 @@ WITH RecursiveCTE AS (
 AggregateRoles AS (
     SELECT 
         ci.movie_id, 
-        STRING_AGG(r.role, ', ') AS roles_combined
+        arrayStringConcat(groupArray(assumeNotNull(r.role)), ', ') AS roles_combined
     FROM 
         cast_info ci
     JOIN 

@@ -61,4 +61,4 @@ WHERE
 ORDER BY 
     cs.total_web_sales DESC NULLS LAST,
     cd.cd_purchase_estimate DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -44,4 +44,4 @@ WHERE
     rp.PostRank = 1
 ORDER BY 
     rp.Score DESC, rp.CreationDate
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

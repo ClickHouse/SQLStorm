@@ -33,7 +33,7 @@ KeywordCounts AS (
 CompleteCastInfo AS (
     SELECT 
         cc.movie_id,
-        STRING_AGG(CONCAT(p.name, ' as ', rt.role), ', ') AS full_cast
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(p.name, ' as ', rt.role))), ', ') AS full_cast
     FROM 
         complete_cast cc
     JOIN 

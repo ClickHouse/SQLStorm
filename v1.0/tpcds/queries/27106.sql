@@ -60,4 +60,4 @@ JOIN SalesData sd ON ac.c_customer_sk = sd.ws_bill_customer_sk
 WHERE ac.cd_gender = 'F' 
 AND ac.cd_marital_status = 'M'
 ORDER BY sd.total_net_profit DESC, sd.total_quantity DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

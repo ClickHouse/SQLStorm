@@ -4,7 +4,7 @@ WITH TagData AS (
         p.Id AS PostId,
         p.Title,
         p.Tags,
-        STRING_AGG(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), ',') AS TagList,
+        arrayStringConcat(groupArray(assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))), ',') AS TagList,
         COUNT(c.Id) AS CommentCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes
@@ -21,7 +21,7 @@ WITH TagData AS (
 ),
 TagStatistics AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(TagList, ',')) AS TagName,
+        arrayJoin(splitByString(',', TagList)) AS TagName,
         COUNT(PostId) AS PostCount,
         SUM(CommentCount) AS TotalComments,
         SUM(UpVotes) AS TotalUpVotes,

@@ -21,12 +21,12 @@ WITH UserActivity AS (
         u.Id, u.DisplayName
 ), PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '|')) AS TagName,
+        arrayJoin(splitByString('|', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
-        CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         TagName
 ), PostStatistics AS (

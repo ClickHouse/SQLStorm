@@ -5,7 +5,7 @@ SELECT
     AVG(p.ViewCount) AS AverageViewCount,
     AVG(p.AnswerCount) AS AverageAnswerCount,
     MAX(p.LastActivityDate) AS MostRecentActivity,
-    AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AverageTimeToActivity 
+    AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AverageTimeToActivity 
 FROM 
     Posts p
 JOIN 

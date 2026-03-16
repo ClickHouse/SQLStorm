@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsAggregated
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsAggregated
     FROM
         Posts p
     JOIN
@@ -16,12 +16,12 @@ WITH RankedPosts AS (
     LEFT JOIN
         Comments c ON p.Id = c.PostId
     LEFT JOIN
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag ON true
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag ON true
     LEFT JOIN
         Tags t ON tag = t.TagName
     WHERE
         p.PostTypeId = 1  
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.DisplayName
 ),
@@ -35,7 +35,7 @@ RankedWithBadges AS (
     LEFT JOIN 
         Badges b ON rp.PostId = b.UserId
     WHERE
-        b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 FinalRanking AS (
     SELECT

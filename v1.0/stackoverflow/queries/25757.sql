@@ -1,7 +1,7 @@
 
 WITH TagFrequencies AS (
     SELECT
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
         COUNT(*) AS TagCount
     FROM Posts
     WHERE PostTypeId = 1  
@@ -61,6 +61,6 @@ SELECT
     r.EditComment
 FROM TopTags t
 JOIN TopUsers u ON u.Rank <= 10  
-JOIN RecentActivity r ON r.EditDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+JOIN RecentActivity r ON r.EditDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 WHERE t.Rank <= 10  
 ORDER BY t.TagCount DESC, u.TotalViews DESC, r.EditDate DESC;

@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS num_suppliers,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     SUM(l.l_quantity) AS total_quantity,
-    STRING_AGG(DISTINCT SUBSTRING(s.s_comment, 1, 20), '; ') AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(s.s_comment, 1, 20)))), '; ') AS supplier_comments
 FROM 
     part p
 JOIN 

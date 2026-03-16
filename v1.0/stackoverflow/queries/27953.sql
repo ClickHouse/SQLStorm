@@ -56,7 +56,7 @@ SELECT
         WHEN ad.Rank <= 10 THEN 'Excellent Engagement'
         ELSE 'Moderate Engagement'
     END AS EngagementLevel,
-    STRING_AGG(DISTINCT CONCAT(pt.Name, ': ', pt.Id), ', ') AS PostTypeDetails
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(pt.Name, ': ', pt.Id)))), ', ') AS PostTypeDetails
 FROM 
     AggregatedData ad
 JOIN 

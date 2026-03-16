@@ -56,4 +56,4 @@ JOIN PartSupplierDetails psd ON cd.order_count > 5 AND psd.supplier_count > 2
 WHERE cd.total_order_value BETWEEN 500 AND 10000
   AND psd.p_retailprice > (SELECT AVG(p.p_retailprice) FROM part p)
 ORDER BY cd.total_order_value DESC, psd.p_retailprice
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

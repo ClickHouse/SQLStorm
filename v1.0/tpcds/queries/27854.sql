@@ -50,8 +50,8 @@ FROM
 JOIN 
     processed_addresses da ON ac.full_address = da.full_address
 JOIN 
-    demographics dm ON RANDOM() < 0.1  
+    demographics dm ON rand() < 0.1  
 ORDER BY 
     ac.address_frequency DESC, 
     dm.cd_purchase_estimate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

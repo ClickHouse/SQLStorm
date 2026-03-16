@@ -71,6 +71,6 @@ LEFT JOIN
 GROUP BY 
     r.r_regionkey, r.r_name, n.n_name, nt.nation_supply_cost, nt.nation_customer_count
 HAVING 
-    MAX(o.o_orderdate) >= DATE '1997-01-01' OR nt.nation_customer_count > 10
+    MAX(o.o_orderdate) >= toDate('1997-01-01') OR nt.nation_customer_count > 10
 ORDER BY 
     nt.nation_supply_cost DESC NULLS LAST, n.n_name ASC;

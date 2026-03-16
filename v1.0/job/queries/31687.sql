@@ -36,7 +36,7 @@ cast_summary AS (
 movie_genre AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS genres
     FROM 
         movie_keyword mt
     JOIN 
@@ -47,7 +47,7 @@ movie_genre AS (
 movie_info_agg AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS info_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS info_details
     FROM 
         movie_info mi
     GROUP BY 

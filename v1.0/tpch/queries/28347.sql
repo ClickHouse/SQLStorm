@@ -14,7 +14,7 @@ PartDetails AS (
         p.p_name, 
         p.p_brand, 
         COUNT(ps.ps_suppkey) AS supply_count,
-        STRING_AGG(s.s_name, ', ') AS supplier_names
+        arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS supplier_names
     FROM part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey

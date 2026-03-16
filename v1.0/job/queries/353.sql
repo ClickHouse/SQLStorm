@@ -3,7 +3,7 @@ WITH movie_cast AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS num_cast_members,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names
     FROM 
         cast_info c
     JOIN 
@@ -29,7 +29,7 @@ company_agg AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT co.id) AS num_companies,
-        STRING_AGG(DISTINCT co.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS company_names
     FROM 
         movie_companies mc
     JOIN 

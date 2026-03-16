@@ -39,7 +39,7 @@ lineitem_details AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate <= DATE '1998-10-01' - INTERVAL '30 days'
+        l.l_shipdate <= toDate('1998-10-01') - INTERVAL 30 DAY
 ),
 avg_discount AS (
     SELECT 
@@ -66,4 +66,4 @@ WHERE
     AND c_summary.total_spent IS NOT NULL
 ORDER BY 
     s_info.total_supply_cost DESC, c_summary.total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -24,7 +24,7 @@ CitySummary AS (
     SELECT 
         ca.ca_city,
         COUNT(*) AS total_customers,
-        STRING_AGG(full_name, ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names
     FROM 
         RankedCustomers rc
     JOIN 

@@ -17,7 +17,7 @@ WITH UserReputation AS (
 ),
 TopTags AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', Tags)) AS Tag
     FROM 
         Posts
     WHERE 

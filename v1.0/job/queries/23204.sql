@@ -49,7 +49,7 @@ full_movie_info AS (
         md.actor_name,
         md.movie_count,
         md.movie_type,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         movie_details md
     LEFT JOIN 

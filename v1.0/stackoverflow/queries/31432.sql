@@ -68,8 +68,8 @@ SELECT
     COALESCE(FR.TopUser, 'No Users') AS TopUser,
     COALESCE(FR.TotalBadgeScore, 0) AS TotalBadgeScore,
     CASE 
-        WHEN FR.LastActiveDate < (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year') THEN 'Inactive'
-        WHEN FR.LastActiveDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year') AND FR.LastActiveDate < (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month') THEN 'Somewhat Active'
+        WHEN FR.LastActiveDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) THEN 'Inactive'
+        WHEN FR.LastActiveDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AND FR.LastActiveDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH) THEN 'Somewhat Active'
         ELSE 'Active'
     END AS ActivityStatus
 FROM 

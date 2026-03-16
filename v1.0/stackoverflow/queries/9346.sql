@@ -23,7 +23,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostHistory bh ON p.Id = bh.PostId
     WHERE 
-        p.CreationDate >= DATE '2023-01-01'
+        p.CreationDate >= toDate('2023-01-01')
     GROUP BY 
         p.Id, u.DisplayName, pt.Name
 ),

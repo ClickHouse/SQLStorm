@@ -48,7 +48,7 @@ SELECT
     od.o_orderdate,
     od.total_quantity,
     od.unique_parts_count,
-    STRING_AGG(CONCAT(esi.country, ': ', CONCAT('Comment Length = ', esi.comment_length)), '; ') AS supplier_info
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(esi.country, ': ', CONCAT('Comment Length = ', esi.comment_length)))), '; ') AS supplier_info
 FROM 
     RankedParts rp
 LEFT JOIN 

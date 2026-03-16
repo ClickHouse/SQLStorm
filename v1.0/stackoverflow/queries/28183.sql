@@ -11,7 +11,7 @@ WITH PostStatistics AS (
         p.LastActivityDate,
         COALESCE((SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id), 0) AS CommentCount,
         COALESCE((SELECT COUNT(*) FROM Posts a WHERE a.ParentId = p.Id), 0) AS AnswerCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         MAX(ph.CreationDate) AS LastEdit,
         MAX(ph.UserDisplayName) AS LastEditor
     FROM 

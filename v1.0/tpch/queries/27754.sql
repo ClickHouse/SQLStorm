@@ -3,8 +3,8 @@ SELECT
     s.s_name,
     s.s_address,
     CONCAT('Total Availability of ', p.p_name, ' from ', s.s_name, ' is: ', SUM(ps.ps_availqty)) AS availability_summary,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS supplied_nations,
-    STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS market_segments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS supplied_nations,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS market_segments,
     MAX(o.o_orderdate) AS last_order_date,
     COUNT(DISTINCT o.o_orderkey) AS total_orders
 FROM 

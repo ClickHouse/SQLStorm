@@ -40,4 +40,4 @@ SELECT rh.r_name, so.s_name, so.total_orders_value
 FROM RegionHierarchy rh
 JOIN SupplierOrders so ON rh.r_regionkey = so.s_suppkey
 ORDER BY so.total_orders_value DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

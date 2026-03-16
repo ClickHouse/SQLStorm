@@ -26,7 +26,7 @@ WITH RankedPosts AS (
 RecentEdits AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT ph.Comment, ', ') AS EditComments,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), ', ') AS EditComments,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph

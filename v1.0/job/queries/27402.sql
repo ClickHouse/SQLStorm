@@ -4,8 +4,8 @@ WITH RankedMovies AS (
         mt.title AS movie_title,
         mt.production_year,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT an.name, ', ') AS all_cast_names,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS movie_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS all_cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS movie_keywords
     FROM 
         aka_title mt
     INNER JOIN 

@@ -5,8 +5,8 @@ SELECT
     MAX(p.p_retailprice) AS max_price,
     MIN(p.p_retailprice) AS min_price,
     AVG(p.p_retailprice) AS avg_price,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_served
 FROM 
     supplier s
 JOIN 

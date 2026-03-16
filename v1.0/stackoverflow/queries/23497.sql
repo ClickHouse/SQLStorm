@@ -46,14 +46,14 @@ PostVotes AS (
 PostHistoryWithTags AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph
     JOIN 
         Posts p ON ph.PostId = p.Id
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '<>')) AS tag ON tag IS NOT NULL 
+        arrayJoin(splitByString('<>', p.Tags)) AS tag ON tag IS NOT NULL 
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -85,6 +85,6 @@ LEFT JOIN
     PostVotes pv ON pp.Id = pv.PostId
 WHERE 
     tu.PostCount > 0
-    AND (p.LastEditDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' OR p.LastEditDate IS NULL)
+    AND (p.LastEditDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR OR p.LastEditDate IS NULL)
 ORDER BY 
     tu.PostCount DESC, tu.DisplayName;

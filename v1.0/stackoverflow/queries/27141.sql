@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 ),
 TagAggregation AS (
     SELECT 
-        TRIM(BOTH '<>' FROM unnest(string_to_array(Tags, '><'))) AS Tag,
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', Tags))) AS Tag,
         COUNT(*) AS PostCount,
         AVG(Score) AS AverageScore,
         SUM(ViewCount) AS TotalViews
@@ -33,7 +33,7 @@ TagAggregation AS (
     WHERE 
         PostTypeId = 1  
     GROUP BY 
-        TRIM(BOTH '<>' FROM unnest(string_to_array(Tags, '><')))
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', Tags)))
 ),
 CommentsAggregation AS (
     SELECT 

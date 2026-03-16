@@ -1,5 +1,5 @@
 SELECT 
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' - ', r.r_name), '; ') AS customer_region_summary,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' - ', r.r_name)))), '; ') AS customer_region_summary,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(l.l_quantity) AS avg_quantity_per_order

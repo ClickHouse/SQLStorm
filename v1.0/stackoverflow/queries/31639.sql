@@ -32,7 +32,7 @@ SELECT
     COUNT(DISTINCT b.Id) AS TotalBadges,
     COALESCE(SUM(v.vote_count), 0) AS TotalVotes,
     MAX(p.CreationDate) AS LastPostDate,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed,
     CASE 
         WHEN COUNT(DISTINCT b.Id) > 0 THEN 'Has Badges'
         ELSE 'No Badges'
@@ -59,7 +59,7 @@ LEFT JOIN
     (
         SELECT 
             p.Id,
-            unnest(string_to_array(p.Tags, ',')) AS TagName
+            arrayJoin(splitByString(',', p.Tags)) AS TagName
         FROM 
             Posts p
     ) t ON p.Id = t.Id

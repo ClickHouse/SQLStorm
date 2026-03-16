@@ -4,8 +4,8 @@ WITH RankedMovies AS (
         m.title AS movie_title,
         m.production_year,
         COUNT(DISTINCT ca.person_id) AS actor_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
         ROW_NUMBER() OVER (ORDER BY COUNT(DISTINCT ca.person_id) DESC) AS rank
     FROM 
         aka_title m

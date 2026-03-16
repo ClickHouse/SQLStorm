@@ -41,7 +41,7 @@ SELECT
         WHEN s.total_returns > 0 THEN s.ws_net_profit * 0.9 
         ELSE s.ws_net_profit 
     END) AS adjusted_profit,
-    STRING_AGG(DISTINCT s.volume_category || ': ' || s.total_returns || ' returns', ', ') AS volume_summary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.volume_category || ': ' || s.total_returns || ' returns'))), ', ') AS volume_summary
 FROM SalesReturnsSummary s
 WHERE s.profit_rank <= 10
 GROUP BY s.ws_item_sk

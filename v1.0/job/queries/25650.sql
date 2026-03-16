@@ -2,7 +2,7 @@ WITH MovieDetails AS (
     SELECT 
         t.title AS movie_title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COALESCE(cc.kind, 'Unknown') AS company_type,
         COUNT(DISTINCT a.name) AS actor_count
     FROM 

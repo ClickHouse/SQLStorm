@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         P.Score,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
         COUNT(DISTINCT V.UserId) AS UpVoteCount,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS TagList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagList
     FROM 
         Posts P
     JOIN 
@@ -62,6 +62,6 @@ FinalOutput AS (
 )
 SELECT 
     *,
-    (SELECT COUNT(*) FROM Posts WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year') AS TotalPostsLastYear
+    (SELECT COUNT(*) FROM Posts WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR) AS TotalPostsLastYear
 FROM 
     FinalOutput;

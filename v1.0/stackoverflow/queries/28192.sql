@@ -8,14 +8,14 @@ WITH RankedPosts AS (
         p.Score,
         p.CreationDate,
         pt.Name AS PostType,
-        ARRAY_LENGTH(string_to_array(p.Tags, '><'), 1) AS TagCount,
+        length(splitByString('><', p.Tags), 1) AS TagCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank
     FROM
         Posts p
     JOIN
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 FilteredPosts AS (

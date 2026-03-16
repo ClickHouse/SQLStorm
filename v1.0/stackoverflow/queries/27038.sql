@@ -2,7 +2,7 @@
 WITH PostTags AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag
     FROM Posts p
     WHERE p.PostTypeId = 1  
 ),
@@ -10,7 +10,7 @@ TagStatistics AS (
     SELECT 
         Tag,
         COUNT(*) AS QuestionCount,
-        ARRAY_AGG(DISTINCT p.Title) AS ExampleTitles
+        arrayDistinct(groupArray(assumeNotNull(p.Title))) AS ExampleTitles
     FROM PostTags pt
     JOIN Posts p ON pt.PostId = p.Id
     GROUP BY Tag

@@ -14,7 +14,7 @@ TitlesWithKeywords AS (
     SELECT 
         at.id AS title_id, 
         at.title, 
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         aka_title at
     LEFT JOIN 

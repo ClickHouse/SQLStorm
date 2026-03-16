@@ -5,7 +5,7 @@ WITH AvgOrderValue AS (
     FROM 
         orders
     WHERE 
-        o_orderdate >= DATE '1996-01-01' AND o_orderdate < DATE '1997-01-01'
+        o_orderdate >= toDate('1996-01-01') AND o_orderdate < toDate('1997-01-01')
     GROUP BY 
         o_custkey
 ),
@@ -33,7 +33,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END) AS total_returns,
     AVG(a.avg_order_price) AS customer_avg_order_value,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', sp.total_cost, ')'), ', ') AS suppliers_costs
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', sp.total_cost, ')')))), ', ') AS suppliers_costs
 FROM 
     orders o
 JOIN 
@@ -48,7 +48,7 @@ LEFT JOIN
     AvgOrderValue a ON o.o_custkey = a.o_custkey
 WHERE 
     o.o_orderstatus = 'O' AND
-    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     cn.nation_name
 ORDER BY 

@@ -42,8 +42,8 @@ JOIN
 JOIN 
     top_customers tc ON c.c_custkey = tc.custkey
 WHERE 
-    o.o_orderdate >= DATE '1996-01-01' AND 
-    o.o_orderdate < DATE '1997-01-01'
+    o.o_orderdate >= toDate('1996-01-01') AND 
+    o.o_orderdate < toDate('1997-01-01')
 GROUP BY 
     r.r_name
 ORDER BY 

@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice) AS total_revenue,
     AVG(s.s_acctbal) AS avg_supplier_balance,
-    STRING_AGG(DISTINCT o.o_orderpriority, ', ') AS order_priorities
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(o.o_orderpriority))), ', ') AS order_priorities
 FROM 
     part p
 JOIN 

@@ -25,12 +25,12 @@ WITH RankedPosts AS (
 RecentBadges AS (
     SELECT
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(b.Id) AS BadgeCount
     FROM 
         Badges b
     WHERE 
-        b.Date >= CURRENT_DATE - INTERVAL '1 year'
+        b.Date >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 ),

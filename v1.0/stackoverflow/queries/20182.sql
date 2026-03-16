@@ -7,7 +7,7 @@ WITH RankedPosts AS (
            ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS RankByScore,
            SUM(p.ViewCount) OVER (PARTITION BY p.OwnerUserId) AS TotalViews
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT u.Id AS UserId,
@@ -60,9 +60,9 @@ SELECT dp.PostId,
            WHEN dp.DeleteCount > 0 THEN 'Deleted'
            ELSE 'Active'
        END AS PostStatus,
-       ARRAY_AGG(DISTINCT t.TagName) AS RelatedTags
+       arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS RelatedTags
 FROM DetailedPosts dp
-LEFT JOIN Tags t ON t.TagName = ANY(string_to_array(dp.Tags, ','))
+LEFT JOIN Tags t ON t.TagName = ANY(splitByString(',', dp.Tags))
 WHERE dp.OwnerReputation > (SELECT AVG(Reputation) FROM Users)
 GROUP BY dp.PostId, dp.Title, dp.Score, dp.ViewCount, dp.OwnerDisplayName, dp.OwnerReputation,
          dp.CloseCount, dp.DeleteCount, dp.LastEventDate, dp.Tags

@@ -58,8 +58,8 @@ SELECT
     fmd.movie_keyword,
     fmd.actor_role,
     fmd.actor_name,
-    ARRAY_AGG(DISTINCT fmd.company_name) AS companies,
-    ARRAY_AGG(DISTINCT fmd.company_type) AS company_types,
+    arrayDistinct(groupArray(assumeNotNull(fmd.company_name))) AS companies,
+    arrayDistinct(groupArray(assumeNotNull(fmd.company_type))) AS company_types,
     COUNT(fmd.company_name) AS company_count
 FROM 
     full_movie_details fmd

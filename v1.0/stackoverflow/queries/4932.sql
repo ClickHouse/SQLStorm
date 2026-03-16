@@ -5,7 +5,7 @@ WITH UserActivity AS (
         u.DisplayName,
         COUNT(p.Id) AS PostCount,
         SUM(COALESCE(vs.VoteCount, 0)) AS TotalVotes,
-        AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - p.CreationDate))) AS AvgPostAgeInSeconds
+        AVG(toUnixTimestamp((now64(6) - p.CreationDate))) AS AvgPostAgeInSeconds
     FROM 
         Users u
     LEFT JOIN 

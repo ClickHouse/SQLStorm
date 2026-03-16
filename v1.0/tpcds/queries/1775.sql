@@ -65,4 +65,4 @@ WHERE
     a.customer_net_profit < (SELECT AVG(customer_net_profit) FROM customer_info)
 ORDER BY 
     a.total_net_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

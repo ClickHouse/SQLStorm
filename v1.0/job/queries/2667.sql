@@ -39,7 +39,7 @@ SELECT
     mwa.movie_id,
     mwa.title,
     mwa.production_year,
-    STRING_AGG(mwa.actor_name, ', ') AS actor_names,
+    arrayStringConcat(groupArray(assumeNotNull(mwa.actor_name)), ', ') AS actor_names,
     COUNT(DISTINCT mwa.actor_name) AS unique_actors,
     (CASE 
         WHEN COUNT(DISTINCT mwa.actor_name) > 5 THEN 'Ensemble Cast'

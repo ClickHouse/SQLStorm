@@ -41,7 +41,7 @@ RankedUsers AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 

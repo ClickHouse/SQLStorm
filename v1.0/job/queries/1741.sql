@@ -37,7 +37,7 @@ FilteredTitles AS (
 SELECT 
     rm.title,
     ft.company_count,
-    COALESCE(STRING_AGG(k.keyword, ', ') FILTER (WHERE k.keyword IS NOT NULL), 'No Keywords') AS keywords
+    COALESCE(arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') FILTER (WHERE k.keyword IS NOT NULL), 'No Keywords') AS keywords
 FROM 
     RankedMovies rm
 LEFT JOIN 

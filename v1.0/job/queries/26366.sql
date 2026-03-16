@@ -18,7 +18,7 @@ FilteredMovies AS (
     SELECT 
         rm.movie_title,
         rm.production_year,
-        STRING_AGG(rm.actor_name, ', ' ORDER BY rm.actor_rank) AS actors_list
+        arrayStringConcat(groupArray(assumeNotNull(rm.actor_name)), ', ' ORDER BY rm.actor_rank) AS actors_list
     FROM 
         RankedMovies rm
     GROUP BY 
@@ -42,7 +42,7 @@ SELECT
     fm.movie_title,
     fm.production_year,
     fm.actors_list,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     FilteredMovies fm
 LEFT JOIN 

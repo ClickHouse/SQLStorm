@@ -9,7 +9,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     SUM(l.l_extendedprice) AS total_extended_price,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nation_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nation_names
 FROM 
     part p
 JOIN 

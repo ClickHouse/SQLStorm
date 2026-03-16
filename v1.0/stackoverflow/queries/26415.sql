@@ -8,14 +8,14 @@ WITH PostStatistics AS (
         P.AnswerCount,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
         P.CreationDate,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
     FROM 
         Posts P
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
         (SELECT 
-            unnest(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><')) AS TagName,
+            arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2))) AS TagName,
             PostId 
          FROM 
             Posts) T ON P.Id = T.PostId
@@ -46,7 +46,7 @@ WITH PostStatistics AS (
     FROM 
         PostStatistics PS
     WHERE 
-        PS.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        PS.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
 )
 SELECT 
     TQ.Title,

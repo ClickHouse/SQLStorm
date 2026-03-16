@@ -26,8 +26,8 @@ LEFT JOIN lineitem l ON ps.ps_suppkey = l.l_suppkey
 LEFT JOIN supplier_hierarchy sh ON ps.ps_suppkey = sh.s_suppkey
 JOIN nation n ON sh.s_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey
-WHERE l.l_shipdate >= DATE '1997-01-01' 
-  AND l.l_shipdate < DATE '1998-01-01' 
+WHERE l.l_shipdate >= toDate('1997-01-01') 
+  AND l.l_shipdate < toDate('1998-01-01') 
   AND (l.l_returnflag = 'R' OR l.l_linestatus = 'O')
 GROUP BY p.p_partkey, p.p_name, r.r_name
 HAVING SUM(COALESCE(ps.ps_availqty, 0)) > 50

@@ -3,9 +3,9 @@ SELECT
     a.name AS actor_name,
     t.title AS movie_title,
     t.production_year,
-    STRING_AGG(DISTINCT c.kind, ', ') AS company_types,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT pi.info, ', ') AS person_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pi.info))), ', ') AS person_info,
     COUNT(DISTINCT ci.role_id) AS role_count
 FROM 
     aka_name a

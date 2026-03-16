@@ -26,7 +26,7 @@ CastSummary AS (
     SELECT
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names
     FROM 
         cast_info c
     JOIN 
@@ -48,7 +48,7 @@ SELECT
     t.production_year,
     cs.total_cast,
     cs.cast_names,
-    ARRAY_AGG(DISTINCT mk.keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(mk.keyword))) AS keywords,
     CASE 
         WHEN t.rank_group = 'Top 5' THEN 'This is a classic!'
         ELSE 'Could be better...'

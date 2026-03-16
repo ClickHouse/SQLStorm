@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR' 
+        AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ), TopUsers AS (
     SELECT 
         u.Id AS UserId,
@@ -52,7 +52,7 @@ SELECT
     COUNT(DISTINCT rp.PostId) AS UniquePostsEdited,
     SUM(tu.TotalScore) AS TotalScore,
     SUM(tu.TotalViews) AS TotalViews,
-    ARRAY_AGG(DISTINCT ph.EditDate ORDER BY ph.EditDate DESC) AS RecentEdits
+    arrayDistinct(groupArray(assumeNotNull(ph.EditDate ORDER BY ph.EditDate DESC))) AS RecentEdits
 FROM 
     TopUsers tu
 LEFT JOIN 

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserActivity AS (
     SELECT 
@@ -37,11 +37,11 @@ PostHistoryAnalysis AS (
         ph.PostHistoryTypeId,
         COUNT(*) AS ChangeCount,
         MAX(ph.CreationDate) AS LastChangeDate,
-        STRING_AGG(ph.Comment, '; ') AS ChangeComments
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS ChangeComments
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId
 )

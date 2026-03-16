@@ -3,7 +3,7 @@ SELECT
     ca_city,
     COUNT(DISTINCT c_customer_sk) AS unique_customers,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), ', ') AS customer_names,
     MAX(cd_demo_sk) AS max_demo_sk,
     MIN(cd_demo_sk) AS min_demo_sk
 FROM 

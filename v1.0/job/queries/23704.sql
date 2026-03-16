@@ -42,7 +42,7 @@ WITH Recursive_Actor_Movies AS (
         keyword k ON mk.keyword_id = k.id
     WHERE 
         m.production_year IS NOT NULL AND 
-        m.production_year <= EXTRACT(YEAR FROM cast('2024-10-01' as date)) 
+        m.production_year <= toYear(cast('2024-10-01' as date)) 
         AND (m.note IS NULL OR m.note NOT LIKE '%canceled%')
 )
 SELECT 
@@ -50,7 +50,7 @@ SELECT
     f.title,
     f.production_year_adjusted,
     SUM(CASE WHEN a.actor_frequent = 'Frequent Actor' THEN 1 ELSE 0 END) AS frequent_actor_count,
-    STRING_AGG(DISTINCT a.actor_name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.actor_name))), ', ') AS actor_names,
     COUNT(DISTINCT CASE WHEN f.movie_keyword IS NOT NULL THEN f.movie_keyword END) AS keyword_count
 FROM 
     Filtered_Movies f

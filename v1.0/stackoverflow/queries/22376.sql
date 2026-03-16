@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     INNER JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 
 UserActivity AS (
@@ -75,7 +75,7 @@ FROM
 LEFT JOIN 
     PostHistory ph ON fp.PostId = ph.PostId AND ph.PostHistoryTypeId = 4 
 WHERE 
-    ph.CreationDate IS NULL OR ph.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 month' 
+    ph.CreationDate IS NULL OR ph.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 MONTH 
 ORDER BY 
     fp.Score DESC, 
     fp.CreationDate ASC

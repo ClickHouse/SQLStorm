@@ -9,11 +9,11 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tagArray ON true
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tagArray ON true
     LEFT JOIN 
         Tags t ON t.TagName = tagArray
     GROUP BY 
@@ -40,7 +40,7 @@ SELECT
     COUNT(DISTINCT c.Id) AS CommentsCount,
     MAX(tp.CreationDate) AS LatestPostDate,
     AVG(tp.Score) AS AverageScore,
-    STRING_AGG(DISTINCT tp.Tags, ', ') AS AllTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.Tags))), ', ') AS AllTags
 FROM 
     Users up
 JOIN 

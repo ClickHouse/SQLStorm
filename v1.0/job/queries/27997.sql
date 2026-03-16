@@ -62,9 +62,9 @@ CompleteInfo AS (
 SELECT 
     title,
     production_year,
-    STRING_AGG(DISTINCT person_name || ' (' || COALESCE(aka_name, 'N/A') || ', ' || role_name || ')', '; ') AS cast,
-    STRING_AGG(DISTINCT company_name || ' (' || company_type || ')', ', ') AS production_companies,
-    STRING_AGG(DISTINCT keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(person_name || ' (' || COALESCE(aka_name, 'N/A') || ', ' || role_name || ')'))), '; ') AS cast,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name || ' (' || company_type || ')'))), ', ') AS production_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords
 FROM 
     CompleteInfo
 GROUP BY 

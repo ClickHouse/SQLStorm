@@ -51,7 +51,7 @@ SELECT
     fp.Title,
     fp.OwnerDisplayName,
     fp.CreationDate,
-    STRING_AGG(fp.TagName, ', ') AS Tags,
+    arrayStringConcat(groupArray(assumeNotNull(fp.TagName)), ', ') AS Tags,
     fp.CommentCount,
     fp.UpVotes,
     fp.DownVotes

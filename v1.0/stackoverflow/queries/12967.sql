@@ -11,7 +11,7 @@ SELECT
     COUNT(DISTINCT v.Id) AS TotalVotes,
     SUM(CASE WHEN vt.Name = 'UpMod' THEN 1 ELSE 0 END) AS TotalUpVotes,
     SUM(CASE WHEN vt.Name = 'DownMod' THEN 1 ELSE 0 END) AS TotalDownVotes,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     Posts p
 JOIN 
@@ -23,11 +23,11 @@ LEFT JOIN
 LEFT JOIN 
     VoteTypes vt ON v.VoteTypeId = vt.Id
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(p.Tags, '>')) AS tag ON tag IS NOT NULL
+    arrayJoin(splitByString('>', p.Tags)) AS tag ON tag IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag
 WHERE 
-    p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'  
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName, u.Reputation
 ORDER BY 

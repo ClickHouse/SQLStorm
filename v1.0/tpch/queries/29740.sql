@@ -18,7 +18,7 @@ SELECT COUNT(*) AS total_parts,
        MIN(p_retailprice) AS min_retail_price,
        MAX(p_retailprice) AS max_retail_price,
        AVG(p_retailprice) AS avg_retail_price,
-       STRING_AGG(DISTINCT supplier_name, ', ') AS supplier_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(supplier_name))), ', ') AS supplier_names
 FROM CombinedData
 WHERE p_retailprice BETWEEN 50.00 AND 200.00
 GROUP BY p_partkey, p_name, p_retailprice

@@ -25,7 +25,7 @@ movie_details AS (
         t.title AS movie_title,
         t.production_year AS year,
         COUNT(DISTINCT ac.actor_id) AS num_actors,
-        STRING_AGG(DISTINCT mk.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.keyword))), ', ') AS keywords
     FROM 
         title t
     LEFT JOIN 

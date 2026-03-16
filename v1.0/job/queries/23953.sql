@@ -14,7 +14,7 @@ WITH movie_cast_info AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -34,7 +34,7 @@ movie_details AS (
     LEFT JOIN (
         SELECT 
             mc.movie_id,
-            STRING_AGG(cn.name, ', ') AS company_name
+            arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS company_name
         FROM 
             movie_companies mc
         JOIN 

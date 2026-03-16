@@ -31,7 +31,7 @@ CitySummary AS (
     SELECT 
         ca_city, 
         COUNT(*) AS customer_count,
-        STRING_AGG(full_name, ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names
     FROM 
         HighValueCustomers
     GROUP BY 

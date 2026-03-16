@@ -5,8 +5,8 @@ SELECT
     c.c_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments
 FROM 
     part p
 JOIN 
@@ -25,7 +25,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     p.p_name ILIKE '%widget%' 
-    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1997-12-31'
+    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_partkey, p.p_name, s.s_name, c.c_name
 ORDER BY 

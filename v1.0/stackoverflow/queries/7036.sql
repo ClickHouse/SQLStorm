@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ), FilteredPosts AS (
@@ -39,7 +39,7 @@ SELECT
     fp.OwnerDisplayName,
     fp.CommentCount,
     fp.AnswerCount,
-    COALESCE((SELECT STRING_AGG(t.TagName, ', ') 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
                FROM Tags t 
                WHERE t.WikiPostId IN (SELECT Id FROM Posts WHERE Id = fp.PostId)), 'No Tags') AS Tags
 FROM 

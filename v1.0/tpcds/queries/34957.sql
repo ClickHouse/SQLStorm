@@ -77,4 +77,4 @@ WHERE
     sc.profit_rank <= 5
 ORDER BY 
     sc.total_profit DESC, ad.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

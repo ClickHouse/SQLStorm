@@ -38,7 +38,7 @@ RecentPosts AS (
     FROM Posts P
     LEFT JOIN Users U ON P.OwnerUserId = U.Id
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    WHERE P.CreationDate >= now64(6) - INTERVAL 30 DAY
     GROUP BY P.Id, P.Title, P.CreationDate, U.DisplayName
 ),
 RankedPosts AS (

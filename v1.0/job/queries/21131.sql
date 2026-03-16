@@ -3,7 +3,7 @@ WITH movie_details AS (
         mt.id AS movie_id,
         mt.title AS movie_title,
         mt.production_year,
-        array_agg(DISTINCT ak.name) AS aka_names, 
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aka_names, 
         count(DISTINCT ci.id) AS cast_count,
         CASE 
             WHEN mt.production_year IS NULL THEN 'Unknown Year'
@@ -22,7 +22,7 @@ WITH movie_details AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ' | ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ' | ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -33,8 +33,8 @@ movie_keywords AS (
 company_info AS (
     SELECT 
         mc.movie_id,
-        array_agg(DISTINCT cn.name) AS companies,
-        array_agg(DISTINCT ct.kind) AS company_types
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(ct.kind))) AS company_types
     FROM 
         movie_companies mc
     JOIN 

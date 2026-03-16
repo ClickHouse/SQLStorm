@@ -4,8 +4,8 @@ WITH movie_author_info AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        STRING_AGG(DISTINCT a.name, ', ') AS authors,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS authors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles
     FROM 
         aka_title m
     JOIN 
@@ -34,8 +34,8 @@ keyword_summary AS (
 movie_company_info AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types
     FROM 
         movie_companies mc
     JOIN 

@@ -7,7 +7,7 @@ SELECT
     o.o_orderkey, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS shipping_modes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS shipping_modes,
     RANK() OVER (PARTITION BY p.p_partkey ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
 FROM 
     part p

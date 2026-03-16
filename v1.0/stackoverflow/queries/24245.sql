@@ -38,10 +38,10 @@ ClosedPosts AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS HistoryCount,
-        STRING_AGG(DISTINCT PT.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PT.Name))), ', ') AS HistoryTypes
     FROM PostHistory PH
     JOIN PostHistoryTypes PT ON PH.PostHistoryTypeId = PT.Id
-    WHERE PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+    WHERE PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY PH.PostId
 )
 SELECT 

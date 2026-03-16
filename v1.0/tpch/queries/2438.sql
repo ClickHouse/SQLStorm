@@ -70,4 +70,4 @@ WHERE
     d.supplier_category = 'High Supplier'
 ORDER BY 
     d.avg_acctbal DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

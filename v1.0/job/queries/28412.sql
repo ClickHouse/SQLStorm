@@ -4,7 +4,7 @@ SELECT
     m.title AS movie_title,
     m.production_year,
     r.role AS role_name,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     COUNT(DISTINCT c.id) AS total_coactors
 FROM 
     aka_name a

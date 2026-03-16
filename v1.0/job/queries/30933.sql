@@ -26,7 +26,7 @@ WITH RECURSIVE MovieHierachy AS (
 AggregateKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -46,7 +46,7 @@ TotalCast AS (
 MovieCompanies AS (
     SELECT 
         mc.movie_id,
-        COALESCE(STRING_AGG(DISTINCT cn.name, ', '), 'Not Available') AS company_names,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', '), 'Not Available') AS company_names,
         COUNT(DISTINCT mc.company_id) AS total_companies
     FROM 
         movie_companies mc

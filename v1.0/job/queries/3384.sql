@@ -26,7 +26,7 @@ SELECT
     m.title,
     m.production_year,
     COUNT(DISTINCT c.person_id) AS actors_count,
-    STRING_AGG(DISTINCT co.company_name, ', ') AS production_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.company_name))), ', ') AS production_companies,
     CASE 
         WHEN COUNT(DISTINCT c.person_id) > 2 THEN 'Ensemble Cast'
         ELSE 'Small Cast'

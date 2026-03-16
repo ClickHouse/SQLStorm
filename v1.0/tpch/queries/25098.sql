@@ -2,8 +2,8 @@ SELECT
     p.p_brand,
     COUNT(DISTINCT ps.ps_partkey) AS unique_parts,
     AVG(p.p_retailprice) AS avg_price,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations
 FROM 
     part p
 JOIN 

@@ -47,7 +47,7 @@ SELECT
     mcp.OwnerDisplayName,
     mcp.CommentCount,
     COUNT(DISTINCT pht.UserId) AS EditCount,
-    STRING_AGG(DISTINCT pht.Comment, '; ') AS EditComments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Comment))), '; ') AS EditComments
 FROM 
     MostCommentedPosts mcp
 LEFT JOIN 

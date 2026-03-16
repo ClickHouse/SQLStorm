@@ -23,8 +23,8 @@ CastInfoWithRoles AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS company_names,
-        STRING_AGG(ct.kind, ', ') AS company_types
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS company_names,
+        arrayStringConcat(groupArray(assumeNotNull(ct.kind)), ', ') AS company_types
     FROM 
         movie_companies mc
     JOIN 
@@ -37,7 +37,7 @@ CompanyDetails AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

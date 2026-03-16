@@ -20,7 +20,7 @@ WITH RegionalSupplierSales AS (
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
         o.o_orderstatus = 'F'
-        AND l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
+        AND l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
     GROUP BY 
         r.r_name, s.s_name
 ),

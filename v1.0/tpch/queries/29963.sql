@@ -5,7 +5,7 @@ WITH StringMetrics AS (
         LENGTH(s.s_name) AS supplier_name_length,
         LOWER(s.s_comment) AS normalized_comment,
         REGEXP_REPLACE(s.s_comment, '[^a-zA-Z0-9 ]', '') AS cleaned_comment,
-        ARRAY_LENGTH(string_to_array(LOWER(s.s_comment), ' '), 1) AS word_count,
+        length(splitByString(' ', LOWER(s.s_comment)), 1) AS word_count,
         CHAR_LENGTH(s.s_name) - LENGTH(REPLACE(s.s_name, 'a', '')) AS count_a,
         CHAR_LENGTH(s.s_name) - LENGTH(REPLACE(s.s_name, 'e', '')) AS count_e,
         CHAR_LENGTH(s.s_name) - LENGTH(REPLACE(s.s_name, 'i', '')) AS count_i,

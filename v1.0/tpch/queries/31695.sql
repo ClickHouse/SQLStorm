@@ -12,7 +12,7 @@ order_summary AS (
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate,
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) as order_rank
     FROM orders o
-    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
 ),
 customer_contributions AS (
     SELECT c.c_custkey, SUM(lo.l_extendedprice * (1 - lo.l_discount)) AS total_contribution

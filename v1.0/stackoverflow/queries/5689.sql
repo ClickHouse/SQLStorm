@@ -34,13 +34,13 @@ PostDetails AS (
         tp.OwnerDisplayName,
         tp.Score,
         tp.CreationDate,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         TopPosts tp
     LEFT JOIN 
         (
             SELECT 
-                unnest(string_to_array(Posts.Tags, ', ')) AS TagName,
+                arrayJoin(splitByString(', ', Posts.Tags)) AS TagName,
                 Posts.Id AS PostId
             FROM 
                 Posts

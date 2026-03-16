@@ -3,7 +3,7 @@ WITH UserBadges AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         MAX(b.Date) AS LastBadgeDate
     FROM 
         Users u
@@ -28,7 +28,7 @@ RecentPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         p.Id, p.OwnerUserId, p.Title, p.CreationDate, p.ViewCount
 ),

@@ -7,7 +7,7 @@ WITH RankedItems AS (
         i.i_current_price,
         ROW_NUMBER() OVER (PARTITION BY i.i_category_id ORDER BY i.i_current_price DESC) AS price_rank
     FROM item i
-    WHERE i.i_rec_end_date > DATE '2002-10-01'
+    WHERE i.i_rec_end_date > toDate('2002-10-01')
 ),
 
 SalesStats AS (

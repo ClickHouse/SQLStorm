@@ -21,7 +21,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     r.r_name = 'ASIA' AND 
-    o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     n.n_name
 ORDER BY 

@@ -52,7 +52,7 @@ FinalSelection AS (
         ma.actor_name,
         ma.actor_imdb_index,
         COUNT(ma.actor_name) OVER (PARTITION BY t.movie_id) AS total_actors,
-        STRING_AGG(ma.actor_name, ', ') AS actors_list
+        arrayStringConcat(groupArray(assumeNotNull(ma.actor_name)), ', ') AS actors_list
     FROM 
         TopMovies t
     LEFT JOIN 

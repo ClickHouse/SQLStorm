@@ -45,7 +45,7 @@ SELECT
     fc.c_custkey,
     fc.c_name,
     fc.c_acctbal,
-    STRING_AGG(cp.p_name, ', ') AS purchased_parts,
+    arrayStringConcat(groupArray(assumeNotNull(cp.p_name)), ', ') AS purchased_parts,
     SUM(cp.part_count) AS total_parts_purchased
 FROM 
     FilteredCustomers fc

@@ -14,7 +14,7 @@ WITH UserActivity AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        U.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        U.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         U.Id, U.DisplayName
 ),
@@ -27,7 +27,7 @@ PostScore AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 )
 SELECT 
     UA.DisplayName,

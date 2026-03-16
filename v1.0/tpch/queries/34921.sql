@@ -35,7 +35,7 @@ LineItemStats AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate < DATE '1998-10-01'
+        l.l_shipdate < toDate('1998-10-01')
     GROUP BY 
         l.l_suppkey
 ),
@@ -48,7 +48,7 @@ OrderStats AS (
         orders o
     WHERE 
         o.o_orderstatus = 'O' AND 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         o.o_custkey
 )

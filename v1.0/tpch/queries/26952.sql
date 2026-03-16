@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT SUBSTRING(s.s_name, 1, 10), ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(s.s_name, 1, 10)))), ', ') AS supplier_names,
     r.r_name AS region_name,
     n.n_name AS nation_name,
     c.c_mktsegment AS market_segment

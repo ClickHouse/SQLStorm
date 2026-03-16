@@ -13,7 +13,7 @@ ActorStats AS (
     SELECT 
         a.person_id,
         COUNT(DISTINCT c.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT tt.title, ', ') AS titles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tt.title))), ', ') AS titles,
         SUM(CASE WHEN c.note IS NOT NULL THEN 1 ELSE 0 END) AS notes_count
     FROM 
         cast_info c

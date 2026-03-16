@@ -20,11 +20,10 @@ WITH RankedPosts AS (
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        STRING_AGG(TRIM(TAG.TagName), ', ') AS TagList
+        arrayStringConcat(groupArray(assumeNotNull(TRIM(TAG.TagName))), ', ') AS TagList
     FROM 
         Posts P
-    CROSS JOIN LATERAL 
-        (SELECT UNNEST(string_to_array(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2), '><')) AS TagName) AS TAG
+    CROSS JOIN (SELECT arrayJoin(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2))) AS TagName) AS TAG
     GROUP BY 
         P.Id
 ),

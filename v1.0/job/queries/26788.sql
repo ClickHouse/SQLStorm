@@ -19,7 +19,7 @@ WITH RankedMovies AS (
 SELECT 
     rm.movie_title,
     rm.production_year,
-    STRING_AGG(rm.person_name || ' (' || rm.role_name || ')', ', ') AS cast_details
+    arrayStringConcat(groupArray(assumeNotNull(rm.person_name || ' (' || rm.role_name || ')')), ', ') AS cast_details
 FROM 
     RankedMovies rm
 WHERE 

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         LEFT JOIN Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostWithTopVotes AS (
     SELECT 
@@ -37,7 +37,7 @@ PostWithTopVotes AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReason
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReason
     FROM 
         PostHistory ph
         JOIN CloseReasonTypes ctr ON CAST(ph.Comment AS INTEGER) = ctr.Id

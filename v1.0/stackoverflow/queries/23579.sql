@@ -20,7 +20,7 @@ WITH UserStats AS (
 BadgesByType AS (
     SELECT 
         U.Id AS UserId,
-        STRING_AGG(B.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames,
         COUNT(CASE WHEN B.Class = 1 THEN 1 END) AS GoldCount, 
         COUNT(CASE WHEN B.Class = 2 THEN 1 END) AS SilverCount,
         COUNT(CASE WHEN B.Class = 3 THEN 1 END) AS BronzeCount
@@ -35,14 +35,14 @@ PostHistorySummary AS (
     SELECT 
         PH.UserId,
         PH.PostId,
-        STRING_AGG(PHT.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes,
         COUNT(PH.Id) AS HistoryCount
     FROM 
         PostHistory PH
     JOIN 
         PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     WHERE 
-        PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         PH.UserId, PH.PostId
 )

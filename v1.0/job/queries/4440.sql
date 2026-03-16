@@ -11,13 +11,13 @@ WITH RankedMovies AS (
 ),
 MovieInfo AS (
     SELECT mi.movie_id, 
-           STRING_AGG(mi.info, '; ') AS all_info
+           arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS all_info
     FROM movie_info mi
     GROUP BY mi.movie_id
 ),
 FilmCompanies AS (
     SELECT mc.movie_id, 
-           STRING_AGG(DISTINCT cn.name, ', ') AS companies
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM movie_companies mc
     JOIN company_name cn ON mc.company_id = cn.id
     GROUP BY mc.movie_id

@@ -39,7 +39,7 @@ SELECT
         ELSE 'Not in Top 10'
     END AS UserCategory,
     (SELECT COUNT(b.Id) FROM Badges b WHERE b.UserId = tu.UserId) AS TotalBadges,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Tags t 
      JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%' 
      WHERE p.OwnerUserId = tu.UserId) AS PopularTags

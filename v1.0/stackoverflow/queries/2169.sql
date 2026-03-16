@@ -32,10 +32,10 @@ SELECT
     COUNT(rp.PostId) AS PostCount,
     SUM(rp.ViewCount) AS TotalViews,
     AVG(rp.Score) AS AverageScore,
-    STRING_AGG(rp.Title, ', ') AS PostTitles,
+    arrayStringConcat(groupArray(assumeNotNull(rp.Title)), ', ') AS PostTitles,
     MAX(rp.CreationDate) AS LastPostDate,
     CASE 
-        WHEN MAX(rp.CreationDate) < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' THEN 'Inactive' 
+        WHEN MAX(rp.CreationDate) < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Inactive' 
         ELSE 'Active' 
     END AS ActivityStatus
 FROM 

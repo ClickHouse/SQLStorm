@@ -44,7 +44,7 @@ WITH RankedSuppliers AS (
         p_container,
         SUM(ps_availqty) AS total_avail_qty,
         AVG(ps_supplycost) AS avg_supply_cost,
-        STRING_AGG(CONCAT(p_name, ' - ', p_brand, ' [', p_type, ']'), '; ') AS detailed_info
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(p_name, ' - ', p_brand, ' [', p_type, ']'))), '; ') AS detailed_info
     FROM 
         SupplierParts
     GROUP BY 

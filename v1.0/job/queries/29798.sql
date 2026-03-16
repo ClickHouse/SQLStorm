@@ -4,7 +4,7 @@ WITH recent_movies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COUNT(cc.subject_id) AS cast_count
     FROM
         aka_title t

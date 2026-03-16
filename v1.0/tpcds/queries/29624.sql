@@ -12,7 +12,7 @@ DemographicStats AS (
         cd_gender,
         COUNT(cd_demo_sk) AS demographic_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(cd_marital_status, ', ') AS marital_statuses
+        arrayStringConcat(groupArray(assumeNotNull(cd_marital_status)), ', ') AS marital_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -22,9 +22,9 @@ DateDetails AS (
     SELECT 
         d_date_sk,
         d_date,
-        EXTRACT(YEAR FROM d_date) AS year,
-        EXTRACT(MONTH FROM d_date) AS month,
-        EXTRACT(DAY FROM d_date) AS day,
+        toYear(d_date) AS year,
+        toMonth(d_date) AS month,
+        toDayOfMonth(d_date) AS day,
         COUNT(*) AS total_dates
     FROM 
         date_dim

@@ -46,8 +46,8 @@ SELECT
     md.movie_id,
     md.title,
     md.production_year,
-    STRING_AGG(DISTINCT md.actor_name, ', ') AS lead_actors,
-    STRING_AGG(DISTINCT md.character_name, ', ') AS lead_characters
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name))), ', ') AS lead_actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.character_name))), ', ') AS lead_characters
 FROM
     MovieDetails md
 GROUP BY

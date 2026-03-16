@@ -29,7 +29,7 @@ string_aggregated AS (
         cd_marital_status,
         COUNT(customer_count) AS total_customers,
         SUM(total_estimated_spending) AS total_spending,
-        STRING_AGG(full_address, ', ') AS all_addresses
+        arrayStringConcat(groupArray(assumeNotNull(full_address)), ', ') AS all_addresses
     FROM 
         processed_data
     GROUP BY 

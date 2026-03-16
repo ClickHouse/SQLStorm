@@ -11,7 +11,7 @@ WITH customer_summary AS (
         ca.ca_state,
         COUNT(DISTINCT ss.ss_ticket_number) AS total_sales,
         SUM(ss.ss_net_paid) AS total_spent,
-        STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used
     FROM 
         customer AS c
     JOIN 

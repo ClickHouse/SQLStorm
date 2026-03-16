@@ -30,7 +30,7 @@ SELECT
     t.title AS MovieTitle,
     t.production_year AS Year,
     COUNT(DISTINCT c.id) AS CastCount,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS Keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS Keywords,
     SUM(CASE WHEN p.info_type_id = (SELECT id FROM info_type WHERE info = 'salary') THEN CAST(p.info AS numeric) ELSE 0 END) AS TotalSalary,
     AVG(CASE WHEN p.info_type_id = (SELECT id FROM info_type WHERE info = 'age') THEN CAST(p.info AS numeric) END) AS AvgAge,
     MAX(t.production_year) OVER () AS LatestProductionYear

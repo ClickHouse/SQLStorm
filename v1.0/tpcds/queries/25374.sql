@@ -6,7 +6,7 @@ WITH demographic_analysis AS (
         COUNT(DISTINCT c_customer_id) AS customer_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
         SUM(cd_dep_count) AS total_dependents,
-        STRING_AGG(CONCAT(c_first_name, ' ', c_last_name), '; ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name))), '; ') AS customer_names
     FROM 
         customer c
     JOIN 
@@ -18,7 +18,7 @@ address_analysis AS (
     SELECT 
         ca_state,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
-        STRING_AGG(ca_city || ' - ' || ca_street_name, '; ') AS city_streets
+        arrayStringConcat(groupArray(assumeNotNull(ca_city || ' - ' || ca_street_name)), '; ') AS city_streets
     FROM 
         customer_address
     GROUP BY 

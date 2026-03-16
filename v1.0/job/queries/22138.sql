@@ -33,7 +33,7 @@ MovieDetails AS (
     SELECT 
         movie_id,
         COUNT(*) AS num_actors,
-        STRING_AGG(DISTINCT actor_name, ', ') AS actors_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors_list
     FROM 
         FilteredRoles
     GROUP BY 

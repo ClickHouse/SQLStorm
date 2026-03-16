@@ -47,4 +47,4 @@ WHERE
 ORDER BY 
     pd.p_name ASC, 
     sd.s_name DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

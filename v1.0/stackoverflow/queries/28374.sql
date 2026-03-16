@@ -1,14 +1,14 @@
 
 WITH TagPostCounts AS (
     SELECT 
-        UNNEST(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        UNNEST(string_to_array(substring(Tags, 2, length(Tags)-2), '><'))
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2)))
 ),
 HighReputationUsers AS (
     SELECT 
@@ -75,9 +75,9 @@ JOIN
 JOIN 
     HighReputationUsers U ON P.OwnerUserId = U.UserId
 JOIN 
-    PopularTags T ON T.Tag = ANY(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><'))
+    PopularTags T ON T.Tag = ANY(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2)))
 WHERE 
-    P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+    P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ORDER BY 
     V.UpVoteCount DESC, E.LastEditDate DESC
 LIMIT 50;

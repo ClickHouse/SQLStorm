@@ -7,7 +7,7 @@ WITH RecursiveBadgeCounts AS (
     FROM 
         Badges
     WHERE 
-        Date >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        Date >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         UserId
 ), 
@@ -40,7 +40,7 @@ RecentPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ), 
 HighlightedUsers AS (
     SELECT 
@@ -77,7 +77,7 @@ LEFT JOIN
     RecentPosts RP ON HU.UserId = RP.OwnerUserId AND RP.PostRank = 1
 WHERE 
     HU.BadgeCount IS NULL OR 
-    HU.LastBadgeDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months')
+    HU.LastBadgeDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
 ORDER BY 
     HU.TotalViews DESC,
     HU.TotalUpvotes DESC;

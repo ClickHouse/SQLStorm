@@ -33,8 +33,8 @@ WITH movie_cast AS (
 SELECT 
     ta.actor_name,
     COUNT(DISTINCT mc.movie_title) AS movies_count,
-    STRING_AGG(DISTINCT mc.movie_title, '; ') AS movie_titles,
-    STRING_AGG(DISTINCT mc.role_type, '; ') AS roles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.movie_title))), '; ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.role_type))), '; ') AS roles
 FROM 
     top_actors ta
 JOIN 

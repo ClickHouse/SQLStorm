@@ -38,7 +38,7 @@ WITH RECURSIVE MovieHierarchy AS (
         mh.title,
         COUNT(DISTINCT cd.person_id) AS actor_count,
         MAX(CASE WHEN c.production_year IS NOT NULL THEN c.production_year ELSE 0 END) AS max_year,
-        STRING_AGG(DISTINCT cd.actor_role, ', ') AS actors_in_roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.actor_role))), ', ') AS actors_in_roles
     FROM 
         MovieHierarchy mh
     LEFT JOIN CastDetails cd ON mh.movie_id = cd.movie_id

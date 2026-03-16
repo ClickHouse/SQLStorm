@@ -61,7 +61,7 @@ SELECT
     P.CreationDate,
     V.UpVotes,
     V.DownVotes,
-    STRING_AGG(DISTINCT P.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(P.TagName))), ', ') AS Tags
 FROM 
     UserStats U
 JOIN 

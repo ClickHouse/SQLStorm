@@ -32,7 +32,7 @@ FinalResults AS (
         r.r_name AS region_name,
         SUM(ad.available_parts) AS total_available_parts,
         SUM(ad.total_supply_cost) AS total_cost,
-        STRING_AGG(DISTINCT rp.p_name, ', ') AS top_products
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.p_name))), ', ') AS top_products
     FROM region r
     JOIN nation n ON n.n_regionkey = r.r_regionkey
     JOIN supplier s ON s.s_nationkey = n.n_nationkey

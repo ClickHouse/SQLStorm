@@ -20,7 +20,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT UserId, COUNT(*) AS badge_count FROM Badges GROUP BY UserId) b ON u.Id = b.UserId
 LEFT JOIN 
-    (SELECT DISTINCT unnest(string_to_array(Tags, ',')) AS Tag, Id FROM Posts) t ON t.Id = p.Id
+    (SELECT DISTINCT arrayJoin(splitByString(',', Tags)) AS Tag, Id FROM Posts) t ON t.Id = p.Id
 GROUP BY 
     u.Id, u.DisplayName
 ORDER BY 

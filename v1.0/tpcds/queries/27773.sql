@@ -9,7 +9,7 @@ WITH CustomerData AS (
         ca.ca_city,
         ca.ca_state,
         ca.ca_country,
-        CAST('2002-10-01 12:34:56' AS TIMESTAMP) AS query_time,
+        toDateTime64('2002-10-01 12:34:56', 6) AS query_time,
         LENGTH(CONCAT(c.c_first_name, c.c_last_name)) AS total_name_length
     FROM customer c
     JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk

@@ -19,8 +19,8 @@ SELECT
     AVG(street_name_length) AS avg_street_name_length,
     MAX(upper_street_name) AS max_upper_street_name,
     MIN(lower_city) AS min_lower_city,
-    STRING_AGG(full_address, '; ') AS full_addresses_sample,
+    arrayStringConcat(groupArray(assumeNotNull(full_address)), '; ') AS full_addresses_sample,
     COUNT(DISTINCT sanitized_zip) AS unique_zip_codes,
-    STRING_AGG(country_code, ', ') AS sample_country_codes
+    arrayStringConcat(groupArray(assumeNotNull(country_code)), ', ') AS sample_country_codes
 FROM 
     StringManipulations;

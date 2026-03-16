@@ -35,7 +35,7 @@ ActorCounts AS (
 MovieInfo AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(m.info, '; ') AS movie_info
+        arrayStringConcat(groupArray(assumeNotNull(m.info)), '; ') AS movie_info
     FROM 
         movie_info m
     JOIN 

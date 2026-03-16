@@ -46,7 +46,7 @@ SELECT
     ta.Total_Movies,
     ta.Active_Years,
     k.keyword AS Popular_Keyword,
-    STRING_AGG(DISTINCT mt.title, ', ') AS Movies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mt.title))), ', ') AS Movies
 FROM 
     TopActors ta
 LEFT JOIN 

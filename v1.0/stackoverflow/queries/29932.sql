@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
         COUNT(*) AS PostCount
     FROM Posts
     WHERE PostTypeId = 1  
@@ -28,7 +28,7 @@ PostDetails AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE p.PostTypeId = 1  
-    AND EXISTS (SELECT 1 FROM TagCounts tc WHERE tc.Tag = ANY(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')))
+    AND EXISTS (SELECT 1 FROM TagCounts tc WHERE tc.Tag = ANY(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))))
     GROUP BY p.Id, u.DisplayName
 ),
 FinalResults AS (
@@ -41,7 +41,7 @@ FinalResults AS (
         pd.CommentCount,
         pd.UpVotes,
         pd.DownVotes,
-        COALESCE(pd.UpVotes::float / NULLIF(pd.DownVotes, 0), 0) AS UpvoteDownvoteRatio
+        COALESCE(CAST(pd.UpVotes AS float) / NULLIF(pd.DownVotes, 0), 0) AS UpvoteDownvoteRatio
     FROM PostDetails pd
 )
 

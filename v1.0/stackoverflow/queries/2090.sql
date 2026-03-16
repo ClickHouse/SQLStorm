@@ -59,4 +59,4 @@ SELECT f.UserId,
 FROM FinalMetrics f
 WHERE f.EditCount > 10
 ORDER BY f.Reputation DESC, f.TotalPosts DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

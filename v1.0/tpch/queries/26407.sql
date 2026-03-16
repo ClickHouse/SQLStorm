@@ -5,7 +5,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS returned_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_sales_price,
-    STRING_AGG(DISTINCT s.s_comment, '; ') FILTER (WHERE LENGTH(s.s_comment) > 10) AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') FILTER (WHERE LENGTH(s.s_comment) > 10) AS supplier_comments
 FROM 
     part p
 JOIN 

@@ -13,7 +13,7 @@ WITH ranked_movies AS (
 cast_details AS (
     SELECT
         ci.movie_id,
-        ARRAY_AGG(an.name) AS actor_names,
+        groupArray(assumeNotNull(an.name)) AS actor_names,
         COUNT(DISTINCT ci.role_id) AS unique_roles
     FROM
         cast_info ci
@@ -53,7 +53,7 @@ SELECT
     m.production_year,
     COALESCE(m.actor_names[1], 'Unknown Actor') AS leading_actor,
     m.unique_roles,
-    STRING_AGG(DISTINCT m.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.keyword))), ', ') AS keywords,
     (SELECT COUNT(*) FROM complete_cast cc WHERE cc.movie_id = m.movie_id AND cc.status_id = 1) AS completed_cast_count
 FROM
     movies_with_details m

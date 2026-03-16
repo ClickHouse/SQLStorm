@@ -34,7 +34,7 @@ SELECT
     COUNT(p.Id) AS PostCount,
     SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositivePosts,
     SUM(CASE WHEN ph.Id IS NOT NULL THEN 1 ELSE 0 END) AS PostsWithHistory,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
 FROM 
     Users u
 LEFT JOIN 
@@ -42,12 +42,12 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory ph ON p.Id = ph.PostId
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(p.Tags, ',')) AS TagName
+            arrayJoin(splitByString(',', p.Tags)) AS TagName
     ) t ON true
 WHERE 
-    u.LastAccessDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'  
+    u.LastAccessDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR  
 GROUP BY 
     u.Id, u.DisplayName, u.Reputation
 ORDER BY 

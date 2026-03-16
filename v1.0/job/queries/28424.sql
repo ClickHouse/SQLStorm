@@ -6,7 +6,7 @@ WITH RecursiveMovieInfo AS (
         m.production_year,
         a.name AS actor_name,
         p.info AS actor_info,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM
         title m
     JOIN
@@ -47,7 +47,7 @@ SELECT
     r.actor_name,
     r.actor_info,
     r.keywords,
-    ARRAY_AGG(DISTINCT mc.company_name || ' (' || mc.company_type || ')') AS companies_involved
+    arrayDistinct(groupArray(assumeNotNull(mc.company_name || ' (' || mc.company_type || ')'))) AS companies_involved
 FROM
     RecursiveMovieInfo r
 LEFT JOIN

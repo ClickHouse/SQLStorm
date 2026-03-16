@@ -59,4 +59,4 @@ WHERE
 ORDER BY 
     TotalPosts DESC,
     PostsAnswerRatio DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

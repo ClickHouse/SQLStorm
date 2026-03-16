@@ -13,7 +13,7 @@ WITH CustomerPurchases AS (
     JOIN web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk
     JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
     JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
-    WHERE EXTRACT(YEAR FROM d.d_date) = 2023
+    WHERE toYear(d.d_date) = 2023
     GROUP BY c.c_customer_sk, c.c_first_name, c.c_last_name, cd.cd_gender, d.d_date
 ), RankedPurchases AS (
     SELECT 
@@ -23,7 +23,7 @@ WITH CustomerPurchases AS (
 )
 SELECT 
     rp.purchase_date,
-    STRING_AGG(CONCAT(rp.c_first_name, ' ', rp.c_last_name, ': ', rp.total_spent), ', ') AS top_customers,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(rp.c_first_name, ' ', rp.c_last_name, ': ', rp.total_spent))), ', ') AS top_customers,
     AVG(rp.average_spent) AS average_spent_per_customer,
     COUNT(*) AS total_customers
 FROM RankedPurchases rp

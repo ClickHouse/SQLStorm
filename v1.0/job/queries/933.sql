@@ -37,7 +37,7 @@ movie_details AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        STRING_AGG(a.name, ', ') AS actors
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actors
     FROM 
         aka_title m
     LEFT JOIN 
@@ -64,7 +64,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT 
         mk.movie_id, 
-        STRING_AGG(k.keyword, ', ') AS keyword
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keyword
     FROM 
         movie_keyword mk
     JOIN 

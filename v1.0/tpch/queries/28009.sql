@@ -25,7 +25,7 @@ HighAvailabilitySuppliers AS (
 SELECT 
     p.p_name AS part_name,
     COUNT(DISTINCT h.supplier_name) AS supplier_count,
-    STRING_AGG(DISTINCT h.nation_name, ', ') AS nations_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(h.nation_name))), ', ') AS nations_supplied
 FROM 
     part p
 JOIN 

@@ -51,7 +51,7 @@ SELECT
         WHEN UR.Reputation > 5000 THEN 'Expert'
         ELSE 'Regular User' 
     END) AS UserType,
-    COALESCE(STRING_AGG(DISTINCT T.TagName, ', '), 'No Tags') AS TagNames
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', '), 'No Tags') AS TagNames
 FROM 
     UserReputation UR
 LEFT JOIN 

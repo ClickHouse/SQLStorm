@@ -10,7 +10,7 @@ WITH StringBenchmark AS (
         REPLACE(p.p_comment, 'a', '@') AS comment_replaced,
         SUBSTRING(s.s_address, 1, 15) AS address_substring,
         CHAR_LENGTH(p.p_type) AS type_length,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied
     FROM 
         part p
     JOIN 

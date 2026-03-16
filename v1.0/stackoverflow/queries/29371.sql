@@ -14,13 +14,13 @@ WITH RankedPosts AS (
                                               WHEN p.PostTypeId = 2 THEN 'Answer'
                                               ELSE 'Other'
                                           END ORDER BY p.Score DESC) AS Rank,
-        CARDINALITY(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS TagCount
+        CARDINALITY(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagCount
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.PostTypeId IN (1, 2)  
 ),
 PopularQuestions AS (

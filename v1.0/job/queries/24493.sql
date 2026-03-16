@@ -35,7 +35,7 @@ SELECT
     COALESCE(ac.actor_count, 0) AS actor_count,
     COALESCE(rc.role_count, 0) AS role_count,
     COUNT(DISTINCT kw.keyword) AS keyword_count,
-    ARRAY_AGG(DISTINCT kw.keyword) AS keywords_list,
+    arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords_list,
     ROW_NUMBER() OVER (PARTITION BY m.id ORDER BY m.production_year DESC) AS row_num,
     CASE 
         WHEN m.production_year IS NULL THEN 'Unknown Year'

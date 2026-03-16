@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     INNER JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') 
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
         AND u.Reputation > (SELECT AVG(Reputation) FROM Users) 
         AND COALESCE(p.ClosedDate, '9999-12-31') = '9999-12-31'
 ),

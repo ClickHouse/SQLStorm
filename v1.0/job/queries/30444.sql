@@ -62,7 +62,7 @@ SELECT
     f.title,
     f.production_year,
     COUNT(DISTINCT f.company_name) AS company_count,
-    STRING_AGG(DISTINCT f.company_type, ', ') AS company_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.company_type))), ', ') AS company_types,
     SUM(CASE WHEN f.production_year < 2000 THEN 1 ELSE 0 END) AS pre_2000_movies,
     CASE 
         WHEN COUNT(DISTINCT f.title) > 10 THEN 'Prolific Actor'

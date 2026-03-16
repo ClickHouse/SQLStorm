@@ -9,7 +9,7 @@ WITH RECURSIVE SupplierHierarchy AS (
     WHERE sh.level < 5
 ),
 NationParts AS (
-    SELECT n.n_nationkey, n.n_name, STRING_AGG(DISTINCT p.p_name, ', ') AS parts
+    SELECT n.n_nationkey, n.n_name, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS parts
     FROM nation n
     LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey
     LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey

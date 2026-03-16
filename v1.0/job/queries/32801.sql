@@ -34,7 +34,7 @@ SELECT
     s.title AS series_title,
     COUNT(s.movie_id) AS episode_count,
     MAX(s.production_year) AS latest_production_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     COALESCE(ac.name, 'Unknown') AS company_name
 FROM 
     cast_info ci

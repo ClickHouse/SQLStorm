@@ -25,10 +25,10 @@ MovieCast AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(CASE 
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
             WHEN it.info = 'summary' THEN mi.info 
             ELSE NULL 
-        END, ' ') AS summary_info,
+        END)), ' ') AS summary_info,
         COUNT(DISTINCT mi.info_type_id) AS info_type_count
     FROM 
         movie_info mi

@@ -3,7 +3,7 @@ WITH matched_movies AS (
     SELECT 
         t.title AS movie_title,
         t.production_year,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
         k.keyword AS movie_keyword,
         ct.kind AS company_type,
         COUNT(DISTINCT ci.person_id) AS actor_count

@@ -28,7 +28,7 @@ TitleWithKeywords AS (
     SELECT 
         t.id AS title_id,
         t.title,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         title t
     LEFT JOIN 
@@ -43,7 +43,7 @@ CastInfoWithRoles AS (
     SELECT 
         ci.movie_id,
         COUNT(ci.id) AS cast_count,
-        STRING_AGG(DISTINCT rt.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS roles
     FROM 
         cast_info ci
     LEFT JOIN 

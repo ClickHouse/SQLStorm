@@ -20,13 +20,13 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON c.PostId = p.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.CreationDate, u.DisplayName, p.ViewCount, p.Score
 ),
 TopTags AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2))) AS Tag
     FROM 
         RecentPosts
 ),
@@ -64,7 +64,7 @@ SELECT
     tp.CommentCount,
     tp.ViewCount,
     tp.Score,
-    ARRAY_AGG(DISTINCT tt.Tag) AS TopTags
+    arrayDistinct(groupArray(assumeNotNull(tt.Tag))) AS TopTags
 FROM 
     TopPosts tp 
 JOIN 

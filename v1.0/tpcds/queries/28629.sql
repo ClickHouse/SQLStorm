@@ -3,8 +3,8 @@ WITH address_summary AS (
     SELECT 
         ca_state,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT ca_street_name || ' ' || ca_street_type, ', ') AS streets
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_type))), ', ') AS streets
     FROM 
         customer_address
     GROUP BY 
@@ -19,7 +19,7 @@ customer_summary AS (
         END AS gender,
         COUNT(DISTINCT c_customer_id) AS customer_count,
         SUM(cd_dep_count) AS total_dependents,
-        STRING_AGG(DISTINCT c_first_name || ' ' || c_last_name, ', ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c_first_name || ' ' || c_last_name))), ', ') AS customer_names
     FROM 
         customer
     JOIN 
@@ -31,7 +31,7 @@ sales_summary AS (
     SELECT 
         d_year,
         SUM(ws_ext_sales_price) AS total_sales,
-        STRING_AGG(DISTINCT w.w_warehouse_name, ', ') AS warehouses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(w.w_warehouse_name))), ', ') AS warehouses
     FROM 
         web_sales ws
     JOIN 

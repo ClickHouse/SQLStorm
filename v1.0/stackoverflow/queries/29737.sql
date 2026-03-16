@@ -33,7 +33,7 @@ UserReputation AS (
 
 TagStatistics AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS TagName,
+        arrayJoin(splitByString('>', Tags)) AS TagName,
         COUNT(*) AS QuestionCount
     FROM 
         Posts
@@ -46,13 +46,13 @@ TagStatistics AS (
 UserTags AS (
     SELECT 
         u.Id AS UserId,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS UserTags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS UserTags
     FROM 
         Users u
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     JOIN 
-        LATERAL unnest(string_to_array(p.Tags, '>')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
@@ -78,7 +78,7 @@ JOIN
 JOIN 
     UserTags ut ON rp.OwnerUserId = ut.UserId
 JOIN 
-    TagStatistics ts ON ts.TagName = ANY(string_to_array(rp.Tags, '>'))
+    TagStatistics ts ON ts.TagName = ANY(splitByString('>', rp.Tags))
 WHERE 
     rp.Rank <= 5 
 ORDER BY 

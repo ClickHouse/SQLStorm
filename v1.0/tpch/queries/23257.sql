@@ -54,7 +54,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_cost,
-    STRING_AGG(DISTINCT sd.supplier_info, ', ') FILTER (WHERE sd.supplier_info IS NOT NULL) AS supplier_information,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sd.supplier_info))), ', ') FILTER (WHERE sd.supplier_info IS NOT NULL) AS supplier_information,
     CASE 
         WHEN EXISTS (SELECT 1 FROM high_value_customers hvc WHERE hvc.c_custkey IN (SELECT o.o_custkey FROM orders o WHERE o.o_orderstatus = 'F')) 
         THEN 'High-Value Customer Present' 

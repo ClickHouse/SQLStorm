@@ -31,7 +31,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(o.o_totalprice) AS total_revenue,
     AVG(o.o_totalprice) AS avg_order_value,
-    STRING_AGG(ts.s_name, ', ') AS top_suppliers
+    arrayStringConcat(groupArray(assumeNotNull(ts.s_name)), ', ') AS top_suppliers
 FROM 
     TopSuppliers ts
 JOIN 

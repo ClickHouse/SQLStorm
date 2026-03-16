@@ -34,7 +34,7 @@ company_summary AS (
     SELECT 
         company_name,
         COUNT(DISTINCT movie_id) AS movie_count,
-        STRING_AGG(DISTINCT title, ',' ORDER BY title) AS titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(title))), ',' ORDER BY title) AS titles
     FROM 
         movie_data
     GROUP BY 
@@ -44,7 +44,7 @@ actor_summary AS (
     SELECT 
         actor_name,
         COUNT(DISTINCT movie_id) AS movie_count,
-        STRING_AGG(DISTINCT title, ',' ORDER BY title) AS titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(title))), ',' ORDER BY title) AS titles
     FROM 
         movie_data
     GROUP BY 

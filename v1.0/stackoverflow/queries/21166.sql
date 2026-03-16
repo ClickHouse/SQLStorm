@@ -25,7 +25,7 @@ WITH RankedPosts AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         v.PostId
 ), PostHistoryData AS (
@@ -33,7 +33,7 @@ WITH RankedPosts AS (
         ph.PostId,
         MAX(CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.CreationDate END) AS LastClosedDate,
         MAX(CASE WHEN ph.PostHistoryTypeId = 11 THEN ph.CreationDate END) AS LastReopenedDate,
-        STRING_AGG(DISTINCT pt.Name, ', ') AS PostHistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostHistoryTypes
     FROM 
         PostHistory ph
     LEFT JOIN 

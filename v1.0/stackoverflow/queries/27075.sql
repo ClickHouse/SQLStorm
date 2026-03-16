@@ -31,7 +31,7 @@ UserDetails AS (
 TaggedPosts AS (
     SELECT 
         rp.PostId,
-        unnest(string_to_array(rp.Tags, '>')) AS Tag
+        arrayJoin(splitByString('>', rp.Tags)) AS Tag
     FROM 
         RankedPosts rp
 )

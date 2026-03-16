@@ -18,7 +18,7 @@ TopMovies AS (
         rm.production_year, 
         rm.kind_id,
         COUNT(DISTINCT mc.company_id) AS company_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM 
         RankedMovies rm
     LEFT JOIN 
@@ -56,8 +56,8 @@ SELECT
     md.kind_id,
     COUNT(DISTINCT md.info) AS info_count,
     COUNT(DISTINCT md.keyword) AS keyword_count,
-    STRING_AGG(DISTINCT md.info, '; ') AS all_info,
-    STRING_AGG(DISTINCT md.keyword, ', ') AS all_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.info))), '; ') AS all_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keyword))), ', ') AS all_keywords
 FROM 
     MovieDetails md
 GROUP BY 

@@ -21,7 +21,7 @@ CastCounts AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies_involved
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies_involved
     FROM 
         movie_companies mc
     JOIN 

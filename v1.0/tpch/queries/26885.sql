@@ -10,7 +10,7 @@ WITH PartDetails AS (
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
         AVG(ps.ps_supplycost) AS average_supply_cost,
         MAX(p.p_retailprice) AS max_retail_price,
-        STRING_AGG(s.s_name, ', ') AS supplier_names
+        arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS supplier_names
     FROM 
         part p
     JOIN 

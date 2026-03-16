@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank
     FROM Posts p
-    WHERE p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
+    WHERE p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
 ),
 TopPosts AS (
     SELECT PostId, Title, Score, ViewCount
@@ -44,10 +44,10 @@ PostHistoryStats AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryCount,
-        STRING_AGG(DISTINCT CASE 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE 
             WHEN ph.PostHistoryTypeId = 10 THEN 'Closed' 
             WHEN ph.PostHistoryTypeId = 11 THEN 'Reopened' 
-            ELSE NULL END, ', ') AS HistoryTypes
+            ELSE NULL END))), ', ') AS HistoryTypes
     FROM PostHistory ph
     GROUP BY ph.PostId
 ),

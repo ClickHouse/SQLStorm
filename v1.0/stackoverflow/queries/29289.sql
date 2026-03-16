@@ -21,13 +21,13 @@ RecentPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsUsed
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsUsed
     FROM 
         Posts p
     JOIN 
         Tags t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
 ),

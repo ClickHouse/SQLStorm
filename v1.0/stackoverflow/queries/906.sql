@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM Posts p
-    WHERE p.Score > 0 AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1' YEAR
+    WHERE p.Score > 0 AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL '1' YEAR
 ),
 UserBadges AS (
     SELECT 
@@ -35,7 +35,7 @@ SELECT
     COUNT(DISTINCT rp.Id) AS NumberOfPosts,
     COALESCE(SUM(uc.BadgeCount), 0) AS TotalBadges,
     SUM(pc.CommentCount) AS TotalComments,
-    ARRAY_AGG(DISTINCT rp.Title) AS LatestPostTitles,
+    arrayDistinct(groupArray(assumeNotNull(rp.Title))) AS LatestPostTitles,
     MAX(rp.Score) AS MaxPostScore,
     AVG(rp.ViewCount) AS AvgPostViews
 FROM Users u

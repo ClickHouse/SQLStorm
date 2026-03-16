@@ -5,7 +5,7 @@ SELECT
     REPLACE(p.p_comment, 'excellent', 'superb') AS updated_comment,
     COUNT(s.s_suppkey) AS supplier_count,
     MAX(ps.ps_supplycost) AS max_supply_cost,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     part p
 JOIN 

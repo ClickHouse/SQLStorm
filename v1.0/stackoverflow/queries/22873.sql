@@ -28,7 +28,7 @@ UserVoteStats AS (
 PostTagSummary AS (
     SELECT 
         p.Id AS PostId,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsAssociated,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsAssociated,
         COUNT(DISTINCT c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes
@@ -39,7 +39,7 @@ PostTagSummary AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        unnest(string_to_array(p.Tags, '><')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('><', p.Tags)) AS t(TagName) ON TRUE
     GROUP BY 
         p.Id
 )
@@ -63,7 +63,7 @@ SELECT
         WHERE 
             pH.PostId = pst.PostId 
             AND pH.PostHistoryTypeId IN (10, 11) 
-            AND pH.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
+            AND pH.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
     ) AS RecentCloseOrReopenCount,
     RANK() OVER (PARTITION BY pst.PostId ORDER BY COALESCE(uVS.UpVotes, 0) DESC) AS RankByUpVotes
 FROM 
@@ -75,7 +75,7 @@ LEFT JOIN
 LEFT JOIN 
     RecursivePostHistory ph ON pst.PostId = ph.PostId
 WHERE 
-    (EXTRACT(HOUR FROM ph.CreationDate) % 2 = 0 OR ph.Comment IS NOT NULL)
+    (toHour(ph.CreationDate) % 2 = 0 OR ph.Comment IS NOT NULL)
     AND (pst.TotalUpVotes - pst.TotalDownVotes > 0 OR pst.CommentCount > 5)
 ORDER BY 
     pst.TotalUpVotes DESC, 

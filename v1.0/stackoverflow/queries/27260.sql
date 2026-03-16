@@ -26,13 +26,13 @@ WITH PostDetails AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, users.DisplayName, pt.Name, p.Title, p.Body, p.Tags, p.CreationDate, p.ViewCount
 ),
 TopTags AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', Tags)) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -47,13 +47,13 @@ TopTags AS (
 TagStats AS (
     SELECT 
         pd.PostId,
-        STRING_AGG(tt.TagName, ', ') AS TopTags
+        arrayStringConcat(groupArray(assumeNotNull(tt.TagName)), ', ') AS TopTags
     FROM 
         PostDetails pd
     JOIN 
         Posts p ON pd.PostId = p.Id
     JOIN 
-        TopTags tt ON tt.TagName = ANY(string_to_array(p.Tags, ','))
+        TopTags tt ON tt.TagName = ANY(splitByString(',', p.Tags))
     GROUP BY 
         pd.PostId
 )

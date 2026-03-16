@@ -55,4 +55,4 @@ WHERE
     hvc.cd_gender IS NOT NULL
 ORDER BY 
     total_profit DESC, full_name ASC
-OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

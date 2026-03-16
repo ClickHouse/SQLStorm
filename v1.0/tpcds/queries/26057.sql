@@ -25,4 +25,4 @@ HAVING
     COUNT(DISTINCT ws.ws_order_number) > 5 OR COUNT(DISTINCT ss.ss_ticket_number) > 10
 ORDER BY
     total_web_net_profit DESC, total_store_net_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

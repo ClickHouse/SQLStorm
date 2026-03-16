@@ -56,8 +56,8 @@ SELECT
     AVG(t.total_sales) AS avg_sales,
     MAX(t.total_sales) AS max_sales,
     MIN(t.total_sales) AS min_sales,
-    STRING_AGG(t.city, ', ') AS cities,
-    STRING_AGG(t.state, ', ') AS states
+    arrayStringConcat(groupArray(assumeNotNull(t.city)), ', ') AS cities,
+    arrayStringConcat(groupArray(assumeNotNull(t.state)), ', ') AS states
 FROM top_customers t
 WHERE t.dr <= 10
 GROUP BY t.customer_segment

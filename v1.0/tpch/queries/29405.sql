@@ -1,6 +1,6 @@
 WITH SupplierDetails AS (
     SELECT s.s_name, s.s_nationkey, n.n_name AS nation_name, 
-           STRING_AGG(DISTINCT p.p_name, ', ') AS part_names, 
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names, 
            COUNT(DISTINCT ps.ps_partkey) AS total_parts,
            SUM(ps.ps_supplycost) AS total_supply_cost
     FROM supplier s

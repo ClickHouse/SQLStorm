@@ -2,7 +2,7 @@
 WITH RecentUsers AS (
     SELECT Id
     FROM Users
-    WHERE LastAccessDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days'
+    WHERE LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY
 ),
 QuestionStats AS (
     SELECT 

@@ -31,14 +31,14 @@ PostSummary AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Badges b ON p.OwnerUserId = b.UserId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.Body, p.CreationDate, p.OwnerUserId
 ),
 PostLinkStats AS (
     SELECT
         pl.PostId,
         COUNT(pl.RelatedPostId) AS RelatedPostCount,
-        STRING_AGG(rpt.TagName, ', ') AS RelatedPostTags
+        arrayStringConcat(groupArray(assumeNotNull(rpt.TagName)), ', ') AS RelatedPostTags
     FROM PostLinks pl
     LEFT JOIN Posts rp ON pl.RelatedPostId = rp.Id
     LEFT JOIN Tags rpt ON rp.Tags LIKE CONCAT('%', rpt.TagName, '%') 

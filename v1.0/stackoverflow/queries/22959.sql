@@ -90,7 +90,7 @@ SELECT
         WHEN EXISTS (SELECT 1 FROM Posts WHERE AcceptedAnswerId = pa.PostId) THEN 'Has Accepted Answer'
         ELSE 'No Accepted Answer'
     END AS AcceptedAnswerStatus,
-    STRING_AGG(DISTINCT pht.Name, ', ') AS PostHistoryTypes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS PostHistoryTypes
 FROM 
     PostAnalytics pa
 LEFT JOIN 
@@ -98,7 +98,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
 WHERE 
-    pa.PostCreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+    pa.PostCreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 GROUP BY 
     pa.PostId,
     pa.Title,

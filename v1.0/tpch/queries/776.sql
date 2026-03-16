@@ -41,7 +41,7 @@ SELECT
     SUM(CASE WHEN c.total_orders > 0 THEN 1 ELSE 0 END) AS active_customers,
     COALESCE(AVG(p.p_retailprice), 0) AS avg_part_price,
     SUM(sd.total_supply_cost) AS total_supplier_cost,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS expensive_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS expensive_parts
 FROM 
     region r
 JOIN 

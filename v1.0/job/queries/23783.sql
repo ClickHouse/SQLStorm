@@ -2,7 +2,7 @@ WITH Recursive_Cast AS (
     SELECT 
         a.person_id,
         COUNT(DISTINCT ca.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT t.title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movie_titles
     FROM 
         aka_name a
     LEFT JOIN 

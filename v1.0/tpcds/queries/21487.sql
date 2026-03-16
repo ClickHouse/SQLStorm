@@ -26,7 +26,7 @@ WITH RECURSIVE CustomerHierarchy AS (
 )
 
 SELECT w.w_warehouse_name, SUM(ws.ws_quantity) AS total_quantity, AVG(ws.ws_net_paid) AS avg_net_paid,
-       STRING_AGG(DISTINCT ch.email_prefix, ', ') AS unique_email_prefixes,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ch.email_prefix))), ', ') AS unique_email_prefixes,
        COUNT(DISTINCT ch.c_customer_sk) AS customer_count,
        COUNT(DISTINCT CASE WHEN ch.purchase_band = 'High' THEN ch.c_customer_sk END) AS high_value_customers
 FROM web_sales ws

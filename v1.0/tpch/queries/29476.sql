@@ -5,7 +5,7 @@ SELECT
     c.c_name,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS related_regions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS related_regions
 FROM 
     part p
 JOIN 
@@ -23,7 +23,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_name, s.s_name, c.c_name
 HAVING 

@@ -5,7 +5,7 @@ WITH TagCounts AS (
     FROM 
         Tags
     JOIN 
-        Posts ON Tags.Id = ANY(string_to_array(substring(Posts.Tags, 2, length(Posts.Tags) - 2), '><')::int[])
+        Posts ON Tags.Id = ANY(splitByString('><', substring(Posts.Tags, 2, length(Posts.Tags) - 2)CAST() AS int)[])
     GROUP BY 
         Tags.TagName
 ),

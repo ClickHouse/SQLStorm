@@ -31,7 +31,7 @@ ClosedPostHistory AS (
     SELECT 
         ph.UserId,
         COUNT(ph.Id) AS ClosedPostCount,
-        STRING_AGG(p.Title, ', ') AS ClosedPostTitles,
+        arrayStringConcat(groupArray(assumeNotNull(p.Title)), ', ') AS ClosedPostTitles,
         MAX(ph.CreationDate) AS LastClosedDate
     FROM 
         PostHistory ph

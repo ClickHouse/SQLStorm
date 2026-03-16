@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (8, 9) 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' AND
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR AND
         p.PostTypeId IN (1, 2) 
 ),
 PostHistoryDetails AS (
@@ -26,7 +26,7 @@ PostHistoryDetails AS (
         ph.CreationDate AS HistoryDate,
         ph.UserId,
         p.Title AS PostTitle,
-        STRING_AGG(DISTINCT COALESCE(u.DisplayName, 'Anonymous'), ', ') AS Editors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(u.DisplayName, 'Anonymous')))), ', ') AS Editors
     FROM 
         PostHistory ph
     JOIN 

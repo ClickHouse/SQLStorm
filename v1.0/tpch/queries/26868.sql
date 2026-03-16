@@ -5,8 +5,8 @@ WITH RankedParts AS (
         p.p_name,
         p.p_brand,
         COUNT(ps.ps_partkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
-        STRING_AGG(DISTINCT s.s_address, ', ') AS addresses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_address))), ', ') AS addresses
     FROM 
         part p
     JOIN 

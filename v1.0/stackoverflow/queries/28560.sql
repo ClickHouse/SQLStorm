@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Tags, u.DisplayName
 ), FilteredPosts AS (
@@ -37,11 +37,11 @@ WITH RankedPosts AS (
 )
 SELECT 
     fp.*,
-    COALESCE(ARRAY_AGG(DISTINCT t.TagName) FILTER (WHERE t.TagName IS NOT NULL), '{}') AS RelatedTags
+    COALESCE(arrayDistinct(groupArray(assumeNotNull(t.TagName))) FILTER (WHERE t.TagName IS NOT NULL), '{}') AS RelatedTags
 FROM 
     FilteredPosts fp
 LEFT JOIN 
-    Tags t ON t.TagName = ANY(string_to_array(fp.Tags, '><')) 
+    Tags t ON t.TagName = ANY(splitByString('><', fp.Tags)) 
 GROUP BY 
     fp.PostId, fp.Title, fp.Tags, fp.OwnerDisplayName, fp.CommentCount, fp.UpVoteCount, fp.DownVoteCount
 ORDER BY 

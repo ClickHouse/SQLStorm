@@ -4,7 +4,7 @@ SELECT
     AVG(o.o_totalprice) AS avg_order_price,
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_qty,
     r.r_name AS region_name,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers_list
 FROM 
     part p
 JOIN 

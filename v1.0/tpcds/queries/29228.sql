@@ -40,8 +40,8 @@ SELECT
     name_length,
     address_length,
     COUNT(*) AS total_customers,
-    STRING_AGG(name_upper, ', ') AS all_names_upper,
-    STRING_AGG(address_lower, '; ') AS all_addresses_lower,
+    arrayStringConcat(groupArray(assumeNotNull(name_upper)), ', ') AS all_names_upper,
+    arrayStringConcat(groupArray(assumeNotNull(address_lower)), '; ') AS all_addresses_lower,
     AVG(name_length) AS avg_name_length,
     AVG(address_length) AS avg_address_length
 FROM 

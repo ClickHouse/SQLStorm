@@ -24,7 +24,7 @@ PostInformation AS (
         LEFT JOIN Votes v ON p.Id = v.PostId
         LEFT JOIN PostHistory bh ON p.Id = bh.PostId AND bh.PostHistoryTypeId IN (4, 5)
     WHERE 
-        p.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
+        p.CreationDate > now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ),

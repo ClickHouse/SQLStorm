@@ -3,7 +3,7 @@ WITH AddressStats AS (
     SELECT 
         ca_state, 
         COUNT(*) AS address_count, 
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities
     FROM 
         customer_address
     GROUP BY 
@@ -14,7 +14,7 @@ CustomerStats AS (
         cd_gender,
         COUNT(*) AS customer_count,
         SUM(cd_dep_count) AS total_dependents,
-        STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -25,13 +25,13 @@ SalesStats AS (
         SUM(ws_net_profit) AS total_net_profit,
         SUM(ws_sales_price) AS total_sales_price,
         COUNT(DISTINCT ws_order_number) AS total_orders,
-        EXTRACT(YEAR FROM d_date) AS sale_year
+        toYear(d_date) AS sale_year
     FROM 
         web_sales
     JOIN 
         date_dim ON ws_sold_date_sk = d_date_sk
     GROUP BY 
-        EXTRACT(YEAR FROM d_date)
+        toYear(d_date)
 ),
 FinalStats AS (
     SELECT 

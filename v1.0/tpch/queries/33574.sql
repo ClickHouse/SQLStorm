@@ -44,7 +44,7 @@ LEFT JOIN FilteredParts ph ON c.c_custkey = (
     FROM orders o 
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey 
     WHERE l.l_quantity > 10 
-    FETCH FIRST 1 ROW ONLY
+    LIMIT 1
 )
 WHERE c.order_count > 5
 ORDER BY c.total_spent DESC;

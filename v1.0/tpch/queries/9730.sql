@@ -1,7 +1,7 @@
 WITH MonthlySales AS (
     SELECT 
-        EXTRACT(YEAR FROM o_orderdate) AS order_year,
-        EXTRACT(MONTH FROM o_orderdate) AS order_month,
+        toYear(o_orderdate) AS order_year,
+        toMonth(o_orderdate) AS order_month,
         SUM(l_extendedprice * (1 - l_discount)) AS total_sales,
         r_name AS region_name
     FROM 

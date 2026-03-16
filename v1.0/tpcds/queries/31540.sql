@@ -55,4 +55,4 @@ WHERE EXISTS (
     ) AND si.total_sales > 500
 ) 
 ORDER BY ca.avg_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

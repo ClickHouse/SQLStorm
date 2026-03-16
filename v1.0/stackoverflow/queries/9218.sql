@@ -49,6 +49,6 @@ LEFT JOIN
 LEFT JOIN 
     PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
 WHERE 
-    ph.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+    ph.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ORDER BY 
     t.UpVotes DESC, t.CreationDate DESC;

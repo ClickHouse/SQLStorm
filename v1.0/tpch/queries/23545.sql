@@ -51,7 +51,7 @@ SELECT
     ROUND(SUM(l.l_extendedprice * (1 - l.l_discount)), 2) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(CASE WHEN l.l_quantity IS NULL THEN NULL ELSE l.l_quantity END) AS avg_quantity,
-    STRING_AGG(DISTINCT CASE WHEN c.c_mktsegment IS NULL THEN 'Unspecified' ELSE c.c_mktsegment END, ', ') AS market_segments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN c.c_mktsegment IS NULL THEN 'Unspecified' ELSE c.c_mktsegment END))), ', ') AS market_segments
 FROM 
     supplier s
 JOIN 

@@ -3,7 +3,7 @@ WITH RankedMovies AS (
     SELECT 
         m.title,
         m.production_year,
-        ARRAY_AGG(DISTINCT a.name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actors,
         RANK() OVER (PARTITION BY m.production_year ORDER BY m.title) AS rank_within_year
     FROM 
         aka_title m
@@ -42,7 +42,7 @@ SELECT
     tm.title,
     tm.production_year,
     COALESCE(NULLIF(tm.actors, ARRAY[]::TEXT[]), ARRAY['No actors found']) AS actors,
-    STRING_AGG(mk.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keywords
 FROM 
     TopMovies tm
 LEFT JOIN 

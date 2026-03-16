@@ -38,7 +38,7 @@ actor_movies AS (
 SELECT
     actor_name,
     COUNT(*) AS movies_count,
-    STRING_AGG(title || ' (' || production_year || ')', ', ') AS movie_list
+    arrayStringConcat(groupArray(assumeNotNull(title || ' (' || production_year || ')')), ', ') AS movie_list
 FROM
     actor_movies
 GROUP BY

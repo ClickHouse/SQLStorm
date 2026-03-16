@@ -6,7 +6,7 @@ WITH Address_Stats AS (
         MAX(LENGTH(ca_street_name)) AS max_street_name_length,
         MIN(LENGTH(ca_street_name)) AS min_street_name_length,
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length,
-        STRING_AGG(ca_street_name, ', ' ORDER BY LENGTH(ca_street_name)) AS all_street_names
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ' ORDER BY LENGTH(ca_street_name)) AS all_street_names
     FROM customer_address
     GROUP BY ca_state
 ), 

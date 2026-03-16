@@ -63,4 +63,4 @@ GROUP BY
     s.i_product_name, s.i_brand, s.i_category, s.total_sales, s.total_profit, s.total_orders, s.sales_band
 ORDER BY 
     s.total_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

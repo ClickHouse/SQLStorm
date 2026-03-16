@@ -6,7 +6,7 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     u.Reputation AS OwnerReputation,
     COUNT(v.Id) AS VoteCount,
-    STRING_AGG(t.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
 FROM 
     Posts p
 JOIN 
@@ -14,7 +14,7 @@ JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    unnest(string_to_array(p.Tags, '<>')) AS tag ON tag IS NOT NULL
+    arrayJoin(splitByString('<>', p.Tags)) AS tag ON tag IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag
 WHERE 

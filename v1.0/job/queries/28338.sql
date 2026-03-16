@@ -3,7 +3,7 @@ WITH movie_actors AS (
         a.name AS actor_name,
         t.title AS movie_title,
         t.production_year,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles
     FROM 
         aka_name a
     JOIN 

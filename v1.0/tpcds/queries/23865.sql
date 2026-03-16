@@ -46,7 +46,7 @@ SELECT
     (SELECT AVG(cd_purchase_estimate) 
      FROM customer_demographics 
      WHERE cd_dep_count IS NOT NULL) AS avg_purchase_estimate,
-    (SELECT STRING_AGG(DISTINCT ca.ca_city, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_city))), ', ') 
      FROM customer_address ca 
      WHERE ca.ca_state IS NOT NULL 
      AND ca.ca_country = 'USA') AS us_cities

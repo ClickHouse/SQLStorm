@@ -47,7 +47,7 @@ SELECT
     ca_city AS city, 
     ca_state AS state, 
     ca_country AS country, 
-    EXTRACT(YEAR FROM DATE '2002-10-01') - d_year AS years_as_customer, 
+    toYear(toDate('2002-10-01')) - d_year AS years_as_customer, 
     SUM(total_orders) AS total_orders,
     SUM(total_spent) AS total_revenue,
     AVG(total_spent) AS avg_spent_per_order

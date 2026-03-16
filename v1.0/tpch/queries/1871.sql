@@ -2,7 +2,7 @@ WITH RankedOrders AS (
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate, 
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
 ),
 SupplierParts AS (
     SELECT ps.ps_partkey, SUM(ps.ps_availqty) AS total_avail_qty, 

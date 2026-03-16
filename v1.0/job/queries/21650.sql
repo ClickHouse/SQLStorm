@@ -42,7 +42,7 @@ FullMovieInfo AS (
         tm.title,
         tm.production_year,
         tm.cast_count,
-        STRING_AGG(DISTINCT mg.genre, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mg.genre))), ', ') AS genres
     FROM 
         TopMovies tm
     LEFT JOIN 

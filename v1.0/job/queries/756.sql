@@ -38,7 +38,7 @@ ActorDetails AS (
 SELECT 
     tm.title,
     tm.production_year,
-    STRING_AGG(DISTINCT ad.actor_name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ad.actor_name))), ', ') AS actors,
     tm.company_count,
     CASE 
         WHEN tm.company_count > 3 THEN 'High Production'

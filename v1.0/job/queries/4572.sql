@@ -19,7 +19,7 @@ TopMovies AS (
     SELECT 
         ma.movie_id, 
         ma.title, 
-        STRING_AGG(ma.actor_name, ', ') AS actor_list
+        arrayStringConcat(groupArray(assumeNotNull(ma.actor_name)), ', ') AS actor_list
     FROM 
         MovieActors ma
     WHERE 

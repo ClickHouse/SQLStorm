@@ -26,7 +26,7 @@ MovieCompanies AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT c.name) AS CompanyCount,
-        STRING_AGG(DISTINCT c.name, ', ') AS Companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS Companies
     FROM 
         movie_companies mc
     JOIN 

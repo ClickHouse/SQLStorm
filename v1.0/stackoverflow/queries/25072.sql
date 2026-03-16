@@ -7,14 +7,14 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         p.CreationDate,
         p.Score,
-        ROW_NUMBER() OVER (PARTITION BY ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '><'), 1) ORDER BY p.Score DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY length(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2)), 1) ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 ),
 
 TagStats AS (
@@ -24,7 +24,7 @@ TagStats AS (
         AVG(score) AS AvgScore
     FROM (
         SELECT 
-            TRIM(unnest(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><'))) AS tag,
+            TRIM(arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2)))) AS tag,
             Score
         FROM 
             Posts
@@ -48,7 +48,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStats ts ON ts.tag = ANY(string_to_array(substring(rp.Tags, 2, LENGTH(rp.Tags) - 2), '><'))
+    TagStats ts ON ts.tag = ANY(splitByString('><', substring(rp.Tags, 2, LENGTH(rp.Tags) - 2)))
 WHERE 
     rp.Rank <= 5
 ORDER BY 

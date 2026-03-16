@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        ARRAY_AGG(t.TagName) AS Tags,
+        groupArray(assumeNotNull(t.TagName)) AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         RANK() OVER (ORDER BY p.Score DESC, p.ViewCount DESC) AS RankScore
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
     LEFT JOIN 
-        LATERAL UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS t(TagName) ON TRUE
     WHERE
         p.PostTypeId = 1  
     GROUP BY 
@@ -28,9 +28,7 @@ PopularTags AS (
         COUNT(*) AS PopularityCount
     FROM 
         RankedPosts r
-    CROSS JOIN 
-        UNNEST(r.Tags) AS tags(TagName)
-    GROUP BY 
+    ARRAY JOIN r.Tags AS TagNameGROUP BY 
         tags.TagName
     ORDER BY 
         PopularityCount DESC

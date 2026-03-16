@@ -9,16 +9,16 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ), BadgeSummary AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        b.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 ), ClosedPosts AS (

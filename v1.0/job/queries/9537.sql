@@ -13,7 +13,7 @@ WITH RankedMovies AS (
 ), MovieInfo AS (
     SELECT 
         mi.movie_id, 
-        STRING_AGG(DISTINCT it.info, ', ') AS info_text
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(it.info))), ', ') AS info_text
     FROM 
         movie_info mi
     JOIN 
@@ -23,8 +23,8 @@ WITH RankedMovies AS (
 ), CastSummary AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
-        STRING_AGG(DISTINCT rt.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS roles
     FROM 
         cast_info ci
     JOIN 

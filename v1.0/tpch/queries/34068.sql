@@ -52,7 +52,7 @@ LEFT JOIN
     CustomerOrders co ON co.o_orderkey = o.o_orderkey
 WHERE 
     r.r_name LIKE '%Asia%' 
-    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     r.r_name, n.n_name
 HAVING 

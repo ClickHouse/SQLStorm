@@ -31,6 +31,6 @@ JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
 JOIN TopSuppliers ts ON s.s_suppkey = ts.s_suppkey 
 JOIN PartDetails pd ON p.p_partkey = pd.p_partkey
-WHERE oi.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+WHERE oi.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY co.c_name, s.s_name, p.p_name, pd.total_quantity, ts.total_cost
 ORDER BY OrderTotal DESC;

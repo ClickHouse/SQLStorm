@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     WHERE
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
     GROUP BY
         p.Id, p.Title, p.Tags, p.CreationDate, u.DisplayName
     HAVING
@@ -44,7 +44,7 @@ SELECT
     tp.CreationDate,
     tp.CommentCount,
     tp.VoteCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS RelatedTags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS RelatedTags,
     CASE 
         WHEN tp.VoteCount > 10 THEN 'Highly Voted'
         WHEN tp.VoteCount BETWEEN 5 AND 10 THEN 'Moderately Voted'
@@ -55,7 +55,7 @@ FROM
 LEFT JOIN
     (SELECT 
          Id, 
-         UNNEST(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName
+         arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName
      FROM 
          Posts) t ON t.Id = tp.PostId
 GROUP BY

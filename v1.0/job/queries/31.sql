@@ -5,7 +5,7 @@ WITH movie_data AS (
         t.production_year,
         COALESCE(kt.keyword, 'No Keyword') AS keyword,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        ARRAY_AGG(DISTINCT a.name ORDER BY a.name) AS cast_names
+        arrayDistinct(groupArray(assumeNotNull(a.name ORDER BY a.name))) AS cast_names
     FROM 
         aka_title t
     LEFT JOIN 

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 )
 
 SELECT 
@@ -31,7 +31,7 @@ SELECT
      FROM Votes v 
      WHERE v.PostId = r.PostId 
        AND v.VoteTypeId IN (2, 3)) AS TotalVotes, 
-    (SELECT STRING_AGG(DISTINCT b.Name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') 
      FROM Badges b 
      WHERE b.UserId = u.Id) AS UserBadges
 FROM 

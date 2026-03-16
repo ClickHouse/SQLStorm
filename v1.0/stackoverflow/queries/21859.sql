@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
+        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
 ),
 TopPosts AS (
     SELECT 
@@ -81,7 +81,7 @@ FROM
     ComplexMetrics cm
 WHERE 
     ViewCount IS NOT NULL
-    AND (LastEditDate IS NULL OR LastEditDate < cast('2024-10-01' as date) - INTERVAL '30 days')
+    AND (LastEditDate IS NULL OR LastEditDate < cast('2024-10-01' as date) - INTERVAL 30 DAY)
 ORDER BY 
     ViewCount DESC, 
     EditCount DESC;

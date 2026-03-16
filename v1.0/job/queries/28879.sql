@@ -5,8 +5,8 @@ WITH movie_details AS (
         t.title,
         t.production_year,
         t.kind_id,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT c.name) AS companies
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS companies
     FROM 
         aka_title t
     JOIN 
@@ -24,8 +24,8 @@ actor_details AS (
     SELECT 
         a.person_id,
         a.name AS actor_name,
-        ARRAY_AGG(DISTINCT t.title) AS titles,
-        ARRAY_AGG(DISTINCT r.role) AS roles
+        arrayDistinct(groupArray(assumeNotNull(t.title))) AS titles,
+        arrayDistinct(groupArray(assumeNotNull(r.role))) AS roles
     FROM 
         aka_name a
     JOIN 

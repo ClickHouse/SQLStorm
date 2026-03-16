@@ -42,7 +42,7 @@ SELECT
     COUNT(c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS Upvotes,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS Downvotes,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
     CASE 
         WHEN EXISTS (SELECT 1 FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 6) THEN 'Closed'
         ELSE 'Open'
@@ -57,11 +57,11 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    LATERAL (
-        SELECT UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS TagName
+    (
+        SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName
     ) t ON TRUE
 WHERE 
-    p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
+    p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName, u.Reputation
 ORDER BY 

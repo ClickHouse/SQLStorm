@@ -7,7 +7,7 @@ SELECT
     a.ca_state,
     ROUND(SUM(ws.ws_ext_sales_price), 2) AS total_sales,
     COUNT(DISTINCT ws.ws_order_number) AS order_count,
-    STRING_AGG(DISTINCT i.i_brand || ' ' || i.i_product_name, ', ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_brand || ' ' || i.i_product_name))), ', ') AS purchased_items
 FROM 
     customer c
 JOIN 

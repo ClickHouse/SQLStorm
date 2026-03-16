@@ -22,7 +22,7 @@ CityGrouped AS (
     SELECT 
         city_lower,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT CAST(ca_address_sk AS TEXT), ', ') AS address_sk_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ca_address_sk AS TEXT)))), ', ') AS address_sk_list
     FROM 
         AddressCity
     GROUP BY 

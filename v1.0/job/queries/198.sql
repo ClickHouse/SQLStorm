@@ -30,7 +30,7 @@ SELECT
     tm.movie_title,
     tm.production_year,
     tm.total_cast,
-    STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
     COALESCE(SUM(CAST(mi.info AS FLOAT)), 0) AS total_box_office,
     CASE 
         WHEN COUNT(DISTINCT mc.company_id) > 0 THEN 'Yes' 

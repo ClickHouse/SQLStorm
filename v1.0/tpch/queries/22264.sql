@@ -19,7 +19,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     ROW_NUMBER() OVER (PARTITION BY n.n_name ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS rank,
-    STRING_AGG(s.s_name, ', ') FILTER (WHERE s.s_name IS NOT NULL) AS suppliers
+    arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') FILTER (WHERE s.s_name IS NOT NULL) AS suppliers
 FROM lineitem l
 JOIN orders o ON l.l_orderkey = o.o_orderkey
 JOIN partsupp ps ON l.l_partkey = ps.ps_partkey AND l.l_suppkey = ps.ps_suppkey
@@ -29,7 +29,7 @@ JOIN nation n ON sh.s_nationkey = n.n_nationkey
 LEFT JOIN supplier s ON s.s_suppkey = l.l_suppkey
 WHERE 
     o.o_orderstatus NOT IN ('F', 'X') 
-    AND l.l_shipdate >= DATE '1998-10-01' - INTERVAL '1 YEAR'
+    AND l.l_shipdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
     AND (l.l_tax IS NULL OR l.l_tax < 0.05)
 GROUP BY n.n_name, p.p_name
 HAVING SUM(l.l_extendedprice) > 1000

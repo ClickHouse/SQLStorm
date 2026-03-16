@@ -15,7 +15,7 @@ WITH UserReputation AS (
     SELECT 
         UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames
     FROM Badges
     GROUP BY UserId
 ), TopAnsweredQuestions AS (
@@ -44,4 +44,4 @@ LEFT JOIN UserBadges ub ON u.UserId = ub.UserId
 LEFT JOIN TopAnsweredQuestions taq ON taq.Rank = 1
 WHERE u.Reputation IS NOT NULL
 ORDER BY u.Reputation DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

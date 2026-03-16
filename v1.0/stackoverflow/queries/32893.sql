@@ -25,7 +25,7 @@ UserBadges AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS Badges
     FROM 
         Users U
     LEFT JOIN 
@@ -42,7 +42,7 @@ PopularPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 )
 SELECT 
     PH.PostId,

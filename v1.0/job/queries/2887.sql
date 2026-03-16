@@ -30,7 +30,7 @@ MovieDetails AS (
         tm.movie_id,
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         (SELECT COUNT(*)
          FROM movie_keyword mk 
          WHERE mk.movie_id = tm.movie_id) AS keyword_count

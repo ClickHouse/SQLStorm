@@ -33,7 +33,7 @@ SELECT
     mh.parent_movie,
     mh.level,
     COUNT(DISTINCT mc.company_id) AS company_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     AVG(p.age) AS average_age,
     MAX(CASE WHEN c.note IS NOT NULL THEN c.note ELSE 'No Notes' END) AS latest_note
 FROM 
@@ -53,7 +53,7 @@ LEFT JOIN
 LEFT JOIN (
     SELECT 
         pi.person_id,
-        EXTRACT(YEAR FROM AGE(CAST('2024-10-01' AS DATE), pi.info::DATE)) AS age
+        toYear(AGE(CAST('2024-10-01' AS DATE), CAST(pi.info AS DATE))) AS age
     FROM 
         person_info pi
     WHERE 

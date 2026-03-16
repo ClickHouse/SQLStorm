@@ -28,7 +28,7 @@ movie_details AS (
         t.production_year,
         m.company_type_id,
         ct.kind AS company_type,
-        STRING_AGG(cn.name, ', ') AS company_names
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS company_names
     FROM 
         aka_title t
     LEFT JOIN 

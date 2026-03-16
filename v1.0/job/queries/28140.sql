@@ -4,9 +4,9 @@ WITH movie_details AS (
         title.id AS movie_id,
         title.title AS movie_title,
         title.production_year,
-        STRING_AGG(DISTINCT aka_name.name, ', ') AS aliases,
-        STRING_AGG(DISTINCT keyword.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT company_name.name, ', ') AS production_companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aka_name.name))), ', ') AS aliases,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name.name))), ', ') AS production_companies
     FROM title
     INNER JOIN aka_title ON title.id = aka_title.movie_id
     LEFT JOIN aka_name ON aka_title.title = aka_name.name
@@ -20,7 +20,7 @@ WITH movie_details AS (
 cast_details AS (
     SELECT 
         movie_id,
-        STRING_AGG(DISTINCT char_name.name || ' (' || role_type.role || ')', ', ') AS cast_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(char_name.name || ' (' || role_type.role || ')'))), ', ') AS cast_info
     FROM cast_info
     INNER JOIN char_name ON cast_info.person_id = char_name.imdb_id
     INNER JOIN role_type ON cast_info.role_id = role_type.id

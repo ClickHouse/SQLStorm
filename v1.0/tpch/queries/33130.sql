@@ -34,7 +34,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(s.s_acctbal) AS average_account_balance,
     MAX(SkewedOrders.total_revenue) AS highest_order_revenue,
-    STRING_AGG(DISTINCT tc.c_name, ', ') AS top_customers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tc.c_name))), ', ') AS top_customers
 FROM region r
 LEFT JOIN nation nh ON r.r_regionkey = nh.n_regionkey 
 LEFT JOIN supplier s ON nh.n_nationkey = s.s_nationkey 

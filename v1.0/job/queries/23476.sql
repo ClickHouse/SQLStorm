@@ -34,7 +34,7 @@ ComplexMovieData AS (
             ELSE 'Other'
         END AS rank_category,
         (SELECT COUNT(*) FROM movie_keyword mk WHERE mk.movie_id = rm.movie_id) AS keyword_count,
-        (SELECT STRING_AGG(DISTINCT cn.name, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') 
          FROM movie_companies mc 
          JOIN company_name cn ON mc.company_id = cn.id 
          WHERE mc.movie_id = rm.movie_id) AS production_companies
@@ -58,7 +58,7 @@ SELECT
     END AS era,
     (SELECT AVG(word_length) 
      FROM (SELECT LENGTH(word) AS word_length 
-           FROM unnest(string_to_array(cmd.title, ' ')) AS word) AS lengths) AS avg_word_length,
+           FROM arrayJoin(splitByString(' ', cmd.title)) AS word) AS lengths) AS avg_word_length,
     CASE 
         WHEN cmd.role_count IS NULL THEN 'No Roles Detected'
         ELSE 'Roles Detected'

@@ -38,7 +38,7 @@ SELECT
     tu.TotalScore,
     tu.UpVotes,
     tu.DownVotes,
-    STRING_AGG(t.TagName, ', ') AS Tags,
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
     MAX(ph.CreationDate) AS LastActiveDate
 FROM TopUsers tu
 LEFT JOIN Posts p ON tu.UserId = p.OwnerUserId

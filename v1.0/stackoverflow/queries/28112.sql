@@ -22,12 +22,12 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')  
+        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)  
         AND p.Score > 0  
 ),
 UniqueTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS Tag
     FROM 
         RankedPosts
     WHERE 
@@ -53,11 +53,11 @@ PostStatistics AS (
         rp.HasAcceptedAnswer,
         rp.ViewCount,
         rp.Score,
-        ARRAY_AGG(DISTINCT tf.Tag) AS PopularTags
+        arrayDistinct(groupArray(assumeNotNull(tf.Tag))) AS PopularTags
     FROM 
         RankedPosts rp
     LEFT JOIN 
-        TagFrequency tf ON tf.Tag = ANY(STRING_TO_ARRAY(SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags) - 2), '><'))
+        TagFrequency tf ON tf.Tag = ANY(splitByString('><', SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags) - 2)))
     GROUP BY 
         rp.PostId, rp.Title, rp.OwnerDisplayName, rp.CreationDate, rp.HasAcceptedAnswer, rp.ViewCount, rp.Score
 )

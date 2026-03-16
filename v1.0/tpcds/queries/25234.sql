@@ -21,9 +21,9 @@ string_processing_benchmark AS (
     SELECT 
         city_rank,
         COUNT(*) AS customer_count,
-        STRING_AGG(CONCAT(c_first_name, ' ', c_last_name), '; ') AS customer_names,
-        SUBSTRING(STRING_AGG(CONCAT(c_first_name, ' ', c_last_name), '; '), 1, 100) AS truncated_names,
-        LENGTH(SUBSTRING(STRING_AGG(CONCAT(c_first_name, ' ', c_last_name), '; '), 1, 100)) AS name_length
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name))), '; ') AS customer_names,
+        SUBSTRING(arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name))), '; '), 1, 100) AS truncated_names,
+        LENGTH(SUBSTRING(arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name))), '; '), 1, 100)) AS name_length
     FROM 
         ranked_customers
     WHERE 

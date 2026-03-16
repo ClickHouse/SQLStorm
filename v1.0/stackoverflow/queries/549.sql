@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserReputation AS (
     SELECT 
@@ -67,4 +67,4 @@ WHERE
     hsp.Score > 0
 ORDER BY 
     hsp.Score DESC, hsp.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

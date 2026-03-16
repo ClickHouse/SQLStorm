@@ -3,7 +3,7 @@ SELECT
     t.title AS movie_title,
     a.name AS actor_name,
     ct.kind AS company_type,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords_list,
     COUNT(DISTINCT ci.id) AS cast_count,
     SUM(CASE WHEN mi.info_type_id IN (SELECT id FROM info_type WHERE info = 'Budget') THEN CAST(mi.info AS INTEGER) ELSE 0 END) AS total_budget,
     AVG(CASE WHEN mi.info_type_id IN (SELECT id FROM info_type WHERE info = 'Rating') THEN CAST(mi.info AS DECIMAL) ELSE NULL END) AS average_rating

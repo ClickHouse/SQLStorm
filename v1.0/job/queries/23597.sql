@@ -21,7 +21,7 @@ ActorCount AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -39,8 +39,8 @@ SELECT
         ELSE 'Earlier Release'
     END AS release_status,
     CASE 
-        WHEN ARRAY_LENGTH(MK.keywords, 1) IS NULL THEN 'No Keywords'
-        WHEN ARRAY_LENGTH(MK.keywords, 1) > 3 THEN 'Rich in Keywords'
+        WHEN length(MK.keywords, 1) IS NULL THEN 'No Keywords'
+        WHEN length(MK.keywords, 1) > 3 THEN 'Rich in Keywords'
         ELSE 'Moderate Keywords'
     END AS keyword_category
 FROM 

@@ -72,7 +72,7 @@ CityCustomerDetails AS (
 )
 SELECT 
     ca_city AS city,
-    STRING_AGG(CONCAT(c_customer_id, ': ', c_first_name, ' ', c_last_name), ', ') AS customer_list,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_customer_id, ': ', c_first_name, ' ', c_last_name))), ', ') AS customer_list,
     COUNT(c_customer_id) AS total_customers
 FROM 
     CityCustomerDetails

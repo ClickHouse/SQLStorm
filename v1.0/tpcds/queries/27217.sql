@@ -57,8 +57,8 @@ SELECT
     purchase_segment,
     COUNT(*) AS customer_count,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT cd_gender, ', ') AS genders,
-    STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_gender))), ', ') AS genders,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses
 FROM BenchmarkData
 GROUP BY 
     purchase_segment

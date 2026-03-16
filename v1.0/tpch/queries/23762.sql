@@ -5,7 +5,7 @@ WITH RankedOrders AS (
         o.o_orderdate,
         RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    WHERE o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
       AND o.o_orderstatus IN ('O', 'F')
 ),
 SupplierStats AS (

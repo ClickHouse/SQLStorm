@@ -16,7 +16,7 @@ CteWithNotes AS (
     SELECT 
         t.id AS title_id,
         t.title,
-        STRING_AGG(DISTINCT c.note, ', ') AS notes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.note))), ', ') AS notes
     FROM 
         aka_title t
     LEFT JOIN 

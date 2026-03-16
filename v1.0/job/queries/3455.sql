@@ -43,7 +43,7 @@ SELECT
      FROM movie_info mi 
      WHERE mi.movie_id = rm.production_year 
      AND mi.info_type_id IN (SELECT id FROM info_type WHERE info = 'Rating')) AS rating_count,
-    (SELECT STRING_AGG(DISTINCT kw.keyword, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') 
      FROM movie_keyword mk 
      JOIN keyword kw ON mk.keyword_id = kw.id 
      WHERE mk.movie_id = rm.production_year) AS keywords

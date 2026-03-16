@@ -41,7 +41,7 @@ SELECT
     COALESCE(SUM(o.o_totalprice), 0) AS total_order_value,
     MAX(pd.rank_price) AS max_rank_price,
     MAX(l.total_value) AS high_lineitem_value,
-    STRING_AGG(CONCAT(s.s_name, ' - ', CAST(s.s_acctbal AS VARCHAR), ' - ', CAST(sh.level AS VARCHAR)), '; ') AS suppliers
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_name, ' - ', CAST(s.s_acctbal AS VARCHAR), ' - ', CAST(sh.level AS VARCHAR)))), '; ') AS suppliers
 FROM customer c
 LEFT JOIN FilteredOrders o ON c.c_custkey = o.o_orderkey
 LEFT JOIN PartDetails pd ON pd.p_partkey IN (

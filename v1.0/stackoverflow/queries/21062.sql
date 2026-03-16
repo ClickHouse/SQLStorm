@@ -15,11 +15,11 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        Votes vt ON p.Id = vt.PostId AND vt.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        Votes vt ON p.Id = vt.PostId AND vt.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND (p.Body IS NOT NULL AND p.Body != '')
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, u.DisplayName, p.PostTypeId

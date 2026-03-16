@@ -11,7 +11,7 @@ actor_appearance AS (
     SELECT 
         ci.movie_id,
         COUNT(ci.person_id) AS actor_count,
-        STRING_AGG(an.name, ', ') AS actors
+        arrayStringConcat(groupArray(assumeNotNull(an.name)), ', ') AS actors
     FROM cast_info ci
     JOIN aka_name an ON ci.person_id = an.person_id
     GROUP BY ci.movie_id

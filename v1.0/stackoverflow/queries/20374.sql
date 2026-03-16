@@ -15,7 +15,7 @@ WITH PostStatistics AS (
     LEFT JOIN Votes V ON P.Id = V.PostId
     LEFT JOIN Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title, P.Score, P.ViewCount, P.AcceptedAnswerId
 ),
@@ -23,7 +23,7 @@ UserActivePostStats AS (
     SELECT 
         U.Id AS UserId,
         U.DisplayName,
-        SUM(CASE WHEN U.LastAccessDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' THEN 1 ELSE 0 END) AS RecentLoginCount,
+        SUM(CASE WHEN U.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN 1 ELSE 0 END) AS RecentLoginCount,
         COUNT(DISTINCT PS.PostId) AS TotalActivePosts,
         SUM(PS.ViewCount) AS TotalViews
     FROM 

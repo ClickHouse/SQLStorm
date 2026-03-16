@@ -13,7 +13,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score, p.AnswerCount
 ),
@@ -28,7 +28,7 @@ TopUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName
 ),

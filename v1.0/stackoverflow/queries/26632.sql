@@ -63,7 +63,7 @@ SELECT
     fp.ViewCount,
     fp.CommentCount,
     fp.AnswerCount,
-    STRING_AGG(DISTINCT fp.Tags, ', ') AS AllTags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fp.Tags))), ', ') AS AllTags,
     COUNT(fp.PostId) AS PostHistoryChangeCount,
     MAX(fp.CreationDate) AS LastUpdatedDate
 FROM 

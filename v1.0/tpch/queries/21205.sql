@@ -79,7 +79,7 @@ SELECT
     COUNT(fr.p_partkey) AS total_parts,
     SUM(fr.total_spent) AS total_spent_by_customers,
     AVG(fr.avg_supply_cost) AS avg_supply_cost_per_part,
-    STRING_AGG(fr.c_name || ' (' || CAST(fr.order_count AS VARCHAR) || ' orders)', ', ') AS customer_summary
+    arrayStringConcat(groupArray(assumeNotNull(fr.c_name || ' (' || CAST(fr.order_count AS VARCHAR) || ' orders)')), ', ') AS customer_summary
 FROM 
     final_report fr
 JOIN 

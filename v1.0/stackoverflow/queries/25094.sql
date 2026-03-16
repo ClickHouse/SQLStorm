@@ -26,12 +26,12 @@ WITH RankedPosts AS (
 ),
 FrequentTags AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         COUNT(*) AS TagFrequency
     FROM 
         RankedPosts
     GROUP BY 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><'))
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2)))
 ),
 TopTags AS (
     SELECT 

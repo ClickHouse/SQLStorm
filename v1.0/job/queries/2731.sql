@@ -36,7 +36,7 @@ CompanyDetails AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, ', ') AS info_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS info_list
     FROM 
         movie_info mi
     WHERE 

@@ -16,8 +16,8 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    o.o_orderdate >= DATE '1995-01-01'
-    AND o.o_orderdate < DATE '1996-01-01'
+    o.o_orderdate >= toDate('1995-01-01')
+    AND o.o_orderdate < toDate('1996-01-01')
     AND r.r_name = 'ASIA'
 GROUP BY 
     n.n_name

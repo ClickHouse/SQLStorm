@@ -25,13 +25,13 @@ WITH UserStatistics AS (
         P.CommentCount,
         ROW_NUMBER() OVER (ORDER BY P.LastActivityDate DESC) AS RecentRank
     FROM Posts P
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), PostHistoryAggregates AS (
     SELECT 
         Ph.PostId,
         COUNT(*) AS EditCount,
         MAX(Ph.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS EditTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS EditTypes
     FROM PostHistory Ph
     JOIN PostHistoryTypes PHT ON Ph.PostHistoryTypeId = PHT.Id
     GROUP BY Ph.PostId

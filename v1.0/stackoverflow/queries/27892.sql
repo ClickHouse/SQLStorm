@@ -7,7 +7,7 @@ WITH TaggedPosts AS (
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS RelevantTags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS RelevantTags
     FROM 
         Posts p
     LEFT JOIN 
@@ -17,7 +17,7 @@ WITH TaggedPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     LEFT JOIN 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag_names ON TRUE
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag_names ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_names
     WHERE 

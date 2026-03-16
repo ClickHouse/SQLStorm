@@ -30,7 +30,7 @@ SELECT
     sc.s_suppkey,
     sc.s_name,
     sc.p_type,
-    STRING_AGG(sc.detailed_comment, ' | ') AS suppliers_info
+    arrayStringConcat(groupArray(assumeNotNull(sc.detailed_comment)), ' | ') AS suppliers_info
 FROM 
     SupplierComments sc
 GROUP BY 

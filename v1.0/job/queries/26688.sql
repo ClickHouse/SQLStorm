@@ -6,7 +6,7 @@ WITH RecentMovies AS (
         mt.production_year,
         a.name AS actor_name,
         ci.role_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title mt
     JOIN 
@@ -25,8 +25,8 @@ WITH RecentMovies AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
-        ARRAY_AGG(DISTINCT ct.kind) AS company_types
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(ct.kind))) AS company_types
     FROM 
         movie_companies mc
     JOIN 

@@ -18,7 +18,7 @@ WITH RECURSIVE SupplierHierarchy AS (
 ),
 OrderYT AS (
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate,
-           ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS order_rank
+           ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
     WHERE o.o_orderstatus = 'O' AND o.o_totalprice > 1000
 ),

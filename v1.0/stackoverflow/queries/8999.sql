@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         Comments c ON c.PostId = p.Id
     WHERE 
         p.PostTypeId = 1 AND
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, u.DisplayName, p.CreationDate, p.Score, p.ViewCount
 ),
@@ -57,7 +57,7 @@ LEFT JOIN (
     FROM 
         Badges
     WHERE 
-        Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         UserId
 ) b ON tp.OwnerDisplayName = (

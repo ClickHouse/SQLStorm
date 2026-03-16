@@ -49,4 +49,4 @@ WHERE
     AND p.p_retailprice > (SELECT AVG(p2.p_retailprice) FROM part p2 WHERE p2.p_type = p.p_type)
 ORDER BY
     sales DESC, availability DESC, p.p_partkey
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

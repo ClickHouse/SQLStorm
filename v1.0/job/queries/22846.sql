@@ -16,7 +16,7 @@ MovieCast AS (
         mc.movie_id,
         COUNT(DISTINCT ci.person_id) AS cast_member_count,
         SUM(CASE WHEN ci.nr_order < 5 THEN 1 ELSE 0 END) AS top_five_roles,
-        STRING_AGG(DISTINCT a.name, ', ') AS all_cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS all_cast_names
     FROM 
         complete_cast mc
     JOIN 
@@ -29,7 +29,7 @@ MovieCast AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords_list
     FROM 
         movie_keyword mk
     JOIN 
@@ -40,7 +40,7 @@ MovieKeywords AS (
 MovieCompanies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, '; ') AS companies_list 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), '; ') AS companies_list 
     FROM 
         movie_companies mc
     JOIN 

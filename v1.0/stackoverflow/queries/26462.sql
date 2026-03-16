@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        array_length(string_to_array(p.Tags, '>'), 1) AS TagCount,
+        length(splitByString('>', p.Tags), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RankByUser
     FROM 
@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 TopPosts AS (
     SELECT 

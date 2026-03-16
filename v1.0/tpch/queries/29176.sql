@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     AVG(s.s_acctbal) AS avg_supplier_acctbal,
     SUM(l.l_quantity) AS total_ordered_quantity,
-    STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments,
     MAX(CASE 
             WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount)
             ELSE 0 

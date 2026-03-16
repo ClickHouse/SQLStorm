@@ -49,7 +49,7 @@ SELECT
         WHEN d.num_null_roles IS NOT NULL THEN 'Dubious'
         ELSE 'Clear'
     END AS cast_quality,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     m.year_rank,
     m.keyword_count
 FROM 

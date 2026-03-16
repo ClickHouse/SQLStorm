@@ -24,8 +24,8 @@ SELECT
     movie_id,
     movie_title,
     production_year,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT CONCAT(person_name, ' (', person_role, ')'), '; ') AS cast_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(person_name, ' (', person_role, ')')))), '; ') AS cast_details,
     COUNT(DISTINCT company_name) AS company_count
 FROM movie_data
 GROUP BY movie_id, movie_title, production_year

@@ -50,7 +50,7 @@ movies_info AS (
         mh.movie_id,
         mh.title,
         mh.production_year,
-        ARRAY_AGG(DISTINCT cd.actor_name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(cd.actor_name))) AS actors,
         COUNT(DISTINCT cd.person_id) AS num_actors,
         MAX(mo.info) FILTER (WHERE it.info = 'rating') AS highest_rating
     FROM 

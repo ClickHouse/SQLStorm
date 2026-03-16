@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ct.Name, ', ') AS CloseReasons,
+        arrayStringConcat(groupArray(assumeNotNull(ct.Name)), ', ') AS CloseReasons,
         COUNT(DISTINCT ph.UserId) AS VoterCount
     FROM 
         PostHistory ph

@@ -8,7 +8,7 @@ WITH UserPostStats AS (
         COUNT(DISTINCT CASE WHEN p.PostTypeId = 1 THEN p.Id END) AS TotalQuestions,
         COUNT(DISTINCT CASE WHEN p.PostTypeId = 2 THEN p.Id END) AS TotalAnswers,
         COUNT(DISTINCT b.Id) AS TotalBadges,
-        STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Badges b ON u.Id = b.UserId
@@ -18,7 +18,7 @@ ClosedPostReasons AS (
     SELECT 
         ph.UserId,
         COUNT(*) AS ClosedPosts,
-        STRING_AGG(COALESCE(cr.Name, 'Unknown'), ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(COALESCE(cr.Name, 'Unknown'))), ', ') AS CloseReasons
     FROM PostHistory ph
     LEFT JOIN CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
     WHERE ph.PostHistoryTypeId = 10 
@@ -56,7 +56,7 @@ SELECT
         ELSE 'No closed posts'
     END AS PostCloseStatus,
     CASE
-        WHEN ru.TotalPosts > 0 THEN ROUND((ru.TotalScore / ru.TotalPosts)::decimal, 2)
+        WHEN ru.TotalPosts > 0 THEN ROUND((ru.TotalScore / ru.TotalPostsCAST() AS decimal), 2)
         ELSE 0
     END AS AverageScorePerPost
 FROM RankedUsers ru

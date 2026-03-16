@@ -34,7 +34,7 @@ TopUsers AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS CloseReasonNames
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasonNames
     FROM 
         PostHistory ph
     JOIN 
@@ -71,4 +71,4 @@ GROUP BY
     t.UserId, t.DisplayName, t.QuestionCount, t.TotalScore, t.AvgViewCount, cr.CloseReasonNames
 ORDER BY 
     t.TotalScore DESC, t.QuestionCount DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

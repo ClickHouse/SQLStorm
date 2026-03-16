@@ -3,7 +3,7 @@ SELECT
     p.p_name AS part_name, 
     COUNT(ps.ps_availqty) AS total_avail_qty, 
     SUM(ps.ps_supplycost) AS total_supply_cost,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     r.r_name AS region_name,
     n.n_name AS nation_name
 FROM 

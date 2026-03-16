@@ -22,7 +22,7 @@ WITH
         SELECT 
             ca_state,
             COUNT(*) AS customer_count,
-            STRING_AGG(DISTINCT full_address, '; ') AS unique_addresses
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(full_address))), '; ') AS unique_addresses
         FROM 
             CustomerDetails
         GROUP BY 

@@ -42,5 +42,5 @@ LEFT JOIN RankedSales rs ON i.i_item_sk = rs.ws_item_sk
 LEFT JOIN CustomerReturns cr ON i.i_item_sk = cr.cr_item_sk
 WHERE i.i_current_price > 150.00 
 ORDER BY return_analysis, rs.price_rank 
-FETCH FIRST 100 ROWS ONLY
-OFFSET 10 ROWS;
+LIMIT 100
+OFFSET 10;

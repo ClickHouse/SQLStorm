@@ -58,4 +58,4 @@ WHERE
     )
 ORDER BY 
     s.total_revenue DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

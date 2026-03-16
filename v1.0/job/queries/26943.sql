@@ -61,8 +61,8 @@ SELECT
     md.movie_id,
     md.title,
     md.production_year,
-    STRING_AGG(DISTINCT md.actor_name || ' (' || md.role_type || ')', ', ') AS actors,
-    STRING_AGG(DISTINCT md.company_name || ' (' || md.company_type || ')', ', ') AS companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name || ' (' || md.role_type || ')'))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.company_name || ' (' || md.company_type || ')'))), ', ') AS companies
 FROM 
     MovieDetails md
 WHERE 

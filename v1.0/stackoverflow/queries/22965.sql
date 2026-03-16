@@ -20,7 +20,7 @@ ClosedPostStats AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons,
         MAX(ph.CreationDate) AS LastCloseDate
     FROM 
         PostHistory ph
@@ -35,7 +35,7 @@ ClosedPostStats AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames,
         COUNT(b.Id) AS BadgeCount,
         MAX(b.Date) AS LastBadgeDate
     FROM 
@@ -69,7 +69,7 @@ LEFT JOIN
 LEFT JOIN 
     UserBadges ub ON u.Id = ub.UserId
 WHERE 
-    (cb.LastCloseDate IS NULL OR cb.LastCloseDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days') 
+    (cb.LastCloseDate IS NULL OR cb.LastCloseDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) 
     AND u.Reputation > (SELECT AVG(Reputation) FROM Users) 
 ORDER BY 
     r.Score DESC NULLS LAST,

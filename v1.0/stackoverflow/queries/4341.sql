@@ -3,7 +3,7 @@ WITH ActiveUsers AS (
     SELECT Id, DisplayName, Reputation, 
            ROW_NUMBER() OVER (ORDER BY Reputation DESC) AS UserRank
     FROM Users
-    WHERE LastAccessDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 EnhancedPosts AS (
     SELECT p.Id AS PostId, p.Title, p.CreationDate, 
@@ -14,7 +14,7 @@ EnhancedPosts AS (
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY p.Id, p.Title, p.CreationDate
 ),
 RankedPosts AS (

@@ -61,4 +61,4 @@ WHERE
     AND (cd.cd_purchase_estimate IS NOT NULL OR js.demographic_count > 5)
 ORDER BY 
     js.total_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

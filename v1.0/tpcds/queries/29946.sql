@@ -4,7 +4,7 @@ WITH demographics AS (
         cd.cd_gender,
         COUNT(DISTINCT c.c_customer_id) AS customer_count,
         AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT ca.ca_city, ', ') AS cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_city))), ', ') AS cities
     FROM 
         customer c
     JOIN 

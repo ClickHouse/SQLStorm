@@ -18,4 +18,4 @@ GROUP BY
     s.s_name, p.p_name, p.p_retailprice, p.p_comment, p.p_type
 ORDER BY 
     string_length DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

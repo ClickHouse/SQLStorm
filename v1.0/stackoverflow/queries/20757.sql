@@ -2,7 +2,7 @@ WITH UserBadges AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS TotalBadges,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM Users U
     LEFT JOIN Badges B ON U.Id = B.UserId
     WHERE U.Reputation > 1000
@@ -17,14 +17,14 @@ PostStatistics AS (
         AVG(P.Score) AS AvgScore
     FROM Posts P
     LEFT JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY P.OwnerUserId
 ),
 ClosedPosts AS (
     SELECT 
         PH.PostId,
         PH.CreationDate,
-        STRING_AGG(CASE WHEN C.PostId IS NOT NULL THEN 'Closed' ELSE 'Active' END, ' | ') AS PostStatus
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN C.PostId IS NOT NULL THEN 'Closed' ELSE 'Active' END)), ' | ') AS PostStatus
     FROM PostHistory PH
     LEFT JOIN Comments C ON PH.PostId = C.PostId 
     WHERE PH.PostHistoryTypeId IN (10, 11)
@@ -61,6 +61,6 @@ FROM Users U
 LEFT JOIN UserBadges UB ON U.Id = UB.UserId
 LEFT JOIN PostStatistics PS ON U.Id = PS.OwnerUserId
 LEFT JOIN ClosedPosts CP ON PS.OwnerUserId = CP.PostId
-WHERE U.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years'
+WHERE U.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
 ORDER BY U.Reputation DESC
 LIMIT 100;

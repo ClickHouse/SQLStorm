@@ -31,7 +31,7 @@ PostClosureHistory AS (
     SELECT 
         ph.UserId,
         COUNT(*) AS CloseVotes,
-        STRING_AGG(DISTINCT ct.Name, ', ') AS CloseReasonNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.Name))), ', ') AS CloseReasonNames
     FROM 
         PostHistory ph
     JOIN 
@@ -79,5 +79,4 @@ WHERE
     )
 ORDER BY 
     Reputation DESC, QuestionCount DESC
-OFFSET 5 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

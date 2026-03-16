@@ -6,7 +6,7 @@ SELECT
     MAX(s.s_acctbal) AS max_supplier_balance,
     MIN(s.s_acctbal) AS min_supplier_balance,
     AVG(s.s_acctbal) AS avg_supplier_balance,
-    CONCAT('Available part: ', p.p_name, ' from suppliers: ', STRING_AGG(DISTINCT s.s_name, ', ')) AS part_supplier_info
+    CONCAT('Available part: ', p.p_name, ' from suppliers: ', arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ')) AS part_supplier_info
 FROM 
     part p
 JOIN 

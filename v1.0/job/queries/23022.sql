@@ -21,7 +21,7 @@ company_info AS (
     SELECT 
         mc.movie_id, 
         COUNT(DISTINCT cn.id) AS total_companies,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         MAX(CASE WHEN ct.kind = 'Production' THEN 1 ELSE 0 END) AS has_production_company
     FROM 
         movie_companies mc

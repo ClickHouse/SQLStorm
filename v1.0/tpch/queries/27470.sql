@@ -2,7 +2,7 @@ SELECT
     s.s_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS average_order_value,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ': ', l.l_quantity), ', ') AS products_sold
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ': ', l.l_quantity)))), ', ') AS products_sold
 FROM 
     supplier s 
 JOIN 

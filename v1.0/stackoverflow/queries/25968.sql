@@ -4,7 +4,7 @@ WITH TagStats AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(COALESCE(p.Score, 0)) AS TotalScore,
         AVG(p.ViewCount) AS AvgViews,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS Contributors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS Contributors
     FROM 
         Tags t
     LEFT JOIN 
@@ -55,7 +55,7 @@ FROM
 JOIN 
     UserReputation ur ON ts.TagName IN (
         SELECT 
-            unnest(string_to_array(ts.Contributors, ', ')) 
+            arrayJoin(splitByString(', ', ts.Contributors)) 
     )
 ORDER BY 
     ts.PostCount DESC, ts.TotalScore DESC

@@ -9,7 +9,7 @@ SELECT
     p.CommentCount,
     u.DisplayName AS OwnerDisplayName,
     COUNT(DISTINCT v.Id) AS TotalVotes,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     Posts p
 LEFT JOIN 
@@ -17,7 +17,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag_array ON TRUE
+    arrayJoin(splitByString(',', p.Tags)) AS tag_array ON TRUE
 LEFT JOIN 
     Tags t ON t.TagName = tag_array
 WHERE 

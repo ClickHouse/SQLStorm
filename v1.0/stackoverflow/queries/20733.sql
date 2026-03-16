@@ -28,7 +28,7 @@ PostStatistics AS (
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
 ), 
 ClosedPosts AS (
@@ -69,4 +69,4 @@ LEFT JOIN ClosedPosts cp ON us.PostId = cp.PostId
 JOIN PostStatistics ps ON us.PostId = ps.PostId
 WHERE us.NetVotes > 0  
 ORDER BY us.Reputation DESC, ps.ScoreRank ASC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

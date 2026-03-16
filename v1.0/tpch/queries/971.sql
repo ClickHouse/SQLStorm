@@ -48,7 +48,7 @@ FROM
 JOIN 
     customer c ON cs.c_custkey = c.c_custkey
 LEFT JOIN 
-    RankedSuppliers rs ON cs.c_custkey IN (SELECT DISTINCT o.o_custkey FROM orders o WHERE o.o_orderkey IN (SELECT l.l_orderkey FROM lineitem l WHERE l.l_shipdate >= DATE '1997-01-01'))
+    RankedSuppliers rs ON cs.c_custkey IN (SELECT DISTINCT o.o_custkey FROM orders o WHERE o.o_orderkey IN (SELECT l.l_orderkey FROM lineitem l WHERE l.l_shipdate >= toDate('1997-01-01')))
 LEFT JOIN 
     LineItemStats lis ON cs.c_custkey IN (SELECT DISTINCT o.o_custkey FROM orders o WHERE o.o_orderkey = lis.l_orderkey)
 WHERE 

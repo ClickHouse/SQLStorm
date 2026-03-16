@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 year') 
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR) 
         AND (p.Score > 0 OR p.ViewCount > 100)
 ),
 ActiveUsers AS (
@@ -31,14 +31,14 @@ ActiveUsers AS (
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
         u.Reputation > 1000 
-        AND u.LastAccessDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months')
+        AND u.LastAccessDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation, u.LastAccessDate
 ),
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS Badges,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges,
         MAX(CASE WHEN b.Class = 1 THEN 'Gold' END) AS GoldCount,
         MAX(CASE WHEN b.Class = 2 THEN 'Silver' END) AS SilverCount,
         MAX(CASE WHEN b.Class = 3 THEN 'Bronze' END) AS BronzeCount

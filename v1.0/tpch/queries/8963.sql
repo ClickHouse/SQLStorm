@@ -15,7 +15,7 @@ recent_orders AS (
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate, c.c_name AS customer_name
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '12 MONTH'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH
 )
 SELECT si.s_name, si.nation_name, si.region_name, pp.ps_partkey, pp.total_avail_qty, ro.o_orderkey, ro.o_totalprice, ro.customer_name
 FROM supplier_info si

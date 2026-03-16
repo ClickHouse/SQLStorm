@@ -10,7 +10,7 @@ WITH RecentVotes AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         P.Id
 ),
@@ -54,7 +54,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges B ON U.Id = B.UserId
 WHERE 
-    P.CreationDate >= DATE '2023-01-01' AND 
+    P.CreationDate >= toDate('2023-01-01') AND 
     P.Score > 0
 GROUP BY 
     U.DisplayName, P.Title, P.ViewCount, R.VoteCount, R.UpVotes, R.DownVotes, Closed.CloseReason

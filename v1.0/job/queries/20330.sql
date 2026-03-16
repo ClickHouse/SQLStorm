@@ -14,7 +14,7 @@ WITH RecursiveMovieInfo AS (
 MovieGenres AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM movie_keyword AS mk
     JOIN keyword AS kw ON mk.keyword_id = kw.id
     GROUP BY mk.movie_id

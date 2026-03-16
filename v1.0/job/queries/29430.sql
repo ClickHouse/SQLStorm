@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         m.title, 
         m.production_year, 
         COUNT(DISTINCT c.person_id) AS total_cast, 
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names
     FROM 
         aka_title m 
     JOIN 
@@ -24,8 +24,8 @@ MovieDetails AS (
         rm.production_year,
         rm.total_cast,
         rm.cast_names,
-        COALESCE(STRING_AGG(DISTINCT k.keyword, ', '), 'No keywords') AS keywords,
-        COALESCE(STRING_AGG(DISTINCT ct.kind, ', '), 'No companies') AS company_types
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'No keywords') AS keywords,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', '), 'No companies') AS company_types
     FROM 
         RankedMovies rm
     LEFT JOIN 

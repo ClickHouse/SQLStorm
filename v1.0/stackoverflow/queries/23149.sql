@@ -24,7 +24,7 @@ RecentPostHistory AS (
         ph.UserDisplayName,
         ROW_NUMBER() OVER (PARTITION BY ph.PostId ORDER BY ph.CreationDate DESC) AS Rn
     FROM PostHistory ph
-    WHERE ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days'
+    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY
 ),
 PostLinksAgg AS (
     SELECT 
@@ -57,7 +57,7 @@ SELECT
         WHEN us.UpVoteCount < us.DownVoteCount THEN 'Net Negative Voting'
         ELSE 'Neutral Voting'
     END AS VoteStatus,
-    STRING_AGG(pt.Name, ', ') AS PostTypeNames
+    arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostTypeNames
 FROM UserStats us
 JOIN Posts p ON us.UserId = p.OwnerUserId
 LEFT JOIN RecentPostHistory ph ON p.Id = ph.PostId AND ph.Rn = 1

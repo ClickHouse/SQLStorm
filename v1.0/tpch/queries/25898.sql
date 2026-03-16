@@ -21,7 +21,7 @@ AggregatedData AS (
         COUNT(DISTINCT s_name) AS unique_suppliers,
         SUM(ps_availqty) AS total_availqty,
         AVG(p_retailprice) AS avg_price,
-        STRING_AGG(part_description, ', ') AS descriptions
+        arrayStringConcat(groupArray(assumeNotNull(part_description)), ', ') AS descriptions
     FROM 
         SupplierParts
     GROUP BY 

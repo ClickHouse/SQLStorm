@@ -6,7 +6,7 @@ SELECT
     MAX(ws.ws_ext_sales_price) AS max_sales_price,
     SUM(ws.ws_quantity) AS total_quantity,
     COUNT(DISTINCT ws.ws_order_number) AS order_count,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
     COUNT(DISTINCT CASE WHEN cd_gender = 'M' THEN c.c_customer_sk END) AS male_customers,
     COUNT(DISTINCT CASE WHEN cd_gender = 'F' THEN c.c_customer_sk END) AS female_customers
 FROM 

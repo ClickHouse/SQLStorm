@@ -48,4 +48,4 @@ HAVING
     ia.total_sales_amount > 1000
 ORDER BY 
     ia.total_sales_amount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

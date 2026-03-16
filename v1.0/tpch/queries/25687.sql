@@ -6,7 +6,7 @@ SELECT
     COUNT(l.l_orderkey) AS lineitem_count,
     SUM(l.l_extendedprice) AS total_extended_price,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT l.l_comment, '; ') AS combined_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_comment))), '; ') AS combined_comments
 FROM 
     part p
 JOIN 

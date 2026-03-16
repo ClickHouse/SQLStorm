@@ -38,7 +38,7 @@ UserActivity AS (
         COALESCE(pm.Questions, 0) AS Questions,
         COALESCE(pm.Answers, 0) AS Answers,
         COALESCE(pm.AverageScore, 0) AS AverageScore,
-        (TIMESTAMP '2024-10-01 12:34:56' - us.CreationDate) AS AccountAge,
+        (toDateTime64('2024-10-01 12:34:56', 6) - us.CreationDate) AS AccountAge,
         us.GoldBadges,
         us.SilverBadges,
         us.BronzeBadges
@@ -69,4 +69,4 @@ WHERE
     ua.PostCount > 0 OR ua.GoldBadges > 0
 ORDER BY 
     ua.Reputation DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

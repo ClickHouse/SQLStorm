@@ -26,7 +26,7 @@ store_info AS (
     SELECT 
         s.s_store_sk,
         COUNT(DISTINCT ss.ss_ticket_number) AS total_store_sales,
-        STRING_AGG(DISTINCT CAST(ss.ss_promo_sk AS TEXT), ',') AS promo_skus
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ss.ss_promo_sk AS TEXT)))), ',') AS promo_skus
     FROM store s
     LEFT JOIN store_sales ss ON s.s_store_sk = ss.ss_store_sk
     GROUP BY s.s_store_sk

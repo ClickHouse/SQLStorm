@@ -57,7 +57,7 @@ SELECT
     mwc.company_name,
     mwc.company_type,
     (SELECT 
-         STRING_AGG(DISTINCT ak.name, ', ') 
+         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') 
      FROM 
          aka_name ak 
      WHERE 

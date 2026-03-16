@@ -50,7 +50,7 @@ JoinedData AS (
 AggregatedData AS (
     SELECT 
         COUNT(*) AS customer_count,
-        STRING_AGG(CONCAT(c_first_name, ' ', c_last_name), ', ') AS customer_names,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name))), ', ') AS customer_names,
         formatted_address,
         ca_city,
         ca_state,

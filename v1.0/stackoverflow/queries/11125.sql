@@ -3,7 +3,7 @@ SELECT
     COUNT(ph.Id) AS HistoryCount,
     MIN(ph.CreationDate) AS FirstEditDate,
     MAX(ph.CreationDate) AS LastEditDate,
-    STRING_AGG(DISTINCT p.Tags, ', ') AS TagsUsed,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Tags))), ', ') AS TagsUsed,
     SUM(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 1 ELSE 0 END) AS CloseReopenCount,
     AVG(u.Reputation) AS AverageUserReputation
 FROM 

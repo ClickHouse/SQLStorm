@@ -45,7 +45,7 @@ SELECT
     dm.title,
     dm.production_year,
     COUNT(*) FILTER (WHERE dm.role_count IS NOT NULL) AS actor_count,
-    STRING_AGG(CONCAT(a.name, ' as ', rt.role), ', ') AS cast
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.name, ' as ', rt.role))), ', ') AS cast
 FROM 
     DistinctMovies dm
 LEFT JOIN 

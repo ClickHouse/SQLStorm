@@ -19,8 +19,8 @@ WITH RegionSales AS (
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
         o.o_orderstatus IN ('F', 'O') 
-        AND l.l_shipdate >= DATE '1997-01-01'
-        AND l.l_shipdate < (DATE '1998-10-01' - INTERVAL '30 days')
+        AND l.l_shipdate >= toDate('1997-01-01')
+        AND l.l_shipdate < (toDate('1998-10-01') - INTERVAL 30 DAY)
     GROUP BY 
         r.r_name
 ),
@@ -45,7 +45,7 @@ SELECT
         WHEN cr.rank <= 10 THEN 'Top Customer'
         ELSE 'Regular Customer'
     END AS customer_status,
-    COALESCE(EXTRACT(YEAR FROM DATE '1998-10-01') - EXTRACT(YEAR FROM o.o_orderdate), 0) AS years_as_customer
+    COALESCE(toYear(toDate('1998-10-01')) - toYear(o.o_orderdate), 0) AS years_as_customer
 FROM 
     RegionSales rs
 FULL OUTER JOIN 

@@ -33,7 +33,7 @@ SELECT
     fm.cast_count,
     fm.cast_rating,
     COALESCE(
-        (SELECT STRING_AGG(name, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(name)), ', ') 
          FROM aka_name an 
          JOIN cast_info ci ON an.person_id = ci.person_id 
          WHERE ci.movie_id IN (SELECT id FROM aka_title WHERE title = fm.title)), 

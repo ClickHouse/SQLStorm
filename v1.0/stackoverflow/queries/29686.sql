@@ -8,7 +8,7 @@ WITH PostStats AS (
         p.ViewCount,
         p.AnswerCount,
         p.Score,
-        ARRAY_LENGTH(STRING_TO_ARRAY(p.Tags, '>'), 1) AS TagCount,
+        length(splitByString('>', p.Tags), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
@@ -28,7 +28,7 @@ WITH PostStats AS (
         p.PostTypeId = 1 
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, p.AnswerCount, p.Score, 
-        ARRAY_LENGTH(STRING_TO_ARRAY(p.Tags, '>'), 1), u.DisplayName
+        length(splitByString('>', p.Tags), 1), u.DisplayName
 ),
 RankedPosts AS (
     SELECT 

@@ -4,8 +4,8 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity, 
     COUNT(DISTINCT o.o_orderkey) AS total_orders, 
     AVG(l.l_extendedprice) AS average_extended_price,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_involved,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_involved
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_involved,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_involved
 FROM 
     part p
 JOIN 

@@ -16,7 +16,7 @@ movie_details AS (
         mt.id AS movie_id,
         mt.title AS movie_title,
         mt.production_year,
-        STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) AS company_names
     FROM 
         aka_title mt
     JOIN 

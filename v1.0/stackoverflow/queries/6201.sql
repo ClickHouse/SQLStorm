@@ -3,7 +3,7 @@ WITH RecentPosts AS (
     SELECT p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId, p.AnswerCount,
            ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
-    WHERE p.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
 ),
 EngagedUsers AS (
     SELECT u.Id, u.DisplayName, u.Reputation, COUNT(DISTINCT c.Id) AS CommentCount,
@@ -12,7 +12,7 @@ EngagedUsers AS (
     FROM Users u
     LEFT JOIN Comments c ON u.Id = c.UserId
     LEFT JOIN Votes v ON u.Id = v.UserId
-    WHERE u.CreationDate < DATE '2024-10-01' - INTERVAL '90 days'
+    WHERE u.CreationDate < toDate('2024-10-01') - INTERVAL 90 DAY
     GROUP BY u.Id, u.DisplayName, u.Reputation
     HAVING COUNT(DISTINCT c.Id) > 0
 ),

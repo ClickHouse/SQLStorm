@@ -46,7 +46,7 @@ SELECT
     tm.avg_info_length,
     tm.movie_classification,
     ak.name AS actor_name,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     TopMovies tm
 LEFT JOIN 

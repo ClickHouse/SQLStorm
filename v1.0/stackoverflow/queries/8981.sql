@@ -13,7 +13,7 @@ WITH UserStats AS (
     GROUP BY u.Id, u.DisplayName
 ),
 TopTags AS (
-    SELECT unnest(string_to_array(Tags, '><')) AS TagName,
+    SELECT arrayJoin(splitByString('><', Tags)) AS TagName,
            COUNT(*) AS TagCount
     FROM Posts
     WHERE Tags IS NOT NULL

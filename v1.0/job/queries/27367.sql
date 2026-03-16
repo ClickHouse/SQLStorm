@@ -5,8 +5,8 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
         ROW_NUMBER() OVER (ORDER BY t.production_year DESC, COUNT(DISTINCT c.person_id) DESC) AS rank
     FROM 
         aka_title t
@@ -45,6 +45,6 @@ SELECT
 FROM 
     FilteredMovies fm
 LEFT JOIN 
-    movie_info mi ON fm.movie_id = mi.movie_id AND mi.info_type_id = (SELECT id FROM info_type WHERE info = 'Synopsis' FETCH FIRST 1 ROWS ONLY)
+    movie_info mi ON fm.movie_id = mi.movie_id AND mi.info_type_id = (SELECT id FROM info_type WHERE info = 'Synopsis' LIMIT 1)
 ORDER BY 
     fm.production_year DESC;

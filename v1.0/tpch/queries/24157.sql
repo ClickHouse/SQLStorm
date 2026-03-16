@@ -74,7 +74,7 @@ SELECT
     COUNT(DISTINCT cus.c_custkey) AS high_value_customer_count,
     SUM(SUPS.total_supply_cost) AS total_supply_cost,
     AVG(SUPS.total_quantity) AS avg_quantity_per_part,
-    STRING_AGG(DISTINCT pc.p_name, '; ') AS excessively_commented_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pc.p_name))), '; ') AS excessively_commented_parts
 FROM 
     HighValueCustomers cus
 JOIN 

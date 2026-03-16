@@ -24,7 +24,7 @@ TitleWithKeywords AS (
     SELECT
         t.id AS title_id,
         t.title,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM aka_title t
     LEFT JOIN movie_keyword mk ON t.id = mk.movie_id
     LEFT JOIN keyword k ON mk.keyword_id = k.id
@@ -62,5 +62,5 @@ LEFT JOIN CompanyMovies cm ON r.aka_id = cm.movie_id
 LEFT JOIN TitleWithKeywords tk ON r.aka_id = tk.title_id
 LEFT JOIN CorrelatedSubquery cs ON cs.movie_id = r.aka_id
 WHERE r.year_rank <= 5
-AND (tk.keywords IS NULL OR ARRAY_LENGTH(tk.keywords, 1) > 2)
+AND (tk.keywords IS NULL OR length(tk.keywords, 1) > 2)
 ORDER BY r.production_year DESC, tk.keywords;

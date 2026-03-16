@@ -31,7 +31,7 @@ sales_summary AS (
         ws_bill_customer_sk,
         SUM(ws_net_paid_inc_tax) AS total_sales,
         COUNT(ws_order_number) AS order_count,
-        DATE '2002-10-01' AS report_date
+        toDate('2002-10-01') AS report_date
     FROM 
         web_sales
     WHERE 
@@ -83,4 +83,4 @@ HAVING
     SUM(customer_count) > 10
 ORDER BY 
     total_sales DESC, average_item_price ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

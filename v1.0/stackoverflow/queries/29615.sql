@@ -33,7 +33,7 @@ WITH TagStats AS (
         p.ViewCount,
         p.Score,
         p.CreationDate,
-        STRING_AGG(t.TagName, ', ') AS TagsList
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
     FROM 
         Posts p
     JOIN 

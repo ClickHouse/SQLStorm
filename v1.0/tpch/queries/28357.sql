@@ -3,7 +3,7 @@ SELECT
     CONCAT(s.s_name, ' - ', p.p_type) AS supplier_part_info,
     SUM(l.l_quantity) AS total_quantity,
     AVG(CAST(l.l_extendedprice AS DECIMAL(12,2))) AS avg_price,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', c.c_acctbal, ')'), ', ') AS customer_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', c.c_acctbal, ')')))), ', ') AS customer_list,
     r.r_name AS region_name
 FROM 
     part p

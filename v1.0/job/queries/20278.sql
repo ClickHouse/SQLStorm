@@ -22,7 +22,7 @@ FilteredCast AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COUNT(DISTINCT mc.company_id) AS total_companies
     FROM movie_companies mc
     JOIN company_name cn ON mc.company_id = cn.id
@@ -31,7 +31,7 @@ CompanyDetails AS (
 TitleWithKeywords AS (
     SELECT 
         mt.movie_id, 
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM movie_keyword mt
     JOIN keyword k ON mt.keyword_id = k.id
     GROUP BY mt.movie_id
@@ -56,4 +56,4 @@ ORDER BY
     tt.production_year, 
     total_comp_rnk, 
     tt.title
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

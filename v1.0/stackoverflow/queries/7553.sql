@@ -32,7 +32,7 @@ ActiveUsers AS (
     FROM 
         Users u
     WHERE 
-        u.LastAccessDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        u.LastAccessDate >= now64(6) - INTERVAL 30 DAY
 )
 SELECT 
     rp.PostId,

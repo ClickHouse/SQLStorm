@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), 
 BadgeCounts AS (
     SELECT 
@@ -21,7 +21,7 @@ BadgeCounts AS (
         Badges b
     WHERE 
         b.Class = 1 AND 
-        b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 years'
+        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
     GROUP BY 
         b.UserId
 ), 

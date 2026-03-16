@@ -21,7 +21,7 @@ MovieDetails AS (
         r.title,
         r.production_year,
         r.actor_count,
-        ARRAY_AGG(DISTINCT a.name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actors,
         (SELECT MIN(CASE WHEN mo.production_year IS NOT NULL THEN mo.production_year ELSE 9999 END)
          FROM aka_title mo 
          WHERE mo.production_year >= r.production_year) AS next_movie_year

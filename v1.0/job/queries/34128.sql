@@ -31,7 +31,7 @@ AggregateTitles AS (
     SELECT 
         actor_id,
         COUNT(DISTINCT title) AS movie_count,
-        STRING_AGG(DISTINCT title, ', ') AS titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(title))), ', ') AS titles
     FROM 
         (SELECT 
             ci.person_id AS actor_id,

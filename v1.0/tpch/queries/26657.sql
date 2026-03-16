@@ -5,7 +5,7 @@ WITH supplier_details AS (
         s.s_nationkey, 
         n.n_name, 
         COUNT(DISTINCT ps.ps_partkey) AS part_count,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
     FROM 
         supplier s
     JOIN 

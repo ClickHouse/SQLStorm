@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         COALESCE(p.AnswerCount, 0) AS AnswerCount,
         COALESCE(p.CommentCount, 0) AS CommentCount,
         COALESCE(p.FavoriteCount, 0) AS FavoriteCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     LEFT JOIN 

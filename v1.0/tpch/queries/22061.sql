@@ -63,4 +63,4 @@ WHERE
 ORDER BY 
     customer_status DESC, 
     expected_discount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

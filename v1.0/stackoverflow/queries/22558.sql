@@ -20,13 +20,13 @@ PostSummary AS (
             WHEN P.AcceptedAnswerId IS NOT NULL THEN 'Accepted'
             ELSE 'Unaccepted'
         END AS AnswerStatus,
-        COALESCE(NULLIF(STRING_AGG(DISTINCT T.TagName, ', '), ''), 'No Tags') AS Tags
+        COALESCE(NULLIF(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', '), ''), 'No Tags') AS Tags
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
     LEFT JOIN PostHistory PH ON P.Id = PH.PostId AND PH.PostHistoryTypeId IN (4, 5, 6)
-    LEFT JOIN LATERAL (
-        SELECT UNNEST(STRING_TO_ARRAY(P.Tags, '><')) AS TagName
+    LEFT JOIN (
+        SELECT arrayJoin(splitByString('><', P.Tags)) AS TagName
     ) T ON TRUE
     GROUP BY P.Id, P.Title, P.PostTypeId
 ),

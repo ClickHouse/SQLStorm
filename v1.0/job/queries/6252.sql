@@ -4,8 +4,8 @@ WITH RecursiveMovies AS (
         t.title, 
         t.production_year, 
         m.name AS company_name,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors
     FROM 
         aka_title t
     JOIN 

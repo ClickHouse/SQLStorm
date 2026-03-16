@@ -5,7 +5,7 @@ WITH RankedPosts AS (
            DENSE_RANK() OVER (PARTITION BY pt.Name ORDER BY p.ViewCount DESC) AS RankByViews
     FROM Posts p
     JOIN PostTypes pt ON p.PostTypeId = pt.Id
-    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT Id, Title, CreationDate, Score, ViewCount, 
@@ -16,7 +16,7 @@ TopPosts AS (
 SELECT tp.Title, tp.CreationDate, tp.Score, tp.ViewCount, 
        COUNT(c.Id) AS CommentCount, 
        MAX(v.CreationDate) AS LastVoteDate, 
-       STRING_AGG(DISTINCT b.Name, ', ') AS Badges
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS Badges
 FROM TopPosts tp
 LEFT JOIN Comments c ON tp.Id = c.PostId
 LEFT JOIN Votes v ON tp.Id = v.PostId

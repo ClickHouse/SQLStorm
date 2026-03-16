@@ -2,7 +2,7 @@ SELECT
     p.p_name, 
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
     SUBSTRING(r.r_name, 1, 10) AS short_region,
     CASE 
         WHEN AVG(l.l_discount) > 0.10 THEN 'High Discount'

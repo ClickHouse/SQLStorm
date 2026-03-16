@@ -27,7 +27,7 @@ WITH UserStats AS (
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        unnest(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) AS Tag
     FROM 
         Posts P
     WHERE 

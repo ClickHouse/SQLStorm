@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM Posts p
     JOIN PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserVoteDetails AS (
     SELECT 
@@ -30,9 +30,9 @@ PostHistoryDetails AS (
         ph.PostHistoryTypeId,
         COUNT(ph.Id) AS HistoryCount,
         MAX(ph.CreationDate) AS LastChangeDate,
-        STRING_AGG(DISTINCT ph.Comment, ', ') AS Comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), ', ') AS Comments
     FROM PostHistory ph
-    WHERE ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '5 years'
+    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 5 YEAR
     GROUP BY ph.PostId, ph.PostHistoryTypeId
 )
 SELECT 

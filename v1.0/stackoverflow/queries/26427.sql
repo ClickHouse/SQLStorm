@@ -51,7 +51,7 @@ SELECT
     (tp.UpVotes - tp.DownVotes) AS NetVotes,
     (SELECT COUNT(*) FROM Comments c WHERE c.PostId = tp.PostId) AS CommentCount,
     (SELECT COUNT(*) FROM PostHistory ph WHERE ph.PostId = tp.PostId AND ph.PostHistoryTypeId = 10) AS CloseCount, 
-    (SELECT STRING_AGG(Name, ', ') FROM Badges b WHERE b.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = tp.PostId)) AS UserBadges
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') FROM Badges b WHERE b.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = tp.PostId)) AS UserBadges
 FROM 
     TopPosts tp
 ORDER BY 

@@ -22,7 +22,7 @@ actor_titles AS (
     SELECT
         md.movie_id,
         md.title,
-        STRING_AGG(md.actor_name, ', ') AS actors_list,
+        arrayStringConcat(groupArray(assumeNotNull(md.actor_name)), ', ') AS actors_list,
         COUNT(*) AS actor_count,
         MAX(md.kind_id_modified) AS max_kind_id,
         COUNT(DISTINCT md.actor_order) FILTER (WHERE md.actor_order <= 5) AS top_five_actors,
@@ -65,7 +65,7 @@ SELECT
     (SELECT COUNT(*)
      FROM movie_link ml
      WHERE ml.movie_id = hm.movie_id) AS linked_movies_count,
-    (SELECT STRING_AGG(DISTINCT cn.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') 
      FROM movie_companies mc 
      JOIN company_name cn ON mc.company_id = cn.id 
      WHERE mc.movie_id = hm.movie_id

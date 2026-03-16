@@ -2,8 +2,8 @@ WITH movie_info_agg AS (
     SELECT
         m.id AS movie_id,
         m.title,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT c.name) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS companies,
         COUNT(DISTINCT ci.person_id) AS cast_count
     FROM
         aka_title m
@@ -25,7 +25,7 @@ WITH movie_info_agg AS (
 person_info_agg AS (
     SELECT
         p.person_id,
-        ARRAY_AGG(DISTINCT pi.info) AS person_info
+        arrayDistinct(groupArray(assumeNotNull(pi.info))) AS person_info
     FROM
         aka_name p
     LEFT JOIN

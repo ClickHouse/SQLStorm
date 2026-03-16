@@ -4,7 +4,7 @@ WITH address_summary AS (
         ca_city,
         ca_state,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
-        STRING_AGG(DISTINCT CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), '; ') AS address_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type)))), '; ') AS address_list
     FROM 
         customer_address
     WHERE 
@@ -37,7 +37,7 @@ SELECT
     ca_city AS city,
     ca_state AS state,
     COUNT(c_customer_id) AS num_customers,
-    STRING_AGG(CONCAT(c_first_name, ' ', c_last_name, ' (', c_customer_id, ')'), ', ') AS customer_names,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name, ' (', c_customer_id, ')'))), ', ') AS customer_names,
     MAX(unique_addresses) AS max_addresses,
     MIN(unique_addresses) AS min_addresses,
     MAX(address_list) AS sample_addresses

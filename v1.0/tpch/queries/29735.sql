@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity, 
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', c.c_acctbal, ')'), '; ') AS customer_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', c.c_acctbal, ')')))), '; ') AS customer_details
 FROM 
     supplier s 
 JOIN 

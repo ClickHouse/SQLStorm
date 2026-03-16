@@ -27,11 +27,11 @@ JOIN
 JOIN 
     region R ON N.n_regionkey = R.r_regionkey
 WHERE 
-    L.l_shipdate >= DATE '1997-01-01'
-    AND L.l_shipdate < DATE '1997-12-31'
+    L.l_shipdate >= toDate('1997-01-01')
+    AND L.l_shipdate < toDate('1997-12-31')
     AND C.c_mktsegment = 'BUILDING'
 GROUP BY 
     P.p_name, S.s_name, C.c_name, O.o_orderkey, R.r_name, P.p_retailprice, S.s_acctbal, P.p_comment
 ORDER BY 
     "Total Sales" DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

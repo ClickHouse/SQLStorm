@@ -44,7 +44,7 @@ SELECT
     f.production_year,
     f.keyword AS "Main Keyword",
     COUNT(DISTINCT ar.actor_name) AS "Unique Actors",
-    STRING_AGG(DISTINCT ar.actor_name, ', ') AS actor_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ar.actor_name))), ', ') AS actor_list
 FROM most_frequent_titles f
 JOIN actors_with_roles ar ON f.movie_id = ar.movie_id
 GROUP BY f.movie_id, f.title, f.production_year, f.keyword

@@ -3,8 +3,8 @@ WITH RankedMovies AS (
     SELECT 
         t.id AS movie_id,
         t.title,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT p.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_names,
         COALESCE(AVG(CAST(mi.info AS FLOAT)), 0) AS average_rating,
         COUNT(DISTINCT k.keyword) AS keyword_count,
         COUNT(DISTINCT mc.company_id) AS company_count,

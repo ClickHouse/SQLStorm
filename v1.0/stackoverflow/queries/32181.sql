@@ -9,13 +9,13 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Tags t ON t.WikiPostId = p.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 YEAR' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount, p.CommentCount, p.PostTypeId
 ),
@@ -56,7 +56,7 @@ AggregatedPostHistory AS (
     SELECT 
         p.PostId,
         MAX(ph.EditDate) AS LastEditDate,
-        STRING_AGG(CONCAT(ph.UserDisplayName, ' - ', ph.EditComment), '; ') AS EditsDetails
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.UserDisplayName, ' - ', ph.EditComment))), '; ') AS EditsDetails
     FROM 
         TopPosts p
     LEFT JOIN 

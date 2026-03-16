@@ -20,7 +20,7 @@ RecentPosts AS (
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 CommentsStatistics AS (
     SELECT 
@@ -52,5 +52,5 @@ FROM Users u
 LEFT JOIN UserBadges ub ON u.Id = ub.UserId
 LEFT JOIN RecentPosts rp ON u.Id = rp.OwnerUserId AND rp.rn = 1
 LEFT JOIN CommentsStatistics cs ON rp.PostId = cs.PostId
-WHERE u.LastAccessDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '90 days'
+WHERE u.LastAccessDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY
 ORDER BY u.Reputation DESC NULLS LAST, ub.BadgeCount DESC;

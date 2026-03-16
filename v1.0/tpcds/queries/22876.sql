@@ -54,7 +54,7 @@ SELECT
     COUNT(DISTINCT s.ss_ticket_number) AS sale_count,
     SUM(s.ss_net_profit) AS total_profit,
     AVG(ti.ws_sales_price) OVER (PARTITION BY ti.i_brand) AS avg_sales_price_by_brand,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customers
 FROM 
     top_items ti
 LEFT JOIN store_sales s ON ti.i_item_sk = s.ss_item_sk
@@ -67,4 +67,4 @@ GROUP BY
     ti.i_item_sk, ti.i_item_desc, ti.i_brand, ti.ws_sales_price, ti.i_current_price
 ORDER BY 
     total_profit DESC, ti.i_item_desc
-OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

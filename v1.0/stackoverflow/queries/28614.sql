@@ -7,7 +7,7 @@ WITH PostDetails AS (
         p.CreationDate,
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         COALESCE(ph.RevisionGUID, 'None') AS LastRevisionGUID,
         COALESCE(ih.Text, 'No edits') AS LastEditText
     FROM 
@@ -15,7 +15,7 @@ WITH PostDetails AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '><')) AS tag ON TRUE
+        arrayJoin(splitByString('><', p.Tags)) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON tag = t.TagName
     LEFT JOIN 
@@ -42,7 +42,7 @@ CommentDetails AS (
     SELECT 
         PostId,
         COUNT(*) AS CommentCount,
-        STRING_AGG(c.Text, ' | ' ORDER BY c.CreationDate) AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ' ORDER BY c.CreationDate) AS Comments
     FROM 
         Comments c
     GROUP BY 

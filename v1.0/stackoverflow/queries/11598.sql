@@ -5,7 +5,7 @@ WITH PostStatistics AS (
         COUNT(*) AS TotalPosts,
         SUM(p.Score) AS TotalScore,
         SUM(p.ViewCount) AS TotalViews,
-        AVG(COALESCE(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)), 0)) AS AvgPostAgeInSeconds
+        AVG(COALESCE(toUnixTimestamp((p.LastActivityDate - p.CreationDate)), 0)) AS AvgPostAgeInSeconds
     FROM
         Posts p
     GROUP BY

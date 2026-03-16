@@ -45,7 +45,7 @@ SELECT
     asum.total_movies,
     asum.last_movie_year,
     COUNT(DISTINCT mwk.movie_id) AS keyword_movie_count,
-    STRING_AGG(DISTINCT mwk.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mwk.keyword))), ', ') AS keywords,
     CASE 
         WHEN asum.total_movies > 10 THEN 'Veteran'
         WHEN asum.total_movies BETWEEN 5 AND 10 THEN 'Rising Star'

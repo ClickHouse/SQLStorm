@@ -14,7 +14,7 @@ FilteredCast AS (
     SELECT 
         ci.movie_id, 
         a.name AS actor_name, 
-        ARRAY_AGG(DISTINCT CONCAT(a.name, ' (', rc.role, ')')) AS roles
+        arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', rc.role, ')')))) AS roles
     FROM 
         cast_info ci
     JOIN 

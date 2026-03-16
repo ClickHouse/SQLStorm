@@ -3,7 +3,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     MAX(l.l_shipdate) AS last_shipping_date,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names_handled
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names_handled
 FROM
     customer c
 JOIN

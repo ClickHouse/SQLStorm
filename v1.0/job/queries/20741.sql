@@ -5,7 +5,7 @@ WITH MovieStats AS (
         t.title,
         COUNT(DISTINCT ci.person_id) AS total_cast,
         AVG(CASE WHEN ci.nr_order IS NOT NULL THEN ci.nr_order ELSE 0 END) AS avg_order,
-        STRING_AGG(DISTINCT c.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS cast_names,
         COALESCE(MAX(CASE WHEN mi.info_type_id = 4 THEN mi.info END), 'Unknown genre') AS genre 
     FROM
         aka_title t
@@ -62,4 +62,4 @@ JOIN
     MovieStats t ON g.genre = t.genre
 ORDER BY 
     popular_ratio DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

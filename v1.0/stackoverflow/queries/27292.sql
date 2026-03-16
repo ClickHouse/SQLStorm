@@ -23,7 +23,7 @@ PostSummary AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     JOIN 
-        UNNEST(string_to_array(P.Tags, '>')) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('>', P.Tags)) AS T(TagName) ON TRUE
     WHERE 
         P.PostTypeId = 1 
 ),

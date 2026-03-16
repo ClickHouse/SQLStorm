@@ -31,7 +31,7 @@ SELECT
     mh.level AS hierarchy_level,
     COUNT(DISTINCT cc.id) AS total_cast_count,
     COUNT(DISTINCT mc.company_id) AS company_count,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
     MAX(CASE WHEN mpi.info_type_id = 2 THEN mpi.info END) AS movie_summary  
 FROM 
     movie_hierarchy mh

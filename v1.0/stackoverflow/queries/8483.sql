@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 YEAR'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         p.Title, p.CreationDate, p.Score, u.DisplayName, p.PostTypeId
 ),
@@ -34,7 +34,7 @@ SELECT
     tp.CreationDate,
     tp.OwnerDisplayName,
     tp.Score,
-    STRING_AGG(t.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 

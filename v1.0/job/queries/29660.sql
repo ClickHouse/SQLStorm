@@ -30,7 +30,7 @@ TopRatedMovies AS (
 DirectorInfo AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS directors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS directors
     FROM 
         cast_info c
     JOIN 

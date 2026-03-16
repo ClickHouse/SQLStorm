@@ -2,10 +2,10 @@ SELECT
     p.p_name, 
     s.s_name, 
     c.c_name, 
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS different_shipping_modes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS different_shipping_modes
 FROM 
     part p
 JOIN 

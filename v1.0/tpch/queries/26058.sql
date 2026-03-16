@@ -41,7 +41,7 @@ SELECT
     rc.part_count,
     psi.supplier_location,
     rc.r_name,
-    STRING_AGG(psi.p_name, ', ') AS part_names,
+    arrayStringConcat(groupArray(assumeNotNull(psi.p_name)), ', ') AS part_names,
     SUM(psi.ps_supplycost) AS total_supplycost
 FROM 
     PartSupplierInfo psi

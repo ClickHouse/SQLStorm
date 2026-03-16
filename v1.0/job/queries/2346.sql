@@ -16,7 +16,7 @@ cast_details AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names
     FROM 
         cast_info ci
     JOIN 
@@ -52,7 +52,7 @@ SELECT
         ELSE 'Small Cast'
     END AS cast_size,
     (SELECT COUNT(*) FROM aka_title WHERE production_year = ms.production_year) AS same_year_count,
-    (SELECT STRING_AGG(DISTINCT rt.keyword, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.keyword))), ', ') 
      FROM ranked_titles rt 
      WHERE rt.production_year = ms.production_year 
      AND rt.rn <= 5) AS top_keywords

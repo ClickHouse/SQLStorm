@@ -24,7 +24,7 @@ FilteredParts AS (
         SUM(CASE WHEN l.l_returnflag = 'R' THEN 1 ELSE 0 END) AS returns
     FROM
         part p
-    LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey AND l.l_shipdate > DATE '1998-10-01' - INTERVAL '1' YEAR
+    LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey AND l.l_shipdate > toDate('1998-10-01') - INTERVAL '1' YEAR
     GROUP BY
         p.p_partkey, p.p_name, p.p_brand
 ),
@@ -64,4 +64,4 @@ WHERE
 ORDER BY 
     f.avg_price DESC NULLS LAST, 
     f.p_name ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

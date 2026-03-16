@@ -5,7 +5,7 @@ SELECT
     c.kind AS cast_type, 
     a.id AS actor_id, 
     t.production_year, 
-    STRING_AGG(k.keyword, ', ') AS keywords 
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords 
 FROM 
     aka_name a 
 JOIN 

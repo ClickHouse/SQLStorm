@@ -5,8 +5,8 @@ WITH MovieDetails AS (
         mt.title,
         mt.production_year,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS movie_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS movie_keywords
     FROM 
         aka_title mt
     LEFT JOIN 
@@ -62,7 +62,7 @@ SELECT
 FROM 
     TopMovies tm
 LEFT JOIN 
-    (SELECT STRING_AGG(keyword, ', ') AS keywords FROM keyword) kw ON TRUE
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords FROM keyword) kw ON TRUE
 CROSS JOIN 
     AverageActorCount ac
 ORDER BY 

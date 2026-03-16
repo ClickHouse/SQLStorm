@@ -16,7 +16,7 @@ WITH UserActivity AS (
         Votes V ON P.Id = V.PostId
     WHERE 
         U.Reputation > 1000 
-        AND U.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         U.Id, U.DisplayName
 ), ClosedPosts AS (

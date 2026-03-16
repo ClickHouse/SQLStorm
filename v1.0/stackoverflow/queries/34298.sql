@@ -25,8 +25,8 @@ TopPosters AS (
 ),
 RecentActivity AS (
     SELECT U.DisplayName, 
-           COUNT(CASE WHEN P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 1 END) AS RecentPosts,
-           COUNT(CASE WHEN C.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 1 END) AS RecentComments
+           COUNT(CASE WHEN P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 END) AS RecentPosts,
+           COUNT(CASE WHEN C.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 END) AS RecentComments
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     LEFT JOIN Comments C ON P.Id = C.PostId

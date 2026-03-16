@@ -56,7 +56,7 @@ SELECT
     c.c_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    FLOOR(RANDOM() * 100 + 1) AS random_sample,
+    FLOOR(rand() * 100 + 1) AS random_sample,
     ROW_NUMBER() OVER (PARTITION BY tp.size_category ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
 FROM 
     CustomerSpending cs

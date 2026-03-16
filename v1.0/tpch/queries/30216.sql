@@ -10,9 +10,9 @@ WITH RECURSIVE OrderHierarchy AS (
         SELECT c.c_custkey
         FROM customer c
         WHERE c.c_acctbal > 5000
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
-    WHERE o.o_orderdate > DATE '1998-10-01' - INTERVAL '1 year'
+    WHERE o.o_orderdate > toDate('1998-10-01') - INTERVAL 1 YEAR
 )
 SELECT 
     p.p_name,
@@ -35,4 +35,4 @@ GROUP BY p.p_name, r.r_name
 HAVING 
     SUM(li.l_extendedprice * (1 - li.l_discount)) > 10000
 ORDER BY total_orders DESC, total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

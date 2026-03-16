@@ -28,7 +28,7 @@ SELECT
     ak.name AS cast_name,
     p.info AS person_info,
     ct.kind AS company_type,
-    ARRAY_AGG(DISTINCT kw.keyword) AS keywords
+    arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords
 FROM 
     selected_titles st
 JOIN 

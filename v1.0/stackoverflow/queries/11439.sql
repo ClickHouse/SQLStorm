@@ -10,7 +10,7 @@ SELECT
     (SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id) AS CommentCount,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpVoteCount,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3) AS DownVoteCount,
-    (SELECT STRING_AGG(b.Name, ', ') FROM Badges b WHERE b.UserId = u.Id) AS Badges
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') FROM Badges b WHERE b.UserId = u.Id) AS Badges
 FROM 
     Posts p
 JOIN 

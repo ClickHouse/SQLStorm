@@ -55,7 +55,7 @@ SELECT
         WHEN u.ClosedPosts > 0 THEN 'Contains Closed Posts'
         ELSE 'Active Participant'
     END AS EngagementLevel,
-    string_agg(pt.Name, ', ') AS PostTypes
+    arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostTypes
 FROM 
     UserPostStats u
 LEFT JOIN 

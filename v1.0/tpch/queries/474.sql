@@ -30,7 +30,7 @@ RecentOrders AS (
         ROW_NUMBER() OVER (PARTITION BY o.o_custkey ORDER BY o.o_orderdate DESC) AS RN
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate >= CURRENT_DATE - INTERVAL '1 year'
+    WHERE l.l_shipdate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY o.o_orderkey, o.o_custkey, o.o_orderdate
 )
 SELECT 

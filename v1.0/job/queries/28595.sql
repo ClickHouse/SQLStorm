@@ -26,7 +26,7 @@ TopMovies AS (
 MovieKeywords AS (
     SELECT 
         tm.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         TopMovies tm
     JOIN 
@@ -54,7 +54,7 @@ SELECT
     mi.keywords,
     COALESCE(ai.name, 'Unknown') AS actor_name,
     COUNT(c.id) AS role_count,
-    STRING_AGG(DISTINCT rt.role, ', ') AS roles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS roles
 FROM 
     MovieInfo mi
 LEFT JOIN 

@@ -63,4 +63,4 @@ LEFT JOIN top_stores ts ON cs.c_customer_sk = ts.ss_store_sk
 WHERE ts.store_rank <= 10
   AND cs.total_orders IS NOT NULL
 ORDER BY cs.total_spent DESC, pi.total_quantity_sold DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

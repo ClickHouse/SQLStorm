@@ -3,8 +3,8 @@ WITH string_aggregates AS (
     SELECT 
         p.p_partkey,
         CONCAT('Part: ', p.p_name, '; Manufacturer: ', p.p_mfgr, '; Brand: ', p.p_brand) AS part_info,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nations
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations
     FROM 
         part p
     JOIN 
@@ -20,7 +20,7 @@ order_details AS (
     SELECT 
         o.o_orderkey,
         o.o_orderdate,
-        STRING_AGG(DISTINCT l.l_shipmode, ', ') AS shipping_modes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS shipping_modes,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM 
         orders o
@@ -42,6 +42,6 @@ FROM
 LEFT JOIN 
     order_details od ON sa.p_partkey IN (SELECT ps.ps_partkey FROM partsupp ps WHERE ps.ps_suppkey IN (SELECT s.s_suppkey FROM supplier s WHERE s.s_nationkey = (SELECT n.n_nationkey FROM nation n WHERE n.n_name = 'USA')))
 WHERE 
-    od.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    od.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 ORDER BY 
     sa.p_partkey, od.o_orderdate DESC;

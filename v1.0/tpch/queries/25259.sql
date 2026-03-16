@@ -4,7 +4,7 @@ WITH StringAggregation AS (
         p.p_partkey,
         CONCAT('Part: ', p.p_name, ' | Brand: ', p.p_brand, ' | Type: ', p.p_type, ' | Comment: ', p.p_comment) AS part_details,
         SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_quantity,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS supplier_nations,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS supplier_nations,
         COUNT(DISTINCT s.s_suppkey) AS unique_suppliers
     FROM part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey

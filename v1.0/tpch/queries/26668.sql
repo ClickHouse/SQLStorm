@@ -4,8 +4,8 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(o.o_totalprice) AS average_order_price,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS region_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS region_names
 FROM 
     part p
 JOIN 

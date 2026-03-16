@@ -2,7 +2,7 @@
 WITH UserBadges AS (
     SELECT UserId, COUNT(*) AS BadgeCount 
     FROM Badges 
-    WHERE Date > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+    WHERE Date > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY UserId
 ),
 RecentPosts AS (
@@ -13,7 +13,7 @@ RecentPosts AS (
     FROM Posts p 
     LEFT JOIN Comments c ON p.Id = c.PostId 
     LEFT JOIN Votes v ON p.Id = v.PostId 
-    WHERE p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
     GROUP BY p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.ViewCount
     ORDER BY p.ViewCount DESC
     LIMIT 10

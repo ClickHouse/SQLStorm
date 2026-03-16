@@ -4,8 +4,8 @@ WITH MovieDetails AS (
         t.id AS movie_id,
         t.title AS movie_title,
         t.production_year,
-        STRING_AGG(a.name, ', ' ORDER BY a.name) AS actors,
-        STRING_AGG(m.name, ', ' ORDER BY m.name) AS companies
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ' ORDER BY a.name) AS actors,
+        arrayStringConcat(groupArray(assumeNotNull(m.name)), ', ' ORDER BY m.name) AS companies
     FROM 
         aka_title t
     LEFT JOIN 
@@ -26,7 +26,7 @@ KeywordStats AS (
     SELECT
         m.id AS movie_id,
         COUNT(mk.id) AS keyword_count,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

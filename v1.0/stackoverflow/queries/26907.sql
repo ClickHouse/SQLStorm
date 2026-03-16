@@ -14,11 +14,11 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
 ),
 TopTags AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', Tags)) AS Tag
     FROM 
         RankedPosts
     WHERE 
@@ -29,11 +29,11 @@ SELECT
     COUNT(*) AS TotalTopPosts,
     AVG(rp.ViewCount) AS AvgViews,
     AVG(rp.Score) AS AvgScore,
-    ARRAY_AGG(DISTINCT rp.OwnerDisplayName) AS UniqueAuthors
+    arrayDistinct(groupArray(assumeNotNull(rp.OwnerDisplayName))) AS UniqueAuthors
 FROM 
     RankedPosts rp
 JOIN 
-    TopTags rt ON rt.Tag = ANY(string_to_array(rp.Tags, '><'))
+    TopTags rt ON rt.Tag = ANY(splitByString('><', rp.Tags))
 GROUP BY 
     rt.Tag
 ORDER BY 

@@ -16,17 +16,17 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 AND  
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ),
 
 TagCounts AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', Tags)) AS TagName,
         COUNT(*) AS TagFrequency
     FROM 
         RankedPosts
     GROUP BY 
-        UNNEST(string_to_array(Tags, '><'))
+        arrayJoin(splitByString('><', Tags))
 ),
 
 FinalResults AS (

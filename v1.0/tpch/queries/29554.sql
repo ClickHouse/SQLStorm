@@ -51,4 +51,4 @@ WHERE
     pp.container_length > 5
 ORDER BY 
     co.total_spending DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

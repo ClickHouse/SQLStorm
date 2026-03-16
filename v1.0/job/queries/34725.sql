@@ -30,7 +30,7 @@ SELECT
     mh.depth,
     COUNT(DISTINCT mc.company_id) AS num_companies,
     SUM(CASE WHEN ci.note IS NULL THEN 1 ELSE 0 END) AS num_null_notes,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ak.name ORDER BY mh.production_year DESC) AS actor_movie_rank
 FROM 
     complete_cast cc

@@ -33,7 +33,7 @@ MovieInfo AS (
         rm.movie_id, 
         rm.title, 
         rm.production_year, 
-        STRING_AGG(DISTINCT am.actor_name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(am.actor_name))), ', ') AS actors
     FROM 
         RankedMovies rm
     JOIN 

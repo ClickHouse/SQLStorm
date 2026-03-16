@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         GROUP BY PostId
     ) pv ON p.Id = pv.PostId
     WHERE
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, pv.VoteCount
 ),
 FilteredPosts AS (
@@ -63,6 +63,6 @@ LEFT JOIN PostHistory ph ON fp.PostId = ph.PostId
     ) 
 LEFT JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
 WHERE 
-    fp.CreationDate BETWEEN DATE '2021-01-01' AND TIMESTAMP '2024-10-01 12:34:56'
+    fp.CreationDate BETWEEN toDate('2021-01-01') AND toDateTime64('2024-10-01 12:34:56', 6)
 ORDER BY 
     fp.Score DESC, fp.CreationDate DESC;

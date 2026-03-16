@@ -3,8 +3,8 @@ SELECT
     t.title,
     a.name AS actor_name,
     c.kind AS cast_type,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
     COUNT(DISTINCT pi.info) AS info_count
 FROM 
     title t

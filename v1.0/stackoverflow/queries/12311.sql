@@ -55,4 +55,4 @@ SELECT
     BronzeBadges
 FROM CombinedStats
 ORDER BY Reputation DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

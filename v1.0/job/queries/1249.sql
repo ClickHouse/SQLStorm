@@ -39,7 +39,7 @@ SELECT
     ad.actor_name,
     ad.surname_pcode,
     COUNT(ad.movie_id) AS total_movies,
-    STRING_AGG(ad.movie_title, ', ') AS movie_titles,
+    arrayStringConcat(groupArray(assumeNotNull(ad.movie_title)), ', ') AS movie_titles,
     AVG(COALESCE(ad.production_year, 0)) AS average_production_year
 FROM 
     ActorDetails ad

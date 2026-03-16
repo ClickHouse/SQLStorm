@@ -1,14 +1,14 @@
 
 WITH TagCounts AS (
     SELECT 
-        TRIM(UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><'))) AS TagName,
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1  
     GROUP BY 
-        TRIM(UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')))
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))))
 ),
 ActiveUsers AS (
     SELECT 
@@ -23,7 +23,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Votes v ON v.UserId = u.Id
     WHERE 
-        u.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
+        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
     GROUP BY 
         u.Id, u.DisplayName
 ),

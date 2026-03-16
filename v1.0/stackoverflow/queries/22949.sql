@@ -13,12 +13,12 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.PostTypeId IN (1, 2) 
 ),
 DistinctTags AS (
     SELECT
-        DISTINCT TRIM(REGEXP_SPLIT_TO_TABLE(p.Tags, '>')) AS TagName,
+        DISTINCT TRIM(splitByRegexp('>', p.Tags)) AS TagName,
         p.Id AS PostId
     FROM 
         Posts p

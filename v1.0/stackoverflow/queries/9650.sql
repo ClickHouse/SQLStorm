@@ -16,7 +16,7 @@ WITH UserReputation AS (
     LEFT JOIN Users U ON P.OwnerUserId = U.Id
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY P.Id, P.Title, P.Score, P.ViewCount, U.DisplayName
     HAVING COUNT(DISTINCT V.UserId) > 10
 ), TopPosts AS (

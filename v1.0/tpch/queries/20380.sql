@@ -49,4 +49,4 @@ FROM
     TopRegions t
 ORDER BY 
     t.total_sales DESC
-OFFSET 1 ROWS;
+OFFSET 1;

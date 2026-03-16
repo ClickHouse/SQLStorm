@@ -17,7 +17,7 @@ WITH RecentPosts AS (
         PostHistory AS PH ON P.Id = PH.PostId 
         AND PH.PostHistoryTypeId IN (4, 5, 24)  
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 AggregateVoteStats AS (
     SELECT 
@@ -35,7 +35,7 @@ AggregateVoteStats AS (
 UserBadges AS (
     SELECT 
         B.UserId,
-        STRING_AGG(B.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames,
         COUNT(*) AS BadgeCount
     FROM 
         Badges AS B

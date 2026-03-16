@@ -34,10 +34,10 @@ AggregatedData AS (
     SELECT 
         production_year, 
         COUNT(movie_id) AS total_movies, 
-        STRING_AGG(DISTINCT title, ', ') AS movie_titles,
-        STRING_AGG(DISTINCT actor_name, ', ') AS cast_names,
-        STRING_AGG(DISTINCT company_name, ', ') AS production_companies,
-        STRING_AGG(DISTINCT keyword, ', ') AS movie_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(title))), ', ') AS movie_titles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS production_companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS movie_keywords
     FROM 
         MovieDetails
     GROUP BY 

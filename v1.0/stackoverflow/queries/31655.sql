@@ -33,7 +33,7 @@ PostVoteStatistics AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasons,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasons,
         COUNT(*) AS CloseCount
     FROM 
         PostHistory ph
@@ -53,7 +53,7 @@ PostRankings AS (
     FROM 
         Posts pa
     WHERE 
-        pa.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
+        pa.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         pa.OwnerUserId
 )

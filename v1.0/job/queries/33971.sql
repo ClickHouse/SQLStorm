@@ -44,7 +44,7 @@ movie_stats AS (
         mh.title,
         mh.production_year,
         COUNT(DISTINCT c.actor_name) AS total_actors,
-        STRING_AGG(DISTINCT c.actor_name, ', ') AS actor_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.actor_name))), ', ') AS actor_list
     FROM 
         movie_hierarchy mh
     LEFT JOIN 
@@ -56,7 +56,7 @@ keyword_aggregate AS (
     SELECT 
         m.id AS movie_id,
         COUNT(mk.keyword_id) AS keyword_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title m
     LEFT JOIN 

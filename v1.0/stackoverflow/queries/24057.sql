@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 UserVoteStats AS (
     SELECT
@@ -35,7 +35,7 @@ PostCommentCounts AS (
 PostBadges AS (
     SELECT 
         b.UserId, 
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 

@@ -2,7 +2,7 @@ SELECT
     SUBSTRING(p_name, 1, 10) AS truncated_part_name,
     COUNT(DISTINCT s_suppkey) AS supplier_count,
     AVG(ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c_name))), ', ') AS customer_names,
     MAX(o_orderdate) AS latest_order_date
 FROM 
     part

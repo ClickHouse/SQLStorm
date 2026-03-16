@@ -4,7 +4,7 @@ SELECT
     n.n_name AS supplier_nation,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT l.l_comment, '; ') AS aggregated_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_comment))), '; ') AS aggregated_comments
 FROM 
     part p
 JOIN 

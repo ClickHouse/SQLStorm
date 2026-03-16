@@ -9,7 +9,7 @@ WITH RecursivePostAnalytics AS (
         COALESCE(c.CommentCount, 0) AS TotalComments,
         COALESCE(pv.ViewCount, 0) AS TotalViews,
         CASE 
-            WHEN p.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' THEN 'Old Post'
+            WHEN p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Old Post'
             ELSE 'Recent Post'
         END AS PostAge,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
@@ -82,7 +82,7 @@ SELECT
         WHEN tp.UserTotalVotes BETWEEN 50 AND 100 THEN 'Moderately Engaged'
         ELSE 'Low Engagement'
     END AS EngagementCategory,
-    ARRAY_AGG(DISTINCT t.TagName) AS UserTags
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS UserTags
 FROM 
     TopUsers tp
 JOIN 
@@ -91,7 +91,7 @@ LEFT JOIN
     (
         SELECT 
             p.OwnerUserId,
-            unnest(string_to_array(p.Tags, '>')) AS TagName
+            arrayJoin(splitByString('>', p.Tags)) AS TagName
         FROM 
             Posts p
         WHERE 

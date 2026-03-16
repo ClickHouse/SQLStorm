@@ -29,7 +29,7 @@ PostHistoryAggregates AS (
         PH.UserId,
         PH.PostId,
         COUNT(PH.Id) AS EditCount,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS EditTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS EditTypes
     FROM 
         PostHistory PH
     JOIN 
@@ -70,7 +70,7 @@ PostsWithVotes AS (
     LEFT JOIN 
         PostHistoryAggregates PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 )
 SELECT 
     PU.UserId,

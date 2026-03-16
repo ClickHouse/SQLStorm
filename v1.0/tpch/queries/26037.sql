@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(s.s_acctbal) AS average_supplier_balance,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     CASE 
         WHEN p.p_size < 20 THEN 'Small'
         WHEN p.p_size BETWEEN 20 AND 50 THEN 'Medium'

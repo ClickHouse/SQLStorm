@@ -5,7 +5,7 @@ WITH TagStats AS (
         SUM(P.ViewCount) AS TotalViews,
         AVG(P.Score) AS AverageScore,
         COUNT(DISTINCT C.Id) AS TotalComments,
-        STRING_AGG(DISTINCT U.DisplayName, ', ') AS TopContributors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS TopContributors
     FROM 
         Tags T
     JOIN 
@@ -22,7 +22,7 @@ HistoryStats AS (
         PH.PostId, 
         COUNT(*) AS EditCount,
         MAX(PH.CreationDate) AS LastEdited,
-        STRING_AGG(DISTINCT PH.UserDisplayName, ', ') AS Editors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.UserDisplayName))), ', ') AS Editors
     FROM 
         PostHistory PH
     GROUP BY 
@@ -48,7 +48,7 @@ TopPosts AS (
     JOIN 
         TagStats ST ON P.Tags LIKE '%' || ST.TagName || '%'
     WHERE 
-        P.LastActivityDate > cast('2024-10-01' as date) - INTERVAL '30 days'
+        P.LastActivityDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
     ORDER BY 
         P.ViewCount DESC, 
         H.EditCount DESC

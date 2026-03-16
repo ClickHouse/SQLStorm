@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 /* Questions */
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' /* Last year */
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR /* Last year */
 ),
 
 TopPostOwners AS (
@@ -37,7 +37,7 @@ TopPostOwners AS (
 
 TopTags AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(Tags, '>'))::text) AS Tag,
+        TRIM(arrayJoin(splitByString('>', Tags)CAST() AS text)) AS Tag,
         COUNT(*) AS UsageCount
     FROM 
         Posts

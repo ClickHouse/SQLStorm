@@ -10,4 +10,4 @@ WHERE ca.ca_state = 'CA'
 GROUP BY c.c_customer_id, ca.ca_city
 HAVING SUM(ws.ws_sales_price) > 1000
 ORDER BY total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

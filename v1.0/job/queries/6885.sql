@@ -5,7 +5,7 @@ SELECT
     c.kind AS cast_type,
     ci.note AS role_note,
     t.production_year,
-    STRING_AGG(DISTINCT k.keyword, ',') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',') AS keywords,
     COUNT(DISTINCT mc.company_id) AS company_count
 FROM 
     aka_name AS a

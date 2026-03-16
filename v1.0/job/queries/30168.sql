@@ -31,7 +31,7 @@ SELECT
     COALESCE(a.name, 'Unknown Actor') AS lead_actor,
     COUNT(DISTINCT mcast.person_id) AS total_cast,
     SUM(CASE WHEN mcomp.company_id IS NOT NULL THEN 1 ELSE 0 END) AS total_companies,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY mh.movie_id ORDER BY mh.production_year DESC) AS row_num
 FROM 
     MovieHierarchy mh

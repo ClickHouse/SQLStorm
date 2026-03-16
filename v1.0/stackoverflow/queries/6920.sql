@@ -35,7 +35,7 @@ TopUsers AS (
 QuestionTags AS (
     SELECT 
         P.Id AS QuestionId,
-        unnest(string_to_array(P.Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', P.Tags)) AS Tag
     FROM 
         Posts P
     WHERE 

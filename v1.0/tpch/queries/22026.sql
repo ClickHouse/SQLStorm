@@ -34,7 +34,7 @@ LineItemStats AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN DATE '1994-01-01' AND DATE '1994-12-31'
+        l.l_shipdate BETWEEN toDate('1994-01-01') AND toDate('1994-12-31')
     GROUP BY 
         l.l_orderkey
 ),

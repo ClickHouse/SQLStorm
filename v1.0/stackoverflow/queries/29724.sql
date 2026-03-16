@@ -38,7 +38,7 @@ PostEdits AS (
         ph.PostId,
         ph.UserId,
         COUNT(*) AS EditCount,
-        STRING_AGG(DISTINCT ph.Comment, '; ') AS EditComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS EditComments
     FROM 
         PostHistory ph
     WHERE 

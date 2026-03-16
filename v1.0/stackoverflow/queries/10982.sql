@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     PostTypes pt ON p.PostTypeId = pt.Id
 WHERE 
-    p.CreationDate >= CURRENT_DATE - INTERVAL '6 months' 
+    p.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH 
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName, pt.Name
 ORDER BY 

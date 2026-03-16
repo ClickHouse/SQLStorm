@@ -7,13 +7,13 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS RankByScore,
         COUNT(c.Id) OVER (PARTITION BY p.Id) AS CommentCount,
         SUBSTRING(p.Body, 1, 100) AS PreviewBody,
-        ARRAY_LENGTH(string_to_array(p.Tags, ','), 1) AS TagCount
+        length(splitByString(',', p.Tags), 1) AS TagCount
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 UserMetrics AS (
@@ -88,4 +88,4 @@ WHERE
 ORDER BY 
     h.Score DESC, 
     h.Reputation DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

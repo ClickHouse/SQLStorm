@@ -39,7 +39,7 @@ SELECT
     ft.title,
     ft.production_year,
     ft.cast_count,
-    STRING_AGG(mk.keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keywords,
     CASE 
         WHEN ft.cast_count IS NULL THEN 'No Cast'
         ELSE 'Has Cast'

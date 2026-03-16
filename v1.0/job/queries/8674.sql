@@ -4,7 +4,7 @@ SELECT
     c.note AS role_description,
     tc.kind AS company_type,
     COUNT(DISTINCT mc.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     aka_name an
 JOIN 

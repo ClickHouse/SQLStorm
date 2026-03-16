@@ -5,7 +5,7 @@ SELECT
     p.info AS actor_bio,
     c.name AS company_name,
     ct.kind AS company_type,
-    STRING_AGG(k.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
 FROM 
     aka_name a
 JOIN 

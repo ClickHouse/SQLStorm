@@ -30,7 +30,7 @@ ActiveUsers AS (
         U.Reputation,
         U.LastAccessDate,
         CASE
-            WHEN U.LastAccessDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 'Active'
+            WHEN U.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Active'
             ELSE 'Inactive'
         END AS UserStatus
     FROM 

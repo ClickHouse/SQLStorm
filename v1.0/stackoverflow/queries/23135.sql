@@ -24,7 +24,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.LastAccessDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -32,11 +32,11 @@ ClosedPostHistory AS (
     SELECT 
         ph.PostId,
         COUNT(ph.Id) AS CloseVoteCount,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasonNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasonNames
     FROM 
         PostHistory ph
     INNER JOIN 
-        CloseReasonTypes cr ON ph.Comment::int = cr.Id
+        CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
     WHERE 
         ph.PostHistoryTypeId = 10
     GROUP BY 
@@ -89,4 +89,4 @@ WHERE
 ORDER BY 
     pd.CloseVoteCount DESC,
     pd.TotalVotes DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

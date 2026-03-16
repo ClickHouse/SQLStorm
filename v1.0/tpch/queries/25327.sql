@@ -26,7 +26,7 @@ SupplierParts AS (
     SELECT 
         fps.s_suppkey,
         COUNT(DISTINCT ps.ps_partkey) AS part_count,
-        STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_container, ')'), ', ') AS parts_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_container, ')')))), ', ') AS parts_list
     FROM 
         FilteredSuppliers fps
     JOIN 

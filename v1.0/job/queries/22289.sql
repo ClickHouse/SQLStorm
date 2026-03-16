@@ -30,7 +30,7 @@ RecursiveAuthors AS (
 CoalescedInfo AS (
     SELECT 
         movie_id,
-        STRING_AGG(DISTINCT adjusted_name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(adjusted_name))), ', ') AS actor_names,
         COUNT(DISTINCT role_id) AS distinct_roles
     FROM 
         RecursiveAuthors
@@ -74,4 +74,4 @@ WHERE
 ORDER BY 
     mh.production_year DESC, 
     oj.movie_title ASC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

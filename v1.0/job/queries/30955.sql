@@ -28,7 +28,7 @@ SELECT
     t.title AS movie_title,
     t.production_year,
     COUNT(ci.id) AS total_casts,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     AVG(CASE WHEN ci.note IS NULL THEN 0 ELSE 1 END) AS average_cast_status,
     MAX(CASE WHEN ci.nr_order IS NULL THEN (SELECT MAX(nr_order) FROM cast_info WHERE movie_id = t.id) ELSE ci.nr_order END) AS max_cast_order
 FROM

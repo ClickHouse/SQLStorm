@@ -34,7 +34,7 @@ SELECT r.r_name, n.n_name,
        COUNT(DISTINCT c.c_custkey) AS customers_count,
        SUM(co.total_spent) AS total_spent_by_customers,
        AVG(s.s_acctbal) AS average_supplier_acctbal,
-       STRING_AGG(DISTINCT tp.p_name, ', ') AS top_parts
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.p_name))), ', ') AS top_parts
 FROM region r
 JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN customer c ON n.n_nationkey = c.c_nationkey

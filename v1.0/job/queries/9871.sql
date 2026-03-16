@@ -40,7 +40,7 @@ SELECT
     movie_title,
     production_year,
     company_name,
-    STRING_AGG(DISTINCT actor_name || ' (' || actor_role || ')', ', ') AS actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name || ' (' || actor_role || ')'))), ', ') AS actors
 FROM 
     FilteredMovies
 GROUP BY 

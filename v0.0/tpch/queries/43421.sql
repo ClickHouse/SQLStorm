@@ -6,8 +6,8 @@ with revenue0 (supplier_no, total_revenue) as
 	from
 		lineitem
 	where
-		l_shipdate >= date '1993-02-01'
-		and l_shipdate < date '1993-02-01' + interval '3' month
+		l_shipdate >= toDate('1993-02-01')
+		and l_shipdate < toDate('1993-02-01') + interval '3' month
 	group by
 		l_suppkey)
 

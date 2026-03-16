@@ -16,7 +16,7 @@ ActorRoles AS (
     SELECT 
         a.id AS actor_id,
         a.name AS actor_name,
-        STRING_AGG(r.role, ', ') AS roles
+        arrayStringConcat(groupArray(assumeNotNull(r.role)), ', ') AS roles
     FROM 
         aka_name a
     JOIN 
@@ -29,7 +29,7 @@ ActorRoles AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

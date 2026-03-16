@@ -18,13 +18,13 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '90 days'  
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 90 DAY  
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, u.DisplayName
 ),
 TagStats AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS TagName,
+        arrayJoin(splitByString('>', Tags)) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts

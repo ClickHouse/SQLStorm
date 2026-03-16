@@ -47,4 +47,4 @@ LEFT JOIN
     VoteStats VS ON PS.PostId = VS.PostId
 ORDER BY 
     PS.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

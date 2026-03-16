@@ -42,7 +42,7 @@ AggregatedMovieData AS (
         mh.title,
         mh.production_year,
         COUNT(DISTINCT cw.person_id) AS total_cast,
-        STRING_AGG(DISTINCT CASE WHEN cw.role_type IS NOT NULL THEN cw.role_type ELSE 'Unknown' END, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN cw.role_type IS NOT NULL THEN cw.role_type ELSE 'Unknown' END))), ', ') AS roles
     FROM 
         MovieHierarchy mh
     LEFT JOIN 

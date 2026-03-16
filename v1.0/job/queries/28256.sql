@@ -3,10 +3,10 @@ WITH movie_data AS (
         mt.id AS movie_id,
         mt.title,
         mt.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles,
         COUNT(DISTINCT c.id) AS cast_count
     FROM aka_title mt
     LEFT JOIN movie_companies mc ON mt.id = mc.movie_id

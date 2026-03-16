@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS unique_suppliers,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     SUM(l.l_quantity) AS total_quantity,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_address, ')'), '; ') AS supplier_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_address, ')')))), '; ') AS supplier_details,
     CONCAT('Region: ', r.r_name, ' | Nation: ', n.n_name) AS location_info
 FROM
     part p

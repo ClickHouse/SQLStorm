@@ -18,7 +18,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_quantity,
     AVG(o.o_totalprice) as avg_order_price,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', s.s_name, ')'), ', ') AS part_supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', s.s_name, ')')))), ', ') AS part_supplier_details
 FROM nation n
 LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey
 LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey

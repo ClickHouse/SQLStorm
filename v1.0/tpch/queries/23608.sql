@@ -56,5 +56,5 @@ LEFT JOIN ranked_customers rc ON lc.l_orderkey = rc.c_custkey
 LEFT JOIN customer c ON rc.c_custkey = c.c_custkey
 WHERE r.n_regionkey IS NOT NULL
 GROUP BY r.n_name, ap.avg_price, ss.total_supply_cost
-HAVING SUM(lc.l_quantity) > (SELECT AVG(l_quantity) FROM lineitem WHERE l_shipdate >= CURRENT_DATE - INTERVAL '30 DAY')
+HAVING SUM(lc.l_quantity) > (SELECT AVG(l_quantity) FROM lineitem WHERE l_shipdate >= CURRENT_DATE - INTERVAL 30 DAY)
 ORDER BY r.n_name;

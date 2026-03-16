@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ), 
 UserScores AS (
     SELECT 
@@ -33,7 +33,7 @@ UserScores AS (
 ClosedPostHistory AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, '; ') AS CloseComments,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS CloseComments,
         COUNT(*) AS CloseCount
     FROM 
         PostHistory ph

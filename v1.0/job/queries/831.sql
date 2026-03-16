@@ -25,7 +25,7 @@ SELECT
     a.name AS actor_name,
     COUNT(cc.id) AS total_cast,
     COALESCE(SUM(CASE WHEN ci.role_id IS NOT NULL THEN 1 ELSE 0 END), 0) AS num_roles,
-    STRING_AGG(DISTINCT kt.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS keywords
 FROM 
     TopMovies tm
 LEFT JOIN 

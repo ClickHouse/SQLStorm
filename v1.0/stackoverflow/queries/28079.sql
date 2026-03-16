@@ -5,7 +5,7 @@ WITH PostTagCounts AS (
         P.Title,
         P.CreationDate,
         COUNT(T.Id) AS TagCount,
-        STRING_AGG(T.TagName, ', ') AS TagsList
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagsList
     FROM 
         Posts P
     LEFT JOIN 
@@ -37,7 +37,7 @@ TopPosts AS (
         P.Score,
         P.ViewCount,
         P.CreationDate,
-        CURRENT_TIMESTAMP - P.CreationDate AS DaysAgo,
+        now64(6) - P.CreationDate AS DaysAgo,
         Y.UserId,
         Y.DisplayName,
         T.TagCount,

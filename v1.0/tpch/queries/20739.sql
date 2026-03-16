@@ -35,7 +35,7 @@ RecentOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate >= CURRENT_DATE - INTERVAL '3 month'
+        l.l_shipdate >= CURRENT_DATE - INTERVAL 3 MONTH
     GROUP BY 
         o.o_orderkey, o.o_custkey
 )

@@ -5,8 +5,8 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        ARRAY_AGG(DISTINCT co.name) AS companies,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(co.name))) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM title t
     JOIN complete_cast cc ON t.id = cc.movie_id
     JOIN cast_info ci ON cc.subject_id = ci.id

@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS Owner,
         COUNT(c.Id) AS CommentCount,
         AVG(v.VoteTypeId) AS AverageVoteType,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
@@ -18,12 +18,12 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
-                unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '>')) AS TagName
+                arrayJoin(splitByString('>', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName
         ) AS t ON TRUE
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' 
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, u.DisplayName, p.Body, p.CreationDate
 ),

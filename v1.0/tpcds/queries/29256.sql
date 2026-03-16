@@ -8,7 +8,7 @@ SELECT
     cd.cd_marital_status,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid) AS total_spent,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
     COALESCE(MAX(cr.cr_return_amount), 0) AS total_returns
 FROM customer c
 JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk

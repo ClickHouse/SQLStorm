@@ -69,7 +69,7 @@ SELECT
 FROM 
     Customer_Analytics ca
 LEFT JOIN 
-    Sales_Comparison sc ON sc.sale_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) - 1
+    Sales_Comparison sc ON sc.sale_year = toYear(cast('2002-10-01' as date)) - 1
 WHERE 
     ca.Profit_Rank <= 10
 ORDER BY 

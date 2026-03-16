@@ -32,7 +32,7 @@ SELECT
     COUNT(DISTINCT c.id) AS appearances,
     AVG(CASE WHEN i.info_type_id = (SELECT id FROM info_type WHERE info = 'rating') 
              THEN CAST(i.info AS FLOAT) ELSE NULL END) AS avg_rating,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     SUM(CASE WHEN c.note IS NULL THEN 1 ELSE 0 END) AS null_notes_count
 FROM 
     cast_info c

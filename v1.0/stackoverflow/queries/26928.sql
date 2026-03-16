@@ -6,11 +6,11 @@ WITH PostTagCounts AS (
         P.OwnerDisplayName,
         P.ViewCount,
         COUNT(T.TagName) AS TagCount,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS TagList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagList
     FROM
         Posts P
     LEFT JOIN
-        UNNEST(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><')) AS tag (TagName) ON TRUE
+        arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2))) AS tag (TagName) ON TRUE
     LEFT JOIN
         Tags T ON T.TagName = tag.TagName
     WHERE
@@ -33,7 +33,7 @@ RecentClosedPosts AS (
         Users U ON PH.UserId = U.Id
     WHERE
         PH.PostHistoryTypeId = 10 
-        AND PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - interval '30 days'
+        AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 TopContributors AS (
     SELECT

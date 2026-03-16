@@ -69,5 +69,4 @@ WHERE
     (sd.balance_category IS NOT NULL OR sd.balance_category = 'Balance Unknown')
 ORDER BY 
     rp.p_retailprice DESC, sd.s_acctbal DESC
-OFFSET 5 ROWS
-FETCH NEXT 15 ROWS ONLY;
+LIMIT 15 OFFSET 5;

@@ -4,7 +4,7 @@ WITH RecursiveMovieCTE AS (
         mt.title,
         mt.production_year,
         mt.kind_id,
-        ARRAY_AGG(DISTINCT ka.name) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(ka.name))) AS actor_names,
         ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY mt.production_year DESC) AS year_rank
     FROM 
         aka_title mt
@@ -33,7 +33,7 @@ MoviesByProductionYear AS (
     SELECT 
         production_year,
         COUNT(*) AS total_movies,
-        STRING_AGG(title, ', ') AS titles
+        arrayStringConcat(groupArray(assumeNotNull(title)), ', ') AS titles
     FROM 
         MoviesWithKeywords
     GROUP BY 
@@ -45,7 +45,7 @@ SELECT
     mp.production_year,
     mp.total_movies,
     mp.titles,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS assorted_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS assorted_keywords,
     CASE 
         WHEN mp.production_year IS NULL THEN 'No Year'
         ELSE 'Year Present'

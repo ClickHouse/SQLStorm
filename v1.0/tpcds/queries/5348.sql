@@ -51,4 +51,4 @@ FROM
     TotalSales t
 ORDER BY 
     combined_sales_amount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

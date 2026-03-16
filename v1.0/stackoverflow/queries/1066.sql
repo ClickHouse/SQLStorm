@@ -48,5 +48,5 @@ SELECT
 FROM TopUsers tu
 JOIN RecentPostActivity rpa ON tu.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = rpa.PostId)
 LEFT JOIN Badges b ON tu.UserId = b.UserId AND b.Class = 1
-WHERE b.Id IS NULL OR b.Date < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+WHERE b.Id IS NULL OR b.Date < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ORDER BY rpa.ViewCount DESC;

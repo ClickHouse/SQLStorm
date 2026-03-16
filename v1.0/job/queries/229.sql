@@ -24,7 +24,7 @@ HighRankedMovies AS (
 MovieCompanyInfo AS (
     SELECT
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         MAX(ct.kind) AS company_type
     FROM
         movie_companies mc
@@ -41,7 +41,7 @@ SELECT
     mci.company_names,
     COALESCE(NULLIF(mci.company_type, ''), 'N/A') AS company_type,
     (SELECT COUNT(*) FROM movie_keyword mk WHERE mk.movie_id = hm.movie_id) AS keyword_count,
-    (SELECT STRING_AGG(DISTINCT k.keyword, ', ') FROM movie_keyword mk JOIN keyword k ON mk.keyword_id = k.id WHERE mk.movie_id = hm.movie_id) AS keywords,
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') FROM movie_keyword mk JOIN keyword k ON mk.keyword_id = k.id WHERE mk.movie_id = hm.movie_id) AS keywords,
     (SELECT AVG(pi.info_type_id) FROM person_info pi JOIN cast_info ci ON pi.person_id = ci.person_id WHERE ci.movie_id = hm.movie_id) AS avg_info_type_id
 FROM
     HighRankedMovies hm

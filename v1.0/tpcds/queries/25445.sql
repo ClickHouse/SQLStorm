@@ -6,7 +6,7 @@ WITH RankedCustomers AS (
         cd.cd_gender,
         cd.cd_marital_status,
         cd.cd_education_status,
-        STRING_AGG(DISTINCT CONCAT(ca.ca_street_number, ' ', ca.ca_street_name, ' ', ca.ca_street_type, ', ', ca.ca_city, ', ', ca.ca_state), '; ') AS address_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca.ca_street_number, ' ', ca.ca_street_name, ' ', ca.ca_street_type, ', ', ca.ca_city, ', ', ca.ca_state)))), '; ') AS address_list
     FROM customer c
     JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
     JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk
@@ -38,7 +38,7 @@ SELECT
     SUM(fd.ws_net_profit) AS total_profit,
     MIN(fd.sales_date) AS first_purchase_date,
     MAX(fd.sales_date) AS last_purchase_date,
-    STRING_AGG(DISTINCT CONCAT(fd.d_month_seq, '-', fd.d_year), ', ') AS purchase_months
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(fd.d_month_seq, '-', fd.d_year)))), ', ') AS purchase_months
 FROM FullDetail fd
 WHERE fd.ws_net_profit > 1000
 GROUP BY fd.full_name, fd.cd_gender, fd.cd_marital_status, fd.cd_education_status, fd.address_list

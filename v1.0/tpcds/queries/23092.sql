@@ -58,4 +58,4 @@ WHERE
 ORDER BY
     D.d_date,
     S.total_sales DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

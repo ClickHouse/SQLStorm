@@ -27,7 +27,7 @@ FullCast AS (
 MovieInfo AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(mi.info, '; ') AS info_details
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS info_details
     FROM 
         movie_info m
     JOIN 

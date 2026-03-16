@@ -41,7 +41,7 @@ SELECT
     f.production_year,
     f.role_count,
     rt.titles_count AS same_year_title_count,
-    (SELECT STRING_AGG(a.name, ', ') FROM aka_name a WHERE a.person_id IN (SELECT DISTINCT ci.person_id FROM cast_info ci WHERE ci.movie_id = f.movie_id)) AS actors_names,
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') FROM aka_name a WHERE a.person_id IN (SELECT DISTINCT ci.person_id FROM cast_info ci WHERE ci.movie_id = f.movie_id)) AS actors_names,
     CASE 
         WHEN f.role_count > 0 THEN 'Has Roles'
         ELSE 'No Roles'

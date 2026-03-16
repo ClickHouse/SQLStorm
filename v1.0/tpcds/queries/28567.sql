@@ -29,7 +29,7 @@ HighValueCustomers AS (
 SELECT 
     CONCAT(ca_city, ', ', ca_state) AS location,
     COUNT(full_name) AS high_value_customer_count,
-    STRING_AGG(full_name, ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names
 FROM 
     HighValueCustomers 
 GROUP BY 

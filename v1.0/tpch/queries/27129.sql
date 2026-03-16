@@ -5,7 +5,7 @@ SELECT
     AVG(l.l_quantity) AS avg_quantity_per_order,
     CONCAT('Region: ', r.r_name, ', Nation: ', n.n_name) AS location_info,
     MAX(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END) AS max_returned_value,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments
 FROM 
     supplier s
 JOIN 

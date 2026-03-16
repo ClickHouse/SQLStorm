@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(s.s_acctbal) AS average_account_balance,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     CASE 
         WHEN SUM(l.l_extendedprice) > 100000 THEN 'High Value' 
         ELSE 'Low Value' 

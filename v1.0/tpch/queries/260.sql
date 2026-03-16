@@ -30,7 +30,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     COALESCE(SUM(o.o_totalprice), 0) AS total_sales,
     COALESCE(SUM(l.l_extendedprice * (1 - l.l_discount)), 0) AS total_revenue,
-    STRING_AGG(DISTINCT ts.s_name, ', ') AS top_suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ts.s_name))), ', ') AS top_suppliers
 FROM 
     nation n
 JOIN 

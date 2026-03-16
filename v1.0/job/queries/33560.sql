@@ -28,7 +28,7 @@ MovieDetails AS (
         m.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
         COUNT(DISTINCT k.keyword) AS total_keywords,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords_list,
         COUNT(DISTINCT mc.company_id) AS total_companies
     FROM 
         MoviesCTE m

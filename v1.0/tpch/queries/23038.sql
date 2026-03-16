@@ -46,4 +46,4 @@ LEFT JOIN SupplierDetails sd ON ps.ps_suppkey = sd.s_suppkey
 LEFT JOIN OrderSummary os ON os.o_orderkey = (SELECT MIN(o_orderkey) FROM orders WHERE o_orderstatus = 'F' AND o_totalprice > 5000)
 WHERE rp.rn <= 5 AND (sd.balance_status = 'Sufficient Balance' OR sd.s_name IS NULL)
 ORDER BY rp.p_retailprice DESC, os.net_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

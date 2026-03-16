@@ -49,7 +49,7 @@ LEFT JOIN
 WHERE 
     rp.rn = 1 
     AND rp.Score > (SELECT AVG(Score) FROM Posts WHERE PostTypeId = 1) 
-    AND (rp.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' OR (rp.ViewCount IS NULL AND rp.AnswerCount = 0))
+    AND (rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR OR (rp.ViewCount IS NULL AND rp.AnswerCount = 0))
 ORDER BY 
     rp.Score DESC, 
     rp.ViewCount DESC;

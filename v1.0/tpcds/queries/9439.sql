@@ -45,7 +45,7 @@ SELECT
 FROM 
     CustomerDetails cd
 JOIN 
-    MonthlySales ms ON cd.total_net_profit > 0 AND ms.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') - 1
+    MonthlySales ms ON cd.total_net_profit > 0 AND ms.d_year = toYear(toDate('2002-10-01')) - 1
 WHERE 
     cd.total_net_profit > 5000
 ORDER BY 

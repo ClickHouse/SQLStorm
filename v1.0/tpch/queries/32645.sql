@@ -12,7 +12,7 @@ WITH RECURSIVE sales_hierarchy AS (
     JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
 ), 
 part_supplier AS (
     SELECT 
@@ -48,7 +48,7 @@ SELECT
     SUM(od.total_revenue) AS total_revenue,
     COUNT(DISTINCT od.o_orderkey) AS total_orders,
     AVG(rh.order_rank) AS average_order_rank,
-    STRING_AGG(DISTINCT CONCAT(ps.p_name, ' (Supplied by: ', ps.s_name, ')'), ', ') AS supplier_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ps.p_name, ' (Supplied by: ', ps.s_name, ')')))), ', ') AS supplier_parts
 FROM 
     sales_hierarchy rh
 LEFT JOIN 
@@ -58,7 +58,7 @@ LEFT JOIN
 LEFT JOIN 
     customer c ON rh.c_custkey = c.c_custkey
 WHERE 
-    rh.o_orderdate >= DATE '1996-01-01'
+    rh.o_orderdate >= toDate('1996-01-01')
 GROUP BY 
     c.c_custkey, c.c_name
 HAVING 

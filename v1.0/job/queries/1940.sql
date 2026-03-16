@@ -38,7 +38,7 @@ SELECT
     fm.title,
     fm.production_year,
     fm.cast_count,
-    STRING_AGG(DISTINCT mg.genre, ', ') AS genres
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mg.genre))), ', ') AS genres
 FROM 
     FilteredMovies AS fm
 LEFT JOIN 

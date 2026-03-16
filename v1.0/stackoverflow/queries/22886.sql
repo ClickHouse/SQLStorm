@@ -14,19 +14,19 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
 ), 
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(p.Tags, ',')) AS Tag,
+        arrayJoin(splitByString(',', p.Tags)) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
-        unnest(string_to_array(p.Tags, ',')) 
+        arrayJoin(splitByString(',', p.Tags)) 
     HAVING 
         COUNT(*) > 5 
 ), 
@@ -69,7 +69,7 @@ FROM
 JOIN 
     UserStatistics ut ON rp.OwnerUserId = ut.UserId
 LEFT JOIN 
-    PopularTags pt ON pt.Tag = ANY(string_to_array(rp.Tags, ','))
+    PopularTags pt ON pt.Tag = ANY(splitByString(',', rp.Tags))
 WHERE 
     rp.Rank <= 5
     AND (ut.UpVotesCount > ut.DownVotesCount OR ut.BadgeCount >= 1)

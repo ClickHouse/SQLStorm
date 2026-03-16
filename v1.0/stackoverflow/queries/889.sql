@@ -52,7 +52,7 @@ SELECT
     tp.DownVotes,
     CASE 
         WHEN tp.UpVotes + tp.DownVotes > 0 
-        THEN ROUND((tp.UpVotes::decimal / (tp.UpVotes + tp.DownVotes)) * 100, 2)
+        THEN ROUND((CAST(tp.UpVotes AS decimal) / (tp.UpVotes + tp.DownVotes)) * 100, 2)
         ELSE NULL 
     END AS UpvotePercentage
 FROM 

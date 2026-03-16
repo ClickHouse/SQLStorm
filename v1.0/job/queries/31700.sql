@@ -32,7 +32,7 @@ SELECT
     COUNT(DISTINCT mh.movie_id) AS total_movies,
     AVG(CASE WHEN c.nr_order IS NOT NULL THEN c.nr_order ELSE 0 END) AS avg_order,
     MAX(mh.production_year) AS latest_movie_year,
-    STRING_AGG(DISTINCT kt.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS keywords
 FROM 
     aka_name ak
 JOIN 

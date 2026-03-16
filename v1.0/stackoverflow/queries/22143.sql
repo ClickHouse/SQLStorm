@@ -23,7 +23,7 @@ ActivePosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    WHERE p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.OwnerUserId
 ),
 RankedActivePosts AS (
@@ -61,9 +61,9 @@ SELECT
         WHEN ups.Reputation < 500 THEN 'Novice'
         ELSE 'Unknown'
     END AS UserType,
-    STRING_AGG(DISTINCT CASE WHEN b.Class = 1 THEN b.Name END, ', ') AS GoldBadges,
-    STRING_AGG(DISTINCT CASE WHEN b.Class = 2 THEN b.Name END, ', ') AS SilverBadges,
-    STRING_AGG(DISTINCT CASE WHEN b.Class = 3 THEN b.Name END, ', ') AS BronzeBadges
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN b.Class = 1 THEN b.Name END))), ', ') AS GoldBadges,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN b.Class = 2 THEN b.Name END))), ', ') AS SilverBadges,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN b.Class = 3 THEN b.Name END))), ', ') AS BronzeBadges
 FROM UserPostStats ups
 LEFT JOIN Badges b ON ups.UserId = b.UserId
 GROUP BY ups.DisplayName, ups.Reputation, ups.TotalComments, ups.TotalPositiveScorePosts, ups.TotalCloseReopenActions

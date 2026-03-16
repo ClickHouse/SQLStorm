@@ -41,7 +41,7 @@ SELECT
         ELSE 'Not in Top 10 by Posts'
     END AS PostCategory,
     COALESCE((
-        SELECT STRING_AGG(DISTINCT PS.Title, '; ') 
+        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PS.Title))), '; ') 
         FROM Posts PS 
         WHERE PS.OwnerUserId = T.UserId 
         AND PS.PostTypeId = 1

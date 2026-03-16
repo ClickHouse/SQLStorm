@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS Total_Orders,
     SUM(l.l_quantity) AS Total_Quantity,
     AVG(l.l_extendedprice - l.l_discount) AS Average_Profit,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS Shipping_Modes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS Shipping_Modes
 FROM 
     part p
 JOIN 

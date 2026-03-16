@@ -17,7 +17,7 @@ ActivePosts AS (
         COUNT(c.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate > DATE '2024-10-01' - INTERVAL '1 year' AND p.Score > 10
+    WHERE p.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR AND p.Score > 10
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
 ),
 BadgeCounts AS (

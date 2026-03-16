@@ -43,7 +43,7 @@ WITH RECURSIVE movie_hierarchy AS (
 ), movie_info_details AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, ', ') AS combined_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS combined_info
     FROM 
         movie_info mi
     GROUP BY 

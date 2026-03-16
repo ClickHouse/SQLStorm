@@ -13,7 +13,7 @@ MovieInfo AS (
     SELECT 
         mi.movie_id,
         COUNT(DISTINCT mi.info_type_id) AS info_count,
-        STRING_AGG(mi.info, '; ') AS combined_info
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS combined_info
     FROM 
         movie_info mi
     GROUP BY 
@@ -32,7 +32,7 @@ ActorRoles AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        STRING_AGG(DISTINCT rt.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS roles
     FROM 
         cast_info ci
     LEFT JOIN 

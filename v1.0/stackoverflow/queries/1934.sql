@@ -37,7 +37,7 @@ PostHistoryInfo AS (
 FilteredPostHistory AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, ', ') AS RecentChanges
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS RecentChanges
     FROM 
         PostHistoryInfo ph
     WHERE 
@@ -64,4 +64,4 @@ WHERE
     AND (rp.ViewCount > 100 OR rp.CommentCount > 5)
 ORDER BY 
     rp.ViewCount DESC, rp.CommentCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

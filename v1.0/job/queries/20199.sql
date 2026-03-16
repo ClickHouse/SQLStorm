@@ -3,7 +3,7 @@ WITH RECURSIVE movie_chain AS (
     SELECT
         mc.movie_id,
         COUNT(*) AS depth,
-        STRING_AGG(DISTINCT t.title, ' -> ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ' -> ') AS movie_titles
     FROM
         movie_link AS ml
     JOIN 

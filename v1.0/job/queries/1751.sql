@@ -41,7 +41,7 @@ BestActors AS (
     FROM 
         KeyActors ka
     INNER JOIN 
-        PopularMovies pm ON ka.movie_id = (SELECT m.id FROM aka_title m WHERE m.title = pm.title AND m.production_year = pm.production_year FETCH FIRST 1 ROWS ONLY)
+        PopularMovies pm ON ka.movie_id = (SELECT m.id FROM aka_title m WHERE m.title = pm.title AND m.production_year = pm.production_year LIMIT 1)
     GROUP BY 
         ka.name
     HAVING 

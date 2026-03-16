@@ -4,8 +4,8 @@ WITH StringAggregation AS (
         p.p_name,
         p.p_mfgr,
         p.p_brand,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
-        STRING_AGG(DISTINCT r.r_name, ', ') AS regions,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions,
         COUNT(DISTINCT ps.ps_partkey) AS supplier_count
     FROM part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey

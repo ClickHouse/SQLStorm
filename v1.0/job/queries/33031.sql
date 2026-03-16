@@ -29,7 +29,7 @@ AggregateCast AS (
     SELECT
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS actor_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
     FROM 
         cast_info c
     JOIN 
@@ -62,7 +62,7 @@ SELECT
     AVG(ms.actor_count) AS average_actor_count,
     MIN(ms.production_year) AS oldest_movie,
     MAX(ms.production_year) AS newest_movie,
-    STRING_AGG(ms.actor_names, '; ') AS all_actors
+    arrayStringConcat(groupArray(assumeNotNull(ms.actor_names)), '; ') AS all_actors
 FROM 
     MovieStats ms
 WHERE 

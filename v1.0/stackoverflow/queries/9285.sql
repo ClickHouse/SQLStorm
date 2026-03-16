@@ -18,7 +18,7 @@ WITH PostStatistics AS (
     LEFT JOIN 
         (SELECT ParentId, COUNT(*) AS AnswerCount FROM Posts WHERE PostTypeId = 2 GROUP BY ParentId) a ON p.Id = a.ParentId
     LEFT JOIN 
-        (SELECT Id, unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName FROM Posts) t ON p.Id = t.Id
+        (SELECT Id, arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName FROM Posts) t ON p.Id = t.Id
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 

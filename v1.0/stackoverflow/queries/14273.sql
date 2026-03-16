@@ -21,11 +21,11 @@ WITH PostStats AS (
 TagStats AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        UNNEST(STRING_TO_ARRAY(p.Tags, '<>')) AS t(TagName) ON true
+        arrayJoin(splitByString('<>', p.Tags)) AS t(TagName) ON true
     GROUP BY 
         p.Id
 )

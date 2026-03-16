@@ -25,7 +25,7 @@ TopMovies AS (
 CompanyDetails AS (
     SELECT 
         m.movie_id,
-        string_agg(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         ct.kind AS company_type
     FROM 
         movie_companies m

@@ -45,7 +45,7 @@ SELECT
     md.movie_title,
     md.production_year,
     md.company_type,
-    STRING_AGG(DISTINCT md.actor_name, ', ') AS actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name))), ', ') AS actors
 FROM 
     MovieDetails md
 GROUP BY 

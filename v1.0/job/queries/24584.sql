@@ -15,7 +15,7 @@ MovieRoleInfo AS (
     SELECT 
         m.movie_id,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         MIN(ak.name) AS first_cast_member
     FROM 
         cast_info c
@@ -31,7 +31,7 @@ CompanyMovieInfo AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT cmp.id) AS total_companies,
-        STRING_AGG(DISTINCT cmp.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cmp.name))), ', ') AS companies,
         MAX(CASE WHEN ct.kind = 'Distributor' THEN cmp.name END) AS distributor_name
     FROM 
         movie_companies mc

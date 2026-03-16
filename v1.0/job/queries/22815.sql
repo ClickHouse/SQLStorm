@@ -14,7 +14,7 @@ MoviesWithCast AS (
         rm.title_id,
         rm.title,
         rm.production_year,
-        COALESCE(STRING_AGG(DISTINCT a.name, ', '), '(No Cast)') AS cast_names,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', '), '(No Cast)') AS cast_names,
         COUNT(DISTINCT c.person_id) AS cast_count
     FROM 
         RankedMovies rm
@@ -29,7 +29,7 @@ MovieKeywords AS (
     SELECT 
         m.title_id,
         COUNT(DISTINCT k.keyword) AS keyword_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') FILTER (WHERE k.keyword IS NOT NULL) AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') FILTER (WHERE k.keyword IS NOT NULL) AS keywords
     FROM 
         MoviesWithCast m
     LEFT JOIN 

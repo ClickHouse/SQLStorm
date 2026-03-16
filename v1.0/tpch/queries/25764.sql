@@ -9,7 +9,7 @@ SELECT
     MAX(l.l_shipdate) AS last_ship_date,
     MIN(o.o_orderdate) AS first_order_date,
     RANK() OVER (PARTITION BY p.p_partkey ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS sales_rank,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS aggregated_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS aggregated_comments
 FROM 
     part p
 JOIN 

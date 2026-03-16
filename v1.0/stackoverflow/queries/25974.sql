@@ -33,7 +33,7 @@ PostHistorySummary AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         COUNT(*) AS EventCount,
-        STRING_AGG(DISTINCT ph.UserDisplayName, ', ') AS UsersInvolved
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.UserDisplayName))), ', ') AS UsersInvolved
     FROM 
         PostHistory ph
     INNER JOIN 

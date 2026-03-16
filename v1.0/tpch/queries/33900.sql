@@ -1,7 +1,7 @@
 WITH RECURSIVE OrderHierarchy AS (
     SELECT o_orderkey, o_custkey, o_orderstatus, o_totalprice, o_orderdate, 1 AS level
     FROM orders
-    WHERE o_orderdate >= DATE '1997-01-01'
+    WHERE o_orderdate >= toDate('1997-01-01')
     UNION ALL
     SELECT o.o_orderkey, o.o_custkey, o.o_orderstatus, o.o_totalprice, o.o_orderdate, oh.level + 1
     FROM orders o
@@ -15,7 +15,7 @@ SELECT
     AVG(o.o_totalprice) AS avg_order_value,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     COUNT(DISTINCT CASE WHEN l.l_returnflag = 'R' THEN l.l_orderkey END) AS total_returns,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS purchased_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS purchased_parts
 FROM customer c
 JOIN nation n ON c.c_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey

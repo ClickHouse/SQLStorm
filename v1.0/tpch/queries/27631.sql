@@ -39,7 +39,7 @@ SELECT
     t.p_mfgr,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(t.nation_region, ', ') AS regions_supplied
+    arrayStringConcat(groupArray(assumeNotNull(t.nation_region)), ', ') AS regions_supplied
 FROM 
     TopItems t
 JOIN 

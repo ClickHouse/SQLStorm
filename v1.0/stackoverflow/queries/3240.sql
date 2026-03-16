@@ -2,7 +2,7 @@ WITH UserBadges AS (
     SELECT 
         UserId, 
         COUNT(*) AS BadgeCount,
-        STRING_AGG(Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames
     FROM 
         Badges 
     GROUP BY 
@@ -15,7 +15,7 @@ UserPosts AS (
         COUNT(CASE WHEN p.PostTypeId = 2 THEN 1 END) AS AnswerCount,
         SUM(COALESCE(p.Score, 0)) AS TotalScore,
         SUM(COALESCE(p.ViewCount, 0)) AS TotalViews,
-        AVG(COALESCE(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)) / 3600, 0)) AS AvgHourToActivity
+        AVG(COALESCE(toUnixTimestamp((p.LastActivityDate - p.CreationDate)) / 3600, 0)) AS AvgHourToActivity
     FROM 
         Posts p
     GROUP BY 

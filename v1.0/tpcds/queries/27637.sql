@@ -15,7 +15,7 @@ customer_analysis AS (
         c.c_last_name,
         cd.cd_gender,
         cd.cd_marital_status,
-        ARRAY_AGG(DISTINCT cd.cd_education_status) AS education_levels,
+        arrayDistinct(groupArray(assumeNotNull(cd.cd_education_status))) AS education_levels,
         aa.ca_address_sk,
         aa.full_address,
         aa.address_length,
@@ -33,7 +33,7 @@ SELECT
     normalized_city,
     COUNT(DISTINCT c_customer_sk) AS total_customers,
     AVG(address_length) AS average_address_length,
-    ARRAY_AGG(DISTINCT education_levels) AS unique_education_levels,
+    arrayDistinct(groupArray(assumeNotNull(education_levels))) AS unique_education_levels,
     SUM(CASE WHEN cd_gender = 'M' THEN 1 ELSE 0 END) AS male_count,
     SUM(CASE WHEN cd_gender = 'F' THEN 1 ELSE 0 END) AS female_count
 FROM 

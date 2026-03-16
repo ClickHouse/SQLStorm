@@ -19,7 +19,7 @@ order_info AS (
            SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= DATE '1998-10-01' - INTERVAL '90 days'
+    WHERE o.o_orderdate >= toDate('1998-10-01') - INTERVAL 90 DAY
     GROUP BY o.o_orderkey, o.o_custkey, o.o_orderstatus
 ),
 final_benchmark AS (

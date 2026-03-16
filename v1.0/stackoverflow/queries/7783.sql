@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName
 ), RecentActivity AS (
@@ -26,7 +26,7 @@ WITH RankedPosts AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '3 months'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
     GROUP BY 
         ph.PostId, ph.CreationDate
 )
@@ -47,4 +47,4 @@ WHERE
     rp.PostRank = 1
 ORDER BY 
     rp.Score DESC, rp.CommentCount DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

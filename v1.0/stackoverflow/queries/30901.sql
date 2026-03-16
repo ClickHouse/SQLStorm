@@ -27,7 +27,7 @@ UserWithBadges AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -71,11 +71,11 @@ LEFT JOIN
 LEFT JOIN
     PostHistorySummary phs ON phs.PostId = p.Id
 LEFT JOIN 
-    PopularTags tp ON tp.TagName = ANY(string_to_array(p.Tags, ','))
+    PopularTags tp ON tp.TagName = ANY(splitByString(',', p.Tags))
 LEFT JOIN 
     RankedPosts rp ON rp.PostId = p.Id
 WHERE
-    p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
+    p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
     AND (p.Score > 0 OR p.ViewCount > 100)
 ORDER BY
     rp.Rank, b.MaxBadgeClass DESC, phs.LastEdited DESC;

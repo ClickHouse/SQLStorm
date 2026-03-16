@@ -16,7 +16,7 @@ WITH RankedParts AS (
 ), LineItemDetails AS (
     SELECT li.l_orderkey, SUM(li.l_extendedprice * (1 - li.l_discount)) AS total_revenue
     FROM lineitem li
-    WHERE li.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 days'
+    WHERE li.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
     GROUP BY li.l_orderkey
 )
 SELECT cr.c_name, sr.nation_name, sr.region_name, 

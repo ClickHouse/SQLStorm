@@ -6,7 +6,7 @@ SELECT
     o.o_orderkey AS order_number,
     COUNT(l.l_orderkey) AS lineitem_count,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions,
     SUBSTRING(p.p_comment, 1, 20) AS short_comment
 FROM
     part p

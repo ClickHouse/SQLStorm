@@ -5,7 +5,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT p.Id) AS TotalPosts,
         COUNT(DISTINCT c.Id) AS TotalComments,
         SUM(CASE WHEN v.VoteTypeId IN (2, 3) THEN 1 ELSE 0 END) AS TotalVotes,
-        AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - u.CreationDate))) AS AvgAccountAgeInSec
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.CreationDate))) AS AvgAccountAgeInSec
     FROM 
         Users u
     LEFT JOIN 
@@ -31,7 +31,7 @@ RecentPostHistory AS (
     JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 
 SELECT 

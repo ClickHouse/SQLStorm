@@ -7,7 +7,7 @@ WITH Benchmark AS (
         u.Reputation AS UserReputation,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        EXTRACT(EPOCH FROM COALESCE(p.LastActivityDate, TIMESTAMP '2024-10-01 12:34:56') - p.CreationDate) AS PostAgeSeconds
+        toUnixTimestamp(COALESCE(p.LastActivityDate, toDateTime64('2024-10-01 12:34:56', 6)) - p.CreationDate) AS PostAgeSeconds
     FROM 
         Posts p
     JOIN 

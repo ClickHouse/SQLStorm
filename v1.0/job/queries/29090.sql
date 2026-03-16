@@ -33,8 +33,8 @@ SELECT
     tt.title,
     tt.production_year,
     kt.kind AS kind,
-    array_agg(DISTINCT ak.name) AS actor_names,
-    array_agg(DISTINCT ki.keyword) AS keywords
+    arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names,
+    arrayDistinct(groupArray(assumeNotNull(ki.keyword))) AS keywords
 FROM 
     top_titles tt
 LEFT JOIN 

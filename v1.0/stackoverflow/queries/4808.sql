@@ -57,4 +57,4 @@ LEFT JOIN BadgeCounts BC ON U.UserId = BC.UserId
 LEFT JOIN RankedPosts RP ON U.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = RP.PostId)
 WHERE U.Reputation > 1000
 ORDER BY U.Reputation DESC, RP.Rank ASC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

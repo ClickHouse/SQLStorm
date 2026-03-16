@@ -9,13 +9,13 @@ WITH PostDetails AS (
         p.AnswerCount,
         u.DisplayName AS AuthorName,
         u.Reputation AS AuthorReputation,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsList
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsList
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '> <')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('> <', substring(p.Tags, 2, length(p.Tags) - 2))) AS t(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1  
     GROUP BY 

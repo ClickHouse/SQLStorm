@@ -35,7 +35,7 @@ RecentPosts AS (
         U.DisplayName AS OwnerDisplayName
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 )
 SELECT 
     RU.ReputationRank,
@@ -53,4 +53,4 @@ FROM RankedUsers RU
 LEFT JOIN RecentPosts RP ON RU.DisplayName = RP.OwnerDisplayName
 WHERE RU.Reputation > 1000
 ORDER BY RU.ReputationRank
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

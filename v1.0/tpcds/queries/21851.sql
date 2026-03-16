@@ -38,7 +38,7 @@ potential_customers AS (
                WHEN c.c_first_name IS NULL THEN 'Unknown'
                ELSE c.c_first_name
            END AS name_alias,
-           EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c.c_birth_year AS age,
+           toYear(cast('2002-10-01' as date)) - c.c_birth_year AS age,
            COALESCE(cd.cd_purchase_estimate, 0) AS purchase_estimate
     FROM customer c
     LEFT JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk

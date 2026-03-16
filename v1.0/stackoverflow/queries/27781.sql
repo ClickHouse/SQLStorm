@@ -1,7 +1,7 @@
 
 WITH TagFrequency AS (
     SELECT 
-        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS Tag,
         COUNT(*) AS Frequency
     FROM 
         Posts
@@ -53,7 +53,7 @@ HighReputationTaggers AS (
     JOIN 
         Posts P ON UR.UserId = P.OwnerUserId
     JOIN 
-        TagFrequency TAG ON TAG.Frequency > 5 AND TAG.Tag = ANY(string_to_array(SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2), '><'))
+        TagFrequency TAG ON TAG.Frequency > 5 AND TAG.Tag = ANY(splitByString('><', SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2)))
     GROUP BY 
         UR.DisplayName, UR.Reputation, TAG.Tag, TAG.Frequency
     HAVING 

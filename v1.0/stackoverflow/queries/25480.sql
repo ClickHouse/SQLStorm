@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS TotalComments,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS RankByScore,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.ViewCount DESC) AS RankByViews
     FROM 
@@ -25,7 +25,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON t.ExcerptPostId = p.Id
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     GROUP BY 
         p.Id, p.Title, p.Body, p.Score, p.ViewCount, p.AnswerCount, p.CommentCount, p.CreationDate, u.DisplayName, pt.Name
 ),

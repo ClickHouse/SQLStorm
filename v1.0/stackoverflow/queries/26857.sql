@@ -22,7 +22,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 month' 
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 MONTH 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Body, p.ViewCount, u.DisplayName, pt.Name
 ),

@@ -26,7 +26,7 @@ WITH RECURSIVE MovieHierarchy AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
     FROM 
         cast_info c
     JOIN 
@@ -41,7 +41,7 @@ SELECT
     COALESCE(mc.cast_count, 0) AS total_cast,
     mc.actor_names,
     COUNT(DISTINCT keyword.keyword) AS keyword_count,
-    STRING_AGG(DISTINCT ki.info, '; ') AS movie_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ki.info))), '; ') AS movie_info
 FROM 
     MovieHierarchy mh
 LEFT JOIN 

@@ -11,7 +11,7 @@ WITH CustomerAnalytics AS (
         COUNT(DISTINCT ws.ws_order_number) AS total_orders,
         SUM(ws.ws_ext_sales_price) AS total_spent,
         AVG(ws.ws_ext_sales_price) AS average_spent,
-        STRING_AGG(DISTINCT wp.wp_url, '; ') AS visited_websites
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp.wp_url))), '; ') AS visited_websites
     FROM 
         customer c
     JOIN 

@@ -35,7 +35,7 @@ SELECT
     COUNT(DISTINCT rp.p_partkey) AS part_count, 
     SUM(ss.total_avail_qty) AS total_available_quantity,
     CASE WHEN SUM(co.total_spent) IS NULL THEN 'No Orders' ELSE CAST(SUM(co.total_spent) AS VARCHAR) END AS customer_spending,
-    STRING_AGG(DISTINCT rp.p_name, ', ') AS expensive_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.p_name))), ', ') AS expensive_parts,
     MAX(l.total_revenue) AS max_order_revenue
 FROM RankedParts rp
 JOIN SupplierStats ss ON rp.p_partkey = ss.s_suppkey

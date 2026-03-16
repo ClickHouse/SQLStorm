@@ -18,13 +18,13 @@ WITH RankedPosts AS (
 RecentCloseReasons AS (
     SELECT 
         ph.PostId,
-        ARRAY_AGG(DISTINCT ctr.Name) AS CloseReasons
+        arrayDistinct(groupArray(assumeNotNull(ctr.Name))) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
         CloseReasonTypes ctr ON CAST(ph.Comment AS INTEGER) = ctr.Id
     WHERE 
-        ph.PostHistoryTypeId IN (10, 11) AND ph.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month'
+        ph.PostHistoryTypeId IN (10, 11) AND ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         ph.PostId
 )

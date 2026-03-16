@@ -30,7 +30,7 @@ highlighted_movies AS (
 cast_details AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
         MIN(ak.id) AS first_actor_id  
     FROM 
         cast_info ci

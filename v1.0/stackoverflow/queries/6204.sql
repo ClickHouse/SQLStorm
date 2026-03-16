@@ -18,7 +18,7 @@ WITH UserStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        u.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        u.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation
 ),

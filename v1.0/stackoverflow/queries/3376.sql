@@ -22,12 +22,12 @@ PostMetrics AS (
         p.Title,
         COUNT(c.Id) AS CommentCount,
         COALESCE(MAX(ph.CreationDate), p.CreationDate) AS LastActivity,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    LEFT JOIN LATERAL (
-        SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName
+    LEFT JOIN (
+        SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName
     ) t ON TRUE
     GROUP BY p.Id, p.Title
 ),

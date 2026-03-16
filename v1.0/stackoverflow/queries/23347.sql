@@ -12,7 +12,7 @@ UserBadges AS (
     SELECT 
         B.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM Badges B
     GROUP BY B.UserId
 ),
@@ -23,7 +23,7 @@ PostStats AS (
         SUM(COALESCE(P.ViewCount, 0)) AS TotalViews,
         SUM(COALESCE(P.Score, 0)) AS TotalScore
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY P.OwnerUserId
 ),
 TopPosts AS (

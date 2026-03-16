@@ -67,4 +67,4 @@ WHERE
 ORDER BY 
     TotalScore DESC, 
     TotalViews DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

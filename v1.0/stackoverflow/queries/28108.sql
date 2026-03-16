@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
         AND p.ViewCount > 0
 ),
 
@@ -36,7 +36,7 @@ TopRankedPosts AS (
 
 TagAnalytics AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS Tag,
+        arrayJoin(splitByString(',', Tags)) AS Tag,
         COUNT(*) AS PostCount,
         SUM(ViewCount) AS TotalViews,
         SUM(Score) AS TotalScore

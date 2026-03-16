@@ -59,7 +59,7 @@ SELECT ch.c_first_name,
            WHEN hp.total_net_profit IS NULL THEN 'No Profit'
            ELSE 'Profitable'
        END AS profit_status,
-       STRING_AGG(CONCAT(ch.c_first_name, ' ', ch.c_last_name), ', ') 
+       arrayStringConcat(groupArray(assumeNotNull(CONCAT(ch.c_first_name, ' ', ch.c_last_name))), ', ') 
            FILTER (WHERE ch.level = 0) AS direct_customers
 FROM CustomerHierarchy ch
 JOIN HighProfitItems hp ON hp.ws_item_sk IN (

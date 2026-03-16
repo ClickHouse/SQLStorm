@@ -56,7 +56,7 @@ SELECT
     customer_segment.cd_marital_status,
     COUNT(DISTINCT sales_data.ws_item_sk) AS items_sold,
     SUM(sales_data.total_profit) AS total_profit,
-    STRING_AGG(DISTINCT CONCAT(top_items.i_product_name, ' (Item ID: ', top_items.i_item_id, ')'), '; ') AS top_selling_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(top_items.i_product_name, ' (Item ID: ', top_items.i_item_id, ')')))), '; ') AS top_selling_items
 FROM 
     customer_segment
 LEFT JOIN 

@@ -21,7 +21,7 @@ RecentPosts AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT
     u.DisplayName,
@@ -49,4 +49,4 @@ WHERE
     AND (u.Location IS NOT NULL OR u.WebsiteUrl IS NOT NULL)
 ORDER BY
     u.Reputation DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

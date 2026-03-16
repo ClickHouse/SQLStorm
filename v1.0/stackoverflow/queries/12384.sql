@@ -25,7 +25,7 @@ UserBadges AS (
 SELECT 
     ub.UserId,
     ub.DisplayName,
-    STRING_AGG(ub.BadgeName, ', ') AS Badges,
+    arrayStringConcat(groupArray(assumeNotNull(ub.BadgeName)), ', ') AS Badges,
     rp.PostId,
     rp.Title AS PostTitle,
     rp.CreationDate AS PostCreationDate,

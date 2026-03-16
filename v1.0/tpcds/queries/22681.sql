@@ -79,4 +79,4 @@ WHERE
     )
 ORDER BY 
     f.net_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

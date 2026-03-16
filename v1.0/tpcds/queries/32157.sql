@@ -58,4 +58,4 @@ WHERE
     )
 ORDER BY 
     item.Total_Sales_Amount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

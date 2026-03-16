@@ -37,7 +37,7 @@ SELECT
     gender,
     COUNT(*) AS customer_count,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(CONCAT(c_first_name, ' ', c_last_name, ' - ', full_address), '; ') AS customer_list
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name, ' - ', full_address))), '; ') AS customer_list
 FROM CombinedData cd
 LEFT JOIN customer_demographics cdem ON cd.c_customer_sk = cdem.cd_demo_sk
 GROUP BY gender

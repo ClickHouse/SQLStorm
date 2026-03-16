@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
         AND p.OwnerUserId IS NOT NULL
     GROUP BY 
@@ -43,11 +43,11 @@ SELECT
      WHERE v.PostId = t.PostId 
      AND v.VoteTypeId IN (2, 3, 7) 
     ) AS VoteCount,
-    (SELECT STRING_AGG(DISTINCT tag.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag.TagName))), ', ') 
      FROM Tags tag 
-     INNER JOIN LATERAL (
+     INNER JOIN (
          SELECT 
-             unnest(string_to_array(t.Title, ' ')) AS TagName 
+             arrayJoin(splitByString(' ', t.Title)) AS TagName 
      ) AS split_tags ON tag.TagName = split_tags.TagName
     ) AS AssociatedTags
 FROM 

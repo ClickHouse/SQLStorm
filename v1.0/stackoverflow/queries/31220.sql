@@ -40,7 +40,7 @@ PostActivity AS (
                    FROM Comments C 
                    WHERE C.PostId = p.Id), 0) AS AvgCommentScore,
         COUNT(DISTINCT COALESCE(v.UserId, -1)) AS VoteCount,
-        ARRAY_AGG(DISTINCT COALESCE(b.Name, 'No Badge')) AS UserBadges,
+        arrayDistinct(groupArray(assumeNotNull(COALESCE(b.Name, 'No Badge')))) AS UserBadges,
         p.OwnerUserId
     FROM 
         Posts p

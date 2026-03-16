@@ -58,4 +58,4 @@ WHERE
     (pd.p_name LIKE '%premium%' OR pd.p_name IS NULL)  
 ORDER BY 
     pd.p_retailprice DESC, cs.total_spent ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

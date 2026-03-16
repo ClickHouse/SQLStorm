@@ -4,7 +4,7 @@ WITH TagStatistics AS (
         COUNT(p.Id) AS PostCount,
         SUM(p.ViewCount) AS TotalViews,
         AVG(COALESCE(p.Score, 0)) AS AverageScore,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS Contributors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS Contributors
     FROM 
         Tags t
     LEFT JOIN 
@@ -40,7 +40,7 @@ RecentPosts AS (
     JOIN 
         Tags t ON p.Tags LIKE CONCAT('%<', t.TagName, '>%')
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - interval '30 days' 
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY 
     AND 
         p.PostTypeId = 1 
 )

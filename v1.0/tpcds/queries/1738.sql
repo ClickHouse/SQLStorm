@@ -62,4 +62,4 @@ WHERE
     ci.total_sales_value > 500
 ORDER BY 
     ci.total_sales_value DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

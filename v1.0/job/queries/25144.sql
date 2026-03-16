@@ -6,7 +6,7 @@ WITH movie_actor AS (
         t.production_year,
         t.kind_id,
         COUNT(CASE WHEN c.note IS NOT NULL THEN 1 END) AS notes_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title t
     JOIN 
@@ -42,7 +42,7 @@ movie_info_summary AS (
     SELECT 
         m.title,
         COALESCE(mc.note, 'No Notes') AS company_note,
-        STRING_AGG(DISTINCT mi.info, '; ') AS additional_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS additional_info
     FROM 
         aka_title m
     LEFT JOIN 

@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 ), PostLinksData AS (
     SELECT 
         pl.PostId,
-        STRING_AGG(CONCAT('Related Post ID: ', pl.RelatedPostId, ' (Link Type: ', lt.Name, ')'), '; ') AS RelatedPosts
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT('Related Post ID: ', pl.RelatedPostId, ' (Link Type: ', lt.Name, ')'))), '; ') AS RelatedPosts
     FROM 
         PostLinks pl
     JOIN LinkTypes lt ON pl.LinkTypeId = lt.Id
@@ -61,4 +61,4 @@ WHERE
     rp.rn = 1 
 ORDER BY 
     rp.CreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

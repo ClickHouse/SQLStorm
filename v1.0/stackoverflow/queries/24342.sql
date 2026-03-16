@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '1 year'
+        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
 ),
 UserBadges AS (
@@ -43,7 +43,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS CommentTexts
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS CommentTexts
     FROM 
         Comments c
     GROUP BY 

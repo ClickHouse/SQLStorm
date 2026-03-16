@@ -24,7 +24,7 @@ high_ranked_movies AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     INNER JOIN 
@@ -46,8 +46,8 @@ company_movies AS (
 movie_info_combined AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(CASE WHEN it.info = 'Rating' THEN mi.info ELSE NULL END, ', ') AS ratings,
-        STRING_AGG(CASE WHEN it.info = 'Summary' THEN mi.info ELSE NULL END, ', ') AS summaries
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN it.info = 'Rating' THEN mi.info ELSE NULL END)), ', ') AS ratings,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN it.info = 'Summary' THEN mi.info ELSE NULL END)), ', ') AS summaries
     FROM 
         movie_info mi
     INNER JOIN 

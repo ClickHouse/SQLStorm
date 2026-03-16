@@ -12,7 +12,7 @@ WITH RECURSIVE
         SELECT
             c.movie_id,
             COUNT(DISTINCT c.person_id) AS total_cast,
-            STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
             MAX(p.gender) AS dominant_gender
         FROM
             cast_info c
@@ -26,7 +26,7 @@ WITH RECURSIVE
     MovieGenres AS (
         SELECT
             m.movie_id,
-            STRING_AGG(DISTINCT k.keyword, ', ') AS genres
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS genres
         FROM
             movie_keyword m
         JOIN

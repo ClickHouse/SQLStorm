@@ -33,7 +33,7 @@ PostStatistics AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId 
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title
 ),

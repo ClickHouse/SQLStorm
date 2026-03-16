@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         m.title,
         m.production_year,
         COUNT(c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names
     FROM 
         aka_title m
     INNER JOIN 
@@ -19,7 +19,7 @@ KeywordStats AS (
     SELECT 
         m.movie_id,
         COUNT(DISTINCT mk.keyword_id) AS keyword_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         RankedMovies m
     LEFT JOIN 

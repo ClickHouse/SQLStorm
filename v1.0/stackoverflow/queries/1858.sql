@@ -7,7 +7,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(CASE WHEN C.Id IS NOT NULL THEN 1 ELSE 0 END) AS CommentCount,
-        COALESCE(NULLIF(MAX(P.CreationDate), '1970-01-01'), cast('2024-10-01 12:34:56' as timestamp)) AS LastActive
+        COALESCE(NULLIF(MAX(P.CreationDate), '1970-01-01'), toDateTime64('2024-10-01 12:34:56', 6)) AS LastActive
     FROM 
         Users U
     LEFT JOIN 

@@ -15,7 +15,7 @@ SupplierDetails AS (
         s_address,
         s_phone,
         nation.n_name AS nation_name,
-        STRING_AGG(CONCAT(p_name, ' (', p_brand, ')'), ', ') AS supplied_parts
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(p_name, ' (', p_brand, ')'))), ', ') AS supplied_parts
     FROM 
         supplier 
     JOIN 
@@ -32,7 +32,7 @@ SupplierDetails AS (
 SELECT 
     nation_name,
     COUNT(*) AS supplier_count,
-    STRING_AGG(CONCAT(s_name, ' (', s_address, ', ', s_phone, ') supplied: ', supplied_parts), '; ') AS supplier_info
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(s_name, ' (', s_address, ', ', s_phone, ') supplied: ', supplied_parts))), '; ') AS supplier_info
 FROM 
     SupplierDetails
 GROUP BY 

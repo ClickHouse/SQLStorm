@@ -61,7 +61,7 @@ LEFT JOIN
         SELECT i.i_item_sk 
         FROM item i 
         WHERE i.i_current_price > 50 
-        AND (i.i_rec_start_date <= DATE '2002-10-01' AND (i.i_rec_end_date IS NULL OR i.i_rec_end_date >= DATE '2002-10-01'))
+        AND (i.i_rec_start_date <= toDate('2002-10-01') AND (i.i_rec_end_date IS NULL OR i.i_rec_end_date >= toDate('2002-10-01')))
     )
 LEFT JOIN 
     CustomerStatistics cs ON cs.c_customer_sk = ca.ca_address_sk

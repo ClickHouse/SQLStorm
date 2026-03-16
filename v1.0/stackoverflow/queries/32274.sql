@@ -34,7 +34,7 @@ PostStats AS (
     FROM Posts p
     LEFT JOIN Comments comment ON p.Id = comment.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.Id, p.OwnerUserId
 ),
 

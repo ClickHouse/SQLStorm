@@ -35,7 +35,7 @@ SELECT
     region_name,
     nation_name,
     supplier_name,
-    STRING_AGG(CONCAT(p_name, ' (', p_brand, ')'), '; ') AS part_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(p_name, ' (', p_brand, ')'))), '; ') AS part_details
 FROM 
     FilteredParts
 GROUP BY 

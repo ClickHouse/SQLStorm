@@ -37,8 +37,8 @@ SELECT
     r.r_name,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(o.o_totalprice) AS total_order_value,
-    ARRAY_AGG(DISTINCT p.p_brand) AS unique_brands,
-    AVG(CASE WHEN o.o_orderdate IS NULL THEN 0 ELSE EXTRACT(YEAR FROM o.o_orderdate) END) AS avg_year_of_orders
+    arrayDistinct(groupArray(assumeNotNull(p.p_brand))) AS unique_brands,
+    AVG(CASE WHEN o.o_orderdate IS NULL THEN 0 ELSE toYear(o.o_orderdate) END) AS avg_year_of_orders
 FROM 
     region r
 LEFT JOIN 

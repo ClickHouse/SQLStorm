@@ -25,7 +25,7 @@ CompanyMovieStats AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -70,4 +70,4 @@ ORDER BY
     t.production_year DESC,
     company_summary DESC,
     actor_name
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

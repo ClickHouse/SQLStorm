@@ -27,7 +27,7 @@ SELECT
     ar.total_parts,
     ar.avg_name_length,
     ar.unique_name_prefixes,
-    STRING_AGG(sp.full_description, '; ') AS all_descriptions
+    arrayStringConcat(groupArray(assumeNotNull(sp.full_description)), '; ') AS all_descriptions
 FROM 
     AggregatedResults ar
 JOIN 

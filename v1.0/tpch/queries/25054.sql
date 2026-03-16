@@ -20,7 +20,7 @@ FilteredParts AS (
         supplier_name, 
         ps_availqty, 
         ps_supplycost, 
-        STRING_AGG(part_supplier_info, '; ') AS supplier_details
+        arrayStringConcat(groupArray(assumeNotNull(part_supplier_info)), '; ') AS supplier_details
     FROM 
         PartSupplierDetails
     WHERE 
@@ -38,7 +38,7 @@ SELECT
     COUNT(*) AS supplier_count, 
     SUM(fp.ps_supplycost) AS total_supply_cost, 
     MAX(fp.ps_availqty) AS max_avail_qty,
-    STRING_AGG(fp.supplier_details, ', ') AS all_supplier_info
+    arrayStringConcat(groupArray(assumeNotNull(fp.supplier_details)), ', ') AS all_supplier_info
 FROM 
     FilteredParts fp
 GROUP BY 

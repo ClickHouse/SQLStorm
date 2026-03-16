@@ -44,7 +44,7 @@ SELECT
         ELSE 'New Contributor'
     END AS ContributorStatus,
     COALESCE((
-        SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
         FROM Posts p 
         JOIN Tags t ON p.Tags LIKE '%' || t.TagName || '%' 
         WHERE p.OwnerUserId = tu.UserId

@@ -52,4 +52,4 @@ JOIN
     warehouse_stats ws ON cs.total_orders > 0 AND ws.total_sales > 50
 ORDER BY 
     cs.total_spent DESC, ws.total_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

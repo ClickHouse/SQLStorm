@@ -31,7 +31,7 @@ SELECT
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     MAX(ts.total_sales) AS max_sales,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_acctbal, ')'), '; ') AS suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_acctbal, ')')))), '; ') AS suppliers
 FROM 
     part p
 LEFT JOIN 

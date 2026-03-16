@@ -57,4 +57,4 @@ WHERE
     ci.cd_purchase_estimate IS NOT NULL
 ORDER BY 
     gender_rank, ts.total_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -63,4 +63,4 @@ GROUP BY
     c.c_customer_id, c.c_birth_year, ci.gender
 ORDER BY 
     c.c_customer_id, total_demo_categories DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

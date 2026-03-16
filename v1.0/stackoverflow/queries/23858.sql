@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
         LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 FilteredPosts AS (
     SELECT 
@@ -39,7 +39,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(*) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS AllComments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS AllComments
     FROM 
         Comments c
     GROUP BY 
@@ -62,4 +62,4 @@ FROM
 ORDER BY 
     fp.Score DESC, 
     fp.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

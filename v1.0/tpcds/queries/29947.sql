@@ -49,5 +49,5 @@ SELECT
 FROM CustomerInfo ci
 JOIN SalesInfo si ON ci.c_customer_sk = si.ws_bill_customer_sk
 WHERE si.total_profit > 1000 
-AND ci.birth_year >= (EXTRACT(YEAR FROM CURRENT_DATE) - 25)
+AND ci.birth_year >= (toYear(CURRENT_DATE) - 25)
 ORDER BY si.total_profit DESC;

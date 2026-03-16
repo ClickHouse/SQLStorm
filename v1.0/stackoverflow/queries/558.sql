@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName
 ),
@@ -25,11 +25,11 @@ PopularTags AS (
         COUNT(*) AS TagCount
     FROM (
         SELECT 
-            UNNEST(string_to_array(p.Tags, '>')) AS tag
+            arrayJoin(splitByString('>', p.Tags)) AS tag
         FROM 
             Posts p
         WHERE 
-            p.CreationDate >= CURRENT_DATE - INTERVAL '3 months' AND p.Tags IS NOT NULL
+            p.CreationDate >= CURRENT_DATE - INTERVAL 3 MONTH AND p.Tags IS NOT NULL
     ) AS TagList
     GROUP BY 
         Tag
@@ -55,13 +55,13 @@ SELECT
     COALESCE(ut.GoldBadges, 0) AS GoldBadges,
     COALESCE(ut.SilverBadges, 0) AS SilverBadges,
     COALESCE(ut.BronzeBadges, 0) AS BronzeBadges,
-    STRING_AGG(pt.Tag, ', ') AS PopularTags
+    arrayStringConcat(groupArray(assumeNotNull(pt.Tag)), ', ') AS PopularTags
 FROM 
     RankedPosts rp
 LEFT JOIN 
     UserBadges ut ON rp.Id = ut.UserId
 LEFT JOIN 
-    PopularTags pt ON pt.Tag IN (SELECT UNNEST(string_to_array(rp.Title, ' ')))
+    PopularTags pt ON pt.Tag IN (SELECT arrayJoin(splitByString(' ', rp.Title)))
 WHERE 
     rp.Score >= 10 AND 
     rp.CommentCount > 5

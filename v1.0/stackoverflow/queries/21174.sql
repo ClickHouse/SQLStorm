@@ -43,14 +43,14 @@ RecentActivity AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        ph.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ),
 TagStatistics AS (
     SELECT 
         t.TagName,
         COUNT(p.Id) AS PostCount,
-        STRING_AGG(DISTINCT p.Title, ', ') AS PostTitles,
-        STRING_AGG(DISTINCT a.Title, ', ') AS RelatedAnswers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), ', ') AS PostTitles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.Title))), ', ') AS RelatedAnswers
     FROM 
         Tags t
     LEFT JOIN Posts p ON t.Id = p.Id
@@ -78,7 +78,7 @@ FROM
 JOIN Users u ON u.Id = rp.PostID 
 LEFT JOIN UserEngagement ueng ON ueng.UserID = u.Id
 LEFT JOIN RecentActivity ra ON ra.PostId = rp.PostID
-LEFT JOIN TagStatistics ts ON ts.TagName = ANY(STRING_TO_ARRAY(rp.Title, ' ')) 
+LEFT JOIN TagStatistics ts ON ts.TagName = ANY(splitByString(' ', rp.Title)) 
 WHERE 
     rp.CommentCount > 5 
     AND (u.Reputation BETWEEN 100 AND 1000 OR 

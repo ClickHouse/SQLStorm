@@ -3,10 +3,10 @@ SELECT
     s.s_name,
     SUM(ps.ps_availqty) AS total_avail_qty,
     ROUND(AVG(p.p_retailprice), 2) AS avg_retail_price,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS supplier_nations,
-    COALESCE(REGEXP_REPLACE(STRING_AGG(DISTINCT CASE 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS supplier_nations,
+    COALESCE(REGEXP_REPLACE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE 
         WHEN p.p_type LIKE '%rubber%' THEN p.p_comment 
-        ELSE '' END, ', '), ', $', ''), 'No rubber parts', 'No comments') AS rubber_comments
+        ELSE '' END))), ', '), ', $', ''), 'No rubber parts', 'No comments') AS rubber_comments
 FROM 
     part p
 JOIN 

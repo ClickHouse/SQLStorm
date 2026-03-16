@@ -50,7 +50,7 @@ SELECT
     SUM(f.sr_return_amt) AS total_return_amt,
     COUNT(DISTINCT f.sr_item_sk) AS unique_returned_items,
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT cd.credit_rating_null_handling, ', ') AS distinct_credit_ratings,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.credit_rating_null_handling))), ', ') AS distinct_credit_ratings,
     CASE 
         WHEN SUM(f.sr_return_amt) > 1000 THEN 'High Returner'
         WHEN SUM(f.sr_return_amt) BETWEEN 500 AND 1000 THEN 'Medium Returner'

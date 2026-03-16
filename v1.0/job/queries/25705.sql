@@ -3,8 +3,8 @@ WITH ranked_movies AS (
         title.id AS movie_id,
         title.title AS movie_title,
         title.production_year,
-        ARRAY_AGG(DISTINCT aka_name.name) AS aka_names,
-        ARRAY_AGG(DISTINCT keyword.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(aka_name.name))) AS aka_names,
+        arrayDistinct(groupArray(assumeNotNull(keyword.keyword))) AS keywords,
         COUNT(DISTINCT cast_info.person_id) AS total_cast,
         RANK() OVER (PARTITION BY title.production_year ORDER BY COUNT(DISTINCT cast_info.person_id) DESC) AS rank_by_cast
     FROM 
@@ -38,8 +38,8 @@ popular_movies AS (
 SELECT 
     pm.movie_title,
     pm.production_year,
-    STRING_AGG(DISTINCT name.name, ', ') AS cast_names,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS movie_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(name.name))), ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS movie_keywords,
     CASE 
         WHEN pm.production_year < 2000 THEN 'Classic'
         WHEN pm.production_year BETWEEN 2000 AND 2010 THEN 'Modern'

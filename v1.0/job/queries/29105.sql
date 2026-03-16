@@ -4,7 +4,7 @@ SELECT
     t.title AS movie_title,
     m.production_year AS release_year,
     c.kind AS company_type,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY a.id ORDER BY m.production_year DESC) AS movie_rank
 FROM 
     aka_name a

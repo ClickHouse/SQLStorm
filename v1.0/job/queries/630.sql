@@ -3,7 +3,7 @@ WITH MovieDetails AS (
         t.title,
         t.production_year,
         a.name AS actor_name,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         ROW_NUMBER() OVER (PARTITION BY t.id ORDER BY t.production_year DESC) AS rn
     FROM 
         aka_title t

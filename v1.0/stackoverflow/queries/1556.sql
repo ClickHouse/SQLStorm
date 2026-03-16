@@ -36,7 +36,7 @@ PostHistoryStats AS (
     SELECT 
         PH.UserId,
         COUNT(PH.Id) AS HistoryEventCount,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryEventTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryEventTypes
     FROM 
         PostHistory PH
     JOIN 

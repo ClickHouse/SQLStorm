@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserInfo AS (
     SELECT 
@@ -51,7 +51,7 @@ SELECT
     COUNT(p.Id) AS PostCount,
     SUM(COALESCE(p.Score, 0)) AS TotalScore,
     MAX(fu.AvgPostScore) AS MaxAvgPostScore,
-    STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames
 FROM 
     FilteredUsers fu
 JOIN 
@@ -59,7 +59,7 @@ JOIN
 LEFT JOIN 
     Badges b ON fu.Id = b.UserId
 WHERE 
-    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
+    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
 GROUP BY 
     fu.DisplayName, fu.Reputation
 HAVING 

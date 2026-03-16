@@ -13,13 +13,13 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score IS NOT NULL
 ),
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS CloseReasonNames
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasonNames
     FROM 
         PostHistory ph
     JOIN 
@@ -79,4 +79,4 @@ WHERE
     rp.rn = 1 
 ORDER BY 
     rp.CreationDate DESC
-FETCH FIRST 25 ROWS ONLY;
+LIMIT 25;

@@ -42,7 +42,7 @@ SELECT
     pwb.OwnerDisplayName,
     pwb.Score,
     pwb.ViewCount,
-    STRING_AGG(DISTINCT CONCAT(pwb.BadgeName, ' (Class: ', pwb.Class, ')'), ', ') AS Badges
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(pwb.BadgeName, ' (Class: ', pwb.Class, ')')))), ', ') AS Badges
 FROM 
     PostWithBadges pwb
 GROUP BY 

@@ -42,7 +42,7 @@ FilteredMovies AS (
         rm.movie_id,
         rm.title,
         COUNT(DISTINCT ac.actor_name) AS actor_count,
-        STRING_AGG(DISTINCT mc.company_name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.company_name))), ', ') AS companies
     FROM 
         RankedMovies rm
     LEFT JOIN 

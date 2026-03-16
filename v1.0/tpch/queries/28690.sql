@@ -23,7 +23,7 @@ AggregateData AS (
         supplier_info,
         SUM(ps_availqty) AS total_avail_qty,
         AVG(ps_supplycost) AS avg_supply_cost,
-        STRING_AGG(short_comment, '; ') AS concatenated_comments
+        arrayStringConcat(groupArray(assumeNotNull(short_comment)), '; ') AS concatenated_comments
     FROM 
         SupplierDetails
     GROUP BY 

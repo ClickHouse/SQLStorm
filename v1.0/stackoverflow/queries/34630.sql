@@ -50,10 +50,10 @@ FROM Users u
 LEFT JOIN UserHierarchy uh ON u.Id = uh.Id
 LEFT JOIN UserBadges ub ON u.Id = ub.UserId
 LEFT JOIN TagUsage tu ON tu.TagName IN (
-    SELECT DISTINCT unnest(string_to_array(p.Tags, '><'))
+    SELECT DISTINCT arrayJoin(splitByString('><', p.Tags))
     FROM Posts p
     WHERE p.OwnerUserId = u.Id
 ) 
 LEFT JOIN UserPostStats ups ON u.Id = ups.UserId
-WHERE u.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '1 year'
+WHERE u.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR
 ORDER BY u.DisplayName;

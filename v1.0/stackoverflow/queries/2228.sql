@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.Score, P.OwnerUserId
 ),
@@ -55,7 +55,7 @@ SELECT
     COALESCE(R.PostId, -1) AS MostRecentPost,
     COALESCE(R.Title, 'No Posts') AS LatestPostTitle,
     COALESCE(R.CommentCount, 0) AS CommentsOnLatestPost,
-    (SELECT STRING_AGG(CASE WHEN B.Class = 1 THEN 'Gold' WHEN B.Class = 2 THEN 'Silver' WHEN B.Class = 3 THEN 'Bronze' END, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(CASE WHEN B.Class = 1 THEN 'Gold' WHEN B.Class = 2 THEN 'Silver' WHEN B.Class = 3 THEN 'Bronze' END)), ', ') 
      FROM Badges B 
      WHERE B.UserId = U.Id) AS BadgeList
 FROM 

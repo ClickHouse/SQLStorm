@@ -19,7 +19,7 @@ WITH CTE_UserVoteStats AS (
     SELECT 
         PH.PostId,
         COUNT(PH.Id) AS CloseCount,
-        STRING_AGG(CRT.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CRT.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 

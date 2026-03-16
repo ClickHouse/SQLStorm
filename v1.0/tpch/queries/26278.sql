@@ -7,7 +7,7 @@ SELECT
         WHEN l.l_returnflag = 'R' THEN l.l_discount 
         ELSE NULL 
     END) AS avg_discount_returned,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_providing_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_providing_parts,
     MIN(CASE 
         WHEN o.o_orderstatus = 'O' THEN o.o_orderdate 
         ELSE NULL 

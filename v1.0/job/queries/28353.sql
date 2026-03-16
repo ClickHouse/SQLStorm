@@ -43,7 +43,7 @@ SELECT
     pm.movie_id,
     pm.title,
     pm.production_year,
-    STRING_AGG(DISTINCT mk.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.keyword))), ', ') AS keywords,
     pm.unique_actor_count
 FROM
     popular_movies pm

@@ -22,7 +22,7 @@ AddressSummary AS (
     SELECT 
         full_address,
         COUNT(*) AS customer_count,
-        STRING_AGG(full_name, ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names
     FROM 
         RankedCustomers
     WHERE 

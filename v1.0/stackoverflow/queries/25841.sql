@@ -2,7 +2,7 @@
 WITH ProcessedTags AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS Tag
     FROM Posts p
     WHERE p.PostTypeId = 1 
 ),
@@ -29,7 +29,7 @@ TopPosts AS (
         p.Score,
         p.ViewCount,
         p.AnswerCount,
-        ARRAY_AGG(DISTINCT t.Tag) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.Tag))) AS Tags
     FROM Posts p
     JOIN ProcessedTags t ON p.Id = t.PostId
     WHERE p.PostTypeId = 1 AND p.Score > 10

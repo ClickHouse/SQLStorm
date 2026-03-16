@@ -4,7 +4,7 @@ SELECT
     s.s_name, 
     SUM(l.l_quantity) AS total_quantity, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue, 
-    ARRAY_AGG(DISTINCT r.r_name) AS regions_served, 
+    arrayDistinct(groupArray(assumeNotNull(r.r_name))) AS regions_served, 
     COUNT(DISTINCT c.c_custkey) AS unique_customers
 FROM 
     part p

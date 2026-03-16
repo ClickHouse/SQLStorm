@@ -7,7 +7,7 @@ SELECT
     SUM(CASE WHEN cd.cd_gender = 'M' THEN 1 ELSE 0 END) AS male_customers,
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
     MAX(cd.cd_credit_rating) AS highest_credit_rating,
-    STRING_AGG(DISTINCT cd.cd_marital_status, ', ') AS marital_status_distribution
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_marital_status))), ', ') AS marital_status_distribution
 FROM 
     customer_address ca
 JOIN 

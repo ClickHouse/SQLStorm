@@ -17,13 +17,13 @@ WITH RelevantPosts AS (
         LEFT JOIN PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (10, 11, 12, 13)
         JOIN PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
         AND p.ViewCount > 100
 ),
 
 TagSummary AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS Tag,
+        arrayJoin(splitByString('><', Tags)) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         RelevantPosts
@@ -48,7 +48,7 @@ OwnerActivity AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        ARRAY_AGG(DISTINCT pht.Name) AS HistoryTypes
+        arrayDistinct(groupArray(assumeNotNull(pht.Name))) AS HistoryTypes
     FROM 
         PostHistory ph
         JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id

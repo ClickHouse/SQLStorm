@@ -53,7 +53,7 @@ FinalResults AS (
         ft.role,
         cm.company_name,
         cm.company_type,
-        ROUND(EXTRACT(EPOCH FROM cast('2024-10-01 12:34:56' as timestamp) - timestamp '1970-01-01') / 60, 2) AS elapsed_minutes
+        ROUND(toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - toDateTime64('1970-01-01', 6)) / 60, 2) AS elapsed_minutes
     FROM 
         FilteredTitles ft
         LEFT JOIN CompanyMovies cm ON ft.title_id = cm.movie_id

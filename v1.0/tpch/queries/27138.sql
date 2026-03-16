@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     r.r_name AS region_name,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     part p
 JOIN 

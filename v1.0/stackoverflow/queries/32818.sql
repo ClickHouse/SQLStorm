@@ -8,7 +8,7 @@ WITH RankedQuestions AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
         COUNT(c.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.Score DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p
     LEFT JOIN 

@@ -29,7 +29,7 @@ AddressSummary AS (
     SELECT 
         ca_state,
         COUNT(DISTINCT ca_address_sk) AS unique_addresses,
-        STRING_AGG(CONCAT(ca_city, ', ', ca_street_name), '; ') AS city_street_list
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ca_city, ', ', ca_street_name))), '; ') AS city_street_list
     FROM 
         customer_address
     GROUP BY 

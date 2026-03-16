@@ -15,7 +15,7 @@ PopularPosts AS (
            P.OwnerUserId,
            RANK() OVER (ORDER BY P.ViewCount DESC) AS PopularityRank
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
       AND P.Score > 0
 ),
 PostVoteCounts AS (

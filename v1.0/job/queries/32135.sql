@@ -32,7 +32,7 @@ SELECT
     mh.title AS movie_title,
     mh.production_year,
     COUNT(DISTINCT ci.person_id) AS total_actors,
-    STRING_AGG(DISTINCT ckt.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ckt.keyword))), ', ') AS keywords,
     SUM(CASE WHEN ci.role_id = rt.id THEN 1 ELSE 0 END) AS specific_role_count,
     AVG(CAST(m_info.info AS numeric)) AS average_rating
 FROM 

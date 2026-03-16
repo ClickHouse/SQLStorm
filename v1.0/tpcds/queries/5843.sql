@@ -58,4 +58,4 @@ JOIN
     customer c ON cs.c_customer_id = c.c_customer_id
 ORDER BY 
     cs.total_spent DESC, cs.total_orders DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

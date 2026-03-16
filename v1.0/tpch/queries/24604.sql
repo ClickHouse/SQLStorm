@@ -43,7 +43,7 @@ SELECT
     COUNT(eo.c_custkey) AS customer_count,
     AVG(eo.total_spent) AS avg_spent,
     MAX(eo.total_spent) AS max_spent,
-    STRING_AGG(eo.c_name, ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(eo.c_name)), ', ') AS customer_names
 FROM 
     RegionCosts rc 
 LEFT JOIN 

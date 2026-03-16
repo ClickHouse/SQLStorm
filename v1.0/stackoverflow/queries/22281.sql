@@ -34,9 +34,9 @@ PostDetail AS (
             WHEN r.UpVoteCount < r.DownVoteCount THEN 'Controversial'
             ELSE 'Neutral'
         END AS PostType,
-        (SELECT STRING_AGG(t.TagName, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
          FROM Tags t 
-         WHERE t.Id IN (SELECT DISTINCT CAST(UNNEST(string_to_array(p.Tags, '>')) AS INTEGER) 
+         WHERE t.Id IN (SELECT DISTINCT CAST(arrayJoin(splitByString('>', p.Tags)) AS INTEGER) 
                         FROM Posts p 
                         WHERE p.Id = r.PostId)
                        AND p.PostTypeId = 1) AS TagsList
@@ -51,7 +51,7 @@ CommentData AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, ' | ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS Comments
     FROM 
         Comments c
     GROUP BY 

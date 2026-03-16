@@ -36,9 +36,9 @@ LEFT JOIN
 LEFT JOIN 
     Comments C ON P.Id = C.PostId
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(P.Tags, '>')) AS TagName
+            arrayJoin(splitByString('>', P.Tags)) AS TagName
     ) T ON TRUE
 LEFT JOIN 
     PostTypes PT ON P.PostTypeId = PT.Id

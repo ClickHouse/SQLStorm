@@ -28,7 +28,7 @@ company_movie_details AS (
     SELECT 
         cn.name AS company_name,
         COUNT(mc.movie_id) AS total_movies,
-        STRING_AGG(DISTINCT at.title, ', ') AS titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(at.title))), ', ') AS titles
     FROM 
         company_name cn
     JOIN 
@@ -67,7 +67,7 @@ FROM
 LEFT JOIN 
     most_valuable_actors m ON m.movie_count > 5
 JOIN 
-    company_movie_details cm ON m.actor_name = ANY(STRING_TO_ARRAY(cm.titles, ', '))
+    company_movie_details cm ON m.actor_name = ANY(splitByString(', ', cm.titles))
 WHERE 
     r.year_rank <= 5
 ORDER BY 

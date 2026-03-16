@@ -5,8 +5,8 @@ WITH RankedMovies AS (
         mt.title AS movie_title,
         mt.production_year,
         AVG(CASE WHEN ci.person_role_id = rt.id THEN 1 ELSE 0 END) AS avg_actor_rating,
-        STRING_AGG(DISTINCT an.name, ', ' ORDER BY an.name) AS actor_names,
-        STRING_AGG(DISTINCT k.keyword, ', ' ORDER BY k.keyword) AS movie_keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ' ORDER BY an.name) AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ' ORDER BY k.keyword) AS movie_keywords,
         COUNT(DISTINCT mc.company_id) AS company_count,
         COUNT(DISTINCT mi.info_type_id) AS info_type_count
     FROM 

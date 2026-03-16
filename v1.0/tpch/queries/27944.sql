@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_qty, 
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     COUNT(DISTINCT c.c_custkey) AS unique_customers, 
-    STRING_AGG(DISTINCT CONCAT(n.n_name, '-', r.r_name), '; ') AS nations_regions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, '-', r.r_name)))), '; ') AS nations_regions
 FROM 
     supplier s
 JOIN 

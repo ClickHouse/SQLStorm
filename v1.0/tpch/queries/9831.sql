@@ -8,7 +8,7 @@ WITH SupplierRevenue AS (
     SELECT o.o_orderkey, o.o_orderdate, SUM(l.l_extendedprice * (1 - l.l_discount)) AS order_value
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
+    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
     GROUP BY o.o_orderkey, o.o_orderdate
 ), SupplierOrderSummary AS (
     SELECT sr.s_suppkey, sr.s_name, od.o_orderkey, od.order_value

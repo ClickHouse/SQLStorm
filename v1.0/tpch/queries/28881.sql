@@ -3,7 +3,7 @@ WITH StringAggregates AS (
     SELECT 
         s.s_suppkey,
         s.s_name,
-        STRING_AGG(DISTINCT CONCAT(p.p_name, ': ', p.p_comment), ', ') AS part_details,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ': ', p.p_comment)))), ', ') AS part_details,
         COUNT(DISTINCT p.p_partkey) AS part_count,
         SUM(ps.ps_supplycost) AS total_supply_cost,
         MAX(s.s_acctbal) AS max_account_balance,

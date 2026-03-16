@@ -51,7 +51,7 @@ SELECT rm.movie_id,
        (SELECT COUNT(*) 
         FROM movie_keyword mk 
         WHERE mk.movie_id = rm.movie_id) AS keyword_count,
-       (SELECT STRING_AGG(k.keyword, ', ') 
+       (SELECT arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') 
         FROM movie_keyword mk 
         JOIN keyword k ON mk.keyword_id = k.id 
         WHERE mk.movie_id = rm.movie_id) AS keywords

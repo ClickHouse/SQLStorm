@@ -67,7 +67,7 @@ TopMovies AS (
 KeywordSummary AS (
     SELECT 
         t.title AS movie_title,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title t
     JOIN 

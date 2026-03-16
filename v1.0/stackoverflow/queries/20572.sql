@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= DATE '2023-01-01'
+        p.CreationDate >= toDate('2023-01-01')
 ),
 ClosedPosts AS (
     SELECT 
@@ -39,7 +39,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        u.LastAccessDate >= DATE '2024-10-01' - INTERVAL '90 days'
+        u.LastAccessDate >= toDate('2024-10-01') - INTERVAL 90 DAY
     GROUP BY 
         u.Id
 ),
@@ -73,13 +73,13 @@ SELECT
     ep.PostStatus,
     ep.UserReputation,
     ep.EngagementScore,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     EngagedPosts ep
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName
+            arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName
         FROM 
             Posts p
         WHERE 

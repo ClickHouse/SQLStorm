@@ -48,7 +48,7 @@ LineItemAnalysis AS (
     FROM 
         lineitem li
     WHERE 
-        li.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+        li.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         li.l_orderkey
 )

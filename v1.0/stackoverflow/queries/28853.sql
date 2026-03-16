@@ -17,13 +17,13 @@ WITH RankedPosts AS (
         Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, u.DisplayName
 ),
 FrequentTags AS (
     SELECT 
-        UNNEST(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag
     FROM 
         Posts
     WHERE 

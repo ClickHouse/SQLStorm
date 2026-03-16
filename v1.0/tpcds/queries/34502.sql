@@ -55,4 +55,4 @@ WHERE
     fi.net_sales IS NOT NULL
 ORDER BY 
     fi.net_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

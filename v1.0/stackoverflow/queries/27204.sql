@@ -48,7 +48,7 @@ SELECT
     tp.CreationDate,
     DENSE_RANK() OVER (ORDER BY tp.ViewCount DESC) AS ViewRank,
     DENSE_RANK() OVER (ORDER BY tp.Score DESC) AS ScoreRank,
-    STRING_AGG(c.UserDisplayName, ', ') AS CommentAuthors
+    arrayStringConcat(groupArray(assumeNotNull(c.UserDisplayName)), ', ') AS CommentAuthors
 FROM 
     TopPosts tp
 LEFT JOIN 

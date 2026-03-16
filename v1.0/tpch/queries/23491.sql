@@ -59,7 +59,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(sp.ps_supplycost) AS total_supply_cost,
     AVG(sp.ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT hp.p_name, ', ') AS high_value_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(hp.p_name))), ', ') AS high_value_parts
 FROM 
     nation n 
 LEFT JOIN 

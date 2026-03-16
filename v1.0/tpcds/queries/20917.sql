@@ -65,4 +65,4 @@ GROUP BY
     cu.c_customer_id, ca.ca_city, cu.rank_by_purchase, cu.rank_by_deps
 ORDER BY 
     total_profit DESC, order_count ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

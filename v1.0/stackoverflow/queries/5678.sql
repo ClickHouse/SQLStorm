@@ -45,13 +45,13 @@ SELECT
     u.DownVotes,
     u.BadgeCount,
     u.Rank,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     RankedUsers u
 LEFT JOIN 
     Posts p ON u.UserId = p.OwnerUserId
 LEFT JOIN 
-    (SELECT DISTINCT unnest(string_to_array(substr(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName FROM Posts p) AS tagNames ON true
+    (SELECT DISTINCT arrayJoin(splitByString('><', substr(p.Tags, 2, length(p.Tags) - 2))) AS TagName FROM Posts p) AS tagNames ON true
 LEFT JOIN 
     Tags t ON t.TagName = tagNames.TagName
 WHERE 

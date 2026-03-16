@@ -4,7 +4,7 @@ SELECT
     t.title AS movie_title,
     t.production_year,
     ct.kind AS company_type,
-    STRING_AGG(DISTINCT t2.title, ', ') AS linked_movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t2.title))), ', ') AS linked_movies,
     COUNT(DISTINCT kw.keyword) AS keyword_count
 FROM 
     aka_name a

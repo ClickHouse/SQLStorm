@@ -4,7 +4,7 @@ SELECT
     s.s_name, 
     COUNT(o.o_orderkey) AS order_count, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customers,
     LENGTH(p.p_comment) AS comment_length,
     SUBSTRING(p.p_comment, 1, 10) AS comment_preview
 FROM 
@@ -21,7 +21,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     p.p_retailprice > 50.00 
-    AND l.l_shipdate >= DATE '1997-01-01'
+    AND l.l_shipdate >= toDate('1997-01-01')
 GROUP BY 
     p.p_name, s.s_name, p.p_comment
 HAVING 

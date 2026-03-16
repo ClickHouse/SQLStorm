@@ -32,10 +32,10 @@ FullCast AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(CASE 
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
                     WHEN cn.country_code IS NOT NULL THEN cn.name 
                     ELSE 'Unknown' 
-                END, ', ') AS companies
+                END)), ', ') AS companies
     FROM 
         movie_companies mc
     LEFT JOIN 

@@ -17,7 +17,7 @@ WITH UserVoteStats AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS ChangeTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS ChangeTypes,
         COUNT(DISTINCT ph.Id) AS HistoryCount,
         MAX(ph.CreationDate) AS LastChangeDate
     FROM PostHistory ph
@@ -32,7 +32,7 @@ TopPosts AS (
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.ViewCount DESC) AS rnk
     FROM Posts p
-    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+    WHERE p.CreationDate >= now64(6) - INTERVAL 1 YEAR
 )
 
 SELECT 

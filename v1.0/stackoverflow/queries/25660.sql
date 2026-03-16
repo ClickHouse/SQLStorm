@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Comments C ON P.Id = C.PostId
     WHERE
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY
         P.Id
 ),
@@ -26,18 +26,18 @@ RankedVotes AS (
     FROM
         Votes V
     WHERE
-        V.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        V.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY
         V.PostId
 ),
 PopularTags AS (
     SELECT
-        TRIM(UNNEST(string_to_array(P.Tags, '><'))) AS Tag,
+        TRIM(arrayJoin(splitByString('><', P.Tags))) AS Tag,
         COUNT(*) AS TagCount
     FROM
         Posts P
     WHERE
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY
         Tag
     ORDER BY

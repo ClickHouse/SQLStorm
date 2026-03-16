@@ -47,7 +47,7 @@ SELECT
     ub.SilverBadges,
     ub.BronzeBadges,
     COALESCE(AVG(vote_count.VoteCount), 0) AS AverageVotes,
-    STRING_AGG(DISTINCT c.Text, '; ') AS CommentTexts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Text))), '; ') AS CommentTexts
 FROM 
     PostHierarchy ph
 LEFT JOIN 

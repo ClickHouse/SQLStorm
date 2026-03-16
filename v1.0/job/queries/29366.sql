@@ -3,7 +3,7 @@ WITH ActorRoles AS (
     SELECT
         a.id AS actor_id,
         a.name AS actor_name,
-        STRING_AGG(DISTINCT rt.role, ', ') AS roles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS roles,
         COUNT(DISTINCT ci.movie_id) AS total_movies
     FROM
         aka_name a

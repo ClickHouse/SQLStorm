@@ -66,7 +66,7 @@ SELECT
     ROUND(t.AvgReputation, 2) AS AvgUserReputation,
     t.BadgeCount,
     'Post Type: ' || (SELECT pt.Name FROM PostTypes pt WHERE pt.Id = (SELECT PostTypeId FROM Posts WHERE Id = t.PostId)) AS PostType,
-    STRING_AGG(DISTINCT CASE WHEN t.IsClosed > 0 THEN 'Closed' ELSE 'Open' END, ', ') AS Status
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN t.IsClosed > 0 THEN 'Closed' ELSE 'Open' END))), ', ') AS Status
 FROM TopPosts t
 GROUP BY t.PostId, t.Title, t.Score, t.ViewCount, t.CreationDate, t.IsClosed, t.AvgReputation, t.BadgeCount
 ORDER BY t.Score DESC, t.ViewCount DESC;

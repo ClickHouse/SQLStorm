@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
 ),
 FilteredPosts AS (
@@ -39,7 +39,7 @@ FilteredPosts AS (
 PostComments AS (
     SELECT 
         fp.PostId,
-        STRING_AGG(c.Text, ' | ' ORDER BY c.CreationDate) AS AllComments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ' ORDER BY c.CreationDate) AS AllComments
     FROM 
         FilteredPosts fp
     LEFT JOIN 
@@ -69,4 +69,4 @@ LEFT JOIN
     PostComments pc ON fp.PostId = pc.PostId
 ORDER BY 
     fp.CreationDate DESC
-OFFSET 0 ROWS FETCH NEXT 25 ROWS ONLY
+LIMIT 25 OFFSET 0

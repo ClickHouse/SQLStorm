@@ -17,7 +17,7 @@ TopMovies AS (
         mt.id AS movie_id,
         mt.title,
         COUNT(DISTINCT ci.person_id) AS num_of_cast,
-        ARRAY_AGG(DISTINCT a.name) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS cast_names,
         SUM(CASE WHEN mi.info_type_id = 1 THEN LENGTH(mi.info) END) AS description_length  
     FROM aka_title mt
     LEFT JOIN cast_info ci ON mt.id = ci.movie_id

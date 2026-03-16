@@ -17,7 +17,7 @@ WITH UserPostStats AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName,
         COUNT(*) AS TagUsage
     FROM 
         Posts p

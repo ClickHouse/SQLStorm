@@ -18,7 +18,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    unnest(string_to_array(p.Tags, ',')) AS t(TagName) ON TRUE 
+    arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON TRUE 
 GROUP BY 
     p.Id, u.DisplayName, u.Reputation, p.Title, p.CreationDate, p.Score, p.ViewCount, t.TagName
 ORDER BY 

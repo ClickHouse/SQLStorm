@@ -48,4 +48,4 @@ GROUP BY
     c.FullName, c.Gender, c.FullAddress
 ORDER BY 
     TotalSpent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

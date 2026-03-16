@@ -6,7 +6,7 @@ WITH ProcessedTags AS (
     FROM 
         Posts p
     JOIN 
-        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS t(TagName) ON true
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS t(TagName) ON true
 ), TagMetrics AS (
     SELECT 
         PostId,

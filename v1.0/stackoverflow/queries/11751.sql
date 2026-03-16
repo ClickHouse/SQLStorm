@@ -53,7 +53,7 @@ PostDetails AS (
 SELECT 
     PD.*,
     CAST(PD.CreationDate AS DATE) AS PostDate,
-    TIMESTAMP '2024-10-01 12:34:56' - PD.CreationDate AS TimeSinceCreation
+    toDateTime64('2024-10-01 12:34:56', 6) - PD.CreationDate AS TimeSinceCreation
 FROM 
     PostDetails PD
 ORDER BY 

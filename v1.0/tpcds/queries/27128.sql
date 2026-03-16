@@ -39,9 +39,9 @@ SELECT
     cd.cd_gender,
     cd.cd_marital_status,
     COUNT(DISTINCT cd.c_customer_sk) AS customer_count,
-    STRING_AGG(cd.cd_education_status, ', ') AS education_levels,
-    STRING_AGG(DISTINCT CONCAT(cd.ca_city, ', ', cd.ca_state), '; ') AS unique_cities_states,
-    STRING_AGG(cd.full_address, '; ') AS full_addresses
+    arrayStringConcat(groupArray(assumeNotNull(cd.cd_education_status)), ', ') AS education_levels,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cd.ca_city, ', ', cd.ca_state)))), '; ') AS unique_cities_states,
+    arrayStringConcat(groupArray(assumeNotNull(cd.full_address)), '; ') AS full_addresses
 FROM 
     CustomerDetails cd
 WHERE 

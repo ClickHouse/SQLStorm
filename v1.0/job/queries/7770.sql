@@ -20,8 +20,8 @@ SELECT
     rm.title,
     rm.production_year,
     COUNT(DISTINCT mi.info) AS info_count,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-    ARRAY_AGG(DISTINCT cn.name) AS company_names
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names
 FROM 
     ranked_movies rm
 LEFT JOIN 

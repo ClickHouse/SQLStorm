@@ -14,7 +14,7 @@ recent_orders AS (
            ROW_NUMBER() OVER (PARTITION BY o.o_custkey ORDER BY o.o_orderdate DESC) AS order_rank
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY o.o_orderkey, o.o_custkey
 ),
 nation_region AS (

@@ -23,7 +23,7 @@ top_movies AS (
 keyword_movies AS (
     SELECT 
         at.id AS movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM aka_title at
     JOIN movie_keyword mk ON at.id = mk.movie_id
     JOIN keyword k ON mk.keyword_id = k.id

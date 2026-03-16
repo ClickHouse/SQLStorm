@@ -6,7 +6,7 @@ WITH RankedOrders AS (
         o.o_totalprice,
         RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) as order_rank
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '12 months'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH
 ),
 SupplierCost AS (
     SELECT 

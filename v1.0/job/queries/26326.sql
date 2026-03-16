@@ -4,7 +4,7 @@ WITH Movie_Aggregates AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COUNT(DISTINCT mc.company_id) AS total_companies
     FROM 
         aka_title t
@@ -39,7 +39,7 @@ Movies_With_Role_Info AS (
         ma.total_cast,
         ma.keywords,
         ma.total_companies,
-        STRING_AGG(DISTINCT cr.role_name || ' (' || cr.role_count || ')', ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.role_name || ' (' || cr.role_count || ')'))), ', ') AS roles
     FROM 
         Movie_Aggregates ma
     LEFT JOIN 

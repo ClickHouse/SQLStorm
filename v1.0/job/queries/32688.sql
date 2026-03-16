@@ -27,7 +27,7 @@ AggregatedMovieInfo AS (
         mh.title,
         mh.production_year,
         COUNT(ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM 
         MovieHierarchy mh
     LEFT JOIN 

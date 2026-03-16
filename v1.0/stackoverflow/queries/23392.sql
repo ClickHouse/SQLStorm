@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.PostTypeId
 ),
@@ -39,7 +39,7 @@ UserReputation AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        u.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         u.Id, u.Reputation
     HAVING 
@@ -53,7 +53,7 @@ PostAnalysis AS (
         rp.Score,
         ut.Reputation AS UserReputation,
         pt.Name AS PostTypeName,
-        STRING_AGG(DISTINCT tg.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tg.TagName))), ', ') AS Tags
     FROM 
         RankedPosts rp
     JOIN 

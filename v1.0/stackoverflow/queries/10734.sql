@@ -55,4 +55,4 @@ FROM
     UserEngagement
 ORDER BY 
     Reputation DESC, PostCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -58,4 +58,4 @@ JOIN combined_sales cs ON cs.total_transactions > 0
 WHERE c.c_birth_year BETWEEN 1980 AND 2000
 AND (c.c_preferred_cust_flag = 'Y' OR c.c_email_address IS NOT NULL)
 ORDER BY cs.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

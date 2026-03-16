@@ -14,7 +14,7 @@ RecentOrders AS (
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY o.o_orderkey, o.o_orderdate, c.c_custkey, c.c_name
 ),
 SupplierPerformance AS (

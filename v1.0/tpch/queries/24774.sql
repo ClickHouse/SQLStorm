@@ -16,7 +16,7 @@ TotalSales AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= DATE '1996-01-01' AND l.l_shipdate < DATE '1997-01-01'
+        l.l_shipdate >= toDate('1996-01-01') AND l.l_shipdate < toDate('1997-01-01')
     GROUP BY 
         l.l_partkey
 ),
@@ -48,7 +48,7 @@ SELECT
     SUM(CASE WHEN ts.sales_rank <= 5 THEN ts.total_sales ELSE 0 END) AS top_5_sales,
     COUNT(DISTINCT rs.s_suppkey) AS distinct_suppliers,
     COUNT(CASE WHEN rs.rnk = 1 THEN 1 END) AS top_supplier_count,
-    STRING_AGG(DISTINCT rs.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rs.s_name))), ', ') AS supplier_names
 FROM 
     TopPartSales ts
 JOIN 

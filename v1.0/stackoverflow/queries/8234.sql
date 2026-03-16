@@ -46,7 +46,7 @@ SELECT
     tp.OwnerDisplayName,
     tp.CommentCount,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = tp.PostId AND v.VoteTypeId IN (2, 3)) AS UpDownVoteCount,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') FROM Tags t JOIN Posts p ON p.Tags LIKE CONCAT('%', t.TagName, '%') WHERE p.Id = tp.PostId) AS Tags
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') FROM Tags t JOIN Posts p ON p.Tags LIKE CONCAT('%', t.TagName, '%') WHERE p.Id = tp.PostId) AS Tags
 FROM 
     TopPosts tp
 ORDER BY 

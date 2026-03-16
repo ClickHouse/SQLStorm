@@ -17,7 +17,7 @@ FilteredOrders AS (
     SELECT o.o_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    WHERE o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
       AND l.l_returnflag = 'N'
     GROUP BY o.o_orderkey
 ),
@@ -49,4 +49,4 @@ WHERE p.p_size BETWEEN 10 AND 20
 GROUP BY p.p_name, r.r_name, tc.total_revenue
 HAVING COUNT(DISTINCT sct.ps_suppkey) > 5
 ORDER BY total_available_quantity DESC, total_supply_cost ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

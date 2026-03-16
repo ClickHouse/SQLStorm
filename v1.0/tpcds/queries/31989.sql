@@ -46,7 +46,7 @@ SELECT
     COUNT(DISTINCT c.c_customer_id) AS total_customers,
     SUM(hvc.total_spent) AS total_revenue,
     AVG(hvc.order_count) AS avg_orders,
-    STRING_AGG(DISTINCT hvc.value_segment, ', ') AS customer_segments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(hvc.value_segment))), ', ') AS customer_segments
 FROM employee_hierarchy eh
 LEFT JOIN high_value_customers hvc ON eh.cc_name = hvc.c_customer_id
 LEFT JOIN customer c ON hvc.c_customer_id = c.c_customer_id

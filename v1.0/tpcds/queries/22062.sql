@@ -48,7 +48,7 @@ FROM
 FULL OUTER JOIN
     CustomerPurchases cp ON r.sr_item_sk = cp.c_customer_sk 
 JOIN
-    LATERAL (
+    (
         SELECT
             ws.ws_item_sk,
             SUM(ws.ws_net_paid_inc_tax) AS revenue

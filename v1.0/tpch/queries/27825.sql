@@ -30,7 +30,7 @@ TopSuppliers AS (
 SELECT 
     t.s_name,
     t.s_address,
-    CONCAT('{', STRING_AGG(CONCAT('{"supplies": "', p.p_name, '"}'), ', '), '}') AS parts_supplied,
+    CONCAT('{', arrayStringConcat(groupArray(assumeNotNull(CONCAT('{"supplies": "', p.p_name, '"}'))), ', '), '}') AS parts_supplied,
     SUM(o.o_totalprice) AS total_orders,
     AVG(l.l_discount) AS avg_discount
 FROM 

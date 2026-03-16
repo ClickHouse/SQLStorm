@@ -53,7 +53,7 @@ SELECT
     r.rank,
     r.title AS movie_title,
     r.production_year,
-    STRING_AGG(c.actor_name || ' (' || c.role || ')', ', ') AS cast_details,
+    arrayStringConcat(groupArray(assumeNotNull(c.actor_name || ' (' || c.role || ')')), ', ') AS cast_details,
     COUNT(DISTINCT c.actor_name) AS total_cast
 FROM 
     ranked_movies r

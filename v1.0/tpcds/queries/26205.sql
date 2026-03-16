@@ -28,7 +28,7 @@ customer_stats AS (
         full_name,
         COUNT(*) AS total_orders,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT email_domain, ', ') AS unique_domains,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(email_domain))), ', ') AS unique_domains,
         MAX(email_length) AS max_email_length
     FROM 
         processed_customers

@@ -29,7 +29,7 @@ Aggregated_Info AS (
         COUNT(*) AS address_count,
         MAX(ai.street_name_length) AS max_street_name_length,
         MIN(ai.street_name_length) AS min_street_name_length,
-        STRING_AGG(ai.full_address, ', ') AS all_addresses
+        arrayStringConcat(groupArray(assumeNotNull(ai.full_address)), ', ') AS all_addresses
     FROM 
         Address_Info ai
     JOIN 

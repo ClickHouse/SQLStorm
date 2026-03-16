@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
 ),
 UserReputation AS (
     SELECT 
@@ -31,7 +31,7 @@ MergingTags AS (
         t.Id,
         t.TagName,
         COUNT(po.Id) AS PostCount,
-        STRING_AGG(po.Title, ', ') AS PostTitles
+        arrayStringConcat(groupArray(assumeNotNull(po.Title)), ', ') AS PostTitles
     FROM 
         Tags t
     LEFT JOIN 

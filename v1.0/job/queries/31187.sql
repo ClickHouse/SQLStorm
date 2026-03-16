@@ -19,7 +19,7 @@ MovieDetails AS (
            (SELECT COUNT(DISTINCT ci.person_id)
             FROM cast_info ci
             WHERE ci.movie_id = m.id) AS total_cast,
-           (SELECT STRING_AGG(DISTINCT ak.name, ', ') 
+           (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') 
             FROM cast_info ci
             JOIN aka_name ak ON ci.person_id = ak.person_id
             WHERE ci.movie_id = m.id) AS cast_names

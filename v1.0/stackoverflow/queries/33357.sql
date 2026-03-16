@@ -38,7 +38,7 @@ PostStatistics AS (
         COUNT(DISTINCT A.Id) AS AnswerCount,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-        AVG(EXTRACT(EPOCH FROM (P.LastActivityDate - P.CreationDate))) AS AvgOpenDuration
+        AVG(toUnixTimestamp((P.LastActivityDate - P.CreationDate))) AS AvgOpenDuration
     FROM 
         Posts P
     LEFT JOIN 
@@ -83,4 +83,4 @@ WHERE
 ORDER BY 
     F.NetVoteCount DESC,
     F.AnswerCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

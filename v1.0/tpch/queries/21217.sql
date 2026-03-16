@@ -19,7 +19,7 @@ order_summaries AS (
            ROW_NUMBER() OVER (PARTITION BY o.o_custkey ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY o.o_custkey
 ),
 top_customers AS (

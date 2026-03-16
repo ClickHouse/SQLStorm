@@ -23,7 +23,7 @@ WITH RankedTitles AS (
 SELECT 
     rt.movie_title, 
     rt.production_year, 
-    STRING_AGG(rt.actor_name, ', ') AS actors,
+    arrayStringConcat(groupArray(assumeNotNull(rt.actor_name)), ', ') AS actors,
     COUNT(rt.role_rank) AS total_roles
 FROM 
     RankedTitles rt

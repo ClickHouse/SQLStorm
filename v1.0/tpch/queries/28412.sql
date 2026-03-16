@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count, 
     AVG(ps.ps_supplycost) AS avg_supply_cost, 
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_qty, 
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     part p
 JOIN 

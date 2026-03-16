@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON b.UserId = p.OwnerUserId AND b.Class = 1
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), FilteredPosts AS (
     SELECT 
         rp.PostId,
@@ -33,7 +33,7 @@ WITH RankedPosts AS (
     FROM 
         RankedPosts rp
     WHERE 
-        rp.Score > (SELECT AVG(Score) FROM Posts WHERE CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') 
+        rp.Score > (SELECT AVG(Score) FROM Posts WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
 )
 
 SELECT 

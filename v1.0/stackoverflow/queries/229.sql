@@ -24,7 +24,7 @@ PopularPosts AS (
         P.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.Score DESC) AS UserRank
     FROM Posts P
-    WHERE P.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
+    WHERE P.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
 ),
 UsersWithBadges AS (
     SELECT 

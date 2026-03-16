@@ -1,7 +1,7 @@
 
 WITH YearlySales AS (
     SELECT 
-        EXTRACT(YEAR FROM o_orderdate) AS order_year,
+        toYear(o_orderdate) AS order_year,
         SUM(l_extendedprice * (1 - l_discount)) AS total_sales,
         c.c_nationkey
     FROM 

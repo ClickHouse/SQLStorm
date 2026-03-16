@@ -24,7 +24,7 @@ UserBadges AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        b.Date >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 YEAR'
+        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id
 ),
@@ -47,7 +47,7 @@ PostHistoryAggregates AS (
     SELECT 
         ph.PostId,
         COUNT(DISTINCT ph.PostHistoryTypeId) AS HistoryTypeCount,
-        STRING_AGG(DISTINCT CONCAT(pt.Name, ': ', ph.Comment), '; ') AS EditComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(pt.Name, ': ', ph.Comment)))), '; ') AS EditComments
     FROM 
         PostHistory ph
     JOIN 

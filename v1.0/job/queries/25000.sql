@@ -23,7 +23,7 @@ ActorRoles AS (
 MovieKeywordInfo AS (
     SELECT
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords,
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
         COUNT(mk.keyword_id) AS keyword_count
     FROM 
         movie_keyword mk
@@ -58,7 +58,7 @@ LEFT JOIN
 CROSS JOIN 
     (
         SELECT 
-            EXTRACT(YEAR FROM cast('2024-10-01' as date)) - MIN(AT2.production_year) AS year_difference
+            toYear(cast('2024-10-01' as date)) - MIN(AT2.production_year) AS year_difference
         FROM 
             aka_title AT2 
         WHERE 

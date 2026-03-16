@@ -33,7 +33,7 @@ SELECT
     COUNT(DISTINCT supplier_name) AS number_of_suppliers,
     COUNT(DISTINCT customer_name) AS number_of_customers,
     AVG(p_retailprice) AS average_retail_price,
-    STRING_AGG(DISTINCT region_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(region_name))), ', ') AS regions_supplied
 FROM 
     DetailedParts
 GROUP BY 

@@ -68,7 +68,7 @@ SELECT
     pm.BadgeCount,
     pm.UpVotes,
     pm.DownVotes,
-    COALESCE(CAST(STRING_AGG(DISTINCT pst.Name, ', ') AS VARCHAR), 'No History') AS PostTypes
+    COALESCE(CAST(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pst.Name))), ', ') AS VARCHAR), 'No History') AS PostTypes
 FROM PostsMetrics pm
 LEFT JOIN PostHistory ph ON pm.Id = ph.PostId
 LEFT JOIN PostHistoryTypes pst ON ph.PostHistoryTypeId = pst.Id

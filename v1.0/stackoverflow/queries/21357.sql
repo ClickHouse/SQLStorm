@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 AggregatedData AS (
     SELECT 
@@ -47,10 +47,10 @@ CloseReasons AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseReasonCount,
-        STRING_AGG(DISTINCT crt.Name, ', ') AS Reasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS Reasons
     FROM 
         PostHistory ph
-    JOIN CloseReasonTypes crt ON ph.Comment = crt.Id::text
+    JOIN CloseReasonTypes crt ON ph.Comment = CAST(crt.Id AS text)
     WHERE 
         ph.PostHistoryTypeId = 10 
     GROUP BY 

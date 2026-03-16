@@ -26,7 +26,7 @@ WITH RECURSIVE Inventory_CTE AS (
         COUNT(DISTINCT ws.ws_order_number) AS order_count,
         SUM(ws.ws_net_profit) AS total_profit,
         MAX(cd.cd_purchase_estimate) AS max_purchase_estimate,
-        STRING_AGG(DISTINCT CASE WHEN cd.cd_gender = 'M' THEN 'Male' ELSE 'Female' END, ', ') AS gender_distribution
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN cd.cd_gender = 'M' THEN 'Male' ELSE 'Female' END))), ', ') AS gender_distribution
     FROM customer c
     JOIN web_sales ws ON c.c_customer_sk = ws.ws_ship_customer_sk
     LEFT JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk

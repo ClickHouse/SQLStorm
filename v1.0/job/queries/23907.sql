@@ -30,8 +30,8 @@ MovieDetails AS (
         f.title,
         f.production_year,
         f.total_cast_members,
-        ARRAY_AGG(DISTINCT c.name) AS cast_member_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_member_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         FilteredMovies f
     LEFT JOIN 

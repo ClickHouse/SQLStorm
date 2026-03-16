@@ -33,7 +33,7 @@ CriticalMovies AS (
     SELECT 
         f.*, 
         (SELECT COUNT(*) FROM movie_keyword mk WHERE mk.movie_id = f.movie_id) AS keywords_count,
-        (SELECT ARRAY_AGG(DISTINCT kind) FROM kind_type kt JOIN aka_title a ON kt.id = a.kind_id WHERE a.movie_id = f.movie_id) AS kind_types
+        (SELECT arrayDistinct(groupArray(assumeNotNull(kind))) FROM kind_type kt JOIN aka_title a ON kt.id = a.kind_id WHERE a.movie_id = f.movie_id) AS kind_types
     FROM 
         FilteredMovies f
 ),

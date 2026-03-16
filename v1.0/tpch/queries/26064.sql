@@ -7,7 +7,7 @@ WITH StringAggregates AS (
         CONCAT(p.p_mfgr, ' ', p.p_brand) AS mfgr_brand,
         LENGTH(p.p_comment) AS comment_length,
         COUNT(s.s_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM part p
     LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
     LEFT JOIN supplier s ON ps.ps_suppkey = s.s_suppkey

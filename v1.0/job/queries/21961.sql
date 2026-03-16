@@ -14,7 +14,7 @@ WITH RecursiveMovieCTE AS (
     LEFT JOIN (
         SELECT 
             mk.movie_id,
-            STRING_AGG(k.keyword, ', ') AS keywords
+            arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
         FROM 
             movie_keyword mk
         JOIN 
@@ -26,7 +26,7 @@ WITH RecursiveMovieCTE AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS num_actors,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
     FROM 
         cast_info c
     JOIN 
@@ -36,7 +36,7 @@ WITH RecursiveMovieCTE AS (
 ), CompData AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name || ' (' || ct.kind || ')', ', ') AS companies_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name || ' (' || ct.kind || ')'))), ', ') AS companies_info
     FROM 
         movie_companies mc
     JOIN 

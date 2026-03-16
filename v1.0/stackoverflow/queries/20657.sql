@@ -56,7 +56,7 @@ SELECT
     UPS.AverageScore,
     UPS.LastPostDate,
     CASE 
-        WHEN UPS.LastPostDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' THEN 'Inactive'
+        WHEN UPS.LastPostDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Inactive'
         ELSE 'Active'
     END AS UserActivityStatus,
     CASE 

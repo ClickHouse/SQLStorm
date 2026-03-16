@@ -1,7 +1,7 @@
 WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 1 AS level
     FROM orders o
-    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
     
     UNION ALL
     
@@ -43,7 +43,7 @@ LEFT JOIN RankedSupplier rs ON s.s_suppkey = rs.s_suppkey
 LEFT JOIN nation n ON s.s_nationkey = n.n_nationkey
 LEFT JOIN region rn ON n.n_regionkey = rn.r_regionkey
 LEFT JOIN FilteredCustomers fc ON o.o_custkey = fc.c_custkey
-WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '6 months'
+WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 6 MONTH
 AND p.p_size IN (SELECT DISTINCT p_size FROM part WHERE p_retailprice > 100)
 GROUP BY p.p_partkey, p.p_name, rn.r_name, fc.balance_category
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 50000

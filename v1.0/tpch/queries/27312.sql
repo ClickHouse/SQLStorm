@@ -3,7 +3,7 @@ WITH RankedSuppliers AS (
         s.s_suppkey, 
         s.s_name, 
         COUNT(ps.ps_partkey) AS part_count,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
         SUM(ps.ps_supplycost) AS total_supply_cost
     FROM 
         supplier s

@@ -18,7 +18,7 @@ RecentVotes AS (
     FROM
         Votes v
     WHERE
-        v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY
         v.UserId
 ),
@@ -54,7 +54,7 @@ PostStats AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '90 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY
 )
 SELECT 
     ur.UserId,

@@ -31,7 +31,7 @@ RecentPopularPosts AS (
         p.Score,
         ROW_NUMBER() OVER (ORDER BY p.Score DESC, p.CreationDate DESC) AS PopularityRank
     FROM Posts p
-    WHERE p.Score > 10 AND p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.Score > 10 AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 EligibleBadges AS (
     SELECT 

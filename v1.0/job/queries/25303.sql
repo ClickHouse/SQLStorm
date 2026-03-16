@@ -34,9 +34,9 @@ MovieInfoExtended AS (
     SELECT
         m.id AS movie_id,
         m.title,
-        ARRAY_AGG(DISTINCT ci.actor_name) AS actors,
-        ARRAY_AGG(DISTINCT ci.role_name) AS roles,
-        ARRAY_AGG(DISTINCT r.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(ci.actor_name))) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(ci.role_name))) AS roles,
+        arrayDistinct(groupArray(assumeNotNull(r.keyword))) AS keywords,
         m.production_year,
         CASE 
             WHEN m.production_year < 2010 THEN 'Legacy Film'

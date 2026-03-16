@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),
@@ -42,11 +42,11 @@ FROM
 LEFT JOIN 
     (SELECT 
          pt.Id AS PostId,
-         STRING_AGG(t.TagName, ', ') AS TagName
+         arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagName
      FROM 
          Posts pt
      JOIN 
-         UNNEST(string_to_array(pt.Tags, ',')) AS tag ON TRUE
+         arrayJoin(splitByString(',', pt.Tags)) AS tag ON TRUE
      JOIN 
          Tags t ON t.TagName = tag
      GROUP BY 

@@ -35,7 +35,7 @@ aggregated_data AS (
         ci.row_num,
         ci.full_address,
         COUNT(*) AS customer_count,
-        STRING_AGG(CONCAT(ci.c_first_name, ' ', ci.c_last_name), ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ci.c_first_name, ' ', ci.c_last_name))), ', ') AS customer_names
     FROM
         customer_info ci
     GROUP BY

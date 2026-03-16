@@ -14,7 +14,7 @@ WITH RECURSIVE MovieHierarchy AS (
 MovieKeywords AS (
     
     SELECT m.id AS movie_id, 
-           STRING_AGG(k.keyword, ', ') AS keywords, 
+           arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords, 
            COUNT(k.id) AS keyword_count
     FROM aka_title m
     LEFT JOIN movie_keyword mk ON m.id = mk.movie_id

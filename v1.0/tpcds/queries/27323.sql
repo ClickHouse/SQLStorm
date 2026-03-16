@@ -62,4 +62,4 @@ WHERE
     s.total_sales > 1000
 ORDER BY
     sales_date DESC, s.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

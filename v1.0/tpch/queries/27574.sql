@@ -4,7 +4,7 @@ SELECT
     AVG(ps_supplycost) AS avg_supply_cost,
     CONCAT(r.r_name, ': ', n.n_name) AS region_nation,
     SUM(CASE WHEN o.o_orderstatus = 'F' THEN l.l_extendedprice ELSE 0 END) AS total_filled_orders,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS shipping_methods
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS shipping_methods
 FROM 
     part p
 JOIN 

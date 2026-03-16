@@ -15,7 +15,7 @@ MovieCast AS (
     SELECT 
         m.movie_id,
         COUNT(c.person_id) AS cast_count,
-        STRING_AGG(CONCAT(a.name, ' (', r.role, ')'), ', ') AS full_cast
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.name, ' (', r.role, ')'))), ', ') AS full_cast
     FROM 
         RankedMovies m
     JOIN 

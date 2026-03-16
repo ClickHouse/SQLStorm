@@ -44,4 +44,4 @@ WHERE (ch.c_current_cdemo_sk IS NOT NULL OR ch.c_current_cdemo_sk IS NULL)
   AND (COALESCE(cr.total_return_amt, 0) + COALESCE(wr.total_web_return_amt, 0) > 0 OR (COALESCE(cr.total_return_amt, 0) + COALESCE(wr.total_web_return_amt, 0) IS NULL))
   AND ch.c_first_name NOT LIKE '%Test%'
 ORDER BY ib.ib_income_band_sk, total_combined_return DESC
-OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

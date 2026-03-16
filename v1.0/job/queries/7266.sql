@@ -4,7 +4,7 @@ SELECT
     t.title AS movie_title,
     p.info AS actor_info,
     c.kind AS cast_type,
-    STRING_AGG(k.keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
     COUNT(DISTINCT mc.company_id) AS production_companies,
     COUNT(DISTINCT ml.linked_movie_id) AS linked_movies
 FROM 

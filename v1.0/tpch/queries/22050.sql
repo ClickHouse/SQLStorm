@@ -16,7 +16,7 @@ filtered_orders AS (
                ELSE 'Low'
            END AS price_category
     FROM orders o
-    WHERE o.o_orderstatus = 'O' AND EXTRACT(MONTH FROM o.o_orderdate) IN (1, 6)
+    WHERE o.o_orderstatus = 'O' AND toMonth(o.o_orderdate) IN (1, 6)
 ),
 customer_summary AS (
     SELECT c.c_custkey, COUNT(DISTINCT l.l_orderkey) AS order_count,
@@ -31,7 +31,7 @@ SELECT r.r_name AS region_name, n.n_name AS nation_name,
        SUM(l.l_extendedprice) AS total_lineitem_price,
        AVG(s.s_acctbal) AS average_supplier_balance,
        COALESCE(MAX(c.total_spent), 0) AS max_customer_spent,
-       STRING_AGG(DISTINCT ps.ps_comment, '; ') AS parts_comments
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ps.ps_comment))), '; ') AS parts_comments
 FROM region r
 JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN supplier s ON s.s_nationkey = n.n_nationkey

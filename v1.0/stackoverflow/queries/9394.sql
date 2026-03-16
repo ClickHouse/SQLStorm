@@ -8,7 +8,7 @@ WITH UserStats AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         SUM(p.ViewCount) AS TotalViews,
         SUM(p.Score) AS TotalScore,
-        AVG(COALESCE(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)), 0)) AS AvgActivityDuration
+        AVG(COALESCE(toUnixTimestamp((p.LastActivityDate - p.CreationDate)), 0)) AS AvgActivityDuration
     FROM 
         Users u
     LEFT JOIN 
@@ -65,4 +65,4 @@ LEFT JOIN
     PostHistoryStats phs ON us.UserId = phs.UserId
 ORDER BY 
     us.TotalScore DESC, us.PostCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -33,4 +33,4 @@ FROM
     UserPostStats
 ORDER BY 
     Reputation DESC, TotalPosts DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

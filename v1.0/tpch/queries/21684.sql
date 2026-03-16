@@ -39,7 +39,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(sh.s_acctbal) AS total_supplier_balance,
     AVG(d.total_revenue) AS avg_department_revenue,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     MAX(COALESCE(re.max_revenue, 0)) AS largest_revenue
 FROM region r
 JOIN nation n ON n.n_regionkey = r.r_regionkey

@@ -38,7 +38,7 @@ SELECT
     COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS TotalDownVotes,
     AVG(COALESCE(ph.ViewCount, 0)) AS AverageViews,
     AVG(COALESCE(ph.Score, 0)) AS AverageScore,
-    STRING_AGG(DISTINCT tags.TagName, ', ') AS AssociatedTags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tags.TagName))), ', ') AS AssociatedTags,
     MAX(ph.CreationDate) AS LastPostDate
 FROM 
     Users u
@@ -49,9 +49,9 @@ LEFT JOIN
 LEFT JOIN 
     RecursivePostHierarchy ph ON p.Id = ph.PostId
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            TRIM(UNNEST(string_to_array(p.Tags, ','))) AS TagName
+            TRIM(arrayJoin(splitByString(',', p.Tags))) AS TagName
         FROM 
             Posts p
         WHERE 

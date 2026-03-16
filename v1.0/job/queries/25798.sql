@@ -42,8 +42,8 @@ Keyword_Info AS (
 SELECT
     actor_name,
     COUNT(DISTINCT movie_id) AS total_movies,
-    STRING_AGG(DISTINCT movie_title || ' (' || production_year || ')', ', ') AS movie_list,
-    STRING_AGG(DISTINCT keyword, ', ') AS associated_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_title || ' (' || production_year || ')'))), ', ') AS movie_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS associated_keywords
 FROM
     Keyword_Info
 GROUP BY

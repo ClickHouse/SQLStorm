@@ -34,7 +34,7 @@ ConnectionInfo AS (
     SELECT 
         PL.PostId,
         COUNT(PL.RelatedPostId) AS RelatedPostCount,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
     FROM 
         PostLinks PL
     JOIN 

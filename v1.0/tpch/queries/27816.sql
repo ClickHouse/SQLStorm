@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(l.l_quantity) AS avg_quantity_per_order,
     MAX(l.l_shipdate) AS latest_ship_date,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     customer c
 JOIN 

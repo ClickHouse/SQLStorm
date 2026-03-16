@@ -52,10 +52,10 @@ LEFT JOIN
             FROM lineitem l 
             WHERE l.l_orderkey IN (SELECT o.o_orderkey FROM orders o WHERE o.o_orderstatus = 'O')
         )
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
 GROUP BY 
     sd.s_name, sd.nation_name
 ORDER BY 
     total_order_value DESC, avg_lineitem_per_order DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

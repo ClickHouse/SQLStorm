@@ -21,7 +21,7 @@ Top_Orders AS (
 Filtered_Items AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue
     FROM lineitem l
-    WHERE l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    WHERE l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     GROUP BY l.l_orderkey
 ),
 Customer_Order_Summary AS (

@@ -31,7 +31,7 @@ PostActivity AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     GROUP BY 
         p.Id, p.CreationDate, p.Title
 ),
@@ -39,7 +39,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryCount,
-        STRING_AGG(DISTINCT CASE WHEN pht.Name = 'Post Closed' THEN 'Closed' ELSE 'Edited' END, ', ') AS ChangeTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN pht.Name = 'Post Closed' THEN 'Closed' ELSE 'Edited' END))), ', ') AS ChangeTypes
     FROM 
         PostHistory ph
     JOIN 

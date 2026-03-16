@@ -31,7 +31,7 @@ SELECT
     m.title,
     m.production_year,
     COUNT(DISTINCT c.id) AS cast_count,
-    STRING_AGG(DISTINCT c.note, ', ') AS cast_notes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.note))), ', ') AS cast_notes,
     ROW_NUMBER() OVER (PARTITION BY m.production_year ORDER BY m.title) AS row_num,
     COALESCE(mh.full_title, 'Standalone Movie') AS movie_hierarchy_title,
     AVG(CASE 

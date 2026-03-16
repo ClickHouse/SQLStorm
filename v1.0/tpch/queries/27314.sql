@@ -19,7 +19,7 @@ SupplierStatistics AS (
         s.s_name,
         COUNT(DISTINCT ps.ps_partkey) AS parts_supplied,
         AVG(s.s_acctbal) AS avg_account_balance,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS supplied_nations
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS supplied_nations
     FROM 
         supplier s
     JOIN 

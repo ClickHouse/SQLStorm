@@ -42,4 +42,4 @@ SELECT
 FROM FullCustomerInfo f
 LEFT JOIN CustomerPurchaseSummary c ON f.c_customer_sk = c.customer_sk
 ORDER BY total_orders DESC, avg_order_value DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

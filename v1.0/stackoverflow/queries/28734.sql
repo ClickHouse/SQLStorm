@@ -28,11 +28,11 @@ WITH FilteredPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TagStatistics AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', Tags)) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         FilteredPosts
@@ -57,7 +57,7 @@ PostEngagement AS (
     LEFT JOIN 
         Votes v ON fp.PostId = v.PostId AND v.VoteTypeId IN (2, 3) 
     LEFT JOIN 
-        TagStatistics ts ON ts.TagName = ANY(string_to_array(fp.Tags, '><'))
+        TagStatistics ts ON ts.TagName = ANY(splitByString('><', fp.Tags))
     GROUP BY 
         fp.PostId, fp.Title, fp.ViewCount, fp.Score, ts.PostCount
 )

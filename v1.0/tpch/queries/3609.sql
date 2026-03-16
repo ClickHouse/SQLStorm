@@ -40,7 +40,7 @@ SELECT
     COUNT(DISTINCT l.l_orderkey) AS order_count,
     SUM(l.l_extendedprice) AS total_sales_value,
     MAX(sc.ps_supplycost) AS max_supplier_cost,
-    ARRAY_AGG(DISTINCT fs.nation_name) AS supplier_nations
+    arrayDistinct(groupArray(assumeNotNull(fs.nation_name))) AS supplier_nations
 FROM 
     part p
 LEFT JOIN 

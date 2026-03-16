@@ -39,20 +39,20 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
     WHERE 
-        ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     fp.PostId,
     fp.Title,
     fp.Score,
     COALESCE(SUM(CASE WHEN phd.HistoryType = 'Post Closed' THEN 1 ELSE 0 END), 0) AS ClosedCount,
-    ARRAY_AGG(DISTINCT phd.UserDisplayName) AS Editors,
+    arrayDistinct(groupArray(assumeNotNull(phd.UserDisplayName))) AS Editors,
     COUNT(DISTINCT phd.PostId) AS HistoryCount,
     CASE 
         WHEN COUNT(DISTINCT phd.PostId) > 0 THEN 'Has History'
         ELSE 'No History'
     END AS HistoryStatus,
-    TRIM(BOTH ' ' FROM STRING_AGG(DISTINCT phd.Comment, ', ')) AS RecentComments
+    TRIM(BOTH ' ' FROM arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(phd.Comment))), ', ')) AS RecentComments
 FROM 
     FilteredPosts fp
 LEFT JOIN 

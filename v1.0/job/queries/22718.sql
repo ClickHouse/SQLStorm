@@ -15,7 +15,7 @@ ActorAwards AS (
         c.person_id,
         COUNT(DISTINCT m.movie_id) AS movie_count,
         SUM(CASE WHEN k.keyword = 'Oscar' THEN 1 ELSE 0 END) AS oscar_wins,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         cast_info c
     LEFT JOIN 

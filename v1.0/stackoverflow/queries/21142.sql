@@ -27,7 +27,7 @@ UserHistory AS (
     SELECT 
         PH.UserId,
         COUNT(PH.Id) AS TotalHistoryEntries,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryTypes,
         MAX(PH.CreationDate) AS LastHistoryEntryDate
     FROM PostHistory PH
     JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id

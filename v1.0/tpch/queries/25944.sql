@@ -20,9 +20,9 @@ AggregatedResults AS (
         AVG(name_length) AS avg_name_length,
         MIN(name_length) AS min_name_length,
         MAX(name_length) AS max_name_length,
-        STRING_AGG(upper_name, ', ') AS upper_names,
-        STRING_AGG(name_replaced, ', ') AS replaced_names,
-        STRING_AGG(trimmed_comment, '; ') AS comments
+        arrayStringConcat(groupArray(assumeNotNull(upper_name)), ', ') AS upper_names,
+        arrayStringConcat(groupArray(assumeNotNull(name_replaced)), ', ') AS replaced_names,
+        arrayStringConcat(groupArray(assumeNotNull(trimmed_comment)), '; ') AS comments
     FROM 
         StringBenchmarks
 )

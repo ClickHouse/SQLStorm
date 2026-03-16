@@ -42,7 +42,7 @@ DetailedMovieInfo AS (
 SELECT 
     d.title,
     d.info,
-    STRING_AGG(DISTINCT d.related_keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d.related_keyword))), ', ') AS keywords
 FROM 
     DetailedMovieInfo d
 GROUP BY 

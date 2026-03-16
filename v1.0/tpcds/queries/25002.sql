@@ -7,8 +7,8 @@ WITH CustomerDetails AS (
         cd.cd_marital_status,
         cd.cd_education_status,
         cd.cd_purchase_estimate,
-        STRING_AGG(DISTINCT ca.ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT ca.ca_state, ', ') AS states
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_city))), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_state))), ', ') AS states
     FROM 
         customer c
     JOIN 

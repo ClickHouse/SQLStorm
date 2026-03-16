@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Posts P
     WHERE 
         P.PostTypeId = 1 AND 
-        P.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
+        P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ),
 TopPosts AS (
     SELECT 
@@ -49,7 +49,7 @@ PostStatistics AS (
             WHEN TP.UpVotes < TP.DownVotes THEN 'Negative'
             ELSE 'Neutral'
         END AS VoteSentiment,
-        DATE_PART('year', TIMESTAMP '2024-10-01 12:34:56' - TP.CreationDate) AS AgeInYears,
+        datePart('year', toDateTime64('2024-10-01 12:34:56', 6) - TP.CreationDate) AS AgeInYears,
         (
             SELECT COUNT(*) 
             FROM Comments C 

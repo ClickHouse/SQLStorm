@@ -17,7 +17,7 @@ PostAggregates AS (
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
         AVG(COALESCE(P.Score, 0)) AS AverageScore,
-        COALESCE(MAX(P.CreationDate), CAST('1970-01-01' AS TIMESTAMP)) AS MostRecentActivity
+        COALESCE(MAX(P.CreationDate), toDateTime64('1970-01-01', 6)) AS MostRecentActivity
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId

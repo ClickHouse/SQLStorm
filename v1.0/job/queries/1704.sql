@@ -24,8 +24,8 @@ FilteredMovies AS (
 SELECT 
     fm.title,
     fm.production_year,
-    COALESCE(ARRAY_AGG(DISTINCT ak.name), '{}') AS aliases,
-    COALESCE(STRING_AGG(DISTINCT pi.info, '; '), 'No info available') AS person_info
+    COALESCE(arrayDistinct(groupArray(assumeNotNull(ak.name))), '{}') AS aliases,
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pi.info))), '; '), 'No info available') AS person_info
 FROM 
     FilteredMovies fm 
 LEFT JOIN 

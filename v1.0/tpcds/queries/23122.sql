@@ -73,4 +73,4 @@ HAVING
 ORDER BY 
     TotalQuantitySold DESC, 
     AveragePrice ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

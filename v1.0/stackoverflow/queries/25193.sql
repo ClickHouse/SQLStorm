@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         COALESCE(COUNT(c.Id), 0) AS CommentCount,
         COALESCE(AVG(CASE WHEN v.VoteTypeId = 2 THEN 1 END) * 100.0 / NULLIF(COUNT(v.Id), 0), 0) AS UpvotePercentage,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '> <')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('> <', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 

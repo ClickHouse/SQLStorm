@@ -4,7 +4,7 @@ WITH address_summary AS (
         ca_city, 
         ca_state, 
         COUNT(ca_address_sk) AS total_addresses,
-        STRING_AGG(ca_street_name || ' ' || ca_street_number || ' ' || ca_street_type, ', ') AS full_address_list
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_number || ' ' || ca_street_type)), ', ') AS full_address_list
     FROM 
         customer_address
     GROUP BY 
@@ -15,7 +15,7 @@ demographics_summary AS (
         cd_gender, 
         cd_marital_status, 
         COUNT(cd_demo_sk) AS total_demographics,
-        STRING_AGG(cd_education_status, ', ') AS education_list
+        arrayStringConcat(groupArray(assumeNotNull(cd_education_status)), ', ') AS education_list
     FROM 
         customer_demographics
     GROUP BY 
@@ -25,7 +25,7 @@ date_summary AS (
     SELECT 
         d_year, 
         COUNT(d_date_sk) AS total_dates,
-        STRING_AGG(d_day_name, ', ') AS day_names_list
+        arrayStringConcat(groupArray(assumeNotNull(d_day_name)), ', ') AS day_names_list
     FROM 
         date_dim
     GROUP BY 

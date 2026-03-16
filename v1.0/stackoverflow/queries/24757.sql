@@ -47,10 +47,10 @@ SELECT
     ps.CommentCount,
     ps.EditCount,
     CASE WHEN tp.TopRank IS NOT NULL THEN 'Top' ELSE 'Regular' END AS PostCategory,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Tags t 
      JOIN (
-        SELECT unnest(string_to_array(Tags, '><')) AS TagName
+        SELECT arrayJoin(splitByString('><', Tags)) AS TagName
         FROM Posts
         WHERE Id = ps.PostId
      ) AS tmp ON t.TagName = tmp.TagName) AS TagList
@@ -61,4 +61,4 @@ WHERE
     ps.Rank <= 5 OR tp.TopRank IS NOT NULL
 ORDER BY 
     ps.Score DESC, ps.CreationDate ASC
-OFFSET 5 ROWS;
+OFFSET 5;

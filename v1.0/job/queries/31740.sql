@@ -49,7 +49,7 @@ SELECT
     fa.actor_name,
     fa.total_movies,
     fa.rank,
-    (SELECT STRING_AGG(DISTINCT at.title, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(at.title))), ', ') 
      FROM aka_title at 
      JOIN cast_info c ON at.movie_id = c.movie_id 
      WHERE c.person_id = fa.actor_id) AS movie_titles

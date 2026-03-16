@@ -5,7 +5,7 @@ SELECT
     ca.ca_city, 
     ca.ca_state, 
     SUM(ss.ss_quantity) AS total_quantity_purchased,
-    STRING_AGG(DISTINCT CONCAT('Item: ', i.i_item_id, ', Desc: ', i.i_item_desc), '; ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Item: ', i.i_item_id, ', Desc: ', i.i_item_desc)))), '; ') AS purchased_items,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     MAX(d.d_date) AS last_purchase_date,
     AVG(ws.ws_sales_price) AS avg_purchase_price

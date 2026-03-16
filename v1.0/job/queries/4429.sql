@@ -26,10 +26,10 @@ FilteredMovies AS (
 SELECT 
     fm.title,
     fm.production_year,
-    ARRAY_AGG(DISTINCT ak.name) AS actor_names,
-    ARRAY_AGG(DISTINCT cn.name) FILTER (WHERE cn.country_code IS NOT NULL) AS production_companies,
+    arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names,
+    arrayDistinct(groupArray(assumeNotNull(cn.name))) FILTER (WHERE cn.country_code IS NOT NULL) AS production_companies,
     (SELECT COUNT(*) FROM movie_info mi WHERE mi.movie_id = fm.movie_id AND mi.info_type_id IN (SELECT id FROM info_type WHERE info = 'Awards')) AS awards_count,
-    (SELECT STRING_AGG(DISTINCT kw.keyword, ', ') FROM movie_keyword mk JOIN keyword kw ON mk.keyword_id = kw.id WHERE mk.movie_id = fm.movie_id) AS keywords
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') FROM movie_keyword mk JOIN keyword kw ON mk.keyword_id = kw.id WHERE mk.movie_id = fm.movie_id) AS keywords
 FROM 
     FilteredMovies fm
 LEFT JOIN 

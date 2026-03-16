@@ -49,4 +49,4 @@ SELECT
     sg.d_month_seq,
     sg.growth_percentage
 FROM TopCustomers tc
-JOIN SalesGrowth sg ON sg.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') AND sg.d_month_seq = EXTRACT(MONTH FROM DATE '2002-10-01');
+JOIN SalesGrowth sg ON sg.d_year = toYear(toDate('2002-10-01')) AND sg.d_month_seq = toMonth(toDate('2002-10-01'));

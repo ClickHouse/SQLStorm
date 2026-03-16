@@ -6,7 +6,7 @@ WITH SalesInfo AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1998-01-01'
+        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1998-01-01')
     GROUP BY 
         l.l_orderkey
 ),
@@ -55,7 +55,7 @@ LEFT JOIN
 LEFT JOIN 
     SupplierNation sn ON n.n_name = sn.n_name
 WHERE 
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     r.r_name
 ORDER BY 

@@ -56,7 +56,7 @@ SELECT
     ra.name AS actor_name,
     ra.movie_count,
     ra.avg_year,
-    (SELECT STRING_AGG(movie.title, ', ' ORDER BY movie.production_year DESC)
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(movie.title)), ', ' ORDER BY movie.production_year DESC)
      FROM title movie 
      JOIN complete_cast cc ON movie.id = cc.movie_id
      WHERE cc.subject_id = ra.person_id) AS movies_played

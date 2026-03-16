@@ -4,7 +4,7 @@ SELECT
     n.n_name AS nation_name, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT SUBSTRING(o.o_comment, 1, 50), '; ') AS comments_preview
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(o.o_comment, 1, 50)))), '; ') AS comments_preview
 FROM 
     part p
 JOIN 

@@ -4,8 +4,8 @@ WITH MovieDetails AS (
         t.title,
         t.production_year,
         c.kind AS company_type,
-        STRING_AGG(DISTINCT k.keyword, ', ' ORDER BY k.keyword) AS keywords,
-        STRING_AGG(DISTINCT p.name, ', ' ORDER BY p.name) AS cast_members
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ' ORDER BY k.keyword) AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ' ORDER BY p.name) AS cast_members
     FROM 
         aka_title t
     INNER JOIN movie_companies mc ON t.id = mc.movie_id

@@ -8,7 +8,7 @@ SELECT
             WHEN l.l_discount > 0 THEN l.l_extendedprice * (1 - l.l_discount)
             ELSE l.l_extendedprice 
         END) AS avg_price_after_discount,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_partkey, ')'), ', ') AS parts_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_partkey, ')')))), ', ') AS parts_supplied,
     r.r_name AS region_name
 FROM 
     supplier s

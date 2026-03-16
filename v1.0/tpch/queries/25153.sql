@@ -11,7 +11,7 @@ SELECT
             ELSE 0 
         END) AS returned_items,
     SUBSTRING(n.n_name, 1, 10) AS shortened_nation_name,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS parts_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS parts_supplied
 FROM 
     customer c
 JOIN 

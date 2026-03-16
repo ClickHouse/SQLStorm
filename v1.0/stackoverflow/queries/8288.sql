@@ -27,7 +27,7 @@ PostEngagement AS (
         SUM(P.ViewCount) AS TotalViews,
         SUM(P.Score) AS TotalScore
     FROM Posts P
-    WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY P.OwnerUserId
 )
 SELECT 

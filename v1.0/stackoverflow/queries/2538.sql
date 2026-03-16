@@ -13,7 +13,7 @@ PostAnalytics AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId 
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ),
 UserPostData AS (
@@ -29,7 +29,7 @@ SELECT UserId, DisplayName, Reputation, ReputationQuartile,
        COUNT(PostId) AS TotalPosts, 
        SUM(UpVotes) AS TotalUpVotes,
        SUM(DownVotes) AS TotalDownVotes,
-       STRING_AGG(Title, '; ') AS PostTitles
+       arrayStringConcat(groupArray(assumeNotNull(Title)), '; ') AS PostTitles
 FROM UserPostData
 WHERE ReputationQuartile = 1
 GROUP BY UserId, DisplayName, Reputation, ReputationQuartile

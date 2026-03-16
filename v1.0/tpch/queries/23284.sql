@@ -24,7 +24,7 @@ PartAvailability AS (
 SELECT r.r_name, 
        COUNT(DISTINCT n.n_nationkey) AS nation_count,
        SUM(CASE WHEN cs.order_count > 5 THEN cs.total_spent ELSE 0 END) AS total_high_value_customers,
-       STRING_AGG(DISTINCT pa.p_name, ', ') AS available_parts,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pa.p_name))), ', ') AS available_parts,
        AVG(rs.s_acctbal) AS avg_supplier_balance
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey

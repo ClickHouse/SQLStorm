@@ -33,7 +33,7 @@ top_actors AS (
 SELECT 
     ta.actor_name,
     ta.movie_count,
-    STRING_AGG(DISTINCT rm.title, ', ') AS movies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.title))), ', ') AS movies
 FROM 
     top_actors ta
 JOIN 

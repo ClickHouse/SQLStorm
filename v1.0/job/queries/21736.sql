@@ -39,8 +39,8 @@ FilteredMovies AS (
     SELECT 
         title, 
         production_year,
-        STRING_AGG(DISTINCT info, '; ') AS movie_info,
-        STRING_AGG(DISTINCT keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(info))), '; ') AS movie_info,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords
     FROM 
         MovieInfoAndKeywords
     WHERE 

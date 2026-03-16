@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
@@ -26,7 +26,7 @@ TopUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '3 months' 
+        u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH 
     GROUP BY 
         u.Id, u.DisplayName
     HAVING 
@@ -42,7 +42,7 @@ RecentActivity AS (
     JOIN 
         Posts p ON v.PostId = p.Id
     WHERE 
-        v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 week'
+        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 WEEK
     GROUP BY 
         p.Id, p.OwnerUserId
 )

@@ -24,7 +24,7 @@ SELECT us.DisplayName,
        us.PostsWithComments,
        us.TotalUpvotes, 
        us.TotalDownvotes,
-       COALESCE(ROUND((us.TotalUpvotes::decimal / NULLIF((us.TotalUpvotes + us.TotalDownvotes), 0)) * 100, 2), 0) AS UpvotePercentage
+       COALESCE(ROUND((CAST(us.TotalUpvotes AS decimal) / NULLIF((us.TotalUpvotes + us.TotalDownvotes), 0)) * 100, 2), 0) AS UpvotePercentage
 FROM UserStats us
 WHERE us.PostsWithComments > 0
 ORDER BY us.TotalUpvotes DESC, us.DisplayName

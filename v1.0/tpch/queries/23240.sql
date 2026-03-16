@@ -37,7 +37,7 @@ WITH RankedOrders AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '90 days'
+        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 90 DAY
 )
 
 SELECT 

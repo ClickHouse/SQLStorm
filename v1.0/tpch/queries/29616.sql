@@ -5,7 +5,7 @@ SELECT
     CONCAT('Region: ', r.r_name, ' | Nation: ', n.n_name) AS location_description,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS combined_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS combined_comments
 FROM
     part p
 JOIN

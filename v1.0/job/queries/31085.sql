@@ -29,7 +29,7 @@ SELECT
     mh.title,
     mh.production_year,
     COALESCE(c.name, 'Unknown') AS company_name,
-    ARRAY_AGG(DISTINCT ak.name) AS aka_names,
+    arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aka_names,
     COUNT(DISTINCT ci.person_id) AS num_actors,
     AVG(CASE WHEN pi.info_type_id = (SELECT id FROM info_type WHERE info = 'Rating') 
              THEN CAST(pi.info AS numeric) ELSE NULL END) AS avg_rating

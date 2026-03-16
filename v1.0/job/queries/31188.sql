@@ -31,7 +31,7 @@ SELECT
     mt.title AS movie_title,
     mh.production_year,
     COUNT(DISTINCT mc.company_id) AS num_companies,
-    STRING_AGG(DISTINCT kc.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kc.keyword))), ', ') AS keywords,
     RANK() OVER (PARTITION BY mt.kind_id ORDER BY mh.production_year DESC) AS rank_by_year,
     COALESCE(SUM(CASE WHEN mi.info_type_id = 1 THEN 1 ELSE 0 END), 0) AS total_info,
     COALESCE(MAX(CASE WHEN mi.note IS NOT NULL THEN mi.info END), 'No Note') AS latest_info_note

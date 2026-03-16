@@ -11,7 +11,7 @@ WITH aggregated_sales AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
+        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
     GROUP BY 
         c.c_custkey
 ),
@@ -34,7 +34,7 @@ region_details AS (
         n.n_regionkey,
         r.r_name,
         COUNT(DISTINCT n.n_nationkey) AS nation_count,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nations
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations
     FROM 
         nation n
     JOIN 

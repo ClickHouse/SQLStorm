@@ -50,4 +50,4 @@ WHERE
 ORDER BY 
     E.TotalVotes DESC, 
     R.ReputationRank ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

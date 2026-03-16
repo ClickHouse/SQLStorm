@@ -10,7 +10,7 @@ WITH PostStatistics AS (
         p.CommentCount,
         p.Body,
         u.DisplayName AS OwnerDisplayName,
-        (SELECT COUNT(*) FROM UNNEST(string_to_array(p.Tags, '>'))) AS TagCount,
+        (SELECT COUNT(*) FROM arrayJoin(splitByString('>', p.Tags))) AS TagCount,
         COUNT(DISTINCT c.Id) AS TotalComments,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),
@@ -43,7 +43,7 @@ SELECT
     pp.OwnerDisplayName,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = pp.Id AND v.VoteTypeId = 2) AS UpVotes,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = pp.Id AND v.VoteTypeId = 3) AS DownVotes,
-    (SELECT STRING_AGG(t.TagName, ', ') FROM Tags t WHERE pp.Id IN (SELECT p.Id FROM Posts p WHERE p.Tags LIKE CONCAT('%<', t.TagName, '>%'))) AS RelatedTags
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') FROM Tags t WHERE pp.Id IN (SELECT p.Id FROM Posts p WHERE p.Tags LIKE CONCAT('%<', t.TagName, '>%'))) AS RelatedTags
 FROM 
     PopularPosts pp
 JOIN 

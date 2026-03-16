@@ -43,7 +43,7 @@ SELECT
     ci.cd_gender,
     ci.cd_marital_status
 FROM item_hierarchy ih
-LEFT JOIN monthly_sales ms ON ms.d_month_seq = EXTRACT(MONTH FROM DATE '2002-10-01')
+LEFT JOIN monthly_sales ms ON ms.d_month_seq = toMonth(toDate('2002-10-01'))
 LEFT JOIN customer_info ci ON ci.order_count > 5
 WHERE ih.i_current_price BETWEEN 10 AND 100
   AND ci.cd_marital_status IS NOT NULL

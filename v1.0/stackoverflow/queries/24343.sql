@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 RecentUserActivity AS (
     SELECT 
@@ -40,7 +40,7 @@ PostHistoryDetails AS (
 UserBadgesInfo AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE
@@ -92,6 +92,6 @@ LEFT JOIN
 LEFT JOIN 
     PostHistoryDetails p ON r.PostId = p.PostId
 WHERE 
-    up.MostRecentPostDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+    up.MostRecentPostDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ORDER BY 
     up.TotalViews DESC, up.UserId;

@@ -21,19 +21,19 @@ WITH UserPostStatistics AS (
 RecentBadges AS (
     SELECT
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         MAX(b.Date) AS LastAwardDate
     FROM
         Badges b
     WHERE
-        b.Date > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
+        b.Date > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY
         b.UserId
 ),
 PostHistorySummary AS (
     SELECT
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         COUNT(*) AS HistoryCount
     FROM
         PostHistory ph
@@ -73,7 +73,7 @@ LEFT JOIN
     PostHistorySummary phs ON tu.UserId IN (SELECT OwnerUserId FROM Posts WHERE Id = phs.PostId)
 WHERE
     tu.UserRank <= 10
-    AND (tu.LastPostDate BETWEEN (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days') AND TIMESTAMP '2024-10-01 12:34:56' OR tu.BadgeNames IS NOT NULL)
+    AND (tu.LastPostDate BETWEEN (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) AND toDateTime64('2024-10-01 12:34:56', 6) OR tu.BadgeNames IS NOT NULL)
 ORDER BY
     tu.PostCount DESC,
     tu.UpVoteCount DESC;

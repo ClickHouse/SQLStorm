@@ -31,7 +31,7 @@ SELECT
     tm.total_companies,
     tm.total_keywords,
     AVG(CASE WHEN c.nr_order IS NOT NULL THEN c.nr_order END) AS avg_cast_order,
-    STRING_AGG(DISTINCT a.name, ', ') AS all_actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS all_actors
 FROM 
     TopMovies tm
 LEFT JOIN 

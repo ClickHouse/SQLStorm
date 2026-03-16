@@ -61,4 +61,4 @@ FROM
     FinalSummary f
 ORDER BY 
     f.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

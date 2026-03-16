@@ -39,7 +39,7 @@ SELECT
     hm.production_year,
     cs.company_count,
     cs.has_distributed_companies,
-    STRING_AGG(cn.name, ', ') AS companies_involved
+    arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS companies_involved
 FROM 
     HighActorMovies hm
 LEFT JOIN 

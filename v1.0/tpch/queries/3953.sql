@@ -42,7 +42,7 @@ SELECT
     co.c_custkey,
     SUM(co.total_revenue) AS total_order_revenue,
     AVG(nr.total_supply_cost) AS average_supply_cost,
-    STRING_AGG(DISTINCT rs.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rs.s_name))), ', ') AS supplier_names
 FROM
     CustomerOrders co
 LEFT JOIN

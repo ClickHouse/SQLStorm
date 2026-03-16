@@ -10,8 +10,8 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1995-01-01'
-        AND o.o_orderdate < DATE '1996-01-01'
+        o.o_orderdate >= toDate('1995-01-01')
+        AND o.o_orderdate < toDate('1996-01-01')
 ),
 LowBalanceCustomers AS (
     SELECT 
@@ -63,7 +63,7 @@ SELECT
             ELSE 0 
         END) AS fulfilled_total,
     AVG(COALESCE(c.c_acctbal, 0)) AS average_low_balance,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS out_of_stock_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS out_of_stock_parts
 FROM 
     nation n
 LEFT JOIN 

@@ -30,7 +30,7 @@ SELECT
     COALESCE(SUM(l.l_extendedprice * (1 - l.l_discount)), 0) AS total_revenue,
     r.r_name AS region_name,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-    ARRAY_AGG(DISTINCT p.p_name) FILTER (WHERE p.p_size >= 10) AS large_parts
+    arrayDistinct(groupArray(assumeNotNull(p.p_name))) FILTER (WHERE p.p_size >= 10) AS large_parts
 FROM 
     TopCustomers tc
 JOIN 
@@ -48,7 +48,7 @@ LEFT JOIN
 LEFT JOIN 
     part p ON l.l_partkey = p.p_partkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' AND
+    l.l_shipdate >= toDate('1997-01-01') AND
     (l.l_returnflag = 'N' OR l.l_returnflag IS NULL)
 GROUP BY 
     tc.c_name, r.r_name

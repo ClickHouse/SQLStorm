@@ -4,9 +4,9 @@ WITH movie_details AS (
         title.id AS movie_id,
         title.title AS movie_title,
         title.production_year,
-        ARRAY_AGG(DISTINCT aka_name.name) AS aka_names,
-        ARRAY_AGG(DISTINCT keyword.keyword) AS movie_keywords,
-        ARRAY_AGG(DISTINCT company_name.name) AS production_companies
+        arrayDistinct(groupArray(assumeNotNull(aka_name.name))) AS aka_names,
+        arrayDistinct(groupArray(assumeNotNull(keyword.keyword))) AS movie_keywords,
+        arrayDistinct(groupArray(assumeNotNull(company_name.name))) AS production_companies
     FROM title
     LEFT JOIN aka_title ON title.id = aka_title.movie_id
     LEFT JOIN aka_name ON aka_title.id = aka_name.id
@@ -19,7 +19,7 @@ WITH movie_details AS (
 actor_performance AS (
     SELECT
         cast_info.movie_id,
-        ARRAY_AGG(DISTINCT name.name) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(name.name))) AS actor_names,
         SUM(CASE WHEN role_type.role = 'Lead' THEN 1 ELSE 0 END) AS lead_roles
     FROM cast_info
     JOIN name ON cast_info.person_id = name.imdb_id

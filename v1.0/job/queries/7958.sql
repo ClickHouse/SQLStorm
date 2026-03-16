@@ -2,7 +2,7 @@
 SELECT 
     t.title AS movie_title,
     a.name AS actor_name,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     AVG(CASE 
         WHEN ci.note IS NOT NULL THEN 1 
         ELSE 0 

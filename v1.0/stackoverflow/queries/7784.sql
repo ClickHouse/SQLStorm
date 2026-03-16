@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPostStats AS (
     SELECT 
@@ -46,7 +46,7 @@ EnhancedPostHistory AS (
     JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 )
 SELECT 
     tp.PostType,

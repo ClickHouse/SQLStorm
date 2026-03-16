@@ -13,7 +13,7 @@ WITH RankedSales AS (
     WHERE
         p.p_start_date_sk <= (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = cast('2002-10-01' as date))
         AND p.p_end_date_sk >= (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = cast('2002-10-01' as date))
-        AND ws.ws_sold_date_sk >= (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL '30 days')
+        AND ws.ws_sold_date_sk >= (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL 30 DAY)
     GROUP BY
         ws.ws_item_sk, ws.ws_ship_mode_sk
 ), TopRanked AS (

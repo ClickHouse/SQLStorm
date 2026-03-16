@@ -26,7 +26,7 @@ TitleKeywords AS (
     SELECT 
         m.id AS movie_id,
         COUNT(DISTINCT mk.keyword_id) AS keyword_count,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title AS m
     LEFT JOIN 

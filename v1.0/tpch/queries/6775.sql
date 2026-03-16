@@ -20,8 +20,8 @@ FROM customer c
 JOIN orders o ON c.c_custkey = o.o_custkey
 JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 JOIN supplier_chain spl ON c.c_nationkey = spl.s_nationkey
-WHERE o.o_orderdate >= DATE '1997-01-01'
-  AND o.o_orderdate < DATE '1997-12-31'
+WHERE o.o_orderdate >= toDate('1997-01-01')
+  AND o.o_orderdate < toDate('1997-12-31')
   AND l.l_shipmode = 'AIR'
 GROUP BY c.c_name, c.c_phone
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 1000

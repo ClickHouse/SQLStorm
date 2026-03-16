@@ -21,7 +21,7 @@ PopularQuestions AS (
         p.CreationDate,
         p.Score,
         COUNT(c.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.ViewCount DESC) AS PopularityRank
+        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.ViewCount DESC) AS PopularityRank
     FROM 
         Posts p
     LEFT JOIN 
@@ -35,7 +35,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        STRING_AGG(DISTINCT crt.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     INNER JOIN 

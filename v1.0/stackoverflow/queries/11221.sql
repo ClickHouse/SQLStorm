@@ -34,4 +34,4 @@ FROM
 ORDER BY 
     ups.Reputation DESC, 
     ups.TotalScore DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

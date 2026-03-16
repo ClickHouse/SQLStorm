@@ -5,7 +5,7 @@ WITH AddressStats AS (
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length,
         MIN(ca_zip) AS min_zip,
         MAX(ca_zip) AS max_zip,
-        STRING_AGG(DISTINCT ca_city, ', ') AS unique_cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS unique_cities
     FROM 
         customer_address
     GROUP BY 
@@ -16,7 +16,7 @@ CustomerStats AS (
         cd_gender,
         COUNT(*) AS customer_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_credit_rating, ', ') AS credit_ratings
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_credit_rating))), ', ') AS credit_ratings
     FROM 
         customer_demographics
     GROUP BY 
@@ -55,6 +55,6 @@ FROM
 CROSS JOIN 
     CustomerStats C
 JOIN 
-    SalesData S ON S.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
+    SalesData S ON S.d_year = toYear(cast('2002-10-01' as date))
 ORDER BY 
     A.address_count DESC, C.customer_count DESC;

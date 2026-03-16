@@ -16,7 +16,7 @@ WITH MovieDetails AS (
 KeywordDetails AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword m
     JOIN 
@@ -27,7 +27,7 @@ KeywordDetails AS (
 MovieCompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(co.name, ', ') AS companies
+        arrayStringConcat(groupArray(assumeNotNull(co.name)), ', ') AS companies
     FROM 
         movie_companies mc
     LEFT JOIN 
@@ -66,4 +66,4 @@ WHERE
     AND r.production_year BETWEEN 2000 AND 2020
 ORDER BY 
     r.rank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

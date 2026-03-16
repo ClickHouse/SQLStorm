@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
 ),
 TopUsers AS (
@@ -32,7 +32,7 @@ TopUsers AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS TagName,
+        arrayJoin(splitByString('>', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -47,11 +47,11 @@ PostHistoryStats AS (
     SELECT 
         ph.PostId, 
         COUNT(ph.Id) AS HistoryCount,
-        ARRAY_AGG(DISTINCT ph.Comment) AS Comments
+        arrayDistinct(groupArray(assumeNotNull(ph.Comment))) AS Comments
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '3 months'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
     GROUP BY 
         ph.PostId
 )
@@ -75,13 +75,13 @@ JOIN
 JOIN 
     TopUsers th ON u.Id = th.Id
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(string_to_array(p.Tags, '>'))
+    PopularTags pt ON pt.TagName = ANY(splitByString('>', p.Tags))
 LEFT JOIN 
     PostHistoryStats phs ON p.Id = phs.PostId
 WHERE 
     (th.TotalScore > 500 OR r.RankScore = 1)
     AND p.CreationDate IS NOT NULL
-    AND (p.ClosedDate IS NULL OR p.ClosedDate <= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month')
+    AND (p.ClosedDate IS NULL OR p.ClosedDate <= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
 ORDER BY 
     p.CreationDate DESC
 LIMIT 100

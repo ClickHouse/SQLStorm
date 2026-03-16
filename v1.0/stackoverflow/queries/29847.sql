@@ -6,7 +6,7 @@ WITH TagStats AS (
         COUNT(DISTINCT CASE WHEN p.PostTypeId = 2 THEN p.Id END) AS TotalAnswers,
         SUM(COALESCE(p.ViewCount, 0)) AS TotalViews,
         AVG(p.Score) AS AverageScore,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopContributors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopContributors
     FROM 
         Tags t
     JOIN 
@@ -20,8 +20,8 @@ RecentActivity AS (
     SELECT 
         p.Title,
         p.CreationDate,
-        STRING_AGG(DISTINCT c.Text, ' | ') AS RecentComments,
-        STRING_AGG(DISTINCT CONCAT(u.DisplayName, ' (', c.CreationDate, ')'), ', ') AS UsersCommented
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Text))), ' | ') AS RecentComments,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' (', c.CreationDate, ')')))), ', ') AS UsersCommented
     FROM 
         Posts p
     LEFT JOIN 
@@ -29,7 +29,7 @@ RecentActivity AS (
     LEFT JOIN 
         Users u ON u.Id = c.UserId
     WHERE 
-        p.LastActivityDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate
 )
@@ -48,7 +48,7 @@ SELECT
 FROM 
     TagStats ts
 LEFT JOIN 
-    RecentActivity ra ON ts.TagName = ANY(STRING_TO_ARRAY((SELECT STRING_AGG(DISTINCT t.TagName, ',') FROM Tags t), ','))
+    RecentActivity ra ON ts.TagName = ANY(splitByString(',', (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ',') FROM Tags t)))
 ORDER BY 
     ts.TotalQuestions DESC, ts.TotalPosts DESC
 LIMIT 10;

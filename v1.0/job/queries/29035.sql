@@ -18,7 +18,7 @@ WITH RankedMovies AS (
 TopKeywords AS (
     SELECT 
         movie_id,
-        STRING_AGG(keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords
     FROM 
         RankedMovies
     WHERE 

@@ -6,7 +6,7 @@ SELECT
     SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
     AVG(u.Reputation) AS AvgReputation,
     COUNT(DISTINCT b.Id) AS BadgeCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
 FROM 
     Users u
 LEFT JOIN 
@@ -14,11 +14,11 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON u.Id = b.UserId
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag ON TRUE
+    arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
 LEFT JOIN 
     Tags t ON TRIM(tag) = t.TagName
 WHERE 
-    u.LastAccessDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+    u.LastAccessDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
 GROUP BY 
     u.DisplayName, u.Reputation
 HAVING 

@@ -2,7 +2,7 @@
 WITH PostTags AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -43,7 +43,7 @@ TopQuestions AS (
         p.AnswerCount,
         p.CommentCount,
         p.CreationDate,
-        ARRAY_AGG(DISTINCT pt.Tag) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(pt.Tag))) AS Tags
     FROM 
         Posts p
     JOIN 

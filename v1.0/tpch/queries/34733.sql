@@ -42,7 +42,7 @@ SELECT
     c.c_name AS customer,
     SUM(lo.l_extendedprice * (1 - lo.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT sp.s_name, ', ') AS suppliers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sp.s_name))), ', ') AS suppliers,
     MAX(sp.max_supply_cost) AS max_supplier_cost,
     AVG(co.total_spent) AS avg_customer_spending
 FROM lineitem lo

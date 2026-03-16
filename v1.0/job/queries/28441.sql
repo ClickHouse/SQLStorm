@@ -4,7 +4,7 @@ WITH MovieDetails AS (
         a.id AS movie_id,
         a.title,
         a.production_year,
-        ARRAY_AGG(DISTINCT c.role_id) AS role_ids,
+        arrayDistinct(groupArray(assumeNotNull(c.role_id))) AS role_ids,
         COUNT(DISTINCT m.company_id) AS company_count
     FROM 
         aka_title a
@@ -36,12 +36,12 @@ TopMovies AS (
 SELECT 
     tm.title,
     tm.production_year,
-    ARRAY_AGG(DISTINCT ak.name) AS aka_names,
-    ARRAY_AGG(DISTINCT p.info) AS person_info 
+    arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aka_names,
+    arrayDistinct(groupArray(assumeNotNull(p.info))) AS person_info 
 FROM 
     TopMovies tm
 LEFT JOIN 
-    aka_name ak ON ak.person_id IN (SELECT UNNEST(tm.role_ids))
+    aka_name ak ON ak.person_id IN (SELECT arrayJoin(tm.role_ids))
 LEFT JOIN 
     person_info p ON ak.person_id = p.person_id
 WHERE 

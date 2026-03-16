@@ -37,7 +37,7 @@ SELECT
     COALESCE(COUNT(ws.ws_order_number), 0) AS order_total,
     MAX(i.i_current_price) AS max_price,
     COUNT(DISTINCT CASE WHEN ws.ws_ext_tax > 0 THEN ws.ws_order_number END) AS orders_with_tax,
-    STRING_AGG(DISTINCT i.i_brand, ', ') AS brands_utilized
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_brand))), ', ') AS brands_utilized
 FROM item i
 LEFT JOIN web_sales ws ON i.i_item_sk = ws.ws_item_sk
 JOIN TopItems ti ON i.i_item_sk = ti.ws_item_sk

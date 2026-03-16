@@ -14,7 +14,7 @@ WITH PostScoreSummary AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
+        P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
     GROUP BY 
         P.Id
 ),
@@ -23,7 +23,7 @@ ClosedPostAnalysis AS (
     SELECT 
         PH.PostId, 
         COUNT(*) AS CloseCount,
-        STRING_AGG(CAST(PH.CreationDate AS VARCHAR), ', ' ORDER BY PH.CreationDate) AS CloseDates,
+        arrayStringConcat(groupArray(assumeNotNull(CAST(PH.CreationDate AS VARCHAR))), ', ' ORDER BY PH.CreationDate) AS CloseDates,
         MAX(PH.CreationDate) AS LastCloseDate
     FROM 
         PostHistory PH

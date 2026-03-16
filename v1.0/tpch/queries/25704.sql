@@ -32,7 +32,7 @@ SELECT
     n.n_name AS nation_name,
     COUNT(DISTINCT sp.s_name) AS supplier_count,
     AVG(sp.price_rank) AS average_price_rank,
-    STRING_AGG(sp.p_name, ', ') AS part_names
+    arrayStringConcat(groupArray(assumeNotNull(sp.p_name)), ', ') AS part_names
 FROM 
     SupplierParts sp
 JOIN 

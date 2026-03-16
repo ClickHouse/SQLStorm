@@ -38,7 +38,7 @@ filtered_movies AS (
         mh.movie_id,
         mh.title,
         mh.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
         COUNT(DISTINCT kc.keyword) AS keyword_count
     FROM 
         movie_hierarchy AS mh

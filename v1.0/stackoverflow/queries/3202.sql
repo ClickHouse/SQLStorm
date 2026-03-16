@@ -27,7 +27,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        STRING_AGG(CASE WHEN ph.PostHistoryTypeId = 10 THEN cr.Name END, ', ') AS CloseReasons,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId = 10 THEN cr.Name END)), ', ') AS CloseReasons,
         COUNT(*) AS CloseCount
     FROM 
         PostHistory ph
@@ -55,4 +55,4 @@ WHERE
     ps.RecentPostRank <= 5
 ORDER BY 
     ps.Score DESC, ps.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

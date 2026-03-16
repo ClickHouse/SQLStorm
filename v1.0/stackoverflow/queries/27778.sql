@@ -37,7 +37,7 @@ SELECT
     t.Tags,
     COUNT(t.PostId) AS PostCount,
     AVG(u.Reputation) AS AvgOwnerReputation,
-    STRING_AGG(t.OwnerDisplayName, ', ') AS TopOwners,
+    arrayStringConcat(groupArray(assumeNotNull(t.OwnerDisplayName)), ', ') AS TopOwners,
     MAX(t.CreationDate) AS MostRecentPostDate
 FROM 
     TopPosts t

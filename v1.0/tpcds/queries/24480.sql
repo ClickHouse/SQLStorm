@@ -59,4 +59,4 @@ WHERE (ds.total_net_profit > 100 OR ds.total_store_sales > 100)
   AND (ds.total_catalog_sales IS NULL OR ds.total_catalog_sales < 50)
   AND (ds.total_quantity IS NOT NULL AND ds.total_sales IS NOT NULL)
 ORDER BY ds.total_net_profit DESC, ds.i_item_sk
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

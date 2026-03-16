@@ -35,7 +35,7 @@ SELECT r.n_name AS nation_name,
        COUNT(DISTINCT rs.s_suppkey) AS supplier_count,
        AVG(rs.total_revenue) AS avg_revenue,
        MAX(rs.p_retailprice) AS max_retail_price,
-       STRING_AGG(CONCAT(rs.p_name, ' (Rank: ', rs.supplier_rank, ')'), ', ') AS supplier_details
+       arrayStringConcat(groupArray(assumeNotNull(CONCAT(rs.p_name, ' (Rank: ', rs.supplier_rank, ')'))), ', ') AS supplier_details
 FROM rankedSuppliers rs
 JOIN supplier s ON rs.s_suppkey = s.s_suppkey
 JOIN nation r ON s.s_nationkey = r.n_nationkey

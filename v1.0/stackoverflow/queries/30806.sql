@@ -33,7 +33,7 @@ PostScoreHistory AS (
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.LastActivityDate DESC) AS RecentActivityRank,
         P.OwnerUserId
     FROM Posts P
-    WHERE P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+    WHERE P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 

@@ -22,7 +22,7 @@ MoviesWithKeywords AS (
         rm.title,
         rm.production_year,
         rm.cast_count,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM
         RankedMovies AS rm
     LEFT JOIN
@@ -48,11 +48,10 @@ SELECT
     tm.title,
     tm.production_year,
     tm.cast_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM
     TopMovies AS tm
-LEFT JOIN
-    UNNEST(tm.keywords) AS k(keyword) ON TRUE
+LEFT ARRAY JOIN tm.keywords AS keyword
 WHERE
     tm.rank <= 10
 GROUP BY

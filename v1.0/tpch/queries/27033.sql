@@ -3,7 +3,7 @@ SELECT
     CONCAT(c.c_name, ' from ', s.s_name) AS supplier_customer, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(p.p_name, ', ') AS products_sold
+    arrayStringConcat(groupArray(assumeNotNull(p.p_name)), ', ') AS products_sold
 FROM 
     customer c
 JOIN 

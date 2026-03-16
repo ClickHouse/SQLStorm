@@ -26,7 +26,7 @@ TopPosts AS (
         u.DisplayName AS OwnerName
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+    WHERE p.CreationDate >= now64(6) - INTERVAL 1 YEAR
     ORDER BY p.Score DESC
     LIMIT 10
 ),

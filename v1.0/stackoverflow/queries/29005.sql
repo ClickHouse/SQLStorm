@@ -2,7 +2,7 @@
 WITH TagArray AS (
     SELECT 
         Id AS PostId, 
-        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS Tag
     FROM 
         Posts 
     WHERE 

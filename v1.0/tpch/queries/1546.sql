@@ -57,4 +57,4 @@ GROUP BY
     p.p_name, p.p_brand
 ORDER BY 
     revenue_rank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

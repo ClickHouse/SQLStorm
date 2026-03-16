@@ -80,4 +80,4 @@ LEFT JOIN (
 ORDER BY 
     q.Reputation DESC, 
     q.Score DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -4,7 +4,7 @@ WITH MovieDetails AS (
         t.title AS movie_title,
         t.production_year,
         k.keyword AS movie_keyword,
-        STRING_AGG(CONCAT(a.name, ' (', r.role, ')'), ', ' ORDER BY ci.nr_order) AS cast_details
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.name, ' (', r.role, ')'))), ', ' ORDER BY ci.nr_order) AS cast_details
     FROM 
         title t
     JOIN 
@@ -32,7 +32,7 @@ CompanyMovieDetails AS (
         md.movie_title,
         md.production_year,
         COUNT(mc.company_id) AS total_companies,
-        STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) AS company_names
     FROM 
         MovieDetails md
     JOIN 

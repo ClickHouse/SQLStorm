@@ -41,7 +41,7 @@ SELECT
 FROM 
     customer_data cd
 LEFT JOIN 
-    filtered_dates fd ON fd.d_year = (EXTRACT(YEAR FROM DATE '2002-10-01') - 1)
+    filtered_dates fd ON fd.d_year = (toYear(toDate('2002-10-01')) - 1)
 WHERE 
     cd.row_num = 1
 AND 

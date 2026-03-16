@@ -6,19 +6,19 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         p.ViewCount,
         p.Score,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
-                UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName
+                arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName
         ) t ON true
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, u.DisplayName
 ),

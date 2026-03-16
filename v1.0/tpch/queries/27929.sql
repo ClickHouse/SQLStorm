@@ -1,7 +1,7 @@
 WITH StringAggregation AS (
     SELECT 
         p.p_partkey,
-        STRING_AGG(CONCAT(p.p_name, ' from ', s.s_name, ' (', s.s_nationkey, ') - ', p.p_comment), '; ') AS part_supplier_info
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(p.p_name, ' from ', s.s_name, ' (', s.s_nationkey, ') - ', p.p_comment))), '; ') AS part_supplier_info
     FROM 
         part p
     JOIN 

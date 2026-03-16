@@ -5,7 +5,7 @@ WITH TagStatistics AS (
         SUM(CASE WHEN pt.Name = 'Question' THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN pt.Name = 'Answer' THEN 1 ELSE 0 END) AS AnswerCount,
         AVG(u.Reputation) AS AvgUserReputation,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopUsers
     FROM 
         Tags t
     JOIN 
@@ -22,7 +22,7 @@ TagCloseReasons AS (
         p.Tags,
         ph.Comment AS CloseReason,
         ph.CreationDate,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS Moderators
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS Moderators
     FROM 
         Posts p
     JOIN 

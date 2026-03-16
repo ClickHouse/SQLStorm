@@ -3,9 +3,9 @@ WITH MovieDetails AS (
     SELECT 
         title.title AS movie_title,
         title.production_year,
-        ARRAY_AGG(DISTINCT name.name) AS cast_names,
-        ARRAY_AGG(DISTINCT keyword.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT company_name.name) AS production_companies
+        arrayDistinct(groupArray(assumeNotNull(name.name))) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(keyword.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(company_name.name))) AS production_companies
     FROM 
         title
     JOIN 

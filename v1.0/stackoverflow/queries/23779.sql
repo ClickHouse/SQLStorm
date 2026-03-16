@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '5 years' AND 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 5 YEAR AND 
         p.ViewCount IS NOT NULL
 ),
 TopUsers AS (

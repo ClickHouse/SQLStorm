@@ -6,7 +6,7 @@ WITH UserPostStats AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(COALESCE(p.ViewCount, 0)) AS TotalViews,
         SUM(COALESCE(p.Score, 0)) AS TotalScore,
-        AVG(EXTRACT(EPOCH FROM p.CreationDate AT TIME ZONE 'UTC')) AS AvgPostCreationDate
+        AVG(toUnixTimestamp(p.CreationDate AT TIME ZONE 'UTC')) AS AvgPostCreationDate
     FROM 
         Users u
     LEFT JOIN 
@@ -32,13 +32,13 @@ ClosedPostStats AS (
     SELECT 
         p.Id AS PostId,
         COUNT(ph.Id) AS ClosedHistoryCount,
-        STRING_AGG(DISTINCT c.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Name))), ', ') AS CloseReasons
     FROM 
         Posts p
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10
     LEFT JOIN 
-        CloseReasonTypes c ON (ph.Comment::text)::int = c.Id
+        CloseReasonTypes c ON (CAST(ph.Comment AS text)CAST() AS int) = c.Id
     WHERE 
         ph.PostHistoryTypeId = 10
     GROUP BY 

@@ -14,13 +14,13 @@ WITH FilteredPosts AS (
     INNER JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
         AND p.PostTypeId = 1 
         AND p.Body IS NOT NULL
 ),
 TagStats AS (
     SELECT 
-        unnest(string_to_array(Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', Tags)) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         FilteredPosts

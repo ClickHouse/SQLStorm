@@ -73,4 +73,4 @@ WHERE
     )
 ORDER BY 
     cs.customer_total_quantity DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

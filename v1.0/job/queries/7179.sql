@@ -4,7 +4,7 @@ SELECT
     t.title AS movie_title,
     c.kind AS cast_kind,
     k.keyword AS movie_keyword,
-    STRING_AGG(ci.note, ', ') AS role_notes
+    arrayStringConcat(groupArray(assumeNotNull(ci.note)), ', ') AS role_notes
 FROM 
     aka_name a
 JOIN 

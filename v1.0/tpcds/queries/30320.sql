@@ -70,7 +70,7 @@ SELECT
     SUM(c.total_profit) AS total_profit_generated,
     SUM(c.total_sold) AS total_units_sold,
     SUM(c.order_count) AS total_orders,
-    STRING_AGG(DISTINCT c.highest_credit_rating, ', ') AS unique_credit_ratings
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.highest_credit_rating))), ', ') AS unique_credit_ratings
 FROM 
     combined_summary c
 WHERE 

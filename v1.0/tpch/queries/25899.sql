@@ -20,7 +20,7 @@ JOIN
 JOIN 
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-10-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-10-31')
     AND c.c_mktsegment = 'BUILDING'
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey

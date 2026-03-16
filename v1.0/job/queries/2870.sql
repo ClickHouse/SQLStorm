@@ -14,7 +14,7 @@ MovieDetails AS (
         rm.title,
         rm.production_year,
         COALESCE(COUNT(DISTINCT ci.person_id), 0) AS cast_count,
-        COALESCE(STRING_AGG(DISTINCT p.name, ', '), '') AS cast_names
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', '), '') AS cast_names
     FROM 
         RankedMovies rm
     LEFT JOIN 
@@ -47,7 +47,7 @@ FilteredMovies AS (
 PopularKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

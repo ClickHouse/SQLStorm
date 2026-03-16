@@ -19,7 +19,7 @@ TopMovies AS (
         movie_id,
         title,
         production_year,
-        STRING_AGG(actor_name, ', ') AS actors
+        arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS actors
     FROM 
         RankedMovies
     GROUP BY 
@@ -41,7 +41,7 @@ MovieDetails AS (
     LEFT JOIN (
         SELECT 
             mk.movie_id,
-            STRING_AGG(k.keyword, ', ') AS keywords
+            arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
         FROM 
             movie_keyword mk
         JOIN 
@@ -52,7 +52,7 @@ MovieDetails AS (
     LEFT JOIN (
         SELECT 
             mi.movie_id,
-            STRING_AGG(mi.info, '; ') AS info_text
+            arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS info_text
         FROM 
             movie_info mi
         GROUP BY 

@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS RankByDate,
         COUNT(c.Id) AS CommentCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) - SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS NetVotes, 
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
     FROM 
         Posts p
     LEFT JOIN 
@@ -17,9 +17,9 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
-                unnest(string_to_array(p.Tags, '<>,>')) AS TagName
+                arrayJoin(splitByString('<>,>', p.Tags)) AS TagName
         ) t ON TRUE
     WHERE 
         p.PostTypeId IN (1, 2) 
@@ -62,4 +62,4 @@ ORDER BY
     CASE WHEN cp.ClosedDate IS NOT NULL THEN 0 ELSE 1 END, 
     rp.Score DESC,
     rp.CreationDate DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

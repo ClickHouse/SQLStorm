@@ -4,7 +4,7 @@ WITH MovieDetails AS (
         m.id AS movie_id, 
         m.title, 
         m.production_year, 
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         aka_title m
     LEFT JOIN 
@@ -59,4 +59,4 @@ WHERE
 ORDER BY 
     cd.production_year DESC, 
     cd.total_cast DESC 
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

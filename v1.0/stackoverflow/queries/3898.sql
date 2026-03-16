@@ -72,7 +72,7 @@ SELECT
     COALESCE(tp.DownVotes, 0) AS TotalDownVotes,
     CASE 
         WHEN tp.AverageViewCount IS NULL THEN 'No views available'
-        ELSE 'Average views - ' || ROUND(tp.AverageViewCount, 2)::text 
+        ELSE 'Average views - ' || ROUND(tp.AverageViewCount, 2, CAST() AS text) 
     END AS AverageViewText
 FROM 
     TopPosts tp

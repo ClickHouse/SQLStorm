@@ -19,7 +19,7 @@ WITH TaggedPosts AS (
 ),
 TagCounts AS (
     SELECT 
-        unnest(string_to_array(trim(both '<>' from Tags), '> <')) AS Tag,
+        arrayJoin(splitByString('> <', trim(both '<>' from Tags))) AS Tag,
         PostId
     FROM 
         TaggedPosts

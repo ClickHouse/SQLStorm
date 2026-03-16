@@ -76,7 +76,7 @@ SELECT
         WHEN d.customer_count IS NULL THEN 'No Customers'
         ELSE 'Customers Present'
     END AS customer_presence,
-    STRING_AGG(CONCAT(s.c_first_name, ' ', s.c_last_name), ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.c_first_name, ' ', s.c_last_name))), ', ') AS customer_names
 FROM 
     sales_performance s
 LEFT JOIN 

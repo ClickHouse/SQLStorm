@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
     MAX(o.o_totalprice) AS max_total_price,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     RANK() OVER (PARTITION BY p.p_type ORDER BY SUM(ps.ps_availqty) DESC) AS availability_rank
 FROM 
     part p

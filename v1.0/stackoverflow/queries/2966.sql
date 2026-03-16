@@ -31,7 +31,7 @@ AcceptedAnswers AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(b.Id) AS BadgeCount
     FROM 
         Badges b
@@ -73,4 +73,4 @@ WHERE
 ORDER BY 
     TotalScore DESC,
     PostCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

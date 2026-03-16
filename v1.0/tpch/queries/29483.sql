@@ -5,7 +5,7 @@ SELECT
     CONCAT('Region: ', r.r_name, ', Nation: ', n.n_name) AS location_info,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ' ORDER BY l.l_shipmode) AS shipping_methods,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ' ORDER BY l.l_shipmode) AS shipping_methods,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_discount) AS average_discount
 FROM 

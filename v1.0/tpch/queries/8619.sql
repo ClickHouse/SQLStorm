@@ -29,4 +29,4 @@ WHERE EXISTS (
       AND br.rank = 1
 )
 ORDER BY r.r_name, rs.total_cost DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

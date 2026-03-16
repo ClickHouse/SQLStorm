@@ -25,8 +25,8 @@ FilteredAddresses AS (
 SELECT 
     fa.ca_state,
     COUNT(*) AS address_count,
-    STRING_AGG(fa.ca_city, ', ') AS cities_in_state,
-    STRING_AGG(fa.ca_street_name, '; ') AS street_names
+    arrayStringConcat(groupArray(assumeNotNull(fa.ca_city)), ', ') AS cities_in_state,
+    arrayStringConcat(groupArray(assumeNotNull(fa.ca_street_name)), '; ') AS street_names
 FROM 
     FilteredAddresses fa
 GROUP BY 

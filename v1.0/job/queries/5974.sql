@@ -4,7 +4,7 @@ SELECT
     t.production_year,
     a.name AS actor_name,
     ct.kind AS cast_type,
-    STRING_AGG(k.keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
     c.name AS company_name,
     ct2.kind AS company_type
 FROM 

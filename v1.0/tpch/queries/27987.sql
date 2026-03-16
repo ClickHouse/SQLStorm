@@ -4,7 +4,7 @@ SELECT
     CONCAT(s.s_name, ' (', r.r_name, ')') AS supplier_region,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT ps.ps_comment, '; ') AS unique_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ps.ps_comment))), '; ') AS unique_comments
 FROM 
     part p
 JOIN 
@@ -20,7 +20,7 @@ JOIN
 JOIN 
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
-    p.p_size > 10 AND o.o_orderdate >= DATE '1996-01-01'
+    p.p_size > 10 AND o.o_orderdate >= toDate('1996-01-01')
 GROUP BY 
     p.p_name, s.s_name, r.r_name
 HAVING 

@@ -51,4 +51,4 @@ ORDER BY
     fm.production_year DESC, 
     fm.cast_count DESC
 OFFSET 0 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

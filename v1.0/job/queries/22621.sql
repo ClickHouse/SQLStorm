@@ -41,7 +41,7 @@ SELECT
     ta.name AS actor_name,
     COUNT(DISTINCT cm.movie_id) AS total_movies,
     SUM(CASE WHEN cm.company_type = 'Distributor' THEN 1 ELSE 0 END) AS distributor_count,
-    STRING_AGG(DISTINCT cm.company_name, ', ') AS companies_involved
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cm.company_name))), ', ') AS companies_involved
 FROM RankedTitles tt
 JOIN cast_info ci ON ci.movie_id = tt.title_id
 JOIN TopActors ta ON ci.person_id = ta.person_id

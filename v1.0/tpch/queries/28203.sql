@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(s.s_acctbal) AS average_supplier_account_balance,
     COUNT(DISTINCT c.c_custkey) AS number_of_customers,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     r.r_name AS region_name
 FROM 
     supplier s

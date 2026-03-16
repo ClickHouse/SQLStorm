@@ -21,7 +21,7 @@ WITH formatted_addresses AS (
 ), address_by_country AS (
     SELECT 
         ca_country,
-        STRING_AGG(full_address, '; ') AS all_addresses
+        arrayStringConcat(groupArray(assumeNotNull(full_address)), '; ') AS all_addresses
     FROM 
         formatted_addresses
     GROUP BY 

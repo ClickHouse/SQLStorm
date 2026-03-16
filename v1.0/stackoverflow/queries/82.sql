@@ -20,7 +20,7 @@ PostDetails AS (
         COALESCE(P.AcceptedAnswerId, -1) AS AcceptedAnswerId
     FROM Posts P
     LEFT JOIN UserScores US ON P.OwnerUserId = US.UserId
-    WHERE P.PostTypeId = 1 AND P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE P.PostTypeId = 1 AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 AnswerCounts AS (
     SELECT 
@@ -34,7 +34,7 @@ UserBadges AS (
     SELECT 
         B.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM Badges B
     GROUP BY B.UserId
 )

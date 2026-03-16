@@ -12,7 +12,7 @@ PostScore AS (
         COALESCE(MAX(b.Class), 0) AS MaxBadgeClass 
     FROM Posts p
     LEFT JOIN Badges b ON p.OwnerUserId = b.UserId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY p.Id, p.OwnerUserId, p.Score
 ),
 PostWithUserStats AS (
@@ -41,11 +41,11 @@ SELECT
         WHEN rp.AcceptedAnswerId IS NOT NULL THEN 'Accepted'
         ELSE 'Not Accepted'
     END AS AnswerStatus,
-    STRING_AGG(DISTINCT tag.TagName, ', ') AS TagsList
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag.TagName))), ', ') AS TagsList
 FROM RankedPosts rp
-LEFT JOIN LATERAL (
+LEFT JOIN (
     SELECT 
-        unnest(string_to_array(rp.Tags, '>,<')) AS TagName
+        arrayJoin(splitByString('>,<', rp.Tags)) AS TagName
 ) AS tag ON TRUE
 WHERE rp.PostRank <= 10 
 GROUP BY 

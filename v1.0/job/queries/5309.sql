@@ -2,7 +2,7 @@
 SELECT 
     t.title AS movie_title,
     a.name AS actor_name,
-    STRING_AGG(k.keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
     ct.kind AS company_type,
     mi.info AS additional_info
 FROM 

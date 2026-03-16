@@ -16,7 +16,7 @@ CastRoles AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast, 
-        ARRAY_AGG(DISTINCT rt.role) AS roles
+        arrayDistinct(groupArray(assumeNotNull(rt.role))) AS roles
     FROM 
         cast_info ci
     JOIN 

@@ -3,14 +3,14 @@ WITH TagStatistics AS (
     SELECT 
         LOWER(TRIM(TAG)) AS NormalizedTag,
         COUNT(*) AS TagCount,
-        STRING_AGG(DISTINCT p.Title, ', ') AS PostTitles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), ', ') AS PostTitles,
         SUM(CASE WHEN p.ViewCount > 1000 THEN 1 ELSE 0 END) AS HighViewCountPosts,
         AVG(p.Score) AS AverageScore,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopUsers
     FROM 
         Posts p
     JOIN 
-        LATERAL UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS TAG ON TRUE
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS TAG ON TRUE
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 

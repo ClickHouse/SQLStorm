@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, u.DisplayName
 ), FilteredPosts AS (
@@ -64,7 +64,7 @@ LEFT JOIN (
         u.Id
 ) AS UserBadges ON UserBadges.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = fp.PostId)
 WHERE 
-    fp.CreationDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' AND TIMESTAMP '2024-10-01 12:34:56'
+    fp.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY AND toDateTime64('2024-10-01 12:34:56', 6)
 ORDER BY 
     fp.NetScore DESC, 
     fp.ViewCount DESC

@@ -59,7 +59,7 @@ SELECT
         ELSE 'Mixed Votes'
     END AS VoteStatus,
     MAX(CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.CreationDate END) AS LastCloseDate,
-    STRING_AGG(DISTINCT pht.Name, ', ') AS PostHistoryTypes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS PostHistoryTypes
 FROM
     TopQuestions tq
 LEFT JOIN 

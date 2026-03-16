@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS SupplierCount, 
     SUM(CASE WHEN p.p_size > 10 THEN ps.ps_availqty ELSE 0 END) AS TotalAvailableQtyOver10,
     SUM(ps.ps_supplycost * ps.ps_availqty) AS TotalSupplyCost, 
-    STRING_AGG(DISTINCT p.p_name, ', ') AS PartNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS PartNames
 FROM 
     nation n
 JOIN 

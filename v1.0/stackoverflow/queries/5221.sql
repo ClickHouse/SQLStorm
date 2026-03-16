@@ -14,12 +14,12 @@ WITH RecentPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 UserBadges AS (
     SELECT 
         b.UserId,
-        ARRAY_AGG(b.Name) AS BadgeNames
+        groupArray(assumeNotNull(b.Name)) AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -35,7 +35,7 @@ PostHistoryLog AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     rp.PostId,
@@ -52,7 +52,7 @@ SELECT
 FROM 
     RecentPosts rp
 LEFT JOIN 
-    UserBadges ub ON rp.OwnerDisplayName = ub.UserId::varchar
+    UserBadges ub ON rp.OwnerDisplayName = CAST(ub.UserId AS varchar)
 ORDER BY 
     rp.Score DESC, 
     rp.ViewCount DESC 

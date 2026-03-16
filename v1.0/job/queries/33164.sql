@@ -16,7 +16,7 @@ WITH RECURSIVE ActorHierarchy AS (
 ),
 MovieDetails AS (
     SELECT t.id AS movie_id, t.title, t.production_year, COUNT(c.person_id) AS actor_count, 
-           STRING_AGG(DISTINCT CONCAT(a.name, ' (', r.role, ')'), ', ') AS actors
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', r.role, ')')))), ', ') AS actors
     FROM aka_title t
     LEFT JOIN cast_info c ON t.id = c.movie_id
     LEFT JOIN aka_name a ON c.person_id = a.person_id
@@ -25,7 +25,7 @@ MovieDetails AS (
     GROUP BY t.id, t.title, t.production_year
 ),
 MovieKeywords AS (
-    SELECT m.movie_id, STRING_AGG(k.keyword, ', ') AS keywords
+    SELECT m.movie_id, arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword m
     JOIN keyword k ON m.keyword_id = k.id
     GROUP BY m.movie_id

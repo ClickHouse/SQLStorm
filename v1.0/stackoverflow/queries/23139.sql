@@ -33,7 +33,7 @@ EncouragedUsers AS (
 UserBadges AS (
     SELECT 
         B.UserId,
-        STRING_AGG(B.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames,
         COUNT(B.Id) AS BadgeCount
     FROM Badges B
     GROUP BY B.UserId
@@ -47,7 +47,7 @@ PopularPosts AS (
         RANK() OVER (PARTITION BY P.OwnerUserId ORDER BY P.ViewCount DESC) AS PostRank
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     GROUP BY P.OwnerUserId, P.Id, P.Title
 )
 SELECT 

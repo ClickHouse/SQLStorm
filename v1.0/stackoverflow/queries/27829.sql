@@ -21,13 +21,13 @@ TopTaggedPosts AS (
         p.Id,
         p.Title,
         p.Tags,
-        STRING_AGG(DISTINCT LEFT(t.TagName, 20), ', ') AS TopTags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(LEFT(t.TagName, 20)))), ', ') AS TopTags
     FROM 
         Posts p
     JOIN 
         Tags t ON POSITION(t.TagName IN p.Tags) > 0
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Tags
 ),

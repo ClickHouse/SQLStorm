@@ -25,7 +25,7 @@ RankedCustomers AS (
 SELECT r.r_name,
        COUNT(DISTINCT n.n_nationkey) AS nation_count,
        SUM(COALESCE(sc.total_supply_cost, 0)) AS total_cost,
-       STRING_AGG(DISTINCT cust.c_name || ' (Total: ' || cust.total_spent || ', Orders: ' || cust.order_count || ')', '; ') AS customer_info
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cust.c_name || ' (Total: ' || cust.total_spent || ', Orders: ' || cust.order_count || ')'))), '; ') AS customer_info
 FROM region r
 JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN (

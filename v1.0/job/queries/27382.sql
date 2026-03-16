@@ -3,7 +3,7 @@ WITH MovieRankings AS (
         a.title AS MovieTitle,
         a.production_year AS ProductionYear,
         COUNT(c.person_id) AS CastCount,
-        ARRAY_AGG(DISTINCT ak.name) AS ActorNames,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS ActorNames,
         MAX(CASE WHEN mi.info_type_id = 1 THEN mi.info END) AS Genre,
         MAX(CASE WHEN mi.info_type_id = 2 THEN mi.info END) AS Description
     FROM 

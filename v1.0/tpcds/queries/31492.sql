@@ -54,4 +54,4 @@ WHERE
     ai.ca_city IS NOT NULL
 ORDER BY 
     fs.total_profit DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -4,7 +4,7 @@ WITH AddressAnalysis AS (
         ca_city,
         ca_state,
         COUNT(DISTINCT c_customer_sk) AS customer_count,
-        STRING_AGG(CONCAT(c_first_name, ' ', c_last_name), ', ' ORDER BY c_last_name) AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name))), ', ' ORDER BY c_last_name) AS customer_names
     FROM 
         customer_address 
     JOIN 
@@ -17,7 +17,7 @@ DemographicAnalysis AS (
         cd_gender,
         cd_marital_status,
         SUM(cd_dep_count) AS total_dependents,
-        STRING_AGG(cd_education_status, ', ' ORDER BY cd_education_status) AS education_levels
+        arrayStringConcat(groupArray(assumeNotNull(cd_education_status)), ', ' ORDER BY cd_education_status) AS education_levels
     FROM 
         customer_demographics 
     JOIN 

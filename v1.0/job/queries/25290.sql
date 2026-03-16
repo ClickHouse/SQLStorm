@@ -41,8 +41,8 @@ SELECT
     actor_name,
     actor_gender,
     actor_order,
-    STRING_AGG(movie_keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT movie_info, '; ') AS additional_info
+    arrayStringConcat(groupArray(assumeNotNull(movie_keyword)), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_info))), '; ') AS additional_info
 FROM 
     movie_details
 GROUP BY 

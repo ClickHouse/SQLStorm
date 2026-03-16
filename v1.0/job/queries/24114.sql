@@ -56,7 +56,7 @@ SELECT
     cd.production_year,
     COALESCE(cd.company_name, 'Independent') AS preferred_company,
     COUNT(cd.role) AS total_roles,
-    STRING_AGG(DISTINCT cd.role, ', ') AS role_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.role))), ', ') AS role_list
 FROM 
     CombinedData cd
 WHERE 

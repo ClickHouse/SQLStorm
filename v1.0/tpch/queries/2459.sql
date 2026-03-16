@@ -61,4 +61,4 @@ WHERE
     AND (pd.p_brand LIKE 'Brand%' OR ps.total_available_qty IS NULL)
 ORDER BY
     rank, cs.total_spent DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

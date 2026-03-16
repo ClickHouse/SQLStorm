@@ -50,7 +50,7 @@ FinalResults AS (
         m.movie_id,
         m.movie_title,
         m.production_year,
-        STRING_AGG(DISTINCT m.movie_keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.movie_keyword))), ', ') AS keywords,
         AVG(m.distinct_cast_count) AS avg_distinct_cast_per_role
     FROM 
         MoviesWithPopularRoles m

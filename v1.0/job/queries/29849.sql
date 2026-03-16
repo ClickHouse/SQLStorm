@@ -35,8 +35,8 @@ MovieDetails AS (
         fm.movie_id,
         fm.title,
         fm.production_year,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
-        STRING_AGG(DISTINCT c.kind, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_types
     FROM 
         FilteredMovies AS fm
     LEFT JOIN 

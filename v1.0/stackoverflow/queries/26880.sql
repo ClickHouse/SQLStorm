@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 
 PopularTags AS (
@@ -52,7 +52,7 @@ PostScoreAnalysis AS (
     JOIN 
         PostTypes pt ON pt.Id = rp.PostTypeId
     JOIN 
-        UNNEST(STRING_TO_ARRAY(rp.Body, ' ')) AS word ON LOWER(word) NOT IN ('the', 'is', 'and', 'or', 'to', 'of', 'in')  
+        arrayJoin(splitByString(' ', rp.Body)) AS word ON LOWER(word) NOT IN ('the', 'is', 'and', 'or', 'to', 'of', 'in')  
     JOIN 
         PopularTags t ON t.TagName LIKE '%' || word || '%'
 )
@@ -63,7 +63,7 @@ SELECT
     p.Score,
     p.AnswerCount,
     p.PostCategory,
-    STRING_AGG(DISTINCT p.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.TagName))), ', ') AS AssociatedTags
 FROM 
     PostScoreAnalysis p
 GROUP BY 

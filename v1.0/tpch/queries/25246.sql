@@ -7,7 +7,7 @@ WITH SupplierParts AS (
 ),
 AggregateInfo AS (
     SELECT s_name, COUNT(*) AS total_parts, SUM(ps_supplycost) AS total_cost,
-           STRING_AGG(supplier_part_info, ', ') AS part_details
+           arrayStringConcat(groupArray(assumeNotNull(supplier_part_info)), ', ') AS part_details
     FROM SupplierParts
     GROUP BY s_name
 )

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
@@ -28,12 +28,12 @@ ClosedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(tags, '>')) AS Tag,
+        arrayJoin(splitByString('>', tags)) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
     GROUP BY 
-        unnest(string_to_array(tags, '>'))
+        arrayJoin(splitByString('>', tags))
     ORDER BY 
         TagCount DESC
 )
@@ -52,7 +52,7 @@ FROM
 LEFT JOIN 
     ClosedPosts cp ON rp.PostId = cp.PostId AND cp.CloseRank = 1
 LEFT JOIN 
-    PopularTags pt ON pt.Tag = ANY(string_to_array(rp.Tags, '>'))
+    PopularTags pt ON pt.Tag = ANY(splitByString('>', rp.Tags))
 WHERE 
     rp.PostRank <= 5
     AND (rp.OwnerReputation IS NULL OR rp.OwnerReputation > 0)

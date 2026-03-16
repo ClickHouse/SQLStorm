@@ -31,7 +31,7 @@ Genres AS (
 ActorGenreCounts AS (
     SELECT 
         at.actor_name,
-        ARRAY_AGG(DISTINCT g.genre) AS genres,
+        arrayDistinct(groupArray(assumeNotNull(g.genre))) AS genres,
         COUNT(DISTINCT g.genre) AS genre_count
     FROM 
         ActorTitles AS at

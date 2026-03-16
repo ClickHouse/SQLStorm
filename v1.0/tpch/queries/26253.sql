@@ -5,7 +5,7 @@ WITH SupplierStatistics AS (
         n.n_name AS nation_name,
         COUNT(DISTINCT ps.ps_partkey) AS part_count,
         SUM(ps.ps_supplycost) AS total_supply_cost,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
     FROM 
         supplier s
     JOIN 

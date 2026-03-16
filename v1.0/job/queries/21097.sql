@@ -13,7 +13,7 @@ WITH RankedTitles AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ' ORDER BY k.keyword) AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ' ORDER BY k.keyword) AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -45,7 +45,7 @@ MoviesWithCompleteInfo AS (
     LEFT JOIN (
         SELECT 
             mc.movie_id,
-            STRING_AGG(cn.name, ', ' ORDER BY cn.name) AS company_names
+            arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ' ORDER BY cn.name) AS company_names
         FROM 
             movie_companies mc
         JOIN 

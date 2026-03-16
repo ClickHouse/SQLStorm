@@ -7,8 +7,8 @@ SELECT
         WHEN l.l_returnflag = 'R' THEN l.l_quantity 
         ELSE 0 
     END) AS total_returned_quantity,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_served
 FROM 
     supplier s
 JOIN 

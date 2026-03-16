@@ -5,7 +5,7 @@ WITH RankedTitles AS (
         t.title AS movie_title, 
         t.production_year,
         COUNT(DISTINCT a.id) AS actor_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM 
         aka_title t
     JOIN 

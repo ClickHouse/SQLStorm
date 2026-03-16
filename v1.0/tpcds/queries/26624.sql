@@ -3,7 +3,7 @@ WITH AddressDetails AS (
     SELECT 
         ca_state, 
         ca_city, 
-        STRING_AGG(CONCAT(c_first_name, ' ', c_last_name), ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name))), ', ') AS customer_names
     FROM 
         customer_address ca
     JOIN 

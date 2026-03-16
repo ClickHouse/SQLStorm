@@ -36,7 +36,7 @@ SELECT
     END AS customer_status,
     COUNT(DISTINCT r.ws_order_number) AS total_orders,
     SUM(COALESCE(ws.ws_ext_discount_amt, 0)) AS total_discount,
-    STRING_AGG(DISTINCT cd.cd_gender, ', ') AS gender_distribution
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_gender))), ', ') AS gender_distribution
 FROM 
     RankedSales r
 LEFT JOIN 

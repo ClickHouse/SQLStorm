@@ -18,7 +18,7 @@ RegionNation AS (
     SELECT 
         n.n_name AS nation_name,
         r.r_name AS region_name,
-        STRING_AGG(sb.name_brand_concat, '; ') AS combined_strings
+        arrayStringConcat(groupArray(assumeNotNull(sb.name_brand_concat)), '; ') AS combined_strings
     FROM 
         StringBenchmarks sb
     JOIN 

@@ -5,7 +5,7 @@ WITH SupplierParts AS (
         p.p_type AS part_type,
         COUNT(ps.ps_availqty) AS total_available,
         SUM(ps.ps_supplycost) AS total_cost,
-        STRING_AGG(DISTINCT p.p_comment, '; ') AS combined_comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS combined_comments
     FROM 
         supplier s
     JOIN 

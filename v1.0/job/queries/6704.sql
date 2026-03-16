@@ -2,8 +2,8 @@
 SELECT 
     t.title AS movie_title,
     COUNT(DISTINCT ci.person_id) AS num_cast,
-    STRING_AGG(DISTINCT ak.name, ',') AS aka_names,
-    STRING_AGG(DISTINCT k.keyword, ',') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ',') AS aka_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',') AS keywords,
     c.name AS company_name,
     cp.kind AS company_type,
     MIN(mi.info) AS first_release_date

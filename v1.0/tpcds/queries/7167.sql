@@ -44,4 +44,4 @@ JOIN
     demographics_summary ds ON ss.total_net_sales > 5000 
 ORDER BY 
     ss.total_net_sales DESC, ds.unique_customers DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

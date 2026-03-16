@@ -37,7 +37,7 @@ MovieStatistics AS (
         mh.movie_id,
         mh.movie_title,
         mh.production_year,
-        ARRAY_AGG(DISTINCT ar.actor_name) AS all_actors,
+        arrayDistinct(groupArray(assumeNotNull(ar.actor_name))) AS all_actors,
         SUM(COALESCE(ar.appearance_count, 0)) AS total_appearances
     FROM 
         MovieHierarchy mh
@@ -57,7 +57,7 @@ SELECT
         WHEN ms.total_appearances BETWEEN 20 AND 50 THEN 'Moderately Featured'
         ELSE 'Rarely Featured'
     END AS appearance_category,
-    ARRAY_LENGTH(ms.all_actors, 1) AS actor_count,
+    length(ms.all_actors, 1) AS actor_count,
     (SELECT COUNT(*) FROM aka_title WHERE production_year = ms.production_year) AS same_year_movie_count,
     (SELECT COALESCE(MAX(production_year), -1) FROM aka_title WHERE production_year < ms.production_year) AS last_year_before
 FROM 

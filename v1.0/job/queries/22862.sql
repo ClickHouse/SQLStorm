@@ -10,7 +10,7 @@ WITH RankedTitles AS (
 TitleKeyword AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id
@@ -19,7 +19,7 @@ PersonRoles AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.role_id) AS role_count,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS role_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS role_types
     FROM cast_info ci
     JOIN comp_cast_type ct ON ci.person_role_id = ct.id
     GROUP BY ci.movie_id
@@ -49,7 +49,7 @@ SELECT
         WHEN fm.role_count = 0 THEN 'No Cast'
         ELSE 'Standard Cast'
     END AS cast_category,
-    ARRAY_AGG(DISTINCT a.name) AS actors
+    arrayDistinct(groupArray(assumeNotNull(a.name))) AS actors
 FROM FilteredMovies fm
 JOIN cast_info ci ON fm.movie_id = ci.movie_id
 JOIN aka_name a ON ci.person_id = a.person_id

@@ -26,7 +26,7 @@ actor_movies AS (
 )
 SELECT 
     a.name,
-    ARRAY_AGG(DISTINCT am.title) AS titles,
+    arrayDistinct(groupArray(assumeNotNull(am.title))) AS titles,
     AVG(mo.movie_count) AS avg_movies_per_actor,
     (SELECT COUNT(*) FROM ranked_movies rm WHERE rm.title_rank <= 5) AS top_ranked_movies_count
 FROM 

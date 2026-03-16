@@ -23,7 +23,7 @@ RecentPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate > CURRENT_DATE - INTERVAL '30 days'
+        P.CreationDate > CURRENT_DATE - INTERVAL 30 DAY
 )
 SELECT 
     U.DisplayName,

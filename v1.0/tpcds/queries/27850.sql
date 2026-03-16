@@ -12,7 +12,7 @@ SELECT
             ELSE 0 
         END) AS Female_Customers,
     AVG(cd_purchase_estimate) AS Avg_Purchase_Estimate,
-    STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), ', ') AS Customer_Names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), ', ') AS Customer_Names
 FROM 
     customer_address ca
 JOIN 

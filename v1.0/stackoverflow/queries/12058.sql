@@ -20,9 +20,9 @@ JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 WHERE 
-    p.CreationDate >= CURRENT_DATE - INTERVAL '6 month' 
+    p.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH 
 GROUP BY 
     p.Id, p.Title, p.CreationDate, u.Id, u.DisplayName, u.Reputation, p.ViewCount, p.Score, p.AnswerCount, p.CommentCount
 ORDER BY 
     p.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

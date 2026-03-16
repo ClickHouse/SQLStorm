@@ -51,7 +51,7 @@ AggregatedSales AS (
         dd.formatted_date,
         SUM(sd.ws_quantity) AS total_quantity,
         SUM(sd.ws_net_profit) AS total_profit,
-        ARRAY_AGG(DISTINCT sd.shipping_method) AS shipping_methods
+        arrayDistinct(groupArray(assumeNotNull(sd.shipping_method))) AS shipping_methods
     FROM CustomerDetails cd
     JOIN AddressDetails ad ON cd.c_customer_sk = ad.ca_address_sk
     JOIN SalesDetails sd ON cd.c_customer_sk = sd.ws_order_number

@@ -13,7 +13,7 @@ WITH RankedTitles AS (
 MovieDetails AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT ak.name || ' (' || r.role || ')', ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name || ' (' || r.role || ')'))), ', ') AS cast_names,
         COUNT(DISTINCT ak.id) AS actor_count
     FROM 
         cast_info c
@@ -27,7 +27,7 @@ MovieDetails AS (
 KeywordDetails AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

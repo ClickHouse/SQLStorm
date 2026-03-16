@@ -9,7 +9,7 @@ WITH UserStats AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(p.ViewCount) AS TotalViews,
         SUM(p.Score) AS TotalScore,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)) / 60) AS AvgResponseTime
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate)) / 60) AS AvgResponseTime
     FROM 
         Users u
     LEFT JOIN 
@@ -67,4 +67,4 @@ LEFT JOIN
     PostActivity pa ON us.UserId = pa.OwnerUserId
 ORDER BY 
     us.Reputation DESC, us.TotalPosts DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

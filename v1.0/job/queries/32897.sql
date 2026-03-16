@@ -33,7 +33,7 @@ SELECT
     m.production_year,
     c.name AS company_name,
     COUNT(DISTINCT ci.person_id) AS total_cast,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
     RANK() OVER (PARTITION BY m.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS cast_rank,
     CASE 
         WHEN COUNT(DISTINCT ci.person_id) > 100 THEN 'Large Cast'

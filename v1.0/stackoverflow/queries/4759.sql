@@ -25,7 +25,7 @@ PostStats AS (
         p.OwnerUserId AS UserId,
         COUNT(CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 END) AS AcceptedAnswerCount,
         COUNT(p.Id) AS TotalPosts,
-        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) / 3600) AS AvgPostAgeHours
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 3600) AS AvgPostAgeHours
     FROM 
         Posts p
     GROUP BY 

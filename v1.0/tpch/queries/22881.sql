@@ -83,7 +83,7 @@ LEFT JOIN
     part_aggregation pa ON pa.p_partkey = (
         SELECT p.p_partkey
         FROM part p
-        ORDER BY RANDOM() 
+        ORDER BY rand() 
         LIMIT 1
     )
 LEFT JOIN 

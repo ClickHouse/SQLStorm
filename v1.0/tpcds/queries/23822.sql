@@ -60,4 +60,4 @@ HAVING COUNT(DISTINCT c.c_customer_id) > 1
    OR COALESCE(SUM(RS.ws_sales_price * RS.ws_quantity), 0) > 1000
    OR MAX(PC.promo_count) > 2
 ORDER BY total_sales DESC, customer_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

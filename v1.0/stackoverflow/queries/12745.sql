@@ -17,7 +17,7 @@ WITH PostStats AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
     GROUP BY 
         p.Id, p.Title, p.CreationDate
 ),

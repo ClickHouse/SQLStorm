@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     MAX(l.l_extendedprice) AS max_price,
     MIN(l.l_discount) AS min_discount,
-    STRING_AGG(DISTINCT c.c_name, '; ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), '; ') AS customer_names,
     r.r_name AS region_name
 FROM 
     part p

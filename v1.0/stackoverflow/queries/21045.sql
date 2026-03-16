@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -65,7 +65,7 @@ PostMetrics AS (
 )
 SELECT 
     pm.*,
-    (SELECT STRING_AGG(t.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
      FROM Tags t 
      JOIN Posts p ON p.Id = pm.PostId 
      WHERE t.ExcerptPostId = p.Id) AS Tags

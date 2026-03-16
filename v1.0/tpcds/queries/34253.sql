@@ -32,7 +32,7 @@ SELECT
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
     MAX(total_profit) AS max_store_profit,
     MIN(total_profit) AS min_store_profit,
-    STRING_AGG(DISTINCT c_first_name || ' ' || c_last_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c_first_name || ' ' || c_last_name))), ', ') AS customer_names
 FROM 
     customer_address ca
 JOIN 

@@ -3,8 +3,8 @@ WITH RankedMovies AS (
     SELECT 
         t.title AS movie_title,
         t.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT c.role_id::TEXT, ', ') AS role_ids,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.role_id AS TEXT)))), ', ') AS role_ids,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.production_year DESC, t.title) AS movie_rank
     FROM 
         aka_title t

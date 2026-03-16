@@ -4,7 +4,7 @@ SELECT
     s.s_name AS supplier_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', c.c_acctbal, ')'), '; ') AS customer_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', c.c_acctbal, ')')))), '; ') AS customer_list
 FROM 
     part p
 JOIN 
@@ -19,7 +19,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     p.p_retailprice > 100
-    AND l.l_shipdate >= DATE '1997-01-01' 
+    AND l.l_shipdate >= toDate('1997-01-01') 
     AND o.o_orderstatus = 'O'
 GROUP BY 
     p.p_name, p.p_retailprice, s.s_name

@@ -16,13 +16,13 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND P.Score >= 0
 ),
 UserWithBadges AS (
     SELECT 
         U.Id AS UserId,
-        ARRAY_AGG(B.Name) AS BadgeNames,
+        groupArray(assumeNotNull(B.Name)) AS BadgeNames,
         COUNT(B.Id) AS BadgeCount
     FROM 
         Users U
@@ -36,11 +36,11 @@ PostHistoryChanges AS (
         PH.PostId,
         PH.PostHistoryTypeId,
         COUNT(*) AS ChangeCount,
-        ARRAY_AGG(DISTINCT PH.CreationDate ORDER BY PH.CreationDate) AS ChangeTimestamps
+        arrayDistinct(groupArray(assumeNotNull(PH.CreationDate ORDER BY PH.CreationDate))) AS ChangeTimestamps
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         PH.PostId, PH.PostHistoryTypeId
 )

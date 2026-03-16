@@ -3,8 +3,8 @@ WITH AddressStats AS (
     SELECT 
         ca_state,
         COUNT(ca_address_sk) AS address_count,
-        STRING_AGG(ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT ca_street_type, ', ') AS street_types
+        arrayStringConcat(groupArray(assumeNotNull(ca_city)), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_type))), ', ') AS street_types
     FROM 
         customer_address
     GROUP BY 
@@ -49,7 +49,7 @@ FinalReport AS (
     LEFT JOIN 
         DemographicsStats d ON a.ca_state IN (SELECT DISTINCT ca_state FROM customer_address)
     LEFT JOIN 
-        SalesStats s ON s.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
+        SalesStats s ON s.d_year = toYear(toDate('2002-10-01'))
 )
 SELECT 
     * 

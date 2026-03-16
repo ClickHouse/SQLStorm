@@ -70,4 +70,4 @@ JOIN HighValueCustomers H ON SC.ws_item_sk IN (
     )
 )
 ORDER BY SC.total_sales DESC, SC.return_count DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Users u ON u.Id = p.OwnerUserId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 TopPosts AS (
     SELECT 

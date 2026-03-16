@@ -6,7 +6,7 @@ SELECT
     ca.ca_state,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid) AS total_spent,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS used_promotions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS used_promotions,
     CASE 
         WHEN COUNT(DISTINCT ws.ws_order_number) > 0 THEN 
             ROUND(SUM(ws.ws_net_paid) / COUNT(DISTINCT ws.ws_order_number), 2)

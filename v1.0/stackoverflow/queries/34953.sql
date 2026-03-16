@@ -8,11 +8,11 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        LATERAL (SELECT UNNEST(string_to_array(p.Tags, '>')) AS tag) AS tag ON tag IS NOT NULL
+        (SELECT arrayJoin(splitByString('>', p.Tags)) AS tag) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 
@@ -53,7 +53,7 @@ SELECT
     rp.Score,
     rp.Tags,
     COALESCE(rc.Text, 'No comments') AS RecentComment,
-    COALESCE(rc.CreationDate::TEXT, 'N/A') AS CommentDate
+    COALESCE(CAST(rc.CreationDate AS TEXT), 'N/A') AS CommentDate
 FROM 
     UserReputation up
 JOIN 

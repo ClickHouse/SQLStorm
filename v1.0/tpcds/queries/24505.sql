@@ -37,7 +37,7 @@ WITH RECURSIVE HierarchicalCTE AS (
 SELECT 
     m.c_customer_id,
     m.ca_city,
-    STRING_AGG(DISTINCT m.cd_gender || ' ' || m.cd_marital_status, ', ') AS demographics,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.cd_gender || ' ' || m.cd_marital_status))), ', ') AS demographics,
     COUNT(DISTINCT CASE WHEN m.rn <= 3 THEN m.c_customer_id END) AS top_customers,
     COALESCE(SUM(ws.ws_net_profit), 0) AS total_profit,
     COUNT(DISTINCT CASE WHEN ws.ws_ship_date_sk IS NULL OR ws.ws_net_paid = 0 THEN ws.ws_order_number END) AS total_returns
@@ -51,4 +51,4 @@ HAVING
     COUNT(DISTINCT m.c_customer_id) > 1
 ORDER BY 
     total_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

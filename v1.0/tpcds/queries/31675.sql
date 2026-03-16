@@ -25,7 +25,7 @@ SalesData AS (
         ws.ws_order_number,
         ws.ws_quantity,
         ws.ws_net_profit,
-        EXTRACT(YEAR FROM d.d_date) AS sale_year,
+        toYear(d.d_date) AS sale_year,
         i.i_item_desc
     FROM 
         web_sales ws
@@ -67,7 +67,7 @@ SELECT
 FROM 
     CustomerHierarchy ch
 JOIN 
-    TopProfitableYears tp ON tp.sale_year = EXTRACT(YEAR FROM DATE '2002-10-01') - ch.level
+    TopProfitableYears tp ON tp.sale_year = toYear(toDate('2002-10-01')) - ch.level
 WHERE 
     ch.level < 5
 ORDER BY 

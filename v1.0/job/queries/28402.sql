@@ -44,7 +44,7 @@ SELECT
     ta.actor_name,
     ta.avg_co_stars_over_all_movies,
     COUNT(DISTINCT tm.movie_title) AS total_movies,
-    STRING_AGG(DISTINCT tm.movie_title, ', ') AS movie_titles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tm.movie_title))), ', ') AS movie_titles
 FROM 
     TopActors ta
 JOIN 

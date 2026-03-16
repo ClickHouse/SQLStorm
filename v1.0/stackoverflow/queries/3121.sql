@@ -23,7 +23,7 @@ PostSummary AS (
         COUNT(p.Id) AS TotalPosts,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionsCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswersCount,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgPostAgeInSeconds
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgPostAgeInSeconds
     FROM 
         Posts p
     GROUP BY 

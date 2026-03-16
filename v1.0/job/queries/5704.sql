@@ -30,8 +30,8 @@ SELECT
     tm.title,
     tm.production_year,
     tm.cast_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actors,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     TopMovies tm
 LEFT JOIN 

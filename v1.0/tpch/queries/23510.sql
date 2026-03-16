@@ -28,7 +28,7 @@ SELECT
     ROUND(SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END), 2) AS ReturnedSales,
     COALESCE(AVG(o.o_totalprice), 0) AS AvgOrderValue,
     COUNT(DISTINCT c.c_custkey) AS UniqueCustomers,
-    STRING_AGG(DISTINCT p.p_name, ', ') FILTER (WHERE p.p_size > 10) AS LargeParts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') FILTER (WHERE p.p_size > 10) AS LargeParts
 FROM 
     region r
 JOIN 

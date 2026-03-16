@@ -40,7 +40,7 @@ SELECT
     tm.title,
     tm.production_year,
     tm.actor_count,
-    STRING_AGG(CONCAT(cm.company_name, ' (', cm.company_type, ')'), '; ') AS companies
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(cm.company_name, ' (', cm.company_type, ')'))), '; ') AS companies
 FROM
     TopMovies tm
 LEFT JOIN

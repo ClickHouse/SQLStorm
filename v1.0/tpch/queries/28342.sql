@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_price,
     MAX(l.l_discount) AS max_discount,
-    STRING_AGG(DISTINCT SUBSTRING(c.c_name FROM 1 FOR 10), ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(c.c_name FROM 1 FOR 10)))), ', ') AS customer_names
 FROM 
     part p
 JOIN 

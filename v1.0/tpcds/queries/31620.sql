@@ -59,4 +59,4 @@ WHERE
     r.spending_rank <= 10
 ORDER BY 
     r.total_spending DESC
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;

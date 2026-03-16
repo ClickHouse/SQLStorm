@@ -39,7 +39,7 @@ SELECT
     COUNT(DISTINCT j.i_item_id) AS unique_items,
     SUM(j.total_return_quantity) AS total_returns,
     AVG(j.avg_return_amount) AS average_return_amount,
-    ARRAY_AGG(DISTINCT j.ReturnCategory) AS ReturnCategories,
+    arrayDistinct(groupArray(assumeNotNull(j.ReturnCategory))) AS ReturnCategories,
     CASE 
         WHEN SUM(j.total_return_quantity) > 50 THEN 'Significant Returns'
         ELSE 'Manageable Returns'

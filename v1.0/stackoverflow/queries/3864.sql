@@ -39,7 +39,7 @@ PostActivity AS (
     LEFT JOIN 
         PostLinks pl ON p.Id = pl.PostId
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ),

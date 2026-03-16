@@ -1,7 +1,7 @@
 WITH RECURSIVE OrderHierarchy AS (
     SELECT o_orderkey, o_custkey, 1 AS level
     FROM orders 
-    WHERE o_orderdate >= DATE '1997-01-01'
+    WHERE o_orderdate >= toDate('1997-01-01')
     UNION ALL
     SELECT o.o_orderkey, o.o_custkey, oh.level + 1
     FROM orders o

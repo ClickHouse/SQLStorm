@@ -21,7 +21,7 @@ WITH RankedPosts AS (
 PostHistoryAggregates AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryTypeNames,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryTypeNames,
         COUNT(CASE WHEN PH.PostHistoryTypeId IN (10, 11) THEN 1 END) AS CloseReopenCount,
         MAX(PH.CreationDate) AS LastChangeDate
     FROM 
@@ -47,7 +47,7 @@ SELECT
         WHEN (RP.UpVotes - RP.DownVotes) = 0 THEN 'Neutral'
         ELSE 'Negative'
     END AS Sentiment,
-    cast('2024-10-01 12:34:56' as timestamp) - RP.CreationDate AS TimeSinceCreated
+    toDateTime64('2024-10-01 12:34:56', 6) - RP.CreationDate AS TimeSinceCreated
 FROM 
     RankedPosts RP
 LEFT JOIN 

@@ -28,7 +28,7 @@ SELECT
     a.ca_city,
     COUNT(DISTINCT c.c_customer_id) AS customer_count,
     AVG(COALESCE(ts.total_sales_value, 0)) AS avg_sales_value,
-    STRING_AGG(DISTINCT ts.i_product_name, ', ') AS top_products
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ts.i_product_name))), ', ') AS top_products
 FROM 
     customer c
 JOIN 

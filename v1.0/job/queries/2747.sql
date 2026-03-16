@@ -44,7 +44,7 @@ ActorInfo AS (
 SELECT 
     t.title,
     t.production_year,
-    STRING_AGG(DISTINCT ai.actor_name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ai.actor_name))), ', ') AS actors,
     COUNT(DISTINCT ai.actor_info) AS biography_count
 FROM 
     TopMovies t

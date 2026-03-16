@@ -14,7 +14,7 @@ CastCustomer AS (
     SELECT 
         c.movie_id,
         COUNT(*) AS cast_count,
-        STRING_AGG(a.name, ', ') AS actors
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actors
     FROM 
         cast_info AS c
     JOIN 
@@ -25,7 +25,7 @@ CastCustomer AS (
 CompanyInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         MAX(ct.kind) AS company_type
     FROM 
         movie_companies AS mc
@@ -56,7 +56,7 @@ FilteredMovies AS (
 )
 SELECT 
     fm.title,
-    COALESCE(fm.production_year::TEXT, 'Unknown') AS year,
+    COALESCE(CAST(fm.production_year AS TEXT), 'Unknown') AS year,
     COALESCE(fm.cast_count, 0) AS total_cast,
     COALESCE(fm.actors, 'None') AS actor_names,
     COALESCE(fm.companies, 'No Companies') AS production_companies,

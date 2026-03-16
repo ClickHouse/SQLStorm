@@ -68,4 +68,4 @@ JOIN
     AddressDetails ad ON ca.ca_address_sk = ad.ca_address_sk
 ORDER BY 
     ca.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -41,7 +41,7 @@ UserPostStats AS (
 PostActivity AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(PH.Comment, '; ') AS HistoryComments
+        arrayStringConcat(groupArray(assumeNotNull(PH.Comment)), '; ') AS HistoryComments
     FROM 
         PostHistory PH
     WHERE 

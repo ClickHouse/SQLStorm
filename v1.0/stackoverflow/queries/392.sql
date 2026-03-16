@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     WHERE 
         p.PostTypeId = 1 AND 
         p.Score > 0 AND 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 HighestRankedPosts AS (
     SELECT 
@@ -55,7 +55,7 @@ SELECT
     hrp.CommentCount,
     COUNT(DISTINCT ph.UserId) AS UniqueEditors,
     MAX(ph.HistoryDate) AS LastEditDate,
-    STRING_AGG(DISTINCT u.DisplayName, ', ') AS EditorNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS EditorNames
 FROM 
     HighestRankedPosts hrp
 LEFT JOIN 

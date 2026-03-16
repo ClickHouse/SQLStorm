@@ -70,7 +70,7 @@ Summary AS (
         u.actor_id,
         COUNT(DISTINCT am.title) AS unique_movies,
         AVG(am.movie_count) AS avg_movies,
-        STRING_AGG(DISTINCT am.title, ', ') AS movie_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(am.title))), ', ') AS movie_list
     FROM 
         UnpopularActors u
     JOIN 

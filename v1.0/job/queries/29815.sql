@@ -4,8 +4,8 @@ WITH MovieDetails AS (
         m.id AS movie_id,
         m.title AS movie_title,
         m.production_year,
-        STRING_AGG(DISTINCT CONCAT(p.name, ' (', rt.role, ')'), ', ') AS cast_info,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.name, ' (', rt.role, ')')))), ', ') AS cast_info,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM
         title m
         JOIN complete_cast cc ON m.id = cc.movie_id
@@ -20,8 +20,8 @@ WITH MovieDetails AS (
 CompanyInfo AS (
     SELECT
         m.movie_id,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types
     FROM
         movie_companies m
         JOIN company_name c ON m.company_id = c.id

@@ -26,7 +26,7 @@ MoviesWithGenres AS (
         tm.title,
         tm.production_year,
         tm.actor_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         TopMovies tm
     LEFT JOIN 
@@ -52,4 +52,4 @@ WHERE
     mwg.production_year >= 2000
 ORDER BY 
     mwg.production_year DESC, mwg.actor_count DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

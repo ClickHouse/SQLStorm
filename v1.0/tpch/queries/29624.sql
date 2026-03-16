@@ -4,7 +4,7 @@ SELECT
     s.s_name, 
     SUM(ps.ps_availqty) AS total_avail_qty, 
     AVG(l.l_discount) AS avg_discount, 
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
 FROM 
@@ -21,7 +21,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     s.s_comment LIKE '%fragile%' AND 
-    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     p.p_name, s.s_name
 HAVING 

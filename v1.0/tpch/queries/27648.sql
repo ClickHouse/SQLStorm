@@ -24,7 +24,7 @@ RankedSuppliers AS (
     FROM FilteredSuppliers
 )
 SELECT supplier_name, 
-       STRING_AGG(part_name || ' (Cost: ' || supply_cost || ')', ', ') AS parts_list, 
+       arrayStringConcat(groupArray(assumeNotNull(part_name || ' (Cost: ' || supply_cost || ')')), ', ') AS parts_list, 
        COUNT(part_name) AS total_parts,
        MAX(supply_cost) AS max_supply_cost,
        MIN(supply_cost) AS min_supply_cost,

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     ORDER BY 
         p.CreationDate DESC
 ),
@@ -36,12 +36,12 @@ PostStatistics AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS ClosedReasons,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS ClosedReasons,
         COUNT(ph.Id) AS CloseCount
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON cr.Id::text = ph.Comment AND ph.PostHistoryTypeId = 10
+        CloseReasonTypes cr ON CAST(cr.Id AS text) = ph.Comment AND ph.PostHistoryTypeId = 10
     GROUP BY 
         ph.PostId
 ),

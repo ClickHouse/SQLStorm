@@ -37,7 +37,7 @@ SELECT
     r.r_name,
     n.n_name,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT mpi.mfgr_brand_info, '; ') AS manufacturer_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mpi.mfgr_brand_info))), '; ') AS manufacturer_info
 FROM
     lineitem l
 JOIN
@@ -51,7 +51,7 @@ JOIN
 JOIN
     RecursivePartInfo mpi ON l.l_partkey = mpi.p_partkey
 WHERE
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY
     r.r_name, n.n_name
 ORDER BY

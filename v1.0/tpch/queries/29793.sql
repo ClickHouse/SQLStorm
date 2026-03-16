@@ -5,7 +5,7 @@ SELECT
     SUBSTRING(p.p_comment, 1, 10) AS short_comment,
     REGEXP_REPLACE(n.n_name, '.*(US|CAN).*', 'North America') AS region_grouping,
     CONCAT(s.s_name, ' (', s.s_phone, ')') AS supplier_info,
-    STRING_AGG(DISTINCT p.p_type, ', ') AS part_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS part_types,
     LEFT(c.c_name, 5) AS customer_prefix
 FROM 
     part p

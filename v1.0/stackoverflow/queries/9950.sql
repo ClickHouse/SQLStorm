@@ -41,4 +41,4 @@ WHERE
     tu.PostCount > 5
 ORDER BY 
     OverallRank ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

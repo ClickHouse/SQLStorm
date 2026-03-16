@@ -42,7 +42,7 @@ AnnotatedMovies AS (
 DistinctMovieKeywords AS (
     SELECT DISTINCT
         movie_title,
-        STRING_AGG(movie_keyword, ', ') AS all_keywords
+        arrayStringConcat(groupArray(assumeNotNull(movie_keyword)), ', ') AS all_keywords
     FROM 
         AnnotatedMovies
     WHERE

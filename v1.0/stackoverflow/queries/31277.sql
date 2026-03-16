@@ -6,15 +6,15 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS PostRank,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag_array ON true
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_array ON true
     LEFT JOIN 
         Tags t ON t.TagName = tag_array
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.PostTypeId
 ),
@@ -48,7 +48,7 @@ TopUsers AS (
     LEFT JOIN 
         Posts p ON p.OwnerUserId = u.Id
     WHERE 
-        v.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '2 years'
+        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
     GROUP BY 
         u.Id, u.DisplayName
     HAVING 
@@ -65,12 +65,12 @@ OverduePosts AS (
     LEFT JOIN 
         PostHistory ph ON ph.PostId = p.Id
     WHERE 
-        p.CreationDate < CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months'
+        p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
         AND ph.PostHistoryTypeId IN (4, 5)  
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId
     HAVING 
-        MAX(ph.CreationDate) < CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months'
+        MAX(ph.CreationDate) < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 )
 SELECT 
     rp.PostId,

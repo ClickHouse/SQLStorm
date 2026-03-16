@@ -58,4 +58,4 @@ WHERE
 ORDER BY 
     a.customers_count DESC, 
     s.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

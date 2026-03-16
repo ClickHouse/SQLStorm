@@ -44,7 +44,7 @@ SELECT
     END AS keyword_description,
     COALESCE(cast_info.note, 'N/A') AS cast_note,
     CHAR_LENGTH(m.title) AS title_length,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keyword_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keyword_list
 FROM 
     aka_title m
 LEFT JOIN 

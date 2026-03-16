@@ -23,7 +23,7 @@ customer_summary AS (
            COUNT(o.o_orderkey) AS order_count
     FROM customer c
     LEFT JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= DATE '1997-01-01' OR o.o_orderdate IS NULL
+    WHERE o.o_orderdate >= toDate('1997-01-01') OR o.o_orderdate IS NULL
     GROUP BY c.c_custkey, c.c_name, c.c_nationkey
 )
 SELECT nh.n_name AS nation_name,

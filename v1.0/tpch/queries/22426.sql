@@ -38,4 +38,4 @@ SELECT f.p_name, f.n_name, f.c_name, f.order_count, f.avg_order_value,
        END AS customer_value_status
 FROM final_results f
 ORDER BY f.n_name ASC, f.c_name DESC
-OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

@@ -67,4 +67,4 @@ JOIN
 ORDER BY 
     UR.Reputation DESC,
     UBC.BadgeCount DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

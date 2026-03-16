@@ -27,7 +27,7 @@ actor_cast AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -38,7 +38,7 @@ movie_keywords AS (
 movie_companies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies,
         COUNT(DISTINCT mc.company_id) AS company_count
     FROM 
         movie_companies mc

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagList
     FROM 
         Posts p
     JOIN 
@@ -21,9 +21,9 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        Tags t ON t.TagName IN (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')))
+        Tags t ON t.TagName IN (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))))
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.Tags, pt.Name
 )

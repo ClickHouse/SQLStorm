@@ -30,7 +30,7 @@ ClosedPostReasons AS (
     SELECT 
         ph.UserId,
         COUNT(ph.Id) AS TotalClosed,
-        STRING_AGG(DISTINCT crt.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

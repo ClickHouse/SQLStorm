@@ -13,7 +13,7 @@ CustomerDetails AS (
         c.c_customer_sk, 
         CONCAT(c.c_first_name, ' ', c.c_last_name) AS full_name,
         d.d_date AS last_purchase_date,
-        STRING_AGG(DISTINCT CONCAT(hd.hd_buy_potential, ' - ', ib.ib_lower_bound, '-', ib.ib_upper_bound), '; ') AS income_potential
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(hd.hd_buy_potential, ' - ', ib.ib_lower_bound, '-', ib.ib_upper_bound)))), '; ') AS income_potential
     FROM customer c
     JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
     LEFT JOIN household_demographics hd ON hd.hd_demo_sk = c.c_current_hdemo_sk

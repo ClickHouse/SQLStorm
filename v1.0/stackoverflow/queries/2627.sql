@@ -52,7 +52,7 @@ SELECT
      WHERE 
          b.UserId = tu.UserId) AS BadgeCount,
     (SELECT 
-         STRING_AGG(t.TagName, ', ') 
+         arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
      FROM 
          Posts p
          JOIN Tags t ON p.Tags LIKE '%' || t.TagName || '%'

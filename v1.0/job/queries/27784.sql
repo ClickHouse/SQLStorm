@@ -24,8 +24,8 @@ movie_details AS (
         tm.movie_id,
         tm.title,
         tm.production_year,
-        ARRAY_AGG(DISTINCT ak.name) AS aka_names,
-        ARRAY_AGG(DISTINCT p.info) AS person_infos
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aka_names,
+        arrayDistinct(groupArray(assumeNotNull(p.info))) AS person_infos
     FROM 
         top_cast_movies tm
     LEFT JOIN 
@@ -40,8 +40,8 @@ movie_details AS (
 SELECT 
     md.title,
     md.production_year,
-    COALESCE(md.aka_names::text, 'No Alias') AS aka_aliases,
-    COALESCE(md.person_infos::text, 'No Info Available') AS person_info
+    COALESCE(CAST(md.aka_names AS text), 'No Alias') AS aka_aliases,
+    COALESCE(CAST(md.person_infos AS text), 'No Info Available') AS person_info
 FROM 
     movie_details md
 ORDER BY 

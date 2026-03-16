@@ -37,7 +37,7 @@ SELECT
     AVG(rs.ws_net_profit) AS avg_net_profit,
     MIN(rs.ws_net_profit) AS min_net_profit,
     MAX(rs.ws_net_profit) AS max_net_profit,
-    ARRAY_AGG(DISTINCT rs.ws_sold_date_sk) AS sold_dates
+    arrayDistinct(groupArray(assumeNotNull(rs.ws_sold_date_sk))) AS sold_dates
 FROM 
     customer_details cd
 JOIN 

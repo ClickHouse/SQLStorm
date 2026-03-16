@@ -39,7 +39,7 @@ MovieInfo AS (
         m.id AS movie_id,
         COUNT(mi.id) AS info_count,
         MAX(mi.info) AS latest_info,
-        STRING_AGG(mi.info, ', ') AS all_info 
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS all_info 
     FROM 
         aka_title m
     LEFT JOIN 

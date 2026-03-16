@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_price,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     CONCAT('Supplier: ', s.s_name, ' | Part: ', p.p_name) AS supplier_part_info
 FROM 
     part p

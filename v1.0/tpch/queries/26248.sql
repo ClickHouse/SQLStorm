@@ -5,7 +5,7 @@ SELECT
     AVG(ps.ps_supplycost) AS average_supply_cost,
     MAX(p.p_retailprice) AS max_retail_price,
     MIN(p.p_retailprice) AS min_retail_price,
-    STRING_AGG(DISTINCT p.p_type, ', ') AS unique_part_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS unique_part_types,
     r.r_name AS region_name,
     n.n_name AS nation_name
 FROM 

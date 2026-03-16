@@ -24,7 +24,7 @@ NationSupplierDetails AS (
         n.n_name,
         n.n_regionkey,
         COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM 
         nation n
     JOIN 
@@ -50,7 +50,7 @@ SELECT
     COUNT(short_name) AS part_count,
     MIN(total_retail_price) AS min_retail_price,
     MAX(total_retail_price) AS max_retail_price,
-    STRING_AGG(display_info, '; ') AS all_part_info
+    arrayStringConcat(groupArray(assumeNotNull(display_info)), '; ') AS all_part_info
 FROM 
     FinalOutput
 GROUP BY 

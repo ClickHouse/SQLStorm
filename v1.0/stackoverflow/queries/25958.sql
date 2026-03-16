@@ -1,7 +1,7 @@
 
 WITH TagUsage AS (
     SELECT 
-        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
         COUNT(*) AS UsageCount
     FROM 
         Posts
@@ -26,7 +26,7 @@ UserResponses AS (
         COUNT(a.Id) AS AnswerCount,
         SUM(CASE WHEN a.ParentId IS NOT NULL THEN 1 ELSE 0 END) AS ParentAnswers,
         SUM(CASE WHEN a.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswers,
-        AVG(EXTRACT(EPOCH FROM (a.CreationDate - p.CreationDate)) / 3600.0) AS AvgResponseTime
+        AVG(toUnixTimestamp((a.CreationDate - p.CreationDate)) / 3600.0) AS AvgResponseTime
     FROM 
         Posts p
     JOIN 

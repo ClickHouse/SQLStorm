@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostStatistics AS (
     SELECT 
@@ -38,8 +38,8 @@ SELECT
     ps.AverageScore,
     ps.TotalViews,
     ps.MostRecentPost,
-    STRING_AGG(DISTINCT bh.Name, ', ') AS BadgeNames,
-    STRING_AGG(DISTINCT v.Name, ', ') AS VoteTypes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(bh.Name))), ', ') AS BadgeNames,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(v.Name))), ', ') AS VoteTypes
 FROM 
     PostStatistics ps
 LEFT JOIN 

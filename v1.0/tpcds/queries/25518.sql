@@ -18,7 +18,7 @@ CustomerDetails AS (
     SELECT
         rc.full_name,
         CASE 
-            WHEN EXTRACT(MONTH FROM DATE '2002-10-01') = rc.birth_month AND EXTRACT(DAY FROM DATE '2002-10-01') = 1 THEN 'Happy Birthday!'
+            WHEN toMonth(toDate('2002-10-01')) = rc.birth_month AND toDayOfMonth(toDate('2002-10-01')) = 1 THEN 'Happy Birthday!'
             ELSE 'Have a great day!'
         END AS birthday_greeting,
         CASE 

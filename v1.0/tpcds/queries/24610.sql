@@ -58,4 +58,4 @@ WHERE
     OR (ci.cd_gender = 'M' AND ci.dependent_count BETWEEN 1 AND 3)
 ORDER BY 
     total_net_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -71,7 +71,7 @@ JOIN
 JOIN 
     TagSummary ts ON ts.PostCount > 5
 WHERE 
-    us.LastActiveDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    us.LastActiveDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ORDER BY 
     us.Reputation DESC, ps.Score DESC, ts.TotalTagCount DESC
 LIMIT 10;

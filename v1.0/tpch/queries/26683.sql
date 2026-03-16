@@ -4,7 +4,7 @@ SELECT
     SUBSTRING(s.s_address, 1, 20) AS short_address, 
     c.c_name, 
     CONCAT('Total Price: $', ROUND(SUM(l.l_extendedprice * (1 - l.l_discount)), 2)) AS total_price,
-    STRING_AGG( DISTINCT CONCAT(l.l_shipdate, ' - ', l.l_comment), '; ') AS shipping_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(l.l_shipdate, ' - ', l.l_comment)))), '; ') AS shipping_details
 FROM 
     part p
 JOIN 

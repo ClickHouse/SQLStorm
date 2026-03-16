@@ -4,7 +4,7 @@ WITH supplier_summary AS (
         n.n_name AS nation_name, 
         SUM(ps.ps_availqty) AS total_available_qty, 
         SUM(ps.ps_supplycost) AS total_supply_cost, 
-        STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_brand, ')'), ', ') AS supplied_parts
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_brand, ')')))), ', ') AS supplied_parts
     FROM 
         supplier s
     JOIN 

@@ -7,12 +7,12 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         p.ViewCount,
         p.Score,
-        ARRAY_LENGTH(STRING_TO_ARRAY(p.Tags, '> <'), 1) AS TagCount,
+        length(splitByString('> <', p.Tags), 1) AS TagCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 
 UserStats AS (
@@ -40,7 +40,7 @@ RecentComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        c.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         c.PostId
 ),

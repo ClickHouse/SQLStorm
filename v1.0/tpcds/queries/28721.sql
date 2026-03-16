@@ -33,8 +33,8 @@ SELECT
     f.ca_state,
     COUNT(*) AS address_count,
     AVG(f.street_name_length) AS avg_street_name_length,
-    STRING_AGG(f.upper_street_name, ', ') AS all_upper_street_names,
-    STRING_AGG(f.modified_street_name, '; ') AS all_modified_street_names
+    arrayStringConcat(groupArray(assumeNotNull(f.upper_street_name)), ', ') AS all_upper_street_names,
+    arrayStringConcat(groupArray(assumeNotNull(f.modified_street_name)), '; ') AS all_modified_street_names
 FROM 
     filtered_addresses f
 GROUP BY 

@@ -34,7 +34,7 @@ SELECT
     SUM(ts.ws_net_profit) AS total_profit,
     COUNT(ts.ws_order_number) AS total_orders,
     MAX(ts.ws_sales_price) AS max_sale_price,
-    STRING_AGG(DISTINCT i.i_product_name, ', ') AS sold_products
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), ', ') AS sold_products
 FROM 
     TopSales ts
 JOIN 

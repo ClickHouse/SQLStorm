@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 UserStats AS (
     SELECT 
@@ -30,7 +30,7 @@ UserStats AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(UNNEST(STRING_TO_ARRAY(p.Tags, ','))) AS TagName,
+        TRIM(arrayJoin(splitByString(',', p.Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p

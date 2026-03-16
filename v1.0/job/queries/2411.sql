@@ -21,7 +21,7 @@ TopActors AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT it.info, '; ') AS info_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(it.info))), '; ') AS info_details
     FROM 
         movie_info mi
     INNER JOIN 
@@ -32,7 +32,7 @@ MovieInfo AS (
 CompanyContribution AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 

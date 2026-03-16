@@ -17,12 +17,12 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(p.Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', p.Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         TagName
     ORDER BY 
@@ -33,7 +33,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseReasonCount,
-        STRING_AGG(DISTINCT crt.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -58,7 +58,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(string_to_array(rp.Title, ' ')) 
+    PopularTags pt ON pt.TagName = ANY(splitByString(' ', rp.Title)) 
 LEFT JOIN 
     ClosedPosts cp ON rp.PostId = cp.PostId
 WHERE 

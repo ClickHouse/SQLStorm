@@ -21,8 +21,8 @@ Company_Info AS (
     
     SELECT 
         movie_id,
-        STRING_AGG(DISTINCT company_name.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT company_type.kind, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type.kind))), ', ') AS company_types
     FROM 
         movie_companies
     JOIN 

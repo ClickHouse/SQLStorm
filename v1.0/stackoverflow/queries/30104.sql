@@ -30,7 +30,7 @@ UserActivity AS (
         COALESCE(rb.BronzeBadges, 0) AS BronzeBadges,
         SUM(COALESCE(v.VoteCount, 0)) AS TotalVotes,
         SUM(COALESCE(p.ViewCount, 0)) AS TotalViews,
-        SUM(CASE WHEN p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' AND p.PostTypeId = 1 THEN 1 ELSE 0 END) AS RecentQuestions,
+        SUM(CASE WHEN p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR AND p.PostTypeId = 1 THEN 1 ELSE 0 END) AS RecentQuestions,
         r.PostCount
     FROM 
         Users u

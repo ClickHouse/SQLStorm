@@ -45,13 +45,13 @@ ClosedQuestions AS (
         p.Id AS PostId,
         p.Title,
         ph.CreationDate AS ClosedDate,
-        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReason
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReason
     FROM 
         Posts p
     JOIN 
         PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10
     LEFT JOIN 
-        CloseReasonTypes ctr ON (ph.Comment::json->>'ReasonId')::int = ctr.Id
+        CloseReasonTypes ctr ON (CAST(ph.Comment AS json)->>'ReasonId'CAST() AS int) = ctr.Id
     GROUP BY 
         p.Id, p.Title, ph.CreationDate
 )
@@ -82,4 +82,4 @@ WHERE
     ua.TotalPosts > 0
 ORDER BY 
     ua.Rank, ps.PostId
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

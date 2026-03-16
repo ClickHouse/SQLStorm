@@ -17,7 +17,7 @@ Company_Movie_Stats AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT mc.company_id) AS company_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM 
         movie_companies mc
     JOIN 
@@ -58,7 +58,7 @@ SELECT
     asu.actor_name,
     COUNT(DISTINCT asu.title) AS total_movies,
     AVG(COALESCE(asu.company_count, 0)) AS avg_companies,
-    STRING_AGG(DISTINCT asu.title, ', ') AS movie_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(asu.title))), ', ') AS movie_list
 FROM 
     Actor_Summary asu
 GROUP BY 

@@ -24,8 +24,8 @@ TopRankedMovies AS (
 MovieCompanyInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS companies,
-        STRING_AGG(ct.kind, ', ') AS company_types
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS companies,
+        arrayStringConcat(groupArray(assumeNotNull(ct.kind)), ', ') AS company_types
     FROM 
         movie_companies mc
     LEFT JOIN 

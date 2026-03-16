@@ -62,7 +62,7 @@ SELECT
     m.actor_imdb_index,
     m.nr_order,
     m.role,
-    STRING_AGG(ki.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(ki.keyword)), ', ') AS keywords
 FROM
     movies_with_actors m
 LEFT JOIN

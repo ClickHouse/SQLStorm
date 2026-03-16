@@ -51,7 +51,7 @@ SELECT
     f.title, 
     f.production_year,
     f.company_name,
-    STRING_AGG(DISTINCT f.keywords, ', ') AS combined_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.keywords))), ', ') AS combined_keywords,
     f.actor_name,
     f.surname_pcode,
     f.num_companies,

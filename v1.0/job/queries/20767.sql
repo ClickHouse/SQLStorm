@@ -39,7 +39,7 @@ SELECT
         WHEN rm.company_count = rm.max_company_count THEN 'Top Company Count'
         ELSE 'Regular Movie'
     END AS category,
-    (SELECT STRING_AGG(DISTINCT m.keyword, ', ')
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.keyword))), ', ')
      FROM movie_keyword mk
      JOIN keyword m ON m.id = mk.keyword_id
      WHERE mk.movie_id = rm.subject_id) AS keywords

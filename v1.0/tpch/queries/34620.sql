@@ -30,9 +30,9 @@ LEFT JOIN customer c ON c.c_custkey = (SELECT o.o_custkey
                                         AND o.o_orderstatus = 'O' 
                                         LIMIT 1)
 JOIN nation n ON s.s_nationkey = n.n_nationkey
-WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY s.s_suppkey, s.s_name, n.n_name, c.c_acctbal, s.s_nationkey
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) IS NOT NULL 
    OR COUNT(l.l_orderkey) > 10
 ORDER BY total_sales DESC, sales_rank
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

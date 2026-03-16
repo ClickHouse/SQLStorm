@@ -4,8 +4,8 @@ WITH MovieInfo AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies
     FROM 
         aka_title t
     JOIN 
@@ -39,7 +39,7 @@ FinalBenchmark AS (
         m.movie_id,
         m.title,
         m.production_year,
-        STRING_AGG(DISTINCT a.actor_name || ' (' || a.role_name || '): ' || a.total_appearances, '; ') AS actor_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.actor_name || ' (' || a.role_name || '): ' || a.total_appearances))), '; ') AS actor_details
     FROM 
         MovieInfo m
     LEFT JOIN 

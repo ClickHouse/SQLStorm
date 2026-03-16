@@ -27,7 +27,7 @@ SELECT
     ak.name AS actor_name,
     COUNT(DISTINCT c.movie_id) AS num_movies,
     AVG(t.production_year) AS avg_production_year,
-    STRING_AGG(DISTINCT t.title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movie_titles,
     MAX(t.production_year) AS latest_movie_year,
     SUM(CASE WHEN t.production_year IS NULL THEN 1 ELSE 0 END) AS null_year_count
 FROM 

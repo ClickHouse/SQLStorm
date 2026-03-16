@@ -31,7 +31,7 @@ CastingData AS (
         COUNT(DISTINCT ci.person_id) AS total_cast,
         COUNT(CASE WHEN ci.role_id IS NOT NULL THEN 1 END) AS validated_cast,
         AVG(CASE WHEN ci.note IS NOT NULL AND ci.note <> '' THEN 1 ELSE 0 END) AS note_non_empty_ratio,
-        STRING_AGG(DISTINCT n.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS cast_names
     FROM 
         cast_info ci
     LEFT JOIN 

@@ -22,12 +22,12 @@ WITH RankedPosts AS (
             WHERE PostId = p.Id
         )
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
       AND p.PostTypeId = 1 
 ),
 TagStats AS (
     SELECT 
-        unnest(string_to_array(Trim(both '<>' from Tags), '>')) AS TagName,
+        arrayJoin(splitByString('>', Trim(both '<>' from Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts
@@ -54,7 +54,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TopTags tt ON tt.TagName = ANY (string_to_array(rp.Tags, '>'))
+    TopTags tt ON tt.TagName = ANY (splitByString('>', rp.Tags))
 WHERE 
     tt.Rank <= 10 
 ORDER BY 

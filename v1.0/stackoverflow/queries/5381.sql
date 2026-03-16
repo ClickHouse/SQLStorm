@@ -49,7 +49,7 @@ ActiveUsers AS (
     LEFT JOIN 
         UserBadges ub ON u.DisplayName = ub.DisplayName
     WHERE 
-        u.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     ap.OwnerDisplayName,

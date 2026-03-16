@@ -27,7 +27,7 @@ lineitem_summary AS (
            SUM(l.l_tax) AS total_tax,
            COUNT(DISTINCT l.l_returnflag) AS return_flag_count
     FROM lineitem l
-    WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY l.l_orderkey
 ),
 nation_region_customer AS (

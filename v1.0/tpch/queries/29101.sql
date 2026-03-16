@@ -11,7 +11,7 @@ SELECT
         WHEN l.l_returnflag = 'R' THEN 1 
         ELSE 0 
     END) AS total_returns,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     part p
 JOIN 

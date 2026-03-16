@@ -33,7 +33,7 @@ ActorPatterns AS (
         actor_id,
         actor_name,
         COUNT(*) AS movies_count,
-        STRING_AGG(movie_title, ', ') AS movie_titles
+        arrayStringConcat(groupArray(assumeNotNull(movie_title)), ', ') AS movie_titles
     FROM
         TopActors
     GROUP BY
@@ -62,7 +62,7 @@ FinalComparison AS (
         ap.actor_name,
         ap.movies_count,
         COALESCE(SUM(CASE WHEN um.genre_keyword IS NULL THEN 0 ELSE 1 END), 0) AS unique_genre_count,
-        ARRAY_AGG(um.title) AS unseen_movies
+        groupArray(assumeNotNull(um.title)) AS unseen_movies
     FROM
         ActorPatterns AS ap
     LEFT JOIN

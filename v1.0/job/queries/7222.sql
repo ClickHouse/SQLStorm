@@ -22,9 +22,9 @@ TopMovies AS (
         title_id, 
         title, 
         production_year,
-        STRING_AGG(DISTINCT keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT company_name || ' (' || company_type || ')', ', ') AS companies,
-        STRING_AGG(DISTINCT movie_info, ', ') AS details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name || ' (' || company_type || ')'))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_info))), ', ') AS details
     FROM MovieDetails
     GROUP BY title_id, title, production_year
     ORDER BY production_year DESC 

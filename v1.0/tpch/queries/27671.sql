@@ -6,7 +6,7 @@ WITH OrderedParts AS (
         COUNT(DISTINCT o.o_orderkey) AS order_count,
         SUM(l.l_quantity) AS total_quantity,
         SUM(l.l_extendedprice) AS total_revenue,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied
     FROM
         part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey

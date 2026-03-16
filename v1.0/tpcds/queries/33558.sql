@@ -30,4 +30,4 @@ FROM Join_Customer j
 JOIN reason r ON j.total_quantity_sold > 100
 WHERE j.total_net_profit IS NOT NULL AND j.ca_state IN ('NY', 'CA') 
 ORDER BY j.total_net_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

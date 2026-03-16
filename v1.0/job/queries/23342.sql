@@ -39,7 +39,7 @@ cast_summary AS (
 movie_remarks AS (
     SELECT 
         m.id AS movie_id, 
-        STRING_AGG(DISTINCT COALESCE(m.note, 'No Comments'), '; ') AS remarks
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(m.note, 'No Comments')))), '; ') AS remarks
     FROM 
         aka_title m
     LEFT JOIN 
@@ -83,7 +83,7 @@ FROM
 WHERE 
     cm.actor_count > 2 
     AND cm.category = 'Episode'
-    AND cm.production_year >= (EXTRACT(YEAR FROM CURRENT_DATE) - 10)
+    AND cm.production_year >= (toYear(CURRENT_DATE) - 10)
 
 ORDER BY 
     cm.production_year DESC, cm.movie_title ASC;

@@ -17,7 +17,7 @@ WITH PostAggregate AS (
     LEFT JOIN 
         Badges ba ON p.OwnerUserId = ba.UserId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'  
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY  
     GROUP BY 
         p.Id, p.PostTypeId
 ),
@@ -47,8 +47,8 @@ SELECT
     pta.TotalUpVotes,
     pta.TotalDownVotes,
     pta.TotalBadges,
-    ROUND(COALESCE(pta.TotalVotes, 0)::DECIMAL / NULLIF(pta.TotalPosts, 0), 2) AS AvgVotesPerPost,
-    ROUND(COALESCE(pta.TotalComments, 0)::DECIMAL / NULLIF(pta.TotalPosts, 0), 2) AS AvgCommentsPerPost
+    ROUND(COALESCE(pta.TotalVotes, 0, CAST() AS DECIMAL) / NULLIF(pta.TotalPosts, 0), 2) AS AvgVotesPerPost,
+    ROUND(COALESCE(pta.TotalComments, 0, CAST() AS DECIMAL) / NULLIF(pta.TotalPosts, 0), 2) AS AvgCommentsPerPost
 FROM 
     PostTypeAggregate pta
 ORDER BY 

@@ -8,7 +8,7 @@ SELECT
     COUNT(l.l_orderkey) AS line_item_count,
     SUM(l.l_extendedprice) AS total_extended_price,
     AVG(l.l_discount) * 100 AS average_discount_percentage,
-    STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments,
     CONCAT('Order ', o.o_orderkey, ' for part ', p.p_name) AS order_description
 FROM
     part p

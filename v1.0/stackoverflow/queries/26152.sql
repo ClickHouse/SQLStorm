@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'), 1) AS TagCount,
+        length(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
         COALESCE(u.DisplayName, 'Deleted User') AS OwnerDisplayName,
         COALESCE(u.Reputation, 0) AS OwnerReputation,
         COUNT(c.Id) AS CommentCount,

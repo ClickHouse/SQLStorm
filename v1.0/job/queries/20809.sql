@@ -34,7 +34,7 @@ MovieInfoDetail AS (
     SELECT 
         m.id AS movie_id,
         MAX(m.production_year) AS latest_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         MIN(mi.info) AS first_info
     FROM 
         aka_title m
@@ -51,7 +51,7 @@ CompanyStats AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT cn.id) AS company_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 

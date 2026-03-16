@@ -50,7 +50,7 @@ SELECT
     mw.title,
     mw.production_year,
     COALESCE(mw.total_actors, 0) AS actor_count,
-    STRING_AGG(DISTINCT mw.company_name, ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mw.company_name))), ', ') AS companies,
     COUNT(*) FILTER(WHERE mw.production_year = 2023) OVER () AS movies_from_2023,
     CASE 
         WHEN mw.production_year IS NULL THEN 'Unknown Year'

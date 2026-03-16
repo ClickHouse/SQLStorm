@@ -28,7 +28,7 @@ SELECT
     tm.title,
     tm.production_year,
     tm.actor_count,
-    STRING_AGG(a.name, ', ') AS top_actors,
+    arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS top_actors,
     AVG(COALESCE(CAST(pi.info AS numeric), 0)) AS average_rating
 FROM 
     top_movies tm

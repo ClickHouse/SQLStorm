@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     CONCAT('Region: ', r.r_name, ' - Nation: ', n.n_name) AS location,
-    STRING_AGG(DISTINCT p.p_brand || ' (' || p.p_type || ')', ', ') AS product_brands
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_brand || ' (' || p.p_type || ')'))), ', ') AS product_brands
 FROM 
     supplier s
 JOIN 
@@ -21,7 +21,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND p.p_size > 10
 GROUP BY 
     short_supplier_name, location

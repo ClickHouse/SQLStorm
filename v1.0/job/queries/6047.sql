@@ -5,7 +5,7 @@ SELECT
     t.production_year,
     c.kind AS company_type,
     COUNT(DISTINCT t.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT k.keyword, ', ' ORDER BY k.keyword) AS associated_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ' ORDER BY k.keyword) AS associated_keywords
 FROM 
     cast_info ci
 JOIN 

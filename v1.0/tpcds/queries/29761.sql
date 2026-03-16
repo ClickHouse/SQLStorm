@@ -10,7 +10,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_ext_sales_price) AS total_spent,
     AVG(ws.ws_ext_sales_price) AS avg_order_value,
-    STRING_AGG(DISTINCT sm.sm_carrier, ', ') AS shipping_carriers_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sm.sm_carrier))), ', ') AS shipping_carriers_used,
     COUNT(DISTINCT wr.wr_order_number) AS total_web_returns,
     COUNT(DISTINCT cr.cr_order_number) AS total_catalog_returns
 FROM 
@@ -42,4 +42,4 @@ HAVING
     SUM(ws.ws_ext_sales_price) > 1000
 ORDER BY 
     total_spent DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

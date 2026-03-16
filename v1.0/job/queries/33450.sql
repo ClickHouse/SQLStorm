@@ -29,7 +29,7 @@ SELECT
     m.production_year,
     COUNT(DISTINCT cc.subject_id) AS total_cast,
     AVG(CASE WHEN pi.info_type_id = 1 THEN LENGTH(pi.info) ELSE NULL END) AS avg_info_length,  
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords_list
 FROM 
     movie_hierarchy m
 JOIN 

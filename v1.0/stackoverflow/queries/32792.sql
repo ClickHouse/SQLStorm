@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON p.OwnerUserId = U.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostWithBadges AS (
     SELECT 
@@ -59,7 +59,7 @@ RecentEdits AS (
         Posts p ON ph.PostId = p.Id
     WHERE 
         ph.PostHistoryTypeId IN (4, 5, 6)  
-        AND ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ),
 UserActivity AS (
     SELECT 

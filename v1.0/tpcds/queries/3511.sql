@@ -53,4 +53,4 @@ WHERE
     CTE_Customer_Sales.total_net_paid IS NOT NULL
 ORDER BY 
     CTE_Customer_Sales.total_net_paid DESC
-FETCH FIRST 25 ROWS ONLY;
+LIMIT 25;

@@ -13,7 +13,7 @@ WITH RECURSIVE ActorHierarchy AS (
 MoviesWithKeywords AS (
     SELECT
         mt.movie_id,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM
         movie_keyword mk
     JOIN
@@ -44,7 +44,7 @@ MovieInfoCTE AS (
     SELECT
         mi.movie_id,
         COUNT(CASE WHEN mi.info_type_id = (SELECT id FROM info_type WHERE info = 'Plot') THEN 1 END) AS plot_count,
-        STRING_AGG(mi.info || ' (' || it.info || ')', '; ') AS info_details
+        arrayStringConcat(groupArray(assumeNotNull(mi.info || ' (' || it.info || ')')), '; ') AS info_details
     FROM
         movie_info mi
     JOIN

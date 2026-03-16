@@ -36,4 +36,4 @@ LEFT JOIN web_sales ws ON cwa.c_customer_sk = ws.ws_ship_customer_sk
 GROUP BY cwa.full_address, cwa.dep_count, cwa.c_first_name, cwa.c_last_name, cwa.c_birth_month
 HAVING SUM(ws.ws_net_profit) > (SELECT AVG(cs_net_profit) FROM catalog_sales WHERE cs_sold_date_sk > 0)
 ORDER BY birth_month_rank, total_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

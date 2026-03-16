@@ -43,8 +43,8 @@ TopBadgedUsers AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        ARRAY_AGG(ph.Comment) AS Comments,
-        ARRAY_AGG(ph.CreationDate ORDER BY ph.CreationDate DESC) AS EditDates,
+        groupArray(assumeNotNull(ph.Comment)) AS Comments,
+        groupArray(assumeNotNull(ph.CreationDate ORDER BY ph.CreationDate DESC)) AS EditDates,
         COUNT(*) AS EditCount
     FROM 
         PostHistory ph

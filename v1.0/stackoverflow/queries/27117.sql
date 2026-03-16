@@ -23,7 +23,7 @@ WITH FilteredPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days' 
+        p.CreationDate >= now64(6) - INTERVAL 30 DAY 
         AND p.ViewCount > 50
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.CreationDate, p.ViewCount, u.DisplayName, pt.Name
@@ -31,7 +31,7 @@ WITH FilteredPosts AS (
 
 TagAggregates AS (
     SELECT 
-        UNNEST(string_to_array(Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', Tags)) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         FilteredPosts

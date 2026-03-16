@@ -34,9 +34,9 @@ AggregatedInfo AS (
         md.title,
         md.production_year,
         COUNT(DISTINCT md.actor_name) AS actor_count,
-        STRING_AGG(DISTINCT md.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT md.person_info, ', ') AS all_person_info,
-        STRING_AGG(DISTINCT md.company_type, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.person_info))), ', ') AS all_person_info,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.company_type))), ', ') AS company_types
     FROM 
         MovieDetails md
     GROUP BY 

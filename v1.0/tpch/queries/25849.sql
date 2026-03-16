@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT ps.ps_partkey) AS part_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_brand, ')'), ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_brand, ')')))), ', ') AS part_names,
     MAX(l.l_shipdate) AS last_ship_date
 FROM 
     region r

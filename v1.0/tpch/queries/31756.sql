@@ -14,7 +14,7 @@ SELECT
     SUM(COALESCE(l.l_extendedprice, 0) * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(c.c_acctbal) AS avg_customer_balance,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS product_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS product_names,
     ROW_NUMBER() OVER (PARTITION BY r.r_regionkey ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS region_ranking
 FROM 
     region r

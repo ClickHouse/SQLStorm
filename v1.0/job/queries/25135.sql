@@ -36,8 +36,8 @@ MovieDetails AS (
         tm.production_year,
         tm.cast_count,
         tm.keyword_count,
-        ARRAY_AGG(DISTINCT a.name) AS actor_names,
-        ARRAY_AGG(DISTINCT ci.kind) AS company_types
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(ci.kind))) AS company_types
     FROM 
         TopMovies tm
     LEFT JOIN 
@@ -59,8 +59,8 @@ SELECT
     md.production_year,
     md.cast_count,
     md.keyword_count,
-    STRING_AGG(DISTINCT md.actor_names::text, ', ') AS actor_list,
-    STRING_AGG(DISTINCT md.company_types::text, ', ') AS company_type_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(md.actor_names AS text)))), ', ') AS actor_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(md.company_types AS text)))), ', ') AS company_type_list
 FROM 
     MovieDetails md
 GROUP BY 

@@ -32,7 +32,7 @@ SELECT
     m.production_year,
     COUNT(DISTINCT mc.company_id) AS company_count,
     AVG(LENGTH(pi.info)) AS avg_person_info_length, -- Replaced pi.info with LENGTH(pi.info) for compatibility
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ak.person_id ORDER BY m.production_year DESC) AS rn
 FROM 
     aka_name AS ak

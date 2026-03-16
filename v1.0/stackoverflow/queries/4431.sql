@@ -14,7 +14,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, p.OwnerUserId
 ),
@@ -39,14 +39,14 @@ PostVoteDetails AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(pt.Name, ', ') AS CloseReasons,
+        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS CloseReasons,
         COUNT(*) AS CloseCount
     FROM 
         PostHistory ph
     JOIN 
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' AND
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY AND
         ph.Comment IS NOT NULL
     GROUP BY 
         ph.PostId

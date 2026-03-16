@@ -5,7 +5,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     AVG(c.c_acctbal) AS average_account_balance,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' from ', c.c_address), '; ') AS customer_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' from ', c.c_address)))), '; ') AS customer_info,
     MIN(l.l_shipdate) AS first_order_date,
     MAX(l.l_shipdate) AS last_order_date,
     COUNT(*) AS total_orders

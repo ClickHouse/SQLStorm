@@ -71,7 +71,7 @@ ActivePostStatistics AS (
     AND 
         rp.Score > 0
     AND 
-        rp.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     APS.PostId,

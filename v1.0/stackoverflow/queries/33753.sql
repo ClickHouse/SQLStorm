@@ -23,7 +23,7 @@ RecentBadges AS (
 UserBadges AS (
     SELECT 
         rb.UserId,
-        STRING_AGG(rb.BadgeName, ', ') AS BadgeList
+        arrayStringConcat(groupArray(assumeNotNull(rb.BadgeName)), ', ') AS BadgeList
     FROM RecentBadges rb
     WHERE rb.rn <= 3 
     GROUP BY rb.UserId
@@ -40,4 +40,4 @@ FROM UserActivity ua
 LEFT JOIN UserBadges ub ON ua.UserId = ub.UserId
 WHERE ua.TotalViews > 1000 
 ORDER BY ua.TotalViews DESC, ua.QuestionCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

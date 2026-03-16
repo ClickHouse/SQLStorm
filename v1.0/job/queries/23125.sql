@@ -30,7 +30,7 @@ SELECT
     COUNT(DISTINCT mh.linked_movie_id) AS Linked_Movies_Count,
     SUM(CASE WHEN mi.info IS NOT NULL THEN 1 ELSE 0 END) AS Info_Count,  
     AVG(CASE WHEN ci.nr_order IS NULL THEN 0 ELSE ci.nr_order END) AS Avg_Nr_Order,  
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS Keywords,  
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS Keywords,  
     MAX(CASE WHEN ci.note IS NOT NULL THEN ci.note ELSE 'No Note' END) AS Last_Note
 FROM 
     aka_title m
@@ -48,7 +48,7 @@ LEFT JOIN
     movie_info mi ON m.id = mi.movie_id 
 
 WHERE 
-    m.production_year >= EXTRACT(YEAR FROM DATE '2024-10-01') - 10
+    m.production_year >= toYear(toDate('2024-10-01')) - 10
 GROUP BY 
     m.title, a.name
 ORDER BY 

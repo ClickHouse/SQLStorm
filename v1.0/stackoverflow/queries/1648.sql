@@ -22,7 +22,7 @@ RecentActivity AS (
     JOIN 
         Posts P ON U.Id = P.OwnerUserId
     WHERE 
-        P.LastActivityDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        P.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 BadgeSummary AS (
     SELECT 

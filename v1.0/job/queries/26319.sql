@@ -43,7 +43,7 @@ SELECT
     tm.title,
     tm.production_year,
     tm.cast_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS aka_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names
 FROM TopMovies tm
 LEFT JOIN aka_name ak ON ak.person_id IN (
     SELECT ci.person_id 

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -49,7 +49,7 @@ PostInteractions AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 DAYS'
+        p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id
 )

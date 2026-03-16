@@ -25,7 +25,7 @@ top_items AS (
         sales_summary
     ORDER BY 
         total_sales_amount DESC
-    FETCH FIRST 10 ROWS ONLY
+    LIMIT 10
 ),
 customer_info AS (
     SELECT 
@@ -57,7 +57,7 @@ top_customers AS (
         customer_info c
     ORDER BY 
         c.total_spent DESC
-    FETCH FIRST 10 ROWS ONLY
+    LIMIT 10
 )
 SELECT 
     tc.c_customer_sk,

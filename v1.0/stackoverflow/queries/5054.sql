@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT c.Id) AS CommentCount,
     COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
     COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
     COALESCE(b.BadgeCount, 0) AS UserBadges,
     u.Reputation,
     u.DisplayName
@@ -26,7 +26,7 @@ LEFT JOIN
      GROUP BY 
          UserId) b ON u.Id = b.UserId
 LEFT JOIN 
-    (SELECT unnest(string_to_array(p.Tags, ',')) AS TagName, p.Id FROM Posts p) t ON p.Id = t.Id
+    (SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName, p.Id FROM Posts p) t ON p.Id = t.Id
 WHERE 
     p.CreationDate >= '2022-01-01' 
     AND p.PostTypeId = 1

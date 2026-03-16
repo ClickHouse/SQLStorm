@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName
 ),
@@ -42,7 +42,7 @@ SELECT
         ELSE 'Unpopular' 
     END AS Popularity,
     COALESCE(
-        (SELECT STRING_AGG(t.TagName, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
          FROM Tags t 
          WHERE t.WikiPostId = rp.PostId),
         'No Tags') AS Tags

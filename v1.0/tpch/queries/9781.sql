@@ -60,7 +60,7 @@ LEFT JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     o.o_orderstatus = 'O' AND 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     hr.s_name, nr.n_name, hr.total_cost
 ORDER BY 

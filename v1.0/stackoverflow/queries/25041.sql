@@ -2,8 +2,8 @@
 WITH TagCounts AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName,
-        COUNT(*) OVER (PARTITION BY unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'))) AS TagOccurrence
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName,
+        COUNT(*) OVER (PARTITION BY arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)))) AS TagOccurrence
     FROM 
         Posts p
     WHERE 
@@ -58,6 +58,6 @@ SELECT
 FROM 
     PostDetails p
 JOIN 
-    MostPopularTags t ON t.TagName = ANY(string_to_array(substring(p.Title, 2, length(p.Title)-2), '><'))
+    MostPopularTags t ON t.TagName = ANY(splitByString('><', substring(p.Title, 2, length(p.Title)-2)))
 ORDER BY 
     t.TotalOccurrences DESC, p.ViewCount DESC;

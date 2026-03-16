@@ -16,7 +16,7 @@ ActivePosts AS (
         COUNT(c.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY p.Id
 ),
 PostsWithHistory AS (
@@ -33,7 +33,7 @@ SELECT
     COUNT(DISTINCT ap.PostId) AS ActivePostCount,
     AVG(ap.ViewCount) AS AvgViews,
     COALESCE(SUM(CASE WHEN ph.ClosureHistory > 0 THEN 1 ELSE 0 END), 0) AS ClosureCount,
-    STRING_AGG(DISTINCT ap.Title, ', ') AS PostTitles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ap.Title))), ', ') AS PostTitles,
     RANK() OVER (ORDER BY SUM(up.Reputation) DESC) AS UserRank
 FROM UserReputation up
 JOIN ActivePosts ap ON up.UserId = ap.OwnerUserId

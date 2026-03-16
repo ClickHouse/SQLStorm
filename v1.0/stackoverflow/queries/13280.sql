@@ -7,4 +7,4 @@ SELECT
 FROM
     Posts
 WHERE
-    CreationDate >= CURRENT_DATE - INTERVAL '1 year';
+    CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR;

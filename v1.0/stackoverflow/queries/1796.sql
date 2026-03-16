@@ -14,7 +14,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AcceptedAnswerId
 ), 
@@ -47,7 +47,7 @@ ClosedPosts AS (
     JOIN 
         PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (10, 12)
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '90 days'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY
 )
 SELECT 
     rp.Id,
@@ -72,4 +72,4 @@ WHERE
     rp.CommentCount > 0 OR cp.ClosedDate IS NOT NULL
 ORDER BY 
     rp.Score DESC, rp.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

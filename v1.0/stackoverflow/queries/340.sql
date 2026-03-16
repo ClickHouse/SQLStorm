@@ -28,7 +28,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation, u.LastAccessDate
 )
@@ -45,7 +45,7 @@ SELECT
         WHEN au.TotalViews BETWEEN 500 AND 1000 THEN 'Moderate Activity'
         ELSE 'Low Activity'
     END AS ActivityLevel,
-    STRING_AGG(DISTINCT ht.Name, ', ') AS HistoryTypes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ht.Name))), ', ') AS HistoryTypes
 FROM 
     ActiveUsers au
 LEFT JOIN 

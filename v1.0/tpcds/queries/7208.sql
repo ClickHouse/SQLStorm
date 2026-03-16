@@ -51,7 +51,7 @@ combined_data AS (
     FROM 
         sales_data sd
     LEFT JOIN 
-        warehouse_data wd ON sd.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
+        warehouse_data wd ON sd.d_year = toYear(toDate('2002-10-01'))
 )
 SELECT 
     d_year,

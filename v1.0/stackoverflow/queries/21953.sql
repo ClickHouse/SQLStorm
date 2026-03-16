@@ -23,7 +23,7 @@ CombinedPostHistory AS (
     JOIN 
         PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     WHERE 
-        PH.CreationDate > cast('2024-10-01' as date) - INTERVAL '90 days'
+        PH.CreationDate > cast('2024-10-01' as date) - INTERVAL 90 DAY
     GROUP BY 
         PH.PostId, PH.UserId, PHT.Name
 ),
@@ -48,7 +48,7 @@ FinalData AS (
     LEFT JOIN 
         Tags T ON P.Tags LIKE '%' || T.TagName || '%'
     WHERE 
-        P.CreationDate <= cast('2024-10-01' as date) - INTERVAL '30 days' 
+        P.CreationDate <= cast('2024-10-01' as date) - INTERVAL 30 DAY 
         AND (P.Score > 5 OR P.ViewCount > 1000)
         AND (CPH.ChangeCount IS NULL OR CPH.ChangeCount < 10)
     ORDER BY 
@@ -57,7 +57,7 @@ FinalData AS (
 )
 SELECT 
     FD.*,
-    (SELECT STRING_AGG(DISTINCT A.UserDisplayName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(A.UserDisplayName))), ', ') 
      FROM Comments A 
      WHERE A.PostId = FD.PostId) AS Commenters,
     (SELECT COUNT(*) 
@@ -73,4 +73,4 @@ FROM
     FinalData FD
 WHERE 
     EXISTS (SELECT 1 FROM Badges B WHERE B.UserId = FD.LastChangeUserId AND B.Class = 1)
-    AND FD.LastChangeDate >= cast('2024-10-01' as date) - INTERVAL '60 days';
+    AND FD.LastChangeDate >= cast('2024-10-01' as date) - INTERVAL 60 DAY;

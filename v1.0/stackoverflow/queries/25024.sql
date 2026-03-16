@@ -45,7 +45,7 @@ TagCount AS (
         COUNT(*) AS TagFrequency
     FROM 
         Posts, 
-        UNNEST(string_to_array(Tags, '>')) AS value 
+        arrayJoin(splitByString('>', Tags)) AS value 
     WHERE 
         PostTypeId = 1
     GROUP BY 

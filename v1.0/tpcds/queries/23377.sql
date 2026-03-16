@@ -33,7 +33,7 @@ SELECT
         WHEN a.selling_days IS NULL OR a.selling_days = 0 
         THEN 'No sales data'
         ELSE CONCAT('Sold on ', 
-            (SELECT STRING_AGG(DISTINCT d.d_day_name, ', ')
+            (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d.d_day_name))), ', ')
              FROM date_dim d 
              WHERE d.d_date_sk IN (SELECT DISTINCT ws_sold_date_sk FROM web_sales WHERE ws_item_sk = i.i_item_sk)))
     END AS sales_info
@@ -47,4 +47,4 @@ ORDER BY
     a.total_profit DESC NULLS LAST,
     quantity_sold DESC,
     i.i_item_id
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

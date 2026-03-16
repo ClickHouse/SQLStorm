@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId
 ),
@@ -40,7 +40,7 @@ SELECT
     o.Reputation, 
     o.RankedPostCount, 
     p.Title,
-    COALESCE(STRING_AGG(t.TagName, ', '), 'No Tags') AS Tags,
+    COALESCE(arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', '), 'No Tags') AS Tags,
     COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVotes,
     COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVotes
 FROM 
@@ -57,4 +57,4 @@ GROUP BY
     o.UserId, o.Reputation, o.RankedPostCount, p.Title
 ORDER BY 
     o.Reputation DESC, UpVotes DESC NULLS LAST
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

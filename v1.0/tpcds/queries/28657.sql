@@ -8,8 +8,8 @@ SELECT
         WHEN AVG(CD.cd_purchase_estimate) > 1000 THEN 'High Spender'
         ELSE 'Low Spender'
     END AS spender_category,
-    STRING_AGG(DISTINCT W.w_warehouse_name, ', ') AS warehouses_contributing,
-    STRING_AGG(DISTINCT I.i_product_name, ', ') AS stocked_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(W.w_warehouse_name))), ', ') AS warehouses_contributing,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(I.i_product_name))), ', ') AS stocked_items
 FROM 
     customer C
 JOIN 

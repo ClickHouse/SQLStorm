@@ -10,8 +10,8 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1995-01-01' AND 
-        o.o_orderdate < DATE '1995-12-31'
+        o.o_orderdate >= toDate('1995-01-01') AND 
+        o.o_orderdate < toDate('1995-12-31')
 ),
 HighValueSuppliers AS (
     SELECT 
@@ -49,8 +49,8 @@ JoinResults AS (
     JOIN 
         region r ON n.n_regionkey = r.r_regionkey
     WHERE 
-        o.o_orderdate >= DATE '1995-01-01' AND 
-        o.o_orderdate < DATE '1995-12-31' AND 
+        o.o_orderdate >= toDate('1995-01-01') AND 
+        o.o_orderdate < toDate('1995-12-31') AND 
         o.o_orderstatus = 'F'
     GROUP BY 
         r.r_name, n.n_name, c.c_name, o.o_orderkey

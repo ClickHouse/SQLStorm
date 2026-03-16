@@ -18,7 +18,7 @@ RecentOrders AS (
     SELECT o.o_orderkey, COUNT(l.l_linenumber) AS line_item_count
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '30 days'
+    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
     GROUP BY o.o_orderkey
     HAVING COUNT(l.l_linenumber) > 5
 )

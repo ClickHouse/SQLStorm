@@ -58,7 +58,7 @@ FROM
 LEFT JOIN (
     SELECT 
         title,
-        STRING_AGG(keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords
     FROM 
         MovieKeywords
     GROUP BY 

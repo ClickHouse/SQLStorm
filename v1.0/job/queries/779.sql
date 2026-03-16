@@ -6,7 +6,7 @@ WITH MovieDetails AS (
         t.production_year,
         COUNT(DISTINCT c.person_id) AS actor_count,
         COALESCE(SUM(CASE WHEN mni.info = 'box office' AND mni.note IS NOT NULL THEN 1 ELSE 0 END), 0) AS total_box_office,
-        STRING_AGG(DISTINCT ak.name, ', ') AS all_actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS all_actors
     FROM 
         aka_title t
     LEFT JOIN 

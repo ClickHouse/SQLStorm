@@ -41,9 +41,9 @@ aggregated_info AS (
     SELECT 
         t.id AS movie_id,
         t.title,
-        ARRAY_AGG(DISTINCT km.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT cm.company_name) AS companies,
-        ARRAY_AGG(DISTINCT cm.company_type) AS company_types
+        arrayDistinct(groupArray(assumeNotNull(km.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(cm.company_name))) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(cm.company_type))) AS company_types
     FROM 
         aka_title t
     LEFT JOIN 

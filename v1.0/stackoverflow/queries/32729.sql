@@ -15,13 +15,13 @@ RecentUserPosts AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(r.PostId) AS RecentPostCount,
-        AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - r.CreationDate)) / 3600) AS AvgAgeInHours
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - r.CreationDate)) / 3600) AS AvgAgeInHours
     FROM 
         Users u
     LEFT JOIN 
         RecursiveCTE r ON u.Id = r.OwnerUserId
     WHERE 
-        u.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        u.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName
 ),

@@ -39,13 +39,13 @@ TopTaggedPosts AS (
         rp.TotalAnswers,
         rp.CommentCount,
         rp.TagRank,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         RankedPosts rp
     JOIN 
         (SELECT 
              p.Id,
-             UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS TagName
+             arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS TagName
          FROM 
              Posts p
          WHERE 

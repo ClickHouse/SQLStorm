@@ -73,8 +73,8 @@ SELECT
     COUNT(*) AS total_titles,
     MIN(fs.production_year) AS earliest_title_year,
     MAX(fs.production_year) AS latest_title_year,
-    ARRAY_AGG(DISTINCT fs.company_name) AS production_companies,
-    STRING_AGG(DISTINCT fs.keyword, ', ') AS keywords_used
+    arrayDistinct(groupArray(assumeNotNull(fs.company_name))) AS production_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fs.keyword))), ', ') AS keywords_used
 FROM
     FinalSelection fs
 WHERE

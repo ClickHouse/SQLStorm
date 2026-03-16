@@ -62,15 +62,15 @@ SELECT
         WHEN U.UpVotesReceived < U.DownVotesReceived THEN 'Negative'
         ELSE 'Neutral'
     END AS OverallEngagement,
-    ARRAY_AGG(DISTINCT PT.Name) AS PostTypesEngaged,
+    arrayDistinct(groupArray(assumeNotNull(PT.Name))) AS PostTypesEngaged,
     (
         SELECT 
-            STRING_AGG(CONCAT(PH.Comment, ' (', CAST(PH.CreationDate AS DATE), ')'), '; ') 
+            arrayStringConcat(groupArray(assumeNotNull(CONCAT(PH.Comment, ' (', CAST(PH.CreationDate AS DATE), ')'))), '; ') 
         FROM 
             PostHistory PH 
         WHERE 
             PH.UserId = U.UserId
-            AND PH.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days' 
+            AND PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
             AND PH.PostHistoryTypeId IN (10, 11, 12) 
     ) AS RecentPostStatusUpdates
 FROM 

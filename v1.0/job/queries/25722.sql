@@ -45,7 +45,7 @@ SELECT
     tm.movie_title,
     tm.production_year,
     COUNT(DISTINCT ak.name) AS total_actors,
-    ARRAY_AGG(DISTINCT ak.name ORDER BY ak.name) AS actor_list
+    arrayDistinct(groupArray(assumeNotNull(ak.name ORDER BY ak.name))) AS actor_list
 FROM 
     TopMovies tm
 JOIN 

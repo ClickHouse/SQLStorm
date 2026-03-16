@@ -31,7 +31,7 @@ CompleteMovieDetails AS (
         mwk.title,
         mwk.production_year,
         mwk.cast_count,
-        STRING_AGG(mwk.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(mwk.keyword)), ', ') AS keywords
     FROM
         MoviesWithKeywords mwk
     GROUP BY

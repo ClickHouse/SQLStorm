@@ -13,19 +13,19 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ),
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         ph.PostHistoryTypeId,
         ph.CreationDate,
-        STRING_AGG(ph.Comment, '; ') AS CommentsAggregate,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS CommentsAggregate,
         MAX(ph.UserDisplayName) FILTER (WHERE ph.UserId IS NOT NULL) AS LastEditor
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId, ph.CreationDate
 ),
@@ -89,4 +89,4 @@ WHERE
 ORDER BY 
     rp.Score DESC, 
     rp.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

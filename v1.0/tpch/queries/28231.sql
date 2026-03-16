@@ -25,8 +25,8 @@ aggregated_data AS (
         AVG(name_length) AS avg_name_length,
         MAX(name_length) AS max_name_length,
         MIN(name_length) AS min_name_length,
-        STRING_AGG(DISTINCT short_name, ', ') AS unique_short_names,
-        STRING_AGG(DISTINCT full_description, '; ') AS descriptions
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(short_name))), ', ') AS unique_short_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(full_description))), '; ') AS descriptions
     FROM string_bench
 )
 SELECT 

@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) - 
                  SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS NetVotes,
         p.CreationDate,
-        EXTRACT(YEAR FROM p.CreationDate) AS CreationYear
+        toYear(p.CreationDate) AS CreationYear
     FROM 
         Posts p
     LEFT JOIN 
@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '5 years'
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 5 YEAR
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score, p.CreationDate
 ),
@@ -44,7 +44,7 @@ PopularQuestions AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS ReasonNames
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS ReasonNames
     FROM 
         PostHistory ph
     INNER JOIN 

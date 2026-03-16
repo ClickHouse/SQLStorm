@@ -12,7 +12,7 @@ OrderDetails AS (
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderstatus = 'O' AND l.l_shipdate >= DATE '1997-01-01'
+    WHERE o.o_orderstatus = 'O' AND l.l_shipdate >= toDate('1997-01-01')
 ),
 PartInfo AS (
     SELECT p.p_partkey, p.p_name, p.p_brand, SUM(ld.l_extendedprice) AS total_revenue

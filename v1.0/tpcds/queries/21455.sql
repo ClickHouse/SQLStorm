@@ -73,4 +73,4 @@ WHERE
     rp.purchase_rank = 1
 ORDER BY 
     rp.total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

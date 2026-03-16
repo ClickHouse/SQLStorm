@@ -5,7 +5,7 @@ WITH TagStatistics AS (
         COUNT(p.Id) AS PostCount,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS Contributors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS Contributors,
         AVG(u.Reputation) AS AvgReputation
     FROM 
         Tags t

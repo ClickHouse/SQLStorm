@@ -21,4 +21,4 @@ GROUP BY
     p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ORDER BY 
     p.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

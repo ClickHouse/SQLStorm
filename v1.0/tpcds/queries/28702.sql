@@ -5,7 +5,7 @@ WITH Address_Stats AS (
         COUNT(*) AS total_addresses,
         MAX(LENGTH(ca_street_name)) AS max_street_name_length,
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length,
-        STRING_AGG(ca_street_name, ', ') AS all_street_names
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS all_street_names
     FROM 
         customer_address
     GROUP BY 
@@ -16,7 +16,7 @@ Customer_Demo AS (
         cd_gender,
         cd_marital_status,
         cd_purchase_estimate,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -26,7 +26,7 @@ Date_Aggregation AS (
     SELECT 
         d_year, 
         COUNT(DISTINCT d_date) AS total_days,
-        STRING_AGG(d_day_name, ', ') AS weekdays_used
+        arrayStringConcat(groupArray(assumeNotNull(d_day_name)), ', ') AS weekdays_used
     FROM 
         date_dim
     GROUP BY 

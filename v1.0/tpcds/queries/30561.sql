@@ -56,4 +56,4 @@ WHERE
     AND ia.i_current_price > 10.00
 ORDER BY 
     IAS.total_net_profit DESC NULLS LAST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

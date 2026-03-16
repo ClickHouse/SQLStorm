@@ -19,7 +19,7 @@ ActivePostHistory AS (
         ph.UserDisplayName,
         MAX(ph.CreationDate) AS LastActivityDate
     FROM PostHistory ph
-    WHERE ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY ph.PostId, ph.PostHistoryTypeId, ph.UserDisplayName
 ),
 
@@ -27,9 +27,9 @@ BadgeSummary AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM Badges b
-    WHERE b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY b.UserId
 )
 
@@ -44,7 +44,7 @@ SELECT
     bs.BadgeNames,
     (SELECT COUNT(*) 
      FROM Votes v 
-     WHERE v.UserId = upc.UserId AND v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month') AS VoteCount,
+     WHERE v.UserId = upc.UserId AND v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH) AS VoteCount,
     (SELECT COUNT(*) 
      FROM ActivePostHistory aph 
      WHERE aph.PostHistoryTypeId = 10 AND aph.UserDisplayName = upc.DisplayName) AS CloseVoteCount

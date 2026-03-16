@@ -54,7 +54,7 @@ SELECT
     f.title_id,
     f.title,
     f.production_year,
-    STRING_AGG(DISTINCT f.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.keyword))), ', ') AS keywords,
     COUNT(DISTINCT f.actor_name) AS total_actors,
     SUM(CASE WHEN f.role_category = 'Leading Role' THEN 1 ELSE 0 END) AS leading_roles_count,
     CASE 

@@ -4,7 +4,7 @@ WITH MovieDetails AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COALESCE(cp.name, 'Unknown') AS company_name,
         COALESCE(a.name, 'Unknown') AS actor_name
     FROM 
@@ -31,7 +31,7 @@ WITH MovieDetails AS (
         actor_name,
         COUNT(DISTINCT movie_id) AS total_movies,
         COUNT(DISTINCT production_year) AS unique_years,
-        STRING_AGG(DISTINCT title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(title))), ', ') AS movie_titles
     FROM 
         MovieDetails
     GROUP BY 
@@ -51,6 +51,6 @@ SELECT
     fa.avg_movies_per_actor,
     fa.most_prolific_actor_years,
     fa.least_prolific_actor_years,
-    (SELECT STRING_AGG(actor_name, ', ') FROM ActorStatistics WHERE total_movies >= (SELECT AVG(total_movies) FROM ActorStatistics)) AS prolific_actors
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') FROM ActorStatistics WHERE total_movies >= (SELECT AVG(total_movies) FROM ActorStatistics)) AS prolific_actors
 FROM 
     FinalResult fa;

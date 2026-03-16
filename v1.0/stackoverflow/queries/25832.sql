@@ -2,7 +2,7 @@
 WITH TagsArray AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -39,9 +39,9 @@ RecentPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        TopTags pp ON EXISTS (SELECT 1 FROM unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS a WHERE a = pp.Tag)
+        TopTags pp ON EXISTS (SELECT 1 FROM arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS a WHERE a = pp.Tag)
     WHERE 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days' AND 
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY AND 
         p.PostTypeId = 1
 )
 SELECT 

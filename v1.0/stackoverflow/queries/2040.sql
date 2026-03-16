@@ -56,5 +56,5 @@ FROM TopContributors t
 LEFT JOIN Users t2 ON t.UserId = t2.Id
 WHERE (t.ContributorCategory = 'Top 10 in Score' OR t.ContributorCategory = 'Top 10 in Posts')
 ORDER BY t.TotalScore DESC, t.TotalPosts DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;
 

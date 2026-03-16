@@ -52,7 +52,7 @@ final_result AS (
 SELECT 
     production_year,
     title,
-    STRING_AGG(CONCAT(actor_name, ' as ', role_name), '; ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(actor_name, ' as ', role_name))), '; ') AS actors
 FROM 
     final_result
 GROUP BY 

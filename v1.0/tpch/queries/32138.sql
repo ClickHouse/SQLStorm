@@ -7,7 +7,7 @@ WITH RECURSIVE MonthlyOrders AS (
     FROM 
         orders
     WHERE 
-        o_orderdate >= DATE '1997-01-01' AND o_orderdate < DATE '1997-12-31'
+        o_orderdate >= toDate('1997-01-01') AND o_orderdate < toDate('1997-12-31')
     GROUP BY 
         o_custkey, DATE_TRUNC('month', o_orderdate)
 ),

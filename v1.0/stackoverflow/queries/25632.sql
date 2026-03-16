@@ -5,16 +5,16 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostsByUserRank
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
-                unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName
+                arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName
         ) t ON TRUE
     WHERE 
         p.PostTypeId = 1 

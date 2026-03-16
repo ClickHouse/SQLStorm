@@ -45,4 +45,4 @@ FROM RankedUsers RU
 LEFT JOIN ClosedPosts CP ON RU.UserId = CP.CloserUserId
 WHERE RU.Reputation > 1000 AND RU.QuestionCount > 5
 ORDER BY RU.Reputation DESC, RU.QuestionCount DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -33,6 +33,6 @@ WITH RECURSIVE string_benchmark AS (
 SELECT 
     COUNT(*) AS total_records,
     AVG(name_length) AS avg_length,
-    STRING_AGG(formatted_info, ' | ') AS aggregated_info
+    arrayStringConcat(groupArray(assumeNotNull(formatted_info)), ' | ') AS aggregated_info
 FROM 
     string_benchmark;

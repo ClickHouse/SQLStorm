@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Comments c ON p.Id = c.PostId
     WHERE
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY
         p.Id, p.Title, p.Tags, p.CreationDate, p.ViewCount, p.Score, p.AnswerCount
 ),
@@ -26,7 +26,7 @@ PostDiversity AS (
     FROM
         RankedPosts rp
     CROSS JOIN
-        LATERAL (SELECT TRIM(both '<>' FROM unnest(string_to_array(rp.Tags, ','))) AS Tag) AS tag
+        (SELECT TRIM(both '<>' FROM arrayJoin(splitByString(',', rp.Tags))) AS Tag) AS tag
     INNER JOIN
         Tags tg ON tg.TagName = tag.Tag
     GROUP BY

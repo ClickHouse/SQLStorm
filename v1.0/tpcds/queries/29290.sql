@@ -3,8 +3,8 @@ WITH AddressCounts AS (
     SELECT
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(ca_city, '; ') AS cities,
-        STRING_AGG(DISTINCT CONCAT(ca_street_name, ' ', ca_street_number), '; ') AS street_details
+        arrayStringConcat(groupArray(assumeNotNull(ca_city)), '; ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_name, ' ', ca_street_number)))), '; ') AS street_details
     FROM
         customer_address
     GROUP BY
@@ -15,7 +15,7 @@ DemoStats AS (
         cd_gender,
         COUNT(*) AS demo_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_education_status, '; ') AS education_levels
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), '; ') AS education_levels
     FROM
         customer_demographics
     GROUP BY
@@ -23,10 +23,10 @@ DemoStats AS (
 ),
 SalesSummary AS (
     SELECT
-        EXTRACT(YEAR FROM d_date) AS sales_year,
+        toYear(d_date) AS sales_year,
         SUM(ws_ext_sales_price) AS total_sales,
         SUM(ws_net_profit) AS total_profit,
-        STRING_AGG(DISTINCT sm_carrier, '; ') AS shipping_methods
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sm_carrier))), '; ') AS shipping_methods
     FROM
         web_sales
     JOIN
@@ -34,7 +34,7 @@ SalesSummary AS (
     JOIN
         ship_mode ON ws_ship_mode_sk = sm_ship_mode_sk
     GROUP BY
-        EXTRACT(YEAR FROM d_date)
+        toYear(d_date)
 )
 SELECT
     ac.ca_state,

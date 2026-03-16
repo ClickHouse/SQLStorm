@@ -21,7 +21,7 @@ CustomerDetails AS (
 SELECT 
     city_address.full_address,
     COUNT(*) AS customer_count,
-    STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), ', ') AS customer_names,
     AVG(cd_purchase_estimate) AS average_purchase_estimate
 FROM 
     CustomerDetails city_address

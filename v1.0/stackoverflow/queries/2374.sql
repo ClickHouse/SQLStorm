@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostVoteCounts AS (
     SELECT 
@@ -25,7 +25,7 @@ PostVoteCounts AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS EditTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS EditTypes,
         COUNT(ph.Id) AS EditCount
     FROM 
         PostHistory ph

@@ -9,7 +9,7 @@ WITH RECURSIVE Sales_CTE AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01'
+        o.o_orderdate >= toDate('1997-01-01')
     GROUP BY 
         o.o_orderkey, o.o_orderdate
     UNION ALL
@@ -70,4 +70,4 @@ HAVING
     COUNT(DISTINCT s.s_suppkey) > 1
 ORDER BY 
     total_supply_cost DESC, p.p_name
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

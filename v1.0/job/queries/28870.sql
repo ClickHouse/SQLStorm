@@ -42,9 +42,9 @@ KeywordInfo AS (
 FinalOutput AS (
     SELECT 
         movie_title,
-        STRING_AGG(DISTINCT company_name, ', ') AS companies,
-        STRING_AGG(DISTINCT company_type, ', ') AS types,
-        STRING_AGG(DISTINCT cast_info, '; ') AS cast_details,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cast_info))), '; ') AS cast_details,
         MIN(production_year) AS first_production_year
     FROM 
         KeywordInfo

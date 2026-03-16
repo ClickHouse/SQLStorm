@@ -11,7 +11,7 @@ WITH movie_data AS (
     LEFT JOIN (
         SELECT 
             mc.movie_id,
-            STRING_AGG(DISTINCT cn.name, ', ') AS company_list
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_list
         FROM 
             movie_companies mc
         JOIN 
@@ -24,7 +24,7 @@ WITH movie_data AS (
     LEFT JOIN (
         SELECT 
             mk.movie_id,
-            STRING_AGG(DISTINCT k.keyword, '; ') AS keywords
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), '; ') AS keywords
         FROM 
             movie_keyword mk
         JOIN 

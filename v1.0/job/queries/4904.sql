@@ -4,7 +4,7 @@ WITH MovieInfo AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COUNT(DISTINCT c.person_id) AS actor_count
     FROM 
         aka_title m
@@ -24,7 +24,7 @@ WITH MovieInfo AS (
 CompanyInfo AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies,
         COUNT(DISTINCT mc.company_id) AS company_count
     FROM 
         movie_companies mc

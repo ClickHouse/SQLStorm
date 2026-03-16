@@ -13,7 +13,7 @@ CompanyStats AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT c.id) AS company_count,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 
@@ -68,4 +68,4 @@ FROM
 ORDER BY 
     md.production_year DESC, 
     md.title ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

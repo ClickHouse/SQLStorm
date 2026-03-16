@@ -31,7 +31,7 @@ FilteredPosts AS (
 ),
 TagStats AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', Tags)) AS TagName,
         COUNT(*) AS TotalCount
     FROM 
         FilteredPosts
@@ -67,7 +67,7 @@ SELECT
 FROM 
     FilteredPosts fp
 JOIN 
-    TagStats ts ON ts.TagName = ANY(string_to_array(fp.Tags, '><'))
+    TagStats ts ON ts.TagName = ANY(splitByString('><', fp.Tags))
 JOIN 
     UserStats us ON us.DisplayName = fp.AuthorDisplayName
 ORDER BY 

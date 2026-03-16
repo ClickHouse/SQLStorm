@@ -45,7 +45,7 @@ SELECT
     ci.production_year,
     ci.company_info,
     ci.keyword_info,
-    STRING_AGG(DISTINCT ci.person_details, ', ') AS cast_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.person_details))), ', ') AS cast_info
 FROM CombinedInfo ci
 GROUP BY ci.title, ci.production_year, ci.company_info, ci.keyword_info
 ORDER BY ci.production_year DESC, ci.company_info DESC;

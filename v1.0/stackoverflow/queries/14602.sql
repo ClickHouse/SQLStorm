@@ -41,4 +41,4 @@ FROM
     BenchmarkData
 ORDER BY 
     ViewCount DESC 
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

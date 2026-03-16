@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT l.l_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(l.l_quantity) AS avg_quantity_per_order,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_size, ')'), ', ') AS parts_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_size, ')')))), ', ') AS parts_supplied
 FROM 
     supplier s
 JOIN 

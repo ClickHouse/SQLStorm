@@ -3,8 +3,8 @@ WITH AddressInfo AS (
     SELECT 
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT ca_street_name || ' ' || ca_street_number, ', ') AS street_details
+        arrayStringConcat(groupArray(assumeNotNull(ca_city)), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_number))), ', ') AS street_details
     FROM 
         customer_address
     GROUP BY 
@@ -15,7 +15,7 @@ CustomerInfo AS (
         cd_gender,
         COUNT(DISTINCT c_customer_sk) AS customer_count,
         SUM(cd_dep_count) AS total_dependents,
-        STRING_AGG(DISTINCT c_first_name || ' ' || c_last_name, ', ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c_first_name || ' ' || c_last_name))), ', ') AS customer_names
     FROM 
         customer_demographics
     JOIN 

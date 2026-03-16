@@ -47,8 +47,8 @@ SELECT
     AVG(pd.ps_supplycost) AS avg_supply_cost,
     SUM(pd.ps_availqty) AS total_available_quantity,
     MAX(pd.comment_length) AS max_comment_length,
-    STRING_AGG(pd.full_description, ', ') AS part_descriptions,
-    STRING_AGG(pd.modified_comment, '; ') AS updated_comments
+    arrayStringConcat(groupArray(assumeNotNull(pd.full_description)), ', ') AS part_descriptions,
+    arrayStringConcat(groupArray(assumeNotNull(pd.modified_comment)), '; ') AS updated_comments
 FROM 
     PartDetails pd
 GROUP BY 

@@ -46,7 +46,7 @@ SELECT
     mh.production_year AS Production_Year,
     COUNT(am.actor_id) AS Num_Actors,
     AVG(pm.info_length) AS Avg_Info_Length,
-    STRING_AGG(DISTINCT am.name, ', ') AS Actor_Names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(am.name))), ', ') AS Actor_Names
 FROM 
     movie_hierarchy mh
 LEFT JOIN 

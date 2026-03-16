@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpvoteCount,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3) AS DownvoteCount
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
       AND p.ViewCount IS NOT NULL
 ),
 PostMetrics AS (
@@ -61,6 +61,6 @@ SELECT
 FROM FinalMetrics
 WHERE Sentiment = 'Positive' 
   AND Score > (SELECT AVG(Score) FROM Posts WHERE PostTypeId = 1) 
-  AND LastClosedDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '60 days'
+  AND LastClosedDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 60 DAY
 ORDER BY Score DESC
 LIMIT 10;

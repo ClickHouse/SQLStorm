@@ -43,7 +43,7 @@ SELECT
         WHEN T.CommentCount > 5 THEN 'Active'
         ELSE 'Less Active'
     END AS ActivityLevel,
-    ARRAY_AGG(DISTINCT P.Title) AS PostTitles,
+    arrayDistinct(groupArray(assumeNotNull(P.Title))) AS PostTitles,
     COUNT(DISTINCT PH.UserId) AS EditCount
 FROM 
     TopUsers T

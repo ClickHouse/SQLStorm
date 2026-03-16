@@ -38,7 +38,7 @@ WITH RankedPosts AS (
         RankedPosts rp
     WHERE 
         rp.rn = 1 AND 
-        rp.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'  
+        rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY  
 )
 
 SELECT 
@@ -52,7 +52,7 @@ SELECT
     p.DownVotes,
     COALESCE(ROUND((CAST(p.UpVotes AS FLOAT) / NULLIF((p.UpVotes + p.DownVotes), 0)) * 100, 2), 0) AS UpVotePercentage,
     COALESCE(ROUND((CAST(p.DownVotes AS FLOAT) / NULLIF((p.UpVotes + p.DownVotes), 0)) * 100, 2), 0) AS DownVotePercentage,
-    (SELECT STRING_AGG(c.Text, ' | ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') 
      FROM Comments c 
      WHERE c.PostId = p.PostId) AS CommentSummary
 FROM 

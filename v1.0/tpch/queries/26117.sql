@@ -3,7 +3,7 @@ SELECT
     p.p_name AS part_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice) AS total_revenue,
-    STRING_AGG(DISTINCT c.c_name, '; ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), '; ') AS customer_names,
     r.r_name AS region_name
 FROM 
     supplier s

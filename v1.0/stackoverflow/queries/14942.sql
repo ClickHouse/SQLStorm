@@ -1,6 +1,6 @@
 SELECT 
     pt.Name AS PostType,
-    AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)) / 60) AS AvgResponseTimeMin,
+    AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate)) / 60) AS AvgResponseTimeMin,
     AVG(u.Reputation) AS AvgUserReputation,
     COUNT(DISTINCT v.Id) AS TotalVotes,
     COUNT(DISTINCT c.Id) AS TotalComments

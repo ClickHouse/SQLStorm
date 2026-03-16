@@ -6,10 +6,10 @@ WITH RecentPosts AS (
         p.Score,
         p.ViewCount,
         COALESCE(CAST(NULLIF(p.OwnerUserId, -1) AS INT), -1) AS ActualOwnerUserId,
-        ARRAY_AGG(t.TagName) AS TagsArray
+        groupArray(assumeNotNull(t.TagName)) AS TagsArray
     FROM Posts p
     LEFT JOIN Tags t ON POSITION(t.TagName IN p.Tags) > 0 
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId
 ),
 VoteStatistics AS (

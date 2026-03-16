@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= DATE_TRUNC('year', '2024-10-01'::date) 
+        p.CreationDate >= DATE_TRUNC('year', CAST('2024-10-01' AS date)) 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName, p.PostTypeId
 ),
@@ -48,13 +48,13 @@ SELECT
         WHEN p.PostTypeId = 2 THEN 'Answer'
         ELSE 'Other'
     END AS PostType,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     TopRankedPosts trp
 JOIN 
     Posts p ON trp.PostId = p.Id
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag_array ON TRUE
+    arrayJoin(splitByString(',', p.Tags)) AS tag_array ON TRUE
 LEFT JOIN 
     Tags t ON t.TagName = tag_array
 GROUP BY 

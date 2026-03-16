@@ -21,7 +21,7 @@ movies_with_keywords AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        ARRAY_AGG(kw.keyword) AS keywords
+        groupArray(assumeNotNull(kw.keyword)) AS keywords
     FROM 
         aka_title m
     LEFT JOIN 

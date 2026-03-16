@@ -6,7 +6,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT p.Id) AS TotalPosts,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
-        AVG(EXTRACT(EPOCH FROM v.CreationDate)) AS AvgVoteDate,  -- Assuming CreationDate is a timestamp
+        AVG(toUnixTimestamp(v.CreationDate)) AS AvgVoteDate,  -- Assuming CreationDate is a timestamp
         COUNT(DISTINCT v.Id) AS TotalVotes
     FROM 
         Users u

@@ -5,7 +5,7 @@ WITH RankedSales AS (
         SUM(ws_sales_price) AS total_sales,
         COUNT(ws_order_number) AS sales_count,
         RANK() OVER (PARTITION BY ws_item_sk ORDER BY SUM(ws_sales_price) DESC) AS sales_rank,
-        STRING_AGG(DISTINCT CONCAT(ws_bill_customer_sk, '|', ws_ship_cdemo_sk), '; ') AS customer_link
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ws_bill_customer_sk, '|', ws_ship_cdemo_sk)))), '; ') AS customer_link
     FROM 
         web_sales 
     WHERE 
@@ -45,7 +45,7 @@ SalesWithDemographics AS (
     LEFT JOIN 
         CustomerDemographics cd ON cd.c_customer_sk = (SELECT c.c_customer_sk FROM customer c 
                                                        WHERE c.c_current_addr_sk = (SELECT MAX(c1.c_current_addr_sk) FROM customer c1)
-                                                       ORDER BY RANDOM() LIMIT 1)
+                                                       ORDER BY rand() LIMIT 1)
     WHERE 
         rs.sales_rank <= 5 
 )

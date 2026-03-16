@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON p.OwnerUserId = U.Id
     WHERE 
-        p.CreationDate >= ('2024-10-01 12:34:56'::timestamp - INTERVAL '1 year')
+        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR)
 ),
 PostCommentStats AS (
     SELECT 

@@ -5,7 +5,7 @@ SELECT
     REGEXP_REPLACE(p.p_mfgr, '^(.{3}).*$', '\\1**') AS truncated_mfgr,
     COUNT(o.o_orderkey) AS order_count,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied
 FROM 
     part p
 JOIN 

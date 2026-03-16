@@ -4,7 +4,7 @@ WITH RECURSIVE order_hierarchy AS (
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
     JOIN supplier s ON c.c_nationkey = s.s_nationkey
-    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
     UNION ALL
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate, oh.s_nationkey, oh.level + 1
     FROM orders o
@@ -15,7 +15,7 @@ SELECT
     COALESCE(SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END), 0) AS total_returned,
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     AVG(oh.o_totalprice) AS avg_order_price,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey

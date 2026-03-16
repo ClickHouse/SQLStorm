@@ -24,7 +24,7 @@ PostAnalytics AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         P.OwnerUserId, P.CreationDate
 ),
@@ -32,7 +32,7 @@ ClosedPostReasons AS (
     SELECT 
         PH.UserId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(DISTINCT CRT.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CRT.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 

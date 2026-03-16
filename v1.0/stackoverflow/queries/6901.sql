@@ -7,7 +7,7 @@ WITH RankedPosts AS (
     FROM Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Badges b ON b.UserId = u.Id
-    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 TopRankedPosts AS (
     SELECT rp.PostId, rp.Title, rp.CreationDate, rp.ViewCount, rp.Score, rp.UserName, 

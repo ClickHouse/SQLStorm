@@ -46,7 +46,7 @@ SELECT
 FROM 
     Customer_Info ci
 JOIN 
-    Item_Info ii ON ii.i_item_sk = (SELECT ws_item_sk FROM web_sales ORDER BY RANDOM() LIMIT 1)
+    Item_Info ii ON ii.i_item_sk = (SELECT ws_item_sk FROM web_sales ORDER BY rand() LIMIT 1)
 LEFT JOIN 
     Sales s ON ii.i_item_sk = s.ws_item_sk
 WHERE 

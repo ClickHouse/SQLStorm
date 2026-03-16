@@ -35,7 +35,7 @@ FilteredPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        UNNEST(string_to_array(CleanedTags, '><')) AS Tag, 
+        arrayJoin(splitByString('><', CleanedTags)) AS Tag, 
         COUNT(*) AS TagCount
     FROM 
         FilteredPosts

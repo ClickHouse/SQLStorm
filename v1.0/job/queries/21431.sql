@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         at.production_year,
         ROW_NUMBER() OVER (PARTITION BY at.production_year ORDER BY at.title) AS title_rank,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
         AVG(CASE WHEN mi.info IS NOT NULL AND mi.info <> '' THEN 1 ELSE 0 END) AS has_info
     FROM 
         aka_title at
@@ -39,7 +39,7 @@ SELECT
     fm.production_year,
     fm.movie_category,
     COUNT(*) AS movies_count,
-    STRING_AGG(fm.title, '; ') AS movies_list
+    arrayStringConcat(groupArray(assumeNotNull(fm.title)), '; ') AS movies_list
 FROM 
     FilteredMovies fm
 LEFT JOIN 

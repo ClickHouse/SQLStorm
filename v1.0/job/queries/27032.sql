@@ -31,7 +31,7 @@ TopActors AS (
 SELECT 
     a.person_name AS actor_name,
     COUNT(DISTINCT mc.movie_id) AS movies_with_company,
-    STRING_AGG(DISTINCT cn.name, ', ') AS companies_worked_with,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies_worked_with,
     SUM(CASE WHEN t.production_year >= 2000 THEN 1 ELSE 0 END) AS movies_post_2000
 FROM 
     TopActors a

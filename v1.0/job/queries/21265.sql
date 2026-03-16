@@ -39,7 +39,7 @@ distinct_cast AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id
@@ -78,4 +78,4 @@ FROM movie_hierarchy mh
 LEFT JOIN cast_with_ratings c ON mh.movie_id = c.movie_id
 WHERE mh.production_year BETWEEN 1990 AND 2023
 ORDER BY mh.production_year DESC, c.actor_order
-OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

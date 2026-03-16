@@ -46,7 +46,7 @@ SELECT
     ns.n_name AS nation,
     SUM(sd.ps_supplycost * sd.sold_quantity) AS total_cost,
     COUNT(DISTINCT ro.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT sd.price_type, ', ') AS price_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sd.price_type))), ', ') AS price_types
 FROM nation ns
 LEFT JOIN SupplierInfo si ON si.s_suppkey = ns.n_nationkey
 LEFT JOIN PartSupplierDetails sd ON sd.s_name = si.s_name

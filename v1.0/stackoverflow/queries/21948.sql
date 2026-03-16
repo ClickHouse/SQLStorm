@@ -7,7 +7,7 @@ WITH RankedUsers AS (
     FROM 
         Users u
     WHERE 
-        u.CreationDate < (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')
+        u.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ), 
 PostStatistics AS (
     SELECT 
@@ -25,7 +25,7 @@ PostStatistics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '30 days') 
+        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 30 DAY) 
     GROUP BY 
         p.Id, p.OwnerUserId
 ), 
@@ -35,7 +35,7 @@ UserPostActivity AS (
         COUNT(DISTINCT p.Id) AS PostsCreated,
         SUM(p.ViewCount) AS TotalViews,
         AVG(ps.CommentCount) AS AverageComments,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed
     FROM 
         Users u
     JOIN 
@@ -43,7 +43,7 @@ UserPostActivity AS (
     LEFT JOIN 
         PostStatistics ps ON p.Id = ps.PostId
     LEFT JOIN 
-        LATERAL (SELECT unnest(string_to_array(p.Tags, ',')) AS TagName) t ON TRUE
+        (SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName) t ON TRUE
     GROUP BY 
         u.Id
 )

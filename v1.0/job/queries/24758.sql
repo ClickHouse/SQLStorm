@@ -71,7 +71,7 @@ SELECT
     production_year,
     role,
     COUNT(*) FILTER (WHERE role IS NOT NULL) OVER (PARTITION BY production_year) AS roles_assigned,
-    STRING_AGG(DISTINCT company_kind, ', ') AS unique_company_kinds,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_kind))), ', ') AS unique_company_kinds,
     NULLIF(MIN(company_count), 0) AS min_company_count
 FROM
     FinalResults

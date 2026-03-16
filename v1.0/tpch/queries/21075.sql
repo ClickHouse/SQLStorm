@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 ),
 SupplierParts AS (
     SELECT 
@@ -72,4 +72,4 @@ WHERE
     AND (hcs.s_suppkey IS NOT NULL OR ro.o_orderstatus = 'O')
 ORDER BY 
     os.net_revenue DESC, os.o_orderdate ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

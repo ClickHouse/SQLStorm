@@ -61,7 +61,7 @@ JOIN UserReputation UP ON U.Id = UP.UserId
 JOIN PostStats ST ON P.Id = ST.PostId
 LEFT JOIN ClosedPosts CP ON P.Id = CP.PostId
 LEFT JOIN AcceptedAnswerCount AAC ON P.AcceptedAnswerId = AAC.AcceptedAnswerId
-WHERE P.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR')
+WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 AND P.PostTypeId = 1
 AND U.Reputation > 100
 ORDER BY U.Reputation DESC, P.Title

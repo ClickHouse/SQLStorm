@@ -4,7 +4,7 @@ SELECT
     CONCAT('Supplier ', s.s_name, ' provides part ', p.p_name) AS full_description,
     COUNT(ps.ps_availqty) AS available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customers_served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customers_served
 FROM 
     supplier s
 JOIN 
@@ -19,7 +19,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     p.p_name LIKE '%widget%' 
-    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     s.s_name, p.p_name
 HAVING 

@@ -61,4 +61,4 @@ WHERE
     cd_gender = 'F'
 ORDER BY 
     total_sales_price DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

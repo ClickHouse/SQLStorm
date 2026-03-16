@@ -64,4 +64,4 @@ WHERE
     AND c.c_last_review_date_sk IS NOT NULL
 ORDER BY 
     return_rate DESC NULLS LAST
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -63,7 +63,7 @@ LEFT JOIN (
 JOIN 
     PopularTags P ON P.TagName IN (
         SELECT 
-            UNNEST(string_to_array(Tags, ',')) 
+            arrayJoin(splitByString(',', Tags)) 
         FROM 
             Posts 
         WHERE 
@@ -71,7 +71,7 @@ JOIN
     )
 WHERE 
     U.Reputation > 1000 AND 
-    (U.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' OR U.Location IS NOT NULL)
+    (U.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR OR U.Location IS NOT NULL)
 ORDER BY 
     U.Reputation DESC, 
     QuestionCount DESC

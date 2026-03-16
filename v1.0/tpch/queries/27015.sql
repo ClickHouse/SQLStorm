@@ -3,7 +3,7 @@ SELECT
     n.n_name AS nation_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS product_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS product_names,
     AVG(l.l_quantity) AS avg_quantity,
     COUNT(DISTINCT CASE WHEN l.l_returnflag = 'R' THEN l.l_orderkey END) AS total_returns,
     MAX(o.o_orderdate) AS last_order_date,

@@ -29,7 +29,7 @@ SELECT
     COUNT(DISTINCT ts.s_suppkey) AS supplier_count,
     SUM(ps.ps_supplycost) AS total_supply_cost,
     AVG(ps.ps_availqty) AS avg_avail_qty,
-    STRING_AGG(ts.short_comment, '; ') AS comments_summary
+    arrayStringConcat(groupArray(assumeNotNull(ts.short_comment)), '; ') AS comments_summary
 FROM 
     partsupp ps
 JOIN 

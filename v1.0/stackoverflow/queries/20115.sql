@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 
 UserActivity AS (
@@ -40,7 +40,7 @@ PostActivity AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId
 ),
@@ -64,7 +64,7 @@ ActiveUserPosts AS (
         PostActivity pa ON p.Id = pa.PostId
     WHERE 
         u.Reputation > 1000 AND 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '3 months' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 3 MONTH 
 ),
 
 FinalReport AS (

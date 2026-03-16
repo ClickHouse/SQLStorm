@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.ViewCount > 100
 ),
 TopRankedPosts AS (
@@ -37,7 +37,7 @@ TagStats AS (
     FROM 
         Tags t
     LEFT JOIN 
-        Posts p ON t.Id = ANY (string_to_array(p.Tags, '><')::int[])
+        Posts p ON t.Id = ANY (splitByString('><', p.TagsCAST() AS int)[])
     GROUP BY 
         t.TagName
 ),
@@ -68,7 +68,7 @@ JOIN
 JOIN 
     (SELECT 
          trp.PostId, 
-         unnest(string_to_array(trp.Tags, '><')) AS TagName
+         arrayJoin(splitByString('><', trp.Tags)) AS TagName
      FROM 
          TopRankedPosts trp) AS pTags ON trp.PostId = pTags.PostId
 JOIN 

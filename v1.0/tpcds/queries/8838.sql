@@ -43,7 +43,7 @@ SELECT
     d.cd_marital_status,
     d.customer_count,
     (SELECT COUNT(DISTINCT c.c_customer_sk) FROM customer c) AS total_customers,
-    ROUND((d.customer_count::numeric / (SELECT COUNT(DISTINCT c.c_customer_sk) FROM customer c)) * 100, 2) AS customer_percentage
+    ROUND((CAST(d.customer_count AS numeric) / (SELECT COUNT(DISTINCT c.c_customer_sk) FROM customer c)) * 100, 2) AS customer_percentage
 FROM 
     Demographics d
 ORDER BY 

@@ -26,7 +26,7 @@ WITH RECURSIVE ActorHierarchy AS (
 SELECT 
     ah.actor_name,
     COUNT(DISTINCT ah.movie_title) AS movies_count,
-    STRING_AGG(DISTINCT ah.movie_title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ah.movie_title))), ', ') AS movie_titles,
     MIN(ah.production_year) AS first_movie_year,
     MAX(ah.production_year) AS last_movie_year,
     AVG(ah.production_year) FILTER (WHERE ah.production_year IS NOT NULL) AS avg_year,

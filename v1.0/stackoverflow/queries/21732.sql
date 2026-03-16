@@ -68,7 +68,7 @@ SELECT
     COALESCE(UP.SilverBadges, 0) AS SilverBadges,
     COALESCE(UP.BronzeBadges, 0) AS BronzeBadges,
     UP.PerformanceCategory,
-    (SELECT STRING_AGG(DISTINCT ph.Comment, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), ', ') 
      FROM PostHistory ph 
      WHERE ph.UserId = UP.UserId AND ph.PostHistoryTypeId IN (10, 11) 
     ) AS UserFeedbackComments,

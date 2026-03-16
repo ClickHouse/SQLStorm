@@ -51,7 +51,7 @@ SELECT
 FROM 
     TopCustomers tc
 LEFT JOIN 
-    SalesByDate sbd ON sbd.d_date >= cast('2002-10-01' as date) - INTERVAL '30 days'
+    SalesByDate sbd ON sbd.d_date >= cast('2002-10-01' as date) - INTERVAL 30 DAY
 ORDER BY 
     tc.total_sales DESC, sbd.daily_sales DESC
 LIMIT 50;

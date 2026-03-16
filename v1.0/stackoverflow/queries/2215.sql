@@ -21,7 +21,7 @@ PostSummary AS (
         COALESCE(SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
         COALESCE(SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
         COUNT(C.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM P.CreationDate) ORDER BY P.CreationDate) AS YearRank
+        ROW_NUMBER() OVER (PARTITION BY toYear(P.CreationDate) ORDER BY P.CreationDate) AS YearRank
     FROM 
         Posts P
     LEFT JOIN 
@@ -34,7 +34,7 @@ PostSummary AS (
 ClosedPostReasons AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(DISTINCT CRT.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CRT.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 
@@ -65,7 +65,7 @@ LEFT JOIN
     ClosedPostReasons C ON P.PostId = C.PostId
 WHERE 
     (P.CommentCount > 10 OR P.YearRank = 1) 
-    AND P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ORDER BY 
     U.TotalVotes DESC, 
     P.CreationDate DESC

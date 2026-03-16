@@ -4,8 +4,8 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS number_of_orders,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS average_extended_price,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' from ', r.r_name), ', ') AS customer_names,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' from ', r.r_name)))), ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments
 FROM 
     supplier s
 JOIN 

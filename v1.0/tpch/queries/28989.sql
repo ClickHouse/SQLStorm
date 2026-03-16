@@ -2,7 +2,7 @@ SELECT
     SUM(P.p_size) AS total_part_size,
     R.r_name AS region_name,
     COUNT(DISTINCT S.s_suppkey) AS num_suppliers,
-    STRING_AGG(DISTINCT C.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(C.c_name))), ', ') AS customer_names,
     COUNT(O.o_orderkey) AS total_orders,
     AVG(O.o_totalprice) AS average_order_value
 FROM 
@@ -21,8 +21,8 @@ JOIN
     region R ON N.n_regionkey = R.r_regionkey
 WHERE 
     P.p_name LIKE '%metal%'
-    AND O.o_orderdate >= DATE '1996-01-01'
-    AND O.o_orderdate < DATE '1997-01-01'
+    AND O.o_orderdate >= toDate('1996-01-01')
+    AND O.o_orderdate < toDate('1997-01-01')
 GROUP BY 
     R.r_name
 ORDER BY 

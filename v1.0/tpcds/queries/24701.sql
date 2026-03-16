@@ -30,7 +30,7 @@ SELECT
     ca.ca_city,
     COUNT(tc.c_customer_id) AS top_customers_count,
     AVG(tc.cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(CONCAT(tc.c_first_name, ' ', tc.c_last_name), '; ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(tc.c_first_name, ' ', tc.c_last_name))), '; ') AS customer_names
 FROM 
     CustomerAnalytics ca
 LEFT JOIN 

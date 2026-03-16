@@ -27,7 +27,7 @@ CastDetails AS (
 MovieCompanies AS (
     SELECT 
         mc.movie_id,
-        string_agg(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         COUNT(DISTINCT mc.company_type_id) AS distinct_company_types
     FROM 
         movie_companies mc

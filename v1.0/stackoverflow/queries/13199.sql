@@ -29,15 +29,15 @@ PostEngagement AS (
         P.FavoriteCount,
         P.CreationDate,
         P.LastActivityDate,
-        ARRAY_AGG(DISTINCT T.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS Tags
     FROM 
         Posts P
     LEFT JOIN 
-        unnest(string_to_array(P.Tags, '<>')) AS Tag ON TRUE
+        arrayJoin(splitByString('<>', P.Tags)) AS Tag ON TRUE
     JOIN 
         Tags T ON T.TagName = Tag
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         P.Id, P.Title, P.Score, P.ViewCount, P.AnswerCount, P.CommentCount, P.FavoriteCount, P.CreationDate, P.LastActivityDate
 )

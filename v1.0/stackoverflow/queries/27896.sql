@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score > 0 
 ), FilteredPosts AS (
     SELECT 
@@ -44,7 +44,7 @@ SELECT
     f.ViewCount,
     f.Score,
     f.AnswerCount,
-    STRING_AGG(t.TagName, ', ') AS RelatedTags,
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS RelatedTags,
     COUNT(DISTINCT c.Id) AS CommentCount,
     COUNT(DISTINCT ph.Id) AS EditCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpvotes, 
@@ -56,7 +56,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory ph ON f.PostId = ph.PostId
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(f.Tags, ',')) AS tag_array ON TRUE
+    arrayJoin(splitByString(',', f.Tags)) AS tag_array ON TRUE
 LEFT JOIN 
     Tags t ON TRIM(tag_array) = t.TagName
 LEFT JOIN 

@@ -6,7 +6,7 @@ WITH UserPostStats AS (
         COALESCE(SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END), 0) AS QuestionCount,
         COALESCE(SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END), 0) AS AnswerCount,
         COALESCE(SUM(CASE WHEN P.PostTypeId IN (4, 5) THEN 1 ELSE 0 END), 0) AS TagWikiCount,
-        COALESCE(SUM(CASE WHEN P.LastActivityDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month' THEN 1 ELSE 0 END), 0) AS RecentActivityCount
+        COALESCE(SUM(CASE WHEN P.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN 1 ELSE 0 END), 0) AS RecentActivityCount
     FROM 
         Users U
     LEFT JOIN 
@@ -31,7 +31,7 @@ UserBadges AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 

@@ -41,12 +41,12 @@ SELECT
         WHEN sa.net_sales BETWEEN 5000 AND 10000 THEN 'Moderate Performer'
         ELSE 'Low Performer'
     END AS performance_category,
-    STRING_AGG(CASE 
+    arrayStringConcat(groupArray(assumeNotNull(CASE 
         WHEN sa.total_returns > 0 THEN 'Item has returns' 
         ELSE 'No returns' 
-    END, '; ') AS return_status
+    END)), '; ') AS return_status
 FROM sales_and_returns sa
 GROUP BY sa.ws_item_sk, sa.total_sales, sa.total_returns, sa.total_return_amt, sa.net_sales
 HAVING COUNT(sa.ws_item_sk) > 1 OR SUM(sa.total_sales) IS NULL
 ORDER BY performance_category, net_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

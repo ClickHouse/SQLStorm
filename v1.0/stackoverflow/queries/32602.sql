@@ -13,7 +13,7 @@ UserReputationBadges AS (
     SELECT
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames
     FROM Users u
     LEFT JOIN Badges b ON u.Id = b.UserId
     GROUP BY u.Id
@@ -21,7 +21,7 @@ UserReputationBadges AS (
 CloseReasons AS (
     SELECT
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS CloseReasonNames
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasonNames
     FROM PostHistory ph
     INNER JOIN CloseReasonTypes cr ON CAST(ph.Comment AS INT) = cr.Id
     WHERE ph.PostHistoryTypeId IN (10, 11)  

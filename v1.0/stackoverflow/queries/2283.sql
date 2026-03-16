@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS PostRank
     FROM Posts p
-    WHERE p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT
@@ -24,7 +24,7 @@ UserBadges AS (
 PostsWithCloseReasons AS (
     SELECT
         ph.PostId,
-        STRING_AGG(ct.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(ct.Name)), ', ') AS CloseReasons
     FROM PostHistory ph
     JOIN CloseReasonTypes ct ON ph.Comment = CAST(ct.Id AS TEXT)
     WHERE ph.PostHistoryTypeId IN (10, 11)

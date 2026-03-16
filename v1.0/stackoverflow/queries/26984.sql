@@ -45,4 +45,4 @@ SELECT
 FROM UserPostStatistics ups
 LEFT JOIN BadgeStatistics bs ON ups.UserId = bs.UserId
 ORDER BY ReputationScore DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

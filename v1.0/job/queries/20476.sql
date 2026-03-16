@@ -28,8 +28,8 @@ top_movies AS (
 key_movie_info AS (
     SELECT
         t.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT ci.note, '; ') AS cast_notes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), '; ') AS cast_notes
     FROM
         top_movies t
     LEFT JOIN
@@ -54,7 +54,7 @@ FROM
 LEFT JOIN
     (SELECT
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS company_name
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS company_name
      FROM
         movie_companies mc
      LEFT JOIN

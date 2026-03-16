@@ -5,7 +5,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(p.p_retailprice) AS average_retail_price,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     MAX(ps.ps_supplycost) AS max_supply_cost,
     MIN(ps.ps_supplycost) AS min_supply_cost
 FROM 
@@ -22,7 +22,7 @@ JOIN
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
     p.p_name LIKE '%rubber%'
-    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     s.s_name, p.p_name
 HAVING 

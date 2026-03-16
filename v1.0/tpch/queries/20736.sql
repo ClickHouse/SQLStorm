@@ -52,7 +52,7 @@ NationRevenue AS (
 SELECT 
     n.n_name,
     COALESCE(SUM(tr.total_revenue), 0) AS nation_revenue,
-    ARRAY_AGG(DISTINCT ts.s_name) AS top_suppliers,
+    arrayDistinct(groupArray(assumeNotNull(ts.s_name))) AS top_suppliers,
     COALESCE(AVG(hvo.o_totalprice), 0) AS avg_high_value_order
 FROM 
     nation n
@@ -68,4 +68,4 @@ GROUP BY
     n.n_name
 ORDER BY 
     nation_revenue DESC, avg_high_value_order ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

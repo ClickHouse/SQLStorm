@@ -28,7 +28,7 @@ TopMovies AS (
 CastDetails AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(a.name, ', ') AS cast_names,
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS cast_names,
         COUNT(DISTINCT c.person_id) AS cast_count
     FROM 
         cast_info c

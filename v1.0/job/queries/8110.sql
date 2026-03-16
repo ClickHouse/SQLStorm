@@ -19,8 +19,8 @@ TopMovies AS (
 )
 SELECT 
     production_year, 
-    ARRAY_AGG(actor_name) AS top_actors, 
-    STRING_AGG(DISTINCT company_type, ', ') AS production_companies
+    groupArray(assumeNotNull(actor_name)) AS top_actors, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS production_companies
 FROM TopMovies
 GROUP BY production_year
 ORDER BY production_year DESC;

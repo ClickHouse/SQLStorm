@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.Title,
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVoteCount,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVoteCount,
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Votes v ON p.Id = v.PostId
     LEFT JOIN
-        UNNEST(string_to_array(p.Tags, '>')) AS t(TagName) ON t.TagName IS NOT NULL
+        arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE
         p.PostTypeId = 1 
     GROUP BY
@@ -31,7 +31,7 @@ PopularTags AS (
     FROM
         Posts p
     JOIN
-        UNNEST(string_to_array(p.Tags, '>')) AS t(TagName) ON t.TagName IS NOT NULL
+        arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
     GROUP BY
         t.TagName
     ORDER BY

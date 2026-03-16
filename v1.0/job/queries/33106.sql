@@ -37,7 +37,7 @@ MovieCast AS (
     SELECT 
         c.movie_id,
         COUNT(c.person_id) AS num_cast,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names
     FROM 
         cast_info c
     JOIN 
@@ -59,7 +59,7 @@ SELECT
         WHEN rm.rn <= 10 THEN 'Top 10' 
         ELSE 'Not Top 10' 
     END AS rank_status,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     RankedMovies rm
 LEFT JOIN 

@@ -34,7 +34,7 @@ AggregatedResults AS (
         COUNT(*) AS total_suppliers,
         SUM(available_quantity) AS total_available_quantity,
         AVG(supply_cost) AS average_supply_cost,
-        STRING_AGG(supplier_part_info, '; ') AS supplier_details
+        arrayStringConcat(groupArray(assumeNotNull(supplier_part_info)), '; ') AS supplier_details
     FROM 
         FilteredSuppliers
     GROUP BY 

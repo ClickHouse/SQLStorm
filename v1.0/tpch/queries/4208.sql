@@ -24,7 +24,7 @@ FilteredOrder AS (
 SELECT r.r_name AS Region_Name,
        SUM(a.Total_AvailQty * l.l_extendedprice) AS Total_Value,
        COUNT(DISTINCT o.o_orderkey) AS Total_Orders,
-       STRING_AGG(CONCAT(s.s_name, ' (', s.s_acctbal, ')'), '; ') AS Supplier_Concat
+       arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_acctbal, ')'))), '; ') AS Supplier_Concat
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN RankedSupplier s ON n.n_nationkey = s.s_nationkey AND s.RNK <= 3

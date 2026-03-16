@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     MAX(l.l_shipdate) AS last_ship_date,
     AVG(l.l_quantity) AS avg_quantity_per_order,
-    STRING_AGG(CONCAT('Order: ', o.o_orderkey, ', Date: ', o.o_orderdate), '; ') AS order_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT('Order: ', o.o_orderkey, ', Date: ', o.o_orderdate))), '; ') AS order_details
 FROM 
     part p
 JOIN 

@@ -8,7 +8,7 @@ WITH RecentPosts AS (
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 UserReputation AS (
     SELECT 
@@ -33,7 +33,7 @@ PostComments AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         COUNT(*) AS TotalChanges
     FROM PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id

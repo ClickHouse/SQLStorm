@@ -9,9 +9,9 @@ SELECT
     SUM(l.l_extendedprice) AS total_revenue,
     AVG(l.l_discount) AS average_discount,
     MAX(o.o_orderdate) AS last_order_date,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments,
-    STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments,
-    STRING_AGG(DISTINCT c.c_comment, '; ') AS customer_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_comment))), '; ') AS customer_comments
 FROM 
     lineitem l
 JOIN 

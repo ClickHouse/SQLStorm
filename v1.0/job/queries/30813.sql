@@ -30,7 +30,7 @@ SELECT
         WHEN ci.nr_order IS NOT NULL THEN ci.nr_order
         ELSE NULL 
     END) AS Average_Order,
-    STRING_AGG(DISTINCT ak.name, ', ') AS Alternate_Names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS Alternate_Names,
     COUNT(DISTINCT mc.company_id) AS Company_Count,
     SUM(CASE 
         WHEN mc.note IS NOT NULL THEN 1 

@@ -53,7 +53,7 @@ PostDetails AS (
     LEFT JOIN 
         (SELECT 
             PostId,
-            STRING_AGG(Comment, ', ') AS CloseReasonTypes
+            arrayStringConcat(groupArray(assumeNotNull(Comment)), ', ') AS CloseReasonTypes
          FROM 
             PostHistory 
          WHERE 

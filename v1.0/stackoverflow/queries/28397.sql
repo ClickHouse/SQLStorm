@@ -24,7 +24,7 @@ TagStats AS (
         AVG(p.Score) AS AverageScore
     FROM (
         SELECT 
-            unnest(string_to_array(TRIM(BOTH '<>' FROM Tags), '>')) AS TAG,
+            arrayJoin(splitByString('>', TRIM(BOTH '<>' FROM Tags))) AS TAG,
             Score
         FROM 
             Posts
@@ -57,7 +57,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TopTags tt ON tt.Tag = ANY(string_to_array(TRIM(BOTH '<>' FROM rp.Tags), '>'))  
+    TopTags tt ON tt.Tag = ANY(splitByString('>', TRIM(BOTH '<>' FROM rp.Tags)))  
 WHERE 
     rp.Rank = 1  
 ORDER BY 

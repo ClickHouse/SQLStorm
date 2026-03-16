@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         m.title,
         m.production_year,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        ARRAY_AGG(DISTINCT a.name) AS featured_actors,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS featured_actors,
         AVG(CAST(mi.info AS numeric)) AS average_rating
     FROM 
         title m

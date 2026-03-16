@@ -39,7 +39,7 @@ SELECT
     d.avg_purchase_estimate,
     a.full_address
 FROM date_summary ds
-LEFT JOIN demographics_summary d ON ds.d_month_seq % 12 = EXTRACT(MONTH FROM DATE '2002-10-01') 
+LEFT JOIN demographics_summary d ON ds.d_month_seq % 12 = toMonth(toDate('2002-10-01')) 
 LEFT JOIN address_standardization a ON d.customer_count > 100
 GROUP BY ds.d_year, ds.d_month_seq, d.cd_gender, d.cd_marital_status, d.customer_count, d.avg_purchase_estimate, a.full_address
 ORDER BY ds.d_year, ds.d_month_seq;

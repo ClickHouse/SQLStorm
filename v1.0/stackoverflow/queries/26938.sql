@@ -9,14 +9,14 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         COUNT(c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS OwnerPostRank
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag_name ON TRUE
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
@@ -68,4 +68,4 @@ JOIN
     UserReputation ur ON ur.UserId = u.Id
 ORDER BY 
     tp.Score DESC, tp.ViewCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

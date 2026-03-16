@@ -32,7 +32,7 @@ company_details AS (
 movie_info_details AS (
     SELECT 
         mi.movie_id,
-        ARRAY_AGG(CONCAT(it.info, ': ', mi.info)) AS additional_info
+        groupArray(assumeNotNull(CONCAT(it.info, ': ', mi.info))) AS additional_info
     FROM movie_info mi
     JOIN info_type it ON mi.info_type_id = it.id
     GROUP BY mi.movie_id
@@ -41,8 +41,8 @@ SELECT
     rm.movie_title,
     rm.production_year,
     rm.movie_keyword,
-    STRING_AGG(DISTINCT mc.actor_name || ' (' || mc.actor_role || ')', ', ') AS cast,
-    STRING_AGG(DISTINCT cd.company_name || ' [' || cd.company_type || ']', ', ') AS production_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.actor_name || ' (' || mc.actor_role || ')'))), ', ') AS cast,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.company_name || ' [' || cd.company_type || ']'))), ', ') AS production_companies,
     md.additional_info
 FROM ranked_movies rm
 LEFT JOIN movie_cast mc ON rm.movie_id = mc.movie_id

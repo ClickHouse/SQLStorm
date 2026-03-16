@@ -83,4 +83,4 @@ FROM FinalResults fr
 WHERE (fr.return_count >= (SELECT AVG(return_count) FROM FinalResults) OR fr.total_net_paid > 1000)
 AND fr.cd_gender IS NOT NULL
 ORDER BY fr.total_net_paid DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

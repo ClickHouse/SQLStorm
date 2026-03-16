@@ -19,7 +19,7 @@ OrderStats AS (
 )
 SELECT rs.nation_name, AVG(o.total_revenue) AS avg_revenue, 
        MAX(o.distinct_parts_count) AS max_parts_ordered,
-       STRING_AGG(DISTINCT rs.s_name, ', ') AS supplier_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rs.s_name))), ', ') AS supplier_names
 FROM RegionSuppliers rs
 LEFT JOIN OrderStats o ON rs.s_nationkey = o.o_orderkey
 GROUP BY rs.nation_name

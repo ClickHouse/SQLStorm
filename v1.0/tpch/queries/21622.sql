@@ -15,7 +15,7 @@ AggregateLineItems AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN CURRENT_DATE - INTERVAL '90 DAY' AND CURRENT_DATE
+        l.l_shipdate BETWEEN CURRENT_DATE - INTERVAL 90 DAY AND CURRENT_DATE
     GROUP BY 
         l.l_orderkey
 ),

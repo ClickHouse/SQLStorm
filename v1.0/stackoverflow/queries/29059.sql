@@ -1,7 +1,7 @@
 WITH PostTags AS (
     SELECT
         p.Id AS PostId,
-        TRIM(UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><'))) AS Tag
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS Tag
     FROM
         Posts p
     WHERE
@@ -46,7 +46,7 @@ SELECT
     q.Title,
     q.ViewCount,
     q.AnswerCount,
-    STRING_AGG(DISTINCT pt.Tag, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Tag))), ', ') AS AssociatedTags
 FROM
     PopularQuestions q
 JOIN

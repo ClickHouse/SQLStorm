@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 AND
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserAggregates AS (
     SELECT 
@@ -44,9 +44,9 @@ SELECT
         WHEN tu.ScoreRank <= 10 THEN 'Top Contributor'
         ELSE 'Regular Contributor'
     END AS ContributorStatus,
-    COALESCE((SELECT STRING_AGG(DISTINCT t.TagName, ', ')
+    COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ')
                FROM Posts p
-               JOIN UNNEST(string_to_array(p.Tags, ',')) AS t(TagName) ON t.TagName IS NOT NULL
+               JOIN arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
                WHERE p.OwnerUserId = tu.UserId AND p.PostTypeId = 1), 'No Tags') AS TagsUsed
 FROM 
     TopUsers tu

@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '365 days'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 365 DAY
 ),
 CustomerSummary AS (
     SELECT 

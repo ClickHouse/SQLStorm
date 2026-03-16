@@ -10,7 +10,7 @@ WITH RECURSIVE RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     UNION ALL
     SELECT 
         p.Id,
@@ -24,7 +24,7 @@ WITH RECURSIVE RecentPosts AS (
     JOIN 
         RecentPosts rp ON p.ParentId = rp.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 UserPostCounts AS (
     SELECT 
@@ -40,7 +40,7 @@ UserPostCounts AS (
 ),
 TopTags AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS Tag,
+        arrayJoin(splitByString('><', Tags)) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -75,7 +75,7 @@ SELECT
     phs.LastChangeDate,
     phs.EditorCount,
     (SELECT 
-        STRING_AGG(t.Tag, ', ' ORDER BY t.TagCount DESC)
+        arrayStringConcat(groupArray(assumeNotNull(t.Tag)), ', ' ORDER BY t.TagCount DESC)
      FROM 
         TopTags t) AS TopTags
 FROM 

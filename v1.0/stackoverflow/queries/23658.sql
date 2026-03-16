@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON c.PostId = p.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 BadgesSummary AS (
@@ -34,7 +34,7 @@ BadgesSummary AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LastChangeDate
     FROM 
         PostHistory ph

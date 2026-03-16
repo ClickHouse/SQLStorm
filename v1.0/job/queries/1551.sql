@@ -46,7 +46,7 @@ FROM MovieDetails md
 LEFT JOIN (
     SELECT 
         movie_id,
-        STRING_AGG(note, '; ') AS notes
+        arrayStringConcat(groupArray(assumeNotNull(note)), '; ') AS notes
     FROM cast_info
     GROUP BY movie_id
 ) ci ON md.movie_id = ci.movie_id

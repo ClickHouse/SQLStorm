@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1995-01-01'
+        o.o_orderdate >= toDate('1995-01-01')
 ),
 SupplierPartStats AS (
     SELECT 
@@ -46,4 +46,4 @@ HAVING
     OR COUNT(DISTINCT lo.l_orderkey) > 5
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

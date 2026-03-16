@@ -65,4 +65,4 @@ SELECT
 FROM final_summary fs
 LEFT JOIN income_bracket ib ON fs.c_customer_sk = ib.c_customer_sk
 ORDER BY fs.total_sales DESC NULLS LAST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

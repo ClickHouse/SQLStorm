@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ), RecentBadges AS (
     SELECT 
         b.UserId,
@@ -23,7 +23,7 @@ WITH RankedPosts AS (
     FROM 
         Badges b
     WHERE 
-        b.Class = 1 AND b.Date >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months')
+        b.Class = 1 AND b.Date >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
     GROUP BY 
         b.UserId
 ), TopPosts AS (

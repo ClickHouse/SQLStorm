@@ -51,4 +51,4 @@ SELECT
 FROM customer_demographics
 WHERE customer_count > 0
 ORDER BY avg_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

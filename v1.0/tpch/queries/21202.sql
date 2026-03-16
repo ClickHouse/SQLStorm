@@ -45,7 +45,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(CASE WHEN h.order_value_category = 'High' THEN 1 ELSE 0 END) AS high_value_orders,
     AVG(COALESCE(od.returned_price, 0)) AS avg_returned_price,
-    STRING_AGG(DISTINCT CONCAT('Order ', o.o_orderkey, ': ', COALESCE(NULLIF(h.order_value_category, 'Low'), 'N/A')), '; ') AS order_summary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Order ', o.o_orderkey, ': ', COALESCE(NULLIF(h.order_value_category, 'Low'), 'N/A'))))), '; ') AS order_summary
 FROM TopSupp rg
 LEFT JOIN RankedSuppliers s ON rg.supplier_count > 0 AND s.rnk = 1
 LEFT JOIN orders o ON s.s_nationkey = (SELECT n.n_nationkey FROM nation n WHERE n.n_nationkey = s.s_nationkey)

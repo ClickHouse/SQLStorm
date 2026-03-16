@@ -24,7 +24,7 @@ RecentVotes AS (
         COUNT(CASE WHEN v.VoteTypeId = 3 THEN 1 END) AS DownVotes,
         COUNT(*) AS TotalVotes
     FROM Votes v
-    WHERE v.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE v.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY v.PostId
 ),
 

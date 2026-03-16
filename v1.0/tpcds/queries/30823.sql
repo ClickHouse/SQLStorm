@@ -59,4 +59,4 @@ WHERE
 ORDER BY 
     total_returns DESC, 
     return_amount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

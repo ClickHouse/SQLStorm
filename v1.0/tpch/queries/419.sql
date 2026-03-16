@@ -56,4 +56,4 @@ WHERE
     rs.order_rank = 1
 ORDER BY 
     rs.o_orderdate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

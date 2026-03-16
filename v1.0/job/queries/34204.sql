@@ -25,7 +25,7 @@ WITH RECURSIVE MovieCTE AS (
 CastDetails AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
         COUNT(c.person_id) AS cast_count
     FROM 
         cast_info c
@@ -37,7 +37,7 @@ CastDetails AS (
 CompanyInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         COUNT(DISTINCT mc.company_id) AS num_companies
     FROM 
         movie_companies mc
@@ -49,7 +49,7 @@ CompanyInfo AS (
 KeywordInfo AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id

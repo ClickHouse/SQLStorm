@@ -42,4 +42,4 @@ AND s.s_acctbal IS NOT NULL
 GROUP BY p.p_name
 HAVING COUNT(DISTINCT s.s_suppkey) > 1
 ORDER BY total_revenue DESC, supplier_count ASC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

@@ -46,4 +46,4 @@ WHERE
     AND ss.total_order_count > 0
 ORDER BY 
     ss.sales_category, ss.total_sales DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

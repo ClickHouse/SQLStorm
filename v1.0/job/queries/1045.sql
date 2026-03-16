@@ -25,7 +25,7 @@ actor_info AS (
 movie_details AS (
     SELECT 
         m.movie_id,
-        ARRAY_AGG(DISTINCT a.name) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actor_names,
         m.production_year,
         COUNT(DISTINCT k.keyword) AS keyword_count
     FROM 

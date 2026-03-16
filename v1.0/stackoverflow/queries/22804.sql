@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
+    WHERE p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.PostTypeId
 ),
 ActiveUsers AS (
@@ -20,7 +20,7 @@ ActiveUsers AS (
         SUM(CASE WHEN b.Class = 3 THEN 1 ELSE 0 END) AS BronzeBadges
     FROM Users u
     LEFT JOIN Badges b ON u.Id = b.UserId
-    WHERE u.Reputation > 1000 AND u.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL '90 days'
+    WHERE u.Reputation > 1000 AND u.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL 90 DAY
     GROUP BY u.Id, u.DisplayName
 ),
 CombinedData AS (
@@ -65,5 +65,5 @@ SELECT
     COALESCE((SELECT COUNT(*) FROM Votes v WHERE v.PostId = fp.PostId AND v.VoteTypeId = 2), 0) AS UpvoteCount,
     COALESCE((SELECT AVG(Score) FROM Posts p2 WHERE p2.Id = fp.PostId), 0) AS AverageScore
 FROM FilteredPosts fp
-WHERE fp.CreationDate < cast('2024-10-01' as date) - INTERVAL '7 days'
+WHERE fp.CreationDate < cast('2024-10-01' as date) - INTERVAL 7 DAY
 ORDER BY DiscussionStatus, fp.Score DESC;

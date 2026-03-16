@@ -28,7 +28,7 @@ RecentPostActivity AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.LastActivityDate, U.DisplayName
 ),

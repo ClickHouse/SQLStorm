@@ -51,7 +51,7 @@ SELECT
     am.movie_title,
     am.production_year,
     ct.kind AS movie_kind,
-    STRING_AGG(DISTINCT am.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(am.keyword))), ', ') AS keywords
 FROM 
     ActorMovies am
 JOIN 

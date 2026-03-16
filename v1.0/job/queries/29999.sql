@@ -6,8 +6,8 @@ WITH RankedMovies AS (
         a.production_year,
         a.kind_id,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         aka_title a
     LEFT JOIN 

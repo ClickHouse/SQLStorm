@@ -35,4 +35,4 @@ WHERE ci.customer_rank = 1
 GROUP BY ci.c_customer_sk, ci.c_first_name, ci.c_last_name, ci.cd_gender, ci.hd_income_band_sk
 HAVING SUM(rs.ws_net_paid) > (SELECT AVG(rs2.ws_net_paid) FROM RankedSales rs2)
 ORDER BY total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -19,16 +19,16 @@ WITH RankedPosts AS (
         FROM Votes
         GROUP BY PostId
     ) v ON p.Id = v.PostId
-    WHERE p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 RecentClosedPosts AS (
     SELECT 
         p.Id AS PostId,
         MAX(ph.CreationDate) AS LastClosedDate,
-        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasons
     FROM Posts p
     JOIN PostHistory ph ON p.Id = ph.PostId
-    JOIN CloseReasonTypes ctr ON ph.Comment::INTEGER = ctr.Id
+    JOIN CloseReasonTypes ctr ON CAST(ph.Comment AS INTEGER) = ctr.Id
     WHERE ph.PostHistoryTypeId = 10
     GROUP BY p.Id
 ),

@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT p.p_partkey) AS unique_parts,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(p.p_retailprice) AS average_retail_price,
-    STRING_AGG(DISTINCT CONCAT_WS(' - ', s.s_name, s.s_phone), '; ') AS supplier_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' - ', s.s_name, s.s_phone)))), '; ') AS supplier_info,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     SUM(CASE WHEN o.o_orderstatus = 'O' THEN o.o_totalprice ELSE 0 END) AS total_open_orders,
     MAX(o.o_orderdate) AS last_order_date

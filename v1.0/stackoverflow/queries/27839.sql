@@ -15,11 +15,11 @@ WITH RankedPosts AS (
         Users U ON p.OwnerUserId = U.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 TagStatistics AS (
     SELECT
-        UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags)-2))) AS Tag
     FROM 
         RankedPosts
 ),

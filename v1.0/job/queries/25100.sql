@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_members
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_members
     FROM 
         aka_title t
     LEFT JOIN 
@@ -21,7 +21,7 @@ KeywordedMovies AS (
         m.production_year,
         m.cast_count,
         m.cast_members,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         RankedMovies m
     LEFT JOIN 
@@ -48,7 +48,7 @@ SELECT
     era,
     COUNT(*) AS number_of_movies,
     AVG(cast_count) AS average_cast_size,
-    STRING_AGG(title, ', ') AS titles
+    arrayStringConcat(groupArray(assumeNotNull(title)), ', ') AS titles
 FROM 
     FilteredMovies
 GROUP BY 

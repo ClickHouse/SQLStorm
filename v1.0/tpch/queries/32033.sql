@@ -11,7 +11,7 @@ supplier_stats AS (
            COUNT(DISTINCT ps.ps_partkey) AS supply_count,
            SUM(ps.ps_supplycost) AS total_cost,
            MAX(ps.ps_availqty) AS max_avail_qty,
-           STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
     FROM supplier s
     LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     LEFT JOIN part p ON ps.ps_partkey = p.p_partkey

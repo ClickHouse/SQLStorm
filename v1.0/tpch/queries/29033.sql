@@ -22,7 +22,7 @@ JOIN
 WHERE 
     LENGTH(p.p_comment) > 10 
     AND s.s_acctbal > 2000 
-    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_partkey, s.s_suppkey, p.p_name
 HAVING 

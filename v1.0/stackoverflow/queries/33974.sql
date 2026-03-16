@@ -17,13 +17,13 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -32,7 +32,7 @@ UserBadges AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(cr.Name, ', ' ORDER BY ph.CreationDate DESC) AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ' ORDER BY ph.CreationDate DESC) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

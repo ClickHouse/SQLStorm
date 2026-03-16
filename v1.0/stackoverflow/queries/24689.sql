@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Votes v ON p.Id = v.PostId
     WHERE
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         p.Id
 ),
@@ -35,7 +35,7 @@ BadgedUsers AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 

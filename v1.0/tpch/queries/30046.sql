@@ -36,7 +36,7 @@ SELECT
     ns.n_name,
     COALESCE(SUM(sd.revenue), 0) AS total_revenue,
     AVG(sc.ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM CustomerHierarchy ch
 LEFT JOIN SalesData sd ON ch.c_custkey = sd.o_orderkey
 LEFT JOIN nation ns ON ch.c_nationkey = ns.n_nationkey

@@ -36,6 +36,6 @@ SELECT
 FROM Users U
 LEFT JOIN UserBadgeStats UBadge ON U.Id = UBadge.UserId
 LEFT JOIN HighScorePosts HScore ON U.Id = HScore.OwnerUserId
-WHERE U.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL '1 YEAR'
+WHERE U.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 AND (UBadge.TotalBadges IS NULL OR UBadge.TotalBadges > 0)
 ORDER BY U.DisplayName ASC, HScore.AvgScore DESC NULLS LAST;

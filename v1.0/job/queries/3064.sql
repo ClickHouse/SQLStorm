@@ -5,7 +5,7 @@ WITH movie_details AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
         AVG(CAST(i.info AS numeric)) FILTER (WHERE it.info = 'rating') AS avg_rating
     FROM 
         aka_title t

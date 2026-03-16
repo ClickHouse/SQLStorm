@@ -49,7 +49,7 @@ SELECT
     r.r_name,
     SUM(os.order_total) AS total_orders,
     COUNT(DISTINCT ts.s_suppkey) AS unique_suppliers,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     MAX(ts.total_revenue) AS max_revenue,
     MIN(ts.total_revenue) AS min_revenue
 FROM

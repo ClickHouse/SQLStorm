@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_price,
-    STRING_AGG(DISTINCT SUBSTRING(l.l_comment, 1, POSITION(' ' IN l.l_comment) - 1), ', ') AS comment_excerpt,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(l.l_comment, 1, POSITION(' ' IN l.l_comment) - 1)))), ', ') AS comment_excerpt,
     r.r_name AS region_name
 FROM 
     part p

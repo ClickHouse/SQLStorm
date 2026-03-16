@@ -57,7 +57,7 @@ CombinedInfo AS (
         cd.actor_name,
         cd.role_order,
         cd.role_type,
-        STRING_AGG(DISTINCT mc.company_name, ', ') AS production_companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.company_name))), ', ') AS production_companies
     FROM
         TopMovies tm
     LEFT JOIN

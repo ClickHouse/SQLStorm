@@ -40,5 +40,5 @@ FROM RecentOrders ro
 JOIN OrderLineItems oi ON ro.o_orderkey = oi.o_orderkey
 LEFT JOIN PartDetails pd ON oi.o_orderkey = (SELECT l.l_orderkey FROM lineitem l WHERE l.l_orderkey = oi.o_orderkey LIMIT 1)
 WHERE pd.p_retailprice IS NOT NULL
-AND (ro.o_orderdate BETWEEN DATE '1998-10-01' - INTERVAL '30 DAY' AND DATE '1998-10-01')
+AND (ro.o_orderdate BETWEEN toDate('1998-10-01') - INTERVAL 30 DAY AND toDate('1998-10-01'))
 ORDER BY price_rank, ro.c_name;

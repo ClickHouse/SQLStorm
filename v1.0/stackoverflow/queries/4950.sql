@@ -65,7 +65,7 @@ WHERE
 UNION ALL 
 SELECT 
     'No Bounties' AS Title, 
-    TIMESTAMP '2024-10-01 12:34:56' AS CreationDate, 
+    toDateTime64('2024-10-01 12:34:56', 6) AS CreationDate, 
     us.DisplayName, 
     0 AS TotalBounties, 
     us.BadgeCount, 

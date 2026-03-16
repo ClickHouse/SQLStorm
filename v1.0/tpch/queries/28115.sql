@@ -9,7 +9,7 @@ SELECT
         END) AS total_returned_quantity,
     COUNT(DISTINCT o.o_orderkey) AS distinct_order_count,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     part p
 JOIN 

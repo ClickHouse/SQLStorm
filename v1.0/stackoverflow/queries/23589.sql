@@ -15,7 +15,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 UserReputation AS (
     SELECT 
@@ -42,7 +42,7 @@ PostAnalytics AS (
         RP.AnswerCount,
         COALESCE(UR.Reputation, 0) AS UserReputation,
         COALESCE(UR.BadgeCount, 0) AS UserBadgeCount,
-        COALESCE(UR.LastBadgeDate, CAST('1970-01-01' AS TIMESTAMP)) AS LastBadgeDate,
+        COALESCE(UR.LastBadgeDate, toDateTime64('1970-01-01', 6)) AS LastBadgeDate,
         CASE 
             WHEN RP.AnswerCount > 0 THEN 
                 ROUND((CAST(RP.Score AS DECIMAL) / NULLIF(RP.AnswerCount, 0)), 2) 
@@ -65,7 +65,7 @@ SELECT
     PA.UserBadgeCount,
     PA.ScorePerAnswer,
     COUNT(PH.Id) AS EditHistoryCount,
-    STRING_AGG(DISTINCT CONCAT(PH.Comment, ' (', PH.CreationDate, ')'), '; ') AS EditHistoryComments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(PH.Comment, ' (', PH.CreationDate, ')')))), '; ') AS EditHistoryComments
 FROM 
     PostAnalytics PA
 LEFT JOIN 

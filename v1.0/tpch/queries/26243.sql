@@ -31,4 +31,4 @@ GROUP BY
     r.r_name
 ORDER BY 
     total_revenue DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

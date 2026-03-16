@@ -38,4 +38,4 @@ FROM item_sales isa
 LEFT JOIN ranked_sales rs ON isa.i_item_sk = rs.ws_item_sk
 WHERE rs.profit_rank <= 5 OR (rs.profit_rank IS NULL AND rs.quantity_rank = 1)
 ORDER BY isa.total_net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

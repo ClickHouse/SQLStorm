@@ -18,7 +18,7 @@ CustomerOrders AS (
            o.o_orderpriority, o.o_comment
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
 ), 
 LineItemSummary AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,

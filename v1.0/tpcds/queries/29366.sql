@@ -8,8 +8,8 @@ SELECT
     CD.cd_gender, 
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid) AS total_spent,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used,
-    STRING_AGG(DISTINCT i.i_product_name, ', ') AS products_ordered
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), ', ') AS products_ordered
 FROM 
     customer AS c
 JOIN 

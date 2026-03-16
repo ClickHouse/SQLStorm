@@ -3,7 +3,7 @@ WITH UserBadges AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM Users U
     LEFT JOIN Badges B ON U.Id = B.UserId
     GROUP BY U.Id
@@ -18,7 +18,7 @@ RecentPosts AS (
         ROW_NUMBER() OVER (PARTITION BY U.Id ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
     INNER JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 ClosedPosts AS (
     SELECT 

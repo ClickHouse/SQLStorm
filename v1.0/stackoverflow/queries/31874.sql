@@ -51,7 +51,7 @@ PostStats AS (
     LEFT JOIN 
         PostHierarchy ph ON p.Id = ph.PostId
     WHERE 
-        p.LastActivityDate >= CURRENT_DATE - INTERVAL '3 months'
+        p.LastActivityDate >= CURRENT_DATE - INTERVAL 3 MONTH
 ),
 VoteSummary AS (
     SELECT 

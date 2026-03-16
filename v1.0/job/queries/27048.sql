@@ -29,7 +29,7 @@ AggregatedData AS (
     SELECT 
         a.person_id,
         COUNT(tm.aka_id) AS movie_count,
-        STRING_AGG(DISTINCT tm.movie_title, '; ') AS top_movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tm.movie_title))), '; ') AS top_movie_titles
     FROM 
         aka_name a
     JOIN 

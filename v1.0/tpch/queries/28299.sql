@@ -29,7 +29,7 @@ SELECT
     c.c_acctbal,
     COUNT(o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS top_suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS top_suppliers
 FROM 
     customer c
 JOIN 

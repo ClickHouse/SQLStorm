@@ -3,9 +3,9 @@ WITH movie_details AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT c.name) AS companies,
-        ARRAY_AGG(DISTINCT p.name) AS cast,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(p.name))) AS cast,
         COALESCE(COUNT(DISTINCT ci.role_id), 0) AS role_count,
         AVG(mt.info_length) AS avg_info_length
     FROM 

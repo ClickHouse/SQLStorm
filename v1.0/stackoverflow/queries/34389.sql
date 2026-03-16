@@ -25,7 +25,7 @@ PostHistorySummary AS (
         P.Title,
         MAX(PH.CreationDate) AS LastEditedDate,
         COUNT(PH.Id) AS EditCount,
-        STRING_AGG(DISTINCT U.DisplayName, ', ') AS Editors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS Editors
     FROM 
         PostHistory PH
     JOIN 

@@ -39,7 +39,7 @@ CastDetails AS (
 MovieInfo AS (
     SELECT 
         ah.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS movie_info,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS movie_info,
         MAX(CASE WHEN it.info = 'Rating' THEN mi.info END) AS rating
     FROM 
         complete_cast ah

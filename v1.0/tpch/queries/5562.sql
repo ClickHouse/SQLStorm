@@ -19,7 +19,7 @@ RecentOrders AS (
            o.o_totalprice, 
            o.o_orderdate
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 TopSuppliers AS (
     SELECT s.s_suppkey, 

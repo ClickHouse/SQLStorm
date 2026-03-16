@@ -31,7 +31,7 @@ FilteredMovies AS (
 SELECT 
     fm.title,
     fm.production_year,
-    STRING_AGG(fm.author_name, ', ') AS cast_members,
+    arrayStringConcat(groupArray(assumeNotNull(fm.author_name)), ', ') AS cast_members,
     COUNT(DISTINCT ci.role_id) AS unique_roles,
     MAX(CASE WHEN ci.note IS NOT NULL THEN 'Yes' ELSE 'No' END) AS has_notes
 FROM 

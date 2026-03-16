@@ -50,7 +50,7 @@ FilteredPosts AS (
 PostTagStats AS (
     SELECT 
         p.Id AS PostId,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         COUNT(DISTINCT pl.RelatedPostId) AS RelatedPostCount
     FROM 
         Posts p
@@ -59,7 +59,7 @@ PostTagStats AS (
     JOIN 
         (SELECT  
             Id, 
-            unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName 
+            arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName 
         FROM 
             Posts) t ON p.Id = t.Id 
     GROUP BY 

@@ -40,7 +40,7 @@ ActorDetails AS (
 SELECT 
     tt.title,
     tt.production_year,
-    STRING_AGG(ad.actor_name, ', ') AS actor_names
+    arrayStringConcat(groupArray(assumeNotNull(ad.actor_name)), ', ') AS actor_names
 FROM 
     TopTitles tt
 JOIN 

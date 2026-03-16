@@ -36,7 +36,7 @@ SELECT
     R.production_year,
     COUNT(DISTINCT AR.actor_name) AS total_actors,
     COUNT(DISTINCT CASE WHEN AR.role_rank = 1 THEN AR.actor_name END) AS lead_actors,
-    STRING_AGG(DISTINCT AR.actor_name, ', ') AS all_actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(AR.actor_name))), ', ') AS all_actors,
     MAX(CASE WHEN R.keyword IS NULL THEN 'No Keyword' ELSE R.keyword END) AS movie_keyword
 FROM 
     RankedMovies R

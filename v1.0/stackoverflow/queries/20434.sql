@@ -35,11 +35,11 @@ CloseReasonCounts AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseReasonCount,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON ph.Comment = cr.Id::TEXT
+        CloseReasonTypes cr ON ph.Comment = CAST(cr.Id AS TEXT)
     WHERE 
         ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY 

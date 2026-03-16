@@ -39,7 +39,7 @@ SELECT
     a.max_purchase_estimate,
     a.min_purchase_estimate,
     ROUND(AVG(LENGTH(cad.full_name)), 2) AS avg_name_length,
-    STRING_AGG(DISTINCT cad.ca_city, ', ') AS associated_cities
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cad.ca_city))), ', ') AS associated_cities
 FROM 
     AddressStatistics a
 JOIN 

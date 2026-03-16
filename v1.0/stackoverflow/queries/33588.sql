@@ -23,7 +23,7 @@ WITH RECURSIVE UserReputationCTE AS (
 PostTagsCTE AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -37,7 +37,7 @@ RecentVotes AS (
     FROM 
         Votes
     WHERE 
-        CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+        CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         PostId
 ),
@@ -63,7 +63,7 @@ SELECT
     COALESCE(hs.IsClosed, 0) AS IsClosed,
     COALESCE(hs.IsReopened, 0) AS IsReopened,
     COUNT(DISTINCT c.Id) AS CommentCount,
-    STRING_AGG(DISTINCT tt.Tag, ', ') AS Tags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tt.Tag))), ', ') AS Tags,
     u.DisplayName,
     u.Reputation AS UserReputation
 FROM 
@@ -79,7 +79,7 @@ LEFT JOIN
 LEFT JOIN 
     Users u ON p.OwnerUserId = u.Id
 WHERE 
-    p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+    p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 GROUP BY 
     p.Id, p.Title, p.Score, rt.Upvotes, rt.Downvotes, hs.IsClosed, hs.IsReopened, u.Id, u.DisplayName
 ORDER BY 

@@ -1,7 +1,7 @@
 
 WITH TagOccurrences AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><'))) AS TagName, 
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TagName, 
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -39,8 +39,8 @@ ActivitySummary AS (
         P.OwnerUserId,
         COUNT(DISTINCT P.Id) AS TotalPosts,
         COUNT(DISTINCT C.Id) AS TotalComments,
-        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - P.CreationDate))::FLOAT) AS AveragePostAgeInSeconds,
-        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - C.CreationDate))::FLOAT) AS AverageCommentAgeInSeconds
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.CreationDate)CAST() AS FLOAT)) AS AveragePostAgeInSeconds,
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - C.CreationDate)CAST() AS FLOAT)) AS AverageCommentAgeInSeconds
     FROM 
         Posts P
     LEFT JOIN 

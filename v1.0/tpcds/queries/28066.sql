@@ -3,7 +3,7 @@ WITH AddressStats AS (
     SELECT 
         ca_state, 
         COUNT(*) AS total_addresses,
-        STRING_AGG(DISTINCT ca_city, ', ') AS unique_cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS unique_cities,
         AVG(ca_gmt_offset) AS avg_gmt_offset
     FROM customer_address
     GROUP BY ca_state
@@ -13,7 +13,7 @@ GenderStats AS (
         cd_gender,
         COUNT(*) AS total_demographics,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS unique_education_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS unique_education_statuses
     FROM customer_demographics
     GROUP BY cd_gender
 ),
@@ -21,7 +21,7 @@ DateStats AS (
     SELECT 
         d_year,
         COUNT(*) AS total_dates,
-        STRING_AGG(DISTINCT d_day_name, ', ') AS unique_days,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d_day_name))), ', ') AS unique_days,
         COUNT(DISTINCT d_month_seq) AS total_months
     FROM date_dim
     GROUP BY d_year

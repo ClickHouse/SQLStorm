@@ -25,8 +25,8 @@ MovieDetails AS (
     SELECT 
         m.title,
         m.production_year,
-        STRING_AGG(DISTINCT ak.name, ',' ORDER BY ak.name) AS actor_names,
-        STRING_AGG(DISTINCT ci.note, ',' ORDER BY ci.note) AS character_notes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ',' ORDER BY ak.name) AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), ',' ORDER BY ci.note) AS character_notes
     FROM 
         TopMovies m
     LEFT JOIN 

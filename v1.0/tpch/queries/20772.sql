@@ -45,7 +45,7 @@ JOIN orders o ON c.c_custkey = o.o_custkey
 LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 LEFT JOIN TopParts p ON l.l_partkey = p.p_partkey
 LEFT JOIN nation n ON c.c_nationkey = n.n_nationkey
-WHERE o.o_orderdate >= DATE '1997-01-01' 
+WHERE o.o_orderdate >= toDate('1997-01-01') 
 AND (c.c_acctbal IS NOT NULL OR c.c_name LIKE '%Corp%')
 GROUP BY c.c_custkey, c.c_name, c.c_acctbal, o.o_orderkey, o.o_orderstatus, p.p_name, p.stock_status, n.n_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) IS NOT NULL

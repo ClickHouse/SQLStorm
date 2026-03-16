@@ -3,8 +3,8 @@ WITH Address_Stats AS (
     SELECT
         ca_city,
         COUNT(*) AS address_count,
-        STRING_AGG(ca_street_name, ', ') AS street_names,
-        STRING_AGG(DISTINCT ca_zip, ', ') AS zip_codes
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_zip))), ', ') AS zip_codes
     FROM customer_address
     GROUP BY ca_city
 ),

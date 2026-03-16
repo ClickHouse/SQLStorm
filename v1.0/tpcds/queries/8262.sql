@@ -44,4 +44,4 @@ JOIN
     CustomerData cd ON cd.cd_demo_sk = (SELECT c.c_current_cdemo_sk FROM customer c WHERE c.c_customer_sk = sd.cs_item_sk LIMIT 1)
 ORDER BY 
     sd.total_net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

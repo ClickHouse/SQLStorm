@@ -25,7 +25,7 @@ ProcessedOrders AS (
     LEFT JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1996-01-01'
+        o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1996-01-01')
     GROUP BY 
         o.o_orderkey, o.o_totalprice
 ),
@@ -69,4 +69,4 @@ WHERE
 ORDER BY 
     p.p_partkey,
     total_price DESC NULLS LAST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

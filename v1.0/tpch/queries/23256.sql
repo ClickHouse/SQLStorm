@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM
         orders o
     WHERE
-        o.o_orderdate BETWEEN DATE '1994-01-01' AND DATE '1994-12-31'
+        o.o_orderdate BETWEEN toDate('1994-01-01') AND toDate('1994-12-31')
         AND o.o_totalprice IS NOT NULL
 ),
 SupplierDetails AS (

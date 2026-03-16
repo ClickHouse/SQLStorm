@@ -33,11 +33,11 @@ MovieActors AS (
 SELECT 
     tm.title,
     tm.production_year,
-    STRING_AGG(ma.actor_name, ', ') AS actors,
+    arrayStringConcat(groupArray(assumeNotNull(ma.actor_name)), ', ') AS actors,
     (SELECT COUNT(DISTINCT mi.info_type_id) 
      FROM movie_info mi 
      WHERE mi.movie_id = tm.movie_id) AS info_count,
-    COALESCE(STRING_AGG(DISTINCT k.keyword, ', '), 'No Keywords') AS keywords
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'No Keywords') AS keywords
 FROM 
     TopRankedMovies tm
 LEFT JOIN 

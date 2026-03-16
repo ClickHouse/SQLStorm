@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount
 ),
@@ -35,13 +35,13 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        b.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         ph.UserId,
-        STRING_AGG(ph.Comment, '; ') AS EditComments,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS EditComments,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph

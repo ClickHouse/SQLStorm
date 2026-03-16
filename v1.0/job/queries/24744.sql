@@ -41,7 +41,7 @@ SELECT
      JOIN cast_info ci ON an.person_id = ci.person_id 
      WHERE ci.movie_id = fm.movie_id 
        AND an.name IS NOT NULL) AS NamedActorCount,
-    (SELECT STRING_AGG(DISTINCT an.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') 
      FROM aka_name an 
      WHERE an.person_id IN (SELECT ci.person_id 
                             FROM cast_info ci 

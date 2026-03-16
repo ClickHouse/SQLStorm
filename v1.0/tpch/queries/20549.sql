@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        EXTRACT(YEAR FROM o.o_orderdate) = 1997 
+        toYear(o.o_orderdate) = 1997 
         AND l.l_returnflag = 'N'
     GROUP BY 
         o.o_orderkey, o.o_orderdate, o.o_orderstatus

@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Comments C ON P.Id = C.PostId
     WHERE
-        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        P.CreationDate >= now64(6) - INTERVAL 30 DAY
     GROUP BY
         P.Id, U.DisplayName, P.Title, P.CreationDate, P.Score, P.ViewCount
 ),
@@ -53,9 +53,9 @@ SELECT
 FROM
     TopPosts TP
 LEFT JOIN
-    LATERAL (
+    (
         SELECT
-            unnest(string_to_array(substring(TP.Title, 2, length(TP.Title) - 2), '><')) AS TagName
+            arrayJoin(splitByString('><', substring(TP.Title, 2, length(TP.Title) - 2))) AS TagName
     ) T ON TRUE
 ORDER BY
     TP.Score DESC;

@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     AVG(o.o_totalprice) AS avg_order_price,
     COUNT(DISTINCT l.l_orderkey) AS order_count,
-    STRING_AGG(DISTINCT p.p_comment, ', ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), ', ') AS part_comments
 FROM 
     part p
 JOIN 

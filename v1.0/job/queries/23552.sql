@@ -47,7 +47,7 @@ RecentMovies AS (
 )
 SELECT 
     ai.actor_name,
-    ARRAY_AGG(DISTINCT rm.title) AS recent_titles,
+    arrayDistinct(groupArray(assumeNotNull(rm.title))) AS recent_titles,
     ai.total_info_length AS biography_length,
     ai.total_keywords
 FROM 

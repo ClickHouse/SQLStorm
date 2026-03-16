@@ -30,7 +30,7 @@ SELECT
     mh.production_year,
     COUNT(ci.person_id) AS total_actors,
     AVG(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS avg_has_note,
-    STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
     MIN(mh.movie_id) AS min_movie_id,
     MAX(mh.movie_id) AS max_movie_id
 FROM 

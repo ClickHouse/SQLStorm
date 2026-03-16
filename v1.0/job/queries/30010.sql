@@ -33,7 +33,7 @@ SELECT
     mt.production_year,
     COUNT(DISTINCT cc.person_id) AS total_cast,
     COUNT(DISTINCT mk.keyword_id) AS total_keywords,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords_list
 FROM 
     MovieCTE mt
 LEFT JOIN 

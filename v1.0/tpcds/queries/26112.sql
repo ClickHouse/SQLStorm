@@ -4,7 +4,7 @@ SELECT
     ca.ca_city AS customer_city,
     ca.ca_state AS customer_state,
     cd.cd_gender AS customer_gender,
-    STRING_AGG(DISTINCT wp.wp_url, ', ') AS accessed_web_pages,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp.wp_url))), ', ') AS accessed_web_pages,
     COUNT(DISTINCT ws.ws_order_number) AS total_web_orders,
     SUM(ws.ws_net_paid) AS total_spent
 FROM 

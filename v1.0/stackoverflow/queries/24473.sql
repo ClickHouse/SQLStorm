@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId
 ),
@@ -73,7 +73,7 @@ SELECT
     dpi.OwnerDisplayName,
     dpi.UserActivityStatus,
     dpi.CommentStatus,
-    COALESCE((SELECT STRING_AGG(h.Comment, ', ') 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(h.Comment)), ', ') 
                FROM PostHistory h 
                WHERE h.PostId = dpi.PostId 
                  AND h.PostHistoryTypeId IN (4, 5)), 'No Edits') AS RecentEdits

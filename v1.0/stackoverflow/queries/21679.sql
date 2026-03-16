@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), 
 UserReputation AS (
     SELECT 
@@ -38,7 +38,7 @@ PostHistoryDetails AS (
 FilteredPostHistory AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pt.Name, ', ') AS PostHistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostHistoryTypes,
         MAX(ph.HistoryDate) AS LastActionDate
     FROM 
         PostHistoryDetails ph

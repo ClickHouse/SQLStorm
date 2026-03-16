@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), 
 TopPosts AS (
     SELECT 
@@ -33,7 +33,7 @@ TopPosts AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CONCAT('Type: ', pht.Name, ' by: ', ph.UserDisplayName, ' on: ', ph.CreationDate), '; ') AS HistoryInfo,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT('Type: ', pht.Name, ' by: ', ph.UserDisplayName, ' on: ', ph.CreationDate))), '; ') AS HistoryInfo,
         COUNT(*) AS HistoryCount
     FROM 
         PostHistory ph

@@ -34,7 +34,7 @@ FilteredSuppliers AS (
 )
 SELECT 
     nation_name,
-    STRING_AGG(s_name || ' supplies ' || p_name || ' with total available quantity: ' || total_availqty, '; ') AS supplier_summary
+    arrayStringConcat(groupArray(assumeNotNull(s_name || ' supplies ' || p_name || ' with total available quantity: ' || total_availqty)), '; ') AS supplier_summary
 FROM 
     FilteredSuppliers
 GROUP BY 

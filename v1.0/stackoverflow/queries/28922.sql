@@ -3,7 +3,7 @@ WITH PostTagCounts AS (
         p.Id AS PostId,
         p.Title,
         p.Tags,
-        COALESCE(array_length(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'), 1), 0) AS TagCount
+        COALESCE(length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1), 0) AS TagCount
     FROM 
         Posts p
     WHERE 
@@ -20,7 +20,7 @@ RecentVotes AS (
         Posts p ON v.PostId = p.Id
     WHERE 
         p.PostTypeId = 1 AND
-        v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
+        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
     GROUP BY 
         v.PostId
 ),

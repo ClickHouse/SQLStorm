@@ -45,4 +45,4 @@ JOIN
     customer_summary cs ON ss.total_quantity_sold > 100 AND cs.total_quantity_purchased > 50
 ORDER BY 
     ss.d_year DESC, ss.total_net_paid DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

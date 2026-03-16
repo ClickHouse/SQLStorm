@@ -12,12 +12,12 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score > 0
 ),
 PopularTags AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(p.Tags, '><'))) AS TagName,
+        TRIM(arrayJoin(splitByString('><', p.Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -59,7 +59,7 @@ SELECT
     rp.OwnerName,
     COALESCE(pwc.CommentCount, 0) AS CommentCount,
     COALESCE(cp.CloseCount, 0) AS CloseCount,
-    ARRAY_AGG(DISTINCT pt.TagName) AS AssociatedTags
+    arrayDistinct(groupArray(assumeNotNull(pt.TagName))) AS AssociatedTags
 FROM 
     RankedPosts rp
 LEFT JOIN 
@@ -69,7 +69,7 @@ LEFT JOIN
 LEFT JOIN 
     Posts p ON rp.PostId = p.Id
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(STRING_TO_ARRAY(p.Tags, '><'))
+    PopularTags pt ON pt.TagName = ANY(splitByString('><', p.Tags))
 WHERE 
     rp.Rank <= 5
 GROUP BY 

@@ -15,7 +15,7 @@ WITH movie_actors AS (
 highest_rated_movies AS (
     SELECT 
         m.id AS movie_id, 
-        AVG(r.rating::FLOAT) AS avg_rating
+        AVG(CAST(r.rating AS FLOAT)) AS avg_rating
     FROM 
         movie_info m
     LEFT JOIN (
@@ -62,9 +62,9 @@ movie_details AS (
 SELECT 
     title, 
     production_year, 
-    STRING_AGG(DISTINCT CONCAT(actor_name, ' (', actor_role, ')'), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(actor_name, ' (', actor_role, ')')))), ', ') AS actors,
     avg_rating,
-    STRING_AGG(DISTINCT company_name, ', ') AS production_companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS production_companies
 FROM 
     movie_details
 GROUP BY 

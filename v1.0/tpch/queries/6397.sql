@@ -43,8 +43,8 @@ JOIN
 JOIN
     TopSuppliers ts ON ts.s_suppkey = l.l_suppkey
 WHERE
-    o.o_orderdate >= DATE '1997-01-01'
-    AND o.o_orderdate < DATE '1998-01-01'
+    o.o_orderdate >= toDate('1997-01-01')
+    AND o.o_orderdate < toDate('1998-01-01')
 GROUP BY
     o.o_orderkey, o.o_orderdate, c.c_name, ts.s_name, ts.total_supply_cost
 ORDER BY

@@ -7,7 +7,7 @@ WITH RankedMovies AS (
         COUNT(ci.person_id) AS cast_count,
         ROW_NUMBER() OVER (PARTITION BY at.production_year ORDER BY COUNT(ci.person_id) DESC) AS rank_by_cast,
         MAX(CASE WHEN ak.name IS NOT NULL THEN ak.name ELSE 'Unknown' END) AS lead_actor,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords_list
     FROM 
         aka_title at
     LEFT JOIN 

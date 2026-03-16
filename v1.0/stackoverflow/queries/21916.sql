@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT
@@ -71,7 +71,7 @@ WHERE
         FROM PostHistory ph
         WHERE ph.PostId = tp.PostId
         AND ph.PostHistoryTypeId IN (10, 11)
-        AND ph.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 month'
+        AND ph.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 MONTH
     )
 ORDER BY
     tp.ViewCount DESC, tp.Score DESC;

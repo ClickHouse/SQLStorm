@@ -33,7 +33,7 @@ AggregatedInfo AS (
         production_year,
         COUNT(DISTINCT movie_keyword) AS keyword_count,
         COUNT(DISTINCT gender) AS gender_count,
-        STRING_AGG(DISTINCT company_type, ', ') AS companies_involved
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS companies_involved
     FROM 
         MovieTitleInfo
     GROUP BY 
@@ -52,4 +52,4 @@ ORDER BY
     production_year DESC, 
     keyword_count DESC, 
     gender_count ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

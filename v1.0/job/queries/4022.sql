@@ -50,7 +50,7 @@ SELECT
     mac.title,
     mac.production_year,
     COUNT(DISTINCT mac.person_id) AS total_cast,
-    STRING_AGG(DISTINCT mac.display_role, ', ') AS roles_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mac.display_role))), ', ') AS roles_list
 FROM 
     MoviesAndCast mac
 GROUP BY 

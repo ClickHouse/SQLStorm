@@ -34,7 +34,7 @@ SELECT
      FROM movie_info mi 
      WHERE mi.movie_id = rm.movie_id 
      AND mi.info_type_id IN (SELECT id FROM info_type WHERE info = 'Awards')) AS awards_count,
-    COALESCE((SELECT STRING_AGG(kw.keyword, ', ') 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') 
               FROM movie_keyword mk 
               JOIN keyword kw ON mk.keyword_id = kw.id 
               WHERE mk.movie_id = rm.movie_id), 'No keywords') AS keywords

@@ -48,7 +48,7 @@ aggregated_data AS (
         mh.production_year,
         COUNT(cd.cast_id) AS total_cast,
         MAX(cd.role_order) AS max_role_order,
-        STRING_AGG(cd.actor_name, ', ') AS actors_list
+        arrayStringConcat(groupArray(assumeNotNull(cd.actor_name)), ', ') AS actors_list
     FROM 
         movie_hierarchy mh
     LEFT JOIN 

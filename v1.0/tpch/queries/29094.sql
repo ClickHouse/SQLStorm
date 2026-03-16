@@ -5,8 +5,8 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(s.s_acctbal) AS average_supplier_account_balance,
     MAX(LENGTH(s.s_comment)) AS max_supplier_comment_length,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
-    STRING_AGG(DISTINCT r.r_name, '; ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), '; ') AS regions_supplied
 FROM 
     part p
 JOIN 

@@ -13,7 +13,7 @@ WITH RankedTitles AS (
 FilteredMovies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS total_cast_with_notes
     FROM 
         movie_companies AS mc
@@ -31,7 +31,7 @@ ComplexSubquery AS (
         t.title,
         CASE 
             WHEN COUNT(DISTINCT ci.person_id) = 0 THEN 'Unknown Cast'
-            ELSE STRING_AGG(DISTINCT ak.name, ', ')
+            ELSE arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ')
         END AS cast_names
     FROM 
         aka_title AS t

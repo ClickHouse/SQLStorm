@@ -30,8 +30,8 @@ SELECT
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount, 
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
     AVG(COALESCE(a.Score, 0)) AS AvgAcceptedAnswerScore,
-    ARRAY_AGG(DISTINCT t.TagName) AS TagsUsed,
-    STRING_AGG(DISTINCT COALESCE(ph.UserDisplayName, 'Not Edited'), ', ') AS Editors
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsUsed,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(ph.UserDisplayName, 'Not Edited')))), ', ') AS Editors
 FROM 
     Users u
 LEFT JOIN 
@@ -43,9 +43,9 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory ph ON ph.PostId = p.Id
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '>')) AS TagName
+            arrayJoin(splitByString('>', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
     ) t ON true
 WHERE 
     u.Reputation > 100 

@@ -26,8 +26,8 @@ aggregated_data AS (
     SELECT 
         production_year,
         COUNT(*) AS total_movies,
-        STRING_AGG(DISTINCT actor_name, ', ') AS actors,
-        STRING_AGG(DISTINCT genre, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(genre))), ', ') AS genres
     FROM 
         movie_data
     GROUP BY 

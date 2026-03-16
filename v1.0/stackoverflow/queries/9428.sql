@@ -15,7 +15,7 @@ WITH PopularPosts AS (
         Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId IN (1, 2) AND 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score, u.DisplayName
     HAVING 
@@ -30,7 +30,7 @@ TopTags AS (
     JOIN 
         Posts pt ON pt.Tags LIKE CONCAT('%', t.TagName, '%')
     WHERE 
-        pt.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        pt.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         t.TagName
     ORDER BY 

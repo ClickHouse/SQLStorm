@@ -4,7 +4,7 @@ SELECT
     CONCAT('Supplier: ', s.s_name, '; Part: ', p.p_name, '; Region: ', r.r_name) AS detailed_info,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT CONCAT('Order Date: ', o.o_orderdate, ', Total Price: ', o.o_totalprice), '; ') AS orders_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Order Date: ', o.o_orderdate, ', Total Price: ', o.o_totalprice)))), '; ') AS orders_info
 FROM
     part p
 JOIN

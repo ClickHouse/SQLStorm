@@ -2,7 +2,7 @@
 SELECT 
     p.p_name, 
     COUNT(DISTINCT s.s_suppkey) AS supplier_count, 
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names, 
     SUM(ps.ps_availqty) AS total_available_quantity, 
     AVG(ps.ps_supplycost) AS average_supply_cost, 
     SUBSTRING(p.p_comment, 1, 10) AS short_comment

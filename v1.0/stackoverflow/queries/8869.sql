@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -52,7 +52,7 @@ SELECT
     tu.PositiveQuestions,
     tu.TotalViews,
     COUNT(DISTINCT ah.PostId) AS ActivityCount,
-    AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - ah.CreationDate))) AS AvgTimeSinceLastActivity
+    AVG(toUnixTimestamp((now64(6) - ah.CreationDate))) AS AvgTimeSinceLastActivity
 FROM 
     TopUsers tu
 JOIN 

@@ -29,7 +29,7 @@ WITH RECURSIVE MovieHierarchy AS (
 SELECT 
     a.name AS actor_name,
     COUNT(DISTINCT mc.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT mh.title, ', ') AS linked_movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mh.title))), ', ') AS linked_movies,
     ROUND(AVG(m.production_year), 2) AS avg_production_year
 FROM 
     aka_name a

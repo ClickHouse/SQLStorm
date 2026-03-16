@@ -41,7 +41,7 @@ RegionMetrics AS (
     JOIN
         region r ON n.n_regionkey = r.r_regionkey
     WHERE
-        oc.o_orderdate >= DATE '1997-01-01'
+        oc.o_orderdate >= toDate('1997-01-01')
     GROUP BY
         n.n_nationkey, r.r_name
 )

@@ -5,7 +5,7 @@ SELECT
     ca.ca_city AS customer_city,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid) AS total_spent,
-    STRING_AGG(DISTINCT CONCAT(wp.wp_url, ' (', wp.wp_type, ')'), '; ') AS visited_web_pages,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(wp.wp_url, ' (', wp.wp_type, ')')))), '; ') AS visited_web_pages,
     MAX(d.d_date) AS last_order_date
 FROM 
     customer c

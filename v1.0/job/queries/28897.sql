@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         title.title,
         title.production_year,
         COUNT(DISTINCT cast_info.person_id) AS actor_count,
-        STRING_AGG(DISTINCT aka_name.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aka_name.name))), ', ') AS actor_names
     FROM 
         title
     INNER JOIN 
@@ -41,7 +41,7 @@ SELECT
     tm.actor_count,
     tm.actor_names,
     COUNT(DISTINCT mc.company_id) AS production_companies_count,
-    STRING_AGG(DISTINCT cn.name, ', ') AS production_company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS production_company_names
 FROM 
     TopMovies tm
 LEFT JOIN 

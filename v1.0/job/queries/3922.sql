@@ -16,7 +16,7 @@ recent_movies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        string_agg(DISTINCT ak.name, ', ') AS all_actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS all_actors,
         COUNT(DISTINCT kw.keyword) AS keyword_count
     FROM 
         title t

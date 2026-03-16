@@ -16,7 +16,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     AVG(o.o_totalprice) AS avg_order_value,
     SUM(CASE WHEN l.l_discount > 0.1 THEN l.l_extendedprice * (1 - l.l_discount) END) AS total_discounted_sales,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS products_sold,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS products_sold,
     r.r_name AS region_name
 FROM 
     customer c

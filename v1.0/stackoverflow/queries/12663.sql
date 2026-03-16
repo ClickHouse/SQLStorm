@@ -46,7 +46,7 @@ LEFT JOIN
         FROM
             Posts
         ORDER BY
-            RANDOM()
+            rand()
         LIMIT 1
     )
 ORDER BY

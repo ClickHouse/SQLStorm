@@ -18,7 +18,7 @@ keyworded_movies AS (
     SELECT 
         ak.title AS movie_title,
         ak.production_year,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title ak
     JOIN 

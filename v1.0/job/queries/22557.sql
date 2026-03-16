@@ -31,7 +31,7 @@ Filtered_Actors AS (
 Keyword_Filter AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords_list
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords_list
     FROM 
         movie_keyword mk
     JOIN 

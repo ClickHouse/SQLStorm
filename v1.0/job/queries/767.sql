@@ -49,7 +49,7 @@ SELECT
     m.title,
     m.production_year,
     m.cast_count,
-    STRING_AGG(DISTINCT m.company_name, ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.company_name))), ', ') AS companies,
     COUNT(DISTINCT m.company_type) AS unique_company_types
 FROM 
     MoviesWithDetails m

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -33,7 +33,7 @@ DetailedPostStats AS (
         COALESCE((SELECT COUNT(*) FROM Comments c WHERE c.PostId = tp.PostId), 0) AS CommentCount,
         COALESCE((SELECT COUNT(*) FROM Votes v WHERE v.PostId = tp.PostId AND v.VoteTypeId = 2), 0) AS Upvotes,
         COALESCE((SELECT COUNT(*) FROM Votes v WHERE v.PostId = tp.PostId AND v.VoteTypeId = 3), 0) AS Downvotes,
-        COALESCE((SELECT ARRAY_AGG(b.Name) FROM Badges b WHERE b.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = tp.PostId)), '{}') AS UserBadges
+        COALESCE((SELECT groupArray(assumeNotNull(b.Name)) FROM Badges b WHERE b.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = tp.PostId)), '{}') AS UserBadges
     FROM 
         TopPosts tp
 )

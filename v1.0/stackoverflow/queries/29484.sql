@@ -6,7 +6,7 @@ WITH TagStatistics AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         AVG(u.Reputation) AS AvgUserReputation,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopUsers
     FROM 
         Tags t
     LEFT JOIN 

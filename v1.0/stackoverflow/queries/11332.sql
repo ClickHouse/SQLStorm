@@ -57,4 +57,4 @@ JOIN
     PostStats p ON u.UserId = p.OwnerUserId
 ORDER BY 
     u.Reputation DESC, p.Score DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

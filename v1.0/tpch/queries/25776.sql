@@ -39,7 +39,7 @@ SELECT
     a.total_records,
     a.avg_comment_length,
     a.max_description_length,
-    STRING_AGG(CONCAT(sb.short_name, ': ', sb.modified_comment), '; ') AS sample_modified_comments
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(sb.short_name, ': ', sb.modified_comment))), '; ') AS sample_modified_comments
 FROM 
     aggregated_results a
 JOIN 

@@ -22,8 +22,8 @@ WITH RankedMovies AS (
         rm.production_year,
         rm.production_companies_count,
         rm.keywords_count,
-        COALESCE(ARRAY_AGG(DISTINCT cn.name ORDER BY cn.name), '{}') AS company_names,
-        COALESCE(ARRAY_AGG(DISTINCT kw.keyword ORDER BY kw.keyword), '{}') AS keywords
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(cn.name ORDER BY cn.name))), '{}') AS company_names,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(kw.keyword ORDER BY kw.keyword))), '{}') AS keywords
     FROM 
         RankedMovies rm
     LEFT JOIN 
@@ -45,8 +45,8 @@ SELECT
     m.production_year,
     m.production_companies_count,
     m.keywords_count,
-    STRING_AGG(DISTINCT n.name, ', ') AS cast_names,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     MovieSummaries m
 LEFT JOIN 

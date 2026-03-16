@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(o.o_totalprice) AS total_revenue,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price_after_discount,
-    STRING_AGG(DISTINCT p.p_name, ', ' ORDER BY p.p_name ASC) AS product_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ' ORDER BY p.p_name ASC) AS product_names
 FROM 
     nation n
 JOIN 

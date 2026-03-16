@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 LatestBadges AS (
     SELECT 
@@ -59,4 +59,4 @@ WHERE
     rp.OwnerRank <= 3
 ORDER BY 
     rp.Score DESC, rp.ViewCount DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

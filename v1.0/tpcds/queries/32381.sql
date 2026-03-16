@@ -30,8 +30,8 @@ SELECT
     COUNT(DISTINCT c.c_customer_id) AS customer_count,
     SUM(ws.ws_net_profit) AS total_net_profit,
     AVG(COALESCE(ws.ws_net_paid, 0)) AS avg_net_paid,
-    STRING_AGG(DISTINCT sm.sm_carrier, ', ') AS carriers_used,
-    DATE_PART('year', d.d_date) AS year
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sm.sm_carrier))), ', ') AS carriers_used,
+    datePart('year', d.d_date) AS year
 FROM 
     customer_address ca
 LEFT JOIN 
@@ -47,7 +47,7 @@ WHERE
     AND (ca.ca_city IS NOT NULL AND ca.ca_city <> '')
 GROUP BY 
     ca.ca_city,
-    DATE_PART('year', d.d_date)
+    datePart('year', d.d_date)
 HAVING 
     COUNT(DISTINCT c.c_customer_id) > 10
 ORDER BY 

@@ -16,7 +16,7 @@ PartSupplierStats AS (
         ps.ps_partkey,
         SUM(ps.ps_availqty) AS total_available_qty,
         SUM(ps.ps_supplycost) AS total_supply_cost,
-        STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_phone, ')'), '; ') AS supplier_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')')))), '; ') AS supplier_info
     FROM 
         partsupp ps
     JOIN 

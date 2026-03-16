@@ -25,7 +25,7 @@ WITH RankedPosts AS (
 FilteredTags AS (
     SELECT 
         p.PostId,
-        TRIM(UNNEST(STRING_TO_ARRAY(p.Tags, ','))) AS Tag
+        TRIM(arrayJoin(splitByString(',', p.Tags))) AS Tag
     FROM 
         RankedPosts p
     WHERE 
@@ -59,7 +59,7 @@ TaggedQuestions AS (
 SELECT 
     CONCAT('Title: ', TQ.Title, ', View Count: ', TQ.ViewCount, ', Score: ', TQ.Score, 
            ', Tag Count: ', TQ.PostCount, ' Tags: ', 
-           STRING_AGG(DISTINCT ft.Tag, ', ')) AS BenchmarkInfo
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ft.Tag))), ', ')) AS BenchmarkInfo
 FROM 
     TaggedQuestions TQ
 JOIN 

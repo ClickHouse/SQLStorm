@@ -28,7 +28,7 @@ SELECT
         WHEN rm.total_companies IS NULL THEN 'No Companies'
         ELSE 'Companies Present' 
     END AS company_presence,
-    ARRAY_AGG(DISTINCT pa.name) AS actor_names
+    arrayDistinct(groupArray(assumeNotNull(pa.name))) AS actor_names
 FROM 
     ranked_movies rm
 LEFT JOIN 

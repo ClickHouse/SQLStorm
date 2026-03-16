@@ -9,7 +9,7 @@ WITH PostSummary AS (
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.UserId) AS VoteCount,
         COUNT(DISTINCT CASE WHEN b.Id IS NOT NULL THEN b.Id END) AS BadgeCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -51,4 +51,4 @@ LEFT JOIN
     PostHistorySummary phs ON ps.PostId = phs.PostId
 ORDER BY 
     ps.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

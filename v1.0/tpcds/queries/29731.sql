@@ -6,7 +6,7 @@ WITH StringBenchmark AS (
         LEFT(ca.ca_city, 10) AS Short_City,
         RIGHT(ca.ca_zip, 5) AS Zip_Code,
         LENGTH(ca.ca_country) AS Country_Length,
-        STRING_AGG(CONCAT(cd.cd_gender, '_', cd.cd_marital_status), ', ') AS Demographics,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(cd.cd_gender, '_', cd.cd_marital_status))), ', ') AS Demographics,
         CASE 
             WHEN LENGTH(ca.ca_zip) < 5 THEN 'Invalid ZIP'
             ELSE 'Valid ZIP'

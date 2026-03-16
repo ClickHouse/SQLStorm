@@ -30,7 +30,7 @@ SELECT
     tu.TotalScore,
     tu.AverageScore,
     COUNT(DISTINCT bh.Id) AS BadgeCount,
-    STRING_AGG(DISTINCT p.Title, ', ') AS TopPosts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), ', ') AS TopPosts
 FROM 
     TopUsers tu
 LEFT JOIN 

@@ -23,7 +23,7 @@ TopMovies AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(co.name, ', ') AS companies_involved,
+        arrayStringConcat(groupArray(assumeNotNull(co.name)), ', ') AS companies_involved,
         ct.kind AS company_type
     FROM 
         movie_companies mc
@@ -42,7 +42,7 @@ SELECT
     (SELECT COUNT(*) 
      FROM complete_cast cc 
      WHERE cc.movie_id = tm.movie_id) AS total_cast,
-    (SELECT STRING_AGG(DISTINCT k.keyword, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
      FROM movie_keyword mk 
      JOIN keyword k ON mk.keyword_id = k.id 
      WHERE mk.movie_id = tm.movie_id) AS keywords

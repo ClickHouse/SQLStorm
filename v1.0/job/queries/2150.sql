@@ -36,7 +36,7 @@ MovieCompaniesWithNotes AS (
     SELECT 
         mc.movie_id,
         c.name AS company_name,
-        STRING_AGG(mc.note, ', ') AS company_notes
+        arrayStringConcat(groupArray(assumeNotNull(mc.note)), ', ') AS company_notes
     FROM 
         movie_companies mc
     JOIN 

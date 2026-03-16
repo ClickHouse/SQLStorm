@@ -30,7 +30,7 @@ AggregatedOrderStats AS (
 SELECT r.r_name, 
        SUM(COALESCE(ss.total_available_qty, 0)) AS total_supplier_quantity,
        MAX(aos.max_discount) AS highest_discount,
-       STRING_AGG(DISTINCT ch.c_name, ', ') AS customer_names,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ch.c_name))), ', ') AS customer_names,
        AVG(CASE WHEN aos.total_quantity > 0 THEN aos.avg_extended_price ELSE NULL END) AS average_price
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
@@ -39,7 +39,7 @@ LEFT JOIN SupplierStats ss ON s.s_suppkey = ss.s_suppkey
 LEFT JOIN AggregatedOrderStats aos ON aos.o_orderkey IN (
     SELECT o.o_orderkey 
     FROM orders o 
-    WHERE o.o_orderstatus = 'F' AND o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE o.o_orderstatus = 'F' AND o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
 )
 LEFT JOIN CustomerHierarchy ch ON ch.c_nationkey = n.n_nationkey
 WHERE r.r_name LIKE '%East%'

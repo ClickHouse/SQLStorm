@@ -39,7 +39,7 @@ FilteredPosts AS (
         ProcessedPosts
     WHERE 
         (Tags LIKE '%SQL%' OR Tags LIKE '%Database%') 
-        AND CreationDate >= CURRENT_DATE - INTERVAL '1 year'  
+        AND CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR  
         AND Upvotes > 5  
 ),
 RankedPosts AS (

@@ -31,7 +31,7 @@ SELECT
     mh.title,
     mh.production_year,
     COUNT(DISTINCT ca.person_id) AS num_cast_members,
-    STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
     CASE 
         WHEN mh.level > 1 THEN 'Sequel or Franchise'
         ELSE 'Original Movie'

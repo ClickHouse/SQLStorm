@@ -47,7 +47,7 @@ SELECT
         ELSE 'Other'
     END AS actor_status,
     (SELECT 
-        ARRAY_AGG(DISTINCT kn.keyword) 
+        arrayDistinct(groupArray(assumeNotNull(kn.keyword))) 
     FROM 
         movie_keyword mk
     JOIN 

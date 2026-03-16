@@ -46,7 +46,7 @@ SELECT
         WHEN RU.UpVotes < RU.DownVotes THEN 'Negative Influencer'
         ELSE 'Balanced User'
     END AS InfluenceType,
-    STDDEV(RU.Reputation) OVER () AS StdDevReputation 
+    stddevPop(RU.Reputation) OVER () AS StdDevReputation 
 FROM 
     TopUsers RU
 WHERE 

@@ -16,7 +16,7 @@ WITH RankedMovies AS (
 MovieKeywords AS (
     SELECT
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM
         movie_keyword mk
     JOIN
@@ -44,7 +44,7 @@ SELECT
     COUNT(tm.movie_id) AS top_movie_count,
     SUM(tm.cast_count) AS total_cast,
     AVG(tm.avg_order) AS average_order,
-    STRING_AGG(tm.title || ' (' || tm.keywords || ')', '; ') AS movie_list
+    arrayStringConcat(groupArray(assumeNotNull(tm.title || ' (' || tm.keywords || ')')), '; ') AS movie_list
 FROM
     TopMovies tm
 GROUP BY

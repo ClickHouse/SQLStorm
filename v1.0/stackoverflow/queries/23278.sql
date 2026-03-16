@@ -17,11 +17,11 @@ RecentBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
-        b.Date > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        b.Date > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         b.UserId
 ),
@@ -29,7 +29,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(CASE WHEN c.UserDisplayName IS NOT NULL THEN c.UserDisplayName ELSE 'Unknown User' END, ', ') AS Commenters
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN c.UserDisplayName IS NOT NULL THEN c.UserDisplayName ELSE 'Unknown User' END)), ', ') AS Commenters
     FROM 
         Comments c
     GROUP BY 

@@ -14,7 +14,7 @@ WITH EnhancedCustomerInfo AS (
         ca.ca_state,
         CONCAT(c.c_first_name, ' ', c.c_last_name) AS full_name,
         UPPER(CONCAT(ca.ca_city, ', ', ca.ca_state)) AS full_address,
-        EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c.c_birth_year AS age
+        toYear(cast('2002-10-01' as date)) - c.c_birth_year AS age
     FROM 
         customer AS c
     JOIN 

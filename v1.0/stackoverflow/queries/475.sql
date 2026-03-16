@@ -19,7 +19,7 @@ PopularPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH 
     GROUP BY 
         p.Id
     HAVING 
@@ -41,7 +41,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
 )
 SELECT 
     ur.DisplayName,

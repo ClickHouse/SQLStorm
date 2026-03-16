@@ -53,4 +53,4 @@ WHERE
          OR md.production_year > 2000)
 ORDER BY 
     md.production_year DESC, md.title
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

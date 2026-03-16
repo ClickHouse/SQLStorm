@@ -35,4 +35,4 @@ LEFT JOIN RankedParts p ON rh.s_suppkey = p.p_partkey
 FULL OUTER JOIN ExpensiveOrders eo ON eo.o_orderkey = (SELECT MAX(o.o_orderkey) FROM orders o WHERE o.o_orderkey IS NOT NULL)
 WHERE rh.s_name LIKE '%Corp%'
 ORDER BY rh.s_name, p.p_name, eo.o_totalprice DESC
-OFFSET 10 ROWS FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 10;

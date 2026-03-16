@@ -34,7 +34,7 @@ SELECT
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     SUM(ps.ps_availqty) AS total_avail_qty,
     MAX(ps.comment_length) AS max_comment_length,
-    STRING_AGG(DISTINCT ps.supplier_part_combo, '; ') AS supplier_part_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ps.supplier_part_combo))), '; ') AS supplier_part_list
 FROM 
     PartSupplierDetails ps
 JOIN 

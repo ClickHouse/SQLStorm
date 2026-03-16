@@ -42,7 +42,7 @@ MovieTitlesWithCompanies AS (
 TopKeywords AS (
     SELECT 
         mk.movie_id,
-        string_agg(k.keyword, ', ') AS aggregated_keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS aggregated_keywords
     FROM 
         movie_keyword mk
     JOIN 

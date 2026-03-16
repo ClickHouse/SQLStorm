@@ -71,4 +71,4 @@ WHERE
 ORDER BY 
     r.Score DESC, 
     r.ViewCount DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

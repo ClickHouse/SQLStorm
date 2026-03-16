@@ -36,7 +36,7 @@ CustomerPerformance AS (
         SUM(ws_net_profit) AS total_web_profit,
         AVG(ws_sales_price) AS avg_web_sales_price,
         MAX(ws_sales_price) AS max_web_sales_price,
-        STRING_AGG(DISTINCT sm_carrier || ' - ' || sm_type, ', ') AS shipping_methods,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sm_carrier || ' - ' || sm_type))), ', ') AS shipping_methods,
         COUNT(DISTINCT ss_store_sk) AS total_stores_shipped_to
     FROM 
         customer c

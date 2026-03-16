@@ -22,7 +22,7 @@ RankedAkaNames AS (
 CompanyMovieInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COUNT(DISTINCT mc.company_id) AS company_count
     FROM 
         movie_companies mc

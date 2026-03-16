@@ -33,7 +33,7 @@ RecentSales AS (
         ws_item_sk,
         SUM(ws_sales_price) AS recent_sales_price
     FROM web_sales
-    WHERE ws_sold_date_sk > (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL '30 days')
+    WHERE ws_sold_date_sk > (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL 30 DAY)
     GROUP BY ws_sold_date_sk, ws_item_sk
 ),
 SalesWithReturns AS (

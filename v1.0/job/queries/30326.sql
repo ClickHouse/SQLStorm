@@ -41,7 +41,7 @@ cast_details AS (
 aggregated_data AS (
     SELECT 
         cd.movie_id,
-        STRING_AGG(DISTINCT cd.actor_name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.actor_name))), ', ') AS actor_names,
         MAX(cd.nr_order) AS last_order,
         COUNT(cd.actor_name) AS total_actors,
         MAX(CASE WHEN cd.level = 0 THEN cd.episode_title END) AS main_episode

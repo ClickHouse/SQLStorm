@@ -33,7 +33,7 @@ ActiveUsers AS (
     JOIN 
         UserBadges AS ub ON u.Id = ub.user_id
     WHERE 
-        u.LastAccessDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
         AND u.Reputation > 100
 ),
 TopPosts AS (
@@ -44,7 +44,7 @@ TopPosts AS (
         p.CommentCount,
         u.DisplayName AS author_name,
         p.CreationDate,
-        ARRAY_AGG(DISTINCT LOWER(TRIM(tag.tagName))) AS tags
+        arrayDistinct(groupArray(assumeNotNull(LOWER(TRIM(tag.tagName))))) AS tags
     FROM 
         Posts AS p
     JOIN 

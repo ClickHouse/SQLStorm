@@ -83,6 +83,6 @@ LEFT JOIN
     ClosedPosts C ON P.PostId = C.PostId
 WHERE 
     (U.Reputation > 100 OR O.BadgeCount > 0)
-    AND (C.PostId IS NULL OR C.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
+    AND (C.PostId IS NULL OR C.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ORDER BY 
     U.Reputation DESC, O.BadgeCount DESC, P.CommentCount DESC;

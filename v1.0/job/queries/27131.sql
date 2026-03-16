@@ -47,7 +47,7 @@ SELECT
     tm.production_year,
     tm.keyword,
     tm.title_kind,
-    STRING_AGG(CONCAT(ci.actor_name, ' (', ci.actor_role, ')'), '; ') AS cast_list
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(ci.actor_name, ' (', ci.actor_role, ')'))), '; ') AS cast_list
 FROM 
     TopMovies tm
 LEFT JOIN 

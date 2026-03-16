@@ -8,7 +8,7 @@ WITH PostStats AS (
         SUM(CASE WHEN p.ViewCount IS NOT NULL THEN p.ViewCount ELSE 0 END) AS TotalViews,
         AVG(COALESCE(p.Score, 0)) AS AvgScore,
         AVG(COALESCE(p.ViewCount, 0)) AS AvgViewCount,
-        AVG(EXTRACT(EPOCH FROM (COALESCE(p.LastActivityDate, CURRENT_TIMESTAMP) - p.CreationDate))) AS AvgTimeToActivity
+        AVG(toUnixTimestamp((COALESCE(p.LastActivityDate, now64(6)) - p.CreationDate))) AS AvgTimeToActivity
     FROM 
         Posts p
     GROUP BY 

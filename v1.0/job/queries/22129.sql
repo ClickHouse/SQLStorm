@@ -31,7 +31,7 @@ MoviesWithRoles AS (
         rm.movie_id,
         rm.title,
         rm.production_year,
-        ARRAY_AGG(DISTINCT ar.role_name) AS roles,
+        arrayDistinct(groupArray(assumeNotNull(ar.role_name))) AS roles,
         COUNT(DISTINCT ar.person_id) AS actor_count
     FROM 
         RankedMovies AS rm

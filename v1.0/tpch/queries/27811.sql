@@ -6,7 +6,7 @@ SELECT
     AVG(l.l_discount) AS average_discount,
     MAX(l.l_extendedprice) AS max_price,
     MIN(l.l_tax) AS min_tax,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', c.c_mktsegment, ')'), ', ') AS customers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', c.c_mktsegment, ')')))), ', ') AS customers,
     rg.r_name AS region_name
 FROM 
     part p

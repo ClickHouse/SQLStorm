@@ -33,7 +33,7 @@ LEFT JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     r.r_name IS NOT NULL 
-    AND o.o_orderdate >= DATE '1997-01-01' 
+    AND o.o_orderdate >= toDate('1997-01-01') 
     AND o.o_orderstatus = 'O' 
 GROUP BY 
     p.p_partkey, p.p_name, s.s_name

@@ -24,7 +24,7 @@ TopMovies AS (
 MovieKeywords AS (
     SELECT 
         a.id AS movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title a
     LEFT JOIN 

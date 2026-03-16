@@ -7,7 +7,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     MAX(o.o_totalprice) AS max_order_value,
     AVG(o.o_totalprice) AS avg_order_value,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ': ', s.s_name), '; ') AS customer_supplier_relationships,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ': ', s.s_name)))), '; ') AS customer_supplier_relationships,
     REPLACE(p.p_comment, 'GOOD', 'EXCELLENT') AS updated_comment
 FROM 
     part p

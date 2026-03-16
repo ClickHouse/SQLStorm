@@ -5,7 +5,7 @@ WITH TagStats AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         AVG(u.Reputation) AS AverageReputation,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopUsers
     FROM 
         Tags t
     LEFT JOIN 
@@ -27,7 +27,7 @@ ActivePosts AS (
     JOIN 
         Tags t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
-        p.LastActivityDate > cast('2024-10-01' as date) - INTERVAL '30 days' 
+        p.LastActivityDate > cast('2024-10-01' as date) - INTERVAL 30 DAY 
 )
 SELECT 
     ts.TagName,

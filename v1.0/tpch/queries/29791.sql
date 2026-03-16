@@ -31,7 +31,7 @@ OrderLineItemDetails AS (
         ol.l_orderkey,
         COUNT(ol.l_linenumber) AS LineItemCount,
         SUM(ol.l_extendedprice) AS TotalExtendedPrice,
-        STRING_AGG(ol.l_comment, '; ') AS LineComments
+        arrayStringConcat(groupArray(assumeNotNull(ol.l_comment)), '; ') AS LineComments
     FROM 
         lineitem ol
     GROUP BY 

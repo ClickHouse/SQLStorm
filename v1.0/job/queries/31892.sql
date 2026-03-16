@@ -32,7 +32,7 @@ SELECT
     at.production_year,
     COUNT(DISTINCT cc.id) AS cast_count,
     AVG(CAST(mi.info AS numeric)) AS average_rating,
-    STRING_AGG(k.keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ak.name ORDER BY at.production_year DESC) AS ranking
 FROM 
     aka_name ak

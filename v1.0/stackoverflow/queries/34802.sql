@@ -46,7 +46,7 @@ PostHistoryAggregated AS (
         ph.PostId,
         MAX(ph.CreationDate) AS LastEdited,
         COUNT(*) AS EditCount,
-        STRING_AGG(DISTINCT CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN ph.Comment ELSE NULL END, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN ph.Comment ELSE NULL END))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     GROUP BY 

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), UserReputation AS (
     SELECT 
         u.Id AS UserId,
@@ -34,7 +34,7 @@ WITH RankedPosts AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         v.PostId
 )
@@ -60,4 +60,4 @@ WHERE
     rp.rn = 1
 ORDER BY 
     up.Reputation DESC, rp.Score DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

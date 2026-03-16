@@ -40,7 +40,7 @@ WITH RankedMovies AS (
     SELECT 
         m.movie_id,
         m.title,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies
     FROM 
         MovieActorInfo m
     JOIN 

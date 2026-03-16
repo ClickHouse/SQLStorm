@@ -25,7 +25,7 @@ LEFT JOIN
 JOIN 
     PostTypes pt ON p.PostTypeId = pt.Id
 WHERE 
-    p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 MONTH'
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.ViewCount, u.DisplayName, p.Score, t.TagName, pt.Name
 ORDER BY 

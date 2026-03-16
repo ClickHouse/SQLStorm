@@ -31,7 +31,7 @@ OrderLineDetails AS (
            COUNT(l.l_orderkey) AS line_item_count
     FROM lineitem l
     JOIN orders o ON l.l_orderkey = o.o_orderkey
-    WHERE l.l_shipdate BETWEEN '1996-01-01' AND DATE '1998-10-01'
+    WHERE l.l_shipdate BETWEEN '1996-01-01' AND toDate('1998-10-01')
     GROUP BY o.o_orderkey
 )
 SELECT 

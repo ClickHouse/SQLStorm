@@ -17,10 +17,10 @@ WITH string_benchmarks AS (
         COUNT(*) AS address_count,
         AVG(street_name_length) AS avg_street_name_length,
         AVG(street_number_length) AS avg_street_number_length,
-        STRING_AGG(full_address, '; ') AS all_addresses,
-        STRING_AGG(upper_city, '; ') AS all_upper_cities,
-        STRING_AGG(lower_country, '; ') AS all_lower_countries,
-        STRING_AGG(sanitized_street_name, '; ') AS all_sanitized_street_names
+        arrayStringConcat(groupArray(assumeNotNull(full_address)), '; ') AS all_addresses,
+        arrayStringConcat(groupArray(assumeNotNull(upper_city)), '; ') AS all_upper_cities,
+        arrayStringConcat(groupArray(assumeNotNull(lower_country)), '; ') AS all_lower_countries,
+        arrayStringConcat(groupArray(assumeNotNull(sanitized_street_name)), '; ') AS all_sanitized_street_names
     FROM string_benchmarks
     GROUP BY ca_state
 )

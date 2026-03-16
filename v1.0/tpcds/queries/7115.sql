@@ -60,4 +60,4 @@ LEFT JOIN
     PromotionSummary ps ON cs.total_orders > 0
 ORDER BY 
     cs.total_spent DESC, ps.promo_revenue DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

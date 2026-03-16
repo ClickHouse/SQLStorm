@@ -21,7 +21,7 @@ ActorStats AS (
         rm.movie_id,
         rm.title,
         COUNT(rm.actor_id) AS actor_count,
-        STRING_AGG(DISTINCT rm.actor_name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.actor_name))), ', ') AS actor_names
     FROM
         RankedMovies rm
     GROUP BY
@@ -30,7 +30,7 @@ ActorStats AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

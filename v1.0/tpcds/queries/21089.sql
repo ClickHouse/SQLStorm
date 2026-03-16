@@ -63,4 +63,4 @@ WHERE
 ORDER BY 
     ca.ca_city,  
     performance_label
-OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

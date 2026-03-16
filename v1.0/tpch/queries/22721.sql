@@ -79,4 +79,4 @@ GROUP BY
     ci.c_name, ci.nation_name, pd.p_name, pd.total_available, sd.s_name
 ORDER BY 
     total_revenue DESC, ci.c_name
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

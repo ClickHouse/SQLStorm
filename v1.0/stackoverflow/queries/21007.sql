@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
         AND p.PostTypeId = 1 
 ),
 
@@ -31,7 +31,7 @@ UserStats AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     LEFT JOIN 
-        Votes v ON v.UserId = u.Id AND v.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        Votes v ON v.UserId = u.Id AND v.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.Reputation, u.DisplayName
 ),

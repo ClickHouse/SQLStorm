@@ -1,7 +1,7 @@
 WITH PostTags AS (
     SELECT 
         P.Id AS PostId,
-        UNNEST(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) AS Tag
     FROM 
         Posts P
     WHERE 
@@ -49,7 +49,7 @@ WITH PostTags AS (
     JOIN 
         Posts P ON PH.PostId = P.Id
     WHERE 
-        PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'  
+        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY  
     ORDER BY 
         PH.CreationDate DESC
 )

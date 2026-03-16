@@ -69,4 +69,4 @@ HAVING
     OR COUNT(DISTINCT ws.ws_order_number) > 10
 ORDER BY
     total_sales DESC, unique_orders ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

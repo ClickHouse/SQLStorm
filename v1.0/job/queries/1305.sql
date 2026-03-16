@@ -28,7 +28,7 @@ CompanyStats AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(mi.info, ', ') AS aggregated_info
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS aggregated_info
     FROM 
         movie_info mi
     WHERE 

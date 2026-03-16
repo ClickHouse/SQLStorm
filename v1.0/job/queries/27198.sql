@@ -32,7 +32,7 @@ SELECT
     a.name AS actor_name,
     tm.title AS movie_title,
     tm.production_year,
-    STRING_AGG(tk.keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(tk.keyword)), ', ') AS keywords,
     COUNT(ci.movie_id) AS total_roles
 FROM 
     aka_name a

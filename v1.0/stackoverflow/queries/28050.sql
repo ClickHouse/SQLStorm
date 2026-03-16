@@ -18,14 +18,14 @@ WITH RankedPosts AS (
 ),
 TagSummary AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><'))) AS TagName,
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS TagName,
         COUNT(*) AS QuestionCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        TRIM(UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')))
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))))
 ),
 TopTags AS (
     SELECT 
@@ -54,13 +54,13 @@ RecentPostHistory AS (
     JOIN 
         PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
     WHERE 
-        ph.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 AggregatedChanges AS (
     SELECT 
         PostId,
         COUNT(*) AS ChangeCount,
-        STRING_AGG(DISTINCT ChangeType || ': ' || ChangeDescription, '; ') AS Changes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ChangeType || ': ' || ChangeDescription))), '; ') AS Changes
     FROM 
         RecentPostHistory
     GROUP BY 

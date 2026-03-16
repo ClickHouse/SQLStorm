@@ -19,7 +19,7 @@ FilteredCast AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS num_actors,
-        STRING_AGG(DISTINCT na.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(na.name))), ', ') AS actor_names
     FROM 
         cast_info ci
     LEFT JOIN 

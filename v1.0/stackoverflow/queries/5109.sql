@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' 
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR 
         AND p.PostTypeId IN (1, 2) 
 ), 
 UserEngagement AS (

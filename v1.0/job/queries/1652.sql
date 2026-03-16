@@ -17,7 +17,7 @@ WITH RecursiveMovieCTE AS (
 MovieKeywordCTE AS (
     SELECT 
         mk.movie_id, 
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -28,7 +28,7 @@ MovieKeywordCTE AS (
 TitleCompanyCTE AS (
     SELECT 
         mt.id AS movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         aka_title mt
     LEFT JOIN 

@@ -13,7 +13,7 @@ PopularQuestions AS (
         P.CreationDate,
         COALESCE(COUNT(A.Id), 0) AS AnswerCount,
         COALESCE(SUM(V.BountyAmount), 0) AS TotalBounty,
-        EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - P.CreationDate)) / 86400 AS AgeInDays
+        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.CreationDate)) / 86400 AS AgeInDays
     FROM 
         Posts P
     LEFT JOIN 

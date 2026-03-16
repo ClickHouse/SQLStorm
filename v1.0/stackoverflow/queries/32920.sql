@@ -19,9 +19,9 @@ SELECT
     COUNT(c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
     MAX(b.Date) AS LastBadgeDate,
-    ARRAY_AGG(DISTINCT uh.DisplayName) AS GoldBadgeHolders
+    arrayDistinct(groupArray(assumeNotNull(uh.DisplayName))) AS GoldBadgeHolders
 FROM Posts p
 LEFT JOIN Users u ON p.OwnerUserId = u.Id
 LEFT JOIN Comments c ON p.Id = c.PostId

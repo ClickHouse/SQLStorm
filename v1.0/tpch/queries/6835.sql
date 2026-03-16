@@ -22,7 +22,7 @@ HighValueCustomers AS (
     JOIN
         orders o ON c.c_custkey = o.o_custkey
     WHERE
-        o.o_orderdate >= DATE '1997-01-01'
+        o.o_orderdate >= toDate('1997-01-01')
     GROUP BY
         c.c_custkey, c.c_name
     HAVING
@@ -79,7 +79,7 @@ JOIN
     TopCustomers c ON o.o_custkey = c.c_custkey
 WHERE
     l.l_shipmode = 'AIR' AND
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY
     s.s_name, c.c_name
 ORDER BY

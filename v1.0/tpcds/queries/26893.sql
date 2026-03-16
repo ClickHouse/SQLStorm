@@ -25,7 +25,7 @@ SELECT
     cd.cd_marital_status,
     AVG(email_length) AS avg_email_length,
     COUNT(DISTINCT full_name_underscore) AS unique_names,
-    STRING_AGG(DISTINCT full_address, '; ' ORDER BY full_address DESC) AS distinct_addresses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(full_address))), '; ' ORDER BY full_address DESC) AS distinct_addresses
 FROM 
     CustomerDetails cd
 GROUP BY 

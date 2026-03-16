@@ -2,7 +2,7 @@ SELECT
     SUBSTRING(p_name, 1, 10) AS short_name,
     COUNT(DISTINCT s_name) AS supplier_count,
     AVG(ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT s_comment, '; ') AS combined_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s_comment))), '; ') AS combined_comments,
     MAX(l_discount) AS max_discount,
     CONCAT('Region: ', r_name, ', Nation: ', n_name) AS region_nation
 FROM 

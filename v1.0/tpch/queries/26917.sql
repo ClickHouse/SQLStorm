@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_qty,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ': ', s.s_address, ', ', s.s_phone), '; ') AS supplier_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ': ', s.s_address, ', ', s.s_phone)))), '; ') AS supplier_details,
     MAX(CASE WHEN l.l_shipmode = 'AIR' THEN l.l_extendedprice ELSE 0 END) AS max_air_extended_price
 FROM 
     part p
@@ -20,4 +20,4 @@ GROUP BY
     p.p_name
 ORDER BY 
     total_available_qty DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

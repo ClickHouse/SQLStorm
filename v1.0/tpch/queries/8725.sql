@@ -22,7 +22,7 @@ RecentOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 OrderDetails AS (
     SELECT 

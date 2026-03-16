@@ -45,7 +45,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes ht ON ph.PostHistoryTypeId = ht.Id
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months' 
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH 
 ),
 PostWithHistory AS (
     SELECT 

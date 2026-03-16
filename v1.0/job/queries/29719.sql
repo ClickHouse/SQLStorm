@@ -34,7 +34,7 @@ SELECT
     tm.production_year,
     tm.movie_keyword,
     tm.cast_count,
-    STRING_AGG(DISTINCT p.name, ', ') AS cast_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_names
 FROM 
     TopMovies tm
 JOIN 

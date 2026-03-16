@@ -3,7 +3,7 @@ WITH UserBadgeCounts AS (
     SELECT 
         b.UserId, 
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -19,8 +19,8 @@ PostDetails AS (
         u.DisplayName AS OwnerDisplayName,
         COALESCE(pb.BadgeCount, 0) AS OwnerBadgeCount,
         COALESCE(pb.BadgeNames, 'None') AS OwnerBadges,
-        EXTRACT(EPOCH FROM TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate) AS AgeInSeconds,
-        ARRAY_LENGTH(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'), 1) AS TagCount
+        toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate) AS AgeInSeconds,
+        length(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)), 1) AS TagCount
     FROM 
         Posts p
     JOIN 

@@ -23,8 +23,8 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey 
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' 
-    AND l.l_shipdate < DATE '1998-01-01' 
+    l.l_shipdate >= toDate('1997-01-01') 
+    AND l.l_shipdate < toDate('1998-01-01') 
     AND s.s_comment LIKE '%quality%' 
 GROUP BY 
     s.s_suppkey, p.p_partkey, s.s_name, p.p_name, r.r_name

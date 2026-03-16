@@ -8,8 +8,8 @@ SELECT
     c.Text AS CommentText,
     c.CreationDate AS CommentCreationDate,
     COUNT(v.Id) AS VoteCount,
-    ARRAY_AGG(DISTINCT pt.Name) AS PostTypeNames,
-    ARRAY_AGG(DISTINCT lt.Name) AS LinkTypeNames
+    arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypeNames,
+    arrayDistinct(groupArray(assumeNotNull(lt.Name))) AS LinkTypeNames
 FROM 
     Users u
 JOIN 

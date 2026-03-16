@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT m.id) AS company_count,
-        ARRAY_AGG(DISTINCT c.name) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS companies,
         RANK() OVER (ORDER BY COUNT(DISTINCT m.id) DESC) AS rank
     FROM 
         title t

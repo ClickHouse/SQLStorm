@@ -26,7 +26,7 @@ WITH RECURSIVE MovieHierarchy AS (
 AggregatedRoles AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles_summary,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles_summary,
         COUNT(DISTINCT c.person_id) AS actor_count
     FROM 
         cast_info c

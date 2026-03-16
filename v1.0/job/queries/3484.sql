@@ -41,7 +41,7 @@ CompanyMovies AS (
 SELECT
     a.actor_name,
     a.num_movies,
-    ARRAY_AGG(DISTINCT t.title) AS titles,
+    arrayDistinct(groupArray(assumeNotNull(t.title))) AS titles,
     c.company_count,
     CASE 
         WHEN a.num_movies > 5 THEN 'High'

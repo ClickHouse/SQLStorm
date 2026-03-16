@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         t.title,
         t.production_year,
         k.keyword,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
         SUM(CASE WHEN mc.company_type_id = 1 THEN 1 ELSE 0 END) AS production_companies_count,
         AVG(LENGTH(mi.info)) AS avg_info_length
     FROM 

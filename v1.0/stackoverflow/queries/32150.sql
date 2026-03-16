@@ -11,7 +11,7 @@ WITH RecursiveCTE AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserDetails AS (
     SELECT 
@@ -39,9 +39,9 @@ PopularPosts AS (
     FROM 
         Posts p
     JOIN 
-        LATERAL (
+        (
             SELECT 
-                unnest(string_to_array(p.Tags, '><')) AS TagName
+                arrayJoin(splitByString('><', p.Tags)) AS TagName
         ) pd ON true
     WHERE 
         p.Score > 50
@@ -54,7 +54,7 @@ SELECT
     rp.ViewCount AS PopularPostViews,
     COALESCE(cte.PostId, 0) AS RecentPostId,
     COALESCE(cte.Title, 'No Recent Posts') AS RecentPostTitle,
-    COALESCE(cte.CreationDate, DATE '1970-01-01') AS RecentPostDate
+    COALESCE(cte.CreationDate, toDate('1970-01-01')) AS RecentPostDate
 FROM 
     UserDetails ud
 LEFT JOIN 

@@ -9,7 +9,7 @@ WITH PostStatistics AS (
     INNER JOIN 
         PostTypes Pt ON P.PostTypeId = Pt.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
     GROUP BY 
         Pt.Name
 ),

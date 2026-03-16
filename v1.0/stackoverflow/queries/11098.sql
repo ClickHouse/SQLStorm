@@ -6,7 +6,7 @@ SELECT
     p.ViewCount,
     COUNT(DISTINCT c.Id) AS CommentCount,
     SUM(v.BountyAmount) AS TotalBounty,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
     u.DisplayName AS OwnerDisplayName,
     u.Reputation AS OwnerReputation,
     ph.CreationDate AS LastHistoryUpdate
@@ -21,11 +21,11 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory ph ON p.Id = ph.PostId
 LEFT JOIN 
-    UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag_name ON TRUE
+    arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS tag_name ON TRUE
 LEFT JOIN 
     Tags t ON tag_name = t.TagName
 WHERE 
-    p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month' 
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.ViewCount, u.DisplayName, u.Reputation, ph.CreationDate
 ORDER BY 

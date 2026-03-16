@@ -29,7 +29,7 @@ SELECT
     m.title AS movie_title,
     m.production_year,
     COUNT(DISTINCT mc.company_id) AS production_companies,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
     SUM(CASE WHEN mi.info IS NOT NULL THEN 1 ELSE 0 END) AS info_count,
     ROW_NUMBER() OVER (PARTITION BY a.person_id ORDER BY m.production_year DESC) AS actor_rank
 FROM 

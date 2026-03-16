@@ -21,7 +21,7 @@ RecentOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         o.o_orderkey, o.o_custkey
 ),
@@ -47,7 +47,7 @@ SELECT
     MAX(rs.rnk) AS top_supplier_rank,
     COALESCE((SELECT COUNT(DISTINCT l.l_orderkey)
               FROM lineitem l
-              WHERE l.l_returnflag = 'R' AND l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '1 year'), 0) AS return_order_count
+              WHERE l.l_returnflag = 'R' AND l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR), 0) AS return_order_count
 FROM 
     HighValueCustomers hv
 LEFT JOIN 

@@ -34,7 +34,7 @@ keyword_stats AS (
     SELECT 
         movie_keyword,
         COUNT(*) AS keyword_count,
-        STRING_AGG(DISTINCT movie_title, ', ') AS related_movies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_title))), ', ') AS related_movies
     FROM 
         movie_details
     GROUP BY 
@@ -44,7 +44,7 @@ SELECT
     ks.movie_keyword,
     ks.keyword_count,
     ks.related_movies,
-    AVG(EXTRACT(YEAR FROM CURRENT_DATE) - m.production_year) AS average_age
+    AVG(toYear(CURRENT_DATE) - m.production_year) AS average_age
 FROM 
     keyword_stats ks
 JOIN 

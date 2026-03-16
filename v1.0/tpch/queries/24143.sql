@@ -21,7 +21,7 @@ FilteredOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2 WHERE o2.o_orderdate < DATE '1997-01-01')
+        o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2 WHERE o2.o_orderdate < toDate('1997-01-01'))
 ), 
 CustomerSpending AS (
     SELECT 

@@ -44,4 +44,4 @@ LEFT JOIN BadgeCounts bc ON us.UserId = bc.UserId
 LEFT JOIN PostHistoryRank phr ON us.UserId = phr.UserId
 WHERE us.PostCount > 0
 ORDER BY us.AverageScore DESC, us.PostCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

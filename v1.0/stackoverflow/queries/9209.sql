@@ -48,8 +48,8 @@ SELECT
     TU.Upvotes,
     TU.Downvotes,
     TU.BadgeCount,
-    (SELECT STRING_AGG(TagName, ', ') 
-     FROM (SELECT DISTINCT TRIM(regexp_split_to_table(P.Tags, ',')) AS TagName 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') 
+     FROM (SELECT DISTINCT TRIM(splitByRegexp(',', P.Tags)) AS TagName 
            FROM Posts P 
            WHERE P.OwnerUserId = TU.UserId) AS TagList) AS AssociatedTags
 FROM 

@@ -58,7 +58,7 @@ SELECT
     r.r_name,
     SUM(os.total_revenue) AS region_revenue,
     COUNT(DISTINCT c.c_custkey) AS active_customers,
-    STRING_AGG(DISTINCT fp.price_category, ', ') AS price_categories,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fp.price_category))), ', ') AS price_categories,
     COUNT(DISTINCT sh.s_fullname) AS supplier_count
 FROM 
     region r

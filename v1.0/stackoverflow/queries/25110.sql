@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT
-        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount,
         SUM(ViewCount) AS TotalViews,
         AVG(Score) AS AverageScore
@@ -48,7 +48,7 @@ SELECT
     tt.TotalViews,
     tt.AverageScore,
     (SELECT COUNT(*) FROM Posts p WHERE p.Tags LIKE '%' || tt.TagName || '%') AS TotalPostsWithTag,
-    (SELECT STRING_AGG(DISTINCT rp.OwnerDisplayName, ', ') FROM RankedPosts rp WHERE rp.Tags LIKE '%' || tt.TagName || '%' AND rp.Rank <= 5) AS TopContributors
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.OwnerDisplayName))), ', ') FROM RankedPosts rp WHERE rp.Tags LIKE '%' || tt.TagName || '%' AND rp.Rank <= 5) AS TopContributors
 FROM
     TopTags tt
 WHERE

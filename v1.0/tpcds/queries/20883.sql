@@ -46,4 +46,4 @@ SELECT
 FROM SalesWithReturns s
 WHERE s.total_sales > 1000
 ORDER BY return_percentage DESC, total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

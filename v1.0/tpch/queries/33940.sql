@@ -17,7 +17,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_lineitem_price,
     MAX(s.s_acctbal) AS max_supplier_acctbal,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM part p
 LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 LEFT JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
@@ -25,7 +25,7 @@ LEFT JOIN nation n ON s.s_nationkey = n.n_nationkey
 LEFT JOIN lineitem l ON l.l_partkey = p.p_partkey
 LEFT JOIN orders o ON l.l_orderkey = o.o_orderkey
 WHERE n.n_name IS NOT NULL 
-  AND (l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31' OR l.l_returnflag = 'R')
+  AND (l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31') OR l.l_returnflag = 'R')
 GROUP BY n.n_name
 HAVING SUM(COALESCE(ps.ps_availqty, 0)) > 100 AND AVG(p.p_retailprice) < 50.00
 ORDER BY total_supply_cost DESC

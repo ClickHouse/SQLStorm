@@ -19,7 +19,7 @@ RecentPosts AS (
         p.OwnerUserId,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RecentPostRank
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostInteractions AS (
     SELECT 
@@ -52,6 +52,6 @@ FROM Users u
 LEFT JOIN UserBadges ub ON u.Id = ub.UserId AND ub.BadgeRank = 1
 LEFT JOIN RecentPosts rp ON u.Id = rp.OwnerUserId AND rp.RecentPostRank = 1
 LEFT JOIN PostInteractions pi ON rp.PostId = pi.PostId
-WHERE u.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+WHERE u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ORDER BY u.Reputation DESC, RecentPostDate DESC
 LIMIT 50;

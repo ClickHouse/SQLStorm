@@ -58,7 +58,7 @@ SELECT
     tr.title,
     tr.ranking,
     COALESCE(cc.actor_count, 0) AS actor_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
 FROM 
     TopRatedMovies tr
 LEFT JOIN 

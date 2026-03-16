@@ -38,7 +38,7 @@ NationDetails AS (
     SELECT 
         n.n_nationkey, 
         MAX(n.n_name) AS nation_name,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers
     FROM nation n
     LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey
     GROUP BY n.n_nationkey

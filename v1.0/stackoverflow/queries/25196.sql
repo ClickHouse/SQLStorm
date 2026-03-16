@@ -51,7 +51,7 @@ PostHistoryDetails AS (
         ph.PostHistoryTypeId,
         p.Title AS OldTitle,
         p.Body AS OldBody,
-        STRING_AGG(cht.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cht.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     LEFT JOIN 

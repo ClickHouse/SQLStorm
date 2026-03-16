@@ -39,7 +39,7 @@ MovieKeywords AS (
 CompanyInfo AS (
     SELECT 
         t.title,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         TopMovies tm
     JOIN 

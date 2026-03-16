@@ -8,8 +8,8 @@ WITH SeasonalSales AS (
     FROM 
         web_sales
     WHERE 
-        ws_ship_date_sk BETWEEN (SELECT MIN(d_date_sk) FROM date_dim WHERE d_year = EXTRACT(YEAR FROM DATE '2002-10-01') - 1)
-        AND (SELECT MAX(d_date_sk) FROM date_dim WHERE d_year = EXTRACT(YEAR FROM DATE '2002-10-01'))
+        ws_ship_date_sk BETWEEN (SELECT MIN(d_date_sk) FROM date_dim WHERE d_year = toYear(toDate('2002-10-01')) - 1)
+        AND (SELECT MAX(d_date_sk) FROM date_dim WHERE d_year = toYear(toDate('2002-10-01')))
     GROUP BY 
         ws_ship_date_sk
 ),
@@ -21,8 +21,8 @@ ReturnSales AS (
     FROM 
         web_returns
     WHERE 
-        wr_returned_date_sk BETWEEN (SELECT MIN(d_date_sk) FROM date_dim WHERE d_year = EXTRACT(YEAR FROM DATE '2002-10-01') - 1)
-        AND (SELECT MAX(d_date_sk) FROM date_dim WHERE d_year = EXTRACT(YEAR FROM DATE '2002-10-01'))
+        wr_returned_date_sk BETWEEN (SELECT MIN(d_date_sk) FROM date_dim WHERE d_year = toYear(toDate('2002-10-01')) - 1)
+        AND (SELECT MAX(d_date_sk) FROM date_dim WHERE d_year = toYear(toDate('2002-10-01')))
     GROUP BY 
         wr_returned_date_sk
 )
@@ -44,7 +44,7 @@ LEFT JOIN
 LEFT JOIN 
     ReturnSales rs ON ds.d_date_sk = rs.wr_returned_date_sk
 WHERE 
-    ds.d_date BETWEEN DATE '2001-01-01' AND DATE '2002-10-01'
+    ds.d_date BETWEEN toDate('2001-01-01') AND toDate('2002-10-01')
 ORDER BY 
     sales_date DESC
 LIMIT 100 OFFSET 10;

@@ -2,7 +2,7 @@ SELECT
     s_name AS supplier_name, 
     SUM(ps_availqty) AS total_available_qty,
     COUNT(DISTINCT p_partkey) AS unique_parts_supplied,
-    STRING_AGG(DISTINCT CONCAT(p_name, ' (', p_brand, ')'), ', ') AS supplied_part_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p_name, ' (', p_brand, ')')))), ', ') AS supplied_part_details,
     n_name AS nation_name,
     CONCAT('Region: ', r_name, ', Supplier Address: ', s_address) AS detailed_info
 FROM 

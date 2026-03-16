@@ -27,7 +27,7 @@ FilteredTitles AS (
 MovieNotes AS (
     SELECT 
         mt.title AS movie_title,
-        STRING_AGG(DISTINCT mi.info, ', ') AS notes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS notes
     FROM 
         aka_title mt
     LEFT JOIN 

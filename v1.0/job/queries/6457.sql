@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         a.production_year,
         a.kind_id,
         c.name AS company_name,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         ROW_NUMBER() OVER (PARTITION BY a.id ORDER BY a.production_year DESC) AS rank
     FROM 
         aka_title a

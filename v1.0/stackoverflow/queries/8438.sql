@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.PostTypeId = 1 AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 YEAR'
+        p.PostTypeId = 1 AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.CreationDate, p.Score, p.ViewCount, p.Tags
 ),
@@ -50,11 +50,11 @@ SELECT
     tp.ViewCount,
     tp.CommentCount,
     (tp.UpVoteCount - tp.DownVoteCount) AS NetVoteCount,
-    STRING_AGG(t.TagName, ', ') AS RelatedTags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS RelatedTags
 FROM 
     TopPosts tp
 LEFT JOIN 
-    Tags t ON t.TagName = ANY(STRING_TO_ARRAY(tp.Tags, ', '))
+    Tags t ON t.TagName = ANY(splitByString(', ', tp.Tags))
 GROUP BY 
     tp.PostId, tp.OwnerDisplayName, tp.Title, tp.CreationDate, tp.Score, tp.ViewCount, tp.CommentCount, tp.UpVoteCount, tp.DownVoteCount
 ORDER BY 

@@ -15,7 +15,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     AVG(o.o_totalprice) AS avg_order_price,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS products_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS products_list
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey
@@ -34,4 +34,4 @@ HAVING
     AND COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY 
     total_available_quantity DESC, avg_order_price ASC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
+LIMIT 10 OFFSET 0

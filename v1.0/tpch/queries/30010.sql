@@ -15,7 +15,7 @@ SELECT
     p.p_name,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS supplier_nations,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS supplier_nations,
     CASE 
         WHEN SUM(l.l_extendedprice) > 10000 THEN 'High'
         WHEN SUM(l.l_extendedprice) BETWEEN 5000 AND 10000 THEN 'Medium'
@@ -36,8 +36,8 @@ LEFT JOIN
 LEFT JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01'
-    AND l.l_shipdate <= DATE '1997-12-31'
+    l.l_shipdate >= toDate('1997-01-01')
+    AND l.l_shipdate <= toDate('1997-12-31')
 GROUP BY 
     p.p_partkey, p.p_name
 HAVING 

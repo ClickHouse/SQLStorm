@@ -23,8 +23,8 @@ WITH ActorMovies AS (
 SELECT 
     am.actor_id,
     am.actor_name,
-    STRING_AGG(am.movie_title || ' (' || am.year || ')', ', ' ORDER BY am.year DESC) AS movies,
-    STRING_AGG(DISTINCT am.keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(am.movie_title || ' (' || am.year || ')')), ', ' ORDER BY am.year DESC) AS movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(am.keyword))), ', ') AS keywords,
     COUNT(*) AS movie_count
 FROM 
     ActorMovies am

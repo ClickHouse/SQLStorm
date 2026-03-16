@@ -8,7 +8,7 @@ SELECT
     COUNT(l.l_orderkey) AS line_item_count,
     SUM(l.l_extendedprice) AS total_extended_price,
     AVG(l.l_quantity) AS average_quantity,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments,
     SUBSTRING(o.o_comment, 1, 50) AS truncated_order_comment
 FROM 
     part p

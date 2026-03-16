@@ -8,13 +8,13 @@ WITH RankedPosts AS (
         p.Tags,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS RankByScore,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.ViewCount DESC) AS RankByViews,
-        ARRAY_LENGTH(string_to_array(p.Tags, '>'), 1) AS TagCount
+        length(splitByString('>', p.Tags), 1) AS TagCount
     FROM 
         Posts p
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 Year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 )
 
 SELECT 
@@ -23,7 +23,7 @@ SELECT
     AVG(rp.ViewCount) AS AvgViewCount,
     AVG(rp.Score) AS AvgScore,
     SUM(rp.TagCount) AS TotalTags,
-    STRING_AGG(rp.Title, '; ') AS Titles,
+    arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS Titles,
     MAX(rp.CreationDate) AS MostRecentPostDate
 FROM 
     RankedPosts rp

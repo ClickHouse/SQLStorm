@@ -30,7 +30,7 @@ address_counts AS (
     SELECT 
         ca.ca_city,
         COUNT(DISTINCT c.c_customer_sk) AS customer_count,
-        STRING_AGG(DISTINCT c.c_first_name || ' ' || c.c_last_name, ', ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_first_name || ' ' || c.c_last_name))), ', ') AS customer_names
     FROM 
         customer_address ca
     JOIN 

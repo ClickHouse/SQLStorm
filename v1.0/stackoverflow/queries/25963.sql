@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.CommentCount,
         p.Score,
         COALESCE(COUNT(DISTINCT c.Id), 0) AS TotalComments,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         RANK() OVER (ORDER BY p.Score DESC, p.CreationDate DESC) AS Rank
     FROM 
         Posts p
@@ -26,7 +26,7 @@ WITH RankedPosts AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT crt.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

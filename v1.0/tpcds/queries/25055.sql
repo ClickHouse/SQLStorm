@@ -34,7 +34,7 @@ processed_data AS (
             WHEN c.cd_gender = 'F' THEN 'Ms. ' || c.full_name
             ELSE c.full_name 
         END AS saluted_name,
-        EXTRACT(YEAR FROM AGE(cast('2002-10-01' as date), c.first_purchase_date)) AS years_since_first_purchase,
+        toYear(AGE(cast('2002-10-01' as date), c.first_purchase_date)) AS years_since_first_purchase,
         CASE 
             WHEN c.address_city ILIKE '%New%' THEN 'New City Discount'
             ELSE 'Regular Customer' 
@@ -47,7 +47,7 @@ SELECT
     address_state,
     COUNT(*) AS total_customers,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT saluted_name, ', ') AS unique_customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(saluted_name))), ', ') AS unique_customer_names
 FROM 
     processed_data
 GROUP BY 

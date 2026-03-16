@@ -5,7 +5,7 @@ WITH RankedParts AS (
         p.p_type,
         s.s_name AS supplier_name,
         COUNT(ps.ps_suppkey) AS supplier_count,
-        STRING_AGG(s.s_name, ', ') AS supplier_names,
+        arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS supplier_names,
         ROW_NUMBER() OVER (PARTITION BY p.p_type ORDER BY p.p_retailprice DESC) AS rank
     FROM 
         part p
@@ -33,7 +33,7 @@ FilteredParts AS (
 SELECT 
     fp.rank_category,
     COUNT(fp.p_partkey) AS part_count,
-    STRING_AGG(fp.p_name, ', ') AS part_names,
+    arrayStringConcat(groupArray(assumeNotNull(fp.p_name)), ', ') AS part_names,
     MAX(fp.supplier_count) AS max_suppliers
 FROM 
     FilteredParts fp

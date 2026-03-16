@@ -20,7 +20,7 @@ WITH RankedSuppliers AS (
     FROM 
         RankedSuppliers rs
     JOIN 
-        nation n ON n.n_nationkey = (SELECT n_nationkey FROM nation ORDER BY RANDOM() LIMIT 1)
+        nation n ON n.n_nationkey = (SELECT n_nationkey FROM nation ORDER BY rand() LIMIT 1)
     JOIN 
         region r ON n.n_regionkey = r.r_regionkey
     WHERE 

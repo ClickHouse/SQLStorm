@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT p.p_partkey) AS total_parts,
     SUM(ps.ps_availqty) AS total_available_qty,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments
 FROM 
     supplier s
 JOIN 

@@ -13,7 +13,7 @@ WITH ranked_titles AS (
 cast_details AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(CONCAT(an.name, ' as ', rt.role), ', ') AS cast_list,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(an.name, ' as ', rt.role))), ', ') AS cast_list,
         COUNT(DISTINCT ci.person_id) AS num_cast_members
     FROM 
         cast_info ci
@@ -63,5 +63,5 @@ ORDER BY
     rt.production_year DESC, 
     info_quality, 
     rt.title
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;
 

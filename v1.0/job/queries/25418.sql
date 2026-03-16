@@ -46,9 +46,9 @@ SELECT
     rm.movie_id,
     rm.movie_title,
     rm.production_year,
-    STRING_AGG(DISTINCT mk.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT mc.actor_name || ' (' || mc.actor_role || ')', ', ') AS cast,
-    STRING_AGG(DISTINCT cm.company_name || ' (' || cm.company_type || ')', ', ') AS companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.actor_name || ' (' || mc.actor_role || ')'))), ', ') AS cast,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cm.company_name || ' (' || cm.company_type || ')'))), ', ') AS companies
 FROM 
     RankedMovies rm
 LEFT JOIN 

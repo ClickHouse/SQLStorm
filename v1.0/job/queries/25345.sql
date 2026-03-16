@@ -42,7 +42,7 @@ TitleWithCast AS (
 SELECT 
     twc.title,
     twc.production_year,
-    STRING_AGG(twc.actor_name, ', ' ORDER BY twc.actor_name) AS cast,
+    arrayStringConcat(groupArray(assumeNotNull(twc.actor_name)), ', ' ORDER BY twc.actor_name) AS cast,
     COUNT(twc.actor_id) AS num_actors
 FROM 
     TitleWithCast twc

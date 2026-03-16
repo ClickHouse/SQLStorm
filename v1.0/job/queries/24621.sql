@@ -13,7 +13,7 @@ WITH ranked_cast AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -62,4 +62,4 @@ WHERE
 ORDER BY 
     t.production_year DESC,
     rk.role_rank ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -2,7 +2,7 @@
 WITH RECURSIVE DateRange AS (
     SELECT d_date_sk, d_date, 1 AS year_count
     FROM date_dim
-    WHERE d_date >= DATE '2021-01-01' AND d_date <= DATE '2023-12-31'
+    WHERE d_date >= toDate('2021-01-01') AND d_date <= toDate('2023-12-31')
     UNION ALL
     SELECT d.d_date_sk, d.d_date, dr.year_count + 1
     FROM date_dim d

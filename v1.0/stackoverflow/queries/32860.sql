@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, u.DisplayName
 ),
@@ -52,7 +52,7 @@ PostHistoryDetails AS (
         ph.CreationDate AS HistoryDate,
         p.Title AS PostTitle,
         COUNT(ph.Id) AS EditCount,
-        STRING_AGG(DISTINCT CONCAT_WS(' ', u.DisplayName, ph.Comment), ', ') AS Comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' ', u.DisplayName, ph.Comment)))), ', ') AS Comments
     FROM 
         PostHistory ph
     JOIN 

@@ -25,7 +25,7 @@ CollatedCast AS (
     SELECT 
         ci.movie_id,
         COUNT(ci.person_id) AS cast_count,
-        STRING_AGG(a.name, ', ') AS actors, 
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actors, 
         MAX(CASE WHEN a.name IS NOT NULL THEN 1 ELSE 0 END) AS has_actors
     FROM 
         cast_info ci

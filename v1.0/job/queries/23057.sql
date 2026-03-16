@@ -12,7 +12,7 @@ WITH RankedMovies AS (
 MovieInfoDetails AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS movie_info,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS movie_info,
         MIN(mi.note) AS min_note,
         MAX(mi.info_type_id) AS max_info_type
     FROM 
@@ -23,7 +23,7 @@ MovieInfoDetails AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COUNT(DISTINCT cn.id) AS company_count,
         MAX(ct.kind) AS highest_company_type
     FROM 

@@ -26,7 +26,7 @@ MovieDetails AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -68,4 +68,4 @@ WHERE
 ORDER BY 
     fo.production_year DESC, 
     fo.total_cast DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

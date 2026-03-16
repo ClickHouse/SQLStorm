@@ -16,11 +16,11 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
+        AND p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
 ),
 TagCounts AS (
     SELECT 
-        unnest(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -43,7 +43,7 @@ PostHistoryAnalysis AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryCount,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS ActionTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS ActionTypes
     FROM 
         PostHistory ph
     JOIN 
@@ -65,7 +65,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    PopularTags pt ON pt.Tag = ANY (string_to_array(SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags) - 2), '><'))
+    PopularTags pt ON pt.Tag = ANY (splitByString('><', SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags) - 2)))
 LEFT JOIN 
     PostHistoryAnalysis pha ON pha.PostId = rp.PostId
 WHERE 

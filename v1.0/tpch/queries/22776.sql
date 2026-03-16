@@ -8,7 +8,7 @@ RecentOrders AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_orderdate,
            DENSE_RANK() OVER (ORDER BY o.o_orderdate DESC) AS recent_rank
     FROM orders o
-    WHERE o.o_orderdate >= (CAST('1998-10-01' AS DATE) - INTERVAL '1 month')
+    WHERE o.o_orderdate >= (CAST('1998-10-01' AS DATE) - INTERVAL 1 MONTH)
 ),
 HighValueCustomers AS (
     SELECT c.c_custkey, c.c_name, c.c_acctbal,

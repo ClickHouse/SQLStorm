@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         ROW_NUMBER() OVER (ORDER BY p.Score DESC, p.ViewCount DESC) AS PostRank
     FROM 
@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId
     LEFT JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag_name ON TRUE 
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS tag_name ON TRUE 
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
@@ -43,7 +43,7 @@ SELECT
     fp.Tags,
     fp.Upvotes,
     fp.Downvotes,
-    ROUND(COALESCE(fp.Upvotes::FLOAT / NULLIF(fp.Upvotes + fp.Downvotes, 0), 0), 2) AS UpvoteRatio
+    ROUND(COALESCE(CAST(fp.Upvotes AS FLOAT) / NULLIF(fp.Upvotes + fp.Downvotes, 0), 0), 2) AS UpvoteRatio
 FROM 
     FilteredPosts fp
 WHERE 

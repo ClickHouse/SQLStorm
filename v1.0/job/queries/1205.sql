@@ -22,7 +22,7 @@ CompanyInfo AS (
     SELECT 
         t.id AS title_id,
         MIN(c.name) AS company_name,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types
     FROM 
         movie_companies mc
     JOIN 

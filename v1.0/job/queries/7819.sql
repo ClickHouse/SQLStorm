@@ -31,7 +31,7 @@ FilteredRankedMovies AS (
 SELECT 
     fr.movie_title,
     fr.production_year,
-    STRING_AGG(fr.actor_name, ', ') AS top_actors
+    arrayStringConcat(groupArray(assumeNotNull(fr.actor_name)), ', ') AS top_actors
 FROM 
     FilteredRankedMovies fr
 GROUP BY 

@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT p.p_partkey) AS unique_parts,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(s.s_acctbal) AS average_supplier_account_balance,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     region r
 JOIN 

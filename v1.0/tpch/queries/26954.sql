@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     SUM(l.l_quantity) AS total_lineitem_quantity,
     AVG(s.s_acctbal) AS average_supplier_balance,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nation_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nation_names,
     p.p_comment || ' ' || p.p_type AS part_description
 FROM 
     part p

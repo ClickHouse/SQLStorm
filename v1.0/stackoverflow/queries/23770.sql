@@ -7,13 +7,13 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
-        ARRAY_AGG(t.TagName) AS Tags
+        groupArray(assumeNotNull(t.TagName)) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Tags t ON t.ExcerptPostId = p.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.ViewCount IS NOT NULL 
         AND p.Score IS NOT NULL
     GROUP BY 
@@ -39,7 +39,7 @@ UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS TotalBadges,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -60,7 +60,7 @@ PostHistoryDetails AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 )
 SELECT 
     ps.PostId,
@@ -85,7 +85,7 @@ WHERE
     AND EXISTS (
         SELECT 1 
         FROM Votes v 
-        WHERE v.PostId = ps.PostId AND v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+        WHERE v.PostId = ps.PostId AND v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
         GROUP BY v.PostId 
         HAVING COUNT(v.Id) >= 3
     )

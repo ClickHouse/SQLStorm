@@ -56,4 +56,4 @@ FROM
     filtered_sales f
 ORDER BY 
     f.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

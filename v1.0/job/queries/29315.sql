@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COUNT(c.id) AS cast_count,
         ROW_NUMBER() OVER (ORDER BY t.production_year DESC, t.title) AS rank
     FROM 
@@ -55,7 +55,7 @@ FROM
     FinalJoin
 WHERE 
     cast_count > 5 AND 
-    (ARRAY_LENGTH(keywords, 1) > 0)
+    (length(keywords, 1) > 0)
 ORDER BY 
     production_year DESC, 
     title;

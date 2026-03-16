@@ -31,7 +31,7 @@ MovieDetails AS (
         mh.production_year,
         mh.parent_id,
         mh.level,
-        COALESCE(ARRAY_AGG(DISTINCT kw.keyword), '{}') AS keywords,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), '{}') AS keywords,
         COALESCE(COUNT(DISTINCT c.person_id), 0) AS cast_count
     FROM 
         MovieHierarchy mh

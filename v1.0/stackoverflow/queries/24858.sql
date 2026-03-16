@@ -20,7 +20,7 @@ RecentPosts AS (
     FROM Posts P
     LEFT JOIN Comments C ON C.PostId = P.Id
     LEFT JOIN PostHistory PH ON PH.PostId = P.Id
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY P.Id, P.OwnerUserId, P.PostTypeId, P.CreationDate, P.LastActivityDate, P.AcceptedAnswerId
 ),
 AggregatedPostStats AS (
@@ -30,7 +30,7 @@ AggregatedPostStats AS (
         COUNT(DISTINCT V.Id) AS TotalVotes,
         AVG(
             CASE 
-                WHEN RP.PostTypeId = 1 THEN EXTRACT(EPOCH FROM (RP.LastActivityDate - RP.CreationDate)) 
+                WHEN RP.PostTypeId = 1 THEN toUnixTimestamp((RP.LastActivityDate - RP.CreationDate)) 
                 ELSE NULL 
             END
         ) AS AvgTimeToResponse
@@ -42,7 +42,7 @@ UserBadges AS (
     SELECT 
         B.UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM Badges B
     GROUP BY B.UserId
 )

@@ -41,7 +41,7 @@ actors_with_movie_count AS (
         ua.name,
         ua.movies_count,
         (SELECT total_count FROM total_movies) AS total_movies_count,
-        (ua.movies_count::FLOAT / (SELECT total_count FROM total_movies)) * 100 AS percentage_of_total
+        (CAST(ua.movies_count AS FLOAT) / (SELECT total_count FROM total_movies)) * 100 AS percentage_of_total
     FROM 
         unique_actors ua
 )

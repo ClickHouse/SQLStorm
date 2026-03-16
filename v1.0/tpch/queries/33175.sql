@@ -8,7 +8,7 @@ WITH RECURSIVE SalesCTE AS (
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderstatus = 'O' AND l.l_shipdate >= DATE '1997-01-01'
+    WHERE o.o_orderstatus = 'O' AND l.l_shipdate >= toDate('1997-01-01')
     GROUP BY o.o_orderkey, c.c_name, c.c_custkey
     HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 1000
 ),

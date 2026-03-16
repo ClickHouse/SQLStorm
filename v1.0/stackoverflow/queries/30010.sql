@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year' 
+        p.CreationDate >= now64(6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),
@@ -24,11 +24,11 @@ RecentBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
-        b.Date >= CURRENT_TIMESTAMP - INTERVAL '6 months' 
+        b.Date >= now64(6) - INTERVAL 6 MONTH 
     GROUP BY 
         b.UserId
 ),

@@ -3,7 +3,7 @@ SELECT
     p.p_name AS part_name, 
     CONCAT(s.s_name, ' supplies ', p.p_name) AS supplier_part_info, 
     SUM(ps.ps_availqty) AS total_available_quantity, 
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_served
 FROM 
     supplier s
 JOIN 

@@ -38,7 +38,7 @@ WITH RECURSIVE regional_sales AS (
     JOIN 
         lineitem l ON p.p_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate < DATE '1998-10-01' - INTERVAL '1 year' AND
+        l.l_shipdate < toDate('1998-10-01') - INTERVAL 1 YEAR AND
         l.l_discount BETWEEN 0.05 AND 0.10
     GROUP BY 
         r.r_regionkey, r.r_name

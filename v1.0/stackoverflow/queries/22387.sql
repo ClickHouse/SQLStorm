@@ -14,7 +14,7 @@ WITH RecursivePosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserReputation AS (
     SELECT 
@@ -31,7 +31,7 @@ PostHistoryDetails AS (
         PH.PostId,
         COUNT(*) AS EditCount,
         MAX(PH.CreationDate) AS LastEditDate,
-        STRING_AGG(PHT.Name, ', ') AS HistoryTypes
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes
     FROM 
         PostHistory PH
     JOIN 
@@ -72,7 +72,7 @@ SELECT
         WHEN FP.Reputation BETWEEN 500 AND 1000 THEN 'Medium Reputation'
         ELSE 'Low Reputation'
     END AS ReputationCategory,
-    ARRAY_LENGTH(string_to_array(FP.HistoryTypes, ', '), 1) AS HistoryTypeCount
+    length(splitByString(', ', FP.HistoryTypes), 1) AS HistoryTypeCount
 FROM 
     FilteredPosts FP
 WHERE 

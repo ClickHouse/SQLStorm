@@ -37,7 +37,7 @@ SELECT
     SUM(h.l_extendedprice * (1 - h.l_discount)) AS total_revenue,
     COUNT(DISTINCT h.l_partkey) AS unique_parts_count,
     COUNT(h.l_suppkey) AS total_suppliers,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     MAX(CASE WHEN h.return_status = 'Returned' THEN h.l_quantity ELSE NULL END) AS max_returned_quantity
 FROM 
     RankedOrders r

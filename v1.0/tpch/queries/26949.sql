@@ -10,7 +10,7 @@ WITH RankedParts AS (
         p.p_retailprice,
         p.p_comment,
         COUNT(ps.ps_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, '; ') AS suppliers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), '; ') AS suppliers,
         ROW_NUMBER() OVER (PARTITION BY p.p_brand ORDER BY p.p_retailprice DESC) AS price_rank
     FROM 
         part p

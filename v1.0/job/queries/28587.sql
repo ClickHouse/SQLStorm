@@ -15,7 +15,7 @@ TopMovies AS (
         rt.title,
         rt.production_year,
         ci.person_id,
-        ARRAY_AGG(DISTINCT ak.name) AS actor_names
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names
     FROM 
         RankedTitles rt
     JOIN 
@@ -32,7 +32,7 @@ TopMovies AS (
 MovieKeywords AS (
     SELECT 
         mt.movie_id,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         movie_keyword mt
     JOIN 

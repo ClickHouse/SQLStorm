@@ -10,8 +10,8 @@ WITH RankedCustomers AS (
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
         o.o_orderstatus = 'O' AND 
-        o.o_orderdate >= DATE '1995-01-01' AND 
-        o.o_orderdate < DATE '1997-01-01'
+        o.o_orderdate >= toDate('1995-01-01') AND 
+        o.o_orderdate < toDate('1997-01-01')
     GROUP BY 
         c.c_custkey, c.c_name
 ),
@@ -39,8 +39,8 @@ PartDetails AS (
     JOIN 
         lineitem l ON p.p_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate >= DATE '1995-01-01' AND 
-        l.l_shipdate < DATE '1997-01-01'
+        l.l_shipdate >= toDate('1995-01-01') AND 
+        l.l_shipdate < toDate('1997-01-01')
     GROUP BY 
         p.p_partkey, p.p_name
 )

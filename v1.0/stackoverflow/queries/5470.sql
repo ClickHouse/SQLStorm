@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.PostTypeId = 1 AND p.CreationDate >= DATE '2023-01-01' 
+        p.PostTypeId = 1 AND p.CreationDate >= toDate('2023-01-01') 
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, u.DisplayName
 ),
@@ -48,6 +48,6 @@ JOIN
 JOIN 
     PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
 WHERE 
-    ph.CreationDate >= DATE '2023-01-01' 
+    ph.CreationDate >= toDate('2023-01-01') 
 ORDER BY 
     trp.Score DESC, trp.ViewCount DESC;

@@ -67,7 +67,7 @@ SELECT
     COALESCE(c_name, 'Anonymous Customer') AS customer_name,
     CASE 
         WHEN adjusted_balance IS NULL THEN 'N/A' 
-        ELSE adjusted_balance::TEXT
+        ELSE CAST(adjusted_balance AS TEXT)
     END AS adjusted_customer_balance,
     region_orders,
     orders_from_customer

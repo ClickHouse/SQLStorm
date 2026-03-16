@@ -69,4 +69,4 @@ GROUP BY
 ORDER BY 
     total_available DESC,
     avg_order_value DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

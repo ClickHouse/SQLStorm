@@ -51,7 +51,7 @@ RecentPosts AS (
     LEFT JOIN 
         PostHistoryDetails phs ON p.Id = phs.PostId AND phs.EditRank = 1
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostLinkCounts AS (
     SELECT 
@@ -74,7 +74,7 @@ SELECT
     plc.LinkCount,
     CASE 
         WHEN rp.Title IS NOT NULL THEN 'Active'
-        WHEN rp.ClosedDateFallback > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 'Recently Closed'
+        WHEN rp.ClosedDateFallback > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Recently Closed'
         ELSE 'Inactive'
     END AS PostStatus
 FROM 

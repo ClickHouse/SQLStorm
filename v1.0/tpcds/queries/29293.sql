@@ -7,7 +7,7 @@ SELECT
     SUM(ws.ws_ext_sales_price) AS total_spent,
     MIN(d.d_date) AS first_order_date,
     MAX(d.d_date) AS last_order_date,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS used_promotions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS used_promotions,
     SUBSTRING(c.c_email_address, POSITION('@' IN c.c_email_address) + 1, CHAR_LENGTH(c.c_email_address)) AS email_domain,
     LENGTH(c.c_email_address) AS email_length
 FROM 

@@ -41,7 +41,7 @@ PostHistoryAnalysis AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
     FROM 
         PostHistory ph
     JOIN 
@@ -67,7 +67,7 @@ FROM
 JOIN 
     PostHistoryAnalysis pta ON rp.PostId = pta.PostId
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(STRING_TO_ARRAY(rp.Tags, ', ')) 
+    PopularTags pt ON pt.TagName = ANY(splitByString(', ', rp.Tags)) 
 WHERE 
     rp.rn = 1 
 ORDER BY 

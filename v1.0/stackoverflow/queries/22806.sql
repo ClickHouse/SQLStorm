@@ -9,7 +9,7 @@ WITH PostStats AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVoteCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 10 THEN 1 ELSE 0 END), 0) AS DeletionVoteCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 6 THEN 1 ELSE 0 END), 0) AS CloseVoteCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -17,7 +17,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        LATERAL (SELECT unnest(string_to_array(p.Tags, '><')) AS TagName) AS t ON true
+        (SELECT arrayJoin(splitByString('><', p.Tags)) AS TagName) AS t ON true
     GROUP BY 
         p.Id, p.Title, p.PostTypeId
 ),

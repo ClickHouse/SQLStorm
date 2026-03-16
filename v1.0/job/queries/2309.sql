@@ -24,7 +24,7 @@ WITH Recursive TitleHierarchy AS (
 MoviesWithKeywords AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -52,7 +52,7 @@ FinalResults AS (
         th.title,
         th.production_year,
         COALESCE(mk.keywords, 'No Keywords') AS keywords,
-        STRING_AGG(fc.actor_name, ', ' ORDER BY fc.nr_order) AS actors,
+        arrayStringConcat(groupArray(assumeNotNull(fc.actor_name)), ', ' ORDER BY fc.nr_order) AS actors,
         COUNT(DISTINCT fc.actor_name) AS total_actors,
         COUNT(DISTINCT fc.nr_order) AS unique_actor_orders
     FROM 

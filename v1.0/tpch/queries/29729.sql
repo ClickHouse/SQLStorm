@@ -5,7 +5,7 @@ WITH RankedSuppliers AS (
         s.s_name, 
         n.n_name AS nation_name, 
         COUNT(DISTINCT ps.ps_partkey) AS supply_count,
-        STRING_AGG(DISTINCT CONCAT(p.p_name, ': ', CAST(p.p_retailprice AS text)), '; ') AS part_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ': ', CAST(p.p_retailprice AS text))))), '; ') AS part_details
     FROM 
         supplier s
     JOIN 

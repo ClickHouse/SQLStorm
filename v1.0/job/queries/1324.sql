@@ -26,7 +26,7 @@ MoviesWithCompanies AS (
     SELECT 
         rm.movie_id,
         rm.movie_title,
-        STRING_AGG(DISTINCT cn.name, ', ') AS production_companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS production_companies
     FROM 
         RankedMovies rm
     LEFT JOIN 

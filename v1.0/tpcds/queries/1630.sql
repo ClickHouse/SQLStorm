@@ -36,7 +36,7 @@ SELECT
     COUNT(DISTINCT c.c_customer_sk) AS customer_count,
     MAX(ts.total_sales_value) AS max_sales,
     AVG(ts.total_sales_value) AS avg_sales_value,
-    STRING_AGG(DISTINCT CONCAT(i.i_item_desc, ' (', i.i_color, ')'), ', ') AS item_descriptions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(i.i_item_desc, ' (', i.i_color, ')')))), ', ') AS item_descriptions
 FROM 
     customer c
 LEFT JOIN 

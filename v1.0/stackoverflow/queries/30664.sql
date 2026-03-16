@@ -36,7 +36,7 @@ FilteredPosts AS (
     FROM Posts P
     INNER JOIN RecursivePostCounts R ON P.Id = R.PostId
     INNER JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
       AND (R.AnswerCount > 5 OR R.CommentCount > 10)
 ),
 RankedPosts AS (

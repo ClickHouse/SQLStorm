@@ -22,7 +22,7 @@ PostStatistics AS (
     LEFT JOIN Votes V ON P.Id = V.PostId
     LEFT JOIN Users U ON P.OwnerUserId = U.Id
     LEFT JOIN PostHistory PH ON P.Id = PH.PostId AND PH.PostHistoryTypeId IN (4, 5, 6) 
-    WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
+    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
     GROUP BY P.Id, P.Title, P.CreationDate, P.ViewCount, U.Reputation
 ),
 ClosedPostStats AS (

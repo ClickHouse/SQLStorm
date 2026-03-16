@@ -5,7 +5,7 @@ WITH TagStats AS (
         COUNT(DISTINCT P.Id) AS PostCount,
         SUM(CASE WHEN P.Score > 0 THEN 1 ELSE 0 END) AS PositiveScorePosts,
         AVG(COALESCE(P.Score, 0)) AS AveragePostScore,
-        STRING_AGG(DISTINCT U.DisplayName, ', ') AS TopUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS TopUsers
     FROM 
         Tags T
     JOIN 

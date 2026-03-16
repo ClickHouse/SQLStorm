@@ -17,7 +17,7 @@ CompleteCastCTE AS (
     SELECT 
         cc.movie_id,
         COUNT(cc.id) AS total_cast,
-        STRING_AGG(DISTINCT ca.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.name))), ', ') AS cast_names,
         RANK() OVER (ORDER BY COUNT(cc.id) DESC) AS cast_rank
     FROM 
         complete_cast cc
@@ -32,7 +32,7 @@ MovieCompanyCTE AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT mc.company_id) AS total_companies,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM 
         movie_companies mc
     LEFT JOIN 

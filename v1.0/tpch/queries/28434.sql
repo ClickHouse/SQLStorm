@@ -17,7 +17,7 @@ GroupedResults AS (
         SUBSTR(short_name, 1, 5) AS name_prefix,
         COUNT(*) AS name_count,
         AVG(name_length) AS avg_length,
-        STRING_AGG(upper_name, ', ') AS aggregated_upper_names
+        arrayStringConcat(groupArray(assumeNotNull(upper_name)), ', ') AS aggregated_upper_names
     FROM 
         StringBenchmark
     GROUP BY 

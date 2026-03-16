@@ -2,7 +2,7 @@ SELECT
     s.s_name AS supplier_name,
     count(DISTINCT p.p_partkey) AS total_parts_supplied,
     SUM(ps.ps_availqty) AS total_available_quantity,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS supplied_part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS supplied_part_names,
     r.r_name AS region_name
 FROM 
     supplier s

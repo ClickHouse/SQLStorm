@@ -30,7 +30,7 @@ SELECT
     AVG(brand_length) AS avg_brand_length,
     MAX(comment_length) AS max_comment_length,
     MIN(comment_length) AS min_comment_length,
-    STRING_AGG(detailed_info, '; ') AS all_detailed_info
+    arrayStringConcat(groupArray(assumeNotNull(detailed_info)), '; ') AS all_detailed_info
 FROM 
     StringBenchmark sb
 INNER JOIN 

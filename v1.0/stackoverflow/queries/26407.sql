@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 TagCount AS (
     SELECT 
-        unnest(string_to_array(SUBSTRING(Tags FROM 2 FOR CHAR_LENGTH(Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR CHAR_LENGTH(Tags) - 2))) AS Tag,
         COUNT(*) AS Count
     FROM 
         Posts
@@ -41,7 +41,7 @@ TopTags AS (
 PostHistoryDismissed AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS DismissedHistory
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS DismissedHistory
     FROM 
         PostHistory ph
     JOIN 

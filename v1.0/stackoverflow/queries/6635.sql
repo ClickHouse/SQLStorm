@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostStats AS (
     SELECT 
@@ -23,13 +23,13 @@ PostStats AS (
         COUNT(p.Id) AS TotalPosts,
         SUM(p.Score) AS TotalScore,
         SUM(p.ViewCount) AS TotalViews,
-        AVG(EXTRACT(EPOCH FROM p.CreationDate)) AS AveragePostDate
+        AVG(toUnixTimestamp(p.CreationDate)) AS AveragePostDate
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.OwnerUserId, u.DisplayName
 )
@@ -46,7 +46,7 @@ SELECT
     ps.TotalPosts,
     ps.TotalScore,
     ps.TotalViews,
-    TO_TIMESTAMP(ps.AveragePostDate) AS AveragePostDate
+    toDateTime64(ps.AveragePostDate, 6) AS AveragePostDate
 FROM 
     RankedPosts r
 JOIN 

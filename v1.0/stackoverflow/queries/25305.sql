@@ -16,18 +16,18 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 AND /* Only questions */
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' /* Questions from the last year */
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR /* Questions from the last year */
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS TagName,
+        arrayJoin(splitByString('>', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 /* Only questions */
     GROUP BY 
-        unnest(string_to_array(Tags, '>'))
+        arrayJoin(splitByString('>', Tags))
     HAVING 
         COUNT(*) > 5 /* Tags used more than 5 times */
 ),
@@ -56,7 +56,7 @@ PostsWithBadge AS (
     WHERE 
         p.PostTypeId = 1 /* Only questions */
         AND b.Class = 1 /* Only Gold badges */
-        AND b.Date >= CURRENT_DATE - INTERVAL '1 year' /* Received last year */
+        AND b.Date >= CURRENT_DATE - INTERVAL 1 YEAR /* Received last year */
 )
 SELECT 
     rp.PostId,
@@ -73,7 +73,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(string_to_array(rp.Tags, '>'))
+    PopularTags pt ON pt.TagName = ANY(splitByString('>', rp.Tags))
 LEFT JOIN 
     PostWithComments pc ON pc.PostId = rp.PostId
 LEFT JOIN 

@@ -14,7 +14,7 @@ RegionNation AS (
 )
 SELECT ps.part_info, rn.full_location, 
        COUNT(*) AS supplier_count,
-       STRING_AGG(CONCAT(rn.full_location, ': ', ps.part_info), '; ') AS supplier_details
+       arrayStringConcat(groupArray(assumeNotNull(CONCAT(rn.full_location, ': ', ps.part_info))), '; ') AS supplier_details
 FROM PartSupplier ps
 JOIN RegionNation rn ON ps.s_nationkey = rn.n_nationkey
 WHERE ps.rn = 1

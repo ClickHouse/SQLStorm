@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId 
     WHERE 
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days'
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName
 ),
@@ -39,7 +39,7 @@ TopRankedPosts AS (
 PostDetails AS (
     SELECT 
         trp.*,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         TopRankedPosts trp
     LEFT JOIN (

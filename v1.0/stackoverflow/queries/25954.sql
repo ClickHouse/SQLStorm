@@ -1,7 +1,7 @@
 
 WITH TagUsage AS (
     SELECT 
-        unnest(string_to_array(Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', Tags)) AS TagName,
         p.Id AS PostId,
         p.OwnerUserId,
         p.CreationDate,

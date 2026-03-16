@@ -34,7 +34,7 @@ DetailedMovieInfo AS (
         m.title,
         m.production_year,
         COALESCE(mi.info, 'No Info Available') AS additional_info,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies_involved,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies_involved,
         COUNT(DISTINCT f.person_id) AS featured_actor_count
     FROM 
         RankedMovies m

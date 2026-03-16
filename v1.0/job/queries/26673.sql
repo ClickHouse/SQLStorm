@@ -4,7 +4,7 @@ WITH RecursiveMovieInfo AS (
         a.title, 
         a.production_year, 
         p.name AS actor_name, 
-        STRING_AGG(kw.keyword, ',') AS keywords,
+        arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ',') AS keywords,
         ROW_NUMBER() OVER (PARTITION BY a.id ORDER BY p.name) AS actor_order
     FROM 
         aka_title a

@@ -12,7 +12,7 @@ WITH ranked_movies AS (
 cast_details AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(a.name, ', ') AS actors,
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actors,
         SUM(CASE WHEN r.role = 'lead' THEN 1 ELSE 0 END) AS lead_count
     FROM 
         cast_info c

@@ -60,7 +60,7 @@ LEFT JOIN (
     SELECT 
         movie_id, 
         SUM(total_cast) AS total_cast,
-        STRING_AGG(note_existence, ', ') AS note_existence
+        arrayStringConcat(groupArray(assumeNotNull(note_existence)), ', ') AS note_existence
     FROM 
         MovieInfoCTE
     GROUP BY 

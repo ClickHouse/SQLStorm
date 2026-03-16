@@ -7,7 +7,7 @@ SELECT
     SUM(CASE WHEN b.Class = 1 THEN 1 ELSE 0 END) AS GoldBadges,
     SUM(CASE WHEN b.Class = 2 THEN 1 ELSE 0 END) AS SilverBadges,
     SUM(CASE WHEN b.Class = 3 THEN 1 ELSE 0 END) AS BronzeBadges,
-    ARRAY_AGG(DISTINCT t.TagName) AS TagsUsed,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsUsed,
     MAX(ph.CreationDate) AS LastPostDate
 FROM 
     Users u
@@ -16,16 +16,16 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON u.Id = b.UserId
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(p.Tags, '><')) AS TagName
+            arrayJoin(splitByString('><', p.Tags)) AS TagName
         WHERE 
             p.PostTypeId = 1
     ) t ON true
 LEFT JOIN 
     PostHistory ph ON p.Id = ph.PostId
 WHERE 
-    u.CreationDate > DATE '2024-10-01' - INTERVAL '1 year'
+    u.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR
 GROUP BY 
     u.Id, u.DisplayName, u.Reputation
 HAVING 

@@ -33,7 +33,7 @@ SELECT
             WHEN m.production_year IS NOT NULL THEN m.production_year 
             ELSE NULL 
         END) AS avg_movie_year,
-    STRING_AGG(DISTINCT mt.title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mt.title))), ', ') AS movie_titles,
     ROW_NUMBER() OVER (PARTITION BY ak.id ORDER BY COUNT(ci.movie_id) DESC) AS actor_rank
 FROM 
     aka_name ak

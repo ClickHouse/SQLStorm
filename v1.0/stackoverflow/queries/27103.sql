@@ -1,7 +1,7 @@
 
 WITH TagFrequency AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts

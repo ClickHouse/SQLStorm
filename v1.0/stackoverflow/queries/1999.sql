@@ -9,7 +9,7 @@ WITH RecentPosts AS (
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostVoteStats AS (
     SELECT 
@@ -28,7 +28,7 @@ TopUsers AS (
         u.Reputation,
         RANK() OVER (ORDER BY u.Reputation DESC) AS ReputationRank
     FROM Users u
-    WHERE u.LastAccessDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     LIMIT 10
 ),
 PostHistoryDetails AS (
@@ -42,7 +42,7 @@ PostHistoryDetails AS (
         ROW_NUMBER() OVER (PARTITION BY ph.PostId ORDER BY ph.CreationDate DESC) AS ph_rn
     FROM PostHistory ph
     JOIN Posts p ON ph.PostId = p.Id
-    WHERE ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 )
 SELECT
     rp.Id AS PostId,
@@ -60,7 +60,7 @@ LEFT JOIN PostVoteStats ps ON rp.Id = ps.PostId
 JOIN Users u ON rp.OwnerUserId = u.Id
 LEFT JOIN PostHistoryDetails ph ON rp.Id = ph.PostId AND ph.ph_rn = 1
 WHERE rp.Score > (
-    SELECT AVG(Score) FROM Posts WHERE CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    SELECT AVG(Score) FROM Posts WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 ORDER BY rp.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

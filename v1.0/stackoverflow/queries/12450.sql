@@ -13,7 +13,7 @@ WITH PostStats AS (
     u.Id AS OwnerUserID,
     u.DisplayName AS OwnerDisplayName,
     COUNT(v.Id) AS VoteCount,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
   FROM 
     Posts p
   JOIN 
@@ -21,7 +21,7 @@ WITH PostStats AS (
   LEFT JOIN 
     Votes v ON p.Id = v.PostId
   LEFT JOIN 
-    UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag ON TRUE
+    arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS tag ON TRUE
   LEFT JOIN 
     Tags t ON tag = t.TagName
   GROUP BY 

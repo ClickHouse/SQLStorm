@@ -6,7 +6,7 @@ SELECT
     AVG(l.l_extendedprice) AS avg_price,
     MAX(l.l_discount) AS max_discount,
     MIN(l.l_tax) AS min_tax,
-    STRING_AGG(DISTINCT CONCAT(l.l_shipmode, ' ', l.l_shipinstruct), '; ') AS shipping_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(l.l_shipmode, ' ', l.l_shipinstruct)))), '; ') AS shipping_details
 FROM 
     part p
 JOIN 

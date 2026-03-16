@@ -9,7 +9,7 @@ SELECT
             WHEN c.c_birth_month BETWEEN 1 AND 6 THEN 1 
             ELSE 2 
         END) AS birth_month_half,
-    STRING_AGG(CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name))), ', ') AS customer_names
 FROM 
     customer_address AS ca
 JOIN 

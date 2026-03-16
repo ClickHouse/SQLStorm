@@ -4,7 +4,7 @@ WITH SupplierInfo AS (
         s.s_nationkey,
         COUNT(DISTINCT ps.ps_partkey) AS TotalPartsSupplied,
         SUM(ps.ps_supplycost) AS TotalSupplyCost,
-        STRING_AGG(DISTINCT CONCAT('Part: ', p.p_name, ', Comment: ', p.p_comment), '; ') AS PartDetails
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Part: ', p.p_name, ', Comment: ', p.p_comment)))), '; ') AS PartDetails
     FROM 
         supplier s
     JOIN 
@@ -19,7 +19,7 @@ NationInfo AS (
         n.n_name,
         SUM(si.TotalPartsSupplied) AS TotalSuppliers,
         SUM(si.TotalSupplyCost) AS TotalCosts,
-        STRING_AGG(si.s_name, ', ') AS Suppliers
+        arrayStringConcat(groupArray(assumeNotNull(si.s_name)), ', ') AS Suppliers
     FROM 
         nation n
     JOIN 

@@ -38,7 +38,7 @@ movie_details AS (
         mt.title AS movie_title,
         mt.production_year,
         ak.name AS actor_name,
-        STRING_AGG(kw.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') AS keywords
     FROM
         aka_title mt
     LEFT JOIN

@@ -54,4 +54,4 @@ LEFT JOIN RecursivePostHistory RPH ON PWB.PostId = RPH.PostId AND RPH.rn = 1
 JOIN UserStats U ON PWB.OwnerUserId = U.UserId
 WHERE PWB.Score IS NOT NULL
 ORDER BY PWB.Score DESC, TotalComments DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

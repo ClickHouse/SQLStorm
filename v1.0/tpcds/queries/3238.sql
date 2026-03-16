@@ -50,7 +50,7 @@ SELECT
     AVG(s.total_sales) AS average_sales,
     MAX(s.total_sales) AS maximum_sales,
     MIN(s.total_sales) AS minimum_sales,
-    STRING_AGG(s.sales_status, ', ') AS sales_status_summary
+    arrayStringConcat(groupArray(assumeNotNull(s.sales_status)), ', ') AS sales_status_summary
 FROM 
     SalesAnalytics s
 WHERE 
@@ -64,4 +64,4 @@ HAVING
     COUNT(DISTINCT s.c_customer_sk) > 1
 ORDER BY 
     overall_sales DESC
-OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

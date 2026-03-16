@@ -30,8 +30,8 @@ cast_with_rank AS (
 movie_info_summary AS (
     SELECT
         mi.movie_id,
-        STRING_AGG(CASE WHEN it.info = 'summary' THEN mi.info ELSE NULL END, ' ') AS summary,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN it.info = 'summary' THEN mi.info ELSE NULL END)), ' ') AS summary,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM movie_info mi
     JOIN info_type it ON mi.info_type_id = it.id
     LEFT JOIN movie_keyword mk ON mi.movie_id = mk.movie_id

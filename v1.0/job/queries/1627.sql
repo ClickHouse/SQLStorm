@@ -25,7 +25,7 @@ ActorRoles AS (
 MoviesWithNotes AS (
     SELECT
         mt.movie_id,
-        STRING_AGG(mn.note, '; ') AS notes
+        arrayStringConcat(groupArray(assumeNotNull(mn.note)), '; ') AS notes
     FROM
         movie_info mn
     JOIN

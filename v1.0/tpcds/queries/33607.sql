@@ -10,7 +10,7 @@ WITH RECURSIVE TimeSeries AS (
     FROM
         date_dim
     WHERE
-        d_date >= DATE '2022-01-01'
+        d_date >= toDate('2022-01-01')
     UNION ALL
     SELECT
         d.d_date_sk,
@@ -24,7 +24,7 @@ WITH RECURSIVE TimeSeries AS (
     JOIN
         TimeSeries ts ON d.d_date_sk = ts.d_date_sk + 1
     WHERE
-        d.d_date <= DATE '2022-12-31' AND ts.level < 30
+        d.d_date <= toDate('2022-12-31') AND ts.level < 30
 ),
 SalesData AS (
     SELECT

@@ -33,7 +33,7 @@ PostStats AS (
 ),
 TopTags AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(p.Tags, '>'))) AS Tag,
+        TRIM(arrayJoin(splitByString('>', p.Tags))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p

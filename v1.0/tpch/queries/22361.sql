@@ -20,7 +20,7 @@ FilteredOrders AS (
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE o.o_orderstatus IN ('F', 'A') 
-    AND l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     GROUP BY o.o_orderkey, o.o_totalprice, o.o_orderdate
     HAVING SUM(l.l_discount) IS NOT NULL
 ),
@@ -50,4 +50,4 @@ LEFT JOIN RankedSuppliers s ON s.total_supply_cost = (SELECT MAX(total_supply_co
 LEFT JOIN TopRegions r ON r.region_total_supply_cost = s.total_supply_cost
 WHERE o.revenue_rank <= 10
 ORDER BY o.total_revenue DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

@@ -33,4 +33,4 @@ WHERE
     combined_length > 30
 ORDER BY 
     combined_length DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

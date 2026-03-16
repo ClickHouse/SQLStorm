@@ -44,7 +44,7 @@ SELECT
     ca_city,
     COUNT(*) AS total_customers,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(CONCAT(c_first_name, ' ', c_last_name, ' - ', full_address), '; ') AS customer_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name, ' - ', full_address))), '; ') AS customer_details
 FROM 
     CustomerStats
 JOIN 

@@ -32,7 +32,7 @@ SELECT
     COUNT(DISTINCT mc.company_id) AS companies_involved,
     ROW_NUMBER() OVER (PARTITION BY ak.id ORDER BY mt.production_year DESC) AS movie_rank,
     SUM(CASE WHEN pi.info_type_id = 1 THEN 1 ELSE 0 END) AS awards_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     aka_name ak
 JOIN 

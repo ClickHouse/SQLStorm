@@ -40,7 +40,7 @@ BestCustomers AS (
         ds.avg_purchase_estimate
     FROM 
         CustomerInfo ci
-        JOIN DateStats ds ON EXTRACT(YEAR FROM TIMESTAMP '2002-10-01 12:34:56') = ds.d_year
+        JOIN DateStats ds ON toYear(toDateTime64('2002-10-01 12:34:56', 6)) = ds.d_year
     WHERE 
         ci.city_rank <= 10
 )

@@ -29,7 +29,7 @@ NationSupplier AS (
     SELECT 
         n.n_nationkey,
         n.n_name,
-        STRING_AGG(s.s_name, ', ') AS suppliers,
+        arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS suppliers,
         SUM(s.s_acctbal) AS total_acctbal
     FROM 
         nation n

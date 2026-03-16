@@ -10,7 +10,7 @@ WITH UserStats AS (
         COUNT(DISTINCT CASE WHEN P.AcceptedAnswerId IS NOT NULL THEN P.Id END) AS TotalAcceptedAnswers,
         COUNT(DISTINCT C.Id) AS TotalComments
     FROM Users U
-    LEFT JOIN Posts P ON U.Id = P.OwnerUserId AND P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+    LEFT JOIN Posts P ON U.Id = P.OwnerUserId AND P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     LEFT JOIN Votes V ON P.Id = V.PostId
     LEFT JOIN Votes VB ON U.Id = VB.UserId
     LEFT JOIN Comments C ON P.Id = C.PostId

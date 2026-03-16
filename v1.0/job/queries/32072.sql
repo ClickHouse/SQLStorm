@@ -32,7 +32,7 @@ SELECT
         WHEN ci.note IS NOT NULL THEN 1 
         ELSE 0 
     END) AS actor_contribution,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     COUNT(DISTINCT mc.company_id) AS production_companies,
     ROW_NUMBER() OVER (PARTITION BY a.name ORDER BY t.production_year DESC) AS movie_rank
 FROM 

@@ -3,7 +3,7 @@ WITH UserBadges AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -30,7 +30,7 @@ ModeratedPosts AS (
         p.OwnerUserId,
         COUNT(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 1 END) AS ClosureCount,
         COUNT(CASE WHEN ph.PostHistoryTypeId IN (12, 13) THEN 1 END) AS DeletionCount,
-        ARRAY_AGG(ph.Comment) AS ClosureReasons
+        groupArray(assumeNotNull(ph.Comment)) AS ClosureReasons
     FROM 
         Posts p
     LEFT JOIN 
@@ -52,7 +52,7 @@ SELECT
         WHEN COALESCE(mp.ClosureReasons, '{}') = '{}' THEN 'No closure reasons'
         ELSE 'Reasons: ' || ARRAY_TO_STRING(mp.ClosureReasons, ', ')
     END AS ClosureDetails,
-    DATE_PART('year', AGE(ps.LastPostDate)) AS YearsSinceLastPost,
+    datePart('year', AGE(ps.LastPostDate)) AS YearsSinceLastPost,
     ROW_NUMBER() OVER (PARTITION BY ub.UserId ORDER BY ub.BadgeCount DESC NULLS LAST) AS BadgeRank
 FROM 
     UserBadges ub

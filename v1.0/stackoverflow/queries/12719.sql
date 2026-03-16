@@ -36,4 +36,4 @@ FROM
     PostEngagement
 ORDER BY 
     EngagementScore DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -63,4 +63,4 @@ HAVING
     COUNT(*) > 5
 ORDER BY 
     AvgSalesPrice DESC
-OFFSET 10 ROWS;
+OFFSET 10;

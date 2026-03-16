@@ -49,6 +49,6 @@ SELECT
     fs.customer_value_category,
     COALESCE(d.d_month_seq, 0) AS sales_month_sequence
 FROM FilteredSales fs
-LEFT JOIN date_dim d ON fs.total_sales IS NOT NULL AND d.d_date = DATE '2002-10-01'
+LEFT JOIN date_dim d ON fs.total_sales IS NOT NULL AND d.d_date = toDate('2002-10-01')
 WHERE fs.sales_rank <= 100
 ORDER BY fs.sales_rank;

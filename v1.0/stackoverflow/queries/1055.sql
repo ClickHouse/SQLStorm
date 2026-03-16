@@ -17,7 +17,7 @@ PostHistoryAggregated AS (
         ph.PostId,
         COUNT(*) AS EditCount,
         MAX(CASE WHEN ph.PostHistoryTypeId IN (4, 5) THEN ph.CreationDate END) AS LastEditDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS EditTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS EditTypes
     FROM PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     GROUP BY ph.PostId

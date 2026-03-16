@@ -33,7 +33,7 @@ FilteredActors AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -70,7 +70,7 @@ LEFT JOIN
         FROM cast_info ci 
         WHERE ci.movie_id = m.title_id
         ORDER BY ci.nr_order
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
 WHERE 
     m.keywords IS NOT NULL

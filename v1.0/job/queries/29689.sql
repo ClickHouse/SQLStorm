@@ -33,8 +33,8 @@ Summary AS (
         movie_id,
         movie_title,
         COUNT(movie_keyword) AS keyword_count,
-        ARRAY_AGG(DISTINCT company_type) AS companies_involved,
-        ARRAY_AGG(DISTINCT person_info) AS cast_info,
+        arrayDistinct(groupArray(assumeNotNull(company_type))) AS companies_involved,
+        arrayDistinct(groupArray(assumeNotNull(person_info))) AS cast_info,
         MAX(production_year) AS production_year
     FROM
         MovieDetails

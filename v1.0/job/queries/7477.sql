@@ -11,7 +11,7 @@ WITH ActorMovies AS (
 MovieDetails AS (
     SELECT m.id AS movie_id, 
            m.title, 
-           STRING_AGG(DISTINCT k.keyword, ', ') AS keywords, 
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords, 
            c.name AS company_name
     FROM aka_title m
     JOIN movie_companies mc ON m.id = mc.movie_id

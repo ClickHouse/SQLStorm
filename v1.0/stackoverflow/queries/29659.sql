@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON a.ParentId = p.Id AND a.PostTypeId = 2
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.CreationDate, pt.Name, u.DisplayName
 )

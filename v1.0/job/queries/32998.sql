@@ -34,7 +34,7 @@ SELECT
     COUNT(DISTINCT ci.person_id) AS cast_count,
     AVG(CASE WHEN ci.role_id < 3 THEN 1 ELSE NULL END) AS avg_principal_cast,
     SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS notations_count,
-    STRING_AGG(DISTINCT p.info, ', ') FILTER (WHERE p.info IS NOT NULL) AS person_notes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.info))), ', ') FILTER (WHERE p.info IS NOT NULL) AS person_notes
 FROM 
     aka_title a
 LEFT JOIN 

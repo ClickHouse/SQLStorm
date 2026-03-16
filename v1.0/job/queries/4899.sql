@@ -4,7 +4,7 @@ WITH MovieInfo AS (
         mt.title,
         mt.production_year,
         COUNT(mc.movie_id) AS company_count,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names
     FROM 
         aka_title mt
     LEFT JOIN 

@@ -14,13 +14,13 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
+        AND p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 HighScoreComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, ' | ') AS CommentTexts
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS CommentTexts
     FROM 
         Comments c
     JOIN 

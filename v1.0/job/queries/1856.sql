@@ -26,8 +26,8 @@ MovieDetails AS (
     SELECT 
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT an.name, ', ' ORDER BY an.name) AS actors,
-        STRING_AGG(DISTINCT kt.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ' ORDER BY an.name) AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS keywords,
         COUNT(DISTINCT mc.company_id) AS company_count
     FROM 
         TopMovies tm

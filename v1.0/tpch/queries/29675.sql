@@ -28,7 +28,7 @@ SELECT
     hpc.supplier_address,
     hpc.nation_name,
     hpc.part_count,
-    STRING_AGG(p.p_name, ', ') AS part_names
+    arrayStringConcat(groupArray(assumeNotNull(p.p_name)), ', ') AS part_names
 FROM 
     HighestPartCount hpc
 JOIN 

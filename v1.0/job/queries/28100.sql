@@ -18,7 +18,7 @@ WITH RECURSIVE movie_cast AS (
 aggregated_cast AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(mc.actor_name, ', ') AS cast_names,
+        arrayStringConcat(groupArray(assumeNotNull(mc.actor_name)), ', ') AS cast_names,
         COUNT(mc.actor_name) AS cast_count,
         MAX(mc.casting_order) AS total_casting_order
     FROM 
@@ -29,7 +29,7 @@ aggregated_cast AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

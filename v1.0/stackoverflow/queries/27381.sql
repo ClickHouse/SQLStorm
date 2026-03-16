@@ -5,7 +5,7 @@ WITH TagAnalytics AS (
         AVG(u.Reputation) AS AverageReputation,
         SUM(CASE WHEN pt.Name = 'Answer' THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(CASE WHEN pt.Name = 'Question' THEN 1 ELSE 0 END) AS TotalQuestions,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS UserNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS UserNames
     FROM 
         Tags t
     JOIN 
@@ -21,12 +21,12 @@ WITH TagAnalytics AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pr.Name, ', ') AS CloseReasons,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pr.Name))), ', ') AS CloseReasons,
         COUNT(DISTINCT ph.Id) AS ClosureCount
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes pr ON ph.Comment::INT = pr.Id
+        CloseReasonTypes pr ON CAST(ph.Comment AS INT) = pr.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
     GROUP BY 

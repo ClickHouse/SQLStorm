@@ -17,7 +17,7 @@ TopMovies AS (
         rm.production_year,
         rm.rank,
         rm.total_movies,
-        COALESCE(STRING_AGG(DISTINCT k.keyword, ', '), 'No Keywords') AS keywords
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'No Keywords') AS keywords
     FROM
         RankedMovies rm
         LEFT JOIN movie_keyword mk ON rm.movie_id = mk.movie_id
@@ -31,7 +31,7 @@ CastSummary AS (
     SELECT
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS num_cast_members,
-        STRING_AGG(DISTINCT CONCAT(a.name, '(', rt.role, ')'), ', ') AS cast_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, '(', rt.role, ')')))), ', ') AS cast_details
     FROM
         cast_info c
         JOIN aka_name a ON c.person_id = a.person_id

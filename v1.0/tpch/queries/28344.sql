@@ -31,8 +31,8 @@ QualifiedSuppliers AS (
 )
 SELECT 
     qs.nation_name,
-    STRING_AGG(qs.s_name, ', ') AS supplier_names,
-    STRING_AGG(qs.p_name, '; ') AS part_names,
+    arrayStringConcat(groupArray(assumeNotNull(qs.s_name)), ', ') AS supplier_names,
+    arrayStringConcat(groupArray(assumeNotNull(qs.p_name)), '; ') AS part_names,
     SUM(qs.total_supply_cost) AS aggregate_supply_cost
 FROM 
     QualifiedSuppliers qs

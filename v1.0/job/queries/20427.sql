@@ -17,7 +17,7 @@ WITH MovieStats AS (
 ), CastStats AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors_list,
         COUNT(DISTINCT c.person_id) AS actor_count,
         MAX(CASE WHEN r.role = 'Director' THEN c.nr_order END) AS director_order
     FROM 

@@ -18,7 +18,7 @@ WITH RankedTitles AS (
 DistinctCompanies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 
@@ -40,7 +40,7 @@ SELECT
          AVG(y.years_active)
      FROM 
          (SELECT 
-             (EXTRACT(YEAR FROM DATE '2024-10-01') - EXTRACT(YEAR FROM pi.info::date)) AS years_active
+             (toYear(toDate('2024-10-01')) - toYear(CAST(pi.info AS date))) AS years_active
           FROM 
              person_info pi
           WHERE 

@@ -25,8 +25,8 @@ customer_summary AS (
     SELECT 
         city_rank,
         COUNT(*) AS customer_count,
-        STRING_AGG(c_customer_id, ', ') AS customer_ids,
-        STRING_AGG(c_first_name || ' ' || c_last_name, ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(c_customer_id)), ', ') AS customer_ids,
+        arrayStringConcat(groupArray(assumeNotNull(c_first_name || ' ' || c_last_name)), ', ') AS customer_names
     FROM 
         ranked_customers
     WHERE 

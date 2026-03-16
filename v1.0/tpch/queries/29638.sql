@@ -32,7 +32,7 @@ SELECT
     t.p_partkey,
     t.p_name,
     t.p_brand,
-    STRING_AGG(t.s_name, ', ') AS supplier_names,
+    arrayStringConcat(groupArray(assumeNotNull(t.s_name)), ', ') AS supplier_names,
     AVG(t.ps_supplycost) AS avg_supplycost,
     SUM(t.ps_availqty) AS total_available_qty
 FROM 

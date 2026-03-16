@@ -40,7 +40,7 @@ SalesSummary AS (
         rs.customer_count,
         rs.total_sales,
         COALESCE(SUM(ss.total_supply_cost), 0) AS total_supplier_cost,
-        STRING_AGG(CONCAT(ss.s_name, ': ', ss.total_orders), '; ') AS supplier_orders
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ss.s_name, ': ', ss.total_orders))), '; ') AS supplier_orders
     FROM 
         RegionSales rs
     LEFT JOIN 

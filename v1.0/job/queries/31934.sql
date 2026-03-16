@@ -39,7 +39,7 @@ SELECT
     ak.name AS actor_name,
     c.role_id,
     (SELECT COUNT(*) FROM cast_info ci WHERE ci.movie_id = t.id) AS total_cast,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     CASE 
         WHEN mci.note IS NOT NULL THEN 'Noted'
         ELSE 'No Note'

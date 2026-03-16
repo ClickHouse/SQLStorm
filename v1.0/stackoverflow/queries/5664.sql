@@ -8,15 +8,15 @@ WITH RecentPosts AS (
     FROM Posts P
     LEFT JOIN Votes V ON P.Id = V.PostId
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY P.Id, P.Title, P.CreationDate
 ),
 PopularTags AS (
     SELECT T.TagName, 
            COUNT(*) AS UsageCount
     FROM Tags T
-    JOIN Posts P ON T.Id = ANY(string_to_array(P.Tags, ',')::int[])
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    JOIN Posts P ON T.Id = ANY(splitByString(',', P.TagsCAST() AS int)[])
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY T.TagName
     ORDER BY UsageCount DESC
     LIMIT 5

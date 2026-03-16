@@ -36,7 +36,7 @@ SELECT
     ft.production_year,
     COALESCE(ft.actor_count, 0) AS actor_count,
     (SELECT COUNT(*) FROM movie_keyword mk WHERE mk.movie_id = ft.title_id) AS keyword_count,
-    (SELECT STRING_AGG(DISTINCT kw.keyword, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') 
      FROM movie_keyword mk 
      JOIN keyword kw ON mk.keyword_id = kw.id 
      WHERE mk.movie_id = ft.title_id) AS keywords

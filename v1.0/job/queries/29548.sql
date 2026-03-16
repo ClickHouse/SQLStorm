@@ -26,7 +26,7 @@ TopRankedMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -37,8 +37,8 @@ MovieKeywords AS (
 MovieCompanies AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
-        ARRAY_AGG(DISTINCT ct.kind) AS company_types
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(ct.kind))) AS company_types
     FROM 
         movie_companies mc
     JOIN 

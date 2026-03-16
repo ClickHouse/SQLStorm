@@ -7,7 +7,7 @@ SELECT
     p.ViewCount,
     u.DisplayName AS OwnerDisplayName,
     u.Reputation AS OwnerReputation,
-    ARRAY_AGG(t.TagName) AS Tags,
+    groupArray(assumeNotNull(t.TagName)) AS Tags,
     COUNT(v.Id) AS VoteCount
 FROM 
     Posts p

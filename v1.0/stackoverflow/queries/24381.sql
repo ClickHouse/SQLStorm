@@ -32,7 +32,7 @@ RecentCloseReasons AS (
     SELECT 
         p.Id AS PostId,
         MAX(ph.CreationDate) AS LastClosed,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -81,4 +81,4 @@ WHERE
 ORDER BY 
     COALESCE(rcr.LastClosed, '1900-01-01') DESC,
     rp.CreationDate DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

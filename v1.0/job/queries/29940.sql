@@ -15,7 +15,7 @@ WITH ranked_titles AS (
 title_keywords AS (
     SELECT 
         at.id AS title_id,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         aka_title at
     JOIN 
@@ -28,7 +28,7 @@ title_keywords AS (
 movie_info_data AS (
     SELECT 
         mi.movie_id,
-        ARRAY_AGG(DISTINCT CONCAT(it.info, ': ', mi.info)) AS movie_info_details
+        arrayDistinct(groupArray(assumeNotNull(CONCAT(it.info, ': ', mi.info)))) AS movie_info_details
     FROM 
         movie_info mi
     JOIN 

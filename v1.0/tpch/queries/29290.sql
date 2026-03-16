@@ -33,7 +33,7 @@ SELECT
     AVG(name_length) AS avg_name_length,
     AVG(comment_length) AS avg_comment_length,
     COUNT(*) AS total_records,
-    STRING_AGG(concatenated_string, '; ') AS aggregated_strings
+    arrayStringConcat(groupArray(assumeNotNull(concatenated_string)), '; ') AS aggregated_strings
 FROM 
     string_benchmark p
 GROUP BY 

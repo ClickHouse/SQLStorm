@@ -35,7 +35,7 @@ aggregated_movies AS (
         title,
         production_year,
         COUNT(actor_id) AS num_actors,
-        STRING_AGG(DISTINCT actor_name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actor_names
     FROM 
         movie_hierarchy
     GROUP BY 

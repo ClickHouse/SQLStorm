@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.ViewCount IS NOT NULL
 ),
 
@@ -29,7 +29,7 @@ RecentPostHistory AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 
 FilteredTopPosts AS (
@@ -41,7 +41,7 @@ FilteredTopPosts AS (
         rp.VoteCount,
         COALESCE(rp.RankScore, 0) AS RankScore, 
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = rp.PostId) AS CommentCount,
-        (SELECT STRING_AGG(tag.TagName, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ') 
          FROM Tags tag
          INNER JOIN Posts p ON p.Tags LIKE CONCAT('%', tag.TagName, '%')
          WHERE p.Id = rp.PostId) AS TagsUsed

@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.OwnerUserId  -- Added necessary columns to GROUP BY
 ), 
@@ -49,7 +49,7 @@ FROM
 JOIN 
     Users u ON tp.OwnerUserId = u.Id
 LEFT JOIN 
-    Badges b ON u.Id = b.UserId AND b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+    Badges b ON u.Id = b.UserId AND b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ORDER BY 
     tp.Score DESC, 
     tp.ViewCount DESC;

@@ -23,7 +23,7 @@ MovieCredits AS (
 MovieCompanies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT co.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS company_names
     FROM 
         movie_companies mc
     JOIN 
@@ -38,7 +38,7 @@ SELECT
     COALESCE(mco.company_names, 'No Companies') AS companies_involved,
     COALESCE(mc.total_cast, 0) AS total_cast,
     CASE 
-        WHEN mc.total_cast > 0 THEN (mc.credited_cast::float / mc.total_cast) * 100
+        WHEN mc.total_cast > 0 THEN (CAST(mc.credited_cast AS float) / mc.total_cast) * 100
         ELSE NULL 
     END AS credited_percentage
 FROM 

@@ -27,7 +27,7 @@ PopularTags AS (
     FROM 
         Posts p
     LEFT JOIN 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag_name ON true
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag_name ON true
     LEFT JOIN 
         Tags t ON tag_name = t.TagName
     GROUP BY 

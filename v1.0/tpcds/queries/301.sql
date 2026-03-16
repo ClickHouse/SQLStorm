@@ -58,4 +58,4 @@ WHERE
     AND (i.i_brand LIKE '%Premium%' OR i.i_category IN (SELECT DISTINCT r.r_reason_desc FROM reason r WHERE r.r_reason_desc IS NOT NULL))
 ORDER BY
     total_net_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

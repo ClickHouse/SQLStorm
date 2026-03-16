@@ -53,4 +53,4 @@ WHERE
     NOT EXISTS (SELECT 1 FROM store_sales ss WHERE ss.ss_item_sk = ts.ws_item_sk AND ss.ss_net_paid < 0)
 ORDER BY 
     ts.total_net_paid DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

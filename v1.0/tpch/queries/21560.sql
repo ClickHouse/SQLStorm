@@ -37,7 +37,7 @@ RegionStats AS (
         r.r_name,
         COUNT(DISTINCT n.n_nationkey) AS nation_count,
         SUM(coalesce(c.c_acctbal, 0)) AS total_account_balance,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers
     FROM region r
     JOIN nation n ON r.r_regionkey = n.n_regionkey
     LEFT JOIN customer c ON n.n_nationkey = c.c_nationkey

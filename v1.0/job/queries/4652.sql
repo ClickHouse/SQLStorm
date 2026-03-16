@@ -29,8 +29,8 @@ movie_details AS (
         tm.title,
         tm.production_year,
         tm.total_cast,
-        ARRAY_AGG(DISTINCT ak.name) AS actors,
-        COALESCE(ARRAY_AGG(DISTINCT mn.name) FILTER (WHERE mn.name IS NOT NULL), '{}') AS alternate_names
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actors,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(mn.name))) FILTER (WHERE mn.name IS NOT NULL), '{}') AS alternate_names
     FROM 
         top_movies tm
     LEFT JOIN 
@@ -47,7 +47,7 @@ movie_details AS (
 keyword_info AS (
     SELECT 
         movie_id,
-        STRING_AGG(keyword.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(keyword.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

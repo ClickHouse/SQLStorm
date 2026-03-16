@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), 
 TopPostStats AS (
     SELECT 
@@ -62,11 +62,11 @@ SELECT
     tps.UpvoteCount,
     tps.DownvoteCount,
     COALESCE(pla.RelatedPostCount, 0) AS RelatedPostCount,
-    (SELECT STRING_AGG(DISTINCT CASE WHEN pt.Name IS NOT NULL THEN pt.Name END, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN pt.Name IS NOT NULL THEN pt.Name END))), ', ') 
       FROM PostHistory ph 
       LEFT JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id 
       WHERE ph.PostId = tps.PostId) AS HistoryTypes,
-    COALESCE(ha.LastChangeDate, TIMESTAMP '1970-01-01 00:00:00') AS LastChange
+    COALESCE(ha.LastChangeDate, toDateTime64('1970-01-01 00:00:00', 6)) AS LastChange
 FROM 
     TopPostStats tps
 LEFT JOIN 

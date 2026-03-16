@@ -25,7 +25,7 @@ ActivePosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8 
-    WHERE p.LastActivityDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    WHERE p.LastActivityDate >= now64(6) - INTERVAL 30 DAY
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, p.AcceptedAnswerId
 ),
 PostDetails AS (
@@ -52,7 +52,7 @@ SELECT
     pd.CommentCount, 
     pd.TotalBounties,
     pd.AnswerStatus,
-    STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypeNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypeNames
 FROM RankedUsers ru
 JOIN PostDetails pd ON ru.Id = pd.PostId
 LEFT JOIN PostTypes pt ON pd.CommentCount > 0 AND pd.TotalBounties > 0

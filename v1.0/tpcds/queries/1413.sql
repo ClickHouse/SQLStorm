@@ -58,4 +58,4 @@ WHERE
     d.d_year = 2023
 ORDER BY 
     sale_date DESC, ss.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

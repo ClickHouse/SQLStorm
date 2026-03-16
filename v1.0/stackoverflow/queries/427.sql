@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.AnswerCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.CreationDate ASC) AS Rank,
-        ARRAY_AGG(t.TagName) AS Tags
+        groupArray(assumeNotNull(t.TagName)) AS Tags
     FROM 
         Posts p
     JOIN 
@@ -36,7 +36,7 @@ UsersVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         v.PostId
 )
@@ -62,6 +62,6 @@ LEFT JOIN
 WHERE 
     rp.Rank <= 5
     AND rp.Score > 0
-    AND (cp.CloseCount IS NULL OR cp.LastCloseDate >= cast('2024-10-01' as date) - INTERVAL '30 days')
+    AND (cp.CloseCount IS NULL OR cp.LastCloseDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY)
 ORDER BY 
     rp.Score DESC, rp.CreationDate ASC;

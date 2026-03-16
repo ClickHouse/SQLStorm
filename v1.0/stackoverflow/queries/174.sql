@@ -21,7 +21,7 @@ RecentPosts AS (
     JOIN 
         RankedUsers R ON P.OwnerUserId = R.UserId
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 PostStats AS (
     SELECT 

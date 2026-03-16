@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.Tags
 ), 
@@ -47,7 +47,7 @@ SELECT
     trp.Tags,
     trp.CommentCount,
     trp.VoteCount,
-    STRING_AGG(DISTINCT CONCAT(u.DisplayName, ': ', b.Name), '; ') AS UserBadges
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(u.DisplayName, ': ', b.Name)))), '; ') AS UserBadges
 FROM 
     TopRankedPosts trp
 LEFT JOIN 

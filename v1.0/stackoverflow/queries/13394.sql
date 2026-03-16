@@ -9,7 +9,7 @@ WITH PostStats AS (
         COUNT(v.Id) AS VoteCount,
         MIN(b.Date) AS FirstBadgeDate,
         MAX(b.Date) AS LastBadgeDate,
-        EXTRACT(EPOCH FROM p.CreationDate) AS CreationTimestamp
+        toUnixTimestamp(p.CreationDate) AS CreationTimestamp
     FROM 
         Posts p
     LEFT JOIN 

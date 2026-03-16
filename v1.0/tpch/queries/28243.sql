@@ -6,7 +6,7 @@ WITH PartAggregates AS (
         SUM(ps.ps_availqty) AS total_available_quantity,
         SUM(ps.ps_supplycost) AS total_supply_cost,
         AVG(p.p_retailprice) AS average_retail_price,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM 
         part p
     JOIN 
@@ -19,7 +19,7 @@ WITH PartAggregates AS (
     SELECT 
         r.r_name AS region_name,
         COUNT(DISTINCT n.n_nationkey) AS nation_count,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nation_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nation_names
     FROM 
         region r
     JOIN 

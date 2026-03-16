@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.PostTypeId = 1  
 ),
 TopUsers AS (
@@ -48,7 +48,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId, 
         ph.UserId,
-        STRING_AGG(ctr.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(ctr.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -69,7 +69,7 @@ SELECT
         WHEN r.PostRank <= 5 THEN 'Top Post'
         ELSE 'Regular Post'
     END AS PostCategory,
-    ARRAY_AGG(DISTINCT cp.CloseReasons) AS ReasonsForClosure
+    arrayDistinct(groupArray(assumeNotNull(cp.CloseReasons))) AS ReasonsForClosure
 FROM 
     RankedPosts r
 JOIN 

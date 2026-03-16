@@ -75,4 +75,4 @@ WHERE
     urh.BadgeCount > 0
 ORDER BY 
     p.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

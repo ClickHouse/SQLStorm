@@ -57,4 +57,4 @@ LEFT JOIN
     PostHistoryStats pht ON ps.PostId = pht.PostId
 ORDER BY 
     ps.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

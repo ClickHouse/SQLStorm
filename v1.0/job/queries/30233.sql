@@ -48,7 +48,7 @@ MovieStats AS (
         mh.title,
         mh.production_year,
         COUNT(DISTINCT cd.actor_rank) AS actor_count,
-        STRING_AGG(DISTINCT cd.actor_name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.actor_name))), ', ') AS actor_names
     FROM 
         MovieHierarchy mh
     LEFT JOIN 

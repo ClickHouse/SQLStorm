@@ -27,7 +27,7 @@ PostDetails AS (
     LEFT JOIN 
         (SELECT PostId, COUNT(*) AS VoteCount FROM Votes WHERE VoteTypeId = 2 GROUP BY PostId) v ON v.PostId = p.Id
     LEFT JOIN 
-        (SELECT ph.PostId, STRING_AGG(cr.Name, ', ') AS CommentText
+        (SELECT ph.PostId, arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CommentText
          FROM PostHistory ph
          INNER JOIN CloseReasonTypes cr ON CAST(ph.Comment AS INT) = cr.Id
          WHERE ph.PostHistoryTypeId = 10

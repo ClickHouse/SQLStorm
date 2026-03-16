@@ -15,7 +15,7 @@ SELECT
     SUM(CASE WHEN o.o_orderstatus = 'F' THEN 1 ELSE 0 END) AS fulfilled_orders,
     AVG(ps.ps_supplycost * l.l_quantity) AS avg_supply_cost,
     MAX(l.l_discount) AS max_discount,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM part p
 JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 JOIN supplier s ON ps.ps_suppkey = s.s_suppkey

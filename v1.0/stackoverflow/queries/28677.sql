@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Body,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.UserId) AS VoteCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         ROW_NUMBER() OVER (ORDER BY COUNT(c.Id) DESC, COUNT(DISTINCT v.UserId) DESC) AS Rank
     FROM 
         Posts p
@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (2, 3) 
     LEFT JOIN 
-        unnest(string_to_array(p.Tags, ',')) AS tag ON TRUE
+        arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON TRIM(tag) = t.TagName
     WHERE 
@@ -30,7 +30,7 @@ PopularTags AS (
     FROM 
         Posts p
     JOIN 
-        unnest(string_to_array(p.Tags, ',')) AS tag ON TRUE
+        arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
     JOIN 
         Tags t ON TRIM(tag) = t.TagName
     WHERE 
@@ -43,7 +43,7 @@ PopularTags AS (
 RecentPostHistory AS (
     SELECT 
         ph.PostId,
-        ARRAY_AGG(DISTINCT ph.UserDisplayName) AS Editors,
+        arrayDistinct(groupArray(assumeNotNull(ph.UserDisplayName))) AS Editors,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph

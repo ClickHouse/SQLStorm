@@ -35,7 +35,7 @@ SELECT
     ami.movie_id,
     ami.title,
     ami.production_year,
-    STRING_AGG(ami.actor_name, ', ') AS actors,
+    arrayStringConcat(groupArray(assumeNotNull(ami.actor_name)), ', ') AS actors,
     COUNT(DISTINCT ami.rn) AS num_roles,
     MAX(ami.movie_info) AS movie_summary
 FROM ActorMovieInfo ami

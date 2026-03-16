@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS RecentRank
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.CreationDate, p.PostTypeId
 ), UserReputation AS (
     SELECT 
@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ), ClosureReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS ClosureReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS ClosureReasons
     FROM PostHistory ph
     JOIN CloseReasonTypes cr ON ph.Comment = CAST(cr.Id AS VARCHAR)
     WHERE ph.PostHistoryTypeId = 10

@@ -31,7 +31,7 @@ TopCustomers AS (
 )
 SELECT 
     CONCAT('Top Customers from ', ca_state, ':') AS state_info,
-    STRING_AGG(CONCAT(full_name, ' - ', cd_gender, ' - ', cd_marital_status, ' - ', cd_education_status), '; ') AS customer_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(full_name, ' - ', cd_gender, ' - ', cd_marital_status, ' - ', cd_education_status))), '; ') AS customer_details
 FROM 
     TopCustomers
 GROUP BY 

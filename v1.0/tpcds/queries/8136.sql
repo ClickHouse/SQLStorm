@@ -16,7 +16,7 @@ WITH RankedSales AS (
     WHERE 
         cd.cd_gender = 'F' 
         AND i.i_current_price BETWEEN 10.00 AND 100.00
-        AND (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c.c_birth_year) BETWEEN 18 AND 35
+        AND (toYear(cast('2002-10-01' as date)) - c.c_birth_year) BETWEEN 18 AND 35
     GROUP BY 
         ws.ws_order_number, ws.ws_item_sk
 ),

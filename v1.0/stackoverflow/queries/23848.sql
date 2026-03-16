@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') AND
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AND
         p.Score > 0
 ),
 TopUserVotes AS (
@@ -29,11 +29,11 @@ TopUserVotes AS (
 PostWithTags AS (
     SELECT
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        UNNEST(NULLIF(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'), '{}')) AS t(TagName) ON TRUE
+        arrayJoin(NULLIF(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)), '{}')) AS t(TagName) ON TRUE
     WHERE
         p.PostTypeId = 1 
     GROUP BY
@@ -58,11 +58,11 @@ LEFT JOIN
                                        FROM Users u
                                        WHERE u.Reputation = (SELECT MAX(Reputation)
                                                              FROM Users
-                                                             WHERE LastAccessDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month'))
+                                                             WHERE LastAccessDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH))
                                        LIMIT 1)
 WHERE
     rp.Rank <= 3
 ORDER BY
     rp.Score DESC,
     rp.ViewCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

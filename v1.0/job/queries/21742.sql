@@ -54,7 +54,7 @@ SELECT
         WHEN ai.movie_count BETWEEN 5 AND 10 THEN 'Experienced Actor'
         ELSE 'Newcomer Actor'
     END AS actor_category,
-    STRING_AGG(DISTINCT km.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(km.keyword))), ', ') AS keywords
 FROM 
     filtered_movies fm
 JOIN 

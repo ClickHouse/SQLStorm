@@ -93,4 +93,4 @@ FROM
     FinalReport fr
 ORDER BY 
     fr.net_sales DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

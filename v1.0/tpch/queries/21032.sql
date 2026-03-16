@@ -3,7 +3,7 @@ WITH RankedOrders AS (
            o.o_orderdate, 
            RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) as order_rank
     FROM orders o
-    WHERE o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL '1 year')
+    WHERE o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
 ),
 FilteredSuppliers AS (
     SELECT s.s_suppkey, 
@@ -43,4 +43,4 @@ WHERE EXISTS (
 )
 AND p.p_retailprice BETWEEN (SELECT AVG(p_retailprice) FROM part) * 0.9 AND (SELECT AVG(p_retailprice) FROM part) * 1.1
 ORDER BY cs.avg_balance DESC, available_suppliers DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

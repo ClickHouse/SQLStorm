@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostVoteSummary AS (
     SELECT 
@@ -23,7 +23,7 @@ ClosedPostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS CommentTexts
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS CommentTexts
     FROM Comments c
     JOIN Posts p ON c.PostId = p.Id
     WHERE p.ClosedDate IS NOT NULL

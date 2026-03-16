@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 ), 
 TopCustomerOrders AS (
     SELECT 
@@ -62,7 +62,7 @@ LEFT JOIN
         JOIN 
             lineitem l ON o.o_orderkey = l.l_orderkey 
         WHERE 
-            l.l_shipdate > DATE '1998-10-01' - INTERVAL '30' DAY
+            l.l_shipdate > toDate('1998-10-01') - INTERVAL '30' DAY
     )
 WHERE 
     TOC.total_spent > 1000

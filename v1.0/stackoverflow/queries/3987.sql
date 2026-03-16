@@ -24,11 +24,11 @@ WITH PostStatistics AS (
 UniqueTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag ON TRUE
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -58,7 +58,7 @@ FROM
 LEFT JOIN 
     UniqueTags ut ON ps.PostId = ut.PostId
 WHERE 
-    ps.LastEditDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+    ps.LastEditDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ORDER BY 
     ps.UpVotes DESC
 LIMIT 50;

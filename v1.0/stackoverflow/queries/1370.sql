@@ -8,7 +8,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS TotalUpvotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS TotalDownvotes,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Users u
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH UserActivity AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, ', ')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString(', ', p.Tags)) AS t(TagName) ON TRUE
     WHERE 
         u.Reputation > 1000
     GROUP BY 
@@ -68,4 +68,4 @@ FROM
 ORDER BY 
     asu.TotalUpvotes DESC, 
     asu.TotalPosts DESC 
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

@@ -37,7 +37,7 @@ top_movies AS (
 
 SELECT 
     production_year, 
-    STRING_AGG(title || ' (' || actor_name || ' - ' || keyword || ')', ', ') AS movie_details
+    arrayStringConcat(groupArray(assumeNotNull(title || ' (' || actor_name || ' - ' || keyword || ')')), ', ') AS movie_details
 FROM 
     top_movies
 GROUP BY 

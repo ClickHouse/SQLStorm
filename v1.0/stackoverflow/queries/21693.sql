@@ -7,7 +7,7 @@ WITH RecentUserActivities AS (
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes
     FROM Users u
     LEFT JOIN Votes v ON u.Id = v.UserId 
-    WHERE u.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY u.Id
 ),
 PostStatistics AS (
@@ -23,7 +23,7 @@ PostStatistics AS (
 BadgesForUsers AS (
     SELECT
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeList,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeList,
         COUNT(b.Id) AS BadgeCount
     FROM Badges b
     GROUP BY b.UserId
@@ -32,9 +32,9 @@ CloseReasonSummary AS (
     SELECT
         ph.UserId,
         COUNT(ph.Id) AS CloseCount,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasonNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasonNames
     FROM PostHistory ph
-    JOIN CloseReasonTypes cr ON ph.Comment::int = cr.Id
+    JOIN CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
     WHERE ph.PostHistoryTypeId = 10  
     GROUP BY ph.UserId
 )

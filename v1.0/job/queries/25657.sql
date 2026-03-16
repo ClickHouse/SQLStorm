@@ -43,8 +43,8 @@ movie_details AS (
 SELECT 
     p.name AS actor_name,
     COUNT(DISTINCT md.movie_id) AS num_movies,
-    STRING_AGG(DISTINCT md.title, ', ') AS movies,
-    STRING_AGG(DISTINCT md.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.title))), ', ') AS movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keyword))), ', ') AS keywords
 FROM 
     popular_actors p
 JOIN 

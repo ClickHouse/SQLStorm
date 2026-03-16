@@ -22,7 +22,7 @@ WITH RankedPosts AS (
         SUM(Score) AS TotalScore
     FROM (
         SELECT 
-            UNNEST(string_to_array(TRANSLATE(Tags, '<>', ''), '><')) AS TagName,
+            arrayJoin(splitByString('><', replaceAll(Tags, '<>', ''))) AS TagName,
             Score
         FROM 
             RankedPosts

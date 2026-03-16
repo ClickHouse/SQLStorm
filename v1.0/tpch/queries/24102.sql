@@ -3,7 +3,7 @@ WITH RECURSIVE OrderHierarchy AS (
     SELECT o_orderkey, o_custkey, o_orderdate, o_totalprice,
            ROW_NUMBER() OVER (PARTITION BY o_custkey ORDER BY o_orderdate DESC) AS rn
     FROM orders
-    WHERE o_orderdate < DATE '1998-10-01' AND o_totalprice IS NOT NULL
+    WHERE o_orderdate < toDate('1998-10-01') AND o_totalprice IS NOT NULL
 ),
 SupplierStats AS (
     SELECT s_nationkey, COUNT(DISTINCT s_suppkey) AS supplier_count,
@@ -37,7 +37,7 @@ LEFT JOIN (SELECT oh.o_orderkey, SUM(oh.o_totalprice) AS ps_total_order_value
 JOIN lineitem l ON c.c_custkey = l.l_orderkey
 JOIN PartDetails p ON l.l_partkey = p.p_partkey
 LEFT JOIN SupplierStats s ON n.n_nationkey = s.s_nationkey
-WHERE l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1997-10-31'
+WHERE l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1997-10-31')
   AND (p.max_supply_cost IS NULL OR p.max_supply_cost > 50)
 GROUP BY r.r_name
 HAVING COUNT(DISTINCT c.c_custkey) > 0 AND MAX(p.p_retailprice) IS NOT NULL

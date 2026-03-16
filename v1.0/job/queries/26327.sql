@@ -5,7 +5,7 @@ WITH movie_details AS (
         t.production_year AS year,
         k.keyword AS genre,
         c.kind AS company_type,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors
     FROM 
         aka_title t
     JOIN 
@@ -30,7 +30,7 @@ movie_info_summary AS (
         md.movie_id,
         md.movie_title,
         md.year,
-        STRING_AGG(DISTINCT COALESCE(mi.info, ''), '; ') AS additional_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(mi.info, '')))), '; ') AS additional_info
     FROM 
         movie_details md
     LEFT JOIN 

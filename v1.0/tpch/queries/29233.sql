@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price_after_discount,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' from ', c.c_address), '; ') AS customer_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' from ', c.c_address)))), '; ') AS customer_details
 FROM 
     supplier s
 JOIN 

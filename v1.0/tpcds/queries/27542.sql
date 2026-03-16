@@ -11,7 +11,7 @@ WITH RankedAddresses AS (
 AddressStringAggregates AS (
     SELECT 
         ca_state,
-        STRING_AGG(CONCAT(ca_city, ': ', ca_street_name), '; ') AS city_street_list
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ca_city, ': ', ca_street_name))), '; ') AS city_street_list
     FROM RankedAddresses
     WHERE rank <= 5
     GROUP BY ca_state

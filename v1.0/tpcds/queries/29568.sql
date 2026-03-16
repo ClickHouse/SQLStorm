@@ -61,4 +61,4 @@ WHERE
     ai.country = 'USA'
 ORDER BY 
     total_sales DESC
-FETCH FIRST 100 ROW ONLY;
+LIMIT 100;

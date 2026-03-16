@@ -68,4 +68,4 @@ WHERE
     Reputation > 1000
 ORDER BY 
     Reputation DESC, BadgeCount DESC, PostCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

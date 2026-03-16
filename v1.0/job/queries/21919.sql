@@ -40,7 +40,7 @@ SELECT
      FROM cast_info c
      WHERE c.movie_id = mh.movie_id) AS actor_count,
     COALESCE((
-        SELECT string_agg(DISTINCT a.name, ', ')
+        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ')
         FROM aka_name a
         JOIN cast_info c ON a.person_id = c.person_id
         WHERE c.movie_id = mh.movie_id

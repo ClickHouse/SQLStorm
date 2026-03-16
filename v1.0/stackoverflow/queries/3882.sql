@@ -29,7 +29,7 @@ WITH UserActivity AS (
 ), UserBadges AS (
     SELECT 
         B.UserId,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Badges B
     GROUP BY B.UserId

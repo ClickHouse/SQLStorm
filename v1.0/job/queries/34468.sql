@@ -61,7 +61,7 @@ SELECT
     am.production_year,
     COUNT(*) AS total_movies,
     AVG(total_cast_count) AS average_cast_size,
-    STRING_AGG(DISTINCT am.predominant_keyword, ', ') AS predominant_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(am.predominant_keyword))), ', ') AS predominant_keywords
 FROM 
     aggregated_movies am
 GROUP BY 

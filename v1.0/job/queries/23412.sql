@@ -26,7 +26,7 @@ MovieDetail AS (
     SELECT 
         mt.movie_id,
         mt.note,
-        STRING_AGG(DISTINCT c.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS company_names,
         COUNT(DISTINCT ki.keyword) AS keyword_count,
         COUNT(DISTINCT ca.person_id) AS cast_count
     FROM 

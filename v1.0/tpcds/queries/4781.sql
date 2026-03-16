@@ -43,7 +43,7 @@ SELECT
 FROM 
     AddressCounts AC
 LEFT JOIN 
-    HighValueSales HV ON HV.i_item_id = (SELECT i_item_id FROM item ORDER BY RANDOM() LIMIT 1)
+    HighValueSales HV ON HV.i_item_id = (SELECT i_item_id FROM item ORDER BY rand() LIMIT 1)
 JOIN 
     customer_address A ON AC.ca_state = A.ca_state
 WHERE 

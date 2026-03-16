@@ -21,7 +21,7 @@ RecentPosts AS (
         DENSE_RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.ViewCount, p.Score, c.Text
 ),
 UserBadges AS (
@@ -38,14 +38,14 @@ PostHistoryDetails AS (
         ph.PostHistoryTypeId,
         ph.UserId,
         ph.CreationDate,
-        EXTRACT(EPOCH FROM ph.CreationDate) AS EditTimestamp,
+        toUnixTimestamp(ph.CreationDate) AS EditTimestamp,
         CASE 
             WHEN ph.PostHistoryTypeId IN (10, 11) THEN 'Closed/Open'
             WHEN ph.PostHistoryTypeId = 12 THEN 'Deleted'
             ELSE 'Other'
         END AS ActionType
     FROM PostHistory ph
-    WHERE ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 

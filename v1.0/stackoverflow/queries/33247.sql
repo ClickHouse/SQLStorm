@@ -18,7 +18,7 @@ BadgeSummary AS (
     SELECT 
         B.UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(DISTINCT B.Name, ', ') AS BadgeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(B.Name))), ', ') AS BadgeNames
     FROM 
         Badges B
     GROUP BY 
@@ -37,7 +37,7 @@ PostHistorySummary AS (
     SELECT 
         PH.UserId,
         COUNT(PH.Id) AS PostHistoryCount,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS PostHistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS PostHistoryTypes
     FROM 
         PostHistory PH
     INNER JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id

@@ -27,7 +27,7 @@ SELECT
     mt.title AS movie_title,
     mt.production_year,
     COUNT(cc.id) AS total_cast,
-    STRING_AGG(DISTINCT g.kind, ', ') AS genres,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(g.kind))), ', ') AS genres,
     ROW_NUMBER() OVER (PARTITION BY ak.id ORDER BY mt.production_year DESC) AS rank_within_actor,
     CASE 
         WHEN mt.production_year IS NULL THEN 'Year Not Available' 

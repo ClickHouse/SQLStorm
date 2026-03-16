@@ -43,7 +43,7 @@ FilteredResults AS (
 )
 SELECT 
     actor_name,
-    STRING_AGG(movie_title || ' (' || movie_year || ') - ' || character_role, ', ' ORDER BY movie_year DESC) AS movie_roles
+    arrayStringConcat(groupArray(assumeNotNull(movie_title || ' (' || movie_year || ') - ' || character_role)), ', ' ORDER BY movie_year DESC) AS movie_roles
 FROM FilteredResults
 GROUP BY actor_name
 ORDER BY actor_name;

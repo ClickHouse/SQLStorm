@@ -7,7 +7,7 @@ WITH DemographicCounts AS (
         MAX(cd_dep_count) AS max_dependents,
         MIN(cd_dep_count) AS min_dependents,
         AVG(cd_dep_count) AS avg_dependents,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS unique_education_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS unique_education_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -18,7 +18,7 @@ AddressCounts AS (
     SELECT 
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities
     FROM 
         customer_address
     GROUP BY 
@@ -30,7 +30,7 @@ SalesStatistics AS (
         SUM(ws_quantity) AS total_quantity,
         SUM(ws_net_paid) AS total_sales,
         AVG(ws_net_paid) AS avg_order_value,
-        STRING_AGG(DISTINCT wp_type, ', ') AS unique_web_page_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp_type))), ', ') AS unique_web_page_types
     FROM 
         web_sales
     JOIN 

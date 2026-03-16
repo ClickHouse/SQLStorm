@@ -26,7 +26,7 @@ RankedSales AS (
         ss.total_sales,
         ss.item_count,
         ss.o_orderdate,
-        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM ss.o_orderdate) ORDER BY ss.total_sales DESC) AS sales_rank
+        RANK() OVER (PARTITION BY toYear(ss.o_orderdate) ORDER BY ss.total_sales DESC) AS sales_rank
     FROM SalesSummary ss
 )
 SELECT 

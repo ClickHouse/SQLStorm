@@ -25,7 +25,7 @@ WITH RankedTitles AS (
 TopRatedMovies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT an.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS companies,
         COUNT(mk.keyword_id) AS keyword_count
     FROM 
         movie_companies mc

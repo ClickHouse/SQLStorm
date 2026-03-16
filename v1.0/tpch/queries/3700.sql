@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2 WHERE o2.o_orderdate >= DATE '1996-01-01') 
+        o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2 WHERE o2.o_orderdate >= toDate('1996-01-01')) 
         AND c.c_acctbal IS NOT NULL
 ),
 SupplierParts AS (

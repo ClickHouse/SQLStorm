@@ -1,6 +1,6 @@
 WITH TagFrequency AS (
     SELECT 
-        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -21,7 +21,7 @@ MostActiveUsers AS (
     JOIN 
         Posts P ON U.Id = P.OwnerUserId
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         U.Id, U.DisplayName
     ORDER BY 

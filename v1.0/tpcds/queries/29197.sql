@@ -7,7 +7,7 @@ SELECT
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
     MAX(cd_dep_count) AS max_dependents,
     MIN(cd_dep_count) AS min_dependents,
-    STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), ', ') AS customer_names
 FROM 
     customer_address ca
 JOIN 

@@ -6,7 +6,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(COALESCE(NULLIF(l.l_discount, 0), 1)) AS avg_discount_rate,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     CONCAT('Total Orders: ', COUNT(DISTINCT o.o_orderkey), ' | Total Quantity: ', SUM(l.l_quantity)) AS summary
 FROM 
     part p

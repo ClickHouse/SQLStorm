@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
@@ -32,11 +32,11 @@ PostHistoryDetails AS (
         ph.PostHistoryTypeId,
         ph.CreationDate AS HistoryDate,
         ph.UserDisplayName,
-        STRING_AGG(ph.Comment, ', ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS Comments
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId, ph.UserDisplayName, ph.CreationDate
 ),
@@ -71,7 +71,7 @@ SELECT
     COALESCE(fp.SilverBadges, 0) AS SilverBadges,
     COALESCE(fp.BronzeBadges, 0) AS BronzeBadges,
     MAX(fp.HistoryDate) AS LatestHistoryDate,
-    STRING_AGG(DISTINCT fp.Comments, ' | ') AS AllComments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fp.Comments))), ' | ') AS AllComments
 FROM 
     FilteredPosts fp
 GROUP BY 

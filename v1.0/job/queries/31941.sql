@@ -31,7 +31,7 @@ SELECT
     mh.production_year,
     mh.level,
     COALESCE(cast_info.nr_order, 0) AS cast_order,
-    STRING_AGG(DISTINCT CONCAT(a.name, ' as ', r.role), ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' as ', r.role)))), ', ') AS cast_names,
     (SELECT COUNT(*) FROM movie_keyword mk WHERE mk.movie_id = mh.movie_id) AS keyword_count,
     (SELECT COUNT(*) FROM movie_info mi WHERE mi.movie_id = mh.movie_id) AS info_count
 FROM 

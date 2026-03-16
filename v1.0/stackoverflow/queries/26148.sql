@@ -22,7 +22,7 @@ RecentPosts AS (
            OwnerReputation
     FROM RankedPosts
     WHERE TagRank <= 5  
-    AND CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    AND CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 TagStatistics AS (
     SELECT TagName,
@@ -30,16 +30,16 @@ TagStatistics AS (
            AVG(OwnerReputation) AS AvgReputation,
            MAX(CreationDate) AS LatestPostDate
     FROM RecentPosts
-    CROSS JOIN LATERAL unnest(string_to_array(Tags, '><')) AS TagName
+    CROSS JOIN arrayJoin(splitByString('><', Tags)) AS TagName
     GROUP BY TagName
 )
 SELECT ts.TagName,
        ts.PostCount,
        ts.AvgReputation,
        ts.LatestPostDate,
-       STRING_AGG(rp.Title, '; ') AS TopTitles,
-       STRING_AGG(rp.Body, '; ') AS TopBodies
+       arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS TopTitles,
+       arrayStringConcat(groupArray(assumeNotNull(rp.Body)), '; ') AS TopBodies
 FROM TagStatistics ts
-JOIN RecentPosts rp ON ts.TagName = ANY(string_to_array(rp.Tags, '><'))
+JOIN RecentPosts rp ON ts.TagName = ANY(splitByString('><', rp.Tags))
 GROUP BY ts.TagName, ts.PostCount, ts.AvgReputation, ts.LatestPostDate
 ORDER BY ts.PostCount DESC, ts.AvgReputation DESC;

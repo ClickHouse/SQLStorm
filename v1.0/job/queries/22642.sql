@@ -16,7 +16,7 @@ AggregatedData AS (
         mh.production_year,
         COUNT(DISTINCT ci.person_id) AS cast_count,
         COUNT(DISTINCT mk.keyword_id) AS keyword_count,
-        STRING_AGG(DISTINCT cn.name, ', ') FILTER (WHERE cn.name IS NOT NULL) AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') FILTER (WHERE cn.name IS NOT NULL) AS cast_names,
         RANK() OVER (PARTITION BY mh.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS rank_by_cast_count
     FROM 
         MovieHierarchy mh
@@ -58,7 +58,7 @@ SELECT
         WHERE t.production_year = fd.production_year AND t.id <> fd.movie_id
     ) AS movie_count_same_year,
     (SELECT 
-        STRING_AGG(DISTINCT ct.kind, ', ')
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ')
         FROM movie_companies mc
         JOIN company_type ct ON mc.company_type_id = ct.id
         WHERE mc.movie_id = fd.movie_id

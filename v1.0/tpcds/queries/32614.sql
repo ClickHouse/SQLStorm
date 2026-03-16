@@ -28,7 +28,7 @@ SELECT ca.ca_city,
        COUNT(DISTINCT c.c_customer_sk) AS num_customers,
        SUM(ws.ws_sales_price) AS total_sales,
        AVG(ws.ws_net_profit) AS avg_net_profit,
-       STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customer_names
 FROM customer c
 LEFT JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk
 LEFT JOIN web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk
@@ -38,4 +38,4 @@ WHERE ca.ca_state = 'CA'
 GROUP BY ca.ca_city
 HAVING SUM(ws.ws_sales_price) > 10000
 ORDER BY num_customers DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

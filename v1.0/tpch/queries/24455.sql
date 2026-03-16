@@ -10,7 +10,7 @@ WITH ranked_orders AS (
         orders o
     WHERE 
         o.o_totalprice IS NOT NULL 
-        AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 ),
 order_summary AS (
     SELECT 

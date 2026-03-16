@@ -47,4 +47,4 @@ WHERE
     c.order_count > (SELECT AVG(order_count) FROM CustomerOrders)
 ORDER BY 
     total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

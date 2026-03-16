@@ -82,4 +82,4 @@ HAVING
 ORDER BY 
     ca.ca_state, 
     ca.ca_city
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

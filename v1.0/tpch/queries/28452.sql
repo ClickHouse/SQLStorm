@@ -24,7 +24,7 @@ TopSuppliers AS (
 SELECT 
     ts.region_name,
     ts.nation_name,
-    STRING_AGG(ts.supplier_name || ' (' || CAST(ts.s_acctbal AS VARCHAR) || ')', ', ') AS supplier_list
+    arrayStringConcat(groupArray(assumeNotNull(ts.supplier_name || ' (' || CAST(ts.s_acctbal AS VARCHAR) || ')')), ', ') AS supplier_list
 FROM TopSuppliers ts
 GROUP BY ts.region_name, ts.nation_name
 ORDER BY ts.region_name, ts.nation_name;

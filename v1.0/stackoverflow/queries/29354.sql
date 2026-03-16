@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -26,7 +26,7 @@ SELECT
     COUNT(DISTINCT p.Id) AS TotalQuestions,
     AVG(COALESCE(c.Score, 0)) AS AverageCommentScore,
     MAX(p.ViewCount) AS MaxViewCount,
-    STRING_AGG(DISTINCT u.DisplayName, ', ') AS ActiveUsers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS ActiveUsers,
     COUNT(DISTINCT b.Id) AS BadgeCount
 FROM 
     RankedTags rt

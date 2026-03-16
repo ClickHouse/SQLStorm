@@ -31,8 +31,8 @@ RecentEdits AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT ph.UserDisplayName, ', ') AS Editors,
-        STRING_AGG(DISTINCT ph.Comment, '; ') AS EditComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.UserDisplayName))), ', ') AS Editors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS EditComments
     FROM 
         PostHistory ph
     WHERE 
@@ -60,4 +60,4 @@ LEFT JOIN
     RecentEdits re ON aq.PostId = re.PostId
 ORDER BY 
     aq.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

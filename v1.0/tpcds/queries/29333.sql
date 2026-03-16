@@ -18,7 +18,7 @@ SELECT
     gender,
     COUNT(*) AS total_customers,
     AVG(CASE WHEN rank <= 5 THEN 1 ELSE 0 END) * 100 AS top_customers_percentage,
-    STRING_AGG(full_name || ' - ' || full_address, '; ') AS top_customers_details
+    arrayStringConcat(groupArray(assumeNotNull(full_name || ' - ' || full_address)), '; ') AS top_customers_details
 FROM (
     SELECT 
         cd_gender AS gender,

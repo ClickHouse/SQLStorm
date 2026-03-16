@@ -6,9 +6,9 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_qty,
     AVG(p.p_retailprice) AS avg_retail_price,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     MAX(o.o_orderdate) AS last_order_date,
-    STRING_AGG(DISTINCT CASE WHEN l.l_returnflag = 'R' THEN 'Returned' ELSE 'Not Returned' END, ', ') AS return_status,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN l.l_returnflag = 'R' THEN 'Returned' ELSE 'Not Returned' END))), ', ') AS return_status,
     COUNT(DISTINCT o.o_orderkey) AS total_orders
 FROM 
     part p

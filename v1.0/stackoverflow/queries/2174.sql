@@ -28,7 +28,7 @@ PostStats AS (
         SELECT 
             PostId,
             COUNT(DISTINCT UserId) AS UserCount,
-            STRING_AGG(DISTINCT UserDisplayName, ', ') AS UserNames
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(UserDisplayName))), ', ') AS UserNames
         FROM 
             Comments
         GROUP BY 

@@ -14,8 +14,8 @@ JOIN
 JOIN 
     nation ON supplier.s_nationkey = nation.n_nationkey 
 WHERE 
-    o_orderdate >= DATE '1997-01-01' 
-    AND o_orderdate < DATE '1997-02-01' 
+    o_orderdate >= toDate('1997-01-01') 
+    AND o_orderdate < toDate('1997-02-01') 
 GROUP BY 
     n_name 
 ORDER BY 

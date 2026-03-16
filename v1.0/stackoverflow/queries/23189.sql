@@ -72,4 +72,4 @@ WHERE
     AND TotalScore > 100
 ORDER BY 
     UserRank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

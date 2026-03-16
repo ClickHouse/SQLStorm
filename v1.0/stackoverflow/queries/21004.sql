@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 ClosedAndEditedPosts AS (
@@ -32,7 +32,7 @@ UserBadges AS (
     SELECT 
         UserId,
         COUNT(*) AS TotalBadges,
-        STRING_AGG(Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames
     FROM 
         Badges
     GROUP BY 
@@ -45,7 +45,7 @@ PostsWithTitleReplies AS (
         p.Title,
         COALESCE((
             SELECT 
-                STRING_AGG(c.Text, ' | ') 
+                arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') 
             FROM 
                 Comments c 
             WHERE 
@@ -72,7 +72,7 @@ FROM
 LEFT JOIN 
     ClosedAndEditedPosts ca ON rp.PostId = ca.PostId
 LEFT JOIN 
-    UserBadges ub ON rp.OwnerDisplayName = ub.UserId::varchar
+    UserBadges ub ON rp.OwnerDisplayName = CAST(ub.UserId AS varchar)
 LEFT JOIN 
     PostsWithTitleReplies pwtr ON rp.PostId = pwtr.Id
 WHERE 

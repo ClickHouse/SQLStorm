@@ -40,9 +40,9 @@ FullDetails AS (
         tm.cast_count,
         tm.keyword_count,
         tm.company_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         TopMovies tm
     LEFT JOIN 

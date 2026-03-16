@@ -11,7 +11,7 @@ OrderSummary AS (
     SELECT o.o_orderkey, o.o_custkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1998-01-01'
+    WHERE l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1998-01-01')
     GROUP BY o.o_orderkey, o.o_custkey
 ),
 CustomerOrderCount AS (
@@ -34,8 +34,8 @@ PartSupplierCost AS (
 SELECT p.p_partkey, p.p_name, p.p_retailprice, 
        COALESCE(sc.total_supply_cost, 0) AS supply_cost,
        COALESCE(ts.order_count, 0) AS customer_orders,
-       DATE_PART('year', o.o_orderdate) AS order_year,
-       ROW_NUMBER() OVER (PARTITION BY DATE_PART('year', o.o_orderdate) ORDER BY COALESCE(ts.order_count, 0) DESC) AS order_rank
+       datePart('year', o.o_orderdate) AS order_year,
+       ROW_NUMBER() OVER (PARTITION BY datePart('year', o.o_orderdate) ORDER BY COALESCE(ts.order_count, 0) DESC) AS order_rank
 FROM part p
 LEFT JOIN PartSupplierCost sc ON p.p_partkey = sc.ps_partkey
 LEFT JOIN TopCustomers ts ON ts.c_custkey = (

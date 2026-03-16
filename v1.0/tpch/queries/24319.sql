@@ -76,4 +76,4 @@ HAVING
     SUM(ed.l_extendedprice) > 1000
 ORDER BY 
     total_sales DESC, cr.region_name
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

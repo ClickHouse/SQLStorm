@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserDetails AS (
     SELECT 
@@ -31,7 +31,7 @@ PostsWithBadges AS (
         p.Title,
         p.Score,
         p.ViewCount,
-        ARRAY_AGG(DISTINCT b.Name) AS BadgeNames
+        arrayDistinct(groupArray(assumeNotNull(b.Name))) AS BadgeNames
     FROM 
         Posts p
     LEFT JOIN 

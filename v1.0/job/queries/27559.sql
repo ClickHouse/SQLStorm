@@ -35,10 +35,10 @@ SELECT
     movie_id,
     movie_title,
     COUNT(DISTINCT person_name) AS number_of_cast_members,
-    STRING_AGG(DISTINCT person_name, ', ') AS cast_names,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(person_name))), ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
     MIN(movie_info) AS synopsis,
-    STRING_AGG(DISTINCT production_company, ', ') AS production_companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(production_company))), ', ') AS production_companies
 FROM 
     MovieData
 GROUP BY 

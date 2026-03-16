@@ -34,7 +34,7 @@ SELECT DISTINCT r.o_orderkey, cn.n_name, spd.s_name,
                 SUM(COALESCE(l.l_quantity, 0)) AS total_quantity,
                 AVG(COALESCE(l.l_discount, 0)) AS avg_discount,
                 MAX(ec.comment_length) AS max_comment_length,
-                STRING_AGG(DISTINCT ec.comment_size, ', ') AS comment_sizes
+                arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ec.comment_size))), ', ') AS comment_sizes
 FROM RankedOrders r
 LEFT JOIN FilteredLineItems l ON r.o_orderkey = l.l_orderkey
 JOIN CustomerNation cn ON r.o_custkey = cn.c_custkey

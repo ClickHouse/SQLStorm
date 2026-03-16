@@ -33,7 +33,7 @@ PostHistoryDetails AS (
         MAX(PH.CreationDate) AS LastModified
     FROM PostHistory PH
     JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
-    WHERE PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '3 months'
+    WHERE PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
     GROUP BY PH.PostId, PHT.Name
 )
 SELECT 

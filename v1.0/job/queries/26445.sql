@@ -5,7 +5,7 @@ WITH RankedTitles AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT m.company_id) AS production_company_count,
-        STRING_AGG(DISTINCT c.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS cast_names
     FROM
         aka_title t
     JOIN
@@ -26,7 +26,7 @@ RankedTitlesWithKeywords AS (
         rt.production_year,
         rt.production_company_count,
         rt.cast_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM
         RankedTitles rt
     LEFT JOIN

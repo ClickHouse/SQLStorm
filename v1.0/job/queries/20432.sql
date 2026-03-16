@@ -15,7 +15,7 @@ ActorDetails AS (
         a.person_id,
         a.name,
         COUNT(DISTINCT c.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT m.title, ', ') AS movies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.title))), ', ') AS movies
     FROM 
         aka_name a
     LEFT JOIN 
@@ -36,7 +36,7 @@ SELECT
         WHEN ad.movie_count BETWEEN 3 AND 5 THEN 'Moderate Actor'
         ELSE 'Occasional Actor' 
     END AS actor_category,
-    STRING_AGG(k.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
 FROM 
     ActorDetails ad
 JOIN 

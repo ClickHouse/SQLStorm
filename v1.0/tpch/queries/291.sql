@@ -11,7 +11,7 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= (CAST('1998-10-01' AS DATE) - INTERVAL '1 year')
+        o.o_orderdate >= (CAST('1998-10-01' AS DATE) - INTERVAL 1 YEAR)
 ),
 SupplierCosts AS (
     SELECT 

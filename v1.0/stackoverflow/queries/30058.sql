@@ -26,7 +26,7 @@ RecentPosts AS (
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rp.PostId AND v.VoteTypeId = 2) AS UpVotes,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rp.PostId AND v.VoteTypeId = 3) AS DownVotes,
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = rp.PostId) AS TotalComments,
-        (SELECT STRING_AGG(b.Name, ', ') FROM Badges b WHERE b.UserId = rp.OwnerUserId) AS OwnerBadges
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') FROM Badges b WHERE b.UserId = rp.OwnerUserId) AS OwnerBadges
     FROM 
         RankedPosts rp
     JOIN 

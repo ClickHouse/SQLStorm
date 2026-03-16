@@ -3,7 +3,7 @@ WITH movie_cast AS (
     SELECT 
         m.id AS movie_id,
         m.title AS movie_title,
-        ARRAY_AGG(DISTINCT a.name) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS cast_names,
         m.production_year,
         k.keyword AS genre
     FROM 
@@ -22,8 +22,8 @@ WITH movie_cast AS (
 company_movie AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
-        ARRAY_AGG(DISTINCT ct.kind) AS company_types
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(ct.kind))) AS company_types
     FROM 
         movie_companies mc
     JOIN 

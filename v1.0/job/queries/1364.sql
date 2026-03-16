@@ -41,7 +41,7 @@ MovieKeywords AS (
 SELECT 
     TR.title,
     TR.production_year,
-    COALESCE(string_agg(mk.keyword, ', ' ORDER BY mk.keyword_rank), 'No keywords') AS keywords_list
+    COALESCE(arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ' ORDER BY mk.keyword_rank), 'No keywords') AS keywords_list
 FROM 
     TopRankedMovies TR
 LEFT JOIN 

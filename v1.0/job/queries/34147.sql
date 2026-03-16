@@ -28,7 +28,7 @@ SELECT
     ah.actor_name,
     COUNT(DISTINCT c2.movie_id) AS movies_worked_with,
     SUM(CASE WHEN a.kind_id IS NULL THEN 1 ELSE 0 END) AS uncredited_roles,
-    STRING_AGG(DISTINCT ak.keyword, ', ') AS associated_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.keyword))), ', ') AS associated_keywords,
     MAX(a.production_year) AS latest_movie_year,
     RANK() OVER (ORDER BY COUNT(DISTINCT c2.movie_id) DESC) AS rank_by_collaborations
 FROM 

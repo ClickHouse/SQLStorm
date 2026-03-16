@@ -56,4 +56,4 @@ WHERE
     cs.total_orders > 5
 ORDER BY 
     cs.total_spent DESC, ps.total_sales_generated DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

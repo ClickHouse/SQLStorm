@@ -19,7 +19,7 @@ TopUserPosts AS (
         u.DisplayName,
         COUNT(rp.PostId) AS NumberOfTopQuestions,
         SUM(rp.Score) AS TotalScore,
-        STRING_AGG(DISTINCT rp.Tags, ', ') AS TagList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.Tags))), ', ') AS TagList
     FROM 
         Users u
     JOIN 
@@ -32,7 +32,7 @@ TopUserPosts AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges
     FROM 
         Badges b
     GROUP BY 

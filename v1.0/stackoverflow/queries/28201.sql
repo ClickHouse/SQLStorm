@@ -52,7 +52,7 @@ TaggedPosts AS (
         fp.Upvotes,
         fp.Downvotes,
         fp.NetVotes,
-        unnest(string_to_array(fp.Tags, ',')) AS TagArray  
+        arrayJoin(splitByString(',', fp.Tags)) AS TagArray  
     FROM 
         FilteredPosts fp
 )

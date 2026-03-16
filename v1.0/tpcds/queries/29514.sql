@@ -11,7 +11,7 @@ WITH CustomerStats AS (
         COUNT(DISTINCT ws.ws_order_number) AS total_orders,
         SUM(ws.ws_sales_price) AS total_spent,
         AVG(ws.ws_sales_price) AS avg_spent_per_order,
-        STRING_AGG(DISTINCT CONCAT(p.p_promo_name, ': ', COALESCE(p.p_discount_active, 'N/A')), ', ') AS promotions_used
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_promo_name, ': ', COALESCE(p.p_discount_active, 'N/A'))))), ', ') AS promotions_used
     FROM 
         customer c
     JOIN 

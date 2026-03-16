@@ -21,7 +21,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate > DATE('2024-10-01') - INTERVAL '30 days'
+        P.CreationDate > DATE('2024-10-01') - INTERVAL 30 DAY
     GROUP BY 
         P.Id, P.Title, P.ViewCount, P.CreationDate, U.DisplayName, 
         P.PostTypeId, AR.AcceptedAnswerId, P.OwnerUserId, P.Tags
@@ -35,7 +35,7 @@ ActiveUsers AS (
     FROM 
         Users U
     WHERE 
-        U.LastAccessDate > DATE('2024-10-01') - INTERVAL '60 days'
+        U.LastAccessDate > DATE('2024-10-01') - INTERVAL 60 DAY
 ),
 PopularTags AS (
     SELECT 

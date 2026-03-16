@@ -36,7 +36,7 @@ SELECT
     tt.production_year,
     ak.name AS actor_name,
     COUNT(ci.person_id) AS actor_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     top_titles tt
 LEFT JOIN 

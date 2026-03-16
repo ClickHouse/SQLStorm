@@ -17,12 +17,12 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostHistoryAggregates AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         COUNT(ph.Id) AS HistoryCount,
         MAX(ph.CreationDate) AS LastHistoryDate
     FROM 
@@ -63,7 +63,7 @@ FinalResults AS (
         rp.UpVoteCount - rp.DownVoteCount AS NetVotes,
         CASE 
             WHEN rp.LastRelevantDate IS NULL THEN 'No Activity'
-            WHEN rp.LastRelevantDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month' THEN 'Recently Active'
+            WHEN rp.LastRelevantDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN 'Recently Active'
             ELSE 'Inactive'
         END AS ActivityStatus
     FROM 

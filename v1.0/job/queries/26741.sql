@@ -5,10 +5,10 @@ WITH movie_details AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT tc.kind, ', ') AS company_types,
-        STRING_AGG(DISTINCT co.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tc.kind))), ', ') AS company_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS company_names
     FROM
         aka_title AS t
     LEFT JOIN
@@ -39,7 +39,7 @@ info_collected AS (
         md.cast_names,
         md.keywords,
         COUNT(mi.id) AS info_count,
-        STRING_AGG(DISTINCT i.info, '; ') AS additional_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.info))), '; ') AS additional_info
     FROM
         movie_details AS md
     LEFT JOIN

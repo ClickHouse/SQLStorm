@@ -50,7 +50,7 @@ FinalResult AS (
         RP.Upvotes,
         RP.Downvotes,
         COALESCE(PWC.CommentsCount, 0) AS CommentsCount,
-        (SELECT STRING_AGG(TagName, ', ') FROM PopularTags WHERE PostsCount > 5) AS PopularTags
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') FROM PopularTags WHERE PostsCount > 5) AS PopularTags
     FROM 
         RankedPosts RP
     LEFT JOIN 

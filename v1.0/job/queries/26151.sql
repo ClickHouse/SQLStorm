@@ -4,7 +4,7 @@ WITH RankedTitles AS (
         t.title,
         t.production_year,
         kt.kind AS movie_kind,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(DISTINCT mc.company_id) DESC) AS rank_by_companies
     FROM title t
     JOIN aka_title at ON t.id = at.movie_id
@@ -25,7 +25,7 @@ SELECT
     ft.movie_kind,
     ft.companies,
     COUNT(DISTINCT ci.person_id) AS total_cast,
-    STRING_AGG(DISTINCT ak.name, ', ') AS aka_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names
 FROM FilteredTitles ft
 LEFT JOIN cast_info ci ON ft.title_id = ci.movie_id
 LEFT JOIN aka_name ak ON ci.person_id = ak.person_id

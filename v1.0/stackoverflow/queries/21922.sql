@@ -67,4 +67,4 @@ WHERE
     AND (rp.ViewCount > 50 OR bc.BadgeCount > 2)
 ORDER BY 
     rp.ViewCount DESC, rp.Score DESC
-OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

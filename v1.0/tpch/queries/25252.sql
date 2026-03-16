@@ -4,7 +4,7 @@ SELECT
     SUBSTRING(p.p_comment, 1, 10) AS short_comment,
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     r.r_name AS region_name,
     n.n_name AS nation_name
 FROM 

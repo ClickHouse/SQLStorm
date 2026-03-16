@@ -3,7 +3,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     AVG(l.l_quantity) AS avg_quantity,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     DATE_TRUNC('month', o.o_orderdate) AS order_month
 FROM 
     supplier s

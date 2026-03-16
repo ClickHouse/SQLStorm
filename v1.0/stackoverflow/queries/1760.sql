@@ -45,7 +45,7 @@ SELECT
     tu.Upvotes,
     tu.Downvotes,
     tu.TotalViews,
-    COALESCE((SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
                FROM Tags t 
                INNER JOIN Posts p ON t.WikiPostId = p.Id 
                WHERE p.OwnerUserId = tu.UserId), 'No Tags') AS TagsList
@@ -54,7 +54,7 @@ FROM
 LEFT JOIN 
     Badges b ON tu.UserId = b.UserId
 WHERE 
-    b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 GROUP BY 
     tu.UserId, tu.DisplayName, tu.PostCount, tu.TotalBounty, tu.Upvotes, tu.Downvotes, tu.TotalViews
 ORDER BY 

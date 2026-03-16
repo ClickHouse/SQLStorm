@@ -5,7 +5,7 @@ WITH AddressStats AS (
         COUNT(*) AS address_count,
         MIN(ca_zip) AS min_zip,
         MAX(ca_zip) AS max_zip,
-        STRING_AGG(DISTINCT ca_city, ', ') AS unique_cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS unique_cities
     FROM 
         customer_address
     GROUP BY 
@@ -16,7 +16,7 @@ CustomerStats AS (
         cd_gender,
         COUNT(*) AS customer_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -27,7 +27,7 @@ DateStats AS (
         d_year,
         COUNT(*) AS order_count,
         AVG(d_dow) AS avg_day_of_week,
-        STRING_AGG(DISTINCT d_day_name, ', ') AS unique_days
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d_day_name))), ', ') AS unique_days
     FROM 
         date_dim
     WHERE 

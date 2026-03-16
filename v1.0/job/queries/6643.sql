@@ -23,8 +23,8 @@ SELECT
     movie_title,
     production_year,
     COUNT(DISTINCT actor_name) AS total_actors,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT person_info, ', ') AS additional_information
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(person_info))), ', ') AS additional_information
 FROM MovieDetails
 GROUP BY movie_title, production_year
 HAVING COUNT(DISTINCT actor_name) > 5

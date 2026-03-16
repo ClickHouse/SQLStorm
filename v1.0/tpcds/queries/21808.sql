@@ -56,4 +56,4 @@ FROM unique_customers ci
 JOIN income_brackets ib ON ci.total_per_gender BETWEEN ib.ib_lower_bound AND ib.ib_upper_bound
 JOIN item_with_returns iw ON ci.c_customer_sk = iw.ws_item_sk
 ORDER BY ci.marital_info, iw.net_revenue DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

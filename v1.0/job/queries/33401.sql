@@ -23,7 +23,7 @@ SELECT
     a.name AS actor_name,
     m.title AS movie_title,
     m.production_year,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     COUNT(DISTINCT CAST(c.person_role_id AS INTEGER)) AS role_count
 FROM movie_hierarchy m
 JOIN cast_info c ON m.movie_id = c.movie_id

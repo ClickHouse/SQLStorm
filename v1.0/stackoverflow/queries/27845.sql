@@ -4,7 +4,7 @@ WITH TagDetails AS (
         p.Id AS PostId,
         p.Title,
         p.Tags,
-        string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><') AS SplitTags
+        splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)) AS SplitTags
     FROM
         Posts p
     WHERE
@@ -47,7 +47,7 @@ SELECT
     ps.TotalPosts,
     ps.AcceptedAnswers,
     ps.AvgScore,
-    ARRAY_AGG(DISTINCT td.SplitTags) AS UniqueTags,
+    arrayDistinct(groupArray(assumeNotNull(td.SplitTags))) AS UniqueTags,
     COUNT(td.PostId) AS QuestionsCount
 FROM
     UserReputation ud

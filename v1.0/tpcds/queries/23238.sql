@@ -50,4 +50,4 @@ JOIN customer c ON cr.customer_sk = c.c_customer_sk
 WHERE cr.total_distinct_items > 5
     AND (c.c_birth_year BETWEEN 1980 AND 1990 OR c.c_email_address LIKE '%@example.com')
 ORDER BY cr.total_overall_returns DESC, c.c_last_name ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

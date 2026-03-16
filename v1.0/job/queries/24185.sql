@@ -76,7 +76,7 @@ SELECT
     C.company_id,
     C.name AS company_name,
     C.company_type,
-    COALESCE(MPY.production_year::text, 'No Entries') AS last_production_year
+    COALESCE(CAST(MPY.production_year AS text), 'No Entries') AS last_production_year
 FROM 
     RankedMovies R
 LEFT JOIN (

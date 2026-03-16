@@ -26,7 +26,7 @@ AggregateData AS (
         cd_gender,
         demographic_info,
         COUNT(*) AS customer_count,
-        STRING_AGG(short_email, ', ') AS email_list
+        arrayStringConcat(groupArray(assumeNotNull(short_email)), ', ') AS email_list
     FROM 
         ProcessedCustomers
     GROUP BY 

@@ -64,7 +64,7 @@ SELECT
     END AS ReputationCategory,
     RANK() OVER (ORDER BY U.Reputation DESC) AS ReputationRank,
     (SELECT COUNT(*) FROM Votes V WHERE V.UserId = U.Id) AS TotalVotes,
-    (SELECT STRING_AGG(DISTINCT PT.Name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PT.Name))), ', ') 
      FROM Posts P
      INNER JOIN PostTypes PT ON P.PostTypeId = PT.Id
      WHERE P.OwnerUserId = U.Id) AS PostTypes

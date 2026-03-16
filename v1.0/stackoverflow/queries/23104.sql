@@ -25,7 +25,7 @@ CTE_PostStats AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 YEAR'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.CreationDate
 ),
 CTE_TagUsage AS (
@@ -49,7 +49,7 @@ CTE_ActiveUsers AS (
         COALESCE(ua.AvgBountyAmount, 0) AS AvgBounty,
         CASE 
             WHEN ua.FirstVoteDate IS NOT NULL AND ua.LastVoteDate IS NOT NULL THEN 
-                DATE_PART('day', ua.LastVoteDate - ua.FirstVoteDate) 
+                datePart('day', ua.LastVoteDate - ua.FirstVoteDate) 
             ELSE 
                 NULL 
         END AS VoteSpanDays

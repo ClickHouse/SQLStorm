@@ -43,7 +43,7 @@ SELECT
         WHEN fm.actor_count IS NULL THEN 'No Actor'
         ELSE CAST(fm.actor_count AS VARCHAR)
     END AS actor_count,
-    (SELECT STRING_AGG(k.keyword, ', ')
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ')
      FROM movie_keyword mk
      JOIN keyword k ON mk.keyword_id = k.id
      WHERE mk.movie_id = fm.movie_id) AS keywords

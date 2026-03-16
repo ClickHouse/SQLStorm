@@ -73,7 +73,7 @@ FROM
 JOIN
     Demographics d ON a.ca_state = d.cd_gender
 JOIN
-    DateStats dt ON dt.d_year = EXTRACT(YEAR FROM CURRENT_DATE)
+    DateStats dt ON dt.d_year = toYear(CURRENT_DATE)
 JOIN
     WarehouseDetails w ON a.ca_state = w.w_state
 ORDER BY

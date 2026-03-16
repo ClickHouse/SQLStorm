@@ -5,7 +5,7 @@ SELECT
     COUNT(P.Id) AS PostCount,
     SUM(P.ViewCount) AS TotalViews,
     SUM(P.Score) AS TotalScore,
-    AVG(EXTRACT(EPOCH FROM P.CreationDate)) AS AveragePostCreationDate
+    AVG(toUnixTimestamp(P.CreationDate)) AS AveragePostCreationDate
 FROM 
     Users U
 LEFT JOIN 

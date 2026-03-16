@@ -15,7 +15,7 @@ WITH PostMetrics AS (
         COUNT(CASE WHEN V.VoteTypeId = 2 THEN 1 END) AS UpVotes,
         COUNT(CASE WHEN V.VoteTypeId = 3 THEN 1 END) AS DownVotes,
         COUNT(CASE WHEN CH.Id IS NOT NULL THEN 1 END) AS CloseVotes,
-        AVG(CASE WHEN CH.PostId IS NOT NULL THEN EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - CH.CreationDate)) END) AS AvgCloseDuration
+        AVG(CASE WHEN CH.PostId IS NOT NULL THEN toUnixTimestamp((now64(6) - CH.CreationDate)) END) AS AvgCloseDuration
     FROM 
         Posts P
     JOIN 

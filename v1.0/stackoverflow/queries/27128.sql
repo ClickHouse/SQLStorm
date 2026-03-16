@@ -19,7 +19,7 @@ WITH RankedPosts AS (
         Votes v ON v.PostId = p.Id
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.Score, p.ViewCount, p.Tags
 ),
@@ -50,8 +50,8 @@ SELECT
     tp.ViewCount,
     tp.CommentCount,
     tp.VoteCount,
-    ARRAY(SELECT DISTINCT UNNEST(STRING_TO_ARRAY(tp.Tags, '><')) AS Tag) AS ParsedTags,
-    (SELECT STRING_AGG(DISTINCT CONCAT(u.DisplayName, ' (Reputation: ', u.Reputation, ')'), ', ')
+    ARRAY(SELECT DISTINCT arrayJoin(splitByString('><', tp.Tags)) AS Tag) AS ParsedTags,
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' (Reputation: ', u.Reputation, ')')))), ', ')
      FROM Users u
      WHERE u.Id IN (SELECT DISTINCT c.UserId FROM Comments c WHERE c.PostId = tp.PostId)) AS Commenters
 FROM 

@@ -33,7 +33,7 @@ PostMetrics AS (
     LEFT JOIN 
         VoteStats V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -64,7 +64,7 @@ SELECT
         WHEN P.UpVotes - P.DownVotes < 0 THEN 'Negative'
         ELSE 'Neutral'
     END AS VoteSentiment,
-    (SELECT STRING_AGG(Name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') 
      FROM Badges B 
      WHERE B.UserId = U.Id
      GROUP BY B.UserId) AS Badges

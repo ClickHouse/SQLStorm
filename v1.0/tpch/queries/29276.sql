@@ -11,7 +11,7 @@ TopSuppliers AS (
     WHERE rs.rank <= 5
 ), 
 SupplierComments AS (
-    SELECT t.s_name, t.s_acctbal, STRING_AGG(CONCAT(s.s_comment, ' - from ', s.s_name), '; ') AS all_comments
+    SELECT t.s_name, t.s_acctbal, arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_comment, ' - from ', s.s_name))), '; ') AS all_comments
     FROM TopSuppliers t
     JOIN supplier s ON t.s_suppkey = s.s_suppkey
     GROUP BY t.s_name, t.s_acctbal

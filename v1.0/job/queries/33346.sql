@@ -28,7 +28,7 @@ SELECT
     mh.depth,
     COUNT(DISTINCT ci.person_id) AS total_cast,
     AVG(m.production_year) AS avg_production_year,
-    STRING_AGG(DISTINCT ak.name, ', ') AS known_as,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS known_as,
     SUM(CASE WHEN ci.role_id IS NOT NULL THEN 1 ELSE 0 END) AS role_count,
     ROW_NUMBER() OVER (PARTITION BY mh.depth ORDER BY AVG(m.production_year) DESC) AS row_rank
 FROM

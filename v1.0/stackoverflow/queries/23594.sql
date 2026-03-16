@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' 
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR 
         AND p.PostTypeId = 1 
 ),
 UserActivity AS (
@@ -31,21 +31,21 @@ UserActivity AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        u.CreationDate < DATE '2024-10-01' - INTERVAL '2 years' 
+        u.CreationDate < toDate('2024-10-01') - INTERVAL 2 YEAR 
     GROUP BY 
         u.Id, u.DisplayName
 ),
 PostHistoryAggregate AS (
     SELECT 
         ph.PostId,
-        ARRAY_AGG(DISTINCT pht.Name) AS HistoryTypes,
+        arrayDistinct(groupArray(assumeNotNull(pht.Name))) AS HistoryTypes,
         COUNT(*) AS TotalChanges
     FROM 
         PostHistory ph
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= DATE '2024-10-01' - INTERVAL '6 months' 
+        ph.CreationDate >= toDate('2024-10-01') - INTERVAL 6 MONTH 
     GROUP BY 
         ph.PostId
 )

@@ -19,8 +19,8 @@ WITH RankedSales AS (
         cs_item_sk,
         SUM(cs_ext_sales_price) AS last_year_revenue
     FROM catalog_sales
-    WHERE cs_sold_date_sk BETWEEN (SELECT d_date_sk FROM date_dim WHERE d_year = EXTRACT(YEAR FROM DATE '2002-10-01') - 1 AND d_month_seq = 12)
-      AND (SELECT d_date_sk FROM date_dim WHERE d_year = EXTRACT(YEAR FROM DATE '2002-10-01') AND d_month_seq = 1) 
+    WHERE cs_sold_date_sk BETWEEN (SELECT d_date_sk FROM date_dim WHERE d_year = toYear(toDate('2002-10-01')) - 1 AND d_month_seq = 12)
+      AND (SELECT d_date_sk FROM date_dim WHERE d_year = toYear(toDate('2002-10-01')) AND d_month_seq = 1) 
     GROUP BY cs_item_sk
 ), InventoryStatus AS (
     SELECT 

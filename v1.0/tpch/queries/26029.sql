@@ -6,7 +6,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS Total_Sales,
     AVG(l.l_quantity) AS Average_Quantity,
     MAX(l.l_shipdate) AS Last_Ship_Date,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS Regions_Supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS Regions_Supplied
 FROM 
     part p
 JOIN 

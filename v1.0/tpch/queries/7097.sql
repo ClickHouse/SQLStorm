@@ -10,8 +10,8 @@ WITH TotalRevenue AS (
     JOIN
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE
-        l.l_shipdate >= DATE '1994-01-01'
-        AND l.l_shipdate < DATE '1995-01-01'
+        l.l_shipdate >= toDate('1994-01-01')
+        AND l.l_shipdate < toDate('1995-01-01')
     GROUP BY
         c.c_custkey, c.c_name
 ),

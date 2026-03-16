@@ -27,7 +27,7 @@ CastStatistics AS (
     SELECT 
         ci.movie_id,
         COUNT(ci.person_id) AS cast_count,
-        STRING_AGG(ak.name, ', ') AS cast_names
+        arrayStringConcat(groupArray(assumeNotNull(ak.name)), ', ') AS cast_names
     FROM 
         cast_info ci
     JOIN 
@@ -39,7 +39,7 @@ CastStatistics AS (
 MovieGenres AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(DISTINCT kt.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS genres
     FROM 
         movie_keyword mt
     JOIN 

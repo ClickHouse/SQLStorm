@@ -12,7 +12,7 @@ FilteredParts AS (
         rp.p_partkey, 
         rp.p_name, 
         rp.p_retailprice, 
-        STRING_AGG(SUBSTRING(ps.ps_comment, 1, 50), '; ') AS supplier_comments
+        arrayStringConcat(groupArray(assumeNotNull(SUBSTRING(ps.ps_comment, 1, 50))), '; ') AS supplier_comments
     FROM 
         RankedParts rp
     JOIN 

@@ -4,7 +4,7 @@ WITH RECURSIVE MovieHierarchy AS (
         mt.id AS movie_id,
         mt.title,
         COALESCE(SUM(CASE WHEN mc.note IS NOT NULL THEN 1 ELSE 0 END), 0) AS company_count,
-        ARRAY_AGG(DISTINCT c.name) AS cast_names
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_names
     FROM
         aka_title mt
     LEFT JOIN movie_companies mc ON mt.id = mc.movie_id
@@ -51,4 +51,4 @@ WHERE
     lm.rn = 1
 ORDER BY 
     lm.production_year DESC, mh.company_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

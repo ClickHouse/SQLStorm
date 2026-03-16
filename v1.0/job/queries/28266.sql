@@ -4,8 +4,8 @@ WITH filtered_titles AS (
         t.title AS title,
         t.production_year,
         k.keyword AS keyword,
-        ARRAY_AGG(DISTINCT c.id) AS cast_ids,
-        ARRAY_AGG(DISTINCT a.id) AS aka_ids
+        arrayDistinct(groupArray(assumeNotNull(c.id))) AS cast_ids,
+        arrayDistinct(groupArray(assumeNotNull(a.id))) AS aka_ids
     FROM 
         aka_title t
     JOIN 
@@ -28,7 +28,7 @@ person_info_summary AS (
     SELECT 
         p.person_id,
         COUNT(pi.id) AS info_count,
-        STRING_AGG(DISTINCT pi.info, ', ') AS info_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pi.info))), ', ') AS info_details
     FROM 
         cast_info ci
     JOIN 

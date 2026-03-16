@@ -2,7 +2,7 @@ SELECT
     CONCAT(s.s_name, ' (', s.s_nationkey, ')') AS supplier_info,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS average_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     CASE 
         WHEN SUM(l.l_quantity) > 100 THEN 'High Demand'
         WHEN SUM(l.l_quantity) BETWEEN 50 AND 100 THEN 'Medium Demand'

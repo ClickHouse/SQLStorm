@@ -36,7 +36,7 @@ MoviesWithKeywords AS (
         rm.title,
         rm.production_year,
         COALESCE(ac.actor_count, 0) AS actor_count,
-        STRING_AGG(DISTINCT pk.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pk.keyword))), ', ') AS keywords,
         rm.year_rank
     FROM 
         RankedMovies rm

@@ -36,7 +36,7 @@ PostActivity AS (
     LEFT JOIN 
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
-        ph.CreationDate > (SELECT MAX(CreationDate) FROM Posts WHERE Id = pp.Id) - INTERVAL '30 days'
+        ph.CreationDate > (SELECT MAX(CreationDate) FROM Posts WHERE Id = pp.Id) - INTERVAL 30 DAY
 ),
 UserBadges AS (
     SELECT 

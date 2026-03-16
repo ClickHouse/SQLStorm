@@ -6,7 +6,7 @@ WITH UserPostStats AS (
         COUNT(p.Id) AS PostCount,
         COALESCE(SUM(vote.Score), 0) AS TotalVotes,
         COALESCE(SUM(c.CommentCount), 0) AS TotalComments,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgActivityDuration
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgActivityDuration
     FROM 
         Users u
     LEFT JOIN 
@@ -35,4 +35,4 @@ JOIN
     Users u ON ups.UserId = u.Id
 ORDER BY 
     ups.PostCount DESC, ups.TotalVotes DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

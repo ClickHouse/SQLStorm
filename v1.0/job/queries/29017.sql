@@ -5,7 +5,7 @@ WITH movie_keyword_counts AS (
 ),
 movies_with_info AS (
     SELECT m.id AS movie_id, m.title, m.production_year, 
-           ARRAY_AGG(DISTINCT mt.kind) AS movie_types, 
+           arrayDistinct(groupArray(assumeNotNull(mt.kind))) AS movie_types, 
            COALESCE(mkc.keyword_count, 0) AS keyword_count
     FROM title m
     LEFT JOIN kind_type mt ON m.kind_id = mt.id
@@ -15,7 +15,7 @@ movies_with_info AS (
 ),
 cast_details AS (
     SELECT ci.movie_id, 
-           STRING_AGG(DISTINCT CONCAT_WS(' as ', an.name, rt.role), ', ') AS cast_list
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' as ', an.name, rt.role)))), ', ') AS cast_list
     FROM cast_info ci
     JOIN aka_name an ON ci.person_id = an.person_id
     JOIN role_type rt ON ci.role_id = rt.id

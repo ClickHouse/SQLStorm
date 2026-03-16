@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     WHERE 
         o.o_orderstatus IN ('O', 'F') 
       AND 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
 ),
 SuppliersWithHighSupplyCost AS (
     SELECT 
@@ -33,7 +33,7 @@ LineItemsSummary AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate < cast('1998-10-01' as date) - INTERVAL '30 days'
+        l.l_shipdate < cast('1998-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         l.l_orderkey
 ),

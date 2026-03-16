@@ -23,7 +23,7 @@ WITH RankedSuppliers AS (
         r.r_regionkey,
         r.r_name,
         COUNT(n.n_nationkey) AS nation_count,
-        STRING_AGG(n.n_comment, '; ') AS combined_nation_comments
+        arrayStringConcat(groupArray(assumeNotNull(n.n_comment)), '; ') AS combined_nation_comments
     FROM region r
     LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
     GROUP BY r.r_regionkey, r.r_name

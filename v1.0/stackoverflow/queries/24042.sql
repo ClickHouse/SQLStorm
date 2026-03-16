@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= (CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year')
+        P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 PopularUsers AS (
     SELECT 
@@ -34,7 +34,7 @@ ClosedPosts AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(DISTINCT CRT.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CRT.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 

@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.title AS movie_title,
         t.production_year,
         COUNT(DISTINCT ki.keyword) AS keyword_count,
-        ARRAY_AGG(DISTINCT ak.name) AS aka_names,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aka_names,
         ROW_NUMBER() OVER (PARTITION BY t.id ORDER BY t.production_year DESC) AS rn
     FROM 
         aka_title AS t
@@ -44,9 +44,7 @@ TopMovies AS (
 SELECT 
     tm.movie_title,
     tm.production_year,
-    tm.keyword_count,
-    unnest(tm.aka_names) AS aka_name
-FROM 
+    tm.keyword_count ARRAY JOIN tm.aka_names AS aka_nameFROM 
     TopMovies AS tm
 ORDER BY 
     tm.keyword_count DESC, 

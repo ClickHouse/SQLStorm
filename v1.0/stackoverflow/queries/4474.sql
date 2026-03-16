@@ -46,4 +46,4 @@ WHERE
     A.DownVotes < (SELECT AVG(DownVotes) / 2 FROM UserVoteSummary))
 ORDER BY 
     A.UpVotes DESC, A.DownVotes ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

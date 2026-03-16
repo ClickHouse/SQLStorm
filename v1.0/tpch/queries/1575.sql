@@ -24,7 +24,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END) AS total_revenue_returned,
     SUM(l.l_extendedprice) AS total_revenue,
     AVG(sd.total_supply_cost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_brand, ')'), ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_brand, ')')))), ', ') AS part_names
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN customer c ON n.n_nationkey = c.c_nationkey

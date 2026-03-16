@@ -32,11 +32,11 @@ TagStatistics AS (
         t.TagName,
         COUNT(fp.PostId) AS TotalPosts,
         AVG(LENGTH(fp.Body)) AS AvgBodyLength,
-        STRING_AGG(fp.Title, '; ') AS TopTitles
+        arrayStringConcat(groupArray(assumeNotNull(fp.Title)), '; ') AS TopTitles
     FROM 
         FilteredPosts fp
     JOIN 
-        (SELECT DISTINCT UNNEST(string_to_array(fp.Tags, '>')) AS TagName FROM FilteredPosts fp) t ON t.TagName = ANY(string_to_array(fp.Tags, '>'))
+        (SELECT DISTINCT arrayJoin(splitByString('>', fp.Tags)) AS TagName FROM FilteredPosts fp) t ON t.TagName = ANY(splitByString('>', fp.Tags))
     GROUP BY 
         t.TagName
 )

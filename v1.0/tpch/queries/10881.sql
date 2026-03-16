@@ -15,8 +15,8 @@ JOIN
 JOIN
     partsupp ps ON p.p_partkey = ps.ps_partkey AND s.s_suppkey = ps.ps_suppkey
 WHERE
-    o.o_orderdate >= DATE '1995-01-01'
-    AND o.o_orderdate < DATE '1996-01-01'
+    o.o_orderdate >= toDate('1995-01-01')
+    AND o.o_orderdate < toDate('1996-01-01')
 GROUP BY
     p.p_name, o.o_orderdate
 ORDER BY

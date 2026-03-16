@@ -10,7 +10,7 @@ WITH RECURSIVE RankedOrders AS (
         customer c ON o.o_custkey = c.c_custkey
     WHERE
         o.o_orderstatus = 'F' AND
-        o.o_orderdate >= (cast('1998-10-01' as date) - INTERVAL '1 year')
+        o.o_orderdate >= (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
 ), 
 SupplierPrice AS (
     SELECT 
@@ -50,7 +50,7 @@ SELECT
     MAX(pd.max_supply_cost) AS max_supply_cost,
     (SELECT COUNT(*)
      FROM lineitem l 
-     WHERE l.l_shipdate > (cast('1998-10-01' as date) - INTERVAL '30 day')
+     WHERE l.l_shipdate > (cast('1998-10-01' as date) - INTERVAL 30 DAY)
        AND l.l_returnflag = 'R') AS recent_returns
 FROM 
     region r

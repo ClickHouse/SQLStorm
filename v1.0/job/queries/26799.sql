@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         t.production_year,
         COUNT(DISTINCT ci.person_id) AS cast_count,
         SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS special_roles,
-        STRING_AGG(DISTINCT ka.name, ', ') AS aka_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ka.name))), ', ') AS aka_names
     FROM 
         aka_title t
     LEFT JOIN 

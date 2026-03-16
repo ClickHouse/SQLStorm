@@ -3,7 +3,7 @@ WITH string_aggregates AS (
     SELECT 
         p.p_brand,
         SUBSTRING(p.p_name, 1, 5) AS short_name,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
         COUNT(DISTINCT ps.ps_partkey) AS supplier_count
     FROM 
         part p
@@ -18,7 +18,7 @@ region_summary AS (
     SELECT 
         r.r_name AS region_name,
         COUNT(DISTINCT n.n_nationkey) AS nation_count,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nation_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nation_names
     FROM 
         region r
     JOIN 

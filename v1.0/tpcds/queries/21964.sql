@@ -18,7 +18,7 @@ SalesData AS (
         ROW_NUMBER() OVER (PARTITION BY ws.ws_item_sk ORDER BY SUM(ws.ws_quantity) DESC) AS rank
     FROM web_sales ws
     JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
-    WHERE d.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
+    WHERE d.d_year = toYear(cast('2002-10-01' as date))
     GROUP BY ws.ws_item_sk
 ),
 FilteredSales AS (

@@ -1,14 +1,14 @@
 WITH RECURSIVE MonthlySales AS (
     SELECT 
-        EXTRACT(YEAR FROM o_orderdate) AS sales_year,
-        EXTRACT(MONTH FROM o_orderdate) AS sales_month,
+        toYear(o_orderdate) AS sales_year,
+        toMonth(o_orderdate) AS sales_month,
         SUM(l_extendedprice * (1 - l_discount)) AS total_sales
     FROM 
         orders o
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
     GROUP BY 
         sales_year, sales_month
 ),

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1  
-        AND p.LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
+        AND p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 ),
 PostScoreStats AS (
     SELECT 
@@ -30,7 +30,7 @@ PostScoreStats AS (
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(p.Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', p.Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -48,14 +48,14 @@ SELECT
     ps.TotalQuestions,
     ps.AvgViewCount,
     ps.AcceptedAnswersCount,
-    STRING_AGG(DISTINCT pt.TagName, ', ') AS PopularTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.TagName))), ', ') AS PopularTags
 FROM 
     Users u
 LEFT JOIN 
     PostScoreStats ps ON u.Id = ps.OwnerUserId
 LEFT JOIN 
     PopularTags pt ON pt.TagName IN (
-        SELECT UNNEST(STRING_TO_ARRAY(p.Tags, '><'))
+        SELECT arrayJoin(splitByString('><', p.Tags))
         FROM Posts p
         WHERE p.OwnerUserId = u.Id
         AND p.PostTypeId = 1

@@ -5,9 +5,9 @@ SELECT
     p.p_brand,
     SUBSTRING(p.p_comment, 1, 10) AS short_comment,
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_quantity,
-    STRING_AGG(DISTINCT CASE WHEN l.l_linestatus = 'F' THEN s.s_name END, ', ') AS fulfilled_suppliers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN l.l_linestatus = 'F' THEN s.s_name END))), ', ') AS fulfilled_suppliers,
     MAX(o.o_orderdate) AS latest_order_date
 FROM part p
 JOIN partsupp ps ON p.p_partkey = ps.ps_partkey

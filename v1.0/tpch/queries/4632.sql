@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 SupplierCosts AS (
     SELECT 

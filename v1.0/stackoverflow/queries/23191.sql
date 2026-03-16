@@ -59,15 +59,15 @@ SELECT
         WHEN ps.ViewCount >= 10 AND ps.UpVotes > ps.DownVotes THEN 'Popular'
         ELSE 'Mixed'
     END AS Category,
-    STRING_AGG(t.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
 FROM 
     PostStatistics ps
 LEFT JOIN 
     Posts p ON ps.PostId = p.Id
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            UNNEST(string_to_array(p.Tags, '><')) AS TagName
+            arrayJoin(splitByString('><', p.Tags)) AS TagName
     ) t ON TRUE
 GROUP BY 
     ps.PostId, ps.Title, ps.CreationDate, ps.ViewCount, ps.Score, ps.VoteCount, ps.UpVotes, ps.DownVotes, ps.Status

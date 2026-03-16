@@ -1,7 +1,7 @@
 WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 0 AS depth
     FROM orders o
-    WHERE o.o_orderdate < DATE '1997-01-01'
+    WHERE o.o_orderdate < toDate('1997-01-01')
     
     UNION ALL
     
@@ -50,7 +50,7 @@ SELECT
         WHEN oss.total_spent IS NULL THEN 'No Orders'
         ELSE 'Has Orders'
     END AS order_status,
-    STRING_AGG(DISTINCT CONCAT('Part Key: ', ps.ps_partkey, ' | Quantity: ', ps.ps_availqty), '; ') AS part_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Part Key: ', ps.ps_partkey, ' | Quantity: ', ps.ps_availqty)))), '; ') AS part_details
 FROM OrderHierarchy oh
 LEFT JOIN OrderTotal oss ON oh.o_orderkey = oss.c_custkey
 LEFT JOIN RegionSupplier rss ON rss.s_suppkey = oss.c_custkey

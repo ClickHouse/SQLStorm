@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS actor_count_rank,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
     FROM 
         aka_title t
     LEFT JOIN 
@@ -49,9 +49,9 @@ SELECT
     md.title,
     md.production_year,
     md.movie_info,
-    ARRAY_AGG(DISTINCT md.movie_keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(md.movie_keyword))) AS keywords,
     CASE 
-        WHEN ARRAY_LENGTH(ARRAY_AGG(DISTINCT md.movie_keyword), 1) IS NULL THEN 'No keywords found'
+        WHEN length(arrayDistinct(groupArray(assumeNotNull(md.movie_keyword))), 1) IS NULL THEN 'No keywords found'
         ELSE 'Contains keywords'
     END AS keyword_status
 FROM 

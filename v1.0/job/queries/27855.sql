@@ -51,7 +51,7 @@ SELECT
     title,
     production_year,
     actor_name,
-    STRING_AGG(DISTINCT company_name || ' (' || company_type || ')', ', ') AS companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name || ' (' || company_type || ')'))), ', ') AS companies
 FROM
     FullDetails
 GROUP BY

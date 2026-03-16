@@ -24,8 +24,8 @@ MovieDetails AS (
     SELECT 
         tm.movie_title,
         tm.production_year,
-        ARRAY_AGG(DISTINCT ak.name) AS actor_names,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         TopMovies tm
     LEFT JOIN 

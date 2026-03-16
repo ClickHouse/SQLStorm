@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        ARRAY_AGG(DISTINCT c.kind ORDER BY c.kind) AS company_types,
+        arrayDistinct(groupArray(assumeNotNull(c.kind ORDER BY c.kind))) AS company_types,
         AVG(CASE WHEN mi.note IS NOT NULL THEN 1 ELSE 0 END) AS has_info_type
     FROM 
         title t

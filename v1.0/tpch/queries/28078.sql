@@ -20,7 +20,7 @@ AggregatedData AS (
         COUNT(*) AS part_count,
         AVG(p_retailprice) AS avg_price,
         MAX(comment_length) AS max_comment_length,
-        STRING_AGG(part_info, '; ') AS part_descriptions
+        arrayStringConcat(groupArray(assumeNotNull(part_info)), '; ') AS part_descriptions
     FROM 
         StringProcessing
     GROUP BY 

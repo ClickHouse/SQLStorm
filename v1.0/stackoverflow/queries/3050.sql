@@ -39,7 +39,7 @@ SELECT
     TU.DisplayName,
     TU.ReputationScore,
     COALESCE(SUM(CASE WHEN PH.PostHistoryTypeId = 10 THEN 1 ELSE 0 END), 0) AS CloseVotes,
-    COALESCE(AVG(DATE_PART('day', PH.CreationDate - CURRENT_DATE)), 0) AS AvgPostAge,
+    COALESCE(AVG(datePart('day', PH.CreationDate - CURRENT_DATE)), 0) AS AvgPostAge,
     CASE 
         WHEN TU.ReputationScore > 1000 THEN 'High Reputation'
         WHEN TU.ReputationScore BETWEEN 500 AND 1000 THEN 'Medium Reputation'

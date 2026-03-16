@@ -45,7 +45,7 @@ SELECT
     sm.production_year,
     sm.cast_count,
     COALESCE(sm.top_info_count, 0) AS top_information_count,
-    (SELECT STRING_AGG(DISTINCT ak.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') 
      FROM aka_name ak 
      JOIN cast_info ci ON ak.person_id = ci.person_id 
      WHERE ci.movie_id = sm.movie_id) AS cast_names,

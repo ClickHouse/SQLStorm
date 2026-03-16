@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_quantity) AS total_quantity,
     AVG(s.s_acctbal) AS avg_supplier_balance,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS combined_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS combined_comments
 FROM 
     part p
 JOIN 

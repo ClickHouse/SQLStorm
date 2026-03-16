@@ -7,7 +7,7 @@ WITH RankedOrders AS (
         RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank,
         o.o_custkey
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate <= DATE '1997-12-31'
+    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate <= toDate('1997-12-31')
 ),
 SupplierSummary AS (
     SELECT 
@@ -54,6 +54,6 @@ JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 LEFT JOIN CustomerRegion tr ON tr.c_custkey = o.o_custkey
 INNER JOIN TopSuppliers ts ON ts.s_suppkey = l.l_suppkey
 WHERE o.order_rank <= 10 
-  AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+  AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
   AND (l.l_discount > 0.1 OR ts.total_supply_cost IS NULL)
 ORDER BY o.o_orderdate DESC, o.o_totalprice DESC;

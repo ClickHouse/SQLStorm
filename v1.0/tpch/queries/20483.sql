@@ -25,7 +25,7 @@ filtered_orders AS (
 )
 SELECT r.r_name, COALESCE(ps.ps_availqty, 0) AS available_quantity, 
        SUM(p.effective_price) AS total_retail_value,
-       ARRAY_AGG(DISTINCT CONCAT(s.s_name, ': ', p.p_name)) AS supplier_product_list
+       arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ': ', p.p_name)))) AS supplier_product_list
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN recursive_supplier s ON n.n_nationkey = s.s_nationkey AND s.rank <= 5

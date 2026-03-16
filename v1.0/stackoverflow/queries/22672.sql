@@ -42,7 +42,7 @@ PostsWithComments AS (
 UserBadges AS (
     SELECT 
         u.Id AS UserId,
-        ARRAY_AGG(DISTINCT b.Name) AS BadgeNames,
+        arrayDistinct(groupArray(assumeNotNull(b.Name))) AS BadgeNames,
         COUNT(DISTINCT b.Class) AS BadgeLevelCount
     FROM 
         Users u

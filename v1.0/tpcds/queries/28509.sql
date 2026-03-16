@@ -34,7 +34,7 @@ AggregatedData AS (
         ci.cd_marital_status,
         COUNT(*) AS customer_count,
         AVG(ci.street_length) AS avg_street_length,
-        STRING_AGG(DISTINCT ci.upper_street_type, ', ') AS street_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.upper_street_type))), ', ') AS street_types
     FROM 
         CustomerInfo ci
     GROUP BY 

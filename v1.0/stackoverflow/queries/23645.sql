@@ -11,13 +11,13 @@ WITH RankedPosts AS (
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) OVER (PARTITION BY p.Id) AS Downvote_Count
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS Badge_Count,
-        STRING_AGG(b.Name, ', ') AS Badge_Names
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badge_Names
     FROM Badges b
     GROUP BY b.UserId
 ),
@@ -48,7 +48,7 @@ SELECT
 FROM RankedPosts rp
 LEFT JOIN UserBadges ub ON rp.OwnerUserId = ub.UserId
 LEFT JOIN PostHistoryDetails pd ON rp.PostId = pd.PostId
-WHERE (pd.Last_Title_Edit IS NULL OR pd.Last_Title_Edit < cast('2024-10-01' as date) - INTERVAL '30 days')
-  AND (pd.Last_CLOSED_Date IS NULL OR pd.Last_CLOSED_Date < cast('2024-10-01' as date) - INTERVAL '60 days')
+WHERE (pd.Last_Title_Edit IS NULL OR pd.Last_Title_Edit < cast('2024-10-01' as date) - INTERVAL 30 DAY)
+  AND (pd.Last_CLOSED_Date IS NULL OR pd.Last_CLOSED_Date < cast('2024-10-01' as date) - INTERVAL 60 DAY)
 ORDER BY rp.Score DESC, rp.CreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

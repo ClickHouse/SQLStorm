@@ -22,7 +22,7 @@ part_supplier AS (
         ps.ps_suppkey,
         SUM(ps.ps_availqty) AS total_available,
         MAX(ps.ps_supplycost) AS max_cost,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM 
         partsupp ps
     JOIN 
@@ -65,4 +65,4 @@ WHERE
     AND (rs.num_customers > 0 AND rs.avg_order_value > (SELECT AVG(o.o_totalprice) FROM orders o WHERE o.o_orderstatus != 'C'))
 ORDER BY 
     rs.total_acctbal DESC, rp.price_rank ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

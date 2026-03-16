@@ -14,7 +14,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(o.o_totalprice) AS total_order_value,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_discounted_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS products_sold
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS products_sold
 FROM 
     nation n
 LEFT JOIN 

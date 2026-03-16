@@ -90,7 +90,7 @@ FinalOutput AS (
 SELECT 
     fo.PostId,
     fo.Title,
-    COALESCE(fo.CreationDate, CAST('2024-10-01 12:34:56' AS TIMESTAMP)) AS PostCreationDate,
+    COALESCE(fo.CreationDate, toDateTime64('2024-10-01 12:34:56', 6)) AS PostCreationDate,
     fo.CloseCount,
     fo.UpVotes,
     fo.DownVotes,
@@ -102,4 +102,4 @@ WHERE
     fo.CloseCount IS NULL OR fo.CloseCount < 5
 ORDER BY 
     fo.ViewCount DESC
-OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 0;

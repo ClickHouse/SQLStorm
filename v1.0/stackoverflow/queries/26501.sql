@@ -2,7 +2,7 @@
 WITH TagsSplit AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS Tag
     FROM 
         Posts p
 ), 
@@ -16,7 +16,7 @@ PostDetails AS (
         p.Score,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT b.Id) AS BadgeCount,
-        STRING_AGG(DISTINCT ts.Tag, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ts.Tag))), ', ') AS Tags
     FROM 
         Posts p
     JOIN 

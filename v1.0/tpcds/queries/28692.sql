@@ -4,7 +4,7 @@ WITH Address_Stats AS (
         ca_city,
         COUNT(DISTINCT ca_address_sk) AS unique_addresses,
         AVG(ca_gmt_offset) AS average_gmt_offset,
-        STRING_AGG(DISTINCT ca_street_name, '; ') AS street_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), '; ') AS street_names
     FROM 
         customer_address
     GROUP BY 
@@ -15,7 +15,7 @@ Demographic_Stats AS (
         cd_gender,
         COUNT(DISTINCT cd_demo_sk) AS customer_count,
         SUM(cd_dep_count) AS total_dependents,
-        STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses
     FROM 
         customer_demographics
     GROUP BY 

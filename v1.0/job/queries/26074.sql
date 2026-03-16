@@ -37,7 +37,7 @@ ActorsInfo AS (
         a.name,
         a.md5sum,
         COUNT(DISTINCT ci.movie_id) AS movies_count,
-        STRING_AGG(DISTINCT tm.genre, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tm.genre))), ', ') AS genres
     FROM
         aka_name a
     JOIN

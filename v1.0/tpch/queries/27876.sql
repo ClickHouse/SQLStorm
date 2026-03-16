@@ -3,7 +3,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(l.l_quantity) AS avg_quantity_per_order,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ': $', p.p_retailprice), ', ') AS product_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ': $', p.p_retailprice)))), ', ') AS product_details
 FROM 
     nation n
 JOIN 

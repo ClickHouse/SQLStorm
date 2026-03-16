@@ -5,7 +5,7 @@ SELECT
     c.c_email_address,
     d.d_date AS order_date,
     SUM(ws.ws_sales_price) AS total_sales_amount,
-    STRING_AGG(DISTINCT CONCAT(cp.cp_catalog_page_id, ': ', cp.cp_description), '; ') AS catalog_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cp.cp_catalog_page_id, ': ', cp.cp_description)))), '; ') AS catalog_details
 FROM
     customer c
 JOIN

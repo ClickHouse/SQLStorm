@@ -12,7 +12,7 @@ SELECT
         END) AS male_count,
     AVG(cd_purchase_estimate) AS average_purchase_estimate,
     COUNT(DISTINCT wd.web_site_id) AS web_visits,
-    STRING_AGG(DISTINCT CONCAT(wp_url, ' (', wp_type, ')'), '; ') AS visited_pages
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(wp_url, ' (', wp_type, ')')))), '; ') AS visited_pages
 FROM 
     customer_address ca
 JOIN 

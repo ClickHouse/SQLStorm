@@ -58,4 +58,4 @@ WHERE
     hs.aggregated_sales IS NOT NULL
 ORDER BY 
     remaining_budget DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

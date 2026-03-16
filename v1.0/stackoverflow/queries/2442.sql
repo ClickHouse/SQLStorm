@@ -59,4 +59,4 @@ WHERE
     OR (ojr.AverageCommentScore > 1 AND ojr.Score > 100)
 ORDER BY 
     ojr.Score DESC, ojr.ViewCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

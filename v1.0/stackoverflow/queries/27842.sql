@@ -4,7 +4,7 @@ WITH RecursiveTagCounts AS (
         P.Id AS PostId,
         P.Title,
         P.Tags,
-        ARRAY_LENGTH(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><'), 1) AS TagCount
+        length(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2)), 1) AS TagCount
     FROM 
         Posts P
     WHERE 
@@ -46,8 +46,8 @@ SELECT
     U.TotalDownvotes,
     T.TagName,
     T.TotalQuestionsWithTag,
-    ROUND((U.TotalUpvotes::decimal / NULLIF(U.TotalQuestions, 0)) * 100, 2) AS UpvotePercentage,
-    ROUND((U.TotalDownvotes::decimal / NULLIF(U.TotalQuestions, 0)) * 100, 2) AS DownvotePercentage
+    ROUND((CAST(U.TotalUpvotes AS decimal) / NULLIF(U.TotalQuestions, 0)) * 100, 2) AS UpvotePercentage,
+    ROUND((CAST(U.TotalDownvotes AS decimal) / NULLIF(U.TotalQuestions, 0)) * 100, 2) AS DownvotePercentage
 FROM 
     UserActivity U
 LEFT JOIN 

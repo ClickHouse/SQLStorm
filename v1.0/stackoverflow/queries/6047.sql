@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
     AND 
         p.Score >= 0
 ),
@@ -40,7 +40,7 @@ PostWithBadges AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        ARRAY_AGG(DISTINCT b.Name) AS Badges
+        arrayDistinct(groupArray(assumeNotNull(b.Name))) AS Badges
     FROM 
         Posts p
     LEFT JOIN 

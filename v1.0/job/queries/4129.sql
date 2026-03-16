@@ -27,7 +27,7 @@ SELECT
     rm.title,
     rm.production_year,
     rm.total_cast,
-    STRING_AGG(mk.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keywords
 FROM 
     RankedMovies rm
 LEFT JOIN 

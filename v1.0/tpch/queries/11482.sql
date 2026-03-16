@@ -4,7 +4,7 @@ SELECT
 FROM 
     lineitem
 WHERE 
-    l_shipdate >= DATE '1997-01-01' AND l_shipdate < DATE '1997-02-01'
+    l_shipdate >= toDate('1997-01-01') AND l_shipdate < toDate('1997-02-01')
 GROUP BY 
     l_shipmode
 ORDER BY 

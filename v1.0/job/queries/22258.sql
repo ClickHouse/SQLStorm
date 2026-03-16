@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         at.production_year,
         COUNT(ci.id) AS cast_count,
         ROW_NUMBER() OVER (PARTITION BY at.production_year ORDER BY COUNT(ci.id) DESC) AS rank,
-        STRING_AGG(ak.name, ', ') AS cast_names
+        arrayStringConcat(groupArray(assumeNotNull(ak.name)), ', ') AS cast_names
     FROM 
         aka_title at
     LEFT JOIN 
@@ -25,7 +25,7 @@ MoviesWithInfo AS (
     FROM 
         RankedMovies rm
     LEFT JOIN 
-        movie_info mi ON rm.cast_count > (SELECT AVG(cast_count)::FLOAT FROM RankedMovies)
+        movie_info mi ON rm.cast_count > (SELECT AVG(cast_countCAST() AS FLOAT) FROM RankedMovies)
         AND rm.production_year = mi.movie_id
 )
 SELECT

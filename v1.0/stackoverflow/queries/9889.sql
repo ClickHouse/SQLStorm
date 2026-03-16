@@ -23,7 +23,7 @@ WITH RankedPosts AS (
          GROUP BY UserId) vote ON u.Id = vote.UserId
     WHERE 
         p.PostTypeId = 1 AND
-        p.LastActivityDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        p.LastActivityDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, vote.UpVotes, vote.DownVotes, p.OwnerUserId
 ),

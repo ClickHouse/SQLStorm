@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 HistoryAggregates AS (
     SELECT 
@@ -42,7 +42,7 @@ RecentVotes AS (
     JOIN 
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE 
-        v.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        v.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         v.PostId
 )

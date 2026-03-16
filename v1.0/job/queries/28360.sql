@@ -4,8 +4,8 @@ SELECT
     t.title AS movie_title,
     p.gender,
     COUNT(DISTINCT cc.id) AS total_cast_members,
-    STRING_AGG(DISTINCT p_info.info, '; ') AS person_info,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS movie_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p_info.info))), '; ') AS person_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS movie_keywords,
     COUNT(DISTINCT mc.company_id) AS production_companies
 FROM 
     aka_name akn

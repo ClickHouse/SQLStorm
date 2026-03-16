@@ -26,7 +26,7 @@ MoviesWithKeywords AS (
     SELECT 
         m.id AS movie_id,
         m.title,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         title m
     JOIN 
@@ -54,4 +54,4 @@ WHERE
     a.total_movies > 3
 ORDER BY 
     a.actor_name, a.production_year DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

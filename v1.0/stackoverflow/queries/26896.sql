@@ -4,18 +4,18 @@ WITH TagAggregation AS (
         SPLIT_PART(tag.TNAME, '>', 1) AS MainTag,
         COUNT(DISTINCT p.Id) AS PostCount,
         AVG(u.Reputation) AS AvgUserReputation,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS ActiveUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS ActiveUsers
     FROM 
         Posts p
     JOIN 
         (SELECT DISTINCT 
-            UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS TNAME 
+            arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS TNAME 
         FROM 
             Posts) AS tag ON p.Tags LIKE '%' || tag.TNAME || '%'
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= DATE '2023-10-01'
+        p.CreationDate >= toDate('2023-10-01')
     GROUP BY 
         MainTag
 ), 

@@ -65,8 +65,8 @@ SELECT
     fr.c_customer_id,
     fr.total_items_purchased,
     fr.total_spent,
-    ARRAY_AGG(DISTINCT fr.i_item_id) AS purchased_item_ids,
-    ARRAY_AGG(DISTINCT fr.i_item_desc) AS purchased_item_descriptions
+    arrayDistinct(groupArray(assumeNotNull(fr.i_item_id))) AS purchased_item_ids,
+    arrayDistinct(groupArray(assumeNotNull(fr.i_item_desc))) AS purchased_item_descriptions
 FROM 
     final_report fr
 GROUP BY 

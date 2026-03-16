@@ -7,7 +7,7 @@ WITH CustomerDetails AS (
         cd.cd_marital_status,
         ca.ca_city,
         ca.ca_state,
-        EXTRACT(YEAR FROM DATE '2002-10-01') - c.c_birth_year AS age
+        toYear(toDate('2002-10-01')) - c.c_birth_year AS age
     FROM customer c
     JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
     JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk

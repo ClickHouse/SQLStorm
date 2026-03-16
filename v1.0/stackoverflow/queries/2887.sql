@@ -37,13 +37,13 @@ WITH UserStats AS (
     FROM 
         Comments C
     WHERE 
-        C.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        C.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         C.UserId
 ), UserAchievements AS (
     SELECT 
         B.UserId,
-        STRING_AGG(B.Name, ', ') AS BadgesEarned
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgesEarned
     FROM 
         Badges B
     GROUP BY 

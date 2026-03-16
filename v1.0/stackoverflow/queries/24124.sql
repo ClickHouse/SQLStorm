@@ -65,7 +65,7 @@ RecentClosures AS (
         Users u ON ph.UserId = u.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
-        AND ph.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
+        AND ph.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 ClosedPostCounts AS (
     SELECT 
@@ -86,7 +86,7 @@ SELECT
     SUM(tp.CommentCount) AS TotalComments,
     SUM(tp.UpVoteCount) AS TotalUpVotes,
     SUM(tp.DownVoteCount) AS TotalDownVotes,
-    STRING_AGG(tt.TagName, ', ') AS TopTags
+    arrayStringConcat(groupArray(assumeNotNull(tt.TagName)), ', ') AS TopTags
 FROM 
     Users u
 LEFT JOIN 

@@ -49,7 +49,7 @@ SELECT
     cfd.cd_gender,
     cfd.cd_marital_status,
     cfd.education_status,
-    STRING_AGG(DISTINCT CONCAT(cfd.cd_gender, '-', cfd.cd_marital_status), ', ') AS demographic_summary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cfd.cd_gender, '-', cfd.cd_marital_status)))), ', ') AS demographic_summary
 FROM 
     CustomerFullDetails cfd
 GROUP BY 

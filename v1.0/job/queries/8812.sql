@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         t.title, 
         t.production_year, 
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        ARRAY_AGG(DISTINCT c.name) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_names,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS rank
     FROM 
         aka_title t

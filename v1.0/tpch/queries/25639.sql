@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     SUM(l.l_quantity) AS total_quantity,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT SUBSTRING(p.p_comment, 1, 10), ', ') AS short_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(p.p_comment, 1, 10)))), ', ') AS short_comments
 FROM 
     supplier s
 JOIN 

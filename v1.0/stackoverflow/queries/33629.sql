@@ -24,7 +24,7 @@ PostDetails AS (
         (SELECT COUNT(C.Id) 
          FROM Comments C 
          WHERE C.PostId = P.Id) AS CommentCount,
-        (SELECT STRING_AGG(T.TagName, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
          FROM Tags T 
          WHERE T.WikiPostId = P.Id) AS TagNames
     FROM 
@@ -38,7 +38,7 @@ PostDetails AS (
             WHERE PostId = P.Id
         )
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPostAuthors AS (
     SELECT 

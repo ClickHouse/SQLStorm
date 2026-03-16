@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (2, 3)
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '30 DAY' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY 
         AND p.Score > 0
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
@@ -65,7 +65,7 @@ SELECT
     op.Score_Status,
     COUNT(DISTINCT phd.EditorId) AS TotalEditors,
     MAX(phd.EditDate) AS LastEditDate,
-    STRING_AGG(phd.EditComment, '; ') AS EditorComments
+    arrayStringConcat(groupArray(assumeNotNull(phd.EditComment)), '; ') AS EditorComments
 FROM 
     OpenPosts op
 LEFT JOIN 

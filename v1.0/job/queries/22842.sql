@@ -42,7 +42,7 @@ MovieDetails AS (
             mi.movie_id = pm.movie_id AND 
             mi.info_type_id IN (SELECT id FROM info_type WHERE info = 'Genre')) AS genre_count,
         (SELECT 
-            STRING_AGG(kw.keyword, ', ') 
+            arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') 
          FROM 
             movie_keyword mk 
          JOIN 

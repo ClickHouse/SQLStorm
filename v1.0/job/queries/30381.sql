@@ -28,7 +28,7 @@ SELECT
     mh.depth,
     COUNT(DISTINCT mc.company_id) AS company_count,
     AVG(COALESCE(CAST(mi.info AS FLOAT), 0)) AS avg_movie_rating,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actors_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors_list
 FROM 
     movie_hierarchy mh
 LEFT JOIN 

@@ -76,4 +76,4 @@ LEFT JOIN
     SalesInfo si ON ca.c_customer_sk = si.ws_item_sk
 ORDER BY 
     si.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

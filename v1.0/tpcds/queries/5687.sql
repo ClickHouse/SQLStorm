@@ -57,4 +57,4 @@ FROM
     AggregatedData ad
 ORDER BY 
     ad.net_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

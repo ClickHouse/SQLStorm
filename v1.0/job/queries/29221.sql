@@ -26,7 +26,7 @@ keyworded_movies AS (
         rm.movie_id, 
         rm.movie_title, 
         rm.production_year, 
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         ranked_movies rm
     LEFT JOIN 

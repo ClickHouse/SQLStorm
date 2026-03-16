@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 AggregatedVotes AS (
     SELECT 
@@ -65,7 +65,7 @@ SELECT
         WHEN ps.Score > 0 THEN 'Moderate'
         ELSE 'Less Popular'
     END AS Popularity,
-    (SELECT STRING_AGG(t.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
      FROM Tags t 
      WHERE t.ExcerptPostId = ps.PostId) AS Tags
 FROM 

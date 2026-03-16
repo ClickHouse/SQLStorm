@@ -40,7 +40,7 @@ PostVoteDetails AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate > (CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '30 days')  
+        P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)  
     GROUP BY 
         P.Id, P.Title
 ),
@@ -80,7 +80,7 @@ TopUsers AS (
             FROM 
                 Users 
             WHERE 
-                LastAccessDate > (CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year')  
+                LastAccessDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)  
         )
     ORDER BY 
         U.Reputation DESC

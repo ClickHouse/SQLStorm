@@ -4,7 +4,7 @@ SELECT
     s.s_name,
     SUM(ps.ps_availqty) AS total_available_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     SUBSTRING(p.p_comment, 1, 10) AS short_comment,
     CONCAT('Supplier: ', s.s_name, ', Part: ', p.p_name) AS detailed_info
 FROM 

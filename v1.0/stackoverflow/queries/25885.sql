@@ -10,11 +10,11 @@ WITH FilteredPosts AS (
         p.AnswerCount, 
         p.ViewCount, 
         p.CommentCount,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'), 1) AS TagCount
+        length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount
     FROM 
         Posts p 
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.AnswerCount > 0
         AND p.ViewCount > 100
 ),

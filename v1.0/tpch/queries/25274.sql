@@ -32,7 +32,7 @@ SELECT
     COUNT(DISTINCT l.l_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     MAX(l.l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT ts.nation_name, ', ') AS nations_served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ts.nation_name))), ', ') AS nations_served
 FROM 
     part p
 JOIN 

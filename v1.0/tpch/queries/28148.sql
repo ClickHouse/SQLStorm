@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_qty,
     AVG(p.p_retailprice) AS avg_retail_price,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied
 FROM 
     part p
 JOIN 

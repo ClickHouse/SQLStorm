@@ -26,7 +26,7 @@ WITH RECURSIVE MovieHierarchy AS (
 
 SELECT 
     a.name AS actor_name,
-    string_agg(DISTINCT at.title || ' (' || at.production_year || ')', ', ') FILTER (WHERE at.production_year IS NOT NULL) AS movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(at.title || ' (' || at.production_year || ')'))), ', ') FILTER (WHERE at.production_year IS NOT NULL) AS movies,
     COUNT(DISTINCT mh.movie_id) AS linked_movies_count,
     MAX(mh.production_year) FILTER (WHERE mh.production_year IS NOT NULL) AS latest_linked_movie_year
 FROM 

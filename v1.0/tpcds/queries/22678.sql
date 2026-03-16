@@ -60,4 +60,4 @@ FROM CombinedDetails
 GROUP BY ca_city, ca_state
 HAVING SUM(total_sales_price) > 10000
 ORDER BY ca_city, ca_state
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

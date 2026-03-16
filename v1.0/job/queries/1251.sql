@@ -23,7 +23,7 @@ SELECT
     ai.name, 
     COUNT(mai.genre) AS genre_count, 
     MAX(mai.production_year) AS last_year, 
-    STRING_AGG(DISTINCT mai.genre, ', ') AS genres_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mai.genre))), ', ') AS genres_list
 FROM 
     aka_name ai
 LEFT JOIN 

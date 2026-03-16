@@ -5,7 +5,7 @@ SELECT
     COUNT(o.o_orderkey) AS Total_Orders,
     SUM(l.l_quantity) AS Total_Quantity,
     AVG(l.l_extendedprice) AS Avg_Extended_Price,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS Nations_Supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS Nations_Supplied,
     MAX(p.p_retailprice) AS Max_Retail_Price
 FROM 
     part p

@@ -46,4 +46,4 @@ JOIN
     TopItems ti ON cp.purchase_count > 0
 ORDER BY 
     cp.total_spent DESC, ti.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -5,8 +5,8 @@ SELECT
     AVG(ps_supplycost) AS average_supply_cost,
     MAX(ps_supplycost) AS max_supply_cost,
     MIN(ps_supplycost) AS min_supply_cost,
-    STRING_AGG(DISTINCT p_type, ', ') AS part_types,
-    STRING_AGG(DISTINCT CONCAT_WS(' - ', p_mfgr, p_brand), ', ') AS mfgr_brand_pairs
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p_type))), ', ') AS part_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' - ', p_mfgr, p_brand)))), ', ') AS mfgr_brand_pairs
 FROM supplier s
 JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
 JOIN part p ON ps.ps_partkey = p.p_partkey

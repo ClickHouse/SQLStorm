@@ -41,7 +41,7 @@ RecentPostHistory AS (
     JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days'
+        ph.CreationDate >= DATE('2024-10-01') - INTERVAL 30 DAY
 )
 
 SELECT 

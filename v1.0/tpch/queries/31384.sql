@@ -25,9 +25,9 @@ LEFT JOIN orders o ON l.l_orderkey = o.o_orderkey
 LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 LEFT JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
 WHERE o.o_orderstatus = 'F'
-    AND (l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31')
+    AND (l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31'))
     AND s.s_acctbal IS NOT NULL
 GROUP BY p.p_partkey, p.p_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 10
 ORDER BY revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

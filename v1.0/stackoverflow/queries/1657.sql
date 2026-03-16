@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -33,7 +33,7 @@ RecentPostHistory AS (
         pst.Name AS PostHistoryType
     FROM PostHistory ph
     JOIN PostHistoryTypes pst ON ph.PostHistoryTypeId = pst.Id
-    WHERE ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 ),
 AggregatedData AS (
     SELECT 
@@ -43,7 +43,7 @@ AggregatedData AS (
         up.Views,
         COALESCE(SUM(rp.Score), 0) AS TotalPostScore,
         COALESCE(SUM(rp.Score) FILTER (WHERE rp.rn = 1), 0) AS MostRecentPostScore,
-        COALESCE(MAX(rp.CreationDate), TIMESTAMP '1970-01-01') AS LastPostDate,
+        COALESCE(MAX(rp.CreationDate), toDateTime64('1970-01-01', 6)) AS LastPostDate,
         COUNT(rph.PostId) AS RecentEditCount
     FROM UserStats up
     LEFT JOIN RankedPosts rp ON up.UserId = rp.OwnerUserId

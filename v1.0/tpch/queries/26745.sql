@@ -10,7 +10,7 @@ WITH RankedSuppliers AS (
     SELECT 
         s.s_name,
         n.n_name AS nation_name,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
         SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_value,
         MAX(r.r_name) AS region_name
     FROM RankedSuppliers s

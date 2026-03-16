@@ -1,7 +1,7 @@
 
 WITH TopTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -46,7 +46,7 @@ RecentActivity AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     ORDER BY 
         P.CreationDate DESC
     LIMIT 20

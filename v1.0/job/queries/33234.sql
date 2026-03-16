@@ -27,7 +27,7 @@ SELECT
     a_name.name AS actor_name,
     title.title AS movie_title,
     title.production_year,
-    ARRAY_AGG(DISTINCT keyword.keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(keyword.keyword))) AS keywords,
     COUNT(DISTINCT ci.person_role_id) AS roles_count,
     AVG(CASE WHEN m_info.info IS NOT NULL THEN 1 ELSE 0 END) AS info_present_ratio,
     ROW_NUMBER() OVER (PARTITION BY a_name.id ORDER BY title.production_year DESC) AS title_rank

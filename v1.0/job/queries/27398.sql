@@ -18,7 +18,7 @@ AggregateCharacters AS (
     SELECT 
         ma.movie_id,
         ma.movie_title,
-        STRING_AGG(ma.actor_name, ', ' ORDER BY ma.actor_order) AS actor_list,
+        arrayStringConcat(groupArray(assumeNotNull(ma.actor_name)), ', ' ORDER BY ma.actor_order) AS actor_list,
         COUNT(ma.actor_id) AS total_actors
     FROM 
         MovieActors ma

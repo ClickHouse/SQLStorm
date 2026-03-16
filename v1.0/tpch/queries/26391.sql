@@ -25,4 +25,4 @@ HAVING
     COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY 
     avg_price_after_discount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

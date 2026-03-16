@@ -36,7 +36,7 @@ RecentActivePosts AS (
         COUNT(p.Id) AS RecentPosts,
         MAX(p.LastActivityDate) AS MostRecentActivity
     FROM Posts p
-    WHERE p.LastActivityDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.OwnerUserId
 )
 SELECT 

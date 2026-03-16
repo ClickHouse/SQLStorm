@@ -90,7 +90,7 @@ SELECT
     f.movie_id,
     f.title,
     f.production_year,
-    STRING_AGG(f.company_name, ', ') AS companies,
+    arrayStringConcat(groupArray(assumeNotNull(f.company_name)), ', ') AS companies,
     MIN(f.actor_count) AS min_actors,
     MAX(f.actor_count) AS max_actors,
     AVG(f.actor_count) AS average_actors,

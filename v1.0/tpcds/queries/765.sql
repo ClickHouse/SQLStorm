@@ -52,4 +52,4 @@ WHERE
     sales.sales_rank = 1 OR sales.sales_rank IS NULL
 ORDER BY 
     total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

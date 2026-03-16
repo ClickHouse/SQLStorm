@@ -25,7 +25,7 @@ JOIN
 WHERE 
     p.p_comment LIKE '%green%'
     AND s.s_comment NOT LIKE '%bad%'
-    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     p.p_name, s.s_name, r.r_name, n.n_name
 HAVING 

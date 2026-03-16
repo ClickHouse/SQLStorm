@@ -5,7 +5,7 @@ WITH UserReputation AS (
         u.Reputation,
         COUNT(b.Id) AS BadgeCount,
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounty,
-        AVG(EXTRACT(EPOCH FROM (u.LastAccessDate - u.CreationDate))) AS AvgActiveDuration
+        AVG(toUnixTimestamp((u.LastAccessDate - u.CreationDate))) AS AvgActiveDuration
     FROM Users u
     LEFT JOIN Badges b ON b.UserId = u.Id
     LEFT JOIN Votes v ON v.UserId = u.Id

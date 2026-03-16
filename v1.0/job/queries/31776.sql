@@ -37,7 +37,7 @@ MergedMovieInfo AS (
         a.title,
         a.production_year,
         mc.actor_count,
-        STRING_AGG(DISTINCT kv.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kv.keyword))), ', ') AS keywords
     FROM 
         aka_title a
     LEFT JOIN 

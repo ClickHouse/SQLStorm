@@ -29,7 +29,7 @@ SELECT
     COALESCE(ki.keyword, 'None') AS keyword,
     COUNT(DISTINCT ti.id) AS total_movies,
     AVG(CASE WHEN ti.production_year IS NOT NULL THEN ti.production_year ELSE NULL END) AS avg_production_year,
-    STRING_AGG(DISTINCT ti.title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ti.title))), ', ') AS movie_titles,
     COUNT(DISTINCT ci.person_id) FILTER (WHERE ci.note IS NOT NULL) AS actors_count,
     ROW_NUMBER() OVER (PARTITION BY cn.name ORDER BY COUNT(DISTINCT ti.id) DESC) AS rn
 FROM 

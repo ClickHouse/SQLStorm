@@ -15,12 +15,12 @@ WITH RankedPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 9 
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS ChangeTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS ChangeTypes,
         MIN(ph.CreationDate) AS FirstChangeDate,
         MAX(ph.CreationDate) AS LastChangeDate,
         COUNT(*) AS ChangeCount
@@ -48,7 +48,7 @@ CombinedData AS (
             WHEN phs.ChangeCount > 10 THEN 'Highly Active Post'
             ELSE 'Activity Moderate'
         END AS ActivityLevel,
-        (EXTRACT(EPOCH FROM (COALESCE(phs.LastChangeDate, cast('2024-10-01 12:34:56' as timestamp)) - rp.CreationDate)) / 3600.0) AS HoursSinceCreation
+        (toUnixTimestamp((COALESCE(phs.LastChangeDate, toDateTime64('2024-10-01 12:34:56', 6)) - rp.CreationDate)) / 3600.0) AS HoursSinceCreation
     FROM RankedPosts rp
     LEFT JOIN PostHistorySummary phs ON rp.PostId = phs.PostId
 )
@@ -75,5 +75,5 @@ SELECT
     END) AS PostAge
 FROM CombinedData cd
 WHERE cd.RankScore <= 10
-AND cd.Score > (SELECT AVG(Score) FROM Posts WHERE CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')
+AND cd.Score > (SELECT AVG(Score) FROM Posts WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ORDER BY cd.Score DESC, cd.CommentCount DESC;

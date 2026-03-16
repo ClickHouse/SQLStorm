@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND P.Score > 0
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount, U.DisplayName, P.OwnerUserId
@@ -43,7 +43,7 @@ EnhancedHistory AS (
     JOIN 
         Posts P ON PH.PostId = P.Id
     WHERE 
-        PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
         AND PH.PostHistoryTypeId IN (10, 11)
 ),
 FinalReport AS (

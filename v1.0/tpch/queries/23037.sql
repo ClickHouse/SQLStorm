@@ -38,7 +38,7 @@ SELECT
     SUM(COALESCE(p.ps_availqty, 0)) AS total_available_quantity,
     MAX(os.total_sales) AS max_sale_per_order,
     SUM(COALESCE(cs.order_count, 0)) AS total_customer_orders,
-    STRING_AGG(DISTINCT sh.s_name, ', ') AS dedicated_suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sh.s_name))), ', ') AS dedicated_suppliers
 FROM part ph
 LEFT JOIN partsupp p ON ph.p_partkey = p.ps_partkey
 LEFT JOIN nation n ON p.ps_suppkey = n.n_nationkey

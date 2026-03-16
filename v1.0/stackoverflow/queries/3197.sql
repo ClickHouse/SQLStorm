@@ -63,7 +63,7 @@ PostHistoryAggregate AS (
     SELECT 
         p.Id AS PostId,
         COUNT(ph.Id) AS HistoryCount,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
     FROM 
         Posts p
     LEFT JOIN 

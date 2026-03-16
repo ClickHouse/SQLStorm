@@ -9,8 +9,8 @@ SELECT
     MAX(l.l_shipdate) AS last_ship_date,
     MIN(l.l_shipdate) AS first_ship_date,
     AVG(l.l_quantity) AS avg_quantity_per_order,
-    STRING_AGG(s.s_comment, '; ') AS supplier_comments,
-    STRING_AGG(c.c_comment, '; ') AS customer_comments
+    arrayStringConcat(groupArray(assumeNotNull(s.s_comment)), '; ') AS supplier_comments,
+    arrayStringConcat(groupArray(assumeNotNull(c.c_comment)), '; ') AS customer_comments
 FROM 
     lineitem l
 JOIN 

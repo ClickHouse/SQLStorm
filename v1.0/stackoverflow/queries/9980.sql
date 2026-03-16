@@ -9,7 +9,7 @@ WITH PostStats AS (
         COUNT(DISTINCT c.Id) AS CommentCount,
         COALESCE(AVG(v.BountyAmount) FILTER (WHERE v.VoteTypeId IN (8, 9)), 0) AS AverageBounty,
         SUM(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 1 ELSE 0 END) AS CloseActions,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -19,11 +19,11 @@ WITH PostStats AS (
     LEFT JOIN 
         PostHistory ph ON ph.PostId = p.Id
     LEFT JOIN 
-        LATERAL UNNEST(string_to_array(p.Tags, ',')) AS tag_name ON TRUE
+        arrayJoin(splitByString(',', p.Tags)) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(tag_name)
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score, p.AnswerCount
 ),
@@ -76,4 +76,4 @@ FROM
     CombinedStats
 ORDER BY 
     ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

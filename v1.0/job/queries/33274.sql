@@ -46,8 +46,8 @@ WITH RECURSIVE bag_of_movies AS (
     SELECT 
         title,
         production_year,
-        STRING_AGG(DISTINCT keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT company_name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies,
         SUM(cast_count) AS total_cast
     FROM 
         movie_details

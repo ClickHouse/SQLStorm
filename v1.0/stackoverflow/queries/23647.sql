@@ -9,13 +9,13 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
 ),
 UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -26,7 +26,7 @@ UserBadges AS (
 CloseReasonDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

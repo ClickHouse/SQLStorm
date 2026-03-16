@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(CASE WHEN p.p_size > 10 THEN ps.ps_availqty ELSE 0 END) AS large_part_avail_qty,
     AVG(p.p_retailprice) AS avg_retail_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     MAX(o.o_totalprice) AS max_order_total_price
 FROM 
     supplier s

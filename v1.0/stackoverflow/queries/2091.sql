@@ -34,7 +34,7 @@ PostHistoryCounts AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         ph.PostId
 )
@@ -43,7 +43,7 @@ SELECT
     rp.CreationDate,
     rp.Score,
     rp.CommentCount,
-    (SELECT STRING_AGG(pt.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(pt.TagName)), ', ') 
      FROM PopularTags pt 
      JOIN Posts p ON p.Tags LIKE '%' || pt.TagName || '%' 
      WHERE p.Id = rp.Id) AS PopularTags,

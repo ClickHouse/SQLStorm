@@ -16,7 +16,7 @@ MoviesWithKeyword AS (
     SELECT 
         mt.movie_id,
         mt.title,
-        ARRAY_AGG(DISTINCT kw.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords
     FROM 
         aka_title mt
     LEFT JOIN 
@@ -56,7 +56,7 @@ FilteredMovies AS (
         rm.movie_rank <= 3
         AND EXISTS (
             SELECT 1 
-            FROM UNNEST(rm.keywords) AS kw 
+            FROM arrayJoin(rm.keywords) AS kw 
             WHERE kw IS NOT NULL AND LOWER(kw) LIKE '%action%'
         )
 )

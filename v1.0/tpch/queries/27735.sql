@@ -3,7 +3,7 @@ WITH StringAggregates AS (
         s.s_name AS supplier_name,
         CONCAT(SUBSTRING(s.s_name, 1, 5), '...', SUBSTRING(s.s_name, LENGTH(s.s_name) - 4, 5)) AS truncated_name,
         COUNT(DISTINCT p.p_partkey) AS total_parts,
-        STRING_AGG(DISTINCT p.p_type, ', ') AS part_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS part_types,
         SUM(ps.ps_availqty) AS total_avail_qty,
         AVG(ps.ps_supplycost) AS avg_supply_cost
     FROM 

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.ViewCount IS NOT NULL
 ),
 
@@ -50,7 +50,7 @@ TopPosts AS (
         ub.BadgeCount,
         pvc.UpVotes,
         pvc.DownVotes,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
     FROM 
         RankedPosts rp
     LEFT JOIN 
@@ -65,9 +65,9 @@ TopPosts AS (
     LEFT JOIN 
         PostVoteCounts pvc ON rp.PostId = pvc.PostId
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
-                unnest(string_to_array(rp.Tags, '<>')) AS TagName
+                arrayJoin(splitByString('<>', rp.Tags)) AS TagName
         ) AS t ON TRUE
     WHERE 
         rp.Rank <= 10

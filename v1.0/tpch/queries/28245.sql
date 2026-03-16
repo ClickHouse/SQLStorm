@@ -18,7 +18,7 @@ PartAggregations AS (
 ),
 PartSupplierInfo AS (
     SELECT p.p_partkey, p.p_name, pa.total_availqty, pa.total_supplycost,
-           STRING_AGG(DISTINCT ts.supplier_info, '; ') AS suppliers
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ts.supplier_info))), '; ') AS suppliers
     FROM part p
     JOIN PartAggregations pa ON p.p_partkey = pa.ps_partkey
     JOIN lineitem l ON p.p_partkey = l.l_partkey

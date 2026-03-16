@@ -27,7 +27,7 @@ MovieDetails AS (
         fm.title, 
         fm.production_year, 
         COALESCE(COUNT(DISTINCT mc.company_id), 0) AS company_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM 
         FilteredMovies fm
     LEFT JOIN 

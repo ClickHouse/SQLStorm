@@ -16,7 +16,7 @@ WITH TagStats AS (
         ) AS AnswerCount,
         SUM(p.Score) AS TotalScore,
         AVG(p.ViewCount) AS AvgViewCount,
-        ARRAY_AGG(DISTINCT u.DisplayName) AS TopContributors
+        arrayDistinct(groupArray(assumeNotNull(u.DisplayName))) AS TopContributors
     FROM
         Tags t
     JOIN

@@ -53,7 +53,7 @@ SELECT
     ol.l_orderkey,
     COUNT(DISTINCT ol.l_partkey) AS unique_parts_count,
     SUM(ol.l_extendedprice * (1 - ol.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT ol.custom_description, ', ') AS part_descriptions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ol.custom_description))), ', ') AS part_descriptions,
     MAX(ol.l_shipdate) AS latest_ship_date
 FROM 
     OrderLineItem ol

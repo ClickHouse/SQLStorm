@@ -16,7 +16,7 @@ PostScores AS (
         p.OwnerUserId,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) - SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS Score,
         COUNT(CASE WHEN c.Score IS NOT NULL THEN c.Id END) AS CommentCount,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgActivityTime
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgActivityTime
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Comments c ON p.Id = c.PostId

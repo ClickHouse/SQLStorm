@@ -30,7 +30,7 @@ SELECT
     n.n_name AS nation_name,
     r.r_name AS region_name,
     COUNT(DISTINCT fs.s_suppkey) AS supplier_count,
-    STRING_AGG(fs.s_name, ', ') AS top_suppliers,
+    arrayStringConcat(groupArray(assumeNotNull(fs.s_name)), ', ') AS top_suppliers,
     SUM(fs.s_acctbal) AS total_acctbal,
     AVG(fs.s_acctbal) AS avg_acctbal
 FROM 

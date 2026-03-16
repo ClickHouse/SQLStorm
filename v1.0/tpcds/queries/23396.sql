@@ -61,7 +61,7 @@ SELECT
 FROM 
     item_analysis ia
 JOIN 
-    customer ci ON RANDOM() < 0.1 AND ci.c_customer_sk IN (SELECT c_customer_sk FROM customer WHERE ci.c_customer_sk IS NOT NULL)
+    customer ci ON rand() < 0.1 AND ci.c_customer_sk IN (SELECT c_customer_sk FROM customer WHERE ci.c_customer_sk IS NOT NULL)
 JOIN 
     customer_address ca ON ci.c_current_addr_sk = ca.ca_address_sk
 WHERE 

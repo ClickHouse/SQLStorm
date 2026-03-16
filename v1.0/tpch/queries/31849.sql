@@ -15,7 +15,7 @@ SELECT
     rg.r_name AS Region,
     COALESCE(SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice END), 0) AS TotalReturned,
     COUNT(DISTINCT o.o_orderkey) AS TotalOrders,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS ProductNames,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS ProductNames,
     ROW_NUMBER() OVER (PARTITION BY n.n_name ORDER BY SUM(o.o_totalprice) DESC) AS OrderRank
 FROM region rg
 JOIN nation n ON rg.r_regionkey = n.n_regionkey

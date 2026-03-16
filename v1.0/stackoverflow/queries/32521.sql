@@ -58,7 +58,7 @@ PostStatistics AS (
         PD.TotalDownvotes,
         PD.TotalVotes,
         COALESCE(CS.CloseCount, 0) AS CloseCount,
-        COALESCE(CS.FirstCloseDate, DATE '1970-01-01') AS FirstCloseDate
+        COALESCE(CS.FirstCloseDate, toDate('1970-01-01')) AS FirstCloseDate
     FROM 
         Posts P
     LEFT JOIN 

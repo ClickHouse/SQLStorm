@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, u.DisplayName, p.CreationDate
 ),
@@ -51,12 +51,12 @@ SELECT
     fp.UpVotes,
     fp.DownVotes,
     CONCAT('This post has ', fp.CommentCount, ' comments and ', fp.UpVotes, ' upvotes.') AS Summary,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
 FROM 
     FilteredPosts fp
-    LEFT JOIN LATERAL (
+    LEFT JOIN (
         SELECT 
-            unnest(string_to_array(SUBSTRING(fp.Tags FROM 2 FOR LENGTH(fp.Tags) - 2), '><')) AS TagName
+            arrayJoin(splitByString('><', SUBSTRING(fp.Tags FROM 2 FOR LENGTH(fp.Tags) - 2))) AS TagName
     ) AS t ON TRUE
 GROUP BY 
     fp.PostId, fp.Title, fp.Body, fp.Tags, fp.OwnerDisplayName, fp.CreationDate, fp.CommentCount, fp.UpVotes, fp.DownVotes

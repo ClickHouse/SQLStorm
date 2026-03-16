@@ -39,8 +39,8 @@ SalesData AS (
 ),
 MonthlySales AS (
     SELECT
-        EXTRACT(YEAR FROM d.d_date) AS year,
-        EXTRACT(MONTH FROM d.d_date) AS month,
+        toYear(d.d_date) AS year,
+        toMonth(d.d_date) AS month,
         SUM(cs_ext_sales_price) AS monthly_sales
     FROM
         date_dim d
@@ -61,8 +61,8 @@ FROM
 LEFT JOIN 
     SalesData sd ON c.c_customer_sk = sd.ws_bill_customer_sk
 LEFT JOIN 
-    MonthlySales ms ON ms.year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) 
-                     AND ms.month = EXTRACT(MONTH FROM cast('2002-10-01' as date))
+    MonthlySales ms ON ms.year = toYear(cast('2002-10-01' as date)) 
+                     AND ms.month = toMonth(cast('2002-10-01' as date))
 WHERE 
     c.cd_gender = 'F' 
     AND c.cd_marital_status = 'M'

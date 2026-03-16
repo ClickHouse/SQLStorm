@@ -32,7 +32,7 @@ SELECT n.n_name,
        AVG(li.l_quantity) AS avg_quantity,
        MAX(li.l_tax) AS max_tax_rate,
        MIN(li.l_shipdate) AS earliest_ship_date,
-       STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_phone, ')'), '; ') AS suppliers_info
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')')))), '; ') AS suppliers_info
 FROM lineitem li
 JOIN partsupp ps ON li.l_partkey = ps.ps_partkey
 JOIN supplier s ON ps.ps_suppkey = s.s_suppkey

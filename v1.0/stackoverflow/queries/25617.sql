@@ -11,8 +11,8 @@ WITH PostDetails AS (
         COALESCE(a.Title, 'No Accepted Answer') AS AcceptedAnswerTitle,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypeName,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypeName,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
     FROM 
         Posts p
     LEFT JOIN 
@@ -26,7 +26,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        (SELECT Id, unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName 
+        (SELECT Id, arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName 
          FROM Posts) t 
     ON p.Id = t.Id
     GROUP BY 

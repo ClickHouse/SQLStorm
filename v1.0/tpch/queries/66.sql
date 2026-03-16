@@ -5,14 +5,14 @@ WITH RankedOrders AS (
         o.o_totalprice,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rank
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
 ),
 HighValueLines AS (
     SELECT 
         l.l_orderkey,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM lineitem l
-    WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '30 days'
+    WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 30 DAY
     GROUP BY l.l_orderkey
 ),
 SupplierPartData AS (

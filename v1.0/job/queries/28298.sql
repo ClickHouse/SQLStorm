@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         a.title AS movie_title,
         a.production_year,
         COUNT(DISTINCT c.person_id) AS actor_count,
-        STRING_AGG(DISTINCT an.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actor_names
     FROM 
         aka_title a
     JOIN 
@@ -26,8 +26,8 @@ SELECT
     rm.movie_title,
     rm.production_year,
     rm.actor_count,
-    ARRAY_LENGTH(STRING_TO_ARRAY(rm.actor_names, ', '), 1) AS number_of_actors,
-    (SELECT STRING_AGG(DISTINCT t.title, ', ') 
+    length(splitByString(', ', rm.actor_names), 1) AS number_of_actors,
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') 
      FROM title t 
      JOIN movie_link ml ON t.id = ml.linked_movie_id 
      WHERE ml.movie_id = (SELECT a.id FROM aka_title a WHERE a.title = rm.movie_title LIMIT 1)) AS linked_movies

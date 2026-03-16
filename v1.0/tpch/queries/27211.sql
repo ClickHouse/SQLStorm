@@ -14,7 +14,7 @@ Aggregated_Nations AS (
     SELECT 
         n.n_name,
         COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM nation n
     JOIN supplier s ON n.n_nationkey = s.s_nationkey
     GROUP BY n.n_name
@@ -24,7 +24,7 @@ Customer_Orders AS (
         c.c_name,
         COUNT(o.o_orderkey) AS order_count,
         SUM(o.o_totalprice) AS total_spent,
-        STRING_AGG(DISTINCT o.o_orderstatus, '|') AS unique_order_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(o.o_orderstatus))), '|') AS unique_order_statuses
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
     GROUP BY c.c_name

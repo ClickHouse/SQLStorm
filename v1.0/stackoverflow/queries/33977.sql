@@ -19,7 +19,7 @@ PostVoteCounts AS (
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id
 ),
 UserBadges AS (
@@ -28,7 +28,7 @@ UserBadges AS (
         COUNT(b.Id) AS BadgeCount,
         MAX(b.Class) AS HighestBadgeClass
     FROM Badges b
-    WHERE b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years'
+    WHERE b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
     GROUP BY b.UserId
 )
 SELECT 

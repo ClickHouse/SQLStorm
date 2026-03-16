@@ -5,8 +5,8 @@ SELECT
     COUNT(DISTINCT c.c_customer_id) AS total_customers,
     SUM(CASE WHEN cd_marital_status = 'M' THEN 1 ELSE 0 END) AS married_customers,
     SUM(CASE WHEN cd_marital_status = 'S' THEN 1 ELSE 0 END) AS single_customers,
-    STRING_AGG(DISTINCT cd_education_status, ', ') AS unique_education_levels,
-    STRING_AGG(DISTINCT c.c_first_name || ' ' || c.c_last_name, '; ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS unique_education_levels,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_first_name || ' ' || c.c_last_name))), '; ') AS customer_names
 FROM
     customer_address ca
 JOIN

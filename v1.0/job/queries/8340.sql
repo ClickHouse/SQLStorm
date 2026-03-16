@@ -16,9 +16,9 @@ WITH MovieDetails AS (
 SELECT 
     md.movie_title,
     md.production_year,
-    STRING_AGG(DISTINCT md.actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT md.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT md.company_type, ', ') AS companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.company_type))), ', ') AS companies
 FROM MovieDetails md
 GROUP BY md.movie_title, md.production_year
 ORDER BY md.production_year DESC, md.movie_title;

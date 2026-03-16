@@ -22,8 +22,8 @@ MovieDetails AS (
            at.title,
            at.production_year,
            COALESCE(COUNT(DISTINCT mc.company_id), 0) AS company_count,
-           COALESCE(STRING_AGG(DISTINCT k.keyword, ', '), 'No Keywords') AS keywords,
-           COALESCE(STRING_AGG(DISTINCT c.kind, ', '), 'Unknown Type') AS company_types
+           COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'No Keywords') AS keywords,
+           COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', '), 'Unknown Type') AS company_types
     FROM aka_title at
     LEFT JOIN movie_companies mc ON at.id = mc.movie_id
     LEFT JOIN company_type c ON mc.company_type_id = c.id

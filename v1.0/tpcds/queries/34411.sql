@@ -60,4 +60,4 @@ WHERE
     a.total_sales > 1000
 ORDER BY 
     a.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

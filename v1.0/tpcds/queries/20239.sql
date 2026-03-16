@@ -31,7 +31,7 @@ SELECT
     ca.ca_country,
     SUM(qs.ws_net_profit) AS total_profit,
     COUNT(DISTINCT qs.ws_order_number) AS total_orders,
-    STRING_AGG(DISTINCT qs.sale_category, ', ') AS sale_categories
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(qs.sale_category))), ', ') AS sale_categories
 FROM 
     qualified_sales qs
 JOIN 

@@ -29,7 +29,7 @@ SELECT
             ELSE 0 
         END) AS avg_movie_info,
     MAX(mh.production_year) AS latest_production_year,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     aka_name ak
 JOIN 

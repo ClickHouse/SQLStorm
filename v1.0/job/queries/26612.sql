@@ -24,7 +24,7 @@ MovieDetails AS (
         rm.movie_id,
         rm.title,
         rm.production_year,
-        ARRAY_AGG(DISTINCT rm.actor_name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(rm.actor_name))) AS actors,
         MAX(rm.actor_count) AS total_actors
     FROM 
         RankedMovies AS rm
@@ -36,7 +36,7 @@ MovieDetails AS (
 KeywordInfo AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword AS mk
     JOIN 

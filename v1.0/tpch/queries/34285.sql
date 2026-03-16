@@ -41,7 +41,7 @@ LEFT JOIN
 LEFT JOIN 
     orders o ON o.o_orderkey = l.l_orderkey
 WHERE 
-    l_shipdate BETWEEN '1997-01-01' AND DATE '1998-10-01'
+    l_shipdate BETWEEN '1997-01-01' AND toDate('1998-10-01')
 GROUP BY 
     n.n_name
 HAVING 

@@ -7,6 +7,6 @@ FROM orders o
 JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 JOIN customer c ON o.o_custkey = c.c_custkey
 WHERE o.o_orderstatus = 'O'
-  AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+  AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY o.o_orderpriority
 ORDER BY total_revenue DESC;

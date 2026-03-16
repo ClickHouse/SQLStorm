@@ -23,7 +23,7 @@ RecentActivity AS (
         MAX(p.CreationDate) AS LastPostDate
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.OwnerUserId
 ),
 PostHistorySummary AS (
@@ -31,7 +31,7 @@ PostHistorySummary AS (
         ph.UserId,
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
     FROM PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     GROUP BY ph.UserId, ph.PostId

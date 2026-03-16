@@ -41,7 +41,7 @@ SELECT
     tm.keyword_count,
     tm.cast_count,
     tm.avg_info_type,
-    (SELECT STRING_AGG(DISTINCT c.name || ' (' || rt.role || ')', ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name || ' (' || rt.role || ')'))), ', ') 
      FROM cast_info ci 
      JOIN aka_name c ON ci.person_id = c.person_id 
      JOIN role_type rt ON ci.role_id = rt.id 

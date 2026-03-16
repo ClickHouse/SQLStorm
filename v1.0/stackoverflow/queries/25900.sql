@@ -51,7 +51,7 @@ SELECT
     UpVotes,
     DownVotes,
     NetVotes,
-    STRING_AGG(TagName || ' (' || TagPostCount || ' Posts, ' || TagQuestionCount || ' Questions, ' || TagAnswerCount || ' Answers)', '; ') AS TagsInfo
+    arrayStringConcat(groupArray(assumeNotNull(TagName || ' (' || TagPostCount || ' Posts, ' || TagQuestionCount || ' Questions, ' || TagAnswerCount || ' Answers)')), '; ') AS TagsInfo
 FROM UserPostInsights
 GROUP BY UserId, DisplayName, PostCount, QuestionCount, AnswerCount, UpVotes, DownVotes, NetVotes
 ORDER BY NetVotes DESC

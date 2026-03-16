@@ -17,8 +17,8 @@ JOIN
 JOIN 
     orders ON lineitem.l_orderkey = orders.o_orderkey
 WHERE 
-    lineitem.l_shipdate >= DATE '1998-01-01'
-    AND lineitem.l_shipdate < DATE '1998-02-01'
+    lineitem.l_shipdate >= toDate('1998-01-01')
+    AND lineitem.l_shipdate < toDate('1998-02-01')
 GROUP BY 
     region.r_name, nation.n_name
 ORDER BY 

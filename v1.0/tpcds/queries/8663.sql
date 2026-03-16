@@ -55,4 +55,4 @@ JOIN
     demographics d ON d.ca_city = 'New York'  
 ORDER BY 
     s.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

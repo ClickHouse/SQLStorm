@@ -40,7 +40,7 @@ FilteredOrders AS (
     FROM 
         orders o
     WHERE 
-        EXTRACT(YEAR FROM o.o_orderdate) = 1997
+        toYear(o.o_orderdate) = 1997
         AND o.o_totalprice > (SELECT AVG(o_sub.o_totalprice) FROM orders o_sub)
 ),
 FinalSummary AS (

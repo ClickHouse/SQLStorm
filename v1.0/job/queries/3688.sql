@@ -12,7 +12,7 @@ WITH RankedTitles AS (
 CompanyMovieInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name || ' (' || ct.kind || ')', ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name || ' (' || ct.kind || ')'))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 

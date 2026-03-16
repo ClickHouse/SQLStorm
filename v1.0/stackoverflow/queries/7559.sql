@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.PostTypeId IN (1, 2)  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
@@ -57,4 +57,4 @@ FROM
     FilteredPosts fp
 ORDER BY 
     NetVoteCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

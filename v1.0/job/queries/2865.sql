@@ -23,7 +23,7 @@ MovieDetails AS (
         t.id AS movie_id,
         t.title,
         COUNT(cc.id) AS cast_count,
-        STRING_AGG(a.name, ', ') AS actors,
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actors,
         COALESCE(mci.note, 'N/A') AS movie_note
     FROM title t
     LEFT JOIN complete_cast cc ON t.id = cc.movie_id

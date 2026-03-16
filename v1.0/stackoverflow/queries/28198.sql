@@ -1,7 +1,7 @@
 
 WITH TagStatistics AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
         COUNT(*) AS PostCount,
         SUM(CASE WHEN PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
@@ -12,7 +12,7 @@ WITH TagStatistics AS (
     WHERE 
         Tags IS NOT NULL
     GROUP BY 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><'))
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2)))
 ),
 UserEngagement AS (
     SELECT 

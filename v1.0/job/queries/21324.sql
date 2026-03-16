@@ -29,7 +29,7 @@ MoviesWithKeywords AS (
     SELECT 
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COALESCE(SUM(CAST(mk.id AS INTEGER)), 0) AS keyword_count
     FROM 
         title t
@@ -72,4 +72,4 @@ ORDER BY
     fm.production_year DESC, 
     fm.total_actors DESC, 
     fm.max_roles ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -20,7 +20,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -59,4 +59,4 @@ WHERE
 ORDER BY 
     rp.Score DESC,
     rp.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

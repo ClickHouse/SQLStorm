@@ -26,7 +26,7 @@ PostStatistics AS (
 BadgesByUser AS (
     SELECT 
         UserId,
-        STRING_AGG(Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames
     FROM Badges
     GROUP BY UserId
 ),

@@ -5,7 +5,7 @@ WITH ranked_titles AS (
         title.title,
         title.production_year,
         COUNT(DISTINCT cast_info.person_id) AS total_cast,
-        STRING_AGG(DISTINCT aka_name.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aka_name.name))), ', ') AS cast_names,
         RANK() OVER (PARTITION BY title.production_year ORDER BY COUNT(DISTINCT cast_info.person_id) DESC) AS rank_within_year
     FROM 
         title

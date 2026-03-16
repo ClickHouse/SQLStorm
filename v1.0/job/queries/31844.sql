@@ -35,7 +35,7 @@ WITH RECURSIVE movie_hierarchy AS (
 SELECT
     a.name AS actor_name,
     COUNT(DISTINCT c.movie_id) AS movie_count,
-    STRING_AGG(DISTINCT t.title, ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS titles,
     AVG(mh.level) AS average_hierarchy_level
 FROM
     cast_info c

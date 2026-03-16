@@ -47,7 +47,7 @@ MovieAndCast AS (
 SELECT 
     mac.movie_title,
     mac.production_year,
-    STRING_AGG(mac.person_name || ' as ' || mac.character_role, ', ') AS cast_list
+    arrayStringConcat(groupArray(assumeNotNull(mac.person_name || ' as ' || mac.character_role)), ', ') AS cast_list
 FROM 
     MovieAndCast mac
 GROUP BY 

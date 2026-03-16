@@ -5,7 +5,7 @@ WITH RankedOrders AS (
            ROW_NUMBER() OVER (PARTITION BY o.o_clerk ORDER BY o.o_totalprice DESC) AS rank
     FROM orders o
     WHERE o.o_orderstatus = 'O'
-      AND o.o_orderdate >= DATE '1996-01-01'
+      AND o.o_orderdate >= toDate('1996-01-01')
 ),
 SupplierPartDetails AS (
     SELECT s.s_suppkey,

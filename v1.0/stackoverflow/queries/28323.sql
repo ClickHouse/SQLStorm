@@ -9,7 +9,7 @@ WITH PostTagCounts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        Tags t ON t.TagName = ANY(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'))
+        Tags t ON t.TagName = ANY(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
     GROUP BY 
         p.Id, p.Title, p.Tags
 ),

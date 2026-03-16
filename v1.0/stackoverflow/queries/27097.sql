@@ -8,12 +8,12 @@ WITH RankedPosts AS (
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
-    LEFT JOIN LATERAL unnest(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS t(TagName) ON TRUE
+    LEFT JOIN arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags)-2))) AS t(TagName) ON TRUE
     WHERE p.PostTypeId = 1 
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),

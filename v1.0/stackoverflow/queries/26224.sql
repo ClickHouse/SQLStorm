@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 TagStats AS (
@@ -37,12 +37,12 @@ TagStats AS (
 FilteredComments AS (
     SELECT 
         c.PostId,
-        STRING_AGG(c.Text, ' ') AS AllComments,
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' ') AS AllComments,
         COUNT(*) AS CommentCount
     FROM 
         Comments c
     WHERE 
-        c.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 MONTH'
+        c.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         c.PostId
 )

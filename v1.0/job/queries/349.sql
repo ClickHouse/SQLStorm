@@ -56,7 +56,7 @@ SELECT
         ELSE 'Less Popular'
     END AS popularity,
     (SELECT 
-        STRING_AGG(k.keyword, ', ')
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ')
      FROM 
         movie_keyword mk
      JOIN 

@@ -23,9 +23,9 @@ AggregationData AS (
         movie_id,
         title,
         production_year,
-        STRING_AGG(DISTINCT company_name, ', ') AS companies,
-        STRING_AGG(DISTINCT keywords, ', ') AS all_keywords,
-        STRING_AGG(DISTINCT actor_name || ' (' || actor_role || ')', ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keywords))), ', ') AS all_keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name || ' (' || actor_role || ')'))), ', ') AS actors
     FROM RecursiveMovieData
     GROUP BY movie_id, title, production_year
 )

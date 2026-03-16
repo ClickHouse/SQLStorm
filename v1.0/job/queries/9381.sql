@@ -33,7 +33,7 @@ AggregateData AS (
         title,
         production_year,
         COUNT(DISTINCT keyword) AS total_keywords,
-        STRING_AGG(DISTINCT company_type, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS companies
     FROM 
         MovieDetails
     GROUP BY 

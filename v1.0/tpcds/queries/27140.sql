@@ -3,7 +3,7 @@ WITH StringAggregation AS (
     SELECT 
         c.c_customer_id,
         CONCAT(c.c_first_name, ' ', c.c_last_name) AS full_name,
-        STRING_AGG(DISTINCT CONCAT(a.ca_street_number, ' ', a.ca_street_name, ' ', a.ca_city, ', ', a.ca_state, ' ', a.ca_zip), '; ') AS addresses,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.ca_street_number, ' ', a.ca_street_name, ' ', a.ca_city, ', ', a.ca_state, ' ', a.ca_zip)))), '; ') AS addresses,
         COUNT(DISTINCT d.d_date) AS purchase_dates,
         SUM(CASE WHEN d.d_holiday = 'Y' THEN 1 ELSE 0 END) AS holiday_purchases,
         SUM(CASE WHEN dc.cd_gender = 'M' THEN 1 ELSE 0 END) AS male_customers,

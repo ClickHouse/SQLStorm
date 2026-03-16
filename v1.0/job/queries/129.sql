@@ -31,7 +31,7 @@ ActorStats AS (
         a.person_id,
         COUNT(cc.movie_id) AS total_movies,
         AVG(m.production_year) AS avg_year,
-        STRING_AGG(DISTINCT m.title, ', ') AS movies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.title))), ', ') AS movies
     FROM 
         cast_info cc
     JOIN 
@@ -46,7 +46,7 @@ ActorStats AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

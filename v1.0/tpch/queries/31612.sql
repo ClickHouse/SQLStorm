@@ -44,7 +44,7 @@ SELECT
     n.n_name AS nation, 
     s.s_name AS supplier_name, 
     SUM(t.total_sales) AS total_sales,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     MIN(sa.avg_supplycost) AS min_avg_supply_cost,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     COALESCE(MAX(sh.level), 0) AS supplier_level

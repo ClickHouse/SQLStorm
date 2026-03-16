@@ -31,7 +31,7 @@ UserPostStats AS (
 SELECT ups.UserId, ups.DisplayName, ups.Reputation, ups.CreationDate, 
        ups.TotalPosts, ups.TotalAnswers, ups.TotalQuestions, ups.TotalViews,
        ups.GoldBadges, ups.SilverBadges, ups.BronzeBadges,
-       (SELECT STRING_AGG(t.TagName, ', ') FROM Tags t 
+       (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') FROM Tags t 
         JOIN Posts ps ON ps.Tags LIKE CONCAT('%<', t.TagName, '>%') 
         WHERE ps.OwnerUserId = ups.UserId) AS PopularTags
 FROM UserPostStats ups

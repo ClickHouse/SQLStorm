@@ -73,4 +73,4 @@ LEFT JOIN
     PostComments c ON u.UserId = c.UserId
 ORDER BY 
     u.Reputation DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

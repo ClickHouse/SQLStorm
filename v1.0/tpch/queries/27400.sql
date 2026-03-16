@@ -13,7 +13,7 @@ WITH RECURSIVE StringProcessing AS (
     SELECT brass_indicator, 
            AVG(name_length) AS avg_length,
            COUNT(*) AS count_parts,
-           STRING_AGG(name_substring, ', ') AS concatenated_names
+           arrayStringConcat(groupArray(assumeNotNull(name_substring)), ', ') AS concatenated_names
     FROM StringProcessing
     GROUP BY brass_indicator
 )

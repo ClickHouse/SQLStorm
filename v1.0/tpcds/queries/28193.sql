@@ -4,7 +4,7 @@ WITH address_stats AS (
         ca_state, 
         COUNT(*) AS address_count, 
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length,
-        STRING_AGG(DISTINCT ca_city, ', ') AS unique_cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS unique_cities
     FROM 
         customer_address
     GROUP BY 
@@ -15,7 +15,7 @@ demographics_stats AS (
         cd_gender,
         COUNT(*) AS demographic_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -26,7 +26,7 @@ sales_stats AS (
         ws_bill_addr_sk, 
         SUM(ws_net_profit) AS total_net_profit,
         COUNT(*) AS total_orders,
-        STRING_AGG(DISTINCT CAST(ws_ship_mode_sk AS TEXT), ', ') AS shipping_modes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws_ship_mode_sk AS TEXT)))), ', ') AS shipping_modes
     FROM 
         web_sales
     GROUP BY 

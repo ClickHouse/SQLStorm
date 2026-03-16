@@ -49,7 +49,7 @@ LEFT JOIN TagStatistics TS ON EXISTS (
     SELECT 1 FROM Posts P 
     WHERE P.OwnerUserId = U.Id AND P.Id = PS.PostId
 )
-WHERE U.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
+WHERE U.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
 AND (U.Views IS NULL OR U.Views >= 100) 
 GROUP BY U.DisplayName, U.Reputation, UB.GoldBadges, UB.SilverBadges, UB.BronzeBadges, PS.ScoreRank, TS.TagName, TS.PostCount, TS.PositivePosts, TS.NegativePosts
 ORDER BY U.Reputation DESC, TS.PostCount DESC

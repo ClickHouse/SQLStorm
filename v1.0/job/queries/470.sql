@@ -26,7 +26,7 @@ MovieDetails AS (
     SELECT 
         tm.movie_title,
         tm.production_year,
-        STRING_AGG(aka.name, ', ') AS main_actors,
+        arrayStringConcat(groupArray(assumeNotNull(aka.name)), ', ') AS main_actors,
         MAX(mi.info) AS rating
     FROM 
         TopMovies tm

@@ -18,7 +18,7 @@ AggregatedData AS (
         p_type,
         COUNT(*) AS part_count,
         AVG(ps_supplycost) AS avg_supplycost,
-        STRING_AGG(supplier_name, ', ') AS suppliers
+        arrayStringConcat(groupArray(assumeNotNull(supplier_name)), ', ') AS suppliers
     FROM 
         RankedParts
     WHERE 

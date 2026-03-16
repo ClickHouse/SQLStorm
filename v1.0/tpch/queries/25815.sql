@@ -5,9 +5,9 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
     MAX(o.o_totalprice) AS max_order_total,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, '(', c.c_acctbal, ')'), '; ') AS customer_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, '(', c.c_acctbal, ')')))), '; ') AS customer_info,
     SUBSTRING(p.p_comment, 1, 20) AS short_comment,
-    CONCAT('Suppliers: ', STRING_AGG(DISTINCT s.s_name, ', ')) AS supplier_names
+    CONCAT('Suppliers: ', arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ')) AS supplier_names
 FROM 
     part p
 JOIN 

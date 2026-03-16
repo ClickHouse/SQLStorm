@@ -16,18 +16,18 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 9 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId
 ),
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        ARRAY_AGG(cr.Name) AS CloseReasons
+        groupArray(assumeNotNull(cr.Name)) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON ph.Comment::int = cr.Id 
+        CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id 
     WHERE 
         ph.PostHistoryTypeId = 10 
     GROUP BY 

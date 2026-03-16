@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -26,7 +26,7 @@ UserStats AS (
 TaggedPosts AS (
     SELECT 
         P.Id AS PostId,
-        unnest(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2))) AS Tag
     FROM 
         Posts P
     WHERE 
@@ -58,7 +58,7 @@ JOIN
     UserStats US ON US.UserId = RP.PostId 
 LEFT JOIN (
     SELECT 
-        TP.PostId, STRING_AGG(TP.Tag, ', ') AS PosterGroup 
+        TP.PostId, arrayStringConcat(groupArray(assumeNotNull(TP.Tag)), ', ') AS PosterGroup 
     FROM 
         TaggedPosts TP
     GROUP BY 

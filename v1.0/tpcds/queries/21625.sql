@@ -48,4 +48,4 @@ JOIN IncomeDistribution id ON cs.total_spent BETWEEN id.customer_count AND id.to
 WHERE rs.return_amt IS NOT NULL
     AND cs.order_count > 1
 ORDER BY cs.total_spent DESC, rs.return_quantity DESC
-OFFSET 10 ROWS FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 10;

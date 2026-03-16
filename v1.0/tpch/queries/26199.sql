@@ -3,7 +3,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     SUM(l.l_extendedprice) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(CONCAT(s.s_name, ' (', s.s_phone, ')'), '; ') AS supplier_details,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')'))), '; ') AS supplier_details,
     r.r_name AS region_name
 FROM 
     part p

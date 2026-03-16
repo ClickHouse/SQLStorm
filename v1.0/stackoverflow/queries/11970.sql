@@ -44,4 +44,4 @@ SELECT
 FROM UserStats U
 JOIN PostStats P ON P.PostId = (SELECT Id FROM Posts WHERE OwnerUserId = U.UserId ORDER BY CreationDate DESC LIMIT 1)
 ORDER BY U.Reputation DESC, P.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

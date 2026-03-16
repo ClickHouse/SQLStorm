@@ -3,8 +3,8 @@ WITH MovieStats AS (
         t.id AS movie_id,
         t.title AS movie_title,
         COUNT(DISTINCT c.person_id) AS actor_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         MIN(t.production_year) AS first_year,
         MAX(t.production_year) AS last_year
     FROM 
@@ -28,8 +28,8 @@ WITH MovieStats AS (
 CompanyStats AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT co.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types
     FROM 
         movie_companies mc
     JOIN 

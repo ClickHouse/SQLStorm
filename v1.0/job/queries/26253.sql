@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         title.title AS movie_title, 
         aka_title.title AS aka_title, 
         title.production_year, 
-        STRING_AGG(DISTINCT keyword.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword.keyword))), ', ') AS keywords,
         company_name.name AS production_company
     FROM 
         title

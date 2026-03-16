@@ -27,7 +27,7 @@ SELECT
     a.actor_name,
     COUNT(DISTINCT m.id) AS movies_count,
     AVG(m.production_year) AS avg_production_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     COALESCE(g.kind, 'Not Specified') AS genre,
     ROW_NUMBER() OVER (PARTITION BY a.actor_id ORDER BY AVG(m.production_year) DESC) AS ranking
 FROM 

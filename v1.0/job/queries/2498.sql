@@ -48,7 +48,7 @@ SELECT
     tm.production_year,
     COALESCE(mk.movie_keyword, 'No Keywords') AS movie_keyword,
     COUNT(DISTINCT md.actor_id) AS unique_actors,
-    STRING_AGG(DISTINCT md.actor_name, ', ') AS actor_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name))), ', ') AS actor_names
 FROM 
     TopMovies tm
 LEFT JOIN 

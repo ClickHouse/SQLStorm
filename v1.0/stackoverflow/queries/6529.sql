@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName
 ),
@@ -39,7 +39,7 @@ SELECT
     fp.*, 
     COUNT(b.Id) AS BadgeCount,
     SUM(CASE WHEN bh.PostHistoryTypeId = 10 THEN 1 ELSE 0 END) AS CloseCount,
-    STRING_AGG(pt.Name, ', ') AS PostTypeNames
+    arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostTypeNames
 FROM 
     FilteredPosts fp
 LEFT JOIN 

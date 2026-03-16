@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         t.production_year,
         a.name AS actor_name,
         COUNT(ci.person_id) AS actor_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         ROW_NUMBER() OVER (PARTITION BY t.id ORDER BY COUNT(ci.person_id) DESC) AS rank
     FROM 
         aka_title t
@@ -36,10 +36,10 @@ TopMovies AS (
 )
 SELECT 
     production_year,
-    STRING_AGG(DISTINCT movie_title, '; ') AS movies,
-    STRING_AGG(DISTINCT actor_name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_title))), '; ') AS movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
     SUM(actor_count) AS total_actors,
-    STRING_AGG(DISTINCT keywords, ', ') AS all_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keywords))), ', ') AS all_keywords
 FROM 
     TopMovies
 GROUP BY 

@@ -5,7 +5,7 @@ WITH MovieTitles AS (
         t.title,
         t.production_year,
         COUNT(c.id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS main_cast,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS main_cast,
         CASE 
             WHEN t.production_year < 2000 THEN 'Pre-2000' 
             ELSE 'Post-2000' 

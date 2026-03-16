@@ -43,7 +43,7 @@ SELECT
     tu.TotalDownVotes,
     COALESCE(ROUND(((CAST(tu.TotalUpVotes AS FLOAT) / NULLIF(tu.TotalPosts, 0)) * 100), 2), 0) AS UpVotePercentage,
     COALESCE(ROUND(((CAST(tu.TotalDownVotes AS FLOAT) / NULLIF(tu.TotalPosts, 0)) * 100), 2), 0) AS DownVotePercentage,
-    (SELECT STRING_AGG(t.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
      FROM Tags t 
      JOIN Posts p ON t.WikiPostId = p.Id 
      WHERE p.OwnerUserId = tu.UserId) AS TagsContributed

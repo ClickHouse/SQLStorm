@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, u.DisplayName
 ), HighScorePosts AS (

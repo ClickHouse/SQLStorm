@@ -2,7 +2,7 @@
 WITH TagsSplit AS (
     SELECT 
         Id AS PostId,
-        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS Tag
     FROM 
         Posts
     WHERE 
@@ -60,7 +60,7 @@ SELECT
     u.DisplayName,
     u.QuestionCount,
     u.TotalBounty,
-    STRING_AGG(DISTINCT ut.Tag || ' (' || ut.TagCount || ')', ', ') AS PopularTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ut.Tag || ' (' || ut.TagCount || ')'))), ', ') AS PopularTags
 FROM 
     TopUsers u
 LEFT JOIN 

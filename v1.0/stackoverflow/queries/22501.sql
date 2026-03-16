@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '1 year'
+        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT

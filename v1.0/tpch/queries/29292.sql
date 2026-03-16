@@ -8,8 +8,8 @@ SELECT
     MAX(l.l_discount) AS max_discount,
     MIN(l.l_tax) AS min_tax,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments,
-    STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments
 FROM 
     part p
 JOIN 

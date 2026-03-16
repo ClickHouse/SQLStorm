@@ -30,7 +30,7 @@ SELECT
     (SELECT COUNT(*) 
      FROM Comments c 
      WHERE c.PostId = rp.PostId) AS TotalComments,
-    (SELECT STRING_AGG(DISTINCT u.DisplayName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') 
      FROM Votes v 
      JOIN Users u ON v.UserId = u.Id 
      WHERE v.PostId = rp.PostId 

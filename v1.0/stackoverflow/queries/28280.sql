@@ -19,7 +19,7 @@ WITH RecentQuestions AS (
         Comments c ON c.PostId = p.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.Tags, u.DisplayName
     HAVING 
@@ -27,14 +27,14 @@ WITH RecentQuestions AS (
 ),
 TagStats AS (
     SELECT 
-        LOWER(TRIM(UNNEST(STRING_TO_ARRAY(p.Tags, '> <')))) AS TagName,
+        LOWER(TRIM(arrayJoin(splitByString('> <', p.Tags)))) AS TagName,
         COUNT(p.Id) AS QuestionCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
-        LOWER(TRIM(UNNEST(STRING_TO_ARRAY(p.Tags, '> <'))))
+        LOWER(TRIM(arrayJoin(splitByString('> <', p.Tags))))
 ),
 UserVoteStats AS (
     SELECT 

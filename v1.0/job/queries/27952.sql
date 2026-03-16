@@ -14,7 +14,7 @@ MoviesWithInfo AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        STRING_AGG(DISTINCT k.keyword, ',') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',') AS keywords,
         COUNT(DISTINCT ci.person_id) AS actor_count
     FROM 
         aka_title m

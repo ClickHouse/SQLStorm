@@ -8,7 +8,7 @@ WITH RankedPosts AS (
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
     WHERE p.PostTypeId = 1 
-      AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+      AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT PostId, Title, Score, CreationDate, OwnerDisplayName
@@ -41,5 +41,5 @@ SELECT ps.PostId,
 FROM PostStats ps
 LEFT JOIN PostHistory ph ON ps.PostId = ph.PostId
 LEFT JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
-WHERE ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ORDER BY ps.Score DESC, ps.CommentCount DESC;

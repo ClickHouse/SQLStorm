@@ -47,7 +47,7 @@ MovieDetails AS (
 )
 SELECT 
     md.movie_title,
-    STRING_AGG(DISTINCT md.actor_name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name))), ', ') AS actor_names,
     COUNT(DISTINCT md.movie_info) AS info_count,
     RANK() OVER (ORDER BY SUM(pq.keyword_count) DESC) AS popularity_rank
 FROM 

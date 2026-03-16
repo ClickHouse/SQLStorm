@@ -7,7 +7,7 @@ SELECT
     COUNT(l.l_orderkey) AS total_line_items,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(l.l_tax) AS average_tax,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     CONCAT('Processed ', COUNT(DISTINCT l.l_orderkey), ' orders with total revenue of $', 
            CAST(SUM(l.l_extendedprice * (1 - l.l_discount)) AS VARCHAR)) AS summary_info
 FROM 

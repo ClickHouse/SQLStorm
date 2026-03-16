@@ -39,7 +39,7 @@ RecentHighCastMovies AS (
 CompanyMovies AS (
     SELECT 
         mt.title AS movie_title,
-        STRING_AGG(CN.name, ', ') AS company_names
+        arrayStringConcat(groupArray(assumeNotNull(CN.name)), ', ') AS company_names
     FROM 
         aka_title mt
     INNER JOIN 

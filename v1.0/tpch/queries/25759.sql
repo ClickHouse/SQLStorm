@@ -6,7 +6,7 @@ SELECT
     MAX(p.p_retailprice) AS max_price,
     MIN(p.p_retailprice) AS min_price,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-    STRING_AGG(n.n_name, ', ') AS nation_names
+    arrayStringConcat(groupArray(assumeNotNull(n.n_name)), ', ') AS nation_names
 FROM 
     part p
 LEFT JOIN 

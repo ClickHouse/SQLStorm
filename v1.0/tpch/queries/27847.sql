@@ -4,8 +4,8 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(s.s_acctbal) AS average_supplier_balance,
     MAX(p.p_retailprice) AS max_price,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
-    STRING_AGG(DISTINCT r.r_name, '; ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), '; ') AS regions_supplied
 FROM 
     part p
 JOIN 

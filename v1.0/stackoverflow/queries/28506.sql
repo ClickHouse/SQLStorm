@@ -30,18 +30,18 @@ RecentPostHistories AS (
     JOIN 
         PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         ph.PostId, ph.CreationDate, PHT.Name
 ),
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(DISTINCT TRIM(REGEXP_REPLACE(tag, '<([^>]+)>', '', 'g')), ', ') AS CleanedTags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(TRIM(REGEXP_REPLACE(tag, '<([^>]+)>', '', 'g'))))), ', ') AS CleanedTags
     FROM 
         Posts p
     CROSS JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS tag
     GROUP BY 
         p.Id
 )

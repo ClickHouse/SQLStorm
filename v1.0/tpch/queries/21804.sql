@@ -45,4 +45,4 @@ LEFT JOIN RankedSuppliers rs ON c.c_custkey = (SELECT ps.ps_suppkey FROM partsup
 LEFT JOIN SupplierProductStats sp ON sp.p_partkey = rs.associated_partkey
 WHERE cd.total_spent > (SELECT AVG(total_spent) FROM CustomerOrderDetails)
 ORDER BY c.c_name, supplier_count DESC NULLS LAST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

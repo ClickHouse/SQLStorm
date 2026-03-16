@@ -36,7 +36,7 @@ SELECT
     lm.phonetic_code,
     COUNT(DISTINCT c.person_id) AS cast_count,
     AVG(COALESCE(CASE WHEN pi.info_type_id = 1 THEN LENGTH(pi.info) END, 0)) AS avg_bio_length,
-    STRING_AGG(DISTINCT ak.name, ', ') AS aka_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names
 FROM 
     RecursiveMovies lm
 LEFT JOIN 

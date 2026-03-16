@@ -5,7 +5,7 @@ SELECT
     r.r_name AS region_name,
     n.n_name AS nation_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     part p
 JOIN 
@@ -24,7 +24,7 @@ WHERE
     p.p_brand LIKE 'Brand%01' 
     AND p.p_type IN ('Type A', 'Type B', 'Type C')
     AND o.o_orderstatus = 'O'
-    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_name, p.p_brand, p.p_container, r.r_name, n.n_name
 ORDER BY 

@@ -46,7 +46,7 @@ FilteredActors AS (
 MovieKeywords AS (
     SELECT 
         movie_id,
-        STRING_AGG(keyword.keyword, ', ') AS keywords_list
+        arrayStringConcat(groupArray(assumeNotNull(keyword.keyword)), ', ') AS keywords_list
     FROM 
         movie_keyword
     JOIN 

@@ -51,11 +51,11 @@ SELECT
     ROUND(tu.AvgScore, 2) AS RoundedAvgScore,
     CASE 
         WHEN tu.TotalQuestions = 0 THEN 'No questions'
-        ELSE CONCAT('Post ratio: ', ROUND(tu.TotalAnswers::numeric / NULLIF(tu.TotalQuestions, 0), 2))
+        ELSE CONCAT('Post ratio: ', ROUND(CAST(tu.TotalAnswers AS numeric) / NULLIF(tu.TotalQuestions, 0), 2))
     END AS PostRatio,
     COALESCE((
         SELECT 
-            STRING_AGG(b.Name, ', ') 
+            arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
         FROM 
             Badges b
         WHERE 

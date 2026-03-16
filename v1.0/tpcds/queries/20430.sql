@@ -30,7 +30,7 @@ SELECT
     COUNT(DISTINCT CASE WHEN cd.cd_marital_status = 'M' THEN c.c_customer_sk END) AS married_customers,
     COUNT(DISTINCT c.c_customer_sk) AS total_customers,
     AVG(cd.cd_purchase_estimate) AS average_purchase_estimate,
-    STRING_AGG(DISTINCT cd.cd_credit_rating, ', ') AS unique_credit_ratings,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_credit_rating))), ', ') AS unique_credit_ratings,
     SUM(ws.ws_net_paid) AS total_web_sales,
     SUM(COALESCE(cr.cr_return_quantity, 0)) AS total_catalog_returns,
     RANK() OVER (PARTITION BY ca.ca_state ORDER BY AVG(cd.cd_dep_count) DESC) AS state_rank
@@ -55,4 +55,4 @@ HAVING
     COUNT(DISTINCT c.c_customer_sk) > 10
 ORDER BY 
     total_web_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

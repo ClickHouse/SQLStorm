@@ -1,7 +1,7 @@
 WITH PostTags AS (
     SELECT 
         p.Id AS PostId,
-        TRIM(UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'))) AS TagName
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS TagName
     FROM 
         Posts p
     WHERE 

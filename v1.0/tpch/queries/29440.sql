@@ -2,7 +2,7 @@ SELECT
     SUBSTRING(p_name, 1, 10) AS short_name,
     COUNT(DISTINCT s_nationkey) AS nation_count,
     AVG(ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT c_mktsegment, ', ') AS market_segments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c_mktsegment))), ', ') AS market_segments,
     MAX(o_totalprice) AS max_order_price
 FROM 
     part p

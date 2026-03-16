@@ -7,7 +7,7 @@ WITH RankedOrders AS (
         o.o_orderdate,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rnk
     FROM orders o
-    WHERE o.o_orderdate < DATE '1998-10-01'
+    WHERE o.o_orderdate < toDate('1998-10-01')
 ),
 CustomerSummary AS (
     SELECT 
@@ -35,7 +35,7 @@ SELECT
     COALESCE(cs.total_spent, 0) AS customer_total_spent,
     r.r_name AS region_name,
     COUNT(DISTINCT o.o_orderkey) FILTER (WHERE o.o_orderstatus = 'O') AS open_orders,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM part p
 LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 LEFT JOIN PartSupplierSummary pss ON p.p_partkey = pss.ps_partkey
@@ -51,4 +51,4 @@ AND (r.r_name IS NOT NULL OR s.s_name LIKE '%inc%')
 GROUP BY p.p_partkey, p.p_name, p.p_mfgr, pss.total_avail_cost, cs.total_spent, r.r_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY total_supplied_cost DESC, customer_total_spent ASC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

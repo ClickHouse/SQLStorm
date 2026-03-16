@@ -36,7 +36,7 @@ PopularTags AS (
     FROM 
         Posts p
     JOIN 
-        UNNEST(string_to_array(p.Tags, '><')) AS t(TagName) ON p.Id = p.Id
+        arrayJoin(splitByString('><', p.Tags)) AS t(TagName) ON p.Id = p.Id
     GROUP BY 
         t.TagName
     ORDER BY 

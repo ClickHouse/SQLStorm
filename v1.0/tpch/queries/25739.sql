@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     AVG(o.o_totalprice) AS avg_order_total,
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_qty,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS unique_part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS unique_part_names
 FROM 
     nation n
 JOIN 

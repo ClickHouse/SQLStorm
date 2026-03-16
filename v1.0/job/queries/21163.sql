@@ -88,5 +88,5 @@ ORDER BY
     mh.production_year DESC,
     mh.title,
     mh.level DESC
-OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;
 

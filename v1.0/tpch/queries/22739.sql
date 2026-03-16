@@ -20,7 +20,7 @@ SELECT r.r_name,
        COUNT(DISTINCT c.c_custkey) AS total_customers,
        AVG(ps.ps_supplycost) AS avg_supplycost,
        SUM(CASE WHEN l.l_shipdate IS NULL THEN 1 ELSE 0 END) AS null_shipdate_count,
-       STRING_AGG(DISTINCT CONCAT(p.p_name, '(', p.p_size, ')'), ', ') AS part_details
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, '(', p.p_size, ')')))), ', ') AS part_details
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN customer c ON n.n_nationkey = c.c_nationkey
@@ -34,4 +34,4 @@ WHERE r.r_name IS NOT NULL
 GROUP BY r.r_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY total_customers DESC, r.r_name
-OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

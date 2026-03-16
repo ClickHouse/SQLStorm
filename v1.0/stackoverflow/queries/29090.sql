@@ -7,7 +7,7 @@ WITH PostDetails AS (
         p.Body,
         u.DisplayName AS AuthorDisplayName,
         COALESCE(NULLIF(p.Score, 0), NULL) AS Score,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT ph.Id) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11)) AS CloseReopenedCount,
         COUNT(DISTINCT v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpvoteCount
@@ -16,7 +16,7 @@ WITH PostDetails AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        Tags t ON STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')::varchar[] @> ARRAY[t.TagName]
+        Tags t ON splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)CAST() AS varchar)[] @> ARRAY[t.TagName]
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 

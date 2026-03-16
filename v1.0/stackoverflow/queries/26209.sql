@@ -15,8 +15,8 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON a.ParentId = p.Id AND a.PostTypeId = 2 
     LEFT JOIN 
-        LATERAL (
-            SELECT unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS TagName
+        (
+            SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS TagName
         ) AS t ON true
     WHERE 
         p.PostTypeId = 1 
@@ -52,8 +52,8 @@ JOIN
 JOIN 
     Users u ON p.OwnerUserId = u.Id
 JOIN 
-    LATERAL (
-        SELECT unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS TagName
+    (
+        SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS TagName
     ) AS t ON true
 WHERE 
     tp.Rank <= 10 

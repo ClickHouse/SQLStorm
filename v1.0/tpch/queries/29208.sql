@@ -7,7 +7,7 @@ SELECT
             ELSE 0 
         END) AS TotalReturnedQuantity,
     COUNT(DISTINCT o.o_orderkey) AS TotalOrders,
-    STRING_AGG(DISTINCT CONCAT('OrderID: ', o.o_orderkey, ' | Status: ', o.o_orderstatus), '; ') AS OrderDetails
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('OrderID: ', o.o_orderkey, ' | Status: ', o.o_orderstatus)))), '; ') AS OrderDetails
 FROM 
     part p
 JOIN 

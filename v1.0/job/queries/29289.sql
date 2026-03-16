@@ -42,7 +42,7 @@ TotalActorProfile AS (
         ak.id AS actor_id,
         ak.name AS actor_name,
         COUNT(DISTINCT mt.id) AS total_movies,
-        STRING_AGG(DISTINCT mt.title, ', ') AS movies_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mt.title))), ', ') AS movies_list
     FROM 
         aka_name ak
     JOIN 

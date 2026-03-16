@@ -27,7 +27,7 @@ aggregated_data AS (
         email_domain,
         COUNT(*) AS customer_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT CONCAT(full_name, '(', cd_gender, ')'), '; ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(full_name, '(', cd_gender, ')')))), '; ') AS customer_names
     FROM 
         processed_data
     GROUP BY 

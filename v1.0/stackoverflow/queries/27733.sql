@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
 ),
 PopularTagStats AS (
     SELECT 
@@ -26,7 +26,7 @@ PopularTagStats AS (
     FROM 
         RankedPosts RP
     JOIN 
-        UNNEST(string_to_array(RP.Tags, '><')) AS T(TagName) 
+        arrayJoin(splitByString('><', RP.Tags)) AS T(TagName) 
     ON 
         RP.TagRank = 1 
     GROUP BY 

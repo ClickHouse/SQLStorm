@@ -37,5 +37,4 @@ JOIN region r ON n.n_regionkey = r.r_regionkey
 GROUP BY r.r_name, fr.order_volume
 HAVING AVG(fr.avg_discounted_price) > (SELECT AVG(total_discounted_price) FROM QualifiedOrders)
 ORDER BY r.r_name, fr.order_volume DESC
-OFFSET 5 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

@@ -25,7 +25,7 @@ SELECT
     m.production_year,
     COALESCE(t.actor_count, 0) AS actor_count,
     COALESCE(t.avg_actor_role, 0) AS avg_actor_role,
-    COALESCE(ARRAY_AGG(DISTINCT n.name ORDER BY n.name), ARRAY[]::VARCHAR[]) AS actor_names
+    COALESCE(arrayDistinct(groupArray(assumeNotNull(n.name ORDER BY n.name))), ARRAY[]::VARCHAR[]) AS actor_names
 FROM RankedMovies m
 LEFT JOIN TopRatedMovies t ON m.movie_id = t.movie_id
 LEFT JOIN cast_info ci ON m.movie_id = ci.movie_id

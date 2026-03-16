@@ -13,7 +13,7 @@ WITH RECURSIVE CustomerOrders AS (
     JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
 
     UNION ALL
 
@@ -63,7 +63,7 @@ FinalResults AS (
         co.c_custkey,
         co.c_name,
         MAX(co.o_totalprice) AS max_order_price,
-        STRING_AGG(DISTINCT ts.s_name, ', ') AS top_suppliers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ts.s_name))), ', ') AS top_suppliers,
         COUNT(DISTINCT co.o_orderkey) AS orders_count
     FROM 
         CustomerOrders co

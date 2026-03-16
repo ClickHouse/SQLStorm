@@ -3,7 +3,7 @@ SELECT
     p_type,
     SUM(ps_supplycost * ps_availqty) AS total_cost,
     COUNT(*) AS total_suppliers,
-    STRING_AGG(DISTINCT p_name, ', ') AS product_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p_name))), ', ') AS product_names
 FROM 
     supplier s
 JOIN 

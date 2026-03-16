@@ -11,7 +11,7 @@ cast_summary AS (
     SELECT 
         c.movie_id,
         COUNT(c.person_id) AS actor_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM 
         cast_info c
     JOIN 
@@ -22,7 +22,7 @@ cast_summary AS (
 keyword_summary AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -61,4 +61,4 @@ WHERE
 ORDER BY 
     ti.total_actors DESC, 
     ti.total_movies DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

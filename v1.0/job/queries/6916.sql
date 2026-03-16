@@ -4,7 +4,7 @@ SELECT
     t.title AS movie_title,
     c.kind AS company_type,
     t.production_year,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     COUNT(DISTINCT p.id) AS num_actors
 FROM 
     aka_name a

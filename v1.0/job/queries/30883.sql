@@ -31,7 +31,7 @@ SELECT
     mh.movie_title,
     mh.production_year,
     COUNT(DISTINCT c.id) AS total_cast,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
     AVG(pi.id) AS average_info_type,
     SUM(CASE WHEN mc.note IS NOT NULL THEN 1 ELSE 0 END) AS notes_count,
     RANK() OVER (PARTITION BY mh.production_year ORDER BY COUNT(DISTINCT c.id) DESC) AS rank_by_cast_size

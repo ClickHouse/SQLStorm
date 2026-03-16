@@ -2,9 +2,9 @@ WITH RankedMovies AS (
     SELECT 
         a.title AS movie_title,
         a.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
         COUNT(c.person_id) AS cast_count,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         ROW_NUMBER() OVER (PARTITION BY a.production_year ORDER BY COUNT(c.person_id) DESC) AS rank
     FROM 
         aka_title a
@@ -38,7 +38,7 @@ SELECT
     sm.production_year,
     sm.aka_names,
     sm.cast_count,
-    COALESCE(STRING_AGG(DISTINCT cn.name, ', '), 'No Companies') AS production_companies
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', '), 'No Companies') AS production_companies
 FROM 
     SelectedMovies sm
 LEFT JOIN 

@@ -61,7 +61,7 @@ SELECT
     fm.cast_with_notes,
     COUNT(DISTINCT fm.company_name) AS unique_companies,
     MAX(CASE WHEN fm.cast_rank IS NULL THEN 'No Cast Available' ELSE 'Has Cast' END) AS cast_status,
-    STRING_AGG(DISTINCT fm.company_type, ', ') AS company_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fm.company_type))), ', ') AS company_types,
     COALESCE(CAST(SUM(fm.cast_with_notes) AS VARCHAR), '0') AS notes_summary
 FROM 
     FilteredMovies fm

@@ -31,7 +31,7 @@ TopMovies AS (
 )
 SELECT 
     tm.production_year,
-    STRING_AGG(tm.title || ' (' || tm.company_name || ')', ', ') AS top_movies,
+    arrayStringConcat(groupArray(assumeNotNull(tm.title || ' (' || tm.company_name || ')')), ', ') AS top_movies,
     AVG(tm.cast_count) AS average_cast_count
 FROM 
     TopMovies tm

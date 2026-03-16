@@ -22,7 +22,7 @@ PostStatistics AS (
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank,
         p.OwnerUserId
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
@@ -55,7 +55,7 @@ SELECT
     AVG(Score) AS AvgScore, 
     SUM(COALESCE(AnswerCount, 0)) AS TotalAnswers,
     MAX(ViewCount) AS MaxViews,
-    STRING_AGG(ClosureComments, ', ') AS ClosureRemarks
+    arrayStringConcat(groupArray(assumeNotNull(ClosureComments)), ', ') AS ClosureRemarks
 FROM CombinedResults
 GROUP BY DisplayName
 HAVING COUNT(Title) > 5

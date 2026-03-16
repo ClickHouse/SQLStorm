@@ -3,7 +3,7 @@ WITH address_summary AS (
         ca_city,
         ca_state,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
-        STRING_AGG(DISTINCT ca_street_name || ' ' || ca_street_type, ', ') AS street_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_type))), ', ') AS street_names
     FROM 
         customer_address
     GROUP BY 
@@ -14,7 +14,7 @@ customer_summary AS (
         cd_gender,
         COUNT(*) AS customer_count,
         SUM(cd_purchase_estimate) AS total_purchase_estimate,
-        STRING_AGG(DISTINCT c_first_name || ' ' || c_last_name, ', ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c_first_name || ' ' || c_last_name))), ', ') AS customer_names
     FROM 
         customer c
     JOIN 

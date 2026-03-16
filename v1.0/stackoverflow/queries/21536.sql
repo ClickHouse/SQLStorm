@@ -10,7 +10,7 @@ WITH UserVotes AS (
 ), UserBadges AS (
     SELECT 
         B.UserId,
-        STRING_AGG(B.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames,
         COUNT(CASE WHEN B.Class = 1 THEN 1 END) AS GoldBadges,
         COUNT(CASE WHEN B.Class = 2 THEN 1 END) AS SilverBadges,
         COUNT(CASE WHEN B.Class = 3 THEN 1 END) AS BronzeBadges
@@ -50,7 +50,7 @@ SELECT
     SUM(PD.Score) AS TotalScore,
     SUM(PD.ViewCount) AS TotalViews,
     SUM(PD.CommentCount) AS TotalComments,
-    STRING_AGG(DISTINCT PD.Title, '; ') AS PostTitles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PD.Title))), '; ') AS PostTitles
 FROM Users U
 LEFT JOIN UserVotes UV ON U.Id = UV.UserId
 LEFT JOIN UserBadges UB ON U.Id = UB.UserId

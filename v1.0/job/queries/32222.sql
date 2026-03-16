@@ -27,7 +27,7 @@ WITH RECURSIVE title_hierarchy AS (
 ), movie_company_info AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies,
         MAX(ct.kind) AS company_type
     FROM 
         movie_companies mc

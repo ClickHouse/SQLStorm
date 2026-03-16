@@ -2,7 +2,7 @@
 SELECT 
     p.p_name, 
     COUNT(DISTINCT s.s_suppkey) AS supplier_count, 
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' [', s.s_address, ']'), '; ') AS supplier_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' [', s.s_address, ']')))), '; ') AS supplier_details,
     SUM(ps.ps_availqty) AS total_available_quantity,
     MAX(ps.ps_supplycost) AS max_supply_cost,
     MIN(ps.ps_supplycost) AS min_supply_cost,
@@ -22,4 +22,4 @@ HAVING
     COUNT(DISTINCT s.s_suppkey) > 5
 ORDER BY 
     total_available_quantity DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

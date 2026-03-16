@@ -30,7 +30,7 @@ SELECT
     r.r_name,
     COUNT(DISTINCT hvs.s_suppkey) AS high_value_supplier_count,
     SUM(CASE WHEN ro.order_rank = 1 THEN ro.o_totalprice ELSE 0 END) AS highest_order_total,
-    STRING_AGG(DISTINCT hvs.s_name, ', ') AS high_value_suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(hvs.s_name))), ', ') AS high_value_suppliers
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN customer c ON n.n_nationkey = c.c_nationkey

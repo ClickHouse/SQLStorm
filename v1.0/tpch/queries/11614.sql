@@ -10,8 +10,8 @@ JOIN
 JOIN 
     nation n ON c.c_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' AND 
-    o.o_orderdate < DATE '1997-02-01' AND 
+    o.o_orderdate >= toDate('1997-01-01') AND 
+    o.o_orderdate < toDate('1997-02-01') AND 
     l.l_shipmode = 'AIR'
 GROUP BY 
     n.n_name

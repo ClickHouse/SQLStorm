@@ -4,7 +4,7 @@ WITH PartStatistics AS (
         p_type,
         COUNT(*) AS part_count,
         AVG(p_retailprice) AS avg_price,
-        STRING_AGG(DISTINCT p_name, ', ') AS part_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p_name))), ', ') AS part_names
     FROM 
         part
     GROUP BY 
@@ -47,7 +47,7 @@ SELECT
     c.c_name,
     c.total_revenue,
     c.total_items,
-    STRING_AGG(DISTINCT ps.p_name, ', ') AS top_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ps.p_name))), ', ') AS top_parts
 FROM 
     SupplierTopParts ps
 JOIN 

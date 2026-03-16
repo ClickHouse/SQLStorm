@@ -34,7 +34,7 @@ SELECT
         WHEN l.l_returnflag = 'R' THEN 1 
         END) AS return_count,
     NULLIF(MAX(l.l_quantity), 0) AS max_quantity,
-    COALESCE(STRING_AGG(DISTINCT p.p_name, ', ' ORDER BY p.p_name), 'No parts') AS part_names
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ' ORDER BY p.p_name), 'No parts') AS part_names
 FROM nation n
 JOIN customer c ON n.n_nationkey = c.c_nationkey
 LEFT JOIN orders o ON c.c_custkey = o.o_custkey AND o.o_orderstatus = 'O'

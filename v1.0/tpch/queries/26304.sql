@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps_partkey) AS part_count, 
     AVG(s_acctbal) AS avg_supplier_balance,
     MAX(o_totalprice) AS max_order_value,
-    STRING_AGG(DISTINCT r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r_name))), ', ') AS regions_supplied
 FROM 
     part p
 JOIN 

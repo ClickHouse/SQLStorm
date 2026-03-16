@@ -48,7 +48,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(cs.total_spent) AS average_spent,
     MAX(o.o_totalprice) AS max_order_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     region r
 LEFT JOIN 

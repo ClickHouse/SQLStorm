@@ -32,7 +32,7 @@ SupplierPartStats AS (
         ps.ps_partkey, 
         SUM(ps.ps_availqty) AS total_avail_qty,
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
-        STRING_AGG(s.s_name, ', ') AS supplier_names
+        arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS supplier_names
     FROM 
         partsupp ps
     LEFT JOIN 

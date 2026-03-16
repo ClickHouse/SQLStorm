@@ -51,4 +51,4 @@ WHERE
 ORDER BY 
     sales_date DESC,
     net_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

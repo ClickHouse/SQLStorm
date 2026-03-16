@@ -6,7 +6,7 @@ SELECT
     ca.ca_state,
     COUNT(DISTINCT wr.wr_order_number) AS total_web_returns,
     SUM(wr.wr_return_amt) AS total_return_amount,
-    STRING_AGG(DISTINCT r.r_reason_desc, ', ') AS return_reasons,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_reason_desc))), ', ') AS return_reasons,
     AVG(LENGTH(wp.wp_url)) AS avg_url_length,
     MAX(CASE 
         WHEN c.c_birth_month = 12 THEN 'Birthday in December'

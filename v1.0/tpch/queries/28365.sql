@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity, 
     AVG(l.l_extendedprice) AS average_price, 
     COUNT(DISTINCT o.o_orderkey) AS order_count, 
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supply
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supply
 FROM 
     supplier s 
 JOIN 
@@ -22,8 +22,8 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey 
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' 
-    AND l.l_shipdate < DATE '1998-01-01' 
+    l.l_shipdate >= toDate('1997-01-01') 
+    AND l.l_shipdate < toDate('1998-01-01') 
     AND p.p_size > 10 
 GROUP BY 
     s.s_name, p.p_name 

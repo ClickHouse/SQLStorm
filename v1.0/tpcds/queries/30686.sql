@@ -76,4 +76,4 @@ LEFT JOIN
     promotion_summary ps ON ca.customer_count > 20
 ORDER BY 
     ca.average_sales_price DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

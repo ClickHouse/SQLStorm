@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' AND 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY AND 
         p.PostTypeId = 1 
 ),
 TopPosts AS (
@@ -34,7 +34,7 @@ CommentsSummary AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, ' | ') AS SampleComments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS SampleComments
     FROM 
         Comments c
     GROUP BY 

@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount 
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.ViewCount, p.CreationDate, p.PostTypeId
 ),
 RecentVotes AS (
@@ -17,7 +17,7 @@ RecentVotes AS (
         v.VoteTypeId,
         COUNT(*) AS VoteCount
     FROM Votes v
-    WHERE v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY v.PostId, v.VoteTypeId
 ),
 PostMetrics AS (

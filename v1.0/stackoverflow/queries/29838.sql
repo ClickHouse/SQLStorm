@@ -7,7 +7,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         MAX(p.CreationDate) AS LastPostDate,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsContributed,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsContributed,
         SUM(v.BountyAmount) AS TotalBounties
     FROM 
         Users u
@@ -32,14 +32,14 @@ PostHistoryDetails AS (
         ph.PostHistoryTypeId,
         p.Title,
         COUNT(ph.Id) AS HistoryCount,
-        STRING_AGG(DISTINCT ph.Comment, '; ') AS CommentsMade,
-        STRING_AGG(DISTINCT ph.Text, '; ') AS TextChanges
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS CommentsMade,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Text))), '; ') AS TextChanges
     FROM 
         PostHistory ph
     JOIN 
         Posts p ON ph.PostId = p.Id 
     WHERE 
-        ph.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         ph.PostId, ph.UserId, ph.UserDisplayName, ph.PostHistoryTypeId, p.Title
 ),

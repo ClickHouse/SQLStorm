@@ -9,7 +9,7 @@ WITH RecentPosts AS (
         U.DisplayName AS OwnerDisplayName,
         COALESCE(V.UpVotes, 0) AS UpVotes,
         COALESCE(V.DownVotes, 0) AS DownVotes,
-        DENSE_RANK() OVER (PARTITION BY EXTRACT(YEAR FROM P.CreationDate) ORDER BY P.CreationDate DESC) AS YearRank
+        DENSE_RANK() OVER (PARTITION BY toYear(P.CreationDate) ORDER BY P.CreationDate DESC) AS YearRank
     FROM 
         Posts P
     JOIN 
@@ -25,7 +25,7 @@ WITH RecentPosts AS (
             PostId
     ) V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -66,7 +66,7 @@ SELECT
         ELSE 'Active' 
     END AS PostStatus,
     (SELECT COUNT(*) FROM Comments C WHERE C.PostId = PD.PostId) AS CommentCount,
-    STRING_AGG(T.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
 FROM 
     PostDetails PD
 LEFT JOIN 

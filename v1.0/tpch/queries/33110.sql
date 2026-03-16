@@ -30,7 +30,7 @@ SELECT
         WHEN s.total_supply_cost > m.max_supply_cost THEN 'Above Max'
         ELSE 'Below Max'
     END AS cost_comparison,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     CTE_Supplier_Rank s
 JOIN 

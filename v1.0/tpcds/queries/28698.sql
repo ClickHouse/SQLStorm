@@ -84,4 +84,4 @@ WHERE
 ORDER BY 
     si.sales_date DESC, 
     si.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

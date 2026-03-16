@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' AND
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR AND
         p.ViewCount IS NOT NULL
 ),
 TopUserEngagement AS (
@@ -40,7 +40,7 @@ VoteCounts AS (
     JOIN 
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE 
-        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
+        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
     GROUP BY 
         v.PostId
     HAVING 
@@ -84,4 +84,4 @@ WHERE
     rp.RankByScore <= 5 /* Top 5 posts per type */
 ORDER BY 
     rp.PostId, te.TotalViews DESC NULLS LAST
-FETCH NEXT 100 ROWS ONLY;
+LIMIT 100;

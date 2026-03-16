@@ -36,7 +36,7 @@ SELECT
         THEN p.info 
         ELSE NULL 
     END) AS birth_date,
-    STRING_AGG(DISTINCT c.kind, ', ') AS company_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_types
 FROM 
     cast_info ci
 JOIN 

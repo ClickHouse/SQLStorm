@@ -19,7 +19,7 @@ WITH PostAggregates AS (
     LEFT JOIN
         Badges b ON p.OwnerUserId = b.UserId
     WHERE
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY
         p.Id, p.OwnerUserId, p.CreationDate, p.Score, p.ViewCount
 ),

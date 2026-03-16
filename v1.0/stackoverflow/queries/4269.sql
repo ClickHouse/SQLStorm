@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId, u.DisplayName
 ),
@@ -51,10 +51,10 @@ SELECT
     ps.NetVotes,
     ps.Popularity,
     COALESCE((
-        SELECT STRING_AGG(t.TagName, ', ')
+        SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ')
         FROM Tags t
-        JOIN LATERAL (
-            SELECT unnest(string_to_array(p.Tags, '><')) AS tag
+        JOIN (
+            SELECT arrayJoin(splitByString('><', p.Tags)) AS tag
         ) AS split_tags ON t.TagName = split_tags.tag
         WHERE p.Id = ps.PostId
     ), 'No Tags') AS Tags

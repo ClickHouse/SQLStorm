@@ -25,7 +25,7 @@ distinct_companies AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT mc.company_id) AS num_companies,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 
@@ -67,7 +67,7 @@ SELECT
     COALESCE(cc.avg_active_cast, 0) AS avg_active_cast,
     COALESCE(dc.num_companies, 0) AS num_companies,
     COALESCE(dc.companies, '') AS companies,
-    STRING_AGG(DISTINCT ti.actor_name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ti.actor_name))), ', ') AS actors,
     SUM(CASE WHEN ti.title_keyword IS NULL THEN 1 ELSE 0 END) AS null_keyword_count,
     MAX(CASE WHEN ti.title_keyword IS NOT NULL THEN ti.title_keyword END) AS last_title_keyword,
     COUNT(DISTINCT ti.title_id) FILTER (WHERE ti.title_keyword IS NOT NULL) AS unique_keyword_count

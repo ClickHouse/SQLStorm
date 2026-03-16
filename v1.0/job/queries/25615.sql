@@ -41,8 +41,8 @@ WITH RankedMovies AS (
 ), MovieInfoDetails AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(CASE WHEN it.info = 'Tagline' THEN mi.info END, '; ') AS taglines,
-        STRING_AGG(CASE WHEN it.info = 'Summary' THEN mi.info END, '; ') AS summaries
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN it.info = 'Tagline' THEN mi.info END)), '; ') AS taglines,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN it.info = 'Summary' THEN mi.info END)), '; ') AS summaries
     FROM 
         movie_info mi
     JOIN 

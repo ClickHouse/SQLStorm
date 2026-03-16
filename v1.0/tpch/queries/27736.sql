@@ -5,8 +5,8 @@ WITH SupplierDetails AS (
         n.n_name AS nation_name,
         COUNT(DISTINCT p.p_partkey) AS part_count,
         SUM(ps.ps_supplycost) AS total_supply_cost,
-        STRING_AGG(DISTINCT p.p_brand, ', ') AS brands_supplied,
-        STRING_AGG(DISTINCT p.p_type, ', ') AS types_supplied
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_brand))), ', ') AS brands_supplied,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS types_supplied
     FROM 
         supplier s
         JOIN nation n ON s.s_nationkey = n.n_nationkey
@@ -22,7 +22,7 @@ CustomerDetails AS (
         n.n_name AS nation_name,
         SUM(o.o_totalprice) AS total_spent,
         COUNT(DISTINCT o.o_orderkey) AS order_count,
-        STRING_AGG(DISTINCT o.o_orderpriority, ', ') AS order_priorities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(o.o_orderpriority))), ', ') AS order_priorities
     FROM 
         customer c
         JOIN nation n ON c.c_nationkey = n.n_nationkey

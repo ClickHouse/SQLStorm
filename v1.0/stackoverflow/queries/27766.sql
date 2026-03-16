@@ -36,7 +36,7 @@ TopUserPosts AS (
 SELECT 
     U.DisplayName AS UserName,
     COUNT(TP.PostId) AS PostCount,
-    STRING_AGG(DISTINCT TP.Title, '; ') AS TopPostTitles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(TP.Title))), '; ') AS TopPostTitles,
     MIN(TP.CreationDate) AS FirstPostDate,
     MAX(TP.LastActivityDate) AS LastPostDate
 FROM 

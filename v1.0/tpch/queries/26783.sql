@@ -2,8 +2,8 @@ SELECT
     p.p_brand, 
     COUNT(*) AS supplier_count, 
     AVG(ps.ps_supplycost) AS avg_supplycost, 
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names, 
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ': ', o.o_orderkey), '; ') AS customer_orders
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ': ', o.o_orderkey)))), '; ') AS customer_orders
 FROM 
     part p
 JOIN 

@@ -52,4 +52,4 @@ FROM final_results f
 WHERE f.total_orders > 5
   AND f.total_sales IS NOT NULL
 ORDER BY f.total_sales DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, pt.Name
 ), ClosedPosts AS (
@@ -37,7 +37,7 @@ WITH RankedPosts AS (
         rp.ViewCount,
         rp.UpVotes,
         rp.DownVotes,
-        COALESCE(cp.FirstCloseDate, DATE '1970-01-01') AS FirstCloseDate,
+        COALESCE(cp.FirstCloseDate, toDate('1970-01-01')) AS FirstCloseDate,
         CASE 
             WHEN cp.FirstCloseDate IS NOT NULL THEN 'Closed'
             ELSE 'Open'

@@ -24,7 +24,7 @@ HighSpendingCustomers AS (
     JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate > CURRENT_DATE - INTERVAL '6 months'
+        o.o_orderdate > CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         c.c_custkey, c.c_name
     HAVING 
@@ -64,9 +64,9 @@ FROM
 LEFT JOIN 
     HighSpendingCustomers acs ON r.r_regionkey = (SELECT n.n_regionkey FROM nation n WHERE n.n_nationkey = acs.c_custkey LIMIT 1)
 LEFT JOIN 
-    PartSupplierStats ps ON ps.ps_partkey = (SELECT p.p_partkey FROM part p WHERE p.p_name LIKE '%widget%' ORDER BY RANDOM() LIMIT 1)
+    PartSupplierStats ps ON ps.ps_partkey = (SELECT p.p_partkey FROM part p WHERE p.p_name LIKE '%widget%' ORDER BY rand() LIMIT 1)
 LEFT JOIN 
-    OrderLineMetrics ol ON ol.l_orderkey = (SELECT o.o_orderkey FROM orders o WHERE o.o_orderstatus = 'O' ORDER BY RANDOM() LIMIT 1)
+    OrderLineMetrics ol ON ol.l_orderkey = (SELECT o.o_orderkey FROM orders o WHERE o.o_orderstatus = 'O' ORDER BY rand() LIMIT 1)
 WHERE 
     (r.total_acctbal IS NULL OR r.total_acctbal > 5000)
 ORDER BY 

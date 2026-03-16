@@ -4,7 +4,7 @@ WITH MovieNames AS (
         a.title AS Title,
         a.production_year AS ProductionYear,
         c.name AS CompanyName,
-        STRING_AGG(DISTINCT r.role, ', ' ORDER BY r.role) AS Roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ' ORDER BY r.role) AS Roles
     FROM aka_title a
     JOIN movie_companies mc ON mc.movie_id = a.id
     JOIN company_name c ON c.id = mc.company_id

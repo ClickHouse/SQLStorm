@@ -80,4 +80,4 @@ WHERE
     fa.total_net_profit IS NOT NULL
 ORDER BY 
     fa.total_net_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

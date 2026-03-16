@@ -28,7 +28,7 @@ RecentEdits AS (
         ROW_NUMBER() OVER (PARTITION BY PH.PostId ORDER BY PH.CreationDate DESC) AS EditRank
     FROM PostHistory PH
     WHERE PH.PostHistoryTypeId IN (4, 5, 6) 
-    AND PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    AND PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 TopUsers AS (
     SELECT 
@@ -47,7 +47,7 @@ SELECT
     TU.TotalPosts,
     TU.TotalScore,
     COUNT(RE.EditRank) AS RecentEditCount,
-    STRING_AGG(DISTINCT RE.Comment, '; ') AS EditComments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(RE.Comment))), '; ') AS EditComments
 FROM TopUsers TU
 LEFT JOIN RecentEdits RE ON TU.UserId = RE.UserId
 GROUP BY TU.DisplayName, TU.TotalPosts, TU.TotalScore

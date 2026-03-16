@@ -14,12 +14,12 @@ RecentPosts AS (
            p.CreationDate,
            p.ViewCount,
            p.Score,
-           COALESCE(STRING_AGG(DISTINCT t.TagName, ', '), 'No Tags') AS Tags,
+           COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', '), 'No Tags') AS Tags,
            u.DisplayName AS Author
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Tags t ON t.ExcerptPostId = p.Id
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.DisplayName
 ),
 ClosedPosts AS (

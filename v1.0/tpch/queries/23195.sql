@@ -22,7 +22,7 @@ RecentOrders AS (
         o.o_comment,
         RANK() OVER (PARTITION BY o.o_custkey ORDER BY o.o_orderdate DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 SupplierDetails AS (
     SELECT 

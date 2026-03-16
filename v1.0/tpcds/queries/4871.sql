@@ -52,6 +52,6 @@ FROM
 FULL OUTER JOIN 
     customer c ON swa.c_customer_sk = c.c_customer_sk
 WHERE 
-    c.c_birth_year < (EXTRACT(YEAR FROM DATE '2002-10-01') - 30)
+    c.c_birth_year < (toYear(toDate('2002-10-01')) - 30)
 ORDER BY 
     total_sales DESC;

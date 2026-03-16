@@ -20,14 +20,14 @@ average_cast AS (
 ),
 movie_keywords AS (
     SELECT mk.movie_id, 
-           STRING_AGG(k.keyword, ', ') AS keywords
+           arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON k.id = mk.keyword_id
     GROUP BY mk.movie_id
 ),
 company_details AS (
     SELECT mc.movie_id,
-           ARRAY_AGG(DISTINCT cn.name) AS companies
+           arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies
     FROM movie_companies mc
     JOIN company_name cn ON cn.id = mc.company_id
     GROUP BY mc.movie_id

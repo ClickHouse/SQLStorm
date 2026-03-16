@@ -8,7 +8,7 @@ WITH RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostScoreData AS (
     SELECT 
@@ -27,7 +27,7 @@ PostScoreData AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days') 
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) 
         AND p.PostTypeId IN (1, 2) 
     GROUP BY 
         p.Id, p.OwnerUserId, p.Title
@@ -55,7 +55,7 @@ UserPostStats AS (
 UserBadges AS (
     SELECT 
         rb.UserId,
-        STRING_AGG(rb.BadgeName, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(rb.BadgeName)), ', ') AS Badges
     FROM 
         RecentBadges rb
     WHERE 

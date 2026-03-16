@@ -9,7 +9,7 @@ WITH CustomerStats AS (
         SUM(ws.ws_net_profit) AS total_net_profit,
         COUNT(DISTINCT ws.ws_order_number) AS total_orders,
         COUNT(DISTINCT wr.wr_order_number) AS total_web_returns,
-        STRING_AGG(DISTINCT CONCAT(ca.ca_city, ', ', ca.ca_state, ' ', ca.ca_zip), '; ') AS address_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca.ca_city, ', ', ca.ca_state, ' ', ca.ca_zip)))), '; ') AS address_info
     FROM 
         customer c
     LEFT JOIN 

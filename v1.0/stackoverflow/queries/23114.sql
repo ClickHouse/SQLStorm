@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 ),
 FilteredPosts AS (
     SELECT 
@@ -38,7 +38,7 @@ PostsWithComments AS (
         COUNT(c.Id) AS CommentCount,
         CASE 
             WHEN COUNT(c.Id) = 0 THEN 'No Comments'
-            ELSE STRING_AGG(c.Text, '; ') 
+            ELSE arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') 
         END AS CommentText
     FROM 
         FilteredPosts fp

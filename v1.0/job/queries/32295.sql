@@ -30,7 +30,7 @@ SELECT
     mh.production_year,
     COUNT(DISTINCT mc.company_id) AS company_count,
     SUM(CASE WHEN aws.note IS NOT NULL THEN 1 ELSE 0 END) AS notable_roles,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     RANK() OVER (PARTITION BY mh.production_year ORDER BY COUNT(DISTINCT mc.company_id) DESC) AS rank_by_company_count
 FROM 
     MovieHierarchy mh

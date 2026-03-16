@@ -57,4 +57,4 @@ WHERE
     cs.total_sales IS NOT NULL
 ORDER BY 
     cs.cumulative_sales DESC
-OFFSET 100 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 100;

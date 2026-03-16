@@ -21,7 +21,7 @@ part_summary AS (
         p.p_brand,
         p.p_type,
         AVG(ps.ps_supplycost) AS avg_supplycost,
-        STRING_AGG(DISTINCT p.p_comment, '; ') AS all_comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS all_comments
     FROM 
         part p
     JOIN 

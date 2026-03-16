@@ -38,7 +38,7 @@ RecentPostHistory AS (
 AggregateComments AS (
     SELECT 
         C.PostId,
-        STRING_AGG(C.Text, ' | ') AS AllComments
+        arrayStringConcat(groupArray(assumeNotNull(C.Text)), ' | ') AS AllComments
     FROM 
         Comments C
     GROUP BY 

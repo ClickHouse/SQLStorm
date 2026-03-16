@@ -14,7 +14,7 @@ CastDetails AS (
     SELECT 
         ci.movie_id,
         COUNT(*) AS cast_member_count,
-        STRING_AGG(aka.name, ', ') AS cast_names
+        arrayStringConcat(groupArray(assumeNotNull(aka.name)), ', ') AS cast_names
     FROM 
         cast_info ci
     JOIN 
@@ -25,8 +25,8 @@ CastDetails AS (
 MovieCompanies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS company_names,
-        STRING_AGG(ct.kind, ', ') AS company_types
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS company_names,
+        arrayStringConcat(groupArray(assumeNotNull(ct.kind)), ', ') AS company_types
     FROM 
         movie_companies mc
     JOIN 
@@ -77,7 +77,7 @@ FinalBenchmark AS (
 SELECT 
     production_year,
     AVG(cast_member_count) AS avg_cast_members,
-    STRING_AGG(DISTINCT title || ' (' || production_year || ')', ', ') AS movies_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(title || ' (' || production_year || ')'))), ', ') AS movies_list,
     COUNT(*) AS total_movies,
     SUM(CASE 
             WHEN movie_info LIKE '%epic%' THEN 1 

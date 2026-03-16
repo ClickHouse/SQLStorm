@@ -22,7 +22,7 @@ CastAggregates AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT p.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_names
     FROM 
         cast_info c
     JOIN 
@@ -48,7 +48,7 @@ SELECT
     COALESCE(ka.keyword_count, 0) AS keyword_count,
     COALESCE(ca.cast_count, 0) AS cast_count,
     ca.cast_names,
-    ARRAY_AGG(DISTINCT ci.company_name) AS companies,
+    arrayDistinct(groupArray(assumeNotNull(ci.company_name))) AS companies,
     COUNT(DISTINCT ci.company_type) AS distinct_company_types
 FROM 
     RankedMovies rm

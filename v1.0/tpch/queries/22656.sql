@@ -32,7 +32,7 @@ SELECT
     COUNT(DISTINCT n.n_nationkey) AS num_nations,
     SUM(CASE WHEN s.s_acctbal IS NULL THEN 0 ELSE s.s_acctbal END) AS total_acct_bal, 
     MAX(COALESCE(l.l_discount / NULLIF(l.l_extendedprice, 0), 0)) AS max_discount_ratio,
-    STRING_AGG(DISTINCT CASE WHEN p.p_size IS NOT NULL THEN p.p_name || ' - ' || p.p_type ELSE 'Unknown Part' END, ', ') AS part_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN p.p_size IS NOT NULL THEN p.p_name || ' - ' || p.p_type ELSE 'Unknown Part' END))), ', ') AS part_details
 FROM 
     region r
 LEFT JOIN 
@@ -53,4 +53,4 @@ HAVING
     COUNT(DISTINCT n.n_nationkey) > 1 AND SUM(s.s_acctbal) > 5000
 ORDER BY 
     total_acct_bal DESC
-OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

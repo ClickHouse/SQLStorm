@@ -63,7 +63,7 @@ SELECT
     production_year,
     company_name,
     company_type,
-    STRING_AGG(movie_keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(movie_keyword)), ', ') AS keywords
 FROM 
     movie_details
 GROUP BY 

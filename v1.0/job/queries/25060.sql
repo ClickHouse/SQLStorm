@@ -42,7 +42,7 @@ TopMovies AS (
 )
 SELECT
     production_year,
-    ARRAY_AGG(title) AS top_movies,
+    groupArray(assumeNotNull(title)) AS top_movies,
     SUM(actor_count) AS total_actors
 FROM
     TopMovies

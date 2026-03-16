@@ -50,7 +50,7 @@ SELECT
     tm.cast_count,
     tm.company_count,
     (SELECT 
-        STRING_AGG(a.name, ', ') 
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') 
      FROM 
         aka_name a 
      JOIN 

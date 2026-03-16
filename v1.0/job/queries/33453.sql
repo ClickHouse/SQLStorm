@@ -27,7 +27,7 @@ WITH RECURSIVE ActorHierarchy AS (
 )
 SELECT ah.name,
        COUNT(DISTINCT ci.movie_id) AS movie_count,
-       STRING_AGG(DISTINCT title.title, ', ') AS movies,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(title.title))), ', ') AS movies,
        RANK() OVER (ORDER BY COUNT(DISTINCT ci.movie_id) DESC) AS rank
 FROM ActorHierarchy ah
 JOIN cast_info ci ON ah.person_id = ci.person_id

@@ -15,7 +15,7 @@ MovieDetails AS (
         rm.title,
         rm.production_year,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        ARRAY_AGG(DISTINCT ak.name) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names,
         MAX(CASE WHEN mi.info_type_id = 1 THEN mi.info END) AS summary
     FROM 
         RankedMovies rm

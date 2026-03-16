@@ -2,9 +2,9 @@ SELECT
     SPLIT_PART(p.p_name, ' ', 1) AS part_first_word,
     LENGTH(p.p_name) AS part_name_length,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_address, ')'), '; ') AS suppliers_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_address, ')')))), '; ') AS suppliers_info,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     MAX(o.o_totalprice) AS max_order_price,
     MIN(o.o_orderdate) AS first_order_date,
     AVG(l.l_extendedprice) AS avg_extended_price

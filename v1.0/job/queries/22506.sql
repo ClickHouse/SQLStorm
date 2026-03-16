@@ -64,7 +64,7 @@ final_output AS (
         h.title AS title,
         h.production_year,
         h.total_cast,
-        COALESCE(ARRAY_AGG(k.keyword), ARRAY[]) AS keywords,
+        COALESCE(groupArray(assumeNotNull(k.keyword)), ARRAY[]) AS keywords,
         COALESCE(SUM(cr.role_count), 0) AS total_roles,
         CASE WHEN h.total_cast IS NULL THEN 'No cast' ELSE 'Has cast' END AS cast_status,
         CASE 

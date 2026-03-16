@@ -10,7 +10,7 @@ WITH RankedPostTags AS (
     FROM 
         Posts p
     JOIN 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -19,7 +19,7 @@ WITH RankedPostTags AS (
 TopTags AS (
     SELECT 
         PostId,
-        ARRAY_AGG(TagName ORDER BY TagRank) AS TagsList
+        groupArray(assumeNotNull(TagName ORDER BY TagRank)) AS TagsList
     FROM 
         RankedPostTags
     WHERE 

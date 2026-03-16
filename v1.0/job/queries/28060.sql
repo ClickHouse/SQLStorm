@@ -37,7 +37,7 @@ top_actors AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id, 
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     INNER JOIN 
@@ -69,7 +69,7 @@ SELECT
     COUNT(*) AS benchmark_count,
     MIN(final_benchmark.production_year) AS earliest_year,
     MAX(final_benchmark.production_year) AS latest_year,
-    STRING_AGG(DISTINCT final_benchmark.top_actor, ', ') AS top_actors_list,
-    STRING_AGG(DISTINCT final_benchmark.keywords, '; ') AS combined_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(final_benchmark.top_actor))), ', ') AS top_actors_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(final_benchmark.keywords))), '; ') AS combined_keywords
 FROM 
     final_benchmark;

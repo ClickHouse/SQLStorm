@@ -2,8 +2,8 @@ WITH StringAggregates AS (
     SELECT 
         p.p_brand,
         COUNT(DISTINCT s.s_suppkey) AS total_suppliers,
-        STRING_AGG(DISTINCT p.p_name, '; ') AS part_names,
-        STRING_AGG(DISTINCT r.r_name, ', ') AS regions_served
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), '; ') AS part_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_served
     FROM 
         part p
     JOIN 

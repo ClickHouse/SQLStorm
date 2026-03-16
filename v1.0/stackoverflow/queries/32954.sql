@@ -40,7 +40,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS PostHistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS PostHistoryTypes,
         CASE 
             WHEN SUM(CASE WHEN pht.Name = 'Post Closed' THEN 1 ELSE 0 END) > 0 THEN 'Closed'
             ELSE 'Open'

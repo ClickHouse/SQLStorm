@@ -9,7 +9,7 @@ WITH PostDetails AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        array_length(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'), 1) AS TagCount,
+        length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount,
         COUNT(c.Id) AS CommentCount,
         COUNT(pa.Id) AS AnswerCount
     FROM 
@@ -31,7 +31,7 @@ PopularTags AS (
         COUNT(*) AS TagFrequency
     FROM (
         SELECT 
-            unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS tag
+            arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS tag
         FROM 
             Posts
         WHERE 

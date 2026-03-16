@@ -49,7 +49,7 @@ SELECT
     tm.production_year,
     COUNT(ad.actor_name) AS total_actors,
     MAX(ad.actor_order) AS max_actor_order,
-    STRING_AGG(ad.actor_name, ', ') AS actor_names,
+    arrayStringConcat(groupArray(assumeNotNull(ad.actor_name)), ', ') AS actor_names,
     CASE 
         WHEN MAX(ad.actor_order) > 5 THEN 'Larger Cast'
         ELSE 'Smaller Cast'

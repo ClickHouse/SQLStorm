@@ -31,7 +31,7 @@ SELECT
     at.title AS movie_title,
     at.production_year,
     COUNT(DISTINCT mc.company_id) AS num_producers,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
     AVG(CASE 
         WHEN mi.info IS NOT NULL THEN LENGTH(mi.info) 
         ELSE 0 

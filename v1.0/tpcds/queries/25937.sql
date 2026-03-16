@@ -31,4 +31,4 @@ GROUP BY
     c.c_birth_country, c.c_email_address
 ORDER BY 
     total_spent DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

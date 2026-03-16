@@ -57,4 +57,4 @@ SELECT
     total_net_sales_value 
 FROM AggregatedSales
 ORDER BY item_count DESC
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;

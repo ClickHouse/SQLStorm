@@ -3,7 +3,7 @@ WITH MovieStatistics AS (
     SELECT 
         a.movie_id,
         COUNT(DISTINCT c.person_id) AS num_cast_members,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         AVG(CAST(mi.info AS FLOAT)) AS avg_rating,
         RANK() OVER (ORDER BY AVG(CAST(mi.info AS FLOAT)) DESC) AS movie_rank
     FROM 
@@ -41,7 +41,7 @@ SELECT
     COALESCE(c1.name, 'Unknown') AS director_name,
     t.avg_rating,
     t.num_cast_members,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     TopMovies t
 LEFT JOIN 

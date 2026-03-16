@@ -23,12 +23,12 @@ WITH FilteredPosts AS (
 ),
 TagCounts AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(Tags, '><'))) AS TagName,
+        TRIM(arrayJoin(splitByString('><', Tags))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         FilteredPosts
     GROUP BY 
-        TRIM(UNNEST(string_to_array(Tags, '><')))
+        TRIM(arrayJoin(splitByString('><', Tags)))
 ),
 TopTags AS (
     SELECT 

@@ -23,7 +23,7 @@ SELECT
     m.title AS movie_title,
     m.production_year,
     COUNT(DISTINCT ah.actor_id) AS actor_count,
-    STRING_AGG(DISTINCT ah.actor_name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ah.actor_name))), ', ') AS actor_names,
     COALESCE(k.keyword, 'No Keywords') AS keyword,
     COALESCE(p.info, 'No info') AS person_info,
     CASE WHEN m.production_year < 2000 THEN 'Classical'

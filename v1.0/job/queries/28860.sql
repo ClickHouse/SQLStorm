@@ -17,7 +17,7 @@ FilteredTitles AS (
         title_id,
         title,
         production_year,
-        STRING_AGG(keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords
     FROM 
         RankedTitles
     WHERE 

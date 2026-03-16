@@ -22,7 +22,7 @@ WITH MovieActors AS (
 KeywordedMovies AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS all_keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS all_keywords
     FROM 
         movie_keyword m
     JOIN 

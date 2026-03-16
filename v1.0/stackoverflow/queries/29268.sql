@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         PostTypeId,
         COUNT(*) AS PostCount
     FROM 
@@ -9,7 +9,7 @@ WITH TagCounts AS (
     WHERE 
         PostTypeId = 1  
     GROUP BY 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')), PostTypeId
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))), PostTypeId
 ),
 
 UserReputation AS (

@@ -49,4 +49,4 @@ WHERE
     AND (ss.unique_parts IS NULL OR ss.unique_parts > 5)
 ORDER BY 
     ro.o_totalprice DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

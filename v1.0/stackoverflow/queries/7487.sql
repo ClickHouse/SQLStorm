@@ -22,7 +22,7 @@ WITH RankedPosts AS (
             UserId
     ) pb ON u.Id = pb.UserId
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -49,7 +49,7 @@ SELECT
     tp.BadgeCount,
     pht.Name AS PostHistoryType,
     COUNT(ph.Id) AS HistoryEntries,
-    STRING_AGG(DISTINCT ct.Name, ', ') AS CloseReasons
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.Name))), ', ') AS CloseReasons
 FROM 
     TopPosts tp
 LEFT JOIN 
@@ -57,7 +57,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
 LEFT JOIN 
-    CloseReasonTypes ct ON ph.Comment::int = ct.Id AND ph.PostHistoryTypeId = 10
+    CloseReasonTypes ct ON CAST(ph.Comment AS int) = ct.Id AND ph.PostHistoryTypeId = 10
 GROUP BY 
     tp.PostId, tp.Title, tp.CreationDate, tp.Score, tp.ViewCount, tp.OwnerDisplayName, tp.BadgeCount, pht.Name
 ORDER BY 

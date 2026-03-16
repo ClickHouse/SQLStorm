@@ -5,7 +5,7 @@ SELECT
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price_after_discount,
     MAX(CASE WHEN l.l_returnflag = 'Y' THEN l.l_extendedprice ELSE 0 END) AS max_returned_value,
     MIN(l.l_tax) AS min_tax_value,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ': ', s.s_comment), ', ') AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ': ', s.s_comment)))), ', ') AS supplier_comments
 FROM 
     part p
 JOIN 

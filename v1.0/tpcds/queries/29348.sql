@@ -20,8 +20,8 @@ CustomerAgeGroups AS (
         cd_marital_status,
         cd_education_status,
         CASE 
-            WHEN EXTRACT(YEAR FROM CURRENT_DATE) - c_birth_year < 30 THEN 'Under 30'
-            WHEN EXTRACT(YEAR FROM CURRENT_DATE) - c_birth_year BETWEEN 30 AND 50 THEN '30-50'
+            WHEN toYear(CURRENT_DATE) - c_birth_year < 30 THEN 'Under 30'
+            WHEN toYear(CURRENT_DATE) - c_birth_year BETWEEN 30 AND 50 THEN '30-50'
             ELSE 'Over 50'
         END AS age_group
     FROM 

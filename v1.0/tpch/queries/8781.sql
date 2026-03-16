@@ -17,8 +17,8 @@ JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     o.o_orderstatus = 'F' 
-    AND l.l_shipdate >= DATE '1995-01-01'
-    AND l.l_shipdate < DATE '1996-01-01'
+    AND l.l_shipdate >= toDate('1995-01-01')
+    AND l.l_shipdate < toDate('1996-01-01')
 GROUP BY 
     n.n_name
 ORDER BY 

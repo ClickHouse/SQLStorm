@@ -52,7 +52,7 @@ SELECT
     SUM(os.total_sales) AS total_sales,
     COUNT(DISTINCT hc.c_custkey) AS high_value_customers,
     AVG(ps.total_quantity) AS avg_product_quantity,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_acctbal, ')'), ', ') AS top_suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_acctbal, ')')))), ', ') AS top_suppliers
 FROM 
     region r
 LEFT JOIN 

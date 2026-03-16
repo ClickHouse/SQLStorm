@@ -57,8 +57,8 @@ SELECT
 FROM 
     CustomerStats cs
 JOIN 
-    SalesData sd ON EXTRACT(YEAR FROM cast('2002-10-01' as date)) = sd.d_year 
-                   AND EXTRACT(MONTH FROM cast('2002-10-01' as date)) = sd.d_month_seq
+    SalesData sd ON toYear(cast('2002-10-01' as date)) = sd.d_year 
+                   AND toMonth(cast('2002-10-01' as date)) = sd.d_month_seq
 CROSS JOIN 
     TopSellingItems tsi
 WHERE 

@@ -61,4 +61,4 @@ WHERE
     ss.total_quantity > 0
 ORDER BY 
     ss.sales_rank ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

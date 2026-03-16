@@ -3,7 +3,7 @@ SELECT
     p.p_partkey,
     SUBSTRING(p.p_name, 1, 10) AS short_name,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     SUM(ps.ps_availqty) AS total_available_qty,
     AVG(p.p_retailprice) AS avg_retail_price,
     CONCAT('Region: ', r.r_name, ' | Nation: ', n.n_name) AS region_nation_info,

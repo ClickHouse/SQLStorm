@@ -26,7 +26,7 @@ SELECT
     a.name AS actor_name,
     mh.title AS movie_title,
     COUNT(DISTINCT cc.subject_id) AS cast_count,
-    STRING_AGG(DISTINCT ki.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ki.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY a.name ORDER BY COUNT(DISTINCT cc.subject_id) DESC) AS rank
 FROM 
     aka_name a

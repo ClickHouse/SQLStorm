@@ -57,4 +57,4 @@ WHERE
     d.d_year = 2023 
     AND (r.total_web_returns IS NOT NULL OR s.total_quantity_sold IS NOT NULL)
 ORDER BY d.d_date
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

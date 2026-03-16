@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ': ', s.s_name), '; ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ': ', s.s_name)))), '; ') AS supplier_names,
     MAX(CASE WHEN l.l_shipdate IS NOT NULL THEN l.l_shipdate ELSE '1900-01-01' END) AS last_ship_date
 FROM 
     part p

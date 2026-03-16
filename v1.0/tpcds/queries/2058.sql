@@ -60,4 +60,4 @@ WHERE
     AND (cd.cd_gender IS NOT NULL OR cd.cd_marital_status IS NOT NULL)
 ORDER BY 
     r.total_web_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -23,9 +23,9 @@ PostMeta AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM Posts p
-    LEFT JOIN UNNEST(string_to_array(p.Tags, '<>')) AS tag ON true
+    LEFT JOIN arrayJoin(splitByString('<>', p.Tags)) AS tag ON true
     JOIN Tags t ON t.TagName = tag
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount
 ),
@@ -39,7 +39,7 @@ TopPosts AS (
         pm.Tags,
         ROW_NUMBER() OVER (ORDER BY pm.Score DESC, pm.ViewCount DESC) AS Rank
     FROM PostMeta pm
-    WHERE pm.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE pm.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT
     us.UserId,

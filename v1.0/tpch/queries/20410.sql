@@ -21,7 +21,7 @@ NationRegions AS (
 SELECT nr.region_name, 
        nr.nation_name, 
        COALESCE(AVG(rs.total_supply_cost), 0) AS avg_supply_cost,
-       STRING_AGG(rs.s_name, ', ') AS supplier_names,
+       arrayStringConcat(groupArray(assumeNotNull(rs.s_name)), ', ') AS supplier_names,
        NTILE(3) OVER (PARTITION BY nr.region_name ORDER BY COALESCE(AVG(rs.total_supply_cost), 0)) AS supply_cost_tier
 FROM NationRegions nr
 LEFT JOIN RankedSuppliers rs ON nr.n_nationkey = rs.s_suppkey

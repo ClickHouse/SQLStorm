@@ -46,7 +46,7 @@ TopUsers AS (
 )
 SELECT 
     U.*,
-    (SELECT STRING_AGG(DISTINCT T.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
      FROM Posts P 
      JOIN Tags T ON P.Tags ILIKE '%' || T.TagName || '%' 
      WHERE P.OwnerUserId = U.UserId) AS TagsUsed,

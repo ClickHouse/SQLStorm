@@ -32,7 +32,7 @@ SELECT r.r_name,
        COUNT(DISTINCT c.c_custkey) AS customer_count,
        SUM(o.o_totalprice) AS total_order_value,
        SUM(l.l_quantity) AS total_parts_available,
-       STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN customer c ON n.n_nationkey = c.c_nationkey

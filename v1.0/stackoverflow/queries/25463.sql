@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         RANK() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS RankInCategory,
         u.DisplayName AS OwnerDisplayName,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray
     FROM 
         Posts p
     JOIN 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS t(TagName) ON TRUE
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, pt.Name, u.DisplayName
 )

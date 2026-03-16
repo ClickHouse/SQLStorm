@@ -24,9 +24,9 @@ MovieInfo AS (
         md.movie_id,
         md.movie_title,
         md.production_year,
-        STRING_AGG(DISTINCT md.actor_name, ', ') AS actor_names,
-        STRING_AGG(DISTINCT md.aka_name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT md.movie_keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name))), ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.aka_name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.movie_keyword))), ', ') AS keywords
     FROM
         MovieDetails md
     GROUP BY

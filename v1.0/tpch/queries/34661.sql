@@ -28,7 +28,7 @@ LEFT JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31' 
+    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31') 
     AND o.o_orderstatus = 'F' 
     AND r.r_name LIKE 'Asia%'
 GROUP BY 
@@ -48,4 +48,4 @@ HAVING
                      ) AS subquery)
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

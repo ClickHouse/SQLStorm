@@ -50,4 +50,4 @@ WHERE
     sos.total_revenue > 1000000 AND rs.supplier_count > 5
 ORDER BY 
     sos.total_revenue DESC, rs.total_account_balance ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

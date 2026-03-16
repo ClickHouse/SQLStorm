@@ -26,7 +26,7 @@ MovieDetails AS (
         fm.movie_id,
         fm.title,
         fm.production_year,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
         COUNT(DISTINCT k.keyword) AS keyword_count
     FROM 
         FilteredMovies fm
@@ -44,7 +44,7 @@ MovieDetails AS (
 CompanyInformation AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COUNT(mc.company_id) AS company_count
     FROM 
         movie_companies mc

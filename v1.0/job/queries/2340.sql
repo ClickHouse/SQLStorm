@@ -3,7 +3,7 @@ WITH MovieData AS (
         a.title,
         a.production_year,
         COUNT(c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT n.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS cast_names,
         ROW_NUMBER() OVER (PARTITION BY a.production_year ORDER BY COUNT(c.person_id) DESC) AS rn
     FROM 
         aka_title a

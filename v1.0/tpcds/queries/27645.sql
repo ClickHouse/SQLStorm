@@ -35,7 +35,7 @@ AggregatedData AS (
         gender_desc,
         COUNT(*) AS customer_count,
         AVG(cd_purchase_estimate) AS average_purchase_estimate,
-        STRING_AGG(full_name, ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names
     FROM 
         CustomerData
     GROUP BY 

@@ -24,4 +24,4 @@ AND o.o_orderdate BETWEEN '1996-01-01' AND '1996-12-31'
 GROUP BY c.c_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000
 ORDER BY TotalRevenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

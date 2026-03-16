@@ -6,7 +6,7 @@ SELECT
         WHEN o.o_orderstatus = 'F' THEN l.l_extendedprice 
         ELSE NULL 
     END) AS avg_filled_order_value,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS product_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS product_names
 FROM 
     supplier s
 JOIN 

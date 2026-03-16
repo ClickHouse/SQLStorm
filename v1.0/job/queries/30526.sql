@@ -29,7 +29,7 @@ SELECT
     a.name AS actor_name,
     COUNT(DISTINCT mh.movie_id) AS movie_count,
     AVG(mh.depth) AS average_depth,
-    ARRAY_AGG(DISTINCT kw.keyword) AS associated_keywords,
+    arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS associated_keywords,
     CASE 
         WHEN AVG(mh.depth) IS NULL THEN 'No Data' 
         ELSE 'Data Available' 

@@ -32,7 +32,7 @@ WITH RankedSuppliers AS (
 SELECT 
     region_name,
     nation_name,
-    STRING_AGG(supplier_name, ', ') AS top_suppliers,
+    arrayStringConcat(groupArray(assumeNotNull(supplier_name)), ', ') AS top_suppliers,
     SUM(total_cost) AS total_cost
 FROM 
     HighCostSuppliers

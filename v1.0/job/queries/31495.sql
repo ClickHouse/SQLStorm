@@ -28,7 +28,7 @@ SELECT
     mh.title AS main_movie_title,
     mh.production_year AS main_movie_year,
     person.name AS actor_name,
-    ARRAY_AGG(DISTINCT k.keyword) FILTER (WHERE k.keyword IS NOT NULL) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) FILTER (WHERE k.keyword IS NOT NULL) AS keywords,
     AVG(CASE WHEN c.nr_order IS NOT NULL THEN c.nr_order ELSE 0 END) AS avg_role_order,
     COUNT(DISTINCT m2.title) FILTER (WHERE m2.production_year < mh.production_year) AS older_movies_count
 FROM 

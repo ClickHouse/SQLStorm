@@ -5,8 +5,8 @@ WITH AddressStats AS (
         COUNT(*) AS address_count,
         MIN(ca_zip) AS min_zip,
         MAX(ca_zip) AS max_zip,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT ca_street_name, ', ') AS street_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), ', ') AS street_names
     FROM 
         customer_address
     GROUP BY 

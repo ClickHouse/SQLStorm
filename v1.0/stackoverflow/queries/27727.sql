@@ -4,7 +4,7 @@ WITH UserBadgeCount AS (
         U.Id AS UserId,
         U.DisplayName,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 
@@ -64,11 +64,11 @@ UserBadgeAndPostStats AS (
 SELECT 
     *,
     CASE 
-        WHEN PostCount > 0 THEN ROUND((TotalUpVotes / PostCount::numeric) * 100, 2)
+        WHEN PostCount > 0 THEN ROUND((TotalUpVotes / CAST(PostCount AS numeric)) * 100, 2)
         ELSE 0
     END AS UpvoteRatio,
     CASE 
-        WHEN TotalComments > 0 THEN ROUND((TotalUpVotes / TotalComments::numeric) * 100, 2)
+        WHEN TotalComments > 0 THEN ROUND((TotalUpVotes / CAST(TotalComments AS numeric)) * 100, 2)
         ELSE 0
     END AS UpvoteToCommentRatio
 FROM 

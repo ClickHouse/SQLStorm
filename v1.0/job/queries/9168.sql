@@ -4,7 +4,7 @@ SELECT
     t.title AS movie_title,
     c.kind AS cast_type,
     m.info AS movie_info,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     cast_info ci
 JOIN 

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.Id, p.Title, p.CreationDate, u.DisplayName, p.Score, p.ViewCount
 ),
 TopPosts AS (

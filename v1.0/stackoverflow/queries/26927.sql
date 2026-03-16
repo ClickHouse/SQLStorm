@@ -40,7 +40,7 @@ TopPosts AS (
 ),
 TagsStats AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '>')) AS TagName, 
+        arrayJoin(splitByString('>', Tags)) AS TagName, 
         COUNT(*) AS PostCount
     FROM 
         TopPosts

@@ -74,4 +74,4 @@ WHERE
     i.i_current_price > 0
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -6,7 +6,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
     MAX(s.s_acctbal) AS max_supplier_acctbal,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_phone, ')'), ', ') AS suppliers_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')')))), ', ') AS suppliers_info,
     CASE 
         WHEN AVG(l.l_discount) > 0.1 THEN 'High Discount'
         WHEN AVG(l.l_discount) BETWEEN 0.05 AND 0.1 THEN 'Medium Discount'

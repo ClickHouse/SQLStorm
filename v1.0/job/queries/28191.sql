@@ -2,7 +2,7 @@ WITH NameAggregates AS (
     SELECT 
         ak.person_id,
         COUNT(DISTINCT ak.name) AS name_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS all_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS all_names
     FROM 
         aka_name ak
     GROUP BY 
@@ -12,7 +12,7 @@ MovieAggregates AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ci.note, '; ') AS cast_notes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), '; ') AS cast_notes,
         AVG(CASE WHEN mt.production_year IS NOT NULL THEN mt.production_year ELSE 0 END) AS avg_production_year
     FROM 
         movie_companies mc

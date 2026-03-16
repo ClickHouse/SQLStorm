@@ -26,9 +26,9 @@ WITH movie_cast AS (
 SELECT 
     movie_title,
     COUNT(actor_name) AS total_actors, 
-    ARRAY_AGG(DISTINCT actor_name) AS actor_list,
-    ARRAY_AGG(DISTINCT keyword) AS keywords,
-    ARRAY_AGG(DISTINCT company_type) AS companies
+    arrayDistinct(groupArray(assumeNotNull(actor_name))) AS actor_list,
+    arrayDistinct(groupArray(assumeNotNull(keyword))) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(company_type))) AS companies
 FROM 
     movie_cast
 GROUP BY 

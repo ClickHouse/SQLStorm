@@ -41,7 +41,7 @@ SELECT
 FROM 
     RecentOrderDetails rod
 WHERE 
-    rod.o_orderdate >= DATE '1997-01-01'
+    rod.o_orderdate >= toDate('1997-01-01')
 GROUP BY 
     rod.c_name
 ORDER BY 

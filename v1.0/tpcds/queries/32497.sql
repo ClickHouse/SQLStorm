@@ -13,7 +13,7 @@ WITH RECURSIVE IncomeBands AS (
 CustomerSales AS (
     SELECT c.c_customer_sk, c.c_first_name, c.c_last_name, 
            SUM(ws.ws_net_paid) AS total_sales,
-           STRING_AGG(DISTINCT i.i_product_name, ', ') AS purchased_items
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), ', ') AS purchased_items
     FROM customer c
     LEFT JOIN web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk
     LEFT JOIN item i ON ws.ws_item_sk = i.i_item_sk

@@ -38,7 +38,7 @@ TopRoles AS (
 MovieInfoWithKeywords AS (
     SELECT 
         ti.title AS movie_title,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         title ti
     LEFT JOIN 

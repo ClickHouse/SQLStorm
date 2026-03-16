@@ -23,8 +23,8 @@ filtered_ranked_titles AS (
 )
 SELECT 
     frt.production_year, 
-    STRING_AGG(frt.title, ', ') AS top_titles,
-    STRING_AGG(frt.actor_name, ', ') AS top_actors
+    arrayStringConcat(groupArray(assumeNotNull(frt.title)), ', ') AS top_titles,
+    arrayStringConcat(groupArray(assumeNotNull(frt.actor_name)), ', ') AS top_actors
 FROM 
     filtered_ranked_titles frt
 GROUP BY 

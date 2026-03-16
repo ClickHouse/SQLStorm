@@ -39,7 +39,7 @@ FinalReport AS (
         rd.production_year,
         rd.movie_kind,
         rd.keyword_count,
-        STRING_AGG(DISTINCT p.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_names
     FROM 
         MovieDetails rd
     LEFT JOIN 

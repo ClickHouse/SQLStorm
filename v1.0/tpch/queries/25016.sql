@@ -13,7 +13,7 @@ TopSuppliers AS (
     WHERE rs.supplier_rank <= 3
 )
 SELECT r_name, 
-       STRING_AGG(CONCAT(s_name, ' - ', p_name, ' ($', ps_supplycost, ')'), '; ') AS supplier_info
+       arrayStringConcat(groupArray(assumeNotNull(CONCAT(s_name, ' - ', p_name, ' ($', ps_supplycost, ')'))), '; ') AS supplier_info
 FROM TopSuppliers
 GROUP BY r_name
 ORDER BY r_name;

@@ -45,11 +45,11 @@ PostDetails AS (
         tp.CommentCount,
         tp.UpVoteCount,
         tp.DownVoteCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
     FROM 
         TopPosts tp
     LEFT JOIN 
-        LATERAL UNNEST(STRING_TO_ARRAY(SUBSTRING(tp.Tags, 2, LENGTH(tp.Tags)-2), '><')) AS tag_array ON TRUE
+        arrayJoin(splitByString('><', SUBSTRING(tp.Tags, 2, LENGTH(tp.Tags)-2))) AS tag_array ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_array
     GROUP BY 

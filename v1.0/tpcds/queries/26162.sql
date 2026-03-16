@@ -34,7 +34,7 @@ SELECT
     ca.ca_state,
     rc.cd_gender,
     COUNT(DISTINCT rc.c_customer_sk) AS customer_count,
-    ARRAY_AGG(DISTINCT rc.c_first_name || ' ' || rc.c_last_name) AS customer_names
+    arrayDistinct(groupArray(assumeNotNull(rc.c_first_name || ' ' || rc.c_last_name))) AS customer_names
 FROM
     TopCustomers rc
 JOIN

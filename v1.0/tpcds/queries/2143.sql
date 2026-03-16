@@ -60,4 +60,4 @@ WHERE
     OR (ca.ca_state IS NULL AND ca.ca_city IS NULL)
 ORDER BY 
     ts.rank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

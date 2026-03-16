@@ -43,4 +43,4 @@ HAVING SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_disc
    AND AVG(pc.AvgSupplyCost) < (SELECT MIN(AvgSupplyCost) FROM FilteredParts) 
 ORDER BY CustRank, TotalOrders DESC
 OFFSET CASE WHEN (SELECT COUNT(*) FROM nation) < 5 THEN 0 ELSE 1 END ROWS 
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10;

@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 PostHistoryDetails AS (
     SELECT 
@@ -29,7 +29,7 @@ UserBadgeDetails AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 
@@ -41,7 +41,7 @@ PostComments AS (
     SELECT 
         C.PostId,
         COUNT(C.Id) AS CommentCount,
-        STRING_AGG(C.Text, '; ') AS AllComments
+        arrayStringConcat(groupArray(assumeNotNull(C.Text)), '; ') AS AllComments
     FROM 
         Comments C
     GROUP BY 
@@ -55,7 +55,7 @@ FinalResults AS (
         RP.UpVoteCount,
         RP.DownVoteCount,
         COALESCE(PH.UserId, 0) AS LastEditedBy,
-        COALESCE(PH.EditDate, '1970-01-01 00:00:00'::timestamp) AS LastEditDate,
+        COALESCE(PH.EditDate, CAST('1970-01-01 00:00:00' AS timestamp)) AS LastEditDate,
         COALESCE(PH.EditType, 'No Edits') AS LastEditType,
         COALESCE(UD.BadgeCount, 0) AS UserBadgeCount,
         COALESCE(UD.BadgeNames, 'No Badges') AS UserBadges,

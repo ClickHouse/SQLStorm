@@ -44,4 +44,4 @@ FROM processed_items pi
 JOIN demographic_analysis da ON da.avg_purchase_estimate > 1000
 WHERE pi.desc_length BETWEEN 10 AND 100
 ORDER BY pi.desc_length DESC, da.customer_count DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -59,7 +59,7 @@ SELECT
     ci.actor_name, 
     COALESCE(ci.actor_role, 'Unspecified') AS actor_role,
     COUNT(*) OVER (PARTITION BY ci.company_name ORDER BY ci.title) AS title_count,
-    STRING_AGG(DISTINCT ci.title, ', ') FILTER (WHERE ci.actor_role IS NOT NULL) AS titles_with_roles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.title))), ', ') FILTER (WHERE ci.actor_role IS NOT NULL) AS titles_with_roles
 FROM 
     CombinedInfo ci
 GROUP BY 

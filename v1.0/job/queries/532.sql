@@ -24,8 +24,8 @@ MovieDetails AS (
         tm.title,
         tm.production_year,
         COUNT(ci.id) AS cast_count,
-        STRING_AGG(DISTINCT an.name, ', ') AS actors,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         TopMovies tm
     LEFT JOIN 

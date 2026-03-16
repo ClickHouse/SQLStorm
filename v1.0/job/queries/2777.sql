@@ -28,7 +28,7 @@ SELECT
     tm.title,
     tm.production_year,
     COALESCE(
-        (SELECT STRING_AGG(a.name, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') 
          FROM aka_name a 
          JOIN cast_info ci ON a.person_id = ci.person_id 
          WHERE ci.movie_id IN (SELECT movie_id FROM movie_companies mc WHERE mc.company_type_id IS NOT NULL) 

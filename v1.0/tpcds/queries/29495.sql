@@ -31,7 +31,7 @@ AggregatedData AS (
     SELECT 
         cd_gender,
         COUNT(*) AS customer_count,
-        STRING_AGG(formal_name, '; ') AS all_customers
+        arrayStringConcat(groupArray(assumeNotNull(formal_name)), '; ') AS all_customers
     FROM EnhancedData
     GROUP BY cd_gender
 )

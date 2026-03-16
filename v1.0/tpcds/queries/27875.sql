@@ -3,7 +3,7 @@ WITH address_analysis AS (
     SELECT 
         ca_city,
         COUNT(*) AS address_count,
-        STRING_AGG(ca_street_name || ' ' || ca_street_type, ', ') AS street_names,
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_type)), ', ') AS street_names,
         MIN(ca_zip) AS min_zip,
         MAX(ca_zip) AS max_zip
     FROM 
@@ -16,7 +16,7 @@ customer_analysis AS (
         cd_gender,
         COUNT(*) AS customer_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(CONCAT(cd_gender, ' - ', cd_marital_status), '; ') AS demographic_info
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(cd_gender, ' - ', cd_marital_status))), '; ') AS demographic_info
     FROM 
         customer_demographics
     GROUP BY 
@@ -27,7 +27,7 @@ sales_summary AS (
         ws_ship_date_sk,
         SUM(ws_quantity) AS total_quantity_sold,
         SUM(ws_net_paid) AS total_sales,
-        STRING_AGG(DISTINCT CAST(ws_web_page_sk AS TEXT), ', ') AS unique_web_pages
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws_web_page_sk AS TEXT)))), ', ') AS unique_web_pages
     FROM 
         web_sales
     GROUP BY 

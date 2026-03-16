@@ -4,8 +4,8 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title t
     JOIN 
@@ -29,11 +29,11 @@ FilteredMovies AS (
         rm.cast_count,
         rm.actors,
         rm.keywords,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM cast('2024-10-01' as date)) ORDER BY rm.cast_count DESC) AS rank
+        ROW_NUMBER() OVER (PARTITION BY toYear(cast('2024-10-01' as date)) ORDER BY rm.cast_count DESC) AS rank
     FROM 
         RankedMovies rm
     WHERE 
-        rm.production_year >= EXTRACT(YEAR FROM cast('2024-10-01' as date)) - 10
+        rm.production_year >= toYear(cast('2024-10-01' as date)) - 10
 )
 
 SELECT 

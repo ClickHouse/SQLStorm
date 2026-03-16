@@ -7,7 +7,7 @@ WITH RecursivePostHistory AS (
            Ph.Comment,
            ROW_NUMBER() OVER (PARTITION BY Ph.PostId ORDER BY Ph.CreationDate DESC) AS rn
     FROM PostHistory Ph
-    WHERE Ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE Ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 RecentPostStats AS (
     SELECT P.Id AS PostId,
@@ -22,7 +22,7 @@ RecentPostStats AS (
     LEFT JOIN Votes V ON P.Id = V.PostId 
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN RecursivePostHistory PH ON P.Id = PH.PostId
-    WHERE P.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months') 
+    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH) 
       AND P.PostTypeId = 1
     GROUP BY P.Id, P.OwnerUserId
 ),
@@ -70,9 +70,9 @@ SELECT PS.PostId,
            ELSE 'Below Top 50'
        END AS UserCategory,
        (CASE WHEN PS.HasEdits = 1 THEN 'Edited' ELSE 'Not Edited' END) AS EditStatus,
-       cast('2024-10-01 12:34:56' as timestamp) AS QueryTimestamp
+       toDateTime64('2024-10-01 12:34:56', 6) AS QueryTimestamp
 FROM PostSummaries PS
 WHERE PS.AvgScore IS NOT NULL
 ORDER BY PS.AvgScore DESC, PS.CommentCount DESC
 LIMIT 100
-OFFSET (SELECT FLOOR(RANDOM() * COUNT(*)) FROM Posts WHERE PostTypeId = 1);
+OFFSET (SELECT FLOOR(rand() * COUNT(*)) FROM Posts WHERE PostTypeId = 1);

@@ -45,7 +45,7 @@ JOIN
 JOIN 
     high_supply_parts hsp ON l.l_partkey = hsp.p_partkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     c.c_name, r.r_name, n.n_name
 HAVING 

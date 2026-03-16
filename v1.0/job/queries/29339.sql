@@ -35,7 +35,7 @@ actor_summary AS (
     SELECT 
         actor_name,
         COUNT(DISTINCT movie_id) AS movie_count,
-        ARRAY_AGG(DISTINCT movie_title) AS movies
+        arrayDistinct(groupArray(assumeNotNull(movie_title))) AS movies
     FROM 
         movie_details
     GROUP BY 

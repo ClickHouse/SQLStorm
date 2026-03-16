@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserVoteStats AS (
     SELECT 
@@ -42,7 +42,7 @@ OutstandingBadges AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CONCAT(ph.UserDisplayName, ' (', ph.CreationDate, ') - ', ph.Comment), ' | ') AS EditHistory
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.UserDisplayName, ' (', ph.CreationDate, ') - ', ph.Comment))), ' | ') AS EditHistory
     FROM 
         PostHistory ph
     WHERE 

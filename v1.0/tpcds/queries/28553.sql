@@ -27,7 +27,7 @@ SELECT
     ca_city,
     COUNT(DISTINCT full_address) AS unique_addresses,
     MAX(ca_zip) AS latest_zip_code,
-    STRING_AGG(DISTINCT CONCAT(full_address, ' (', ca_state, ')'), '; ') AS detailed_addresses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(full_address, ' (', ca_state, ')')))), '; ') AS detailed_addresses
 FROM CombinedAddresses
 GROUP BY ca_city
 HAVING COUNT(DISTINCT full_address) > 5

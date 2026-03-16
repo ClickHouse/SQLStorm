@@ -28,7 +28,7 @@ CastDetails AS (
 MoviesWithKeywords AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COUNT(DISTINCT mk.keyword_id) AS keyword_count
     FROM 
         movie_keyword mk

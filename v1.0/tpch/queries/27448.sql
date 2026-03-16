@@ -31,7 +31,7 @@ TopParts AS (
 )
 SELECT 
     tp.*,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     TopParts tp
 JOIN 

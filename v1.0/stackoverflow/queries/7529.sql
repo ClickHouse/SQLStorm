@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         LEFT JOIN Comments c ON p.Id = c.PostId
         LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2 
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, U.DisplayName, p.OwnerUserId
 ), 
@@ -30,7 +30,7 @@ TopComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        c.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     rp.PostId,

@@ -50,4 +50,4 @@ SELECT
 FROM TopItems ti
 WHERE (ti.total_returns > 10 OR (ti.ws_net_profit > 500 AND ti.return_count IS NOT NULL))
 ORDER BY ti.ws_net_profit DESC, ti.total_returns ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

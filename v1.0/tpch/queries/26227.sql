@@ -4,7 +4,7 @@ SELECT
     AVG(ps.ps_supplycost) AS average_supply_cost,
     SUM(l.l_quantity) AS total_quantity,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT CONCAT_WS(' - ', s.s_name, s.s_address), '; ') AS supplier_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' - ', s.s_name, s.s_address)))), '; ') AS supplier_info
 FROM 
     part p
 JOIN 

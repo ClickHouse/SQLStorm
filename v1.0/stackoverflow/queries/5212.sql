@@ -13,7 +13,7 @@ WITH ranked_posts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (8, 9) 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Score
 ), user_activity AS (
@@ -30,7 +30,7 @@ WITH ranked_posts AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        u.CreationDate < cast('2024-10-01' as date) - INTERVAL '1 month'
+        u.CreationDate < cast('2024-10-01' as date) - INTERVAL 1 MONTH
     GROUP BY 
         u.Id, u.DisplayName
 )

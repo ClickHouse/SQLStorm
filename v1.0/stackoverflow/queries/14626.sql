@@ -8,7 +8,7 @@ WITH PostStats AS (
         p.ViewCount,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         COALESCE((SELECT COUNT(a.Id) FROM Posts a WHERE a.AcceptedAnswerId = p.Id), 0) AS AcceptedAnswers
     FROM 
         Posts p
@@ -17,7 +17,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        (SELECT UNNEST(string_to_array(p.Tags, '<>')) AS TagName, p.Id FROM Posts p) AS t ON p.Id = t.Id
+        (SELECT arrayJoin(splitByString('<>', p.Tags)) AS TagName, p.Id FROM Posts p) AS t ON p.Id = t.Id
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount
 )

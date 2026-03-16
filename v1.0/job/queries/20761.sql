@@ -31,7 +31,7 @@ SELECT
     amc.actor_name,
     amc.total_movies,
     amc.last_movie_year,
-    STRING_AGG(DISTINCT mwk.movie_keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mwk.movie_keyword))), ', ') AS keywords,
     COUNT(DISTINCT mwk.movie_title) AS movies_with_keywords,
     CASE 
         WHEN SUM(CASE WHEN mwk.movie_keyword IS NOT NULL THEN 1 ELSE 0 END) > 5 THEN 'More than five keywords'

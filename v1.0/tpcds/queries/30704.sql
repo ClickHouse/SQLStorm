@@ -36,7 +36,7 @@ SELECT
     ca.ca_state,
     COUNT(DISTINCT c.c_customer_sk) AS customer_count,
     COALESCE(SUM(hs.total_net_profit), 0) AS total_profit,
-    STRING_AGG(DISTINCT i.i_brand, ', ') AS brands
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_brand))), ', ') AS brands
 FROM 
     customer_address ca
     LEFT JOIN customer c ON ca.ca_address_sk = c.c_current_addr_sk

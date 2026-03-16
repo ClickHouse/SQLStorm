@@ -34,8 +34,8 @@ BestSellingItems AS (
     LEFT JOIN 
         TotalReturns tr ON item.i_item_sk = tr.sr_item_sk
     WHERE 
-        item.i_rec_start_date < DATE '2002-10-01' 
-        AND (item.i_rec_end_date IS NULL OR item.i_rec_end_date > DATE '2002-10-01')
+        item.i_rec_start_date < toDate('2002-10-01') 
+        AND (item.i_rec_end_date IS NULL OR item.i_rec_end_date > toDate('2002-10-01'))
     GROUP BY 
         item.i_item_sk, 
         item.i_item_id
@@ -73,7 +73,7 @@ WHERE
         WHERE ws_sold_date_sk > (
             SELECT d_date_sk 
             FROM date_dim 
-            WHERE d_date = DATE '2002-10-01' - INTERVAL '30 DAY'
+            WHERE d_date = toDate('2002-10-01') - INTERVAL 30 DAY
         )
     )
 ORDER BY 

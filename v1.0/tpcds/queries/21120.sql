@@ -49,7 +49,7 @@ SELECT
     COUNT(CASE WHEN t.total_returns > 0 THEN 1 END) AS customers_with_returns,
     COALESCE(SUM(t.total_return_amt), 0) AS total_return_amount,
     AVG(CASE WHEN t.total_return_quantity > 0 THEN t.total_return_quantity END) AS avg_return_qty,
-    STRING_AGG(DISTINCT CONCAT(t.c_first_name, ' ', t.c_last_name), ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(t.c_first_name, ' ', t.c_last_name)))), ', ') AS customer_names
 FROM 
     TopCustomers t
 WHERE 

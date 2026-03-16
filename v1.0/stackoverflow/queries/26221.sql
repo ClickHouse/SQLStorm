@@ -44,12 +44,12 @@ FilteredPosts AS (
 FinalOutput AS (
     SELECT 
         fp.*,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS RelatedTags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS RelatedTags,
         COUNT(DISTINCT pl.RelatedPostId) AS RelatedPostCount
     FROM 
         FilteredPosts fp
     LEFT JOIN 
-        LATERAL (SELECT UNNEST(STRING_TO_ARRAY(SUBSTRING(fp.Tags, 2, LENGTH(fp.Tags) - 2), '><')) AS tag) AS tag ON TRUE
+        (SELECT arrayJoin(splitByString('><', SUBSTRING(fp.Tags, 2, LENGTH(fp.Tags) - 2))) AS tag) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON tag.tag = t.TagName
     LEFT JOIN 

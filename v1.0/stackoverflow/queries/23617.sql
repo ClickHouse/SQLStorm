@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
         JOIN PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 FilteredPosts AS (
     SELECT 
@@ -78,7 +78,7 @@ SELECT
         ELSE 'Needs Attention' 
     END AS PostStatus,
     COALESCE(
-        STRING_AGG(b.Name, ', ') FILTER (WHERE b.Class = 1), 
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') FILTER (WHERE b.Class = 1), 
         'No Gold Badges'
     ) AS GoldBadges
 FROM 

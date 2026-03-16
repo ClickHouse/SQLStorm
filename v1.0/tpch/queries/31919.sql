@@ -11,7 +11,7 @@ WITH RECURSIVE CTE_SupplierSales AS (
         JOIN part p ON ps.ps_partkey = p.p_partkey
         JOIN lineitem l ON p.p_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY 
         s.s_suppkey, s.s_name
 ),

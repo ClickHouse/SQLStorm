@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
 ),
 TopPosts AS (
@@ -52,7 +52,7 @@ SELECT
     pd.Author,
     pd.CommentCount,
     pd.MaxBounty,
-    (SELECT STRING_AGG(t.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
      FROM Tags t 
      JOIN Posts p ON p.Tags LIKE CONCAT('%', t.TagName, '%') 
      WHERE p.Id = pd.PostId) AS Tags,

@@ -18,7 +18,7 @@ WITH UserActivity AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        u.CreationDate < '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        u.CreationDate < CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation
 ),

@@ -3,7 +3,7 @@ WITH GenderDetails AS (
     SELECT 
         cd_gender, 
         COUNT(c_customer_sk) AS customer_count, 
-        STRING_AGG(CONCAT(c_first_name, ' ', c_last_name), '; ') AS full_names
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name))), '; ') AS full_names
     FROM 
         customer c
     JOIN 
@@ -15,7 +15,7 @@ RevenueDetails AS (
     SELECT 
         'Web' AS sales_channel,
         SUM(ws_net_paid_inc_tax) AS total_revenue,
-        STRING_AGG(CONCAT(i_item_desc, ' (', ws_quantity, ' sold)'), '; ') AS item_sales
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(i_item_desc, ' (', ws_quantity, ' sold)'))), '; ') AS item_sales
     FROM 
         web_sales ws
     JOIN 
@@ -26,7 +26,7 @@ RevenueDetails AS (
     SELECT 
         'Store' AS sales_channel,
         SUM(ss_net_paid_inc_tax) AS total_revenue,
-        STRING_AGG(CONCAT(i_item_desc, ' (', ss_quantity, ' sold)'), '; ') AS item_sales
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(i_item_desc, ' (', ss_quantity, ' sold)'))), '; ') AS item_sales
     FROM 
         store_sales ss
     JOIN 

@@ -52,7 +52,7 @@ MovieDetails AS (
         tm.title,
         tm.production_year,
         tm.total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
     FROM 
         TopMovies tm
     LEFT JOIN 

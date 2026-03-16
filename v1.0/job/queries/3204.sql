@@ -24,7 +24,7 @@ CompanyContributions AS (
 MoviesWithKeywords AS (
     SELECT 
         a.id AS movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM aka_title AS a
     JOIN movie_keyword AS mk ON a.id = mk.movie_id
     JOIN keyword AS k ON mk.keyword_id = k.id

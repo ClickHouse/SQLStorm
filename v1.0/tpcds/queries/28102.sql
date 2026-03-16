@@ -5,7 +5,7 @@ WITH AddressData AS (
         ca_state,
         ca_country,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT ca_street_name, ', ') AS unique_street_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), ', ') AS unique_street_names
     FROM 
         customer_address
     GROUP BY 
@@ -16,7 +16,7 @@ CustomerData AS (
         cd_gender,
         cd_marital_status,
         SUM(cd_purchase_estimate) AS total_purchase_estimate,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS unique_education_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS unique_education_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -70,4 +70,4 @@ FROM
 ORDER BY 
     total_purchase_estimate DESC, 
     total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

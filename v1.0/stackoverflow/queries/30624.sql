@@ -39,7 +39,7 @@ SELECT
             ELSE NULL 
         END
     ) AS AvgScoreForQuestions,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed,
     MAX(r.CreationDate) AS LastPostDate
 FROM 
     RecursivePosts r
@@ -48,9 +48,9 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON b.UserId = u.Id
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(p.TAGS, '<>')) AS TagName
+            arrayJoin(splitByString('<>', p.TAGS)) AS TagName
         FROM 
             Posts p
         WHERE 

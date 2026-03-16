@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 PostVotes AS (
     SELECT 
@@ -27,7 +27,7 @@ PostHistories AS (
         ph.PostId,
         COUNT(*) AS EditCount,
         MAX(ph.CreationDate) AS LastEditDate,
-        ARRAY_AGG(DISTINCT ph.UserDisplayName) AS Editors
+        arrayDistinct(groupArray(assumeNotNull(ph.UserDisplayName))) AS Editors
     FROM 
         PostHistory ph
     WHERE 
@@ -43,7 +43,7 @@ CombinedData AS (
         rp.ViewCount,
         COALESCE(pv.VoteScore, 0) AS VoteScore,
         COALESCE(ph.EditCount, 0) AS EditCount,
-        ARRAY_LENGTH(ph.Editors, 1) AS UniqueEditorsCount,
+        length(ph.Editors, 1) AS UniqueEditorsCount,
         CASE 
             WHEN rp.AnswerCount > 0 THEN 'Answered'
             ELSE 'Unanswered'

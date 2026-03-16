@@ -32,7 +32,7 @@ ActorRoles AS (
 KeywordStats AS (
     SELECT 
         m.movie_id,
-        string_agg(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword m
     JOIN 

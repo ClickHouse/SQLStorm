@@ -30,7 +30,7 @@ TopCustomers AS (
 )
 SELECT 
     ca_city,
-    STRING_AGG(full_name, ', ') AS top_customers
+    arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS top_customers
 FROM 
     TopCustomers
 GROUP BY 

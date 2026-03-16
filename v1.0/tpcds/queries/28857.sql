@@ -6,7 +6,7 @@ SELECT
     SUM(CASE WHEN cd_gender = 'M' THEN 1 ELSE 0 END) AS male_customers,
     SUM(CASE WHEN cd_gender = 'F' THEN 1 ELSE 0 END) AS female_customers,
     AVG(CAST(cd_purchase_estimate AS FLOAT)) AS average_purchase_estimate,
-    STRING_AGG(DISTINCT cd_education_status, ', ') AS unique_education_statuses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS unique_education_statuses
 FROM 
     customer_address ca
 JOIN 

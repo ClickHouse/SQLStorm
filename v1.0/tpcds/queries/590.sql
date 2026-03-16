@@ -49,4 +49,4 @@ WHERE
     r.total_web_sales > 1000 OR r.total_catalog_sales > 1000 OR r.total_store_sales > 1000
 ORDER BY 
     r.sales_rank
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

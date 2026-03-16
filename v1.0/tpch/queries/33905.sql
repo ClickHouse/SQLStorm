@@ -38,7 +38,7 @@ TotalSales AS (
     JOIN 
         supplier s ON ps.ps_suppkey = s.s_suppkey
     WHERE 
-        l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31' 
+        l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31') 
     GROUP BY 
         s.s_suppkey
 ),

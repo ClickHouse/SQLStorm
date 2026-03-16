@@ -1,7 +1,7 @@
 WITH RecursiveTags AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
     FROM 
         Posts p
     WHERE 

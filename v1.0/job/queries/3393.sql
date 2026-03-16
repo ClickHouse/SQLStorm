@@ -42,7 +42,7 @@ MovieDetails AS (
         fm.title,
         fm.production_year,
         fm.total_cast,
-        ARRAY_AGG(DISTINCT rm.related_title) AS related_movies
+        arrayDistinct(groupArray(assumeNotNull(rm.related_title))) AS related_movies
     FROM 
         FilteredMovies fm
     LEFT JOIN 

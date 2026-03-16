@@ -46,4 +46,4 @@ JOIN CustomerInfo ci ON ci.c_customer_sk IN (
     WHERE ws.ws_item_sk = ti.ws_item_sk
 )
 ORDER BY rs.total_sales DESC, ci.c_last_name ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score > 0 AND
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStatistics AS (
     SELECT 
@@ -40,7 +40,7 @@ PostWithComments AS (
         p.Title,
         COUNT(c.Id) AS CommentCount,
         SUM(c.Score) AS TotalCommentScore,
-        STRING_AGG(DISTINCT c.UserDisplayName, ', ') AS CommentUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.UserDisplayName))), ', ') AS CommentUsers
     FROM 
         Posts p
     LEFT JOIN 
@@ -74,5 +74,4 @@ WHERE
 ORDER BY 
     r.Score DESC, 
     r.CreationDate DESC
-OFFSET 
-    0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

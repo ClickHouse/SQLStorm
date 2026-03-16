@@ -49,11 +49,11 @@ SELECT
         WHEN U.AvgReputation IS NULL THEN 'No Reputation'
         ELSE CAST(U.AvgReputation AS VARCHAR)
     END AS AvgReputation,
-    COALESCE((SELECT STRING_AGG(T.TagName, ', ') 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
               FROM Tags T
               JOIN (
                   SELECT 
-                      UNNEST(string_to_array(P.Tags, '><')) AS Tag
+                      arrayJoin(splitByString('><', P.Tags)) AS Tag
                   FROM Posts P
                   WHERE P.OwnerUserId = U.UserId
               ) ST ON ST.Tag = T.TagName

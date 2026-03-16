@@ -33,7 +33,7 @@ SELECT
     T.AnswerCount,
     T.AvgUserReputation,
     (SELECT 
-        STRING_AGG(CONCAT(U.DisplayName, ' (', U.Reputation, ')'), ', ') 
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(U.DisplayName, ' (', U.Reputation, ')'))), ', ') 
     FROM 
         Posts P
     INNER JOIN 

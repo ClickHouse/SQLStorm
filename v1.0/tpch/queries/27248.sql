@@ -9,7 +9,7 @@ SELECT
         WHEN SUM(l.l_extendedprice * (1 - l.l_discount)) BETWEEN 5000 AND 10000 THEN 'Medium Revenue'
         ELSE 'Low Revenue'
     END AS revenue_category,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_served
 FROM 
     lineitem l
 JOIN 

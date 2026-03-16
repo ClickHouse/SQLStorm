@@ -4,13 +4,13 @@ WITH RankedOrders AS (
         o.o_orderdate, 
         o.o_totalprice, 
         c.c_name, 
-        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS price_rank
+        RANK() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS price_rank
     FROM 
         orders o
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
+        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
 ),
 Top10Orders AS (
     SELECT 

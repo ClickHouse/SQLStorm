@@ -8,7 +8,7 @@ WITH RankedSuppliers AS (
 )
 
 SELECT r.r_name, COUNT(DISTINCT ns.n_nationkey) AS nation_count,
-       STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM RankedSuppliers s
 JOIN supplier sup ON s.s_name = sup.s_name
 JOIN nation ns ON sup.s_nationkey = ns.n_nationkey

@@ -28,7 +28,7 @@ high_value_customers AS (
 SELECT n.n_name, COUNT(DISTINCT s.s_suppkey) AS total_suppliers,
        SUM(CASE WHEN ps.ps_availqty IS NULL THEN 0 ELSE ps.ps_availqty END) AS available_quantity,
        SUM(COALESCE(lp.l_extendedprice, 0) * (1 - lp.l_discount)) AS total_revenue,
-       STRING_AGG(DISTINCT rp.p_name, ', ') AS part_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.p_name))), ', ') AS part_names
 FROM supplier s
 LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
 LEFT JOIN lineitem lp ON ps.ps_partkey = lp.l_partkey

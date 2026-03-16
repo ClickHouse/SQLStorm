@@ -33,7 +33,7 @@ SELECT
     COUNT(DISTINCT c.movie_id) AS movies_count,
     SUM(CASE WHEN mi.info_type_id IS NOT NULL THEN 1 ELSE 0 END) AS info_count,
     AVG(t.production_year) AS average_year,
-    STRING_AGG(DISTINCT t.title, ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS titles,
     MAX(t.production_year) AS recent_movie_year
 FROM 
     aka_name AS a

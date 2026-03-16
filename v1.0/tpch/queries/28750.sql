@@ -7,7 +7,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     MAX(o.o_orderdate) AS last_order_date,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS aggregated_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS aggregated_comments
 FROM 
     part p
 JOIN 

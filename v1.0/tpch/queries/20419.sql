@@ -33,7 +33,7 @@ WITH RankedSuppliers AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= DATE '1998-10-01' - INTERVAL '30 days' 
+        l.l_shipdate >= toDate('1998-10-01') - INTERVAL 30 DAY 
     GROUP BY 
         l.l_orderkey 
     HAVING 

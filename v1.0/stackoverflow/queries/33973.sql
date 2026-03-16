@@ -29,7 +29,7 @@ PostRankings AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 ClosedPosts AS (
     SELECT 
@@ -63,7 +63,7 @@ SELECT
     u.Reputation,
     COALESCE(ps.CloseCount, 0) AS CloseCount,
     COUNT(b.Id) AS BadgeCount,
-    STRING_AGG(DISTINCT p.Title, ', ') AS TopPosts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), ', ') AS TopPosts
 FROM 
     Users u
 LEFT JOIN 
@@ -71,7 +71,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON b.UserId = u.Id
 LEFT JOIN 
-    Posts p ON p.OwnerUserId = u.Id AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '60 days'
+    Posts p ON p.OwnerUserId = u.Id AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 60 DAY
 WHERE 
     u.Reputation IS NOT NULL 
     AND u.Location IS NOT NULL

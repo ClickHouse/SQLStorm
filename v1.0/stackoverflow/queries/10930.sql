@@ -8,7 +8,7 @@ WITH PostStats AS (
         p.Score,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        (SELECT g.Id, unnest(string_to_array(g.Tags, ',')) AS TagName FROM Posts g) t ON p.Id = t.Id
+        (SELECT g.Id, arrayJoin(splitByString(',', g.Tags)) AS TagName FROM Posts g) t ON p.Id = t.Id
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
 ),

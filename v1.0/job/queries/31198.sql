@@ -30,7 +30,7 @@ WITH RECURSIVE MovieHierarchy AS (
 SELECT 
     m.title,
     COUNT(DISTINCT ci.person_id) AS total_cast,
-    STRING_AGG(DISTINCT n.name, ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS cast_names,
     SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS cast_with_notes,
     AVG(m.production_year) OVER (PARTITION BY m.kind_id) AS avg_year_per_kind,
     MAX(m.production_year) OVER (PARTITION BY m.kind_id ORDER BY m.production_year DESC) AS latest_movie_year

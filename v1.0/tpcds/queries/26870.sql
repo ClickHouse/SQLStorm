@@ -7,8 +7,8 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_spent,
     SUM(ws.ws_net_profit) AS total_profit,
-    STRING_AGG(DISTINCT w.web_name, ', ') AS websites_used,
-    STRING_AGG(DISTINCT CONCAT(p.p_promo_name, ' (', p.p_channel_details, ')'), '; ') AS promotions_used
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(w.web_name))), ', ') AS websites_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_promo_name, ' (', p.p_channel_details, ')')))), '; ') AS promotions_used
 FROM 
     customer AS c
 JOIN 

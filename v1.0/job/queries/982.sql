@@ -49,11 +49,11 @@ company_details AS (
 SELECT
     rm.title,
     rm.production_year,
-    STRING_AGG(DISTINCT mc.company_name, ', ') AS companies,
-    STRING_AGG(DISTINCT mk.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.company_name))), ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.keyword))), ', ') AS keywords,
     COUNT(DISTINCT mc.company_name) AS company_count,
     COUNT(DISTINCT mk.keyword) AS keyword_count,
-    ARRAY_AGG(DISTINCT CONCAT(ac.actor_name, ' (Rank: ', ac.actor_rank, ')')) AS actor_list
+    arrayDistinct(groupArray(assumeNotNull(CONCAT(ac.actor_name, ' (Rank: ', ac.actor_rank, ')')))) AS actor_list
 FROM
     ranked_movies rm
 LEFT JOIN

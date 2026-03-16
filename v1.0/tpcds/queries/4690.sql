@@ -39,7 +39,7 @@ RecentReturns AS (
     FROM 
         store_returns sr
     WHERE 
-        sr.sr_returned_date_sk > (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = (cast('2002-10-01' as date) - INTERVAL '30 days'))
+        sr.sr_returned_date_sk > (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = (cast('2002-10-01' as date) - INTERVAL 30 DAY))
     GROUP BY 
         sr.sr_customer_sk
 )

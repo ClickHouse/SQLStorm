@@ -14,14 +14,14 @@ WITH UserBadges AS (
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(string_to_array(Posts.Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', Posts.Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        UNNEST(string_to_array(Posts.Tags, '><'))
+        arrayJoin(splitByString('><', Posts.Tags))
     ORDER BY 
         TagCount DESC
     LIMIT 10
@@ -51,7 +51,7 @@ ActiveUsers AS (
     JOIN 
         UserPostCounts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.LastAccessDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TagEngagement AS (
     SELECT 

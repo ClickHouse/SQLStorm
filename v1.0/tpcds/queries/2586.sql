@@ -49,4 +49,4 @@ WHERE
     s.Rank = 1
 ORDER BY 
     Adjusted_Net_Profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -3,7 +3,7 @@ WITH PostTagCounts AS (
     SELECT
         p.Id AS PostId,
         p.Title,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName,
         COUNT(v.Id) AS VoteCount
     FROM
         Posts p
@@ -57,7 +57,7 @@ SELECT
     tp.CreationDate,
     tp.ViewCount,
     tp.CommentCount,
-    ARRAY_AGG(pt.TagName) AS AssociatedTags
+    groupArray(assumeNotNull(pt.TagName)) AS AssociatedTags
 FROM
     TopPosts tp
 JOIN

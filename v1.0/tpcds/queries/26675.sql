@@ -7,7 +7,7 @@ WITH ProcessedData AS (
         cd.cd_gender,
         COUNT(ws.ws_order_number) AS total_orders,
         SUM(ws.ws_sales_price) AS total_spent,
-        STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used
     FROM 
         customer c
     JOIN

@@ -14,7 +14,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 RecentPostStats AS (
     SELECT 
@@ -54,7 +54,7 @@ SELECT
     ub.NetVotes,
     CONCAT('User ', ub.DisplayName, ' has ', ub.RecentPostCount, ' recent posts with a net vote score of ', ub.NetVotes) AS UserSummary,
     (
-        SELECT STRING_AGG(DISTINCT CAST(pd.NormalizedTags AS VARCHAR), ', ')
+        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(pd.NormalizedTags AS VARCHAR)))), ', ')
         FROM RecentPostStats pd
         WHERE pd.PostId IN (SELECT PostId FROM RecentPostStats rs WHERE rs.OwnerDisplayName = ub.DisplayName)
     ) AS TagsSummary

@@ -17,7 +17,7 @@ WITH UserPostStats AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(BOTH '<>' FROM UNNEST(string_to_array(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2), '><'))) AS TagName,
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2)))) AS TagName,
         COUNT(*) AS TagPostCount
     FROM 
         Posts P

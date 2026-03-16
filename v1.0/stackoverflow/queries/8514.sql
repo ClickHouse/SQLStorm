@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '3 years' AND
+        p.CreationDate >= CURRENT_DATE - INTERVAL 3 YEAR AND
         p.Score > 0
 ), 
 TopRankedPosts AS (

@@ -20,7 +20,7 @@ PostTagCounts AS (
     FROM 
         Posts P
     LEFT JOIN 
-        UNNEST(string_to_array(P.Tags, '><')) AS T(TagName) ON true
+        arrayJoin(splitByString('><', P.Tags)) AS T(TagName) ON true
     GROUP BY 
         P.Id
 ),
@@ -48,7 +48,7 @@ RecentPosts AS (
             PostId
     ) AS PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 )
 SELECT 
     R.PostId,
@@ -56,7 +56,7 @@ SELECT
     R.CreationDate,
     R.AnswerCount,
     R.ViewCount,
-    CURRENT_TIMESTAMP AS BenchmarkTimestamp,
+    now64(6) AS BenchmarkTimestamp,
     U.UserId,
     U.DisplayName,
     U.Upvotes,

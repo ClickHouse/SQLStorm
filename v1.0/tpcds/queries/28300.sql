@@ -4,8 +4,8 @@ WITH AddressInfo AS (
         ca_city,
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(ca_street_name, ', ') AS street_names,
-        STRING_AGG(CASE WHEN ca_suite_number IS NOT NULL THEN ca_suite_number ELSE 'N/A' END, ', ') AS suite_numbers
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ca_suite_number IS NOT NULL THEN ca_suite_number ELSE 'N/A' END)), ', ') AS suite_numbers
     FROM 
         customer_address
     GROUP BY 
@@ -18,7 +18,7 @@ DemographicSummary AS (
         COUNT(*) AS customer_count,
         SUM(cd_dep_count) AS total_dependents,
         SUM(cd_dep_employed_count) AS employed_dependents,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_statuses
     FROM 
         customer_demographics 
     JOIN 
@@ -41,6 +41,6 @@ SELECT
 FROM 
     AddressInfo ai
 JOIN 
-    DemographicSummary ds ON ai.ca_state = (SELECT ca_state FROM customer_address ORDER BY RANDOM() LIMIT 1)
+    DemographicSummary ds ON ai.ca_state = (SELECT ca_state FROM customer_address ORDER BY rand() LIMIT 1)
 ORDER BY 
     ai.address_count DESC, ds.customer_count DESC;

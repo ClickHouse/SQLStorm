@@ -3,7 +3,7 @@ SELECT
     CONCAT('Supplier: ', s.s_name, ', Region: ', r.r_name) AS supplier_info,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT p.p_comment, ', ') AS unique_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), ', ') AS unique_comments
 FROM 
     part p
 JOIN 

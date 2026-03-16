@@ -4,7 +4,7 @@ WITH UserBadges AS (
         U.DisplayName,
         COUNT(B.Id) AS BadgeCount,
         SUM(B.Class) AS BadgeClassSum,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 
@@ -31,7 +31,7 @@ PostStats AS (
     LEFT JOIN 
         Posts P2 ON PL.RelatedPostId = P2.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
     GROUP BY 
         P.Id, P.OwnerUserId
 ),

@@ -4,11 +4,11 @@ WITH RankedOrders AS (
         o.o_orderkey,
         o.o_orderdate,
         o.o_totalprice,
-        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS order_rank
+        RANK() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS order_rank
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1997-12-31'
+        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1997-12-31')
 ),
 TopSuppliers AS (
     SELECT 

@@ -30,7 +30,7 @@ AggregatedData AS (
     SELECT 
         m.movie_id,
         COUNT(DISTINCT c.id) AS cast_count,
-        STRING_AGG(DISTINCT p.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_names,
         AVG(CAST(mi.info AS numeric)) AS average_rating
     FROM 
         MovieHierarchy m

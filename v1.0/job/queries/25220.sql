@@ -26,8 +26,8 @@ aggregated_data AS (
         movie_title,
         production_year,
         COUNT(DISTINCT actor_name) AS actor_count,
-        STRING_AGG(DISTINCT actor_name, ', ') AS actors_list,
-        STRING_AGG(DISTINCT genre_keyword, ', ') AS genre_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(genre_keyword))), ', ') AS genre_keywords
     FROM 
         movie_data
     GROUP BY 

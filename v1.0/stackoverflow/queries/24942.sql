@@ -15,7 +15,7 @@ RecentPosts AS (
         P.Score,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate > (cast('2024-10-01' as date) - INTERVAL '30 days')
+    WHERE P.CreationDate > (cast('2024-10-01' as date) - INTERVAL 30 DAY)
 ),
 ClosedPosts AS (
     SELECT 
@@ -23,7 +23,7 @@ ClosedPosts AS (
         P.OwnerUserId,
         PH.CreationDate AS CloseCreationDate,
         COUNT(*) AS CloseCount,
-        STRING_AGG(DISTINCT C.UserDisplayName, ', ') AS ClosingUserNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(C.UserDisplayName))), ', ') AS ClosingUserNames
     FROM PostHistory PH
     JOIN Posts P ON P.Id = PH.PostId
     LEFT JOIN Comments C ON C.PostId = PH.PostId

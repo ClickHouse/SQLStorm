@@ -30,7 +30,7 @@ FilteredSuppliers AS (
 SELECT 
     f.nation_name,
     f.p_name,
-    STRING_AGG(CONCAT(f.s_name, ' (', f.s_address, ')'), ', ') AS supplier_info,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(f.s_name, ' (', f.s_address, ')'))), ', ') AS supplier_info,
     MIN(f.ps_supplycost) AS min_supplycost,
     MAX(f.ps_supplycost) AS max_supplycost,
     AVG(f.ps_supplycost) AS avg_supplycost

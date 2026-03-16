@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
         AND p.PostTypeId IN (1, 2) 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName
@@ -46,7 +46,7 @@ SELECT
     tp.DownVotes,
     tp.CommentCount,
     COALESCE(AVG(b.Class), 0) AS AverageBadgeClass,
-    COALESCE(STRING_AGG(DISTINCT REPLACE(t.TagName, '<', '&lt;'), ', '), '') AS AssociatedTags
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(REPLACE(t.TagName, '<', '&lt;')))), ', '), '') AS AssociatedTags
 FROM 
     TopPosts tp
 LEFT JOIN 

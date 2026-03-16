@@ -4,7 +4,7 @@ WITH ranked_movies AS (
         mt.title, 
         mt.production_year, 
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        ARRAY_AGG(DISTINCT ak.name) AS aka_names,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aka_names,
         ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS rank
     FROM 
         aka_title mt
@@ -32,9 +32,7 @@ top_movies AS (
 SELECT 
     tm.title, 
     tm.production_year, 
-    tm.cast_count, 
-    unnest(tm.aka_names) AS aka_name
-FROM 
+    tm.cast_count ARRAY JOIN tm.aka_names AS aka_nameFROM 
     top_movies tm
 ORDER BY 
     tm.production_year DESC, tm.cast_count DESC;

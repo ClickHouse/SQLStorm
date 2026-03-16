@@ -33,7 +33,7 @@ WITH movie_details AS (
 ), keyword_counts AS (
     SELECT 
         title_id, 
-        STRING_AGG(keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords
     FROM 
         movie_details
     GROUP BY 

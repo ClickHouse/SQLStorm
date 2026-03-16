@@ -25,8 +25,8 @@ AggregatedResults AS (
         COUNT(*) AS total_customers,
         AVG(full_name_length) AS avg_full_name_length,
         COUNT(DISTINCT login_prefix) AS unique_login_prefix_count,
-        STRING_AGG(DISTINCT upper_first_name, ', ') AS all_upper_first_names,
-        STRING_AGG(DISTINCT lower_last_name, ', ') AS all_lower_last_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(upper_first_name))), ', ') AS all_upper_first_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lower_last_name))), ', ') AS all_lower_last_names
     FROM StringBenchmark
     GROUP BY ca_city
 )

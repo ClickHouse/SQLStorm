@@ -42,7 +42,7 @@ aggregated_info AS (
         COUNT(DISTINCT c_customer_id) AS total_customers,
         COUNT(CASE WHEN cd_marital_status = 'M' THEN 1 END) AS total_married,
         COUNT(CASE WHEN cd_marital_status = 'S' THEN 1 END) AS total_single,
-        STRING_AGG(formatted_name, ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(formatted_name)), ', ') AS customer_names
     FROM 
         formatted_details
     GROUP BY 

@@ -6,7 +6,7 @@ WITH RankedOrders AS (
         o.o_orderstatus,
         DENSE_RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS status_rank
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
 ),
 
 SupplierAggregate AS (

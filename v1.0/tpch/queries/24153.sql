@@ -58,6 +58,6 @@ FROM ranked_orders r
 FULL OUTER JOIN detailed_nation d ON d.supplier_count = r.order_rank
 LEFT JOIN top_part p ON p.p_partkey = r.o_orderkey
 LEFT JOIN supplier s ON s.s_nationkey = d.n_nationkey
-WHERE (r.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31' OR r.o_orderdate IS NULL)
+WHERE (r.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31') OR r.o_orderdate IS NULL)
 AND (p.p_retailprice < (SELECT MIN(ps_avg.avg_cost) FROM avg_supplier_cost ps_avg) OR s.s_name IS NULL)
 ORDER BY r.total_revenue DESC, d.region_name, p.p_name;

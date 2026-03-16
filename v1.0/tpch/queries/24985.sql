@@ -40,7 +40,7 @@ OrderDetails AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         o.o_orderkey, o.o_orderstatus
 ), 

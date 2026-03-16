@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostStats AS (
     SELECT 
@@ -58,7 +58,7 @@ SELECT
     ps.CommentCount,
     ps.VoteCount,
     ps.BadgeCount,
-    COALESCE(ROUND(AVG(EXTRACT(EPOCH FROM ph.CreationDate) - EXTRACT(EPOCH FROM ps.CreationDate)), 2), 0) AS AverageEditTime
+    COALESCE(ROUND(AVG(toUnixTimestamp(ph.CreationDate) - toUnixTimestamp(ps.CreationDate)), 2), 0) AS AverageEditTime
 FROM 
     PostStats ps
 LEFT JOIN 

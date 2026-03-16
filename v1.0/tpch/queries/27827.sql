@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     AVG(s.s_acctbal) AS avg_supplier_acctbal,
     CONCAT(r.r_name, ' - ', n.n_name) AS region_nation,
-    STRING_AGG(DISTINCT ps.ps_comment, '; ') AS supply_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ps.ps_comment))), '; ') AS supply_comments
 FROM 
     part p
 JOIN 

@@ -8,7 +8,7 @@ WITH OrderSummary AS (
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    WHERE o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     GROUP BY o.o_orderkey, o.o_orderdate, c.c_nationkey
 ),
 SupplierTotal AS (

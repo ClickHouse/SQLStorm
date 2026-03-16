@@ -3,7 +3,7 @@ SELECT
     SUBSTRING(p.p_name, 1, 10) AS short_name,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     AVG(ps.ps_availqty) AS average_available_quantity,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     MAX(o.o_totalprice) AS max_order_price,
     LENGTH(ps.ps_comment) AS comment_length
 FROM 

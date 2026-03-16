@@ -17,7 +17,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS TotalSuppliers,
     SUM(COALESCE(ps.ps_availqty, 0)) AS TotalAvailableQuantity,
     AVG(s.s_acctbal) AS AvgAccountBalance,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS SupplierNames,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS SupplierNames,
     MAX(CASE WHEN o.o_orderstatus = 'F' THEN o.o_orderkey END) AS LastFinishedOrder,
     SUM(CASE WHEN l.l_discount > 0.1 THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END) AS DiscountedRevenue
 FROM nation n

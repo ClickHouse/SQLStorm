@@ -25,7 +25,7 @@ WITH CustomerData AS (
 ),
 AgeDistribution AS (
     SELECT 
-        EXTRACT(YEAR FROM '2002-10-01' :: DATE) - c_birth_year AS age,
+        toYear(CAST('2002-10-01' AS DATE)) - c_birth_year AS age,
         COUNT(*) AS count
     FROM 
         CustomerData

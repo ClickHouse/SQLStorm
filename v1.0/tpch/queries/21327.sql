@@ -7,7 +7,7 @@ WITH RECURSIVE capable_suppliers AS (
     SELECT p_partkey, p_name, COUNT(DISTINCT l_orderkey) AS order_count
     FROM part
     JOIN lineitem ON p_partkey = l_partkey
-    WHERE l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 days'
+    WHERE l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
     GROUP BY p_partkey, p_name
 ), nation_sales AS (
     SELECT n.n_nationkey, n.n_name, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales
@@ -25,7 +25,7 @@ WITH RECURSIVE capable_suppliers AS (
     FROM nation n
     LEFT JOIN (SELECT ps_partkey, COUNT(*) AS part_count
                 FROM partsupp
-                GROUP BY ps_partkey) ps ON ps.ps_partkey IN (SELECT DISTINCT l_partkey FROM lineitem WHERE l_shipdate >= cast('1998-10-01' as date) - INTERVAL '60 days')
+                GROUP BY ps_partkey) ps ON ps.ps_partkey IN (SELECT DISTINCT l_partkey FROM lineitem WHERE l_shipdate >= cast('1998-10-01' as date) - INTERVAL 60 DAY)
     LEFT JOIN nation_sales ns ON n.n_nationkey = ns.n_nationkey
     LEFT JOIN capable_suppliers cs ON n.n_nationkey = cs.s_suppkey
     WHERE n.n_name LIKE 'N%'
@@ -35,7 +35,7 @@ WITH RECURSIVE capable_suppliers AS (
     WHERE LENGTH(p_name) > 10
 )
 SELECT ds.n_name, ds.part_count, ds.total_sales, ds.supplier_rank, 
-       string_agg(DISTINCT ub.p_brand, ', ') AS unique_brands
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ub.p_brand))), ', ') AS unique_brands
 FROM detailed_stats ds
 LEFT JOIN unique_brands ub ON ds.part_count > 5
 GROUP BY ds.n_name, ds.part_count, ds.total_sales, ds.supplier_rank

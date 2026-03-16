@@ -3,7 +3,7 @@ SELECT
     r.r_name AS region_name, 
     COUNT(DISTINCT s.s_suppkey) AS supplier_count, 
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost, 
-    STRING_AGG(DISTINCT p.p_name, '; ') AS part_names, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), '; ') AS part_names, 
     COUNT(DISTINCT c.c_custkey) AS customer_count, 
     SUM(o.o_totalprice) AS total_order_value
 FROM 

@@ -10,7 +10,7 @@ WITH PostStatistics AS (
         p.CommentCount,
         p.FavoriteCount,
         COUNT(c.Id) AS TotalComments,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
         COALESCE(MAX(b.Class), 0) AS HighestBadgeClass,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes
@@ -27,7 +27,7 @@ WITH PostStatistics AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, p.AnswerCount, p.CommentCount, p.FavoriteCount
 ),

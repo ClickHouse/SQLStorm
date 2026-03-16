@@ -14,20 +14,20 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryCount,
-        STRING_AGG(cht.Name, ', ') AS ChangeTypes
+        arrayStringConcat(groupArray(assumeNotNull(cht.Name)), ', ') AS ChangeTypes
     FROM 
         PostHistory ph
     JOIN 
         PostHistoryTypes cht ON ph.PostHistoryTypeId = cht.Id
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND
         cht.Id IN (1, 4, 10) 
     GROUP BY 
         ph.PostId
@@ -87,4 +87,4 @@ FROM
     FinalReport
 ORDER BY 
     Score DESC, ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

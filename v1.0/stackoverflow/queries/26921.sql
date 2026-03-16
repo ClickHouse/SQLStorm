@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts
     WHERE PostTypeId = 1  
@@ -24,7 +24,7 @@ RecentPosts AS (
         OwnerDisplayName,
         Score
     FROM Posts
-    WHERE CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
+    WHERE CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
     ORDER BY CreationDate DESC
     LIMIT 10
 ),

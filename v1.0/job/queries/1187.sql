@@ -24,7 +24,7 @@ MovieDetails AS (
         title.title,
         title.production_year,
         ak.name AS actor_name,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM TopMovies tm
     JOIN title ON tm.title_id = title.id
     LEFT JOIN cast_info ci ON title.id = ci.movie_id

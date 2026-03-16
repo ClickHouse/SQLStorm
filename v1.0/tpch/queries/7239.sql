@@ -2,8 +2,8 @@ WITH RankedOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 
            RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) as OrderRank
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01' 
-      AND o.o_orderdate < DATE '1998-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01') 
+      AND o.o_orderdate < toDate('1998-01-01')
 ),
 TopCustomers AS (
     SELECT c.c_custkey, c.c_name, SUM(o.o_totalprice) AS TotalSpent
@@ -31,8 +31,8 @@ JOIN customer c ON o.o_custkey = c.c_custkey
 JOIN nation n ON c.c_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey
 JOIN SupplierStats ss ON l.l_suppkey = ss.s_suppkey
-WHERE l.l_shipdate >= DATE '1997-04-01' 
-  AND l.l_shipdate < DATE '1997-10-01'
+WHERE l.l_shipdate >= toDate('1997-04-01') 
+  AND l.l_shipdate < toDate('1997-10-01')
 GROUP BY r.r_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 50000
 ORDER BY Revenue DESC;

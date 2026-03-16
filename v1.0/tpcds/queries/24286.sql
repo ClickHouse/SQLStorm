@@ -48,4 +48,4 @@ WHERE
 ORDER BY 
     sale_date, 
     rank_by_revenue
-OFFSET 50 ROWS FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 50;

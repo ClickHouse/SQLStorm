@@ -23,7 +23,7 @@ ActorNames AS (
     JOIN cast_info c ON a.person_id = c.person_id
 )
 SELECT tm.title, tm.production_year, 
-       STRING_AGG(DISTINCT an.name, ', ') AS actor_names,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actor_names,
        COALESCE(NULLIF(CAST(tm.cast_size AS TEXT), '0'), 'No Cast') AS cast_info
 FROM TopMovies tm
 LEFT JOIN ActorNames an ON tm.title_id = an.movie_id

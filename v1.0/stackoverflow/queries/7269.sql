@@ -51,7 +51,7 @@ SELECT
     CONCAT('Rank: ', CAST(tp.Rank AS VARCHAR)) AS PostRank,
     COALESCE((
         SELECT
-            STRING_AGG(CONCAT(t.TagName, ' (' , t.Count , ')'), ', ')
+            arrayStringConcat(groupArray(assumeNotNull(CONCAT(t.TagName, ' (' , t.Count , ')'))), ', ')
         FROM
             Tags t
         WHERE

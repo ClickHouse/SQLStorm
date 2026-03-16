@@ -39,7 +39,7 @@ SELECT
     rm.production_year,
     ar.actor_name,
     ar.role,
-    STRING_AGG(mk.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keywords
 FROM 
     RankedMovies rm
 LEFT JOIN 

@@ -11,7 +11,7 @@ WITH UserStats AS (
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Badges b ON u.Id = b.UserId
-    WHERE u.Reputation > 1000 AND u.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+    WHERE u.Reputation > 1000 AND u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY u.Id, u.DisplayName, u.Reputation, u.Views
 ),
 TopUsers AS (
@@ -35,12 +35,12 @@ SELECT
     tu.QuestionCount,
     tu.AnswerCount,
     tu.BadgeCount,
-    COALESCE(ARRAY_AGG(DISTINCT t.TagName) FILTER (WHERE t.TagName IS NOT NULL), '{}') AS TopTags
+    COALESCE(arrayDistinct(groupArray(assumeNotNull(t.TagName))) FILTER (WHERE t.TagName IS NOT NULL), '{}') AS TopTags
 FROM TopUsers tu
 LEFT JOIN (
     SELECT 
         p.OwnerUserId,
-        UNNEST(string_to_array(p.Tags, ',')) AS TagName
+        arrayJoin(splitByString(',', p.Tags)) AS TagName
     FROM Posts p
     WHERE p.Tags IS NOT NULL
 ) t ON tu.UserId = t.OwnerUserId

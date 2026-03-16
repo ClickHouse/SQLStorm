@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserVoteStats AS (
     SELECT 
@@ -57,4 +57,4 @@ WHERE
     AND (p.ViewCount > 100 OR p.Score > 5)
 ORDER BY 
     p.CreationDate DESC
-OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 5;

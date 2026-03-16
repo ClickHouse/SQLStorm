@@ -7,13 +7,13 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Tags t ON t.WikiPostId = p.Id OR t.ExcerptPostId = p.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.AnswerCount, p.CommentCount, p.PostTypeId
 ),
@@ -65,7 +65,7 @@ LEFT JOIN
     TopUsers tu ON p.OwnerUserId = tu.UserId
 WHERE 
     p.AcceptedAnswerId IS NOT NULL
-    AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+    AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ORDER BY 
     rp.Score DESC, tu.Reputation DESC
 LIMIT 100;

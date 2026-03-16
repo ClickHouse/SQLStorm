@@ -24,7 +24,7 @@ WITH ranked_titles AS (
         rt.production_year,
         rt.role,
         rt.cast_count,
-        STRING_AGG(DISTINCT CONCAT(ak.name, ' (', ak.id, ')'), ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ak.name, ' (', ak.id, ')')))), ', ') AS cast_names
     FROM 
         ranked_titles rt
     JOIN 

@@ -30,7 +30,7 @@ SELECT
     tc.c_last_name,
     tc.total_sales,
     d.d_year,
-    EXTRACT(MONTH FROM d.d_date) AS sales_month,
+    toMonth(d.d_date) AS sales_month,
     COUNT(ws.ws_order_number) AS order_count
 FROM 
     TopCustomers tc

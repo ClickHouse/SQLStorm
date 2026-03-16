@@ -30,7 +30,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS order_count,
     SUM(ws.ws_sales_price) AS total_sales,
     AVG(CASE WHEN ws.ws_sales_price > 100 THEN ws.ws_sales_price ELSE NULL END) AS high_value_avg,
-    STRING_AGG(DISTINCT CONCAT(ih.i_item_desc, ' ($', ih.i_current_price, ')'), '; ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ih.i_item_desc, ' ($', ih.i_current_price, ')')))), '; ') AS purchased_items
 FROM customer c
 LEFT JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk
 LEFT JOIN web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk

@@ -35,7 +35,7 @@ ActiveUsers AS (
     FROM Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE u.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY u.DisplayName
     HAVING COUNT(p.Id) > 5
 )

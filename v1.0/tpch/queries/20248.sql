@@ -24,7 +24,7 @@ HighValueOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '3 months' AND
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 3 MONTH AND
         l.l_returnflag = 'N'
     GROUP BY 
         o.o_orderkey, o.o_totalprice

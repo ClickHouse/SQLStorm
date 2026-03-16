@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT p.p_partkey) AS total_parts,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(p.p_retailprice) AS average_retail_price,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_brand, ')'), '; ') AS part_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_brand, ')')))), '; ') AS part_details,
     SUM(o.o_totalprice) AS total_order_value,
     RANK() OVER (ORDER BY SUM(o.o_totalprice) DESC) AS order_value_rank
 FROM 
@@ -17,7 +17,7 @@ LEFT JOIN
 LEFT JOIN 
     orders o ON l.l_orderkey = o.o_orderkey 
 WHERE 
-    o.o_orderdate >= DATE '1996-01-01'
+    o.o_orderdate >= toDate('1996-01-01')
 GROUP BY 
     s.s_name
 HAVING 

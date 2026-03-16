@@ -27,7 +27,7 @@ SELECT
     mt.production_year,
     COUNT(DISTINCT cc.id) AS total_cast_count,
     AVG(CASE WHEN ci.note IS NULL THEN 0 ELSE 1 END) AS note_present,
-    STRING_AGG(DISTINCT cn.name, ', ') AS character_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS character_names,
     ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY COUNT(DISTINCT cc.id) DESC) AS movie_rank
 FROM 
     MovieHierarchy mh

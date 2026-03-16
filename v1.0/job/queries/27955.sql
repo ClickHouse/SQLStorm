@@ -14,7 +14,7 @@ TitleWithKeywords AS (
         rt.title_id,
         rt.title,
         rt.production_year,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         RankedTitles rt
     JOIN 

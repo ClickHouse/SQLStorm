@@ -49,7 +49,7 @@ SELECT
     ps.AvgViewCount,
     ps.TotalScore,
     ps.LastActivePostDate,
-    EXTRACT(YEAR FROM age(su.AccountCreated)) AS AccountAgeYears
+    toYear(age(su.AccountCreated)) AS AccountAgeYears
 FROM SelectedUsers su
 JOIN PostStatistics ps ON su.UserId = ps.OwnerUserId
 ORDER BY su.Reputation DESC;

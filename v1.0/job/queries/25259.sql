@@ -27,7 +27,7 @@ TitleCounts AS (
     SELECT 
         ft.production_year,
         COUNT(ft.title) AS title_count,
-        STRING_AGG(ft.title, ', ') AS title_list
+        arrayStringConcat(groupArray(assumeNotNull(ft.title)), ', ') AS title_list
     FROM 
         FilteredTitles ft
     GROUP BY 

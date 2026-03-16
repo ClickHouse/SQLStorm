@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     WHERE
         P.PostTypeId = 1 
         AND P.Score > 10 
-        AND P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 AggregatedData AS (
     SELECT 
@@ -34,7 +34,7 @@ AggregatedData AS (
 ),
 PopularTags AS (
     SELECT 
-        DISTINCT UNNEST(string_to_array(RP.Tags, '><')) AS Tag
+        DISTINCT arrayJoin(splitByString('><', RP.Tags)) AS Tag
     FROM 
         RankedPosts RP
     WHERE 

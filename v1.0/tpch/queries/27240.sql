@@ -2,7 +2,7 @@ SELECT
     CONCAT(s.s_name, ' from ', r.r_name) AS supplier_region,
     SUM(l.l_quantity) AS total_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     AVG(o.o_totalprice) AS average_order_value
 FROM 
     supplier s

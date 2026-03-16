@@ -31,7 +31,7 @@ TopMovies AS (
 SELECT 
     tm.movie_title,
     tm.production_year,
-    STRING_AGG(tm.actor_name, ', ') AS top_actors,
+    arrayStringConcat(groupArray(assumeNotNull(tm.actor_name)), ', ') AS top_actors,
     tm.cast_count
 FROM 
     TopMovies tm

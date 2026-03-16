@@ -4,7 +4,7 @@ SELECT
     c.c_name AS customer_name,
     o.o_orderkey AS order_key,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nation_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nation_names
 FROM 
     part p
 JOIN 
@@ -20,7 +20,7 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey
 HAVING 

@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PopularUsers AS (
     SELECT 
@@ -36,7 +36,7 @@ RecentTagUsage AS (
     JOIN 
         Posts p ON p.Tags LIKE CONCAT('%', t.TagName, '%')
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         t.TagName
     ORDER BY 
@@ -75,6 +75,6 @@ LEFT JOIN
 WHERE 
     rp.PostRank <= 5
 AND 
-    (cp.LastClosedDate IS NULL OR cp.LastClosedDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months')
+    (cp.LastClosedDate IS NULL OR cp.LastClosedDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
 ORDER BY 
     rp.ViewCount DESC, rp.Score DESC;

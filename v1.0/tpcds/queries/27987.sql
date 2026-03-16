@@ -3,8 +3,8 @@ WITH CustomerCategories AS (
     SELECT 
         cd_gender,
         COUNT(DISTINCT c.c_customer_id) AS customer_count,
-        STRING_AGG(DISTINCT c.c_email_address, ', ') AS email_addresses,
-        STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_email_address))), ', ') AS email_addresses,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customer_names
     FROM 
         customer c
     JOIN 

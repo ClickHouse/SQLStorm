@@ -17,7 +17,7 @@ CastSummary AS (
     SELECT 
         actor_name,
         COUNT(movie_title) AS movie_count,
-        STRING_AGG(movie_title, ', ') AS movies
+        arrayStringConcat(groupArray(assumeNotNull(movie_title)), ', ') AS movies
     FROM 
         RankedTitles
     WHERE 

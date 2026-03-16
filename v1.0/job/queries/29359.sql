@@ -25,7 +25,7 @@ WITH MovieDetails AS (
     JOIN 
         aka_name a ON ca.person_id = a.person_id
     WHERE 
-        t.production_year >= EXTRACT(YEAR FROM cast('2024-10-01' as date)) - 10
+        t.production_year >= toYear(cast('2024-10-01' as date)) - 10
         AND (t.title ILIKE '%adventure%' OR a.name ILIKE '%Smith%')
 )
 
@@ -33,9 +33,9 @@ SELECT
     production_year,
     COUNT(DISTINCT title_id) AS total_titles,
     COUNT(DISTINCT actor_name) AS unique_actors,
-    STRING_AGG(DISTINCT title, '; ') AS titles_list,
-    STRING_AGG(DISTINCT actor_name, ', ') AS actors_list,
-    STRING_AGG(DISTINCT company_name, ', ') AS companies_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(title))), '; ') AS titles_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies_list
 FROM 
     MovieDetails
 GROUP BY 

@@ -6,7 +6,7 @@ SELECT
     count(distinct c.c_custkey) AS customer_count,
     sum(l.l_quantity) AS total_quantity,
     avg(l.l_discount) AS average_discount,
-    string_agg(distinct n.n_name, ', ') AS nationality_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nationality_list
 FROM 
     part p
 JOIN 

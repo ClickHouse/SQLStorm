@@ -33,7 +33,7 @@ PostHistoryDetails AS (
         ph.PostId,
         ph.UserDisplayName,
         ph.CreationDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         COUNT(*) AS HistoricalRecords
     FROM PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id

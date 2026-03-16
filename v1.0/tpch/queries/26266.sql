@@ -43,7 +43,7 @@ SELECT
     rs.p_brand AS Product_Brand,
     hvc.c_name AS Customer_Name,
     hvc.total_spent AS Total_Spent,
-    (SELECT STRING_AGG(c.c_comment, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(c.c_comment)), ', ') 
      FROM customer c 
      WHERE c.c_nationkey IN (SELECT n.n_nationkey FROM nation n WHERE n.n_name = 'USA')
     ) AS Customer_Comments

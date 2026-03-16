@@ -14,7 +14,7 @@ WITH UserActivity AS (
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     LEFT JOIN Votes V ON P.Id = V.PostId
     LEFT JOIN Badges B ON U.Id = B.UserId
-    WHERE U.Reputation > 100 AND U.LastAccessDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE U.Reputation > 100 AND U.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY U.Id, U.DisplayName, U.Reputation
 ),
 PostStatistics AS (
@@ -26,7 +26,7 @@ PostStatistics AS (
         COUNT(DISTINCT C.Id) AS CommentCount
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY P.OwnerUserId
 )
 SELECT 

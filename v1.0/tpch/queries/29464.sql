@@ -4,8 +4,8 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_quantity) AS total_quantity,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT c.c_name, '; ') AS customer_names,
-    STRING_AGG(DISTINCT n.n_name, '; ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), '; ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), '; ') AS nations_supplied,
     MAX(l.l_shipdate) AS last_ship_date
 FROM 
     supplier s

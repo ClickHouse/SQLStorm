@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (8, 9) 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 RecentActivePosts AS (
     SELECT 
@@ -34,7 +34,7 @@ RecentActivePosts AS (
         CommentCount,
         TotalBounty,
         (SELECT COUNT(*) FROM PostHistory ph WHERE ph.PostId = rp.PostId 
-         AND ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year') AS EditCount
+         AND ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR) AS EditCount
     FROM 
         RankedPosts rp
     WHERE 

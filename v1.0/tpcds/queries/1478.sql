@@ -53,4 +53,4 @@ WHERE
     OR (d.cd_gender = 'F' AND d.cd_marital_status IS NULL)
 ORDER BY 
     a.total_quantity DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -3,7 +3,7 @@ WITH movie_cast AS (
     SELECT 
         m.id AS movie_id,
         m.title AS movie_title,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
         MAX(m.production_year) AS production_year
     FROM 
         aka_title m
@@ -26,7 +26,7 @@ top_movies AS (
 )
 SELECT 
     production_year,
-    STRING_AGG(movie_title || ' (Cast: ' || cast_names || ')', '; ') AS movies_and_cast
+    arrayStringConcat(groupArray(assumeNotNull(movie_title || ' (Cast: ' || cast_names || ')')), '; ') AS movies_and_cast
 FROM 
     top_movies
 WHERE 

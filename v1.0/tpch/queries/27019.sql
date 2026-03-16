@@ -14,8 +14,8 @@ WITH combined_data AS (
     WHERE p.p_size > 10
       AND l.l_shipmode IN ('AIR', 'RAIL')
       AND c.c_mktsegment = 'BUILDING'
-      AND l.l_shipdate >= DATE '1997-01-01'
-      AND l.l_shipdate <= DATE '1997-12-31'
+      AND l.l_shipdate >= toDate('1997-01-01')
+      AND l.l_shipdate <= toDate('1997-12-31')
     GROUP BY supplier_part, r.r_name
 )
 SELECT 

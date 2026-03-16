@@ -3,7 +3,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity, 
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     AVG(o.o_totalprice) AS average_order_value,
-    STRING_AGG(DISTINCT CONCAT_WS(' - ', p.p_name, p.p_comment), ', ') AS parts_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' - ', p.p_name, p.p_comment)))), ', ') AS parts_details
 FROM 
     supplier s
 JOIN 

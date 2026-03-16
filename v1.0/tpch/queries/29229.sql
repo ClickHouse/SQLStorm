@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT l.l_orderkey) AS line_items,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(l.l_quantity) AS avg_quantity_per_line,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' - ', p.p_comment), '; ') AS products_sold
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' - ', p.p_comment)))), '; ') AS products_sold
 FROM 
     supplier s
 JOIN 
@@ -24,4 +24,4 @@ HAVING
     SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

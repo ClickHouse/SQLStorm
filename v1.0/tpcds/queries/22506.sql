@@ -66,7 +66,7 @@ FROM
 LEFT JOIN 
     TotalReturns B ON A.ws_item_sk = B.cr_item_sk
 JOIN 
-    MonthlyStats C ON C.d_year = EXTRACT(YEAR FROM (SELECT d_date FROM date_dim WHERE d_date_sk = A.ws_order_number)) 
+    MonthlyStats C ON C.d_year = toYear((SELECT d_date FROM date_dim WHERE d_date_sk = A.ws_order_number)) 
 LEFT JOIN 
     PopularItems D ON A.ws_item_sk = D.i_item_sk
 WHERE 

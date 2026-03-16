@@ -34,7 +34,7 @@ FilteredActors AS (
         person_id,
         name,
         COUNT(movie_id) AS movie_count,
-        STRING_AGG(DISTINCT movie_info, '; ') AS movie_infos
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_info))), '; ') AS movie_infos
     FROM
         ActorDetails
     GROUP BY

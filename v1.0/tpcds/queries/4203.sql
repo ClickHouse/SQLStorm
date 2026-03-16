@@ -25,9 +25,9 @@ ReturnStatistics AS (
         (r.total_store_returns + r.total_web_returns) AS total_returns,
         (r.total_store_return_transactions + r.total_web_return_transactions) AS total_return_transactions,
         CASE WHEN (r.total_store_returns + r.total_web_returns) = 0 THEN 0
-             ELSE (r.total_store_returns / NULLIF(r.total_store_return_transactions, 0)::decimal) END AS avg_store_return_quantity,
+             ELSE (r.total_store_returns / NULLIF(r.total_store_return_transactions, 0, CAST() AS decimal)) END AS avg_store_return_quantity,
         CASE WHEN (r.total_web_returns + r.total_store_returns) = 0 THEN 0 
-             ELSE (r.total_web_returns / NULLIF(r.total_web_return_transactions, 0)::decimal) END AS avg_web_return_quantity
+             ELSE (r.total_web_returns / NULLIF(r.total_web_return_transactions, 0, CAST() AS decimal)) END AS avg_web_return_quantity
     FROM
         CustomerReturns r
     JOIN customer c ON r.c_customer_sk = c.c_customer_sk

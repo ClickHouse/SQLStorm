@@ -37,7 +37,7 @@ actor_data AS (
 movie_info_data AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, ', ') AS all_info,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS all_info,
         AVG(LENGTH(mi.info)) AS avg_info_length
     FROM 
         movie_info mi

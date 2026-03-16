@@ -17,13 +17,13 @@ PostStatistics AS (
         P.OwnerUserId,
         COUNT(C.Id) AS CommentCount,
         COUNT(DISTINCT PL.RelatedPostId) AS RelatedPostCount,
-        MAX(COALESCE(PH.CreationDate, '1970-01-01'::timestamp)) AS LastHistoryDate,
+        MAX(COALESCE(PH.CreationDate, CAST('1970-01-01' AS timestamp))) AS LastHistoryDate,
         RANK() OVER (PARTITION BY P.OwnerUserId ORDER BY COUNT(DISTINCT C.Id) DESC) AS RankByComments
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN PostLinks PL ON P.Id = PL.PostId
     LEFT JOIN PostHistory PH ON P.Id = PH.PostId
-    WHERE P.CreationDate < TIMESTAMP '2024-10-01 12:34:56' AND (P.ClosedDate IS NULL OR P.ClosedDate > TIMESTAMP '2024-10-01 12:34:56')
+    WHERE P.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) AND (P.ClosedDate IS NULL OR P.ClosedDate > toDateTime64('2024-10-01 12:34:56', 6))
     GROUP BY P.Id, P.Title, P.OwnerUserId
 ),
 UserPostPerformance AS (
@@ -61,7 +61,7 @@ SELECT
     U.EngagementLevel,
     CASE
         WHEN U.LastHistoryDate IS NULL THEN 'No activity'
-        WHEN U.LastHistoryDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' THEN 'Inactive'
+        WHEN U.LastHistoryDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Inactive'
         ELSE 'Active'
     END AS ActivityStatus
 FROM UserPostPerformance U

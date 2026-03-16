@@ -22,7 +22,7 @@ AcceptedAnswers AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LastModifiedDate,
         COUNT(CASE WHEN ph.PostHistoryTypeId = 10 THEN 1 END) AS TotalCloseVotes,
         COUNT(CASE WHEN ph.PostHistoryTypeId = 11 THEN 1 END) AS TotalReopenVotes
@@ -51,7 +51,7 @@ FROM Posts p
 LEFT JOIN PostVoteCounts pc ON p.Id = pc.PostId
 LEFT JOIN AcceptedAnswers ah ON p.Id = ah.QuestionId
 LEFT JOIN PostHistoryDetails phd ON p.Id = phd.PostId
-WHERE p.CreationDate > CURRENT_DATE - INTERVAL '1 year'
+WHERE p.CreationDate > CURRENT_DATE - INTERVAL 1 YEAR
 AND (p.ViewCount > 100 OR pc.TotalVotes > 10)
 ORDER BY p.Score DESC, phd.LastModifiedDate DESC
 LIMIT 50;

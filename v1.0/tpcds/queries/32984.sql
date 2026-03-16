@@ -16,7 +16,7 @@ WITH RECURSIVE CustomerCTE AS (
 SELECT 
     c.c_customer_id,
     ca.ca_city,
-    STRING_AGG(DISTINCT CONCAT(cp.cp_description, ' (', cp.cp_type, ')'), ', ') AS catalog_pages,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cp.cp_description, ' (', cp.cp_type, ')')))), ', ') AS catalog_pages,
     SUM(ws.ws_sales_price) AS total_spent,
     COUNT(ws.ws_order_number) AS total_orders,
     ROW_NUMBER() OVER (PARTITION BY c.c_customer_sk ORDER BY SUM(ws.ws_sales_price) DESC) AS rank_by_spending

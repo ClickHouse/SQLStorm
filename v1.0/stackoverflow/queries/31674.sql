@@ -39,7 +39,7 @@ PostDetails AS (
 PostHistoryAggregates AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(pt.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS HistoryTypes,
         COUNT(*) AS HistoryCount,
         MIN(ph.CreationDate) AS FirstActionDate,
         MAX(ph.CreationDate) AS LastActionDate
@@ -88,4 +88,4 @@ WHERE
 ORDER BY 
     pd.ViewCount DESC, 
     pd.PostCreationDate ASC
-OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

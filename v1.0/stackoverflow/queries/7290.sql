@@ -13,18 +13,18 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(p.Tags, '>')) AS Tag,
+        arrayJoin(splitByString('>', p.Tags)) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
-        unnest(string_to_array(p.Tags, '>'))
+        arrayJoin(splitByString('>', p.Tags))
     ORDER BY 
         TagCount DESC
     LIMIT 5
@@ -53,7 +53,7 @@ FROM
 JOIN 
     PostHistorySummary ph ON rp.PostId = ph.PostId
 JOIN 
-    PopularTags pts ON pts.Tag = ANY(string_to_array(rp.Tags, '>'))
+    PopularTags pts ON pts.Tag = ANY(splitByString('>', rp.Tags))
 WHERE 
     rp.RankByViews <= 10
 ORDER BY 

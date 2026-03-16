@@ -32,7 +32,7 @@ SELECT
     cd.cd_marital_status,
     cd.cd_purchase_estimate,
     COUNT(DISTINCT ca.full_address) AS address_count,
-    STRING_AGG(ca.full_address, '; ') AS addresses
+    arrayStringConcat(groupArray(assumeNotNull(ca.full_address)), '; ') AS addresses
 FROM CustomerDetails cd
 JOIN ConcatenatedAddress ca ON cd.c_customer_sk = ca.ca_address_sk
 GROUP BY cd.full_name, cd.cd_gender, cd.cd_marital_status, cd.cd_purchase_estimate

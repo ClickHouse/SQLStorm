@@ -43,7 +43,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(COALESCE(ss.total_spent, 0)) AS avg_customer_spending,
     MAX(ss.total_fulfilled) AS max_fulfilled_orders,
-    STRING_AGG(DISTINCT fr.r_name, ', ') AS supplier_regions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fr.r_name))), ', ') AS supplier_regions
 FROM 
     part p
 LEFT JOIN 
@@ -64,4 +64,4 @@ HAVING
     COUNT(DISTINCT l.l_orderkey) > 5
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

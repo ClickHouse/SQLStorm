@@ -60,9 +60,9 @@ FilteredMovies AS (
 
 SELECT 
     title.title, 
-    ARRAY_AGG(DISTINCT fm.company_name) AS companies,
+    arrayDistinct(groupArray(assumeNotNull(fm.company_name))) AS companies,
     COUNT(DISTINCT cc.subject_id) AS total_actors,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
 FROM 
     FilteredMovies fm
 JOIN 

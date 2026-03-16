@@ -8,7 +8,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         SUM(P.ViewCount) AS TotalViews,
         SUM(P.Score) AS TotalScore,
-        AVG(COALESCE(EXTRACT(EPOCH FROM (P.LastActivityDate - P.CreationDate)), 0)) AS AvgActiveDuration
+        AVG(COALESCE(toUnixTimestamp((P.LastActivityDate - P.CreationDate)), 0)) AS AvgActiveDuration
     FROM
         Users U
     LEFT JOIN

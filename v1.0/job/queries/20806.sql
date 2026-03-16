@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         mt.title, 
         mt.production_year,
         mt.kind_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
         SUM(CASE WHEN ci.note LIKE '%lead%' THEN 1 ELSE 0 END) AS lead_cast_count,
         COUNT(DISTINCT mc.company_id) AS company_count,
         MAX(CASE WHEN mc.note IS NOT NULL THEN 'Yes' ELSE 'No' END) AS has_notes

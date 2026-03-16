@@ -38,11 +38,11 @@ RecentComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS CommentTexts
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS CommentTexts
     FROM 
         Comments c
     WHERE 
-        c.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
+        c.CreationDate > now64(6) - INTERVAL 30 DAY
     GROUP BY 
         c.PostId
 )

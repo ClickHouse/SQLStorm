@@ -4,7 +4,7 @@ WITH PostStats AS (
         COUNT(p.Id) AS TotalPosts,
         AVG(p.Score) AS AvgScore,
         SUM(p.ViewCount) AS TotalViews,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgTimeToActivity, 
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgTimeToActivity, 
         COUNT(DISTINCT p.OwnerUserId) AS UniqueAuthors
     FROM 
         Posts p

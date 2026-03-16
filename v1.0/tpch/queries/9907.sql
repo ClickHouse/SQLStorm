@@ -35,7 +35,7 @@ SELECT
     COUNT(*) AS total_orders,
     SUM(o.o_totalprice) AS total_revenue,
     AVG(o.o_totalprice) AS avg_order_value,
-    STRING_AGG(CONCAT(o.c_name, ': ', o.o_totalprice), ', ') AS order_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(o.c_name, ': ', o.o_totalprice))), ', ') AS order_details
 FROM 
     TopOrders o
 GROUP BY 

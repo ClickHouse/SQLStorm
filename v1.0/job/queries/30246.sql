@@ -32,7 +32,7 @@ SELECT
     COUNT(DISTINCT kc.keyword) AS keyword_count,
     RANK() OVER (PARTITION BY m.production_year ORDER BY COUNT(DISTINCT kc.keyword) DESC) AS rank_by_keywords,
     AVG(CAST(pi.info AS numeric)) FILTER (WHERE pi.info_type_id = 1) AS average_age,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     movie_hierarchy m
 JOIN 

@@ -3,8 +3,8 @@ SELECT
     n.n_name AS nation_name, 
     COUNT(DISTINCT ps.ps_partkey) AS total_parts_supplied, 
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
-    STRING_AGG(DISTINCT p.p_type, ', ') AS part_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS part_types,
     MAX(l.l_shipdate) AS last_ship_date
 FROM 
     supplier s

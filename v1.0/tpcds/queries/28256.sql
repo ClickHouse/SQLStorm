@@ -26,7 +26,7 @@ sales_summary AS (
         COUNT(*) AS total_orders,
         SUM(ws_ext_sales_price) AS total_spent,
         AVG(ws_ext_sales_price) AS avg_order_value,
-        STRING_AGG(DISTINCT COALESCE(start_item, 'No Items'), ', ') AS distinct_items_purchased
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(start_item, 'No Items')))), ', ') AS distinct_items_purchased
     FROM (
         SELECT 
             ws_bill_customer_sk AS customer_sk, 
@@ -71,4 +71,4 @@ LEFT JOIN
     sales_summary ss ON cd.c_customer_sk = ss.customer_sk
 ORDER BY 
     cd.cd_purchase_estimate DESC, cd.full_name ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

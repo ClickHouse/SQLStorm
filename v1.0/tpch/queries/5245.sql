@@ -20,7 +20,7 @@ FROM part p
 JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 JOIN lineitem l ON ps.ps_suppkey = l.l_suppkey
 JOIN nation_suppliers ns ON ps.ps_suppkey = ns.s_suppkey
-WHERE p.p_size > 15 AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+WHERE p.p_size > 15 AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY p.p_partkey, p.p_name
 HAVING COUNT(DISTINCT ps.ps_suppkey) > 1
 ORDER BY total_revenue DESC

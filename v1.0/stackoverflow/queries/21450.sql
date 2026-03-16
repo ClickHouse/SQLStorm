@@ -58,7 +58,7 @@ UserPerformance AS (
         COALESCE(PS.Questions, 0) AS Questions,
         COALESCE(PS.Answers, 0) AS Answers,
         COALESCE(PS.TotalScore, 0) AS TotalScore,
-        COALESCE(RA.LastActivityDate, DATE '1900-01-01') AS LastActivityDate,
+        COALESCE(RA.LastActivityDate, toDate('1900-01-01')) AS LastActivityDate,
         COALESCE(RA.TotalComments, 0) AS TotalComments,
         CASE 
             WHEN COALESCE(UR.BadgeCount, 0) = 0 THEN 'Unbadged User'

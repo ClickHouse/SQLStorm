@@ -5,8 +5,8 @@ SELECT
     SUM(ws.ws_net_paid) AS total_spent,
     MIN(DATE(d.d_date)) AS first_order_date,
     MAX(DATE(d.d_date)) AS last_order_date,
-    STRING_AGG(DISTINCT w.w_warehouse_name, ', ') AS warehouses_used,
-    STRING_AGG(DISTINCT sm.sm_carrier, ', ') AS shipping_methods
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(w.w_warehouse_name))), ', ') AS warehouses_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sm.sm_carrier))), ', ') AS shipping_methods
 FROM 
     customer c
 JOIN 

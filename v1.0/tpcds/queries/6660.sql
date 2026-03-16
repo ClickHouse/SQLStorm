@@ -37,6 +37,6 @@ SELECT tc.c_first_name,
        wp.total_orders, 
        wp.overall_profit
 FROM TopCustomers tc
-JOIN SalesSummary ts ON ts.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
+JOIN SalesSummary ts ON ts.d_year = toYear(toDate('2002-10-01'))
 JOIN WarehousePerformance wp ON wp.total_orders > 100
 ORDER BY ts.total_profit DESC, wp.overall_profit DESC;

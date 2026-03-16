@@ -17,15 +17,15 @@ RecentPosts AS (
         P.PostTypeId,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostTagStats AS (
     SELECT 
         P.Id AS PostId,
         COUNT(DISTINCT T.TagName) AS TagCount,
-        STRING_AGG(T.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM Posts P
-    JOIN UNNEST(string_to_array(P.Tags, '>')) AS T(TagName) 
+    JOIN arrayJoin(splitByString('>', P.Tags)) AS T(TagName) 
     ON T.TagName IS NOT NULL
     GROUP BY P.Id
 ),

@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 PostWithComments AS (
     SELECT 
@@ -41,7 +41,7 @@ TopUsers AS (
     INNER JOIN 
         Posts p ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -52,11 +52,11 @@ PostHistorySummary AS (
         ph.UserDisplayName,
         ph.CreationDate,
         COUNT(*) AS EditCount,
-        STRING_AGG(DISTINCT CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 'Closed' ELSE 'Edited' END, ', ') AS EditTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 'Closed' ELSE 'Edited' END))), ', ') AS EditTypes
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        ph.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId, ph.UserDisplayName, ph.CreationDate
 )

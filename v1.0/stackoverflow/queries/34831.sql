@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     WHERE
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 ),
 TopRankedPosts AS (
     SELECT
@@ -32,7 +32,7 @@ UserBadges AS (
     SELECT
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM
         Badges b
     GROUP BY

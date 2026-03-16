@@ -2,9 +2,9 @@ WITH ranked_movies AS (
     SELECT 
         t.id AS movie_id,
         t.title,
-        ARRAY_AGG(DISTINCT a.name) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS cast_names,
         COUNT(DISTINCT c.id) AS cast_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         MIN(t.production_year) AS first_release,
         MAX(t.production_year) AS last_release
     FROM 

@@ -58,4 +58,4 @@ WHERE
     i.i_current_price > 20.00
 ORDER BY 
     ti.total_sales DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

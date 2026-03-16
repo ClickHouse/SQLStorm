@@ -32,7 +32,7 @@ SELECT
             WHEN cd.cd_credit_rating = 'M' THEN cd.cd_purchase_estimate 
             ELSE NULL 
         END) AS avg_purchase_estimate_marital,
-    STRING_AGG(DISTINCT CONCAT(cu.c_first_name, ' ', cu.c_last_name), ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cu.c_first_name, ' ', cu.c_last_name)))), ', ') AS customer_names
 FROM 
     customer_address cha 
 LEFT JOIN 

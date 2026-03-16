@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.AcceptedAnswerId,
         COALESCE(p.AnswerCount, 0) AS AnswerCount,
         COALESCE((SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id), 0) AS CommentCount,
-        DENSE_RANK() OVER (PARTITION BY unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) ORDER BY p.CreationDate DESC) AS TagRank
+        DENSE_RANK() OVER (PARTITION BY arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) ORDER BY p.CreationDate DESC) AS TagRank
     FROM 
         Posts p
     JOIN 
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName, 
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName, 
         COUNT(*) AS Frequency
     FROM 
         Posts
@@ -42,7 +42,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags)-2), '><'))
+    PopularTags pt ON pt.TagName = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
 WHERE 
     rp.TagRank <= 5
 ORDER BY 

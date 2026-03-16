@@ -34,7 +34,7 @@ SELECT
     COUNT(DISTINCT ci.id) AS cast_count,
     SUM(CASE WHEN mp.note IS NOT NULL THEN 1 ELSE 0 END) AS has_notes,
     AVG(mt.production_year) OVER (PARTITION BY ak.name) AS avg_production_year,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM
     aka_name ak
 JOIN

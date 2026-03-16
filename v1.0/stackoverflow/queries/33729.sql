@@ -49,7 +49,7 @@ SELECT
     (PD.Upvotes - PD.Downvotes) AS NetVotes,
     P.Title,
     P.CreationDate,
-    ARRAY_AGG(DISTINCT T.TagName) AS Tags
+    arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS Tags
 FROM 
     HighScorers HSC
 JOIN 
@@ -59,7 +59,7 @@ LEFT JOIN
 LEFT JOIN 
     PostVoteDetails PD ON P.Id = PD.PostId
 LEFT JOIN 
-    LATERAL (SELECT unnest(string_to_array(P.Tags, ',')) AS TagName) AS TagArray ON true
+    (SELECT arrayJoin(splitByString(',', P.Tags)) AS TagName) AS TagArray ON true
 LEFT JOIN 
     Tags T ON T.TagName = TagArray.TagName
 GROUP BY 

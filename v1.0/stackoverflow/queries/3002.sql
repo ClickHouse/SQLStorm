@@ -12,14 +12,14 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 
 PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS CommentTexts
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS CommentTexts
     FROM 
         Comments c
     GROUP BY 
@@ -55,6 +55,6 @@ LEFT JOIN
     PostHistories ph ON rp.PostId = ph.PostId
 WHERE 
     rp.PostRank <= 5
-    AND (ph.LastClosedDate IS NULL OR ph.LastClosedDate < cast('2024-10-01' as date) - INTERVAL '30 days')
+    AND (ph.LastClosedDate IS NULL OR ph.LastClosedDate < cast('2024-10-01' as date) - INTERVAL 30 DAY)
 ORDER BY 
     rp.Score DESC, rp.ViewCount DESC;

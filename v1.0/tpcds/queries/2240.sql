@@ -61,4 +61,4 @@ WHERE
 ORDER BY 
     ts.total_web_sales DESC, 
     ts.total_store_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -32,7 +32,7 @@ WITH RecentMovies AS (
     LEFT JOIN MovieCompanies mc ON rm.movie_id = mc.movie_id
     LEFT JOIN MovieKeywords mk ON rm.movie_id = mk.movie_id
 )
-SELECT movie_id, movie_title, production_year, actor_name, actor_info, company_name, company_type, STRING_AGG(keyword, ', ') AS keywords
+SELECT movie_id, movie_title, production_year, actor_name, actor_info, company_name, company_type, arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords
 FROM FinalReport
 GROUP BY movie_id, movie_title, production_year, actor_name, actor_info, company_name, company_type
 ORDER BY production_year DESC, movie_title;

@@ -47,7 +47,7 @@ RecentPostHistory AS (
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        PH.CreationDate >= now64(6) - INTERVAL 30 DAY
     AND 
         PH.PostHistoryTypeId IN (10, 11, 12, 13)
 )

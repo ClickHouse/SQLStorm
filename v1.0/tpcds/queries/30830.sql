@@ -61,7 +61,7 @@ final_report AS (
     INNER JOIN 
         address_info ai ON ch.c_customer_sk = ai.customer_count
     LEFT JOIN 
-        sales_hierarchy sh ON sh.ss_store_sk = (SELECT s_store_sk FROM store ORDER BY RANDOM() LIMIT 1)
+        sales_hierarchy sh ON sh.ss_store_sk = (SELECT s_store_sk FROM store ORDER BY rand() LIMIT 1)
 )
 SELECT 
     *,

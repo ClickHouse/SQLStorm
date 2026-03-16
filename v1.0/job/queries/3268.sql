@@ -17,7 +17,7 @@ WITH ranked_movies AS (
 ), movie_tags AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mt
     JOIN keyword k ON mt.keyword_id = k.id
     GROUP BY mt.movie_id
@@ -25,7 +25,7 @@ WITH ranked_movies AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT mc.company_id) AS company_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM movie_companies mc
     JOIN company_name cn ON mc.company_id = cn.id
     GROUP BY mc.movie_id

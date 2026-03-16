@@ -3,8 +3,8 @@ WITH ranked_movies AS (
     SELECT 
         mt.title AS movie_title,
         mt.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT ch.name, ', ') AS char_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ch.name))), ', ') AS char_names,
         COUNT(DISTINCT mc.company_id) AS company_count,
         COUNT(DISTINCT kw.keyword) AS keywords_count,
         ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY mt.production_year DESC, mt.title ASC) AS rank

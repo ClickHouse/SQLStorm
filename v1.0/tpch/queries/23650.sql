@@ -18,8 +18,8 @@ TotalSpending AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' 
-        AND o.o_orderdate < DATE '1998-01-01'
+        o.o_orderdate >= toDate('1997-01-01') 
+        AND o.o_orderdate < toDate('1998-01-01')
     GROUP BY 
         l.l_suppkey
 ),
@@ -42,7 +42,7 @@ SELECT
     AVG(l.l_extendedprice) AS avg_price,
     COALESCE(SUM(ts.total_spent), 0) AS total_spending,
     COALESCE(MAX(ads.total_available), 0) AS max_available_parts,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     nation r
 LEFT JOIN 

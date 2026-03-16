@@ -8,7 +8,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgActivityDuration
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgActivityDuration
     FROM 
         Users u
     LEFT JOIN 

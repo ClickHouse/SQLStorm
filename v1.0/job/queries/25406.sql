@@ -32,8 +32,8 @@ AggregatedInfo AS (
         fm.aka_id,
         fm.aka_name,
         COUNT(DISTINCT fm.title_id) AS movie_count,
-        STRING_AGG(DISTINCT fm.movie_title, ', ') AS movies_list,
-        STRING_AGG(DISTINCT CONCAT(fm.movie_title, ' (', fm.production_year, ')'), ', ') AS detailed_movies_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fm.movie_title))), ', ') AS movies_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(fm.movie_title, ' (', fm.production_year, ')')))), ', ') AS detailed_movies_list
     FROM 
         FilteredMovies fm
     GROUP BY 

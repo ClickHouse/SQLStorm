@@ -7,7 +7,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid) AS total_spent,
     AVG(ws.ws_net_paid) AS average_order_value,
-    STRING_AGG(DISTINCT ip.i_product_name, ', ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ip.i_product_name))), ', ') AS purchased_items,
     MAX(d.d_date) AS last_purchase_date
 FROM 
     customer c

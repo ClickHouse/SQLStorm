@@ -53,7 +53,7 @@ SELECT
         ELSE 'Low NULL ratio'
     END AS note_analysis,
     COUNT(DISTINCT mci.id) FILTER (WHERE ct.kind IS NOT NULL) AS distinct_company_count,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     RankedMovies rm
 LEFT JOIN 

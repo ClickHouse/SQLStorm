@@ -56,4 +56,4 @@ WHERE
     (sa.total_profit - sa.total_returns) > 1000
 ORDER BY 
     net_profit_after_returns DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

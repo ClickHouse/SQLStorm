@@ -26,8 +26,8 @@ SELECT
     p.CommentCount,
     p.ViewCount,
     p.FavoriteCount,
-    STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypes,
-    STRING_AGG(DISTINCT lt.Name, ', ') AS LinkTypes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lt.Name))), ', ') AS LinkTypes,
     (SELECT COUNT(*) 
      FROM Votes v 
      WHERE v.PostId = rp.PostId AND v.VoteTypeId = 2) AS UpVotes,

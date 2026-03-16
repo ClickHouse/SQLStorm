@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     part AS p
 JOIN 

@@ -31,7 +31,7 @@ UserAggregates AS (
         COALESCE(ps.Questions, 0) AS Questions,
         COALESCE(ps.Answers, 0) AS Answers,
         COALESCE(ps.AverageViews, 0) AS AverageViews,
-        COALESCE(ps.LastPostDate, DATE '1900-01-01') AS LastPostDate 
+        COALESCE(ps.LastPostDate, toDate('1900-01-01')) AS LastPostDate 
     FROM Users u
     LEFT JOIN UserBadgeCounts bc ON u.Id = bc.UserId
     LEFT JOIN PostStats ps ON u.Id = ps.OwnerUserId
@@ -51,17 +51,17 @@ SELECT
         WHEN ua.BadgeCount > 5 THEN 'Enthusiast'
         ELSE 'Newcomer'
     END AS UserCategory,
-    ARRAY_AGG(DISTINCT t.TagName) AS AssociatedTags,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS AssociatedTags,
     COUNT(DISTINCT v.Id) AS VoteCount,
-    STRING_AGG(DISTINCT CONCAT(vt.Name, ' (', v.CreationDate, ')'), '; ') AS LatestVotes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(vt.Name, ' (', v.CreationDate, ')')))), '; ') AS LatestVotes
 FROM UserAggregates ua
 LEFT JOIN Posts p ON ua.Id = p.OwnerUserId
 LEFT JOIN Votes v ON p.Id = v.PostId
 LEFT JOIN VoteTypes vt ON v.VoteTypeId = vt.Id
-LEFT JOIN LATERAL (
+LEFT JOIN (
     SELECT 
         t.TagName
-    FROM UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS t(TagName)
+    FROM arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS t(TagName)
 ) t ON true
 GROUP BY ua.Id, ua.DisplayName, ua.Reputation, ua.BadgeCount, ua.TotalPosts, ua.Questions, ua.Answers, ua.AverageViews, ua.LastPostDate
 HAVING COUNT(DISTINCT p.Id) > 0

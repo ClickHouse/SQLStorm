@@ -13,11 +13,11 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' 
+        AND p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR 
 ),
 TagUsage AS (
     SELECT 
-        unnest(string_to_array(TRIM(BOTH '<>' FROM Tags), '><')) AS TagName,
+        arrayJoin(splitByString('><', TRIM(BOTH '<>' FROM Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts
@@ -30,7 +30,7 @@ SELECT
     COUNT(DISTINCT c.Id) AS TotalComments,
     SUM(p.ViewCount) AS TotalViews,
     SUM(p.AnswerCount) AS TotalAnswers,
-    STRING_AGG(DISTINCT tu.TagName, ', ') AS UsedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tu.TagName))), ', ') AS UsedTags
 FROM 
     Users u
 JOIN 
@@ -38,9 +38,9 @@ JOIN
 LEFT JOIN 
     Comments c ON p.Id = c.PostId
 JOIN 
-    TagUsage tu ON tu.TagName = ANY(string_to_array(TRIM(BOTH '<>' FROM p.Tags), '><'))
+    TagUsage tu ON tu.TagName = ANY(splitByString('><', TRIM(BOTH '<>' FROM p.Tags)))
 WHERE 
-    p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
+    p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
 GROUP BY 
     u.Id, u.DisplayName
 HAVING 

@@ -11,7 +11,7 @@ WITH MatchingParts AS (
         p.p_comment,
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
         SUM(ps.ps_supplycost) AS total_supplycost,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers
     FROM 
         part p
     JOIN 

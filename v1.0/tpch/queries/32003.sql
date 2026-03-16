@@ -20,7 +20,7 @@ SELECT
     r.r_name,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     AVG(lo.l_extendedprice) AS avg_extended_price,
     MAX(lo.l_discount) AS max_discount
 FROM region r

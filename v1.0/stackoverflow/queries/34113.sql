@@ -18,7 +18,7 @@ WITH RECURSIVE UserReputation AS (
     SELECT 
         B.UserId,
         COUNT(*) AS TotalBadges,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM Badges B
     GROUP BY B.UserId
 )
@@ -29,7 +29,7 @@ WITH RECURSIVE UserReputation AS (
         COUNT(P.Id) AS TotalPosts,
         SUM(COALESCE(P.ViewCount, 0)) AS TotalViews
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY P.OwnerUserId
 )
 , RecentUserPosts AS (
@@ -39,7 +39,7 @@ WITH RECURSIVE UserReputation AS (
         P.Score,
         RANK() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month' 
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
 )
 SELECT 
     U.Id AS UserId,
@@ -50,7 +50,7 @@ SELECT
     COALESCE(PS.TotalScore, 0) AS TotalScore,
     COALESCE(PS.TotalPosts, 0) AS TotalPosts,
     COALESCE(PS.TotalViews, 0) AS TotalViews,
-    STRING_AGG(RUP.Title, '; ') AS RecentPosts
+    arrayStringConcat(groupArray(assumeNotNull(RUP.Title)), '; ') AS RecentPosts
 FROM Users U
 LEFT JOIN UserBadges UB ON U.Id = UB.UserId
 LEFT JOIN PostScores PS ON U.Id = PS.OwnerUserId

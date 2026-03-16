@@ -6,7 +6,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(s.s_acctbal) AS average_supplier_account_balance,
     COUNT(DISTINCT c.c_custkey) AS total_customers_related,
-    STRING_AGG(DISTINCT o.o_orderstatus, ', ') AS unique_order_statuses,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(o.o_orderstatus))), ', ') AS unique_order_statuses,
     MAX(o.o_totalprice) AS max_order_total_price
 FROM 
     part p

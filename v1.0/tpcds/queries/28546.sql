@@ -72,7 +72,7 @@ SELECT
 FROM 
     CustomerStatistics cs
 JOIN 
-    DateSummary ds ON ds.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
+    DateSummary ds ON ds.d_year = toYear(toDate('2002-10-01'))
 WHERE 
     cs.total_spent > (SELECT AVG(total_spent) FROM CustomerStatistics)
 ORDER BY 

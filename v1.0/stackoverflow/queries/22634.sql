@@ -27,7 +27,7 @@ TopPosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (8, 9) 
     WHERE 
-        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '2 year'  
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR  
         AND P.PostTypeId = 1  
     GROUP BY 
         P.Id, P.OwnerUserId, P.Score, P.ViewCount

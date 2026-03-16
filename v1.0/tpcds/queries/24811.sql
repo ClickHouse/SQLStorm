@@ -85,15 +85,15 @@ SELECT
     fr.customer_status,
     (SELECT COUNT(*) 
      FROM customer c 
-     WHERE c.c_birth_year = EXTRACT(YEAR FROM DATE '2002-10-01') - (EXTRACT(YEAR FROM DATE '2002-10-01') - marg.c_birth_year)) AS current_year_births 
+     WHERE c.c_birth_year = toYear(toDate('2002-10-01')) - (toYear(toDate('2002-10-01')) - marg.c_birth_year)) AS current_year_births 
 FROM 
     FinalReport fr
 LEFT JOIN 
     (SELECT DISTINCT c_birth_year
      FROM customer
-     WHERE c_birth_year IS NOT NULL) AS marg ON marg.c_birth_year = EXTRACT(YEAR FROM DATE '2002-10-01') - (EXTRACT(YEAR FROM DATE '2002-10-01') - 18)
+     WHERE c_birth_year IS NOT NULL) AS marg ON marg.c_birth_year = toYear(toDate('2002-10-01')) - (toYear(toDate('2002-10-01')) - 18)
 WHERE 
     fr.total_sales IS NOT NULL
 ORDER BY 
     fr.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

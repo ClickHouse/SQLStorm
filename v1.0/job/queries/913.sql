@@ -30,7 +30,7 @@ MovieDetails AS (
         tm.production_year,
         ak.name AS actor_name,
         COALESCE(CAST(mi.info AS VARCHAR), 'No info available') AS movie_info,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         TopMovies tm
     LEFT JOIN 

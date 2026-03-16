@@ -41,7 +41,7 @@ MoviesWithRoles AS (
 SELECT 
     m.title,
     m.production_year,
-    STRING_AGG(m.actor_name, ', ') AS actors,
+    arrayStringConcat(groupArray(assumeNotNull(m.actor_name)), ', ') AS actors,
     MAX(m.total_roles) AS total_roles,
     COUNT(DISTINCT m.movie_id) AS unique_movies_with_actors,
     SUM(CASE 

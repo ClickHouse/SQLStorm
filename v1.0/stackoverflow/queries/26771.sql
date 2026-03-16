@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year') 
+        AND p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR) 
 ),
 UserInteractions AS (
     SELECT 
@@ -41,7 +41,7 @@ PostDetails AS (
         ui.CommentCount AS InteractionCommentCount,
         ui.UpVoteCount,
         ui.DownVoteCount,
-        ARRAY_LENGTH(STRING_TO_ARRAY(rp.Tags, ','), 1) AS TagCount
+        length(splitByString(',', rp.Tags), 1) AS TagCount
     FROM 
         RankedPosts rp
     JOIN 

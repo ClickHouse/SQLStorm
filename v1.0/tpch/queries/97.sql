@@ -15,7 +15,7 @@ WITH sales_summary AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
         AND l.l_returnflag = 'N'
     GROUP BY 
         c.c_custkey, c.c_name, n.n_name

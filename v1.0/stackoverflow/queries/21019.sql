@@ -30,7 +30,7 @@ ActiveUsers AS (
     FROM 
         UserPostStats
     WHERE 
-        LastPostDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')
+        LastPostDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
 )
 SELECT 
     U.DisplayName,
@@ -51,7 +51,7 @@ FROM
 LEFT JOIN (
     SELECT 
         U.Id AS UserId,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS TagsUsed,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagsUsed,
         COUNT(DISTINCT B.Id) AS BadgesEarned
     FROM 
         Users U

@@ -1,7 +1,7 @@
 
 WITH TagUsage AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '>')) AS Tag,
+        arrayJoin(splitByString('>', substring(Tags, 2, length(Tags) - 2))) AS Tag,
         Posts.Id AS PostId,
         Posts.Title,
         COUNT(Comments.Id) AS CommentCount,

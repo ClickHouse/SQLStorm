@@ -29,7 +29,7 @@ UserReputation AS (
         u.Reputation,
         u.DisplayName,
         CASE 
-            WHEN u.LastAccessDate < (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year') THEN 'Inactive'
+            WHEN u.LastAccessDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) THEN 'Inactive'
             ELSE 'Active'
         END AS Status
     FROM 
@@ -74,4 +74,4 @@ WHERE
 ORDER BY 
     COALESCE(rp.TotalBounty, 0) DESC, 
     up.Reputation DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

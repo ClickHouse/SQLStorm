@@ -10,8 +10,8 @@ WITH SupplierRevenue AS (
     JOIN 
         lineitem l ON ps.ps_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate >= DATE '1995-01-01' 
-        AND l.l_shipdate <= DATE '1995-12-31'
+        l.l_shipdate >= toDate('1995-01-01') 
+        AND l.l_shipdate <= toDate('1995-12-31')
     GROUP BY 
         s.s_suppkey, s.s_name
 ), CustomerOrderCount AS (

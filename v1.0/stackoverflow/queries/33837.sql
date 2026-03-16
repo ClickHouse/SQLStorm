@@ -25,7 +25,7 @@ EnhancedPosts AS (
         (SELECT COUNT(DISTINCT v.UserId) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpVoteCount
     FROM Posts p
     LEFT JOIN RecursiveUserPosts rup ON p.OwnerUserId = rup.PostOwnerUserId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
       AND (p.AnswerCount IS NULL OR p.AnswerCount > 0) 
 ), 
 FilteredPosts AS (

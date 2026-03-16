@@ -30,7 +30,7 @@ SELECT
     mh.title AS movie_title,
     mh.season_nr,
     COUNT(DISTINCT cc.person_id) AS total_cast,
-    STRING_AGG(DISTINCT co.name, ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS company_names,
     SUM(CASE WHEN mw.production_year IS NOT NULL THEN 1 ELSE 0 END) AS produced_movies,
     MAX(COALESCE(pi.info, 'No Info')) AS additional_info
 FROM 

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
         AND p.PostTypeId = 1  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId
@@ -23,7 +23,7 @@ UserBadges AS (
     SELECT 
         u.Id AS UserID,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -51,8 +51,8 @@ SELECT
     ub.BadgeNames,
     phi.LastClosedDate,
     phi.LastReopenedDate,
-    COALESCE(DATE_PART('day', CURRENT_DATE - phi.LastClosedDate), 0) AS DaysSinceClosed,
-    COALESCE(DATE_PART('day', CURRENT_DATE - phi.LastReopenedDate), 0) AS DaysSinceReopened,
+    COALESCE(datePart('day', CURRENT_DATE - phi.LastClosedDate), 0) AS DaysSinceClosed,
+    COALESCE(datePart('day', CURRENT_DATE - phi.LastReopenedDate), 0) AS DaysSinceReopened,
     CASE 
         WHEN phi.LastClosedDate IS NOT NULL AND phi.LastReopenedDate IS NULL THEN 'Closed'
         WHEN phi.LastClosedDate IS NULL AND phi.LastReopenedDate IS NOT NULL THEN 'Reopened'

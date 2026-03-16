@@ -52,7 +52,7 @@ SELECT
 FROM 
     TopCustomers tc
 JOIN 
-    SalesByDate sbd ON DATE_PART('month', sbd.sales_date) = DATE_PART('month', cast('2002-10-01' as date))
+    SalesByDate sbd ON datePart('month', sbd.sales_date) = datePart('month', cast('2002-10-01' as date))
 JOIN 
     OverallStatistics os ON TRUE
 ORDER BY 

@@ -16,7 +16,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     SUM(ot.o_totalprice) AS total_order_value,
     AVG(ot.o_totalprice) AS avg_order_value,
-    STRING_AGG(DISTINCT p.p_name, ', ') FILTER (WHERE p.p_size > 10) AS large_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') FILTER (WHERE p.p_size > 10) AS large_parts,
     ROW_NUMBER() OVER (PARTITION BY n.n_name ORDER BY SUM(ot.o_totalprice) DESC) AS rank_by_value
 FROM 
     OrderTree ot

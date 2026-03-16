@@ -19,7 +19,7 @@ PostStats AS (
         P.Title,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
         COUNT(DISTINCT PH.Id) AS EditHistoryCount,
-        COALESCE(MAX(PH.CreationDate), '1900-01-01'::DATE) AS LastEditDate,
+        COALESCE(MAX(PH.CreationDate), CAST('1900-01-01' AS DATE)) AS LastEditDate,
         DENSE_RANK() OVER (ORDER BY P.Score DESC) AS RankByScore
     FROM 
         Posts P

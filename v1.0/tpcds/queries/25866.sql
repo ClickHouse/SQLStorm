@@ -25,8 +25,8 @@ WITH CustomerSummary AS (
 DateDetails AS (
     SELECT 
         d.d_date AS return_date,
-        EXTRACT(MONTH FROM d.d_date) AS return_month,
-        EXTRACT(YEAR FROM d.d_date) AS return_year,
+        toMonth(d.d_date) AS return_month,
+        toYear(d.d_date) AS return_year,
         CASE 
             WHEN d.d_dow IN (1, 7) THEN 'Weekend'
             ELSE 'Weekday'

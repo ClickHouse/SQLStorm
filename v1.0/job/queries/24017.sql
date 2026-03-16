@@ -32,7 +32,7 @@ SELECT
     ak.name AS actor_name,
     mt.title AS movie_title,
     COUNT(cnr.id) AS role_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS co_actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS co_actors,
     AVG(mh.depth) AS avg_depth,
     SUM(CASE WHEN ci.note IS NULL THEN 1 ELSE 0 END) AS null_role_notes,
     SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS not_null_role_notes

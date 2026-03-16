@@ -3,7 +3,7 @@ WITH RecentOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, c.c_name, c.c_nationkey
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '3 months'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 3 MONTH
 ),
 HighValueSuppliers AS (
     SELECT ps.ps_suppkey, SUM(ps.ps_supplycost * ps.ps_availqty) AS total_cost

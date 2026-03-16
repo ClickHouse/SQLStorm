@@ -15,7 +15,7 @@ WITH RevenueData AS (
     JOIN 
         nation n ON s.s_nationkey = n.n_nationkey
     WHERE 
-        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1997-12-31'
+        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1997-12-31')
     GROUP BY 
         n.n_name
 ), RankedRevenue AS (

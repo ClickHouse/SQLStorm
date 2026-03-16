@@ -62,9 +62,9 @@ SELECT
     PS.Downvotes,
     PS.TotalVotes,
     COALESCE(TotalBadges.BadgeCount, 0) AS BadgeCount,
-    STRING_AGG(CASE WHEN UB.Class = 1 THEN 'Gold' 
+    arrayStringConcat(groupArray(assumeNotNull(CASE WHEN UB.Class = 1 THEN 'Gold' 
                     WHEN UB.Class = 2 THEN 'Silver' 
-                    ELSE 'Bronze' END, ', ') AS BadgeTypes,
+                    ELSE 'Bronze' END)), ', ') AS BadgeTypes,
     ROW_NUMBER() OVER (PARTITION BY UPH.UserId ORDER BY UPH.CreationDate DESC) AS Rank
 FROM 
     UserPostHierarchy UPH

@@ -29,13 +29,13 @@ SELECT
     at.title AS movie_title,
     mh.level AS movie_level,
     COUNT(DISTINCT mc.company_id) AS num_companies,
-    STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
     SUM(CASE 
             WHEN mi.info_type_id = (SELECT id FROM info_type WHERE info = 'budget') 
             THEN COALESCE(CAST(mi.info AS INTEGER), 0) 
             ELSE 0 
         END) AS total_budget,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM
     MovieHierarchy mh
 JOIN

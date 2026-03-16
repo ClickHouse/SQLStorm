@@ -31,7 +31,7 @@ TopPosts AS (
 PostBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS UserBadges
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS UserBadges
     FROM 
         Badges b
     JOIN 

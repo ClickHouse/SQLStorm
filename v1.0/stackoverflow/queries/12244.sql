@@ -10,7 +10,7 @@ SELECT
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
     (SELECT COUNT(1) FROM Posts WHERE ParentId = p.Id) AS AnswerCount,
     pt.Name AS PostTypeName,
-    STRING_AGG(t.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
 FROM 
     Posts p
 JOIN 
@@ -22,7 +22,7 @@ LEFT JOIN
 JOIN 
     PostTypes pt ON p.PostTypeId = pt.Id
 LEFT JOIN 
-    LATERAL (SELECT UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS TagName) AS t ON TRUE
+    (SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName) AS t ON TRUE
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName, pt.Name
 ORDER BY 

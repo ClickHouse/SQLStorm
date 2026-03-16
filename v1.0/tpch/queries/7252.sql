@@ -17,7 +17,7 @@ WITH RECURSIVE region_nation AS (
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
     JOIN customer c ON o.o_custkey = c.c_custkey
     JOIN region_nation rn ON s.s_nationkey = rn.n_nationkey
-    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
+    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
     GROUP BY pn.p_partkey, pn.p_name, rn.region_name, rn.nation_name
 )
 SELECT region_name, nation_name, AVG(total_revenue) AS avg_revenue, MAX(order_count) AS max_orders

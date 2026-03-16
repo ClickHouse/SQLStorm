@@ -45,7 +45,7 @@ SELECT
         WHEN u.Reputation BETWEEN 501 AND 1000 THEN 'Intermediate'
         ELSE 'Expert' 
     END AS UserLevel,
-    STRING_AGG(DISTINCT CONCAT('<', p.Title, '> with ', COALESCE(c.CommentCount, 0), ' comments'), ', ') AS RecentPosts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('<', p.Title, '> with ', COALESCE(c.CommentCount, 0), ' comments')))), ', ') AS RecentPosts
 FROM 
     UserReputation u
 LEFT JOIN 

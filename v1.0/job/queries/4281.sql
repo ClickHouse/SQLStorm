@@ -18,7 +18,7 @@ MovieDetails AS (
         rm.title,
         rm.production_year,
         COALESCE(SUM(CASE WHEN mc.note IS NOT NULL THEN 1 ELSE 0 END), 0) AS company_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM 
         RankedMovies rm
     LEFT JOIN 

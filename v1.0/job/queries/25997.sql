@@ -26,7 +26,7 @@ MovieDetails AS (
     SELECT 
         rm.movie_title,
         rm.production_year,
-        ARRAY_AGG(DISTINCT rm.actor_name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(rm.actor_name))) AS actors,
         rm.company_count,
         rm.keyword_count
     FROM 

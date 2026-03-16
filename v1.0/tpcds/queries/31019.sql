@@ -67,4 +67,4 @@ WHERE
     ti.total_sales_quantity IS NOT NULL
 ORDER BY 
     ti.total_sales_quantity DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -39,7 +39,7 @@ PostHistoryDetails AS (
         ph.PostId,
         ph.CreationDate,
         ph.Comment AS CloseReason,
-        STRING_AGG(ph.Comment, '; ') AS EditComments,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS EditComments,
         MAX(ph.CreationDate) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11, 12)) AS LastActionDate
     FROM 
         PostHistory ph
@@ -77,7 +77,7 @@ LEFT JOIN
 WHERE 
     (rp.RankByScore <= 5 OR rp.RankByDate <= 10)
     AND (us.BadgeCount > 0 OR us.TotalBounty > 0)
-    AND (phd.LastActionDate IS NULL OR phd.LastActionDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
+    AND (phd.LastActionDate IS NULL OR phd.LastActionDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ORDER BY 
     rp.CreationDate DESC
 LIMIT 100;

@@ -26,8 +26,8 @@ MovieDetails AS (
     SELECT 
         hm.movie_id,
         hm.title,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies,
         COUNT(DISTINCT k.keyword) AS keyword_count
     FROM 
         HighRankedMovies hm

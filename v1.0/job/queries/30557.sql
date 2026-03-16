@@ -47,7 +47,7 @@ SELECT
     mh.movie_id,
     mh.title,
     mh.production_year,
-    ARRAY_AGG(DISTINCT CONCAT(a.name, ' (', ar.role, ')')) AS actors,
+    arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', ar.role, ')')))) AS actors,
     MIN(CASE WHEN mi.info_type_id = (SELECT id FROM info_type WHERE info = 'Rating') THEN mi.info END) AS rating,
     COUNT(DISTINCT mk.keyword_id) AS total_keywords,
     mh.level

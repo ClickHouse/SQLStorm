@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.LastActivityDate, p.Score, p.ViewCount, u.DisplayName
 ),
@@ -67,14 +67,14 @@ UserActivityRanked AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(tags.Tags, '|')) AS TagName,
+        arrayJoin(splitByString('|', tags.Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     LEFT JOIN 
         (SELECT Id, Tags FROM Posts) AS tags ON p.Id = tags.Id
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         TagName
 )
@@ -94,7 +94,7 @@ FROM
 LEFT JOIN 
     HighScoringPosts ht ON ht.OwnerDisplayName = ua.DisplayName
 LEFT JOIN 
-    PopularTags pt ON pt.TagName IN (SELECT unnest(string_to_array(ht.Title, ' ')))
+    PopularTags pt ON pt.TagName IN (SELECT arrayJoin(splitByString(' ', ht.Title)))
 WHERE 
     ua.PostRank < 11
 ORDER BY 

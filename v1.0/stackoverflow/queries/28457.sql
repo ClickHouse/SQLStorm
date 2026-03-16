@@ -30,7 +30,7 @@ FilteredPosts AS (
         rp.Tags,
         rp.OwnerDisplayName,
         rp.CommentCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS FormattedTags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS FormattedTags,
         ROW_NUMBER() OVER (ORDER BY rp.Score DESC, rp.ViewCount DESC) AS OverallRank
     FROM 
         RankedPosts rp

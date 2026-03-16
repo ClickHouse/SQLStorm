@@ -5,8 +5,8 @@ WITH MovieRank AS (
         m.title,
         m.production_year,
         COUNT(DISTINCT c.person_id) AS cast_member_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT p.info, '; ') AS person_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.info))), '; ') AS person_info
     FROM 
         aka_title m
     JOIN 

@@ -50,4 +50,4 @@ JOIN
     customer_summary cs ON ss.d_year = 2023
 ORDER BY 
     ss.total_sales DESC, cs.total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -39,7 +39,7 @@ SELECT jd.p_partkey,
        jd.p_brand,
        jd.rank_price,
        COUNT(jd.s_suppkey) AS supplier_count,
-       STRING_AGG(jd.short_comment, '; ') AS comments_summary
+       arrayStringConcat(groupArray(assumeNotNull(jd.short_comment)), '; ') AS comments_summary
 FROM JoinData jd
 GROUP BY jd.p_partkey, jd.p_name, jd.p_brand, jd.rank_price
 HAVING COUNT(jd.s_suppkey) > 1

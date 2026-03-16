@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         m.title,
         m.production_year,
         COUNT(DISTINCT mk.keyword_id) AS keyword_count,
-        ARRAY_AGG(DISTINCT c.name) AS cast_names
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_names
     FROM 
         title m
     LEFT JOIN 

@@ -1,6 +1,6 @@
 
 SELECT 
-    CONCAT('Supplier ', s.s_name, ' from ', r.r_name, ' has supplied ', COUNT(p.p_partkey), ' parts: ', STRING_AGG(p.p_name, ', ')) AS supplier_info,
+    CONCAT('Supplier ', s.s_name, ' from ', r.r_name, ' has supplied ', COUNT(p.p_partkey), ' parts: ', arrayStringConcat(groupArray(assumeNotNull(p.p_name)), ', ')) AS supplier_info,
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost
 FROM 
     supplier s

@@ -6,7 +6,7 @@ SELECT
     AVG(l.l_quantity) AS avg_quantity_per_order,
     MAX(l.l_extendedprice) AS max_individual_price,
     MIN(l.l_extendedprice) AS min_individual_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_quantity
 FROM 
     supplier s

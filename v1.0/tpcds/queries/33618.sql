@@ -22,7 +22,7 @@ WITH RECURSIVE CustomerReturns AS (
     SELECT
         ws_bill_customer_sk,
         SUM(ws_net_paid) AS total_spent,
-        EXTRACT(week FROM d_date) AS week_number
+        toWeek(d_date) AS week_number
     FROM
         web_sales
     JOIN

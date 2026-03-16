@@ -30,8 +30,8 @@ title_keywords AS (
 company_info AS (
     SELECT 
         m.movie_id,
-        ARRAY_AGG(DISTINCT c.name) AS companies,
-        ARRAY_AGG(DISTINCT ct.kind) AS company_types
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(ct.kind))) AS company_types
     FROM 
         movie_companies m
     JOIN 

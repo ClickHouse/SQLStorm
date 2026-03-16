@@ -20,18 +20,18 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, u.DisplayName, p.OwnerUserId
 ),
 RecentBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
-        b.Date > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        b.Date > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 ),
@@ -39,11 +39,11 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         ph.PostHistoryTypeId,
-        STRING_AGG(ph.Comment, ', ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS Comments
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId
 )

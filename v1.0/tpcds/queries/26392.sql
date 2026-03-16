@@ -50,7 +50,7 @@ SELECT
     cd_education_status,
     customer_count,
     avg_purchase_estimate,
-    STRING_AGG(CONCAT('Gender: ', cd_gender, ', Marital Status: ', cd_marital_status), '; ') AS demographic_summary
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT('Gender: ', cd_gender, ', Marital Status: ', cd_marital_status))), '; ') AS demographic_summary
 FROM 
     AggregatedData
 WHERE 

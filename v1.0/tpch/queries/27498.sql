@@ -31,7 +31,7 @@ SupplierDetails AS (
 SELECT 
     sd.region_name,
     sd.nation_name,
-    STRING_AGG(sd.s_name || ' (Cost: ' || sd.total_supplycost || ')', ', ') AS top_suppliers
+    arrayStringConcat(groupArray(assumeNotNull(sd.s_name || ' (Cost: ' || sd.total_supplycost || ')')), ', ') AS top_suppliers
 FROM 
     SupplierDetails sd
 GROUP BY 

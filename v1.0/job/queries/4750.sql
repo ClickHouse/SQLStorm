@@ -26,7 +26,7 @@ MovieDetails AS (
     SELECT 
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COALESCE(SUM(CASE WHEN mi.info IS NOT NULL THEN 1 ELSE 0 END), 0) AS info_count
     FROM 
         TopMovies tm

@@ -77,4 +77,4 @@ WHERE
     AND s.i_category = 'Electronics'
 ORDER BY 
     s.total_sales_value DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

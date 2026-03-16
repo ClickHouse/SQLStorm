@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > DATE('2024-10-01') - INTERVAL '1 year'
+        AND p.CreationDate > DATE('2024-10-01') - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 

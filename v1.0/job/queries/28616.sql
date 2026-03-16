@@ -27,7 +27,7 @@ actor_stats AS (
     SELECT 
         actor_name,
         COUNT(DISTINCT title) AS movie_count,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords
     FROM 
         movie_data
     GROUP BY 

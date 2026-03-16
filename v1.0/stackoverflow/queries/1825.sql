@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= DATE '2022-01-01'
+        p.CreationDate >= toDate('2022-01-01')
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score, p.CreationDate, p.OwnerDisplayName, p.PostTypeId
 ),
@@ -27,7 +27,7 @@ PostHistorySummary AS (
         ph.PostId,
         COUNT(*) AS EditCount,
         MAX(CASE WHEN ph.PostHistoryTypeId = 4 THEN ph.CreationDate END) AS LastEdited,
-        STRING_AGG(DISTINCT ph.UserDisplayName, ', ') AS Editors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.UserDisplayName))), ', ') AS Editors
     FROM 
         PostHistory ph
     GROUP BY 

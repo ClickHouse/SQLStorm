@@ -28,7 +28,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(s.s_acctbal) AS avg_supplier_balance,
     RANK() OVER (PARTITION BY p.p_type ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank,
-    STRING_AGG(DISTINCT c.c_comment, ', ') AS customer_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_comment))), ', ') AS customer_comments
 FROM 
     part p
 LEFT JOIN 

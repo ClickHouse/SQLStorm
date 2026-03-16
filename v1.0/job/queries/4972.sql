@@ -16,7 +16,7 @@ CompanyInfo AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT comp.name) AS company_count,
-        STRING_AGG(DISTINCT comp.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(comp.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 
@@ -27,7 +27,7 @@ CompanyInfo AS (
 Keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keyword_list
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keyword_list
     FROM 
         movie_keyword mk
     JOIN 

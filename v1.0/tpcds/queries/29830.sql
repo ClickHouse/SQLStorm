@@ -3,7 +3,7 @@ WITH address_summary AS (
     SELECT 
         ca_city,
         COUNT(*) AS total_addresses,
-        STRING_AGG(ca_street_name, ', ') AS street_names
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names
     FROM 
         customer_address
     GROUP BY 
@@ -25,7 +25,7 @@ date_summary AS (
     SELECT 
         d_year,
         COUNT(DISTINCT d_date) AS active_days,
-        STRING_AGG(d_day_name, ', ') AS days_of_week
+        arrayStringConcat(groupArray(assumeNotNull(d_day_name)), ', ') AS days_of_week
     FROM 
         date_dim
     WHERE 

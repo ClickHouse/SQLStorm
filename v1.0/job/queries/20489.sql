@@ -44,7 +44,7 @@ WITH movie_info_cte AS (
         m.movie_id,
         m.title,
         COUNT(DISTINCT ca.actor_name) AS total_actors,
-        STRING_AGG(DISTINCT ca.company_name, ', ') AS production_companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.company_name))), ', ') AS production_companies
     FROM 
         movie_info_cte AS m
     LEFT JOIN 

@@ -53,7 +53,7 @@ SELECT
     cd.company_type,
     cd.company_count,
     (CASE WHEN cd.company_count > 1 THEN 'Multiple Companies' ELSE 'Single Company' END) AS company_status,
-    (SELECT STRING_AGG(DISTINCT mm.keyword, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mm.keyword))), ', ') 
      FROM movie_keyword mk
      JOIN keyword mm ON mk.keyword_id = mm.id
      WHERE mk.movie_id = rm.title_id) AS keywords

@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders
     WHERE 
-        o_orderdate >= DATE '1997-01-01'
+        o_orderdate >= toDate('1997-01-01')
 ),
 SupplierParts AS (
     SELECT 

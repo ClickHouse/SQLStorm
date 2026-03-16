@@ -15,7 +15,7 @@ WITH RecentUserActivity AS (
     LEFT JOIN 
         Votes v ON v.UserId = u.Id
     WHERE 
-        u.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        u.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName, u.LastAccessDate
 ), 
@@ -50,7 +50,7 @@ ClosedPosts AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         ph.UserId
 )

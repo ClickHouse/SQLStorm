@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(c.person_id) AS cast_count,
-        STRING_AGG(CONCAT(a.name, ' (' , rt.role, ')'), ', ') AS full_cast,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.name, ' (' , rt.role, ')'))), ', ') AS full_cast,
         ROW_NUMBER() OVER (ORDER BY t.production_year DESC, COUNT(c.person_id) DESC) AS rank
     FROM 
         title t
@@ -43,7 +43,7 @@ SELECT
     m.cast_count,
     m.full_cast,
     COUNT(DISTINCT mk.keyword_id) AS keyword_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     TopMovies m
 LEFT JOIN 

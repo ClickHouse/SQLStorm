@@ -32,7 +32,7 @@ TopOrders AS (
     FROM 
         OrderSummary od
     WHERE 
-        od.o_orderdate >= DATE '1995-01-01' AND od.o_orderdate < DATE '1996-01-01'
+        od.o_orderdate >= toDate('1995-01-01') AND od.o_orderdate < toDate('1996-01-01')
     GROUP BY 
         od.o_orderdate
 ),

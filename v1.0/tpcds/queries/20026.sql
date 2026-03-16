@@ -8,7 +8,7 @@ WITH RankedSales AS (
     FROM web_sales
     WHERE ws_sold_date_sk = (SELECT MAX(d_date_sk) 
                               FROM date_dim 
-                              WHERE d_date BETWEEN CURRENT_DATE - INTERVAL '1 day' AND CURRENT_DATE)
+                              WHERE d_date BETWEEN CURRENT_DATE - INTERVAL 1 DAY AND CURRENT_DATE)
 ),
 SalesSummary AS (
     SELECT 

@@ -7,7 +7,7 @@ SELECT
     COUNT(DISTINCT c.Id) AS TotalComments,
     COALESCE(SUM(CASE WHEN bh.UserId IS NOT NULL THEN 1 ELSE 0 END), 0) AS TotalBadges,
     AVG(u.Reputation) AS AverageUserReputation,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
 FROM 
     Posts p
 JOIN 
@@ -19,11 +19,11 @@ LEFT JOIN
 LEFT JOIN 
     Badges bh ON u.Id = bh.UserId
 LEFT JOIN 
-    UNNEST(string_to_array(p.Tags, ',')) AS tag_name ON tag_name IS NOT NULL
+    arrayJoin(splitByString(',', p.Tags)) AS tag_name ON tag_name IS NOT NULL
 JOIN 
     Tags t ON t.TagName = TRIM(tag_name)
 WHERE 
-    p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     AND p.PostTypeId = 1
 GROUP BY 
     u.DisplayName, p.Title, p.CreationDate, u.Reputation

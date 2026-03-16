@@ -16,7 +16,7 @@ RecentPosts AS (
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     u.Id AS UserId,
@@ -34,4 +34,4 @@ LEFT JOIN UserBadges ub ON u.Id = ub.UserId
 LEFT JOIN RecentPosts rp ON u.Id = rp.OwnerUserId AND rp.PostRank = 1
 WHERE u.Reputation > 1000
 ORDER BY u.Reputation DESC, RecentCreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

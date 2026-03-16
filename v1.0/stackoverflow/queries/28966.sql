@@ -46,13 +46,13 @@ SELECT
     fp.UpVotes,
     fp.DownVotes,
     fp.CommentCount,
-    STRING_AGG(t.TagName, ', ') AS RelatedTags,
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS RelatedTags,
     (SELECT COUNT(*) FROM PostHistory ph WHERE ph.PostId = fp.PostId AND ph.PostHistoryTypeId IN (10, 11)) AS CloseReopenCount
 FROM 
     FilteredPosts fp
 LEFT JOIN 
-    LATERAL (SELECT 
-                  UNNEST(string_to_array(fp.Tags, '>')) AS TagName) AS t ON TRUE
+    (SELECT 
+                  arrayJoin(splitByString('>', fp.Tags)) AS TagName) AS t ON TRUE
 GROUP BY 
     fp.PostId, fp.Title, fp.OwnerName, fp.CreationDate, fp.UpVotes, fp.DownVotes, fp.CommentCount
 ORDER BY 

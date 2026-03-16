@@ -51,7 +51,7 @@ SELECT
     f.actor_name,
     f.total_cast_members,
     (SELECT 
-         STRING_AGG(DISTINCT k.keyword, ', ') 
+         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
      FROM 
          movie_keyword mk
      JOIN 

@@ -39,7 +39,7 @@ SELECT
     mh.movie_id,
     mh.title,
     mh.production_year,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     COUNT(DISTINCT c.person_id) AS cast_count,
     AVG(CASE WHEN c.person_role_id IS NOT NULL THEN c.person_role_id ELSE 0 END) AS avg_role_id,
     MAX(mo.info) FILTER (WHERE mo.info_type_id = (SELECT id FROM info_type WHERE info = 'Budget')) AS budget_info,

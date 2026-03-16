@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, p.PostTypeId, p.OwnerUserId
 ),
@@ -20,7 +20,7 @@ FilteredBadges AS (
     SELECT 
         b.UserId, 
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
@@ -48,7 +48,7 @@ UserMetrics AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId, 
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         COUNT(*) AS HistoryCount
     FROM 
         PostHistory ph
@@ -81,4 +81,4 @@ WHERE
     OR (up.TotalPostScore IS NOT NULL AND up.TotalPostScore > 100)
 ORDER BY 
     UserRank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

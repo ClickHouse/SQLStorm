@@ -9,7 +9,7 @@ WITH RankedPosts AS (
            COUNT(c.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.OwnerUserId, p.Score, p.ViewCount, p.CreationDate
 ),
 UserReputation AS (
@@ -26,9 +26,9 @@ PostHistorySummary AS (
     SELECT ph.PostId,
            ph.PostHistoryTypeId,
            COUNT(*) AS HistoryCount,
-           STRING_AGG(ph.UserDisplayName, ', ' ORDER BY ph.CreationDate ASC) AS Editors
+           arrayStringConcat(groupArray(assumeNotNull(ph.UserDisplayName)), ', ' ORDER BY ph.CreationDate ASC) AS Editors
     FROM PostHistory ph
-    WHERE ph.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '2 years'
+    WHERE ph.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 2 YEAR
     GROUP BY ph.PostId, ph.PostHistoryTypeId
 ),
 UserStats AS (
@@ -54,7 +54,7 @@ SELECT us.UserId,
            WHEN us.Reputation BETWEEN 500 AND 1000 THEN 'Moderately Influential'
            ELSE 'New Contributor'
        END AS ContributorLevel,
-       (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = us.UserId AND p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '5 years') AS PostsCreatedLast5Years,
+       (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = us.UserId AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 5 YEAR) AS PostsCreatedLast5Years,
        CASE 
            WHEN EXISTS (SELECT 1 FROM Badges b WHERE b.UserId = us.UserId AND b.Class = 1) THEN 'Gold Badge Holder'
            ELSE 'No Gold Badges'

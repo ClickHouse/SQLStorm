@@ -49,7 +49,7 @@ DetailedInfo AS (
         f.production_year,
         f.actor_count,
         COALESCE(f.keyword, 'No Keywords') AS keyword,
-        ARRAY_AGG(DISTINCT p.info) AS additional_info
+        arrayDistinct(groupArray(assumeNotNull(p.info))) AS additional_info
     FROM 
         FilteredMovies f
     JOIN 

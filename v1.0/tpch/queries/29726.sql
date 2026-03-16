@@ -5,7 +5,7 @@ WITH customer_order_summary AS (
         c.c_name,
         COUNT(o.o_orderkey) AS total_orders,
         SUM(o.o_totalprice) AS total_spent,
-        STRING_AGG(DISTINCT r.r_name, ', ') AS regions
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions
     FROM 
         customer c
     JOIN 

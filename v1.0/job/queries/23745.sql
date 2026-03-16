@@ -27,7 +27,7 @@ MoviesWithRoles AS (
         rm.title_id,
         rm.title,
         rm.production_year,
-        STRING_AGG(DISTINCT ci.note, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), ', ') AS roles
     FROM RankedMovies rm
     LEFT JOIN cast_info ci ON rm.title_id = ci.movie_id
     GROUP BY rm.title_id, rm.title, rm.production_year

@@ -16,11 +16,11 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 AggregatedTags AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag
     FROM 
         RankedPosts
 ),
@@ -56,7 +56,7 @@ PostEngagement AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         p.Id
 )
@@ -76,7 +76,7 @@ FROM
 JOIN 
     PostEngagement pe ON rp.PostId = pe.PostId
 JOIN 
-    TopTags te ON te.Tag = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags)-2), '><'))
+    TopTags te ON te.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
 WHERE 
     rp.Rank <= 5
 ORDER BY 

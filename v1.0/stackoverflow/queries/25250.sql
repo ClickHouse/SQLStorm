@@ -8,12 +8,12 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         p.Tags,
-        ROW_NUMBER() OVER (PARTITION BY STRING_AGG(tag.TagName, ',') ORDER BY p.ViewCount DESC) AS Rank,
-        STRING_AGG(tag.TagName, ',') AS CombinedTags
+        ROW_NUMBER() OVER (PARTITION BY arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ',') ORDER BY p.ViewCount DESC) AS Rank,
+        arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ',') AS CombinedTags
     FROM 
         Posts p
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag(TagName) ON TRUE
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 

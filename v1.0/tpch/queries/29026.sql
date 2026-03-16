@@ -51,7 +51,7 @@ SELECT
     COUNT(p_name) AS part_count,
     AVG(p_retailprice) AS avg_retail_price,
     MAX(name_length) AS max_name_length,
-    STRING_AGG(short_comment, '; ') AS aggregated_comments
+    arrayStringConcat(groupArray(assumeNotNull(short_comment)), '; ') AS aggregated_comments
 FROM 
     CombinedData
 GROUP BY 

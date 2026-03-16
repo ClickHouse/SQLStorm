@@ -32,7 +32,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(CASE WHEN o.order_count > 5 THEN o.total_spent ELSE 0 END) AS high_value_customers,
     AVG(ps.ps_supplycost) AS average_cost,
-    STRING_AGG(DISTINCT sub.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sub.c_name))), ', ') AS customer_names
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey

@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '2 years'
+        p.CreationDate >= now64(6) - INTERVAL 2 YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -42,7 +42,7 @@ PostHistoryAggregation AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        ph.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId
 )

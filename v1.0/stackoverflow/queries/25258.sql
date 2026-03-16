@@ -17,16 +17,16 @@ WITH RecentPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '>')) AS Tag,
+        arrayJoin(splitByString('>', substring(Tags, 2, length(Tags)-2))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         RecentPosts
     GROUP BY 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '>'))
+        arrayJoin(splitByString('>', substring(Tags, 2, length(Tags)-2)))
 ),
 TopTags AS (
     SELECT 

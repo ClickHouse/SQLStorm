@@ -6,7 +6,7 @@ SELECT
     t.production_year,
     t.kind_id,
     p.info AS person_info,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     c.kind AS company_type,
     m.note AS movie_note
 FROM 

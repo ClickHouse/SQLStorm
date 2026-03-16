@@ -21,7 +21,7 @@ WITH RECURSIVE OrderHierarchy AS (
     JOIN 
         OrderHierarchy oh ON o.o_custkey = (SELECT c.c_custkey FROM customer c WHERE c.c_nationkey = (SELECT n.n_nationkey FROM nation n WHERE n.n_name = 'USA'))
     WHERE 
-        o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year'
+        o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
 )
 SELECT 
     p.p_name,
@@ -29,7 +29,7 @@ SELECT
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_revenue,
     SUM(ps.ps_availqty) AS total_available,
     r.r_name AS region_name,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     part p
 LEFT JOIN 

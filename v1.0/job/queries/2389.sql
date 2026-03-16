@@ -22,7 +22,7 @@ movie_info_summary AS (
     SELECT 
         mi.movie_id,
         MAX(CASE WHEN it.info = 'rating' THEN mi.info END) AS movie_rating,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         movie_info mi
     JOIN 

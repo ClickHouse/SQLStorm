@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserActivities AS (
     SELECT 
@@ -30,7 +30,7 @@ UserActivities AS (
     LEFT JOIN 
         Votes v ON u.Id = v.UserId
     WHERE 
-        u.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years'
+        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
     GROUP BY 
         u.Id
 )

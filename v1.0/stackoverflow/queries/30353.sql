@@ -78,7 +78,7 @@ SELECT
     tp.ScoreDifference,
     tp.EngagementLevel,
     COUNT(pd.PostId) AS ActionCount,
-    STRING_AGG(CONCAT(pd.ActionType, ' by ', pd.UserDisplayName, ' on ', pd.CreationDate), '; ') AS ActionHistory
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(pd.ActionType, ' by ', pd.UserDisplayName, ' on ', pd.CreationDate))), '; ') AS ActionHistory
 FROM 
     TopPosts tp
 LEFT JOIN 

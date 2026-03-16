@@ -18,7 +18,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ), UserReputation AS (
@@ -52,7 +52,7 @@ SELECT
     pu.VoteNet,
     pu.TotalPosts,
     pu.ReputationRank,
-    ARRAY_AGG(ps.Title) AS RecentPosts
+    groupArray(assumeNotNull(ps.Title)) AS RecentPosts
 FROM 
     PopularUsers pu
 JOIN 

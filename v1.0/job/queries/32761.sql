@@ -26,7 +26,7 @@ SELECT
     kr.keyword AS Keyword,
     COUNT(DISTINCT c.person_id) AS Cast_Count,
     AVG(p.info_type_id) AS Avg_Info_Type_ID,
-    STRING_AGG(DISTINCT cn.name, ', ') AS Company_Names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS Company_Names,
     SUM(CASE WHEN c.note IS NOT NULL THEN 1 ELSE 0 END) AS Non_Null_Note_Count,
     ROW_NUMBER() OVER (PARTITION BY mh.production_year ORDER BY mh.title) AS Row_Num
 FROM MovieHierarchy mh

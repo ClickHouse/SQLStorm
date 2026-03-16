@@ -4,8 +4,8 @@ SELECT
     AVG(p.p_retailprice) AS avg_retail_price,
     MIN(s.s_acctbal) AS min_supplier_balance,
     MAX(s.s_acctbal) AS max_supplier_balance,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
-    STRING_AGG(DISTINCT c.c_name, '; ') AS customers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), '; ') AS customers,
     SUM(CASE WHEN o.o_orderstatus = 'F' THEN l.l_extendedprice ELSE 0 END) AS total_sales_fully_shipped
 FROM 
     part p

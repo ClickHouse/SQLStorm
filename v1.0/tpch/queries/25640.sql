@@ -26,7 +26,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_retailprice > 100
-    AND o.o_orderdate >= DATE '1997-01-01'
+    AND o.o_orderdate >= toDate('1997-01-01')
     AND LENGTH(s.s_comment) > 30
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey, n.n_name, r.r_name

@@ -47,7 +47,7 @@ SELECT
         WHEN CTE.GoldBadges = 0 THEN NULL
         ELSE CONCAT(CTE.GoldBadges, ' Gold Badges')
     END AS GoldBadgeInfo,
-    ARRAY_AGG(DISTINCT PT.Name) FILTER (WHERE PT.Id IS NOT NULL) AS PostTypesContributed
+    arrayDistinct(groupArray(assumeNotNull(PT.Name))) FILTER (WHERE PT.Id IS NOT NULL) AS PostTypesContributed
 FROM UserEngagement CTE
 LEFT JOIN Posts P ON CTE.Id = P.OwnerUserId
 LEFT JOIN PostTypes PT ON P.PostTypeId = PT.Id

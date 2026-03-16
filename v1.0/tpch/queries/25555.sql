@@ -3,7 +3,7 @@ SELECT
     s.s_name, 
     SUM(ps.ps_availqty) AS total_available_quantity, 
     AVG(p.p_retailprice) AS average_retail_price, 
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied, 
     CONCAT('Supplier: ', s.s_name, ', Part: ', p.p_name) AS supplier_part_info
 FROM 
     part p

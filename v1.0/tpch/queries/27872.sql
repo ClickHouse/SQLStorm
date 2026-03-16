@@ -6,7 +6,7 @@ WITH SupplierParts AS (
         p.p_type AS type,
         SUM(ps.ps_availqty) AS total_available_qty,
         AVG(ps.ps_supplycost) AS average_supply_cost,
-        STRING_AGG(DISTINCT p.p_comment, '; ') AS combined_comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS combined_comments
     FROM 
         supplier s
     JOIN 
@@ -21,7 +21,7 @@ RegionCustomers AS (
         r.r_name AS region_name,
         c.c_name AS customer_name,
         COUNT(DISTINCT o.o_orderkey) AS total_orders,
-        STRING_AGG(DISTINCT c.c_comment, '; ') AS combined_customer_comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_comment))), '; ') AS combined_customer_comments
     FROM 
         region r
     JOIN 

@@ -38,7 +38,7 @@ SELECT
     COUNT(DISTINCT t.ws_order_number) AS TotalOrders,
     SUM(t.ws_ext_sales_price) AS TotalAmountSpent,
     AVG(t.ws_ext_sales_price) AS AverageOrderValue,
-    STRING_AGG(DISTINCT CONCAT(t.i_item_desc, ' ($', ROUND(t.i_current_price, 2), ')'), ', ') AS TopItemsPurchased,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(t.i_item_desc, ' ($', ROUND(t.i_current_price, 2), ')')))), ', ') AS TopItemsPurchased,
     COALESCE(t.ca_state, 'Unknown State') AS CustomerState
 FROM 
     TopSales t

@@ -4,7 +4,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price_after_discount,
     CONCAT(r.r_name, ' - ', n.n_name) AS region_nation,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     MAX(CASE WHEN o.o_orderstatus = 'F' THEN o.o_totalprice ELSE NULL END) AS max_fulfilled_order_price,
     MIN(CASE WHEN c.c_mktsegment = 'BUILDING' THEN c.c_acctbal ELSE NULL END) AS min_building_cust_balance
 FROM 

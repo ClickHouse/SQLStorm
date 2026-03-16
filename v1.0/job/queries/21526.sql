@@ -55,7 +55,7 @@ SELECT
         WHEN f.actor_count IS NULL THEN 'No Actors'
         ELSE 'Other'
     END AS movie_category,
-    STRING_AGG(DISTINCT CONCAT('Actor ID: ', c.person_id, ', Role ID: ', c.role_id), '; ') AS actors_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Actor ID: ', c.person_id, ', Role ID: ', c.role_id)))), '; ') AS actors_details
 FROM 
     TopMovies f
 LEFT JOIN 

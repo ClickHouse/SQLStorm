@@ -33,7 +33,7 @@ SELECT n.n_name,
        COALESCE(SUM(ps.total_avail_qty), 0) AS available_quantity,
        COALESCE(AVG(ps.avg_supply_cost), 0) AS avg_supply_cost,
        COALESCE(COUNT(DISTINCT rc.c_custkey), 0) AS customer_count,
-       ARRAY_AGG(DISTINCT rc.c_name) AS customer_names
+       arrayDistinct(groupArray(assumeNotNull(rc.c_name))) AS customer_names
 FROM nation n
 LEFT JOIN PartStats ps ON n.n_nationkey = (
     SELECT s_nationkey FROM supplier s

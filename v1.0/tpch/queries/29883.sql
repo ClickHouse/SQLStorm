@@ -39,8 +39,8 @@ SELECT
     SUM(o.o_totalprice) AS total_revenue,
     AVG(sp.name_length) AS avg_name_length,
     AVG(sp.comment_length) AS avg_comment_length,
-    STRING_AGG(DISTINCT sp.modified_name, ', ') AS all_modified_names,
-    STRING_AGG(DISTINCT sp.modified_comment, ', ') AS all_modified_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sp.modified_name))), ', ') AS all_modified_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sp.modified_comment))), ', ') AS all_modified_comments
 FROM 
     customer c
 JOIN 

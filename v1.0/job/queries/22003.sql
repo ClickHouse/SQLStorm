@@ -41,7 +41,7 @@ SELECT
         WHEN md.actor_count BETWEEN 1 AND 5 THEN 'Few Actors' 
         ELSE 'Many Actors' 
     END AS actor_category,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     MovieDetails md
 LEFT JOIN 

@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     MAX(o.o_orderdate) AS last_order_date,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     part p
 JOIN 

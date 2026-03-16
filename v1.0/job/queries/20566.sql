@@ -64,4 +64,4 @@ WHERE
 ORDER BY 
     as1.total_movies DESC, 
     as1.avg_production_year ASC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

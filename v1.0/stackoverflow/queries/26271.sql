@@ -16,11 +16,11 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'  
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 ),
 TopTags AS (
     SELECT 
-        unnest(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -49,7 +49,7 @@ PostStatistics AS (
     LEFT JOIN 
         Comments c ON rp.PostId = c.PostId
     JOIN 
-        TopTags tt ON tt.TagName = ANY(string_to_array(SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2), '><'))
+        TopTags tt ON tt.TagName = ANY(splitByString('><', SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2)))
     GROUP BY 
         rp.PostId, rp.Title, rp.Body, rp.CreationDate, rp.ViewCount, rp.Score, rp.OwnerDisplayName, tt.TagName, tt.TagCount
 )
@@ -74,7 +74,7 @@ LEFT JOIN (
     FROM 
         Badges 
     WHERE 
-        Date >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         UserId
 ) badgeSummary ON ps.OwnerDisplayName = (SELECT DisplayName FROM Users WHERE Id = badgeSummary.UserId)

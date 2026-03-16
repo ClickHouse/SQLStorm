@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available,
     MAX(o.o_totalprice) AS max_order_value,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     part p
 JOIN 

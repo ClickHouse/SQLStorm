@@ -11,13 +11,13 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), 
 UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
@@ -63,7 +63,7 @@ SELECT
     ua.UpVotes,
     CASE 
         WHEN phs.LastHistoryDate IS NULL THEN 'No history'
-        WHEN phs.LastHistoryDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months' THEN 'Inactive'
+        WHEN phs.LastHistoryDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH THEN 'Inactive'
         ELSE 'Active'
     END AS PostStatus,
     CASE 

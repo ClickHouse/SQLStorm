@@ -32,7 +32,7 @@ MovieWithKeywords AS (
         mh.title,
         mh.production_year,
         mh.kind_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         MovieHierarchy mh
     LEFT JOIN 

@@ -27,7 +27,7 @@ MovieDetails AS (
     SELECT 
         m.title AS movie_title,
         m.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names
     FROM 
         title m
     JOIN 

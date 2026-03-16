@@ -53,7 +53,7 @@ SELECT
 FROM 
     RankedCustomers rc
 LEFT JOIN 
-    MonthlySales ms ON rc.c_birth_month = EXTRACT(MONTH FROM DATE '2002-10-01')
+    MonthlySales ms ON rc.c_birth_month = toMonth(toDate('2002-10-01'))
 LEFT JOIN 
     CustomerSales cs ON rc.c_customer_sk = cs.c_customer_sk
 WHERE 

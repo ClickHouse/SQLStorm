@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        P.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
 ),
 PostVoteSummary AS (
     SELECT
@@ -28,7 +28,7 @@ PostVoteSummary AS (
 PostCloseReasons AS (
     SELECT
         PH.PostId,
-        STRING_AGG(CRT.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CRT.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 

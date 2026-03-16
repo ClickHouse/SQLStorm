@@ -5,7 +5,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     CONCAT(r.r_name, ', ', n.n_name) AS location,
     AVG(l.l_quantity) AS average_quantity,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS shipping_methods,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS shipping_methods,
     MAX(l.l_shipdate) AS last_ship_date
 FROM 
     part p

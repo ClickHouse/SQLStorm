@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
     MAX(ps.ps_availqty) AS max_available_quantity,
-    STRING_AGG(DISTINCT CONCAT('Part:', p.p_name, ' [', p.p_brand, ']'), '; ') AS parts_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Part:', p.p_name, ' [', p.p_brand, ']')))), '; ') AS parts_list
 FROM 
     supplier s
 JOIN 

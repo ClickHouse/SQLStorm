@@ -3,7 +3,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(p.p_retailprice) AS average_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     r.r_name AS region_name
 FROM 
     supplier s
@@ -23,7 +23,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     r.r_name LIKE '%West%'
-    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     supplier_info, r.r_name
 HAVING 

@@ -20,7 +20,7 @@ JOIN
 WHERE 
     p.p_size BETWEEN 5 AND 15 
     AND s.s_acctbal > 1000.00 
-    AND o.o_orderdate >= DATE '1996-01-01'
+    AND o.o_orderdate >= toDate('1996-01-01')
 GROUP BY 
     p.p_name, s.s_name, s.s_nationkey, p.p_comment
 HAVING 

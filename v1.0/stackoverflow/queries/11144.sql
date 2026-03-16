@@ -18,7 +18,7 @@ JOIN
 LEFT JOIN 
     Badges b ON u.Id = b.UserId
 WHERE 
-    p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 ORDER BY 
     p.CreationDate DESC,  
     u.Reputation DESC;

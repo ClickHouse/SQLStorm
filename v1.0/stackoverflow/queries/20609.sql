@@ -13,7 +13,7 @@ WITH PostStats AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
+        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
         AND p.PostTypeId IN (1, 2) 
     GROUP BY p.Id, p.Title, p.PostTypeId, p.OwnerUserId
 ),
@@ -26,7 +26,7 @@ UserReputation AS (
     LEFT JOIN Badges b ON u.Id = b.UserId
     WHERE 
         u.Reputation > 1000 
-        AND u.LastAccessDate <= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        AND u.LastAccessDate <= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     GROUP BY u.Id, u.Reputation
 ),
 FinalStats AS (

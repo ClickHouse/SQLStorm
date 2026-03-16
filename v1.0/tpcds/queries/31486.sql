@@ -64,7 +64,7 @@ SELECT
     pp.hd_income_band_sk,
     pp.total_orders,
     pp.orders_for_top_items,
-    ROUND((pp.orders_for_top_items / NULLIF(pp.total_orders, 0)::decimal) * 100, 2) AS percentage_of_top_item_orders
+    ROUND((pp.orders_for_top_items / NULLIF(pp.total_orders, 0, CAST() AS decimal)) * 100, 2) AS percentage_of_top_item_orders
 FROM 
     purchase_patterns pp
 WHERE 

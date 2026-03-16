@@ -5,7 +5,7 @@ WITH TagStats AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(p.Score) AS TotalScore,
         AVG(p.ViewCount) AS AvgViews,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopContributors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopContributors
     FROM 
         Tags t
     JOIN 
@@ -13,7 +13,7 @@ WITH TagStats AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         t.TagName
 ),
@@ -21,7 +21,7 @@ CloseReasonStats AS (
     SELECT 
         crt.Name AS CloseReason,
         COUNT(ph.PostId) AS CloseCount,
-        STRING_AGG(DISTINCT p.Title, '; ') AS ClosedPosts
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), '; ') AS ClosedPosts
     FROM 
         PostHistory ph
     JOIN 
@@ -51,7 +51,7 @@ PostDetail AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, u.DisplayName
 ),

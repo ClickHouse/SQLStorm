@@ -49,7 +49,7 @@ NullCheck AS (
         tm.movie_id,
         tm.title,
         tm.actor_count,
-        ARRAY_AGG(DISTINCT an.actor_name) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(an.actor_name))) AS actor_names,
         COALESCE(CM.company_name, 'No Production Company') AS production_company,
         COALESCE(CM.company_type, 'Unknown') AS company_type
     FROM 

@@ -31,7 +31,7 @@ extended_movie_info AS (
         mh.level,
         COALESCE(ki.keyword, 'NoKeyword') AS keyword,
         COUNT(ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aliases
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aliases
     FROM 
         movie_hierarchy mh
     LEFT JOIN 

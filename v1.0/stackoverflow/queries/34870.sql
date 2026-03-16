@@ -36,13 +36,13 @@ RecentPostHistory AS (
         ph.PostId,
         ph.CreationDate, 
         ph.UserDisplayName,
-        STRING_AGG(DISTINCT pst.Name, ', ') AS PostHistoryType
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pst.Name))), ', ') AS PostHistoryType
     FROM 
         PostHistory ph
     JOIN 
         PostHistoryTypes pst ON ph.PostHistoryTypeId = pst.Id
     WHERE 
-        ph.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         ph.PostId, ph.CreationDate, ph.UserDisplayName
 ),

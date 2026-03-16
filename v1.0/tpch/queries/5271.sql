@@ -12,7 +12,7 @@ WITH SupplierSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY 
         s.s_suppkey, s.s_name
 ),
@@ -57,7 +57,7 @@ JOIN
 JOIN 
     TopSuppliers ts ON s.s_suppkey = ts.s_suppkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_partkey, p.p_name, ts.total_sales
 ORDER BY 

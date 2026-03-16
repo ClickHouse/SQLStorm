@@ -8,7 +8,7 @@ WITH ranked_orders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
+        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
 ),
 supplier_details AS (
     SELECT 
@@ -37,7 +37,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     AVG(total_cost) AS avg_supplier_cost,
     SUM(CASE WHEN lo.total_lines > 5 THEN 1 ELSE 0 END) AS large_orders,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS popular_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS popular_parts
 FROM 
     region r
 LEFT JOIN 

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Body IS NOT NULL 
 ),
 
@@ -38,7 +38,7 @@ MostDiscussed AS (
 
 TagStats AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS TagName,
+        arrayJoin(splitByString('>', Tags)) AS TagName,
         COUNT(*) AS TagPostCount,
         SUM(CASE WHEN AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswers
     FROM 
@@ -46,7 +46,7 @@ TagStats AS (
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        unnest(string_to_array(Tags, '>'))
+        arrayJoin(splitByString('>', Tags))
 ),
 
 AggregatedTags AS (

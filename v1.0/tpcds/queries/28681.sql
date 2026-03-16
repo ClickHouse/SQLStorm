@@ -21,7 +21,7 @@ address_summary AS (
 SELECT 
     address_type,
     COUNT(*) AS total_addresses,
-    STRING_AGG(complete_address, '; ') AS aggregated_addresses
+    arrayStringConcat(groupArray(assumeNotNull(complete_address)), '; ') AS aggregated_addresses
 FROM 
     address_summary
 GROUP BY 

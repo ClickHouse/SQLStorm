@@ -8,7 +8,7 @@ WITH UserPostStats AS (
         COUNT(DISTINCT CASE WHEN p.PostTypeId = 1 THEN p.Id END) AS QuestionCount,
         COUNT(DISTINCT CASE WHEN p.PostTypeId = 2 THEN p.Id END) AS AnswerCount,
         AVG(
-            EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))
+            toUnixTimestamp((p.LastActivityDate - p.CreationDate))
         ) AS AvgPostLifeSpan
     FROM 
         Users u

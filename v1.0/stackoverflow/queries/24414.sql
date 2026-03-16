@@ -21,7 +21,7 @@ PostStatistics AS (
         SUM(COALESCE(P.ViewCount, 0)) AS TotalViews,
         COUNT(DISTINCT CASE WHEN P.PostTypeId = 1 THEN P.Id END) AS QuestionsCount,
         COUNT(DISTINCT CASE WHEN P.PostTypeId = 2 THEN P.Id END) AS AnswersCount,
-        AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - P.CreationDate)) / 60) AS AvgPostAgeInMinutes
+        AVG(toUnixTimestamp((now64(6) - P.CreationDate)) / 60) AS AvgPostAgeInMinutes
     FROM Posts P
     GROUP BY P.OwnerUserId
 ),
@@ -70,4 +70,4 @@ SELECT
 FROM CombinedStats Expect
 WHERE Expect.TotalBounty > (SELECT AVG(TotalBounty) FROM CombinedStats)
 ORDER BY Expect.UserRank
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

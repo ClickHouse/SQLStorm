@@ -3,7 +3,7 @@ WITH MovieDetails AS (
     SELECT 
         a.title AS movie_title,
         a.production_year,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COUNT(DISTINCT ci.person_id) AS cast_count,
         AVG(COALESCE(ci.nr_order, 0)) AS avg_order
     FROM aka_title a
@@ -54,4 +54,4 @@ FROM RecentMovies rm
 JOIN TopActors ta ON rm.production_year = ta.movies_played
 WHERE rm.year_category = 'Post-2010'
 ORDER BY rm.production_year DESC, rm.title_length DESC
-FETCH FIRST 25 ROWS ONLY; 
+LIMIT 25; 

@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        unnest(string_to_array(trim(both '<>' from Tags), '><')) AS Tag,
+        arrayJoin(splitByString('><', trim(both '<>' from Tags))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -59,7 +59,7 @@ QuestionStats AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     JOIN 
-        TopTags t ON t.Tag = ANY(string_to_array(trim(both '<>' from p.Tags), '><'))
+        TopTags t ON t.Tag = ANY(splitByString('><', trim(both '<>' from p.Tags)))
     WHERE 
         p.PostTypeId = 1 
 ),

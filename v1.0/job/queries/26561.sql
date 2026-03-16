@@ -28,7 +28,7 @@ MoviesWithKeywords AS (
     SELECT 
         mt.movie_id,
         mt.title,
-        string_agg(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title mt
     JOIN 

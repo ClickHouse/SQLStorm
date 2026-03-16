@@ -30,7 +30,7 @@ PostHistoryInfo AS (
     SELECT 
         ph.PostId,
         COUNT(ph.Id) AS EditCount,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS EditTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS EditTypes
     FROM 
         PostHistory ph
     JOIN 

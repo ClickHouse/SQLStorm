@@ -12,7 +12,7 @@ WITH RecursivePostStats AS (
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id AND v.VoteTypeId IN (8, 9)  
     LEFT JOIN PostHistory ph ON ph.PostId = p.Id
-    WHERE p.CreationDate < TIMESTAMP '2024-10-01 12:34:56'
+    WHERE p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6)
     GROUP BY p.Id, p.PostTypeId, p.AcceptedAnswerId
 ),
 FilteredPosts AS (
@@ -51,7 +51,7 @@ SELECT rp.PostId,
            ELSE 'Archived'
        END AS ReviewStatus,
        COALESCE(
-           (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+           (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
             FROM Posts p
             JOIN Tags t ON t.ExcerptPostId = p.Id
             WHERE p.Id = rp.PostId

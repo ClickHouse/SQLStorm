@@ -33,7 +33,7 @@ SELECT
     AVG(CommentCount) AS AvgCommentCount,
     AVG(AnswerCount) AS AvgAnswerCount,
     AVG(OwnerReputation) AS AvgOwnerReputation,
-    STRING_AGG(DISTINCT Tags, ', ') AS UniqueTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Tags))), ', ') AS UniqueTags
 FROM 
     PostStats
 GROUP BY 

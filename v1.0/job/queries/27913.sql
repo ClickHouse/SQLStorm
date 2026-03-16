@@ -27,9 +27,9 @@ TopMovies AS (
 MovieDetails AS (
     SELECT
         t.movie_id,
-        ARRAY_AGG(DISTINCT c.person_id) AS cast_ids,
-        ARRAY_AGG(DISTINCT c.role_id) AS role_ids,
-        ARRAY_AGG(DISTINCT c.nr_order) AS order_of_appearance
+        arrayDistinct(groupArray(assumeNotNull(c.person_id))) AS cast_ids,
+        arrayDistinct(groupArray(assumeNotNull(c.role_id))) AS role_ids,
+        arrayDistinct(groupArray(assumeNotNull(c.nr_order))) AS order_of_appearance
     FROM
         complete_cast t
     JOIN

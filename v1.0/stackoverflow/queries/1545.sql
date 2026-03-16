@@ -16,10 +16,10 @@ PostClosureSummary AS (
     SELECT 
         PH.PostId,
         COUNT(PH.Id) AS ClosureCount,
-        STRING_AGG(CASE 
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
             WHEN PH.PostHistoryTypeId IN (10, 11) THEN 'Closed'
             ELSE 'Reopened'
-        END, ', ') AS ClosureHistory
+        END)), ', ') AS ClosureHistory
     FROM PostHistory PH
     WHERE PH.PostHistoryTypeId IN (10, 11)
     GROUP BY PH.PostId

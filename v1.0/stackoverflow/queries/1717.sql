@@ -17,7 +17,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostSummary AS (
     SELECT 
@@ -45,7 +45,7 @@ MergedPosts AS (
         ps.VoteTrend,
         ps.NextPostDate,
         CASE 
-            WHEN ps.NextPostDate IS NOT NULL AND ps.NextPostDate - ps.CreationDate < INTERVAL '1 day' THEN 'Merged'
+            WHEN ps.NextPostDate IS NOT NULL AND ps.NextPostDate - ps.CreationDate < INTERVAL 1 DAY THEN 'Merged'
             ELSE 'Standalone'
         END AS PostType
     FROM 

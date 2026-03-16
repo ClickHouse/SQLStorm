@@ -65,4 +65,4 @@ WHERE
 ORDER BY 
     web_sales_revenue DESC, 
     store_sales_revenue DESC
-FETCH FIRST 25 ROWS ONLY;
+LIMIT 25;

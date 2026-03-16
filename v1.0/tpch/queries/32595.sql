@@ -14,7 +14,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(CASE WHEN o.o_orderstatus = 'O' THEN o.o_totalprice ELSE 0 END) AS total_open_orders,
     AVG(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity END) AS avg_returned_quantity,
-    STRING_AGG(DISTINCT p.p_name, ', ' ORDER BY p.p_name) AS parts_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ' ORDER BY p.p_name) AS parts_names,
     SUM(sh.s_acctbal) AS total_supplier_balance
 FROM region r
 JOIN nation n ON r.r_regionkey = n.n_regionkey
@@ -25,7 +25,7 @@ JOIN lineitem l ON l.l_orderkey = o.o_orderkey
 JOIN part p ON l.l_partkey = p.p_partkey
 LEFT JOIN SupplierHierarchy sh ON s.s_suppkey = sh.s_suppkey
 WHERE r.r_name LIKE '%Europe%'
-    AND l.l_shipdate >= DATE '1997-01-01'
+    AND l.l_shipdate >= toDate('1997-01-01')
     AND (p.p_size IS NULL OR p.p_size > 10)
 GROUP BY n.n_name
 HAVING SUM(l.l_discount) > 50

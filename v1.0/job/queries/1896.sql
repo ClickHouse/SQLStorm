@@ -3,9 +3,9 @@ WITH movie_details AS (
     SELECT 
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT CAST(c.id AS TEXT), ', ') AS cast_ids,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.id AS TEXT)))), ', ') AS cast_ids,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title t
     LEFT JOIN 
@@ -46,7 +46,7 @@ SELECT
 FROM 
     movie_details md
 LEFT JOIN 
-    actor_info ai ON ai.person_id = ANY(STRING_TO_ARRAY(md.cast_ids, ', ')::integer[])
+    actor_info ai ON ai.person_id = ANY(splitByString(', ', md.cast_idsCAST() AS integer)[])
 WHERE 
     ai.rn = 1
 ORDER BY 

@@ -6,7 +6,7 @@ SELECT
     AVG(l.l_quantity) AS avg_quantity,
     MAX(l.l_tax) AS max_tax,
     MIN(l.l_discount) AS min_discount,
-    STRING_AGG(DISTINCT CONCAT(l.l_shipmode, ' (', l.l_returnflag, ')'), '; ') AS shipping_modes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(l.l_shipmode, ' (', l.l_returnflag, ')')))), '; ') AS shipping_modes,
     CONCAT('Region: ', r.r_name, ' | Nation: ', n.n_name) AS location_info
 FROM 
     part p

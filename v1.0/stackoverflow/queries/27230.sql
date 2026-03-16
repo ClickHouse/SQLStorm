@@ -9,7 +9,7 @@ WITH PostAggregates AS (
         COUNT(C.Id) AS CommentCount,
         COALESCE(SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 WHEN V.VoteTypeId = 3 THEN -1 ELSE 0 END), 0) AS Score,
         COUNT(DISTINCT B.Id) AS BadgeCount,
-        EXTRACT(YEAR FROM P.CreationDate) AS YearCreated
+        toYear(P.CreationDate) AS YearCreated
     FROM 
         Posts P
     JOIN 

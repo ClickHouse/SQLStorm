@@ -15,14 +15,14 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND P.ViewCount > 0
 ),
 ClosedPostHistory AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(CASE WHEN PH.Comment IS NOT NULL THEN PH.Comment ELSE 'No Comment' END, '; ') AS ClosingComments,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PH.Comment IS NOT NULL THEN PH.Comment ELSE 'No Comment' END)), '; ') AS ClosingComments,
         MAX(PH.CreationDate) AS LastCloseDate
     FROM 
         PostHistory PH
@@ -34,7 +34,7 @@ ClosedPostHistory AS (
 ValidCloseReasons AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(CASE WHEN CR.Name IS NOT NULL THEN CR.Name ELSE 'Unknown Reason' END, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN CR.Name IS NOT NULL THEN CR.Name ELSE 'Unknown Reason' END)), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     LEFT JOIN 

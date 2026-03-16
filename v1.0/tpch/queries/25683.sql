@@ -5,7 +5,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity_sold,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price_after_discount,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT o.o_orderpriority, ', ') AS order_priorities,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(o.o_orderpriority))), ', ') AS order_priorities,
     MAX(l.l_shipdate) AS latest_ship_date
 FROM 
     part p

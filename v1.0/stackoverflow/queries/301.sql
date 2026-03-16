@@ -20,7 +20,7 @@ RecentPosts AS (
         P.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -41,7 +41,7 @@ SELECT
     T.NetVotes,
     T.PostCount,
     T.TotalViews,
-    STRING_AGG(CASE WHEN R.PostRank <= 3 THEN R.Title END, ', ') AS RecentTopThreePosts
+    arrayStringConcat(groupArray(assumeNotNull(CASE WHEN R.PostRank <= 3 THEN R.Title END)), ', ') AS RecentTopThreePosts
 FROM TopUsers T
 LEFT JOIN RecentPosts R ON T.UserId = R.OwnerUserId
 GROUP BY T.DisplayName, T.Reputation, T.NetVotes, T.PostCount, T.TotalViews

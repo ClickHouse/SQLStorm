@@ -82,4 +82,4 @@ FROM
     summary s
 ORDER BY 
     s.net_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

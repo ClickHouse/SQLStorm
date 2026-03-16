@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS unique_suppliers_count,
     MAX(s.s_acctbal) AS max_supplier_balance,
     MIN(s.s_acctbal) AS min_supplier_balance,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     AVG(s.s_acctbal) AS avg_supplier_balance
 FROM 
     part p

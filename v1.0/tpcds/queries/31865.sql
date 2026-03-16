@@ -31,7 +31,7 @@ SELECT
     cp.c_last_name,
     cp.cd_gender,
     cp.path_length,
-    STRING_AGG(cp.path, ', ') AS full_path
+    arrayStringConcat(groupArray(assumeNotNull(cp.path)), ', ') AS full_path
 FROM CustomerPaths cp
 GROUP BY 
     cp.c_customer_sk, 

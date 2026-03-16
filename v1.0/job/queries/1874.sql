@@ -5,7 +5,7 @@ WITH MovieStats AS (
         T.production_year,
         COALESCE(SUM(CASE WHEN C.nr_order IS NOT NULL THEN 1 ELSE 0 END), 0) AS total_cast,
         COUNT(DISTINCT MC.company_id) AS total_companies,
-        STRING_AGG(DISTINCT A.name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(A.name))), ', ') AS actors
     FROM 
         aka_title T
     LEFT JOIN 

@@ -28,7 +28,7 @@ PostWithHistory AS (
     FROM Posts p
     INNER JOIN PostHistory ph ON p.Id = ph.PostId
     INNER JOIN PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
-    WHERE ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     u.DisplayName AS UserName,

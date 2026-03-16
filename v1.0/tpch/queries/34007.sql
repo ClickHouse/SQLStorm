@@ -5,7 +5,7 @@ WITH RECURSIVE RevenueCTE AS (
         o.o_orderdate
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= DATE '1996-01-01'
+    WHERE o.o_orderdate >= toDate('1996-01-01')
     GROUP BY o.o_orderkey, o.o_orderdate
 ),
 RankedOrders AS (

@@ -72,7 +72,7 @@ FinalBenchmark AS (
 SELECT 
     title,
     production_year,
-    STRING_AGG(DISTINCT actor_name || ' (' || role_name || ')', ', ') AS actors_and_roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name || ' (' || role_name || ')'))), ', ') AS actors_and_roles,
     MAX(companies_info) AS companies_count,
     MAX(keyword_info) AS keywords,
     AVG(CAST(total_cast AS FLOAT)) AS average_cast_size,

@@ -35,7 +35,7 @@ OrderDetails AS (
         o.o_clerk, 
         o.o_shippriority, 
         o.o_comment,
-        DATE_PART('year', o.o_orderdate) AS order_year
+        datePart('year', o.o_orderdate) AS order_year
     FROM 
         orders o
 ),

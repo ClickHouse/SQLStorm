@@ -4,10 +4,10 @@ WITH movie_details AS (
         a.id AS movie_id,
         a.title,
         a.production_year,
-        STRING_AGG(DISTINCT CAST(c.person_id AS TEXT), ', ') AS cast_ids,
-        STRING_AGG(DISTINCT CAST(c.person_role_id AS TEXT), ', ') AS role_ids,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT cp.kind, ', ') AS company_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.person_id AS TEXT)))), ', ') AS cast_ids,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.person_role_id AS TEXT)))), ', ') AS role_ids,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cp.kind))), ', ') AS company_types,
         COUNT(DISTINCT m.id) AS company_count
     FROM 
         aka_title a
@@ -32,8 +32,8 @@ person_details AS (
     SELECT 
         p.id AS person_id,
         p.name,
-        STRING_AGG(DISTINCT d.title, ', ') AS movies,
-        STRING_AGG(DISTINCT CAST(d.production_year AS TEXT), ', ') AS production_years,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d.title))), ', ') AS movies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(d.production_year AS TEXT)))), ', ') AS production_years,
         COUNT(DISTINCT d.movie_id) AS movie_count
     FROM 
         aka_name p

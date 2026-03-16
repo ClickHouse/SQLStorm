@@ -34,7 +34,7 @@ PostHistorySummary AS (
     SELECT 
         ph.PostId,
         p.Title,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         COUNT(ph.Id) AS HistoryCount,
         MAX(ph.CreationDate) AS LastUpdate
     FROM 

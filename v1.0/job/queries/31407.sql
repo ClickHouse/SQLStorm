@@ -26,7 +26,7 @@ WITH RECURSIVE movie_hierarchy AS (
 movie_info_summary AS (
     SELECT 
         movie_id,
-        STRING_AGG(info, '; ') AS info_list,
+        arrayStringConcat(groupArray(assumeNotNull(info)), '; ') AS info_list,
         COUNT(*) AS info_count
     FROM 
         movie_info
@@ -40,7 +40,7 @@ cast_details AS (
     SELECT 
         ci.movie_id,
         COUNT(ci.person_id) AS actor_count,
-        STRING_AGG(a.name, ', ') AS actor_names
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actor_names
     FROM 
         cast_info ci
     JOIN 
@@ -52,7 +52,7 @@ cast_details AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

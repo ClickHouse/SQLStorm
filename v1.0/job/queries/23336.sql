@@ -54,7 +54,7 @@ SELECT
         ELSE 'Sparse Cast Notes'
     END AS cast_quality,
     COUNT(DISTINCT mi.info_type_id) AS unique_info_types,
-    STRING_AGG(DISTINCT ci.note, ', ') FILTER (WHERE ci.note IS NOT NULL) AS cast_notes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), ', ') FILTER (WHERE ci.note IS NOT NULL) AS cast_notes
 FROM 
     ranked_titles rt
 LEFT JOIN 

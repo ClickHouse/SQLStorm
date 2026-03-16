@@ -77,4 +77,4 @@ WHERE
     ms.rank <= 10 
 ORDER BY 
     ms.production_year DESC, ms.movie_title 
-OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 5;

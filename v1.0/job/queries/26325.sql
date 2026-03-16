@@ -40,7 +40,7 @@ SELECT
     f.production_year,
     f.actor_count,
     f.director_count,
-    ARRAY_AGG(DISTINCT CONCAT(a.name, ' (', r.role, ')')) AS cast_details
+    arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', r.role, ')')))) AS cast_details
 FROM 
     FilteredMovies f
 JOIN 

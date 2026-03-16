@@ -21,7 +21,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         v.PostId, v.VoteTypeId
 ),
@@ -80,4 +80,4 @@ FROM
 ORDER BY 
     fp.Score DESC, 
     fp.CreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

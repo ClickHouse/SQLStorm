@@ -27,7 +27,7 @@ CastDetails AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS actor_count,
-        STRING_AGG(a.name, ', ') AS actors
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actors
     FROM 
         cast_info c
     JOIN 

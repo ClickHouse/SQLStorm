@@ -3,8 +3,8 @@ WITH movie_details AS (
         t.id AS movie_id,
         t.title AS movie_title,
         t.production_year,
-        COALESCE(STRING_AGG(DISTINCT ak.name, ', '), 'No Cast') AS cast_names,
-        COALESCE(STRING_AGG(DISTINCT k.keyword, ', '), 'No Keywords') AS keywords,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', '), 'No Cast') AS cast_names,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'No Keywords') AS keywords,
         CASE 
             WHEN COUNT(DISTINCT mc.company_id) > 0 THEN 'Has Companies'
             ELSE 'No Companies'

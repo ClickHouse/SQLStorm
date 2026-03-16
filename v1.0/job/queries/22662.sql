@@ -26,7 +26,7 @@ DistinctAkaNames AS (
 MovieKeywords AS (
     SELECT 
         movie_id, 
-        STRING_AGG(keyword.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(keyword.keyword)), ', ') AS keywords
     FROM 
         movie_keyword
     JOIN 
@@ -38,7 +38,7 @@ PersonRoles AS (
     SELECT 
         ci.movie_id, 
         ci.person_id, 
-        STRING_AGG(rt.role, ', ') AS roles
+        arrayStringConcat(groupArray(assumeNotNull(rt.role)), ', ') AS roles
     FROM 
         cast_info ci
     JOIN 
@@ -69,7 +69,7 @@ SELECT
     im.keywords,
     im.interesting_rank,
     im.actor_variety,
-    'Cast Info: ' || COALESCE(STRING_AGG(COALESCE(pr.roles, 'Unknown role'), '; '), 'No cast') AS cast_roles 
+    'Cast Info: ' || COALESCE(arrayStringConcat(groupArray(assumeNotNull(COALESCE(pr.roles, 'Unknown role'))), '; '), 'No cast') AS cast_roles 
 FROM 
     InterestingMovies im
 LEFT JOIN 

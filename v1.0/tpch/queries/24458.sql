@@ -13,7 +13,7 @@ OrderSummary AS (
         o.o_orderkey,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,
         COUNT(DISTINCT l.l_partkey) AS part_count,
-        MAX(CASE WHEN l.l_shipdate < DATE '1997-01-01' THEN l.l_discount ELSE NULL END) AS last_year_discount
+        MAX(CASE WHEN l.l_shipdate < toDate('1997-01-01') THEN l.l_discount ELSE NULL END) AS last_year_discount
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
     GROUP BY o.o_orderkey
@@ -43,4 +43,4 @@ WHERE r.r_name LIKE 'N%'
 GROUP BY r.r_name
 HAVING COUNT(DISTINCT c.c_custkey) > 10 OR SUM(COALESCE(os.total_sales, 0)) > 100000
 ORDER BY r.r_name DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

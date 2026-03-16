@@ -42,7 +42,7 @@ SELECT
     ub.TotalPosts,
     ub.TotalBadgePoints,
     COUNT(DISTINCT rp.PostId) AS RecentPostCount,
-    STRING_AGG(DISTINCT rp.Title, '; ') AS RecentPostTitles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.Title))), '; ') AS RecentPostTitles
 FROM 
     TopBadgedUsers ub
 LEFT JOIN 

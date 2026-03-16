@@ -74,7 +74,7 @@ SELECT
     MAX(ta.actor_name) AS leading_actor,
     SUM(CASE WHEN ta.cast_note LIKE '%lead%' THEN 1 ELSE 0 END) AS lead_actor_count,
     COALESCE(SUM(ta.company_count), 0) AS total_companies,
-    STRING_AGG(DISTINCT ta.keyword, ', ') AS keywords_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ta.keyword))), ', ') AS keywords_list,
     COUNT(*) OVER (PARTITION BY ta.production_year) AS total_movies_by_year
 FROM 
     title_agg ta

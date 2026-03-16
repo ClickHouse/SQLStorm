@@ -8,7 +8,7 @@ WITH PostStats AS (
         P.CreationDate,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
         COUNT(CASE WHEN V.Id IS NOT NULL THEN 1 END) AS VoteCount,
-        STDDEV(P.Score) OVER() AS ScoreStdDev
+        stddevPop(P.Score) OVER() AS ScoreStdDev
     FROM 
         Posts P
     LEFT JOIN 

@@ -5,7 +5,7 @@ SELECT
         WHEN l.l_returnflag = 'R' THEN 'Returned'
         ELSE 'Not Returned' 
     END AS return_status,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_price
 FROM 
     part p 

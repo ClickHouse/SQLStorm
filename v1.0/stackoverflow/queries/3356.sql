@@ -64,7 +64,7 @@ FULL OUTER JOIN
     UserStats us ON tp.OwnerUserId = us.UserId
 WHERE 
     (tp.Score > 0 OR us.UserTotalUpVotes > 0)
-    AND (tp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' OR us.UserPostCount > 5)
+    AND (tp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY OR us.UserPostCount > 5)
 ORDER BY 
     tp.TotalUpVotes DESC NULLS LAST, 
     us.UserTotalUpVotes DESC NULLS LAST;

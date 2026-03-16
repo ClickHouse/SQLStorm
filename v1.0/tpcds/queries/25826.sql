@@ -8,7 +8,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     MAX(i.i_current_price) AS highest_item_price,
     MIN(i.i_current_price) AS lowest_item_price,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS item_descriptions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS item_descriptions,
     d.d_month_seq,
     d.d_year
 FROM 

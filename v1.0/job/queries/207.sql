@@ -13,7 +13,7 @@ WITH movie_cast AS (
 movie_info_details AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS infos
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS infos
     FROM 
         movie_info mi
     JOIN 

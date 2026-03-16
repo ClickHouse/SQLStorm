@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopRankedPosts AS (
     SELECT 
@@ -41,7 +41,7 @@ PostDetails AS (
         trp.AnswerCount,
         trp.CommentCount,
         trp.Author,
-        ARRAY_AGG(DISTINCT tg.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(tg.TagName))) AS Tags,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS Upvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS Downvotes
     FROM 
@@ -51,7 +51,7 @@ PostDetails AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '><')) AS tg(TagName) ON true
+        arrayJoin(splitByString('><', p.Tags)) AS tg(TagName) ON true
     GROUP BY 
         trp.PostId, trp.Title, trp.CreationDate, trp.Score, trp.ViewCount, trp.AnswerCount, trp.CommentCount, trp.Author
 )

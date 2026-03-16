@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title, P.Score, P.ViewCount, U.DisplayName
 ),
@@ -47,7 +47,7 @@ SELECT
     PM.CommentCount,
     PM.UpVotes,
     PM.DownVotes,
-    ROUND((PM.UpVotes::decimal / NULLIF((PM.UpVotes + PM.DownVotes), 0)) * 100, 2) AS UpVotePercentage
+    ROUND((CAST(PM.UpVotes AS decimal) / NULLIF((PM.UpVotes + PM.DownVotes), 0)) * 100, 2) AS UpVotePercentage
 FROM 
     PostMetrics PM
 ORDER BY 

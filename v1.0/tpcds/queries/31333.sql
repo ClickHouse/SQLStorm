@@ -55,4 +55,4 @@ WHERE
     sh.total_paid IS NOT NULL OR ms.monthly_revenue IS NOT NULL
 ORDER BY 
     sh.total_paid DESC, ms.monthly_revenue DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

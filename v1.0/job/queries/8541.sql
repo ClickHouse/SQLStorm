@@ -33,7 +33,7 @@ SELECT
     r.production_year, 
     r.actor_name,
     ci.note AS role_note,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     RecentMovies r
 LEFT JOIN 

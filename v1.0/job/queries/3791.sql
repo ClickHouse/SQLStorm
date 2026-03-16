@@ -25,7 +25,7 @@ MostFeaturedActors AS (
 MovieProductionCompanies AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies
     FROM 
         movie_companies m
     JOIN 

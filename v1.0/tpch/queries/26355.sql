@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count, 
     SUM(ps.ps_availqty) AS total_available_qty, 
     AVG(l.l_discount) AS average_discount, 
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     r.r_name AS region_name
 FROM 
     part p

@@ -2,7 +2,7 @@ SELECT
     SUBSTRING(p_name, 1, 10) AS short_name,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     AVG(s.s_acctbal) AS average_account_balance,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied
 FROM 
     part p
 JOIN 

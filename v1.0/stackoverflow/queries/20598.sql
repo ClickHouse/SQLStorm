@@ -33,7 +33,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        CONCAT('Closed by: ', (SELECT STRING_AGG(DISTINCT u.DisplayName, ', ') 
+        CONCAT('Closed by: ', (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') 
                                FROM PostHistory ph2
                                JOIN Users u ON ph2.UserId = u.Id
                                WHERE ph2.PostId = ph.PostId AND ph2.PostHistoryTypeId = 10)) AS ClosedBy

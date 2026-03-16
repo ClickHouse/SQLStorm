@@ -19,7 +19,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         P.Id, U.DisplayName, P.CreationDate, P.LastActivityDate, P.Score, P.ViewCount, P.OwnerUserId
 ),
@@ -35,7 +35,7 @@ PostHistoryDetails AS (
     INNER JOIN 
         PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     WHERE 
-        PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 )
 SELECT 
     RP.PostId,
@@ -64,4 +64,4 @@ WHERE
     RP.OwnerPostRank <= 3
 ORDER BY 
     RP.LastActivityDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

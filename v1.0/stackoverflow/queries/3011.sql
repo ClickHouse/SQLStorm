@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(CASE WHEN b.Class = 1 THEN 1 END) AS GoldCount,
         COUNT(CASE WHEN b.Class = 2 THEN 1 END) AS SilverCount,
         COUNT(CASE WHEN b.Class = 3 THEN 1 END) AS BronzeCount
@@ -79,7 +79,7 @@ FROM
     FinalOutput f
 WHERE 
     f.Title ILIKE '%sql%'
-    AND (f.CloseDate IS NULL OR f.CloseDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days')
+    AND (f.CloseDate IS NULL OR f.CloseDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY)
 ORDER BY 
     f.CreationDate DESC
 LIMIT 100;

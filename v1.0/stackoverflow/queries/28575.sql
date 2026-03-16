@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE
         p.PostTypeId = 1 
-        AND p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 )
 SELECT
     rp.PostId,
@@ -25,7 +25,7 @@ SELECT
     rp.CreationDate,
     rp.ViewCount,
     rp.Score,
-    ARRAY_AGG(DISTINCT t.TagName) AS AssociatedTags,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS AssociatedTags,
     ch.Comment AS LastEditComment,
     COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVotes,
     COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVotes

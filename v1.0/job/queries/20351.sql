@@ -16,7 +16,7 @@ MovieDetails AS (
         rm.title,
         rm.production_year,
         COUNT(DISTINCT ci.person_id) AS total_actors,
-        STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) AS actor_names,
         MAX(CASE WHEN ci.note IS NOT NULL THEN ci.note ELSE 'No additional notes' END) AS additional_notes
     FROM 
         RankedMovies rm

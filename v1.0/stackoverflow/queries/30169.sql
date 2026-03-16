@@ -7,14 +7,14 @@ WITH RankedQuestions AS (
         Q.ViewCount,
         Q.OwnerUserId,
         U.DisplayName AS OwnerDisplayName,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM Q.CreationDate) ORDER BY Q.ViewCount DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY toYear(Q.CreationDate) ORDER BY Q.ViewCount DESC) AS Rank
     FROM 
         Posts AS Q
     JOIN 
         Users AS U ON Q.OwnerUserId = U.Id
     WHERE 
         Q.PostTypeId = 1 
-        AND Q.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND Q.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 CloseVotes AS (
     SELECT 
@@ -66,7 +66,7 @@ RecentActivePosts AS (
             PostId
     ) AS CV ON P.Id = CV.PostId
     WHERE 
-        P.LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        P.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
         AND P.PostTypeId IN (1, 2) 
 )
 SELECT 

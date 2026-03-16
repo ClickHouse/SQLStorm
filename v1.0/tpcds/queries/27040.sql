@@ -66,7 +66,7 @@ FROM
 JOIN 
     CustomerDetails cd ON ad.ca_zip = CAST(cd.c_customer_id AS VARCHAR)
 JOIN 
-    DateDetails dd ON dd.d_month_seq = MONTH(CAST('2002-10-01 12:34:56' AS TIMESTAMP))
+    DateDetails dd ON dd.d_month_seq = MONTH(toDateTime64('2002-10-01 12:34:56', 6))
 JOIN 
     SalesData sd ON sd.ws_sales_price IS NOT NULL
 GROUP BY 

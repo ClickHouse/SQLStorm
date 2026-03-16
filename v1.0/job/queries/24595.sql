@@ -43,7 +43,7 @@ movie_company_details AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT mc.company_id) AS total_companies,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM 
         movie_companies mc
         JOIN company_name cn ON mc.company_id = cn.id
@@ -54,7 +54,7 @@ movie_company_details AS (
 movie_tags AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
         JOIN keyword k ON mk.keyword_id = k.id

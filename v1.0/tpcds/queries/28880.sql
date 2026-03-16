@@ -20,8 +20,8 @@ AggregateValues AS (
         COUNT(*) AS total_customers,
         SUM(ci.cd_purchase_estimate) AS total_purchase_estimate,
         AVG(ci.cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT ci.cd_gender, ', ') AS unique_genders,
-        STRING_AGG(DISTINCT ci.cd_marital_status, ', ') AS unique_marital_status
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.cd_gender))), ', ') AS unique_genders,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.cd_marital_status))), ', ') AS unique_marital_status
     FROM CustomerInfo ci
     GROUP BY ci.ca_city, ci.ca_state
 )

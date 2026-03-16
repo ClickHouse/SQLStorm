@@ -64,7 +64,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes AS pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate BETWEEN (CAST('2024-10-01' AS DATE) - INTERVAL '30 days') AND CAST('2024-10-01' AS DATE)
+        ph.CreationDate BETWEEN (CAST('2024-10-01' AS DATE) - INTERVAL 30 DAY) AND CAST('2024-10-01' AS DATE)
 )
 SELECT 
     mdp.PostId,
@@ -73,7 +73,7 @@ SELECT
     mdp.CommentCount,
     mdp.UpVotes,
     (SELECT 
-        STRING_AGG(HistoryType || ': ' || CAST(HistoryDate AS TEXT), '; ') 
+        arrayStringConcat(groupArray(assumeNotNull(HistoryType || ': ' || CAST(HistoryDate AS TEXT))), '; ') 
      FROM 
         PostHistoryDetails 
      WHERE 

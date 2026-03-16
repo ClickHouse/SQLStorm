@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.Tags, p.Body
 ),
@@ -26,7 +26,7 @@ ClosedPostHistories AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastClosedDate,
-        STRING_AGG(DISTINCT c.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -59,7 +59,7 @@ LEFT JOIN
     ClosedPostHistories cp ON rp.PostId = cp.PostId
 WHERE 
     (rp.CommentCount > 5 OR rp.Score >= 10)
-    AND (cp.LastClosedDate IS NULL OR cp.LastClosedDate < CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '15 days')
+    AND (cp.LastClosedDate IS NULL OR cp.LastClosedDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 15 DAY)
 ORDER BY 
     rp.Score DESC, 
     rp.CreationDate DESC

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         p.Id, p.Title, p.PostTypeId, p.AcceptedAnswerId, p.OwnerUserId
 ),
@@ -65,7 +65,7 @@ SELECT
     pa.DiscussionLevel,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = pa.PostId AND v.VoteTypeId = 6) AS CloseVoteCount,
     (SELECT COUNT(*) FROM PostHistory ph WHERE ph.PostId = pa.PostId AND ph.PostHistoryTypeId = 10) AS TotalCloseEvents,
-    (SELECT STRING_AGG(pht.Name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(pht.Name)), ', ') 
      FROM PostHistory h
      JOIN PostHistoryTypes pht ON h.PostHistoryTypeId = pht.Id
      WHERE h.PostId = pa.PostId) AS PostHistorySummary

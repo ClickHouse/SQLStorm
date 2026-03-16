@@ -19,7 +19,7 @@ GroupedResults AS (
         substr(part_name, 1, 5) AS short_name,
         COUNT(*) AS num_records,
         AVG(name_length) AS avg_length,
-        STRING_AGG(modified_brand, ', ') AS brands_list
+        arrayStringConcat(groupArray(assumeNotNull(modified_brand)), ', ') AS brands_list
     FROM 
         StringBenchmark
     GROUP BY 

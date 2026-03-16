@@ -30,10 +30,10 @@ WITH movie_details AS (
         movie_id,
         title,
         production_year,
-        STRING_AGG(DISTINCT company_name, ', ') AS companies,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT gender, ', ') AS genders,
-        STRING_AGG(DISTINCT director_info, ', ') AS directors_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(gender))), ', ') AS genders,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(director_info))), ', ') AS directors_info
     FROM 
         movie_details
     GROUP BY 

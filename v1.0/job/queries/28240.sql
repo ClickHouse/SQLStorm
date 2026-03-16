@@ -31,7 +31,7 @@ GenreRank AS (
 TopGenres AS (
     SELECT 
         g.movie_id,
-        STRING_AGG(g.genre, ', ') AS genres
+        arrayStringConcat(groupArray(assumeNotNull(g.genre)), ', ') AS genres
     FROM 
         GenreRank g
     WHERE 

@@ -14,7 +14,7 @@ ProcessedData AS (
         cd.cd_gender,
         ca.ca_city,
         ac.address_count,
-        STRING_AGG(DISTINCT d.d_day_name, ', ') AS available_days
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d.d_day_name))), ', ') AS available_days
     FROM 
         customer c
     JOIN 
@@ -24,7 +24,7 @@ ProcessedData AS (
     JOIN 
         AddressCounts ac ON ca.ca_city = ac.ca_city
     LEFT JOIN 
-        date_dim d ON DATE_PART('dow', cast('2002-10-01' as date)) = d.d_dow
+        date_dim d ON datePart('dow', cast('2002-10-01' as date)) = d.d_dow
     WHERE 
         cd.cd_marital_status = 'M'
     GROUP BY 

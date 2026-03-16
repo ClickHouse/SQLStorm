@@ -29,7 +29,7 @@ RankedSales AS (
 )
 SELECT 
     nation,
-    ARRAY_AGG(c_name) AS top_customers
+    groupArray(assumeNotNull(c_name)) AS top_customers
 FROM 
     RankedSales
 WHERE 

@@ -56,7 +56,7 @@ SELECT
     sr.r_name,
     COUNT(DISTINCT hp.o_orderkey) AS high_value_order_count,
     AVG(hp.total_value) AS avg_high_value,
-    STRING_AGG(DISTINCT rp.p_name || ' (Price: ' || rp.p_retailprice || ')', ', ') AS top_products
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.p_name || ' (Price: ' || rp.p_retailprice || ')'))), ', ') AS top_products
 FROM 
     SupplierRegions sr
 LEFT JOIN 

@@ -20,8 +20,8 @@ ActorStats AS (
         p.id AS person_id,
         p.name AS actor_name,
         COUNT(DISTINCT ci.movie_id) AS movie_count,
-        ARRAY_AGG(DISTINCT m.title) AS movies,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(m.title))) AS movies,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         cast_info ci
     JOIN 

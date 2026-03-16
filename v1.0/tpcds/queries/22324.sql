@@ -45,7 +45,7 @@ SELECT
 FROM customer c
 LEFT JOIN top_customers cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
 CROSS JOIN date_dim d
-WHERE d.d_date BETWEEN DATE '2002-10-01' - INTERVAL '30 DAY' AND DATE '2002-10-01'
+WHERE d.d_date BETWEEN toDate('2002-10-01') - INTERVAL 30 DAY AND toDate('2002-10-01')
 AND NOT EXISTS (
     SELECT 1 
     FROM store_sales ss 

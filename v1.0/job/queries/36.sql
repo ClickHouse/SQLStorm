@@ -42,7 +42,7 @@ SELECT
     rm.production_year,
     COALESCE(fc.cast_count, 0) AS cast_count,
     COALESCE(cd.company_count, 0) AS company_count,
-    STRING_AGG(cd.company_name, ', ') AS companies
+    arrayStringConcat(groupArray(assumeNotNull(cd.company_name)), ', ') AS companies
 FROM 
     RankedMovies rm
 LEFT JOIN 

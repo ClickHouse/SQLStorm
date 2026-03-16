@@ -23,7 +23,7 @@ StringProcessedPosts AS (
         rp.OwnerDisplayName,
         rp.CreationDate,
         rp.ViewCount,
-        ARRAY_LENGTH(string_to_array(rp.Tags, '>'), 1) AS TagCount,
+        length(splitByString('>', rp.Tags), 1) AS TagCount,
         REPLACE(REPLACE(rp.Body, '<p>', ''), '</p>', '') AS ProcessedBody 
     FROM 
         RankedPosts rp
@@ -34,7 +34,7 @@ StringProcessedPosts AS (
 HistoricalEdits AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CONCAT(ph.CreationDate, ': ', ph.Comment), ' | ' ORDER BY ph.CreationDate) AS EditHistory
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.CreationDate, ': ', ph.Comment))), ' | ' ORDER BY ph.CreationDate) AS EditHistory
     FROM 
         PostHistory ph
     JOIN 

@@ -27,7 +27,7 @@ SupplierDetails AS (
 )
 SELECT 
     sd.nation_name,
-    STRING_AGG(CONCAT(sd.s_name, ': $', CAST(sd.total_supply_value AS VARCHAR)), ', ') AS top_suppliers
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(sd.s_name, ': $', CAST(sd.total_supply_value AS VARCHAR)))), ', ') AS top_suppliers
 FROM 
     SupplierDetails sd
 GROUP BY 

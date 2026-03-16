@@ -38,7 +38,7 @@ PostHistoryStats AS (
         p.Title,
         PH.PostHistoryTypeId,
         COUNT(PH.Id) AS HistoryCount,
-        STRING_AGG(PH.UserDisplayName || ' -> ' || PH.Comment, '; ') AS EditComments,
+        arrayStringConcat(groupArray(assumeNotNull(PH.UserDisplayName || ' -> ' || PH.Comment)), '; ') AS EditComments,
         MAX(PH.CreationDate) AS LastEdited
     FROM 
         Posts p

@@ -2,9 +2,9 @@ WITH RankedMovies AS (
     SELECT
         mt.title,
         mt.production_year,
-        ARRAY_AGG(DISTINCT an.name) AS actors,
-        ARRAY_AGG(DISTINCT km.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT cn.name) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(an.name))) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(km.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies,
         RANK() OVER (PARTITION BY mt.production_year ORDER BY mt.production_year DESC) AS year_rank
     FROM
         aka_title mt
@@ -39,11 +39,7 @@ MostInformativeMovies AS (
 
 SELECT
     mi.title,
-    mi.production_year,
-    unnest(mi.actors) AS actor_name,
-    unnest(mi.keywords) AS keyword,
-    unnest(mi.companies) AS company_name
-FROM
+    mi.production_year ARRAY JOIN mi.actors AS actor_name ARRAY JOIN mi.keywords AS keyword ARRAY JOIN mi.companies AS company_nameFROM
     MostInformativeMovies mi
 ORDER BY
     mi.production_year DESC,

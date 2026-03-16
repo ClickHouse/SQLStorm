@@ -14,7 +14,7 @@ SalesData AS (
         SUM(ws.ws_quantity) AS total_quantity,
         SUM(ws.ws_net_paid_inc_tax) AS total_sales
     FROM web_sales ws
-    WHERE ws.ws_sold_date_sk BETWEEN (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL '30 days')
+    WHERE ws.ws_sold_date_sk BETWEEN (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL 30 DAY)
     AND (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date))
     GROUP BY ws.ws_item_sk
 ),
@@ -24,7 +24,7 @@ ReturnData AS (
         SUM(sr_return_quantity) AS total_returns,
         SUM(sr_return_amt_inc_tax) AS total_returned_amount
     FROM store_returns
-    WHERE sr_returned_date_sk BETWEEN (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL '30 days')
+    WHERE sr_returned_date_sk BETWEEN (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL 30 DAY)
     AND (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date))
     GROUP BY sr_item_sk
 ),

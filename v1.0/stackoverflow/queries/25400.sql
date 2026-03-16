@@ -4,7 +4,7 @@ SELECT
     SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
     SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
     COUNT(DISTINCT PH.Id) AS TotalPostHistoryEntries,
-    STRING_AGG(DISTINCT PT.Name, ', ') AS PostTypeNames, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PT.Name))), ', ') AS PostTypeNames, 
     AVG(U.Reputation) AS AverageUserReputation,
     AVG(COALESCE(P.Score, 0)) AS AveragePostScore,
     MIN(P.CreationDate) AS EarliestPostDate,

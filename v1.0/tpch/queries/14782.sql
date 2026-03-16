@@ -16,8 +16,8 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE
     r.r_name = 'AFRICA'
-    AND l.l_shipdate >= DATE '1997-01-01'
-    AND l.l_shipdate < DATE '1998-01-01'
+    AND l.l_shipdate >= toDate('1997-01-01')
+    AND l.l_shipdate < toDate('1998-01-01')
 GROUP BY
     p.p_brand,
     p.p_type

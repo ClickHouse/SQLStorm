@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         LEFT JOIN Comments c ON p.Id = c.PostId
         LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
         AND p.PostTypeId = 1
     GROUP BY 
         p.Id, p.Title, U.DisplayName, p.CreationDate

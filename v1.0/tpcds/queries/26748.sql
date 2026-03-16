@@ -4,8 +4,8 @@ WITH CustomerCityStats AS (
         ca.ca_city,
         COUNT(DISTINCT c.c_customer_sk) AS total_customers,
         COUNT(DISTINCT c.c_current_addr_sk) AS total_addresses,
-        STRING_AGG(DISTINCT cd.cd_gender, ', ') AS unique_genders,
-        STRING_AGG(DISTINCT cd.cd_marital_status, ', ') AS unique_marital_status
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_gender))), ', ') AS unique_genders,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_marital_status))), ', ') AS unique_marital_status
     FROM 
         customer_address ca
     JOIN 

@@ -23,7 +23,7 @@ PostStatistics AS (
         P.CreationDate,
         P.Score,
         P.ViewCount,
-        EXTRACT(YEAR FROM P.CreationDate) AS PostYear,
+        toYear(P.CreationDate) AS PostYear,
         PT.Name AS PostTypeName,
         COALESCE(COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END), 0) AS CommentCount,
         COALESCE(SUM(V.BountyAmount), 0) AS TotalBounty

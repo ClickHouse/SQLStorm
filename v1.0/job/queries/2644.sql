@@ -30,7 +30,7 @@ movies_with_keywords AS (
     SELECT 
         hm.title,
         hm.production_year,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         highly_casted hm
     LEFT JOIN 

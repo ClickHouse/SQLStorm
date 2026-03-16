@@ -37,7 +37,7 @@ PostDetails AS (
     LEFT JOIN 
         Posts PA ON P.AcceptedAnswerId = PA.Id
     WHERE 
-        P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 PostStats AS (
     SELECT 
@@ -49,7 +49,7 @@ PostStats AS (
         AVG(PD.Score) AS AveragePostScore,
         SUM(PD.ViewCount) AS TotalPostViews,
         SUM(PD.AnswerCount) AS TotalAnswers,
-        STRING_AGG(DISTINCT PD.AcceptedAnswerOwner, ', ') AS AcceptedAnswerOwners
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PD.AcceptedAnswerOwner))), ', ') AS AcceptedAnswerOwners
     FROM 
         UserActivity UA
     JOIN 

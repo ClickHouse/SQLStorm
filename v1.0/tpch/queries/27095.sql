@@ -29,7 +29,7 @@ FilteredSuppliers AS (
 )
 SELECT 
     fs.nation,
-    STRING_AGG(CONCAT(fs.s_name, ' (Parts: ', fs.part_count, ', Available Qty: ', fs.total_available_quantity, ')'), ', ') AS supplier_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(fs.s_name, ' (Parts: ', fs.part_count, ', Available Qty: ', fs.total_available_quantity, ')'))), ', ') AS supplier_details
 FROM 
     FilteredSuppliers fs
 GROUP BY 

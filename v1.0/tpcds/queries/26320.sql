@@ -4,9 +4,9 @@ WITH AddressStats AS (
         ca_city,
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT ca_street_name, ', ') AS unique_street_names,
-        STRING_AGG(DISTINCT ca_street_type, ', ') AS unique_street_types,
-        STRING_AGG(DISTINCT CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), ', ') AS full_address
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), ', ') AS unique_street_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_type))), ', ') AS unique_street_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type)))), ', ') AS full_address
     FROM 
         customer_address
     GROUP BY 
@@ -16,7 +16,7 @@ CustomerDemographics AS (
     SELECT 
         cd_gender,
         COUNT(DISTINCT c_customer_id) AS num_customers,
-        STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses
     FROM 
         customer AS c
     JOIN 

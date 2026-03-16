@@ -43,7 +43,7 @@ WITH RankedPosts AS (
                 ELSE 'Edited'
             END AS HistoryType
         FROM PostHistory
-        WHERE CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')
+        WHERE CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
     ) M ON ph.PostId = M.PostId
 )
 SELECT 

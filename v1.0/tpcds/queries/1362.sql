@@ -75,7 +75,7 @@ LEFT JOIN
         FROM 
             item i
         ORDER BY 
-            RANDOM()
+            rand()
         LIMIT 1
     )
 LEFT JOIN 
@@ -87,7 +87,7 @@ LEFT JOIN
         WHERE 
             ws.ws_bill_customer_sk = c.c_customer_sk
         ORDER BY 
-            RANDOM()
+            rand()
         LIMIT 1
     )
 LEFT JOIN
@@ -99,7 +99,7 @@ LEFT JOIN
         WHERE 
             cs.cs_bill_customer_sk = c.c_customer_sk
         ORDER BY 
-            RANDOM()
+            rand()
         LIMIT 1
     )
 WHERE 

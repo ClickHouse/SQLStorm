@@ -3,7 +3,7 @@ SELECT
     p.p_name AS part_name, 
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS market_segments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS market_segments,
     MIN(l.l_shipdate) AS first_ship_date,
     MAX(l.l_shipdate) AS last_ship_date
 FROM 

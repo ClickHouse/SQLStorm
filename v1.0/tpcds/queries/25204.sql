@@ -8,7 +8,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_spent,
     AVG(ws.ws_sales_price) AS average_order_value,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
     SUM(CASE WHEN cd.cd_marital_status = 'M' THEN 1 ELSE 0 END) AS marital_customers,
     LENGTH(c.c_email_address) AS email_length
 FROM 

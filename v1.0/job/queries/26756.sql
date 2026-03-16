@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         m.title AS movie_title,
         m.production_year,
         COUNT(cc.person_id) AS num_cast_members,
-        ARRAY_AGG(DISTINCT a.name) AS all_actor_names,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS all_actor_names,
         RANK() OVER (PARTITION BY m.production_year ORDER BY COUNT(cc.person_id) DESC) AS rank_by_cast
     FROM 
         title m
@@ -38,8 +38,8 @@ SELECT
     mwk.movie_title,
     mwk.production_year,
     mwk.num_cast_members,
-    STRING_AGG(mwk.all_actor_names::text, ', ') AS actor_names,
-    STRING_AGG(mwk.movie_keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(CAST(mwk.all_actor_names AS text))), ', ') AS actor_names,
+    arrayStringConcat(groupArray(assumeNotNull(mwk.movie_keyword)), ', ') AS keywords
 FROM 
     MoviesWithKeywords mwk
 GROUP BY 

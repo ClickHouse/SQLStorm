@@ -12,14 +12,14 @@ WITH RankedPosts AS (
     INNER JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND P.ViewCount IS NOT NULL
 ), PostCloseHistory AS (
     SELECT 
         PH.PostId,
         PH.CreationDate,
         PH.Comment,
-        COALESCE(PH.Text::json ->> 'closeReasonId', 'Not Applicable') AS CloseReason
+        COALESCE(CAST(PH.Text AS json) ->> 'closeReasonId', 'Not Applicable') AS CloseReason
     FROM 
         PostHistory PH
     WHERE 
@@ -29,7 +29,7 @@ ModerationActions AS (
     SELECT 
         PH.PostId,
         COUNT(PH.Id) AS ClosureCount,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS ClosureReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS ClosureReasons
     FROM 
         PostHistory PH
     JOIN 

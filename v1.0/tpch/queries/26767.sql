@@ -6,7 +6,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     MIN(l.l_shipdate) AS first_ship_date,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments
 FROM 
     part p
 JOIN 

@@ -44,7 +44,7 @@ SalesSummary AS (
         ws.ws_ship_date_sk >= (
             SELECT d_date_sk 
             FROM date_dim 
-            WHERE d_date = cast('2002-10-01' as date) - INTERVAL '30 days'
+            WHERE d_date = cast('2002-10-01' as date) - INTERVAL 30 DAY
         )
     GROUP BY 
         ws.ws_ship_date_sk

@@ -19,7 +19,7 @@ RecentPosts AS (
         COUNT(C.Id) AS TotalComments
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
       AND P.PostTypeId = 1
     GROUP BY P.Id, P.Title, P.CreationDate, P.OwnerUserId, P.Score
 ),
@@ -56,7 +56,7 @@ SELECT
     END AS CommentLevel,
     (SELECT COUNT(*) FROM Votes V WHERE V.PostId = PD.PostId AND V.VoteTypeId = 2) AS UpVotes,
     (SELECT COUNT(*) FROM Votes V WHERE V.PostId = PD.PostId AND V.VoteTypeId = 3) AS DownVotes,
-    COALESCE((SELECT STRING_AGG(T.TagName, ', ') 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
               FROM Tags T 
               JOIN Posts P ON T.ExcerptPostId = P.Id 
               WHERE P.Id = PD.PostId), 'No Tags') AS Tags

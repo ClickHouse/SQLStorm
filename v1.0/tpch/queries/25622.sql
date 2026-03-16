@@ -5,7 +5,7 @@ SELECT
     p.p_size,
     p.p_retailprice,
     CONCAT('Supplier: ', s.s_name, ', Comment: ', s.s_comment) AS supplier_info,
-    STRING_AGG(DISTINCT CONCAT('Customer Name: ', c.c_name, ', Address: ', c.c_address), '; ') AS customer_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Customer Name: ', c.c_name, ', Address: ', c.c_address)))), '; ') AS customer_details,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     SUM(l.l_quantity) AS total_quantity
 FROM 

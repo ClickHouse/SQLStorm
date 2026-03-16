@@ -28,7 +28,7 @@ AddressSummary AS (
     SELECT 
         ca_state,
         COUNT(*) AS total_addresses,
-        STRING_AGG(ca_city, ', ') AS cities_list
+        arrayStringConcat(groupArray(assumeNotNull(ca_city)), ', ') AS cities_list
     FROM 
         customer_address
     GROUP BY 

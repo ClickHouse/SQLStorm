@@ -4,7 +4,7 @@ WITH RankedOrders AS (
         o.o_orderkey,
         o.o_orderdate,
         o.o_totalprice,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS rank_order
+        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS rank_order
     FROM 
         orders o
     WHERE 
@@ -59,7 +59,7 @@ JOIN
 JOIN 
     CustomerDetails c ON c.c_custkey = r.o_orderkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1998-10-01' - INTERVAL '3 MONTH' AND DATE '1998-10-01'
+    l.l_shipdate BETWEEN toDate('1998-10-01') - INTERVAL 3 MONTH AND toDate('1998-10-01')
 GROUP BY 
     c.c_name, spd.p_name, spd.s_name, l.l_returnflag, r.o_orderdate
 ORDER BY 

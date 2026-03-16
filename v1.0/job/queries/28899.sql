@@ -2,7 +2,7 @@ WITH NameCounts AS (
     SELECT 
         ak.person_id,
         COUNT(DISTINCT ak.name) AS num_aliases,
-        STRING_AGG(DISTINCT ak.name, ', ') AS all_aliases
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS all_aliases
     FROM 
         aka_name ak
     GROUP BY 
@@ -12,7 +12,7 @@ MovieTitleCounts AS (
     SELECT 
         c.person_id,
         COUNT(DISTINCT mt.title) AS num_movies,
-        STRING_AGG(DISTINCT mt.title, '; ') AS all_movies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mt.title))), '; ') AS all_movies
     FROM 
         cast_info c
     JOIN 
@@ -25,7 +25,7 @@ MovieTitleCounts AS (
 PersonInfo AS (
     SELECT 
         pi.person_id,
-        STRING_AGG(DISTINCT pi.info, '; ') AS all_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pi.info))), '; ') AS all_info
     FROM 
         person_info pi
     GROUP BY 

@@ -33,7 +33,7 @@ ActorStatistics AS (
     SELECT 
         a.name AS actor_name,
         COUNT(DISTINCT c.movie_id) AS movies_participated,
-        STRING_AGG(DISTINCT tm.title, ', ') AS movies_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tm.title))), ', ') AS movies_titles
     FROM 
         aka_name a
     JOIN 

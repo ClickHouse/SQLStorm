@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVoteCount,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVoteCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY COUNT(c.Id) DESC, p.Score DESC) AS PostRank
     FROM 
         Posts p
@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS tag_name ON TRUE
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     GROUP BY 

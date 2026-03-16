@@ -19,7 +19,7 @@ JOIN
 WHERE 
     s.s_comment LIKE '%rapid%' 
     AND p.p_brand = 'Brand#20' 
-    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_name, s.s_name, s.s_address
 HAVING 

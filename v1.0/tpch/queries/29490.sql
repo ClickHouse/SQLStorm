@@ -10,7 +10,7 @@ WITH RankedParts AS (
             WHEN LENGTH(p.p_name) > 20 THEN 1 
             ELSE 0 
         END) AS long_name_count,
-        STRING_AGG(s.s_name, ', ') AS suppliers
+        arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS suppliers
     FROM 
         part p 
     JOIN 

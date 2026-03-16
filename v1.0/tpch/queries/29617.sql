@@ -28,8 +28,8 @@ SELECT
     SUM(ls.total_revenue) AS total_revenue,
     AVG(sp.ps_supplycost) AS avg_supply_cost,
     COUNT(DISTINCT co.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT co.o_orderpriority, ', ') AS order_priorities,
-    STRING_AGG(DISTINCT nr.n_name, ', ') AS nation_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.o_orderpriority))), ', ') AS order_priorities,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(nr.n_name))), ', ') AS nation_names
 FROM supplier_part sp
 JOIN lineitem_summary ls ON sp.s_suppkey = ls.l_orderkey
 JOIN customer_order co ON ls.l_orderkey = co.o_orderkey

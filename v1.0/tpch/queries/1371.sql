@@ -28,7 +28,7 @@ SELECT
     r.r_name,
     SUM(COALESCE(l.l_extendedprice, 0)) AS total_revenue,
     AVG(co.order_count) AS avg_customer_orders,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     region r
 LEFT JOIN 

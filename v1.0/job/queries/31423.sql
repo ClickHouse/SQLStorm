@@ -26,7 +26,7 @@ cast_with_role AS (
     SELECT 
         ci.movie_id,
         COUNT(CASE WHEN ci.role_id IS NOT NULL THEN 1 END) AS number_of_actors,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
     FROM 
         cast_info ci
     JOIN 
@@ -77,4 +77,4 @@ WHERE
 ORDER BY 
     number_of_actors DESC,
     title ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

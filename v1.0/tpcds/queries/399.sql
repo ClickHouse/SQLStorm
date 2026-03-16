@@ -74,4 +74,4 @@ WHERE
     ci.cd_marital_status IS NOT NULL
 ORDER BY
     ti.total_net_paid DESC, sp.total_net_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

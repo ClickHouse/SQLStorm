@@ -4,7 +4,7 @@ SELECT
     n.n_name AS nation_name, 
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS combined_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS combined_comments,
     COUNT(DISTINCT o.o_orderkey) AS order_count
 FROM 
     part p
@@ -19,8 +19,8 @@ JOIN
 JOIN 
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01'
-    AND l.l_shipdate <= DATE '1997-12-31'
+    l.l_shipdate >= toDate('1997-01-01')
+    AND l.l_shipdate <= toDate('1997-12-31')
 GROUP BY 
     p.p_name, s.s_name, n.n_name
 ORDER BY 

@@ -20,7 +20,7 @@ Processed_Strings AS (
         p.p_partkey,
         p.p_name,
         p.manufacturer_upper,
-        STRING_AGG(detailed_info, '; ' ORDER BY detailed_info) AS brief_details,
+        arrayStringConcat(groupArray(assumeNotNull(detailed_info)), '; ' ORDER BY detailed_info) AS brief_details,
         SUM(comment_length) AS total_comment_length
     FROM 
         String_Utils p

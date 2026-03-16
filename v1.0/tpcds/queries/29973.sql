@@ -5,7 +5,7 @@ WITH RankedCustomers AS (
         CONCAT(c.c_first_name, ' ', c.c_last_name) AS full_name,
         cd.cd_gender,
         cd.cd_marital_status,
-        STRING_AGG(DISTINCT ca.ca_city, ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_city))), ', ') AS cities,
         COUNT(DISTINCT ss.ss_item_sk) AS total_items_purchased,
         SUM(ss.ss_sales_price) AS total_spent
     FROM customer c

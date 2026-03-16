@@ -14,7 +14,7 @@ AddressAggregate AS (
     SELECT 
         ca_state,
         ca_city,
-        STRING_AGG(ca_street_name, ', ') AS street_names,
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names,
         COUNT(*) AS address_count
     FROM 
         RankedAddresses

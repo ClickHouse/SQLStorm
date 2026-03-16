@@ -31,12 +31,12 @@ PostMetadata AS (
         p.ViewCount,
         p.Score,
         u.DisplayName AS OwnerDisplayName,
-        STRING_AGG(tag.TagName, ', ') AS TagsList
+        arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ') AS TagsList
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    LEFT JOIN LATERAL (
+    LEFT JOIN (
         SELECT 
-            UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS TagName
+            arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName
     ) AS tag ON TRUE
     GROUP BY p.Id, u.DisplayName
 ),

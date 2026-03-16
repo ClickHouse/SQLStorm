@@ -54,7 +54,7 @@ SELECT
     title,
     production_year,
     cast_count,
-    STRING_AGG(company_name || ' (' || company_type || ')', ', ') AS companies
+    arrayStringConcat(groupArray(assumeNotNull(company_name || ' (' || company_type || ')')), ', ') AS companies
 FROM 
     Result
 GROUP BY 

@@ -42,17 +42,17 @@ RecentPosts AS (
         FROM 
             Comments
         WHERE 
-            CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+            CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
         GROUP BY 
             PostId
     ) C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '60 days'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 60 DAY
 ),
 PostHistorySummary AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(PHT.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes,
         COUNT(PH.Id) AS TotalHistoryEntries
     FROM 
         PostHistory PH

@@ -61,4 +61,4 @@ WHERE
     ts.total_sales > 1000
 ORDER BY 
     online_vs_store_sales_diff DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

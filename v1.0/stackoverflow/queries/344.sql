@@ -26,7 +26,7 @@ RecentPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         p.Id
 ),

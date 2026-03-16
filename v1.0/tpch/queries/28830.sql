@@ -3,7 +3,7 @@ SELECT
     CONCAT(s.s_name, ' ', s.s_address, ', ', r.r_name) AS supplier_info,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_order_value,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS ship_modes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS ship_modes
 FROM 
     part p
 JOIN 

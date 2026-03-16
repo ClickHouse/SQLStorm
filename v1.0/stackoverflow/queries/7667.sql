@@ -20,7 +20,7 @@ WITH PostStatistics AS (
     LEFT JOIN 
         Badges b ON b.UserId = p.OwnerUserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, p.LastActivityDate, p.AcceptedAnswerId, b.UserId
 ),

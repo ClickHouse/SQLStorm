@@ -10,7 +10,7 @@ WITH CustomerDetails AS (
         ca.ca_state,
         ca.ca_country,
         CONCAT(ca.ca_street_number, ' ', ca.ca_street_name, ' ', ca.ca_street_type) AS full_address,
-        STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions
     FROM 
         customer c
     JOIN 

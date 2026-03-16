@@ -4,7 +4,7 @@ WITH TagStats AS (
         COUNT(P.Id) AS PostCount,
         SUM(P.ViewCount) AS TotalViews,
         AVG(P.Score) AS AverageScore,
-        STRING_AGG(DISTINCT U.DisplayName, ', ') AS TopAuthors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS TopAuthors
     FROM
         Tags T
     LEFT JOIN
@@ -29,7 +29,7 @@ RecentActivity AS (
         PostHistory PH ON P.Id = PH.PostId
     WHERE
         PH.PostHistoryTypeId IN (4, 5) 
-        AND PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        AND PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT
     TS.TagName,

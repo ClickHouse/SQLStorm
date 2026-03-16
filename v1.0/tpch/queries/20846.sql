@@ -32,7 +32,7 @@ TotalSales AS (
         l.l_partkey,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales
     FROM lineitem l
-    WHERE l.l_shipdate >= DATE '1997-01-01'
+    WHERE l.l_shipdate >= toDate('1997-01-01')
     GROUP BY l.l_partkey
 ),
 CustomerSales AS (

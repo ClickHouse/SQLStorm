@@ -5,8 +5,8 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(o.o_totalprice) AS total_revenue,
     AVG(l.l_extendedprice) AS avg_lineitem_price,
-    ARRAY_AGG(DISTINCT p.p_name ORDER BY p.p_name) AS product_names,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayDistinct(groupArray(assumeNotNull(p.p_name ORDER BY p.p_name))) AS product_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     region r
 JOIN 
@@ -25,8 +25,8 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     r.r_name LIKE 'Eu%' AND 
-    o.o_orderdate >= DATE '1996-01-01' AND 
-    o.o_orderdate < DATE '1997-01-01'
+    o.o_orderdate >= toDate('1996-01-01') AND 
+    o.o_orderdate < toDate('1997-01-01')
 GROUP BY 
     n.n_name, r.r_name
 ORDER BY 

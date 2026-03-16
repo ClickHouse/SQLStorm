@@ -7,7 +7,7 @@ WITH CustomerInfo AS (
         ca.ca_city, 
         ca.ca_state, 
         cd.cd_gender,
-        ARRAY_AGG(DISTINCT ca.ca_street_name || ' ' || ca.ca_street_number || ', ' || ca.ca_zip) AS full_address,
+        arrayDistinct(groupArray(assumeNotNull(ca.ca_street_name || ' ' || ca.ca_street_number || ', ' || ca.ca_zip))) AS full_address,
         COUNT(DISTINCT ws.ws_order_number) AS total_orders
     FROM 
         customer c
@@ -41,7 +41,7 @@ FinalBenchmark AS (
         ci.ca_city || ', ' || ci.ca_state AS location,
         ci.cd_gender,
         ci.total_orders,
-        STRING_AGG(p.p_promo_name || ' used ' || p.promotion_usage || ' times', '; ') AS promotions
+        arrayStringConcat(groupArray(assumeNotNull(p.p_promo_name || ' used ' || p.promotion_usage || ' times')), '; ') AS promotions
     FROM 
         CustomerInfo ci
     LEFT JOIN 

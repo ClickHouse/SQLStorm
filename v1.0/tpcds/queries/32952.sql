@@ -34,7 +34,7 @@ SELECT
     MAX(sh.total_profit) AS max_store_profit,
     MIN(sh.total_profit) AS min_store_profit,
     SUM(CASE WHEN cd.cd_gender = 'F' THEN 1 ELSE 0 END) AS female_customers,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS popular_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS popular_items
 FROM 
     customer_address ca
 JOIN 

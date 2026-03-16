@@ -50,7 +50,7 @@ SELECT
     cvp.ClosedDate,
     cvp.ReopenedDate,
     AVG(u.TotalPosts) OVER() AS AvgPostsCreated, -- Using TotalPosts for average
-    STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypeNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypeNames
 FROM HighReputationUsers u
 LEFT JOIN ClosedVsOpenedPosts cvp ON u.UserId = cvp.PostId
 LEFT JOIN PostTypes pt ON pt.Id = (SELECT PostTypeId FROM Posts WHERE OwnerUserId = u.UserId LIMIT 1)

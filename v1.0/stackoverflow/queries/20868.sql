@@ -17,13 +17,13 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON c.PostId = p.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
     GROUP BY 
         p.Id, a.OwnerDisplayName
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', Tags)) AS Tag
     FROM 
         Posts
     WHERE 

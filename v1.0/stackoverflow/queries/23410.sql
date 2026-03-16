@@ -28,7 +28,7 @@ RecentBadges AS (
     FROM 
         Badges
     WHERE 
-        EXTRACT(YEAR FROM Date) = EXTRACT(YEAR FROM CURRENT_DATE)
+        toYear(Date) = toYear(CURRENT_DATE)
 ),
 PostSummary AS (
     SELECT 
@@ -39,8 +39,8 @@ PostSummary AS (
         PT.Name AS PostType,
         P.Score,
         COALESCE(PT.Name, 'Unknown') AS TypeNameFallback, 
-        (SELECT STRING_AGG(DISTINCT TagName, ', ') 
-         FROM Tags T WHERE T.Id IN (SELECT UNNEST(string_to_array(P.Tags, ','))::int)) AS TagList
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(TagName))), ', ') 
+         FROM Tags T WHERE T.Id IN (SELECT arrayJoin(splitByString(',', P.Tags)CAST() AS int))) AS TagList
     FROM 
         Posts P
     LEFT JOIN 
@@ -49,11 +49,11 @@ PostSummary AS (
 ClosedPostReasons AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(DISTINCT C.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(C.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 
-        CloseReasonTypes C ON PH.Comment = C.Id::text
+        CloseReasonTypes C ON PH.Comment = CAST(C.Id AS text)
     WHERE 
         PH.PostHistoryTypeId IN (10, 11) 
     GROUP BY 

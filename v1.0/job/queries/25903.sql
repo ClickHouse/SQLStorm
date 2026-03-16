@@ -1,7 +1,7 @@
 WITH movie_keywords AS (
     SELECT 
         mk.movie_id, 
-        array_agg(k.keyword ORDER BY k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword ORDER BY k.keyword)) AS keywords
     FROM 
         movie_keyword mk
     JOIN 

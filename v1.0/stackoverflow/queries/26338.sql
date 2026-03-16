@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        STRING_AGG(t.TagName, ', ') AS Tags,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         u.DisplayName AS OwnerName,
@@ -68,4 +68,4 @@ WHERE
 ORDER BY 
     rp.Score DESC, 
     rp.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

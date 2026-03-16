@@ -67,4 +67,4 @@ WHERE
     ca.ca_country = 'USA'
 ORDER BY 
     hvc.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

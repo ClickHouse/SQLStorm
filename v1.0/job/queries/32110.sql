@@ -60,7 +60,7 @@ SELECT
     tm.production_year,
     COALESCE(tm.actor_count, 0) AS actor_count,
     COALESCE(tm.director_count, 0) AS director_count,
-    STRING_AGG(DISTINCT ca.name, ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.name))), ', ') AS cast_names,
     CASE
         WHEN tm.actor_count > 5 THEN 'Highly Cast'
         ELSE 'Moderate Cast'

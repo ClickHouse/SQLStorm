@@ -60,4 +60,4 @@ WHERE
     hvc.sales_rank <= 100
 ORDER BY 
     hvc.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

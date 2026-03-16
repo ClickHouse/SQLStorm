@@ -21,7 +21,7 @@ WITH RankedMovies AS (
 KeywordCounts AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COUNT(mk.id) AS keyword_count
     FROM 
         movie_keyword mk

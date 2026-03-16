@@ -17,7 +17,7 @@ RecentPosts AS (
         p.OwnerUserId,
         DENSE_RANK() OVER (ORDER BY p.CreationDate DESC) AS PostRank
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 UserBadges AS (
     SELECT 
@@ -67,4 +67,4 @@ LEFT JOIN VoteSummary vs ON rp.PostId = vs.PostId
 WHERE r.ReputationRank <= 10
   AND (b.BadgeCount IS NULL OR b.BadgeCount > 0)
 ORDER BY r.Reputation DESC, rp.CreationDate DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -30,7 +30,7 @@ SELECT
     COUNT(DISTINCT c.c_customer_sk) AS customer_count,
     SUM(ws.ws_net_profit) AS total_net_profit,
     AVG(ws.ws_sales_price) AS avg_sales_price,
-    STRING_AGG(DISTINCT c.c_email_address, ', ') AS customer_emails
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_email_address))), ', ') AS customer_emails
 FROM 
     customer c
 JOIN 

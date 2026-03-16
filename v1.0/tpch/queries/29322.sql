@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     AVG(s.s_acctbal) AS avg_supplier_acctbal,
     SUM(CASE WHEN o.o_orderstatus = 'F' THEN l.l_extendedprice ELSE 0 END) AS total_filled_orders,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     MAX(p.p_retailprice) AS max_retail_price,
     MIN(CASE WHEN c.c_mktsegment = 'AUTOMOBILE' THEN c.c_acctbal ELSE NULL END) AS min_autos_acctbal
 FROM 

@@ -4,7 +4,7 @@ WITH RECURSIVE movie_hierarchy AS (
         mt.title,
         mt.production_year,
         COALESCE(NULLIF(com.name, ''), 'Unknown') AS company_name,
-        ARRAY_AGG(DISTINCT ak.name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actors,
         ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY mt.title) AS ranking
     FROM 
         aka_title mt
@@ -34,7 +34,7 @@ filtered_movies AS (
     SELECT 
         mh.*,
         (SELECT COUNT(*) FROM cast_info c WHERE c.movie_id = mh.movie_id AND c.note IS NOT NULL) AS cast_count,
-        (SELECT STRING_AGG(DISTINCT kw.keyword, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') 
          FROM movie_keyword mk 
          JOIN keyword kw ON mk.keyword_id = kw.id 
          WHERE mk.movie_id = mh.movie_id) AS keywords

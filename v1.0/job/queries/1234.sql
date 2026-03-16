@@ -3,7 +3,7 @@ WITH MovieDetails AS (
     SELECT 
         m.title AS movie_title,
         m.production_year,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         COUNT(DISTINCT kc.keyword) AS keyword_count,
         ROW_NUMBER() OVER (PARTITION BY m.id ORDER BY m.production_year DESC) AS rn
     FROM 

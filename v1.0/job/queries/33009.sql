@@ -16,7 +16,7 @@ SELECT
     m.movie_title,
     m.production_year,
     COALESCE(ak.name, 'Unknown') AS actor_name,
-    ARRAY_AGG(DISTINCT kw.keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords,
     AVG(CASE WHEN ci.nr_order IS NOT NULL THEN ci.nr_order ELSE 0 END) AS avg_nr_order,
     COUNT(DISTINCT mc.company_id) AS production_companies,
     COUNT(DISTINCT CTE.starred_by) AS total_stars

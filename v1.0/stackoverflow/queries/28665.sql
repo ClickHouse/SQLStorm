@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts
     WHERE PostTypeId = 1  
@@ -34,7 +34,7 @@ RecentPostHistory AS (
         P.Name AS PostHistoryType
     FROM PostHistory ph
     JOIN PostHistoryTypes P ON ph.PostHistoryTypeId = P.Id
-    WHERE ph.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days' 
+    WHERE ph.CreationDate > now64(6) - INTERVAL 30 DAY 
     ORDER BY ph.CreationDate DESC
     LIMIT 10
 )

@@ -21,7 +21,7 @@ MovieCast AS (
 TitleInfo AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(DISTINCT mt.info, ', ') AS merged_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mt.info))), ', ') AS merged_info
     FROM 
         movie_info mt
     WHERE 

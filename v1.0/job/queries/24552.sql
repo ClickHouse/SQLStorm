@@ -17,7 +17,7 @@ WITH RankedTitles AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -69,7 +69,7 @@ GROUP BY
     ft.movie_id, ft.title, ft.production_year, ft.movie_keywords
 HAVING 
     COUNT(ci.id) > 5 
-    AND ft.production_year > (SELECT EXTRACT(YEAR FROM cast('2024-10-01' as date)) - 20)
+    AND ft.production_year > (SELECT toYear(cast('2024-10-01' as date)) - 20)
 ORDER BY 
     ft.production_year DESC, ft.movie_id
 LIMIT 50 OFFSET 10;

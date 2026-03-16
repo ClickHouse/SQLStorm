@@ -3,7 +3,7 @@ SELECT
     ca_city,
     COUNT(DISTINCT c_customer_id) AS customer_count,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT cd_credit_rating, ', ') AS unique_credit_ratings,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_credit_rating))), ', ') AS unique_credit_ratings,
     SUM(CASE WHEN ca_state = 'CA' THEN cd_dep_count ELSE 0 END) AS total_dependent_count_CA,
     MAX(LENGTH(c_first_name) + LENGTH(c_last_name)) AS max_full_name_length,
     MIN(LENGTH(c_email_address)) AS min_email_length,

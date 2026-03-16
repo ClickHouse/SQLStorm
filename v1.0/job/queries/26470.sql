@@ -5,7 +5,7 @@ WITH movie_details AS (
         a.name AS actor_name,
         c.kind AS role_type,
         k.keyword AS movie_keyword,
-        STRING_AGG(mi.info, '; ') AS additional_info
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS additional_info
     FROM 
         aka_title AS t
     JOIN 
@@ -31,7 +31,7 @@ rating_summary AS (
         md.production_year,
         COUNT(*) AS actor_count,
         COUNT(DISTINCT md.movie_keyword) AS distinct_keywords,
-        STRING_AGG(DISTINCT md.role_type, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.role_type))), ', ') AS roles
     FROM 
         movie_details md
     GROUP BY 

@@ -16,7 +16,7 @@ WITH StringProcessing AS (
 SELECT 
     r.r_name AS region_name,
     COUNT(DISTINCT n.n_nationkey) AS nation_count,
-    STRING_AGG(DISTINCT sp.name_upper, ', ') AS uppercased_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sp.name_upper))), ', ') AS uppercased_names,
     AVG(sp.name_length) AS avg_name_length,
     MAX(sp.short_comment) AS max_short_comment
 FROM 

@@ -35,7 +35,7 @@ SELECT
     fs.ca_state,
     fs.total_orders,
     fs.total_profit,
-    STRING_AGG(DISTINCT CONCAT('Customer ID: ', c.c_customer_id), '; ') AS customer_ids
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Customer ID: ', c.c_customer_id)))), '; ') AS customer_ids
 FROM 
     FilteredSales fs
 JOIN 

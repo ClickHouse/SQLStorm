@@ -46,7 +46,7 @@ JOIN
 JOIN 
     GenderDemographics gd ON c.c_current_cdemo_sk = gd.cd_demo_sk
 JOIN 
-    DateSummary ds ON EXTRACT(YEAR FROM cast('2002-10-01' as date)) = ds.d_year
+    DateSummary ds ON toYear(cast('2002-10-01' as date)) = ds.d_year
 WHERE 
     aa.street_name_length > 10
 ORDER BY 

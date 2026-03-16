@@ -1,7 +1,7 @@
 WITH String_Agg AS (
     SELECT 
         s.s_name AS supplier_name,
-        STRING_AGG(p.p_name, ', ') AS part_names,
+        arrayStringConcat(groupArray(assumeNotNull(p.p_name)), ', ') AS part_names,
         COUNT(DISTINCT o.o_orderkey) AS order_count
     FROM 
         supplier s

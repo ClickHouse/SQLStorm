@@ -21,15 +21,15 @@ TopCustomers AS (
 ),
 SalesByMonth AS (
     SELECT 
-        EXTRACT(YEAR FROM d.d_date) AS sales_year,
-        EXTRACT(MONTH FROM d.d_date) AS sales_month,
+        toYear(d.d_date) AS sales_year,
+        toMonth(d.d_date) AS sales_month,
         SUM(ws.ws_ext_sales_price) AS monthly_sales
     FROM 
         date_dim d
     JOIN 
         web_sales ws ON d.d_date_sk = ws.ws_sold_date_sk
     GROUP BY 
-        EXTRACT(YEAR FROM d.d_date), EXTRACT(MONTH FROM d.d_date)
+        toYear(d.d_date), toMonth(d.d_date)
 )
 SELECT
     s.sales_year,
@@ -40,10 +40,10 @@ SELECT
 FROM 
     SalesByMonth s
 LEFT JOIN 
-    TopCustomers tc ON s.sales_year = EXTRACT(YEAR FROM DATE '2002-10-01') 
-      AND s.sales_month = EXTRACT(MONTH FROM DATE '2002-10-01') 
-FULL OUTER JOIN date_dim d ON s.sales_year = EXTRACT(YEAR FROM d.d_date) 
-      AND s.sales_month = EXTRACT(MONTH FROM d.d_date)
+    TopCustomers tc ON s.sales_year = toYear(toDate('2002-10-01')) 
+      AND s.sales_month = toMonth(toDate('2002-10-01')) 
+FULL OUTER JOIN date_dim d ON s.sales_year = toYear(d.d_date) 
+      AND s.sales_month = toMonth(d.d_date)
 WHERE 
     d.d_current_month = 'Y'
 GROUP BY 

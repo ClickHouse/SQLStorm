@@ -21,7 +21,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     s.s_nationkey = (SELECT n.n_nationkey FROM nation n WHERE n.n_name = 'USA')
-    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     s.s_name, p.p_name, ps.ps_availqty, l.l_extendedprice, l.l_discount, o.o_orderkey, c.c_custkey, p.p_comment
 ORDER BY 

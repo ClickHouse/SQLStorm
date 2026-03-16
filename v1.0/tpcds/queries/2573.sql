@@ -61,4 +61,4 @@ WHERE
     OR (c.cd_gender = 'M' AND c.total_sales > 1000)
 ORDER BY
     c.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -3,7 +3,7 @@ WITH RankedPosts AS (
         p.Id AS PostID,
         p.Title,
         p.Body,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'), 1) AS TagCount,
+        length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year') 
+        AND p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR) 
     GROUP BY 
         p.Id, p.Title, p.Body
 ),

@@ -27,7 +27,7 @@ SELECT
     ak.name AS actor_name,
     at.title AS movie_title,
     at.production_year,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     COUNT(DISTINCT mc.company_id) AS num_companies,
     AVG(CAST(mo.info AS FLOAT)) AS avg_movie_rating,
     ROW_NUMBER() OVER (PARTITION BY ak.name ORDER BY at.production_year DESC) AS ranking

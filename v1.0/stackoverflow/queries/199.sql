@@ -26,7 +26,7 @@ RecentPosts AS (
         p.OwnerUserId,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RecentRank
     FROM Posts p
-    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    WHERE p.CreationDate >= now64(6) - INTERVAL 30 DAY
 ),
 TopUsers AS (
     SELECT 

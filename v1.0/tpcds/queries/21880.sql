@@ -53,10 +53,10 @@ SELECT
     ci.total_sales,
     ci.available_stock,
     ci.stock_status,
-    STRING_AGG(CASE 
+    arrayStringConcat(groupArray(assumeNotNull(CASE 
                    WHEN ci.stock_status = 'Negative Stock' THEN 'Alert! Stock Negative'
                    ELSE NULL 
-               END, '; ') AS alerts
+               END)), '; ') AS alerts
 FROM 
     CombinedInformation ci
 WHERE 

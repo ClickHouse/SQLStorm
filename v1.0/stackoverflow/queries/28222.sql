@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.Score,
         u.DisplayName AS OwnerDisplayName,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
-        (SELECT COUNT(*) FROM unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'))) AS TagCount
+        (SELECT COUNT(*) FROM arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)))) AS TagCount
     FROM
         Posts p
     JOIN
@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
         COUNT(*) AS TagFrequency
     FROM
         Posts
@@ -45,7 +45,7 @@ PostDetails AS (
     FROM
         RankedPosts rp
     JOIN
-        PopularTags pt ON pt.Tag = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags)-2), '><'))
+        PopularTags pt ON pt.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
     WHERE
         rp.Rank = 1  
 )

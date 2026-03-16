@@ -53,4 +53,4 @@ WHERE
     (COALESCE(cs.total_web_sales, 0) > 500 OR COALESCE(ss.total_store_sales, 0) > 500)
 ORDER BY 
     net_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

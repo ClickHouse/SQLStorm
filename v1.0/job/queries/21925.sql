@@ -32,7 +32,7 @@ Features AS (
             0
         ) AS genre_count,
         COALESCE(
-            (SELECT STRING_AGG(k.keyword, ', ') 
+            (SELECT arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') 
              FROM movie_keyword mk 
              JOIN keyword k ON mk.keyword_id = k.id
              WHERE mk.movie_id = m.movie_id), 

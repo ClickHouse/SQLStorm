@@ -19,7 +19,7 @@ WITH RECURSIVE String_Processing AS (
 Aggregated_Strings AS (
     SELECT 
         s_suppkey,
-        STRING_AGG(processed_string, ', ') AS aggregated_string,
+        arrayStringConcat(groupArray(assumeNotNull(processed_string)), ', ') AS aggregated_string,
         SUM(string_length) AS total_length
     FROM String_Processing
     GROUP BY s_suppkey

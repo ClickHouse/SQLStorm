@@ -36,7 +36,7 @@ PostStatistics AS (
         ROW_NUMBER() OVER (ORDER BY p.Score DESC) AS Rank,
         p.OwnerUserId
     FROM Posts p
-    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+    WHERE p.CreationDate >= now64(6) - INTERVAL 1 YEAR
 )
 SELECT 
     u.UserId,

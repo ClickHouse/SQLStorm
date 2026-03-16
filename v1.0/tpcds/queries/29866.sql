@@ -3,7 +3,7 @@ WITH Address_Stats AS (
     SELECT 
         ca_city,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), '; ') AS street_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type)))), '; ') AS street_details
     FROM 
         customer_address
     GROUP BY 
@@ -23,7 +23,7 @@ Item_Stats AS (
     SELECT 
         i_brand,
         COUNT(*) AS total_items,
-        STRING_AGG(i_item_desc, ', ') AS item_descriptions
+        arrayStringConcat(groupArray(assumeNotNull(i_item_desc)), ', ') AS item_descriptions
     FROM 
         item
     GROUP BY 

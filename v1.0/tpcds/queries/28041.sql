@@ -3,7 +3,7 @@ WITH AddressCounts AS (
     SELECT 
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(ca_city, ', ') AS cities,
+        arrayStringConcat(groupArray(assumeNotNull(ca_city)), ', ') AS cities,
         MAX(ca_gmt_offset) AS max_gmt_offset,
         MIN(ca_gmt_offset) AS min_gmt_offset
     FROM 
@@ -16,7 +16,7 @@ DemographicsSummary AS (
         cd_gender,
         COUNT(*) AS demo_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(cd_marital_status, ', ') AS marital_statuses
+        arrayStringConcat(groupArray(assumeNotNull(cd_marital_status)), ', ') AS marital_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -45,7 +45,7 @@ SELECT
     dm.avg_purchase_estimate,
     dm.marital_statuses,
     LENGTH(ca.cities) AS total_city_length,
-    STRING_AGG(DISTINCT dm.marital_statuses, '; ') AS unique_marital_statuses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(dm.marital_statuses))), '; ') AS unique_marital_statuses
 FROM 
     CombinedResults ca
 JOIN 

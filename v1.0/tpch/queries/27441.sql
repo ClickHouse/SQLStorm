@@ -4,7 +4,7 @@ SELECT
     r.r_name AS region_name,
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(o.o_totalprice) AS total_revenue,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS products_sold,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS products_sold,
     AVG(s.s_acctbal) AS average_supplier_balance,
     MAX(l.l_extendedprice) AS max_line_price
 FROM 
@@ -25,7 +25,7 @@ JOIN
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
     c.c_mktsegment LIKE '%household%'
-    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     n.n_name, r.r_name, s.s_acctbal, l.l_extendedprice
 ORDER BY 

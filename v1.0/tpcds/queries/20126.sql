@@ -73,7 +73,7 @@ LEFT JOIN
          FROM 
             item i 
          ORDER BY 
-            RANDOM() 
+            rand() 
          LIMIT 1)
 WHERE 
     ts.total_profit IS NOT NULL

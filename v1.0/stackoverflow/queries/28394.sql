@@ -59,7 +59,7 @@ JOIN
 JOIN 
     PostLinks pl ON p.Id = pl.PostId
 JOIN 
-    PopularTags tt ON tt.TagName IN (SELECT UNNEST(string_to_array(p.Tags, '><')))
+    PopularTags tt ON tt.TagName IN (SELECT arrayJoin(splitByString('><', p.Tags)))
 LEFT JOIN 
     CommentsWithKeywords cwk ON cwk.PostId = p.Id
 WHERE 

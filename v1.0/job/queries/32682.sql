@@ -30,7 +30,7 @@ SELECT
     p.name AS person_name,
     COUNT(DISTINCT m.movie_id) AS num_movies,
     MAX(CASE WHEN m.production_year IS NOT NULL THEN m.production_year END) AS max_production_year,
-    STRING_AGG(DISTINCT mt.title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mt.title))), ', ') AS movie_titles,
     ROW_NUMBER() OVER (PARTITION BY p.id ORDER BY COUNT(DISTINCT m.movie_id) DESC) AS rank
 FROM 
     aka_name p

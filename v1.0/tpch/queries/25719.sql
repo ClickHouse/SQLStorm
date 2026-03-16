@@ -2,7 +2,7 @@ SELECT
     p.p_brand, 
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     r.r_name AS region_name
 FROM 
     part p

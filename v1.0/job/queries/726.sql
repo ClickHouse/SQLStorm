@@ -42,7 +42,7 @@ SELECT
     tm.movie_title,
     tm.production_year,
     COALESCE(MAX(km.keyword_count), 0) AS max_keyword_count,
-    STRING_AGG(DISTINCT km.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(km.keyword))), ', ') AS keywords
 FROM 
     TopMovies tm
 LEFT JOIN 

@@ -1,7 +1,7 @@
 WITH movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keyword_list
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keyword_list
     FROM 
         movie_keyword mk
     JOIN 
@@ -12,8 +12,8 @@ WITH movie_keywords AS (
 movie_companies_info AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS company_names,
-        STRING_AGG(ct.kind, ', ') AS company_types
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS company_names,
+        arrayStringConcat(groupArray(assumeNotNull(ct.kind)), ', ') AS company_types
     FROM 
         movie_companies mc
     JOIN 

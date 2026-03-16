@@ -35,7 +35,7 @@ SELECT
     ca.ca_state,
     COUNT(*) FILTER (WHERE ra.cd_gender = 'M') AS male_count,
     COUNT(*) FILTER (WHERE ra.cd_gender = 'F') AS female_count,
-    STRING_AGG(ra.full_name, ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(ra.full_name)), ', ') AS customer_names
 FROM 
     CustomerAddresses ca
 JOIN 

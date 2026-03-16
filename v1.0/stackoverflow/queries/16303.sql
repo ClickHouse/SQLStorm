@@ -15,7 +15,7 @@ JOIN
 LEFT JOIN 
     (SELECT PostId, COUNT(*) AS CommentCount FROM Comments GROUP BY PostId) C ON P.Id = C.PostId
 LEFT JOIN 
-    (SELECT PostId, STRING_AGG(TagName, ', ') AS TagName FROM Tags GROUP BY PostId) T ON P.Id = T.PostId
+    (SELECT PostId, arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') AS TagName FROM Tags GROUP BY PostId) T ON P.Id = T.PostId
 WHERE 
     P.PostTypeId = 1  
 GROUP BY 

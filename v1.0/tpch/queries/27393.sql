@@ -7,7 +7,7 @@ SELECT
     AVG(l.l_extendedprice) AS avg_price_per_order,
     MAX(l.l_tax) AS max_tax,
     MIN(l.l_discount) AS min_discount,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS consolidated_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS consolidated_comments
 FROM 
     part p
 JOIN 

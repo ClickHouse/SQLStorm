@@ -48,7 +48,7 @@ SELECT
     a.actor_name,
     COUNT(DISTINCT mwk.title_id) AS keyword_movie_count,
     AVG(mwk.production_year) AS avg_year,
-    STRING_AGG(DISTINCT mwk.keyword, ', ') AS associated_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mwk.keyword))), ', ') AS associated_keywords
 FROM 
     RankedTitles a 
 LEFT JOIN 

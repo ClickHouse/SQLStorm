@@ -20,7 +20,7 @@ SELECT
     AVG(l.l_quantity) AS Avg_Quantity,
     MAX(o.o_totalprice) AS Max_Order_Amount,
     MIN(o.o_orderdate) AS Earliest_Order_Date,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS Part_Names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS Part_Names,
     SUM(CASE WHEN s.s_acctbal IS NULL THEN 0 ELSE s.s_acctbal END) AS Valid_Supplier_Balance
 FROM 
     customer c
@@ -40,7 +40,7 @@ LEFT JOIN
     part p ON l.l_partkey = p.p_partkey
 WHERE 
     r.r_name LIKE 'Northeast%'
-    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     n.n_name, r.r_name
 HAVING 

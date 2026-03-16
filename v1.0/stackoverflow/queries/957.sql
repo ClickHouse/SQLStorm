@@ -47,7 +47,7 @@ SELECT
     (SELECT COUNT(c.Id) 
      FROM Comments c 
      WHERE c.PostId = p.PostId) AS CommentCount,
-    (SELECT STRING_AGG(DISTINCT lt.Name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lt.Name))), ', ') 
      FROM PostLinks pl 
      JOIN LinkTypes lt ON pl.LinkTypeId = lt.Id 
      WHERE pl.PostId = p.PostId) AS RelatedPosts,

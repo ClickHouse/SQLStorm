@@ -8,7 +8,7 @@ WITH PostDetails AS (
         p.Score,
         p.ViewCount,
         p.AnswerCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
         u.DisplayName AS OwnerDisplayName,
         u.Reputation AS OwnerReputation
     FROM 
@@ -16,7 +16,7 @@ WITH PostDetails AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag_names ON TRUE
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_names ON TRUE
     LEFT JOIN 
         Tags t ON tag_names = t.TagName
     WHERE 

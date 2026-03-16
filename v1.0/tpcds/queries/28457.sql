@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT ws_order_number) AS total_orders,
     SUM(ws_ext_sales_price) AS total_sales,
     AVG(cd_purchase_estimate) AS average_purchase_estimate,
-    STRING_AGG(DISTINCT cd_gender, ', ') AS genders_in_city
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_gender))), ', ') AS genders_in_city
 FROM 
     customer_address ca
 JOIN 

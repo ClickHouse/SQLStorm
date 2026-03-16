@@ -1,7 +1,7 @@
 SELECT 
     COUNT(DISTINCT p.p_partkey) AS distinct_part_count,
     AVG(s.s_acctbal) AS average_supplier_balance,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ': ', s.s_name), ', ') AS supplier_nations
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ': ', s.s_name)))), ', ') AS supplier_nations
 FROM 
     part p
 JOIN 

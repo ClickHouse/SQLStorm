@@ -24,7 +24,7 @@ WITH RankedSuppliers AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 ), SupplierParts AS (
@@ -44,7 +44,7 @@ SELECT
     r.r_name,
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(os.total_revenue) AS total_revenue_last_year,
-    ARRAY_AGG(DISTINCT sp.p_name) AS part_names,
+    arrayDistinct(groupArray(assumeNotNull(sp.p_name))) AS part_names,
     AVG(sp.ps_supplycost) AS avg_supply_cost
 FROM
     region r

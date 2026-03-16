@@ -42,7 +42,7 @@ SELECT
     cd.company_name,
     cd.company_type,
     COUNT(DISTINCT ci.person_id) AS total_actors,
-    STRING_AGG(DISTINCT ak.name, ', ') AS aka_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names
 FROM 
     TopMovies tm
 LEFT JOIN 

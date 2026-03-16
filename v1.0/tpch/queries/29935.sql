@@ -18,7 +18,7 @@ HighValueSuppliers AS (
         supplier_name,
         COUNT(part_name) AS part_count,
         SUM(supply_cost * available_quantity) AS total_value,
-        STRING_AGG(supplier_part_description, '; ') AS descriptions
+        arrayStringConcat(groupArray(assumeNotNull(supplier_part_description)), '; ') AS descriptions
     FROM 
         SupplierParts
     GROUP BY 

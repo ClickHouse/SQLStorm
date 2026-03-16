@@ -16,7 +16,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         p.Id
 ),
@@ -52,7 +52,7 @@ FAQ AS (
         ps.Upvotes,
         ps.Downvotes,
         ps.Popularity,
-        EXTRACT(YEAR FROM ps.CreationDate) AS YearCreated,
+        toYear(ps.CreationDate) AS YearCreated,
         DENSE_RANK() OVER (ORDER BY ps.Upvotes DESC) AS Rank,
         CASE 
             WHEN EXISTS (
@@ -86,7 +86,7 @@ SELECT
 FROM 
     FAQ f
 WHERE 
-    f.YearCreated = (SELECT MAX(EXTRACT(YEAR FROM CreationDate)) FROM Posts)
+    f.YearCreated = (SELECT MAX(toYear(CreationDate)) FROM Posts)
 ORDER BY 
     f.Upvotes DESC, 
     f.CommentCount DESC

@@ -8,7 +8,7 @@ SELECT
         WHEN p_retailprice > 100 THEN p_retailprice 
         ELSE NULL 
     END) AS avg_high_price_parts,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_involved
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_involved
 FROM 
     part p
 JOIN 

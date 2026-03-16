@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p 
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -33,7 +33,7 @@ TopUsers AS (
 UserBadges AS (
     SELECT 
         ub.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges ub 
     JOIN 

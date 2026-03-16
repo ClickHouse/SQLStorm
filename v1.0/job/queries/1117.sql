@@ -27,7 +27,7 @@ DirectorInfo AS (
 MovieGenres AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS genres
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS genres
     FROM 
         movie_keyword mk
     JOIN 

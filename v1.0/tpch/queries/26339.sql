@@ -1,7 +1,7 @@
 WITH StringAgg AS (
     SELECT 
         s.s_name AS supplier_name,
-        STRING_AGG(DISTINCT CONCAT(p.p_name, ' - ', ps.ps_supplycost, ' - ', ps.ps_comment), '; ') AS aggregated_info 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' - ', ps.ps_supplycost, ' - ', ps.ps_comment)))), '; ') AS aggregated_info 
     FROM 
         supplier s
     JOIN 

@@ -35,7 +35,7 @@ FilteredMovieKeyword AS (
 AggregatedCompany AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(CASE WHEN c.name IS NULL THEN 'Unknown Company' ELSE c.name END, ', ') AS companies
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN c.name IS NULL THEN 'Unknown Company' ELSE c.name END)), ', ') AS companies
     FROM movie_companies mc
     LEFT JOIN company_name c ON mc.company_id = c.id
     GROUP BY mc.movie_id

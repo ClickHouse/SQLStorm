@@ -13,7 +13,7 @@ WITH ranked_movies AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id
@@ -33,7 +33,7 @@ SELECT
     t.title,
     COALESCE(SUM(CASE WHEN mi.info IS NOT NULL AND it.info = 'Budget' THEN 1 ELSE 0 END), 0) AS total_budgets,
     t.keywords,
-    STRING_AGG(DISTINCT n.name, ', ') AS actor_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS actor_names
 FROM top_movies t
 LEFT JOIN movie_info mi ON t.movie_id = mi.movie_id
 LEFT JOIN info_type it ON mi.info_type_id = it.id

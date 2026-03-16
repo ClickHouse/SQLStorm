@@ -5,8 +5,8 @@ SELECT
     MAX(p.p_retailprice) AS max_price,
     MIN(p.p_retailprice) AS min_price,
     AVG(p.p_retailprice) AS avg_price,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers_names,
     CASE 
         WHEN COUNT(DISTINCT ps.ps_suppkey) > 5 THEN 'Highly Sourced' 
         ELSE 'Low Supply'

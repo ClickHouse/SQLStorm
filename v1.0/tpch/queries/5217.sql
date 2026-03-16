@@ -14,7 +14,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS CustomerCount,
     AVG(o.o_totalprice) AS AvgOrderValue,
     SUM(l.l_quantity) AS TotalQuantity,
-    STRING_AGG(DISTINCT p.p_name, ',' ORDER BY p.p_name) AS PartNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ',' ORDER BY p.p_name) AS PartNames
 FROM 
     region r
 JOIN 

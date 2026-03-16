@@ -6,7 +6,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     RANK() OVER (PARTITION BY p.p_partkey ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS sales_rank,
-    STRING_AGG(DISTINCT l.l_comment, '; ') AS comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_comment))), '; ') AS comments
 FROM 
     part p
 JOIN 

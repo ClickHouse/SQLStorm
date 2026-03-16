@@ -6,7 +6,7 @@ SELECT
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
     pt.Name AS PostTypeName,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
     MAX(b.Date) AS LastBadgeDate,
     p.LastActivityDate AS LastActivityDate
 FROM 
@@ -24,7 +24,7 @@ LEFT JOIN
 LEFT JOIN 
     Tags t ON t.ExcerptPostId = p.Id
 WHERE 
-    p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     AND u.Reputation > 50
 GROUP BY 
     u.DisplayName, p.Title, p.CreationDate, pt.Name, p.LastActivityDate

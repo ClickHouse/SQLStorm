@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, u.Reputation
 ),
@@ -53,7 +53,7 @@ TopPosts AS (
 PostComments AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(c.Text, ' | ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS Comments
     FROM 
         Posts p
     LEFT JOIN 

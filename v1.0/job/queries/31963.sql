@@ -34,7 +34,7 @@ FilteredMovies AS (
         mh.movie_id,
         mh.title,
         mh.production_year,
-        ARRAY_AGG(DISTINCT ar.role_name) AS roles,
+        arrayDistinct(groupArray(assumeNotNull(ar.role_name))) AS roles,
         MAX(ar.num_cast) AS max_cast
     FROM MovieHierarchy mh
     LEFT JOIN AggregatedRoles ar ON mh.movie_id = ar.movie_id
@@ -44,7 +44,7 @@ FilteredMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id

@@ -5,7 +5,7 @@ SELECT
     SUM(ws.ws_sales_price) AS total_spent,
     MAX(d.d_date) AS last_order_date,
     COUNT(DISTINCT CASE WHEN ws.ws_ship_mode_sk = sm.sm_ship_mode_sk THEN ws.ws_order_number END) AS distinct_ship_modes,
-    STRING_AGG(DISTINCT CONCAT(sc.s_store_name, ' (', sc.s_city, ', ', sc.s_state, ')'), '; ') AS store_locations
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(sc.s_store_name, ' (', sc.s_city, ', ', sc.s_state, ')')))), '; ') AS store_locations
 FROM 
     customer c
 JOIN 

@@ -27,8 +27,8 @@ SELECT
     tm.title,
     tm.production_year,
     COUNT(DISTINCT mi.info) AS info_count,
-    STRING_AGG(DISTINCT keyword.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     TopMovies tm
 LEFT JOIN 

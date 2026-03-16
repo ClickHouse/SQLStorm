@@ -62,4 +62,4 @@ JOIN
     AddressStats ab ON ab.customer_count > 0
 ORDER BY 
     total_spent DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

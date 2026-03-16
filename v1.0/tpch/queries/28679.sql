@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(l.l_quantity) AS total_quantity,
     AVG(p.p_retailprice) AS average_retail_price,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     REPLACE(UPPER(p.p_comment), 'FOO', 'BAR') AS modified_comment,
     CONCAT('Part Name: ', p.p_name, ', Total Quantity: ', SUM(l.l_quantity)) AS report,
     LENGTH(p.p_comment) AS comment_length,

@@ -28,7 +28,7 @@ PostVoteCounts AS (
 ClosedPosts AS (
     SELECT p.Id AS PostId,
            MAX(ph.CreationDate) AS LastClosedDate,
-           STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasons
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasons
     FROM Posts p
     JOIN PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (10, 11)
     LEFT JOIN CloseReasonTypes ctr ON ctr.Id = CAST(ph.Comment AS INT)
@@ -47,7 +47,7 @@ JOIN Posts p ON pr.PostId = p.Id
 LEFT JOIN PostVoteCounts pv ON p.Id = pv.PostId
 LEFT JOIN ClosedPosts cp ON p.Id = cp.PostId
 WHERE pr.RankByViews <= 10
-  AND (cp.LastClosedDate IS NOT NULL AND cp.LastClosedDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR')
+  AND (cp.LastClosedDate IS NOT NULL AND cp.LastClosedDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
   OR (pv.TotalUpVotes - pv.TotalDownVotes) > 10
 ORDER BY pr.RankByViews, p.CreationDate DESC
 LIMIT 50;

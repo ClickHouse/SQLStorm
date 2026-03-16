@@ -38,7 +38,7 @@ MovieCast AS (
 MovieInfo AS (
     SELECT 
         m.movie_id,
-        ARRAY_AGG(DISTINCT mi.info) AS infos
+        arrayDistinct(groupArray(assumeNotNull(mi.info))) AS infos
     FROM 
         movie_info mi 
     JOIN 

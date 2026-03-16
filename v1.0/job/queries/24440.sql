@@ -1,7 +1,7 @@
 WITH recursive MovieYearCTE AS (
     SELECT t.production_year,
            COUNT(DISTINCT c.person_id) AS total_cast,
-           STRING_AGG(DISTINCT ka.name, ', ') AS actor_names
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ka.name))), ', ') AS actor_names
     FROM aka_title t
     LEFT JOIN cast_info c ON t.movie_id = c.movie_id
     LEFT JOIN aka_name ka ON c.person_id = ka.person_id

@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.ViewCount DESC) AS PostRank,
         COUNT(c.Id) AS CommentCount,
         MAX(CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.CreationDate END) AS ClosedDate,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -20,9 +20,9 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     LEFT JOIN 
-        unnest(string_to_array(p.Tags, '>')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON TRUE
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '5 years'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 5 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 )

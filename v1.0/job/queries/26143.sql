@@ -9,7 +9,7 @@ WITH MovieDetails AS (
         a.name AS actor_name,
         p.gender AS actor_gender,
         COUNT(DISTINCT c.person_id) AS total_actors,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords_list
     FROM 
         aka_title t
     JOIN 
@@ -41,7 +41,7 @@ SELECT
     production_year,
     COUNT(DISTINCT actor_name) AS actor_count,
     COUNT(DISTINCT company_name) AS production_company_count,
-    STRING_AGG(DISTINCT keywords_list, '; ') AS all_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keywords_list))), '; ') AS all_keywords
 FROM 
     MovieDetails
 GROUP BY 

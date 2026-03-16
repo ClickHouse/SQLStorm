@@ -34,9 +34,8 @@ SELECT
     co.c_name,
     COUNT(DISTINCT co.o_orderkey) AS TotalOrders,
     SUM(co.o_totalprice) AS GrandTotal,
-    STRING_AGG(DISTINCT CONCAT('OrderID: ', co.o_orderkey, 
-                               ', Date: ', co.o_orderdate),
-                '; ') AS OrderDetails,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('OrderID: ', co.o_orderkey, 
+                               ', Date: ', co.o_orderdate)))), '; ') AS OrderDetails,
     MAX(fp.OrderCount) AS MaxFrequentOrders,
     sd.TotalCost AS SupplierCost
 FROM CustomerOrders co
@@ -55,4 +54,4 @@ WHERE COALESCE(sd.TotalCost, 0) < (SELECT AVG(TotalCost) FROM SupplierDetails)
 GROUP BY co.c_custkey, co.c_name, sd.TotalCost
 HAVING SUM(co.o_totalprice) > 5000
 ORDER BY GrandTotal DESC, TotalOrders DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

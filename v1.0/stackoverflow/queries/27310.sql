@@ -41,11 +41,11 @@ TopPosts AS (
 TagInfo AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        UNNEST(string_to_array(substr(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('><', substr(p.Tags, 2, length(p.Tags) - 2))) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

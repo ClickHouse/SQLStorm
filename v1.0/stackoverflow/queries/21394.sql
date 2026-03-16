@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
         AND p.Score IS NOT NULL
 ),
 PostVoteSummary AS (
@@ -28,7 +28,7 @@ PostVoteSummary AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CONCAT(ph.UserDisplayName, ' (', ph.CreationDate, '): ', ph.Comment), '; ') AS HistoryComments
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.UserDisplayName, ' (', ph.CreationDate, '): ', ph.Comment))), '; ') AS HistoryComments
     FROM 
         PostHistory ph
     WHERE 

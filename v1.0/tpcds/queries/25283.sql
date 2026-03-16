@@ -4,8 +4,8 @@ WITH AddressSummary AS (
         ca_state,
         COUNT(*) AS address_count,
         AVG(ca_gmt_offset) AS avg_gmt_offset,
-        STRING_AGG(ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT ca_street_type, ', ') AS street_types
+        arrayStringConcat(groupArray(assumeNotNull(ca_city)), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_type))), ', ') AS street_types
     FROM 
         customer_address
     GROUP BY 
@@ -38,7 +38,7 @@ ItemSummary AS (
         i_brand,
         COUNT(i_item_sk) AS item_count,
         SUM(i_current_price) AS total_value,
-        STRING_AGG(DISTINCT i_color, ', ') AS colors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i_color))), ', ') AS colors
     FROM 
         item
     GROUP BY 

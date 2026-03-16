@@ -14,7 +14,7 @@ WITH RECURSIVE title_hierarchy AS (
 ),
 movie_details AS (
     SELECT mt.id AS movie_id, mt.title, mt.production_year, 
-           ARRAY_AGG(k.keyword) AS keywords,
+           groupArray(assumeNotNull(k.keyword)) AS keywords,
            COUNT(DISTINCT mi.info) FILTER (WHERE it.info IN ('summary', 'plot')) AS summary_count,
            MAX(CASE WHEN ci.role_id IS NOT NULL THEN ci.role_id END) AS primary_role_id
     FROM aka_title mt

@@ -7,7 +7,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS average_extended_price,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT SUBSTRING(p.p_comment, 1, 10), ', ') AS short_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(p.p_comment, 1, 10)))), ', ') AS short_comments
 FROM 
     part p
 JOIN 
@@ -26,8 +26,8 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_brand LIKE '%BrandA%' 
-    AND o.o_orderdate >= DATE '1997-01-01' 
-    AND o.o_orderdate < DATE '1998-01-01' 
+    AND o.o_orderdate >= toDate('1997-01-01') 
+    AND o.o_orderdate < toDate('1998-01-01') 
 GROUP BY 
     p.p_name, p.p_brand, s.s_name, c.c_name, r.r_name
 ORDER BY 

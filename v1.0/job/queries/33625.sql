@@ -31,8 +31,8 @@ WITH RECURSIVE actor_hierarchy AS (
 SELECT 
     at.title,
     COUNT(DISTINCT ch.person_id) AS num_actors,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
-    ARRAY_AGG(DISTINCT co.name) AS production_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
+    arrayDistinct(groupArray(assumeNotNull(co.name))) AS production_companies,
     mn.keyword AS relevant_keyword,
     CASE 
         WHEN COUNT(DISTINCT ch.person_id) > 10 THEN 'Large Cast'

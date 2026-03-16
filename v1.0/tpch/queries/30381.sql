@@ -25,7 +25,7 @@ line_item_summary AS (
     SELECT l.l_orderkey, COUNT(*) AS line_count, 
            SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_line_value
     FROM lineitem l
-    WHERE l.l_shipdate >= DATE '1996-01-01' AND l.l_shipdate < DATE '1997-01-01'
+    WHERE l.l_shipdate >= toDate('1996-01-01') AND l.l_shipdate < toDate('1997-01-01')
     GROUP BY l.l_orderkey
 ),
 ranked_customers AS (

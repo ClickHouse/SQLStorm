@@ -12,20 +12,20 @@ WITH RECURSIVE TrendingPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     AND 
         p.PostTypeId = 1 
 ),
 ScorePerTag AS (
     SELECT 
-        unnest(string_to_array(p.Tags, '>')) AS Tag,
+        arrayJoin(splitByString('>', p.Tags)) AS Tag,
         SUM(p.Score) AS TotalScore
     FROM 
         Posts p
     WHERE 
         p.Score IS NOT NULL
     GROUP BY 
-        unnest(string_to_array(p.Tags, '>'))
+        arrayJoin(splitByString('>', p.Tags))
 ),
 PopularTags AS (
     SELECT 

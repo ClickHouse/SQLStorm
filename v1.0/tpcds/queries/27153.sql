@@ -15,7 +15,7 @@ AddressCounts AS (
     SELECT 
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(full_address, '; ') AS all_addresses
+        arrayStringConcat(groupArray(assumeNotNull(full_address)), '; ') AS all_addresses
     FROM 
         ExpandedAddresses
     GROUP BY 

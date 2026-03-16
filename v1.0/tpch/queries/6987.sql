@@ -24,7 +24,7 @@ WITH SupplierDetails AS (
         orders o ON c.c_custkey = o.o_custkey 
     WHERE 
         o.o_orderstatus = 'F' 
-        AND o.o_orderdate >= DATE '1997-01-01'
+        AND o.o_orderdate >= toDate('1997-01-01')
 ), LineItemSummary AS (
     SELECT 
         l.l_orderkey, 

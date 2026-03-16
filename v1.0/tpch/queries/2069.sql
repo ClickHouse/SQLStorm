@@ -42,7 +42,7 @@ LEFT JOIN
     TopSuppliers ts ON l.l_suppkey = ts.s_suppkey
 WHERE 
     o.o_orderstatus = 'F' 
-    AND o.o_orderdate >= DATE '1997-01-01' 
+    AND o.o_orderdate >= toDate('1997-01-01') 
     AND (l.l_returnflag IS NULL OR l.l_returnflag = 'N')
 GROUP BY 
     c.c_custkey, c.c_name, o.o_orderkey, o.o_orderdate, ts.total_revenue

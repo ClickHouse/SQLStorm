@@ -19,7 +19,7 @@ WITH RecentPosts AS (
             AND ph2.PostHistoryTypeId IN (10, 11, 12) 
         )
     WHERE
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 
 TagUsage AS (
@@ -75,7 +75,7 @@ JOIN
         WHERE Id = rp.PostId
     )
 LEFT JOIN
-    TagUsage tu ON tu.TagName = ANY(string_to_array(rp.Tags, '>'))
+    TagUsage tu ON tu.TagName = ANY(splitByString('>', rp.Tags))
 WHERE
     rp.PostTypeId = 1 
     AND (su.PostsCount > 1 OR su.TotalBounties > 0) 

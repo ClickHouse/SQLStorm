@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year') 
+        AND p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR) 
 ),
 UserStats AS (
     SELECT 
@@ -19,7 +19,7 @@ UserStats AS (
         COUNT(DISTINCT p.Id) AS QuestionCount,
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositiveScoreCount,
         SUM(CASE WHEN p.Score < 0 THEN 1 ELSE 0 END) AS NegativeScoreCount,
-        STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -75,5 +75,4 @@ WHERE
     Reputation > 100 
 ORDER BY 
     Reputation DESC, QuestionCount DESC, PositiveScoreCount DESC
-OFFSET 10 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

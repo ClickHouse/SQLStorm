@@ -23,7 +23,7 @@ actor_movie_counts AS (
 actor_names AS (
     SELECT 
         a.person_id,
-        STRING_AGG(a.name, ', ') AS names
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS names
     FROM 
         aka_name a
     GROUP BY 

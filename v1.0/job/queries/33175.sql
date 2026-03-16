@@ -61,7 +61,7 @@ SELECT
     fm.title,
     fm.production_year,
     COUNT(DISTINCT fm.movie_keyword) AS keyword_count,
-    STRING_AGG(DISTINCT fm.movie_keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fm.movie_keyword))), ', ') AS keywords,
     MAX(fm.production_year) AS latest_movie_year
 FROM 
     aka_name a

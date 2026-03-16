@@ -14,7 +14,7 @@ WITH RankedTitles AS (
 MovieKeywords AS (
     SELECT
         mk.movie_id,
-        STRING_AGG(CAST(mk.keyword_id AS TEXT), ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(CAST(mk.keyword_id AS TEXT))), ', ') AS keywords
     FROM
         movie_keyword mk
     JOIN
@@ -25,7 +25,7 @@ MovieKeywords AS (
 AkaNames AS (
     SELECT
         ak.person_id,
-        STRING_AGG(ak.name, ', ') AS aka_names
+        arrayStringConcat(groupArray(assumeNotNull(ak.name)), ', ') AS aka_names
     FROM
         aka_name ak
     GROUP BY

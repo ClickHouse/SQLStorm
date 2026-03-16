@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Users u ON p.OwnerUserId = u.Id
     WHERE
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT
@@ -75,7 +75,7 @@ SELECT
     pd.TotalVotes,
     pd.BadgeStatus,
     COALESCE(ph.Comment, 'No Close Reason') AS CloseReason,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM
     PostDetails pd
 LEFT JOIN
@@ -83,7 +83,7 @@ LEFT JOIN
 LEFT JOIN
     Posts p ON pd.PostId = p.Id
 LEFT JOIN
-    UNNEST(string_to_array(p.Tags, ', ')) AS t(TagName) ON TRUE 
+    arrayJoin(splitByString(', ', p.Tags)) AS t(TagName) ON TRUE 
 GROUP BY
     pd.PostId, pd.Title, pd.Score, pd.AnswerCount, pd.CreationDate,
     pd.UserDisplayName, pd.UpVotes, pd.DownVotes, pd.TotalVotes, pd.BadgeStatus, ph.Comment

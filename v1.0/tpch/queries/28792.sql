@@ -20,7 +20,7 @@ SELECT
     r.r_name,
     COUNT(DISTINCT rs.s_suppkey) AS total_suppliers,
     SUM(rs.part_count) AS total_parts,
-    STRING_AGG(CONCAT(rs.s_name, ' (', rs.part_count, ' parts)'), ', ') AS supplier_summary
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(rs.s_name, ' (', rs.part_count, ' parts)'))), ', ') AS supplier_summary
 FROM 
     region r
 LEFT JOIN 

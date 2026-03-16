@@ -53,7 +53,7 @@ SELECT
     ih.level
 FROM customer_summary s
 LEFT JOIN sales_summary ss ON s.city = ss.w_warehouse_id 
-LEFT JOIN item_hierarchy ih ON ih.i_item_sk = (SELECT i_item_sk FROM item ORDER BY RANDOM() LIMIT 1) 
+LEFT JOIN item_hierarchy ih ON ih.i_item_sk = (SELECT i_item_sk FROM item ORDER BY rand() LIMIT 1) 
 WHERE s.customer_count > 10
     AND COALESCE(ss.total_profit, 0) > 1000
 ORDER BY s.city, ss.total_profit DESC;

@@ -6,7 +6,7 @@ SELECT
     ca.ca_state AS state,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid) AS total_spent,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS purchased_items
 FROM 
     customer c 
 JOIN 

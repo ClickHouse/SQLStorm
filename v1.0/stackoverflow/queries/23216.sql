@@ -53,9 +53,9 @@ InactiveUserPostCount AS (
     FROM 
         Users u
     LEFT JOIN 
-        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate < (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year') 
+        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
     WHERE 
-        u.LastAccessDate < (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
+        u.LastAccessDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         u.Id
 )

@@ -16,7 +16,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1994-01-01' AND DATE '1994-12-31'
+    o.o_orderdate BETWEEN toDate('1994-01-01') AND toDate('1994-12-31')
     AND r.r_name = 'EUROPE'
 GROUP BY 
     n.n_name

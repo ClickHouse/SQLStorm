@@ -18,10 +18,10 @@ WITH RECURSIVE actor_hierarchy AS (
 
 SELECT at.title AS movie_title,
        COUNT(DISTINCT ci.person_id) AS total_actors,
-       STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
        SUM(CASE WHEN ci.note IS NULL THEN 1 ELSE 0 END) AS null_notes_count,
        MAX(CASE WHEN ci.nr_order IS NOT NULL THEN ci.nr_order ELSE 0 END) AS highest_order,
-       STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
        ROW_NUMBER() OVER (PARTITION BY at.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS rank_by_actor_count
 FROM aka_title at
 LEFT JOIN cast_info ci ON at.id = ci.movie_id

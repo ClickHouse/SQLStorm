@@ -2,10 +2,10 @@
 SELECT 
     a.name AS actor_name,
     COUNT(DISTINCT mc.movie_id) AS number_of_movies,
-    STRING_AGG(DISTINCT t.title, ', ') AS movie_titles,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords_associated,
-    STRING_AGG(DISTINCT c.kind, ', ') AS company_types,
-    STRING_AGG(DISTINCT p.info, '; ') AS additional_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords_associated,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.info))), '; ') AS additional_info
 FROM 
     aka_name a
 JOIN 

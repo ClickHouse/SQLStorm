@@ -38,7 +38,7 @@ SELECT
         WHEN mwac.actor_count = 0 THEN 'No Cast'
         ELSE 'Moderate'
     END AS cast_category,
-    (SELECT STRING_AGG(DISTINCT ak.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') 
      FROM aka_title at 
      JOIN aka_name ak ON at.id = ak.id 
      WHERE at.movie_id = mwac.movie_id) AS aliases

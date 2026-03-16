@@ -36,7 +36,7 @@ CompanyMovies AS (
 )
 SELECT 
     r.actor_name,
-    STRING_AGG(r.movie_title, ', ') AS recent_movies,
+    arrayStringConcat(groupArray(assumeNotNull(r.movie_title)), ', ') AS recent_movies,
     COUNT(DISTINCT cm.company_name) AS production_companies
 FROM 
     RecentMovies r

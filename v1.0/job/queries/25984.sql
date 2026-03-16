@@ -6,7 +6,7 @@ WITH movie_details AS (
         k.keyword AS movie_keyword,
         c.name AS company_name,
         ct.kind AS company_type,
-        ARRAY_AGG(DISTINCT a.name) AS actor_names
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actor_names
     FROM 
         aka_title m
     JOIN 
@@ -33,7 +33,7 @@ info_summary AS (
         md.production_year,
         COUNT(DISTINCT md.movie_keyword) AS keyword_count,
         COUNT(DISTINCT md.actor_names) AS actor_count,
-        STRING_AGG(DISTINCT md.company_name || ' (' || md.company_type || ')', '; ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.company_name || ' (' || md.company_type || ')'))), '; ') AS companies
     FROM 
         movie_details md
     GROUP BY 

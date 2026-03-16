@@ -43,7 +43,7 @@ MovieDetails AS (
         m.title_id,
         c.name AS company_name,
         m.production_year,
-        STRING_AGG(p.name, ', ') AS cast_names,
+        arrayStringConcat(groupArray(assumeNotNull(p.name)), ', ') AS cast_names,
         m.keyword_count
     FROM 
         MoviesWithHighKeywords m

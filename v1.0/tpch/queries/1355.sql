@@ -15,7 +15,7 @@ OrderSummary AS (
         COUNT(DISTINCT li.l_partkey) AS DistinctPartsSold
     FROM orders o
     JOIN lineitem li ON o.o_orderkey = li.l_orderkey
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
     GROUP BY o.o_orderkey, o.o_orderdate
 ),
 TopCustomers AS (

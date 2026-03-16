@@ -16,7 +16,7 @@ WITH RankedMovies AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS company_names,
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS company_names,
         ct.kind AS company_type
     FROM 
         movie_companies mc

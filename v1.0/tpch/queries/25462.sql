@@ -5,7 +5,7 @@ SELECT
     CONCAT('Supplier ', s.s_name, ' from ', n.n_name, ' supplies the part ', p.p_name) AS description,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS combined_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS combined_comments
 FROM 
     part p
 JOIN 

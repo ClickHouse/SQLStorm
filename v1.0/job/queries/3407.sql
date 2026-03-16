@@ -28,7 +28,7 @@ ExtendedMovieInfo AS (
     SELECT 
         md.movie_id,
         COUNT(DISTINCT md.cast_id) AS total_cast,
-        STRING_AGG(DISTINCT md.actor_name, ', ') AS actors_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name))), ', ') AS actors_list
     FROM 
         MovieDetails md
     GROUP BY 

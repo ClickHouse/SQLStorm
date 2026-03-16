@@ -57,8 +57,8 @@ SELECT
     movie_id,
     title,
     production_year,
-    STRING_AGG(actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords,
     MAX(total_keywords) AS strongest_keyword_association
 FROM 
     CombinedData

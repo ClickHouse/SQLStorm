@@ -38,7 +38,7 @@ CastDetails AS (
 CastList AS (
     SELECT 
         cd.movie_id,
-        STRING_AGG(cd.actor_name || ' as ' || cd.role_type, ', ') AS cast_list
+        arrayStringConcat(groupArray(assumeNotNull(cd.actor_name || ' as ' || cd.role_type)), ', ') AS cast_list
     FROM 
         CastDetails cd
     GROUP BY 

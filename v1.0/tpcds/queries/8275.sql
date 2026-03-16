@@ -58,4 +58,4 @@ JOIN
     SalesStats ss ON tr.sr_item_sk = ss.ws_item_sk
 ORDER BY 
     return_rate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

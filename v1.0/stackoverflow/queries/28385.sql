@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         p.LastActivityDate,
         ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.Score DESC) AS Rank,
         COUNT(c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagList
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagList
     FROM 
         Posts p
     LEFT JOIN 
@@ -49,7 +49,7 @@ SELECT
     hsp.OwnerDisplayName,
     hsp.CreationDate,
     hsp.CommentCount,
-    STRING_AGG(tag.tagname, ', ') AS Tags,
+    arrayStringConcat(groupArray(assumeNotNull(tag.tagname)), ', ') AS Tags,
     CASE 
         WHEN hsp.CommentCount > 5 THEN 'Highly Engaged'
         ELSE 'Less Engaged'
@@ -57,7 +57,7 @@ SELECT
 FROM 
     HighScorePosts hsp
 JOIN 
-    UNNEST(hsp.TagList) AS tag(tagname) ON true
+    arrayJoin(hsp.TagList) AS tag(tagname) ON true
 GROUP BY 
     hsp.Title, hsp.OwnerDisplayName, hsp.CreationDate, hsp.CommentCount
 ORDER BY 

@@ -58,4 +58,4 @@ AND
     pd.p_retailprice > 100
 ORDER BY 
     os.total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

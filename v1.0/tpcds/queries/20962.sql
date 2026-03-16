@@ -7,7 +7,7 @@ WITH RECURSIVE customer_hierarchy AS (
         c.c_birth_year,
         CASE 
             WHEN c.c_birth_month IS NOT NULL THEN 
-                CONCAT(EXTRACT(YEAR FROM DATE '2002-10-01') - c.c_birth_year, ' years old')
+                CONCAT(toYear(toDate('2002-10-01')) - c.c_birth_year, ' years old')
             ELSE 'Unknown age'
         END AS age_description,
         NULL AS parent_customer_sk
@@ -25,7 +25,7 @@ WITH RECURSIVE customer_hierarchy AS (
         c.c_birth_year,
         CASE 
             WHEN c.c_birth_month IS NOT NULL THEN 
-                CONCAT(EXTRACT(YEAR FROM DATE '2002-10-01') - c.c_birth_year, ' years old')
+                CONCAT(toYear(toDate('2002-10-01')) - c.c_birth_year, ' years old')
             ELSE 'Unknown age'
         END AS age_description,
         ch.c_customer_sk AS parent_customer_sk

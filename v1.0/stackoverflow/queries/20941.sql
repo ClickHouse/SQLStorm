@@ -50,7 +50,7 @@ UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -82,4 +82,4 @@ WHERE
     AND (rp.CommentCount IS NULL OR rp.CommentCount > 0) 
 ORDER BY 
     rp.PostId DESC
-OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 0;

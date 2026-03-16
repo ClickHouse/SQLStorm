@@ -2,7 +2,7 @@ SELECT
     p.p_name, 
     CONCAT(s.s_name, ' - ', s.s_address) AS supplier_info, 
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS market_segments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS market_segments,
     MAX(o.o_totalprice) AS max_order_price,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_discount) AS avg_discount

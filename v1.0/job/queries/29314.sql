@@ -14,7 +14,7 @@ MovieCast AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT CONCAT(a.name, ' (', r.role, ')'), '; ') AS cast_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', r.role, ')')))), '; ') AS cast_details
     FROM 
         cast_info c
     JOIN 
@@ -27,7 +27,7 @@ MovieCast AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

@@ -3,9 +3,9 @@ WITH MovieDetails AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT c.name) AS cast_names,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT co.name) AS companies
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(co.name))) AS companies
     FROM 
         aka_title t
     JOIN 
@@ -36,7 +36,7 @@ TopMovies AS (
         md.cast_names,
         md.keywords,
         md.companies,
-        ROW_NUMBER() OVER (ORDER BY md.production_year DESC, array_length(md.cast_names, 1) DESC) AS rank
+        ROW_NUMBER() OVER (ORDER BY md.production_year DESC, length(md.cast_names, 1) DESC) AS rank
     FROM 
         MovieDetails md
 )

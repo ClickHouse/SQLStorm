@@ -71,4 +71,4 @@ WHERE
     c.total_sales > 1000
 ORDER BY 
     c.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

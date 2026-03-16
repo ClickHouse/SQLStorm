@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON b.UserId = p.OwnerUserId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ),
@@ -28,7 +28,7 @@ PostActivity AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryActionCount,
-        STRING_AGG(DISTINCT CONCAT(ph.CreationDate, ': ', ph.Comment), '; ') AS ActionDetails
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ph.CreationDate, ': ', ph.Comment)))), '; ') AS ActionDetails
     FROM 
         PostHistory ph
     WHERE 

@@ -38,4 +38,4 @@ LEFT JOIN income_bracket ib ON cd.cd_purchase_estimate BETWEEN ib.ib_lower_bound
 WHERE cs.total_purchases > 5
 GROUP BY cd.cd_gender, cd.cd_marital_status
 ORDER BY total_spent DESC, demographics_info ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

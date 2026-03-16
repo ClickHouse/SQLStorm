@@ -12,7 +12,7 @@ MovieWithCompanies AS (
         rm.movie_id,
         rm.title,
         rm.production_year,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names
     FROM RankedMovies rm
     LEFT JOIN movie_companies mc ON rm.movie_id = mc.movie_id
     LEFT JOIN company_name cn ON mc.company_id = cn.id
@@ -22,7 +22,7 @@ CastAndRoles AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT CONCAT(a.name, ' (', rt.role, ')'), ', ') AS cast_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', rt.role, ')')))), ', ') AS cast_info
     FROM cast_info c
     JOIN aka_name a ON c.person_id = a.person_id
     JOIN role_type rt ON c.role_id = rt.id

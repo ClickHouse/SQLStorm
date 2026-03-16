@@ -66,8 +66,8 @@ FROM
 JOIN 
     top_customers top ON sd.ws_item_sk = sd.ws_item_sk
 LEFT JOIN 
-    monthly_sales ms ON ms.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) 
-                       AND ms.d_month_seq = EXTRACT(MONTH FROM cast('2002-10-01' as date))
+    monthly_sales ms ON ms.d_year = toYear(cast('2002-10-01' as date)) 
+                       AND ms.d_month_seq = toMonth(cast('2002-10-01' as date))
 WHERE 
     sd.total_quantity IS NOT NULL 
     AND sd.total_net_profit > 0

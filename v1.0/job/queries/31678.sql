@@ -31,7 +31,7 @@ SELECT
     mh.title,
     mh.production_year,
     COUNT(DISTINCT mc.company_id) AS num_companies,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
     RANK() OVER (PARTITION BY mh.production_year ORDER BY COUNT(DISTINCT mc.company_id) DESC) AS company_rank
 FROM 
     MovieHierarchy mh

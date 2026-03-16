@@ -47,7 +47,7 @@ SELECT
     COUNT(DISTINCT co.o_orderkey) AS TotalOrders,
     SUM(fp.ps_availqty) AS TotalAvailableParts,
     SUM(fp.ps_supplycost * fp.ps_availqty) AS TotalSupplyCost,
-    STRING_AGG(rs.s_name, ', ') AS TopSuppliers
+    arrayStringConcat(groupArray(assumeNotNull(rs.s_name)), ', ') AS TopSuppliers
 FROM 
     CustomerOrders co
 LEFT JOIN 

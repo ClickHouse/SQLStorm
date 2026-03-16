@@ -9,7 +9,7 @@ WITH UserTagCounts AS (
     JOIN 
         Posts P ON U.Id = P.OwnerUserId
     JOIN 
-        LATERAL (SELECT UNNEST(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><')) AS TagName) T
+        (SELECT arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2))) AS TagName) T
         ON TRUE
     WHERE 
         P.PostTypeId = 1 
@@ -53,7 +53,7 @@ SELECT
     TUT.DisplayName AS TopUser,
     TUT.TagName AS FavoriteTag,
     COUNT(UB.BadgeName) AS GoldBadges,
-    SUM(CASE WHEN Post.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 1 ELSE 0 END) AS RecentPosts
+    SUM(CASE WHEN Post.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS RecentPosts
 FROM 
     TopUserTags TUT
 LEFT JOIN 

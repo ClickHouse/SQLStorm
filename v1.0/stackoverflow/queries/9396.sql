@@ -63,4 +63,4 @@ WHERE
     Reputation > 1000
 ORDER BY 
     Score DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

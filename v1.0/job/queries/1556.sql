@@ -37,7 +37,7 @@ SELECT
     COALESCE(c.company_count, 0) AS company_involvement,
     m.production_year,
     a.role_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS aliases
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aliases
 FROM 
     RankedMovies m
 LEFT JOIN 

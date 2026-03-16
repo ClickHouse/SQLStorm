@@ -8,10 +8,10 @@ SELECT
     COUNT(c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
     u.DisplayName AS OwnerDisplayName,
     
-    EXTRACT(EPOCH FROM TIMESTAMP '2024-10-01 12:34:56') AS BenchmarkStartTime
+    toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6)) AS BenchmarkStartTime
 FROM 
     Posts p
 JOIN 
@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    LATERAL unnest(string_to_array(p.Tags, '>')) AS tag ON TRUE
+    arrayJoin(splitByString('>', p.Tags)) AS tag ON TRUE
 LEFT JOIN 
     Tags t ON t.TagName = tag
 WHERE 

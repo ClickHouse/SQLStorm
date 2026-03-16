@@ -5,7 +5,7 @@ SELECT
     SUM(LENGTH(ca.ca_street_name)) AS total_street_name_length,
     COUNT(DISTINCT c.c_customer_id) AS unique_customers,
     MAX(cd.cd_purchase_estimate) AS max_purchase_estimate,
-    STRING_AGG(CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name))), ', ') AS customer_names
 FROM 
     customer_address ca
 JOIN 

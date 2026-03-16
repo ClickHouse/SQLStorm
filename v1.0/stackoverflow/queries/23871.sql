@@ -35,7 +35,7 @@ BadgesEarned AS (
     SELECT 
         B.UserId,
         COUNT(*) AS BadgesCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Badges B
     GROUP BY 
@@ -44,7 +44,7 @@ BadgesEarned AS (
 PostAge AS (
     SELECT 
         P.Id AS PostId,
-        EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - P.CreationDate)) / 3600 AS AgeInHours
+        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.CreationDate)) / 3600 AS AgeInHours
     FROM 
         Posts P
 )

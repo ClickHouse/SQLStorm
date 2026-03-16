@@ -47,9 +47,9 @@ SELECT
 FROM 
     RegionStats rs
 JOIN 
-    CustomerOrders co ON co.c_custkey = (SELECT c.c_custkey FROM customer c ORDER BY RANDOM() LIMIT 1)
+    CustomerOrders co ON co.c_custkey = (SELECT c.c_custkey FROM customer c ORDER BY rand() LIMIT 1)
 JOIN 
-    LineItemStats lis ON lis.l_orderkey = (SELECT o.o_orderkey FROM orders o ORDER BY RANDOM() LIMIT 1)
+    LineItemStats lis ON lis.l_orderkey = (SELECT o.o_orderkey FROM orders o ORDER BY rand() LIMIT 1)
 ORDER BY 
     rs.total_supply_value DESC
 LIMIT 10;

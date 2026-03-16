@@ -54,7 +54,7 @@ SELECT
     md.movie_id,
     md.title,
     md.production_year,
-    STRING_AGG(md.actor_name, ', ' ORDER BY md.actor_order) AS actors
+    arrayStringConcat(groupArray(assumeNotNull(md.actor_name)), ', ' ORDER BY md.actor_order) AS actors
 FROM 
     movie_details md
 GROUP BY 

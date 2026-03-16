@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS Total_Customers,
     SUM(o.o_totalprice) AS Total_Revenue,
     SUM(l.l_quantity) AS Total_Quantity,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_size, ' ', p.p_container, ')'), ', ') AS Part_Details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_size, ' ', p.p_container, ')')))), ', ') AS Part_Details,
     MAX(l.l_shipdate) AS Latest_Shipdate
 FROM
     nation n
@@ -21,7 +21,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE
     p.p_brand LIKE 'Brand#%'
-    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY
     n.n_name
 ORDER BY

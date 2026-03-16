@@ -8,8 +8,8 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01'
-        AND o.o_orderdate < DATE '1998-01-01'
+        o.o_orderdate >= toDate('1997-01-01')
+        AND o.o_orderdate < toDate('1998-01-01')
 ), SupplierPartDetails AS (
     SELECT 
         s.s_suppkey,
@@ -35,7 +35,7 @@ WITH RankedOrders AS (
     FROM 
         lineitem li
     WHERE 
-        li.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        li.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY 
         li.l_orderkey
 ), OuterJoinSupplier AS (

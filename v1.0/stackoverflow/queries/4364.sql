@@ -7,13 +7,13 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray
     FROM 
         Posts p
     LEFT JOIN 
         Tags t ON p.Tags LIKE CONCAT('%', t.TagName, '%')
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.OwnerUserId, p.Title, p.Score, p.CreationDate
 ),
@@ -40,7 +40,7 @@ RecentBadges AS (
     FROM 
         Badges b 
     WHERE 
-        b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 years'
+        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
     GROUP BY 
         b.UserId, b.Name
 ),

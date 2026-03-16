@@ -18,7 +18,7 @@ WITH PostMetrics AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id
 ), RankedPosts AS (

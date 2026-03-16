@@ -33,7 +33,7 @@ AkaAggregates AS (
     SELECT 
         aka_name, 
         COUNT(DISTINCT title_id) AS title_count,
-        ARRAY_AGG(DISTINCT title ORDER BY title) AS titles 
+        arrayDistinct(groupArray(assumeNotNull(title ORDER BY title))) AS titles 
     FROM 
         MovieDetails
     GROUP BY 

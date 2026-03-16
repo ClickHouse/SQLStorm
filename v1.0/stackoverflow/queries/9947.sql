@@ -34,7 +34,7 @@ PostDetails AS (
     LEFT JOIN 
         Tags T ON P.Tags LIKE CONCAT('%', T.TagName, '%')
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     US.UserId,
@@ -49,7 +49,7 @@ SELECT
     PD.CreationDate AS PostCreationDate,
     PD.Score,
     PD.ViewCount,
-    STRING_AGG(DISTINCT PD.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PD.TagName))), ', ') AS Tags
 FROM 
     UserStats US
 JOIN 

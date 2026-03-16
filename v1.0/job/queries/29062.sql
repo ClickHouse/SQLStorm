@@ -3,10 +3,10 @@ WITH MovieDetails AS (
     SELECT 
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT co.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT p.info, ', ') AS person_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.info))), ', ') AS person_info
     FROM title t
     LEFT JOIN aka_title at ON t.id = at.movie_id
     LEFT JOIN aka_name ak ON at.id = ak.id

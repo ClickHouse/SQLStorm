@@ -16,7 +16,7 @@ WITH LatestPostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId, p.CreationDate
 ),
@@ -63,11 +63,11 @@ PostWithTags AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        ARRAY_AGG(t.TagName) AS Tags
+        groupArray(assumeNotNull(t.TagName)) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(p.Tags, '>')) AS tag ON TRUE
+        arrayJoin(splitByString('>', p.Tags)) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON tag = t.TagName
     WHERE 

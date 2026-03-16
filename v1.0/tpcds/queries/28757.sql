@@ -22,7 +22,7 @@ DateStats AS (
     SELECT
         d_year,
         COUNT(DISTINCT d_date_sk) AS total_days,
-        AVG(EXTRACT(DAY FROM d_date)) AS avg_day_of_month
+        AVG(toDayOfMonth(d_date)) AS avg_day_of_month
     FROM date_dim
     GROUP BY d_year
 ),

@@ -29,7 +29,7 @@ RecentReturns AS (
             FROM 
                 date_dim d 
             WHERE 
-                d.d_date < cast('2002-10-01' as date) - INTERVAL '1 YEAR'
+                d.d_date < cast('2002-10-01' as date) - INTERVAL 1 YEAR
         )
     GROUP BY 
         sr.sr_customer_sk

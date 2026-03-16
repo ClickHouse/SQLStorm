@@ -7,7 +7,7 @@ SELECT
     SUM(ws.ws_ext_sales_price) AS total_spent,
     COUNT(ws.ws_order_number) AS total_orders,
     MAX(d.d_date) AS last_purchase_date,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS purchased_items,
     CASE 
         WHEN cd.cd_gender = 'M' THEN 'Male'
         WHEN cd.cd_gender = 'F' THEN 'Female'

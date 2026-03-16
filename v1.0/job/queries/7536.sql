@@ -22,7 +22,7 @@ WITH RankedTitles AS (
 ), MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT it.info, '; ') AS info_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(it.info))), '; ') AS info_list
     FROM 
         movie_info mi
     JOIN 

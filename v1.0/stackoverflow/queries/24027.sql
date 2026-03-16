@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName
 ),
@@ -34,12 +34,12 @@ ActiveUsers AS (
     FROM 
         Users u
     WHERE 
-        u.LastAccessDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months'
+        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ),
 RelatedPosts AS (
     SELECT 
         pl.PostId,
-        COALESCE((SELECT STRING_AGG(p.Title, ', ')
+        COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(p.Title)), ', ')
                    FROM Posts p
                    JOIN PostLinks pl2 ON pl2.RelatedPostId = p.Id
                    WHERE pl2.PostId = pl.PostId), 'No Related Posts') AS RelatedPostTitles

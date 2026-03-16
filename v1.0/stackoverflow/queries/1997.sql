@@ -17,16 +17,16 @@ PostActivity AS (
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY P.Id, P.Title
 ),
 ClosedPosts AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(DISTINCT C.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(C.Name))), ', ') AS CloseReasons
     FROM PostHistory PH
-    JOIN CloseReasonTypes C ON PH.Comment::integer = C.Id
+    JOIN CloseReasonTypes C ON CAST(PH.Comment AS integer) = C.Id
     WHERE PH.PostHistoryTypeId = 10
     GROUP BY PH.PostId
 ),

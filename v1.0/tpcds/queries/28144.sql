@@ -11,7 +11,7 @@ SELECT
         ELSE 'Low Value'
     END AS customer_value,
     COUNT(DISTINCT WS.ws_order_number) AS total_orders,
-    STRING_AGG(DISTINCT CONCAT_WS(', ', I.i_item_desc), '; ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(', ', I.i_item_desc)))), '; ') AS purchased_items
 FROM 
     customer C
 JOIN 

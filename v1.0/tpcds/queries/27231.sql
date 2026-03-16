@@ -7,7 +7,7 @@ SELECT
     COUNT(DISTINCT ca.ca_city) AS unique_cities,
     SUBSTRING(c.c_first_name, 1, 1) AS first_initial,
     UPPER(CONCAT(c.c_first_name, ' ', c.c_last_name)) AS full_name,
-    STRING_AGG(CONCAT(c.c_first_name, ' ', c.c_last_name), '; ') AS all_customers,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name))), '; ') AS all_customers,
     MAX(CASE WHEN cd.cd_marital_status = 'M' THEN cd.cd_purchase_estimate END) AS max_married_purchase_estimate,
     MIN(CASE WHEN cd.cd_marital_status = 'S' THEN cd.cd_purchase_estimate END) AS min_single_purchase_estimate
 FROM 

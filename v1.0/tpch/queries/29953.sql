@@ -6,7 +6,7 @@ WITH StringAggregates AS (
         s.s_name,
         c.c_name,
         o.o_orderkey,
-        STRING_AGG(DISTINCT CONCAT(p.p_name, ' ', s.s_name), '; ') AS part_supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' ', s.s_name)))), '; ') AS part_supplier_names,
         COUNT(DISTINCT c.c_custkey) AS distinct_customers,
         SUM(l.l_quantity) AS total_quantity
     FROM 

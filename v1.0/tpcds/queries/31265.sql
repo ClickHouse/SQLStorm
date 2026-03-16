@@ -70,4 +70,4 @@ WHERE
     (os.total_quantity > 10 OR cs.customer_count > 5)
 ORDER BY 
     os.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

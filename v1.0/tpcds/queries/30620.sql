@@ -36,7 +36,7 @@ SELECT
     SUM(md.total_net_profit) AS total_net_profit,
     COUNT(DISTINCT cd.c_customer_sk) AS customer_count
 FROM MonthlySales md
-JOIN CustomerDetails cd ON md.d_month_seq = EXTRACT(MONTH FROM cast('2002-10-01' as date))
+JOIN CustomerDetails cd ON md.d_month_seq = toMonth(cast('2002-10-01' as date))
 GROUP BY md.d_month_seq, cd.cd_gender, cd.cd_marital_status
 HAVING SUM(md.total_net_profit) > (SELECT AVG(total_net_profit)
                                      FROM MonthlySales

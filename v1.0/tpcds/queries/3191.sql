@@ -58,4 +58,4 @@ WHERE
     tr.total_revenue IS NOT NULL
 ORDER BY 
     tr.total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

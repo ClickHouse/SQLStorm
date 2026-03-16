@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score > 0 AND 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
 ),
 UserReputation AS (
     SELECT 

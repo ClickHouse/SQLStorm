@@ -29,7 +29,7 @@ SelectedTitles AS (
 MovieKeywords AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mt
     JOIN 
@@ -40,7 +40,7 @@ MovieKeywords AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS info_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS info_details
     FROM 
         movie_info mi
     GROUP BY 

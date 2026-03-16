@@ -5,7 +5,7 @@ SELECT
     c.c_name AS customer_name,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     SUM(l.l_quantity) AS total_quantity,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     SUBSTRING(p.p_comment, 1, 20) AS short_comment,
     CASE 
         WHEN SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000 THEN 'High Value'

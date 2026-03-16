@@ -12,7 +12,7 @@ WITH TagStats AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= '2023-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        p.CreationDate >= CAST('2023-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
     GROUP BY 
         t.TagName
 ),
@@ -29,7 +29,7 @@ PostInteractions AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= '2023-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        p.CreationDate >= CAST('2023-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id
 ),
@@ -41,7 +41,7 @@ PostHistorySummary AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= '2023-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        ph.CreationDate >= CAST('2023-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
         AND ph.PostHistoryTypeId IN (4, 5, 6)  
     GROUP BY 
         ph.PostId

@@ -39,7 +39,7 @@ SELECT
     m.title,
     m.production_year,
     COUNT(DISTINCT ad.actor_name) AS total_actors,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     SUM(CASE WHEN m.production_year IS NOT NULL THEN 1 ELSE 0 END) AS valid_year_count
 FROM 
     RankedMovies m

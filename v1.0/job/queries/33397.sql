@@ -44,7 +44,7 @@ MovieInfo AS (
     SELECT 
         t.id AS movie_id,
         t.title,
-        COALESCE(array_agg(DISTINCT mi.info) FILTER (WHERE mi.info IS NOT NULL), ARRAY[]::text[]) AS info_list,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(mi.info))) FILTER (WHERE mi.info IS NOT NULL), ARRAY[]::text[]) AS info_list,
         COALESCE(mka.movie_count, 0) AS keyword_count
     FROM 
         title t

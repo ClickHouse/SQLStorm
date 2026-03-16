@@ -4,7 +4,7 @@ WITH SupplierInfo AS (
            r.r_name AS region, 
            COUNT(DISTINCT ps.ps_partkey) AS part_count,
            SUM(ps.ps_supplycost) AS total_supply_cost,
-           STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
     FROM supplier s
     JOIN nation n ON s.s_nationkey = n.n_nationkey
     JOIN region r ON n.n_regionkey = r.r_regionkey

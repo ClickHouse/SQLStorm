@@ -63,4 +63,4 @@ WHERE ss.total_quantity > (
     FROM SalesSummary
 )
 ORDER BY ss.total_orders DESC
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;

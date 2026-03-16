@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
-        ARRAY_AGG(b.Name) AS BadgeNames,
+        groupArray(assumeNotNull(b.Name)) AS BadgeNames,
         COUNT(c.Id) AS CommentCount,
         CASE 
             WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 
@@ -31,7 +31,7 @@ TextAnalytics AS (
         CommentCount,
         HasAcceptedAnswer,
         LENGTH(Body) - LENGTH(REPLACE(Body, ' ', '')) + 1 AS WordCount,
-        COALESCE(NULLIF(ARRAY_LENGTH(STRING_TO_ARRAY(Tags, ' '), 1), 0), 1) AS TagCount
+        COALESCE(NULLIF(length(splitByString(' ', Tags), 1), 0), 1) AS TagCount
     FROM RankedPosts
 ),
 Benchmark AS (

@@ -8,7 +8,7 @@ WITH RankedPosts AS (
            p.OwnerUserId, 
            ROW_NUMBER() OVER (PARTITION BY p.Tags ORDER BY p.Score DESC, p.CreationDate DESC) AS Rank
     FROM Posts p
-    WHERE p.PostTypeId IN (1, 2) AND p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.PostTypeId IN (1, 2) AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), UserStats AS (
     SELECT u.Id AS UserId, 
            u.DisplayName, 

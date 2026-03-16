@@ -22,8 +22,8 @@ OrderSummary AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' 
-        AND o.o_orderdate < DATE '1997-12-31'
+        o.o_orderdate >= toDate('1997-01-01') 
+        AND o.o_orderdate < toDate('1997-12-31')
     GROUP BY 
         o.o_orderkey, o.o_orderdate, o.o_orderstatus
 ),
@@ -42,7 +42,7 @@ SELECT
     p.p_name,
     SUM(os.total_sales) AS total_order_sales,
     COUNT(DISTINCT os.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT sd.nation_name, ', ') AS supplier_nations,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sd.nation_name))), ', ') AS supplier_nations,
     MAX(ps.total_availability) AS max_availability,
     MIN(ps.avg_supply_cost) AS min_supply_cost,
     CASE 

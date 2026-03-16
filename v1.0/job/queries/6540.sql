@@ -24,7 +24,7 @@ AggregateResults AS (
         movie_id,
         movie_title,
         COUNT(DISTINCT actor_name) AS actor_count,
-        ARRAY_AGG(DISTINCT movie_keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(movie_keyword))) AS keywords,
         MAX(production_year) AS latest_year
     FROM MovieDetails
     GROUP BY movie_id, movie_title

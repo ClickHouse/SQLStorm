@@ -60,4 +60,4 @@ FROM
 ORDER BY 
     total_net_profit DESC, 
     full_name ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -19,7 +19,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT UserId, COUNT(*) AS BadgeCount FROM Badges GROUP BY UserId) B ON U.Id = B.UserId
 LEFT JOIN 
-    (SELECT PostId, STRING_AGG(TagName, ', ') AS TagName FROM PostLinks PL 
+    (SELECT PostId, arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') AS TagName FROM PostLinks PL 
      JOIN Tags T ON PL.RelatedPostId = T.Id 
      GROUP BY PL.PostId) T ON P.Id = T.PostId
 LEFT JOIN 

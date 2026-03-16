@@ -25,7 +25,7 @@ PostWithTags AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray,
         p.CreationDate
     FROM Posts p
     LEFT JOIN Tags t ON t.ExcerptPostId = p.Id

@@ -47,7 +47,7 @@ FROM
 LEFT JOIN 
     SupplierDetails S ON C.c_custkey % 10 = S.s_nationkey
 WHERE 
-    C.last_order_date >= CURRENT_DATE - INTERVAL '6 MONTH'
+    C.last_order_date >= CURRENT_DATE - INTERVAL 6 MONTH
 GROUP BY 
     C.c_name, S.s_name
 HAVING 

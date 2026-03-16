@@ -45,5 +45,4 @@ AND (l.l_returnflag = 'N' OR l.l_returnflag IS NULL)
 GROUP BY r.r_name, n.n_name
 HAVING SUM(l.l_extendedprice) > 10000 
 ORDER BY total_revenue DESC
-OFFSET 5 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

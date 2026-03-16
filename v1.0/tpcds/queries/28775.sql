@@ -5,7 +5,7 @@ WITH address_summary AS (
         ca_state,
         COUNT(*) AS total_addresses,
         AVG(ca_gmt_offset) AS avg_gmt_offset,
-        STRING_AGG(ca_street_name, ', ') AS street_names
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names
     FROM 
         customer_address
     GROUP BY 
@@ -16,7 +16,7 @@ demographics_summary AS (
         cd_gender,
         COUNT(*) AS total_demographics,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(cd_education_status, ', ') AS education_statuses
+        arrayStringConcat(groupArray(assumeNotNull(cd_education_status)), ', ') AS education_statuses
     FROM 
         customer_demographics
     GROUP BY 

@@ -10,13 +10,13 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
@@ -43,7 +43,7 @@ DistinctTagCounts AS (
         COUNT(DISTINCT TRIM(value)) AS TagCount
     FROM 
         Posts p,
-        UNNEST(string_to_array(p.Tags, '<>')) AS value
+        arrayJoin(splitByString('<>', p.Tags)) AS value
     GROUP BY 
         p.Id
 ),

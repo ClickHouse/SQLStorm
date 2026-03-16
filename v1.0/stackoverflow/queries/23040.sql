@@ -67,7 +67,7 @@ SELECT
     utp.UserId,
     u.DisplayName,
     utp.Reputation,
-    ARRAY_AGG(utp.Title) AS PostTitles,
+    groupArray(assumeNotNull(utp.Title)) AS PostTitles,
     SUM(utp.UpVotes) AS TotalUpVotes,
     SUM(utp.CommentCount) AS TotalComments,
     AVG(utp.UpVoteToCommentRatio) AS AvgUpVoteToCommentRatio

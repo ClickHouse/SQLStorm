@@ -22,7 +22,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     p.p_size BETWEEN 10 AND 20
-    AND l.l_shipdate >= DATE '1996-01-01' AND l.l_shipdate < DATE '1997-01-01'
+    AND l.l_shipdate >= toDate('1996-01-01') AND l.l_shipdate < toDate('1997-01-01')
 GROUP BY 
     p.p_partkey, p.p_name, s.s_name, c.c_name
 HAVING 

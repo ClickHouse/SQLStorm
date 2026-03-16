@@ -54,4 +54,4 @@ HAVING
     )
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;

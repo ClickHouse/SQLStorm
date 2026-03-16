@@ -64,4 +64,4 @@ LEFT JOIN (
 ) r ON m.production_year = r.production_year
 ORDER BY 
     m.production_year DESC, m.movie_id ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

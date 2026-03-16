@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, u.DisplayName, p.CreationDate, p.ViewCount
 ), 
@@ -69,7 +69,7 @@ FROM
     PostStatistics ps
 LEFT JOIN 
     (SELECT DISTINCT 
-         unnest(string_to_array(p.Tags, '>')) AS TagName, 
+         arrayJoin(splitByString('>', p.Tags)) AS TagName, 
          p.Id AS PostID
      FROM 
          Posts p 

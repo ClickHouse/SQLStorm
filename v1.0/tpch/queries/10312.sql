@@ -12,7 +12,7 @@ JOIN
 JOIN 
     supplier s ON l.l_suppkey = s.s_suppkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1997-02-01'
+    l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1997-02-01')
 GROUP BY 
     n.n_name
 ORDER BY 

@@ -10,12 +10,12 @@ WITH RankedPosts AS (
         COALESCE((SELECT COUNT(*) 
                   FROM Votes v 
                   WHERE v.PostId = p.Id AND v.VoteTypeId IN (2, 3)), 0) AS TotalVotes,
-        ARRAY_LENGTH(string_to_array(COALESCE(p.Tags, ''), '><'), 1) AS TagCount
+        length(splitByString('><', COALESCE(p.Tags, '')), 1) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.ViewCount IS NOT NULL
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostStats AS (
     SELECT 
@@ -53,7 +53,7 @@ RecentCloseReasons AS (
         PostHistory ph
     WHERE 
         ph.PostHistoryTypeId = 10 
-        AND ph.CreationDate >= DATE_TRUNC('month', cast('2024-10-01 12:34:56' as timestamp))
+        AND ph.CreationDate >= DATE_TRUNC('month', toDateTime64('2024-10-01 12:34:56', 6))
     GROUP BY 
         ph.PostId, ph.Comment
 ),

@@ -6,7 +6,7 @@ WITH movie_details AS (
         t.production_year,
         t.kind_id,
         COUNT(DISTINCT m.company_id) AS company_count,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         aka_title t
     JOIN 

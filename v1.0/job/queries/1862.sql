@@ -30,7 +30,7 @@ filtered_movies AS (
 movie_keywords AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword m
     JOIN 
@@ -54,7 +54,7 @@ SELECT
     d.actor_name,
     COUNT(d.movie_title) AS movie_count,
     AVG(d.production_year) AS avg_production_year,
-    STRING_AGG(DISTINCT d.keywords, '; ') AS all_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d.keywords))), '; ') AS all_keywords
 FROM 
     movie_details d
 GROUP BY 

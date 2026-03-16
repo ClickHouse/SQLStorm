@@ -54,4 +54,4 @@ WHERE
 ORDER BY 
     ra.ws_sales_price DESC,
     ca.total_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

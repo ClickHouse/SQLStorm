@@ -61,4 +61,4 @@ FROM
     active_customers ac
 ORDER BY 
     ac.total_net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

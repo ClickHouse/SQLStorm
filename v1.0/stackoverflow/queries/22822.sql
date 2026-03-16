@@ -56,7 +56,7 @@ ActiveUsers AS (
     JOIN 
         Posts p ON ur.UserId = p.OwnerUserId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '30 days'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY
     GROUP BY 
         ur.UserId, ur.Reputation, ur.BadgeCount, ur.GoldBadges, ur.SilverBadges, ur.BronzeBadges
 )

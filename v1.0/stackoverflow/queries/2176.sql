@@ -24,13 +24,13 @@ RecentActivity AS (
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 UserBadges AS (
     SELECT 
         B.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Badges B
     GROUP BY 
@@ -60,4 +60,4 @@ WHERE
     US.Reputation > 1000
 ORDER BY 
     US.Reputation DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

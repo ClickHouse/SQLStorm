@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'  
+        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR  
     GROUP BY 
         p.Id, p.Title, u.DisplayName, p.CreationDate, p.Score, p.ViewCount
 ),

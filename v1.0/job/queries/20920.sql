@@ -15,7 +15,7 @@ ActorRoles AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS actor_count,
-        ARRAY_AGG(DISTINCT COALESCE(a.name, 'Unknown Actor')) AS actors_list
+        arrayDistinct(groupArray(assumeNotNull(COALESCE(a.name, 'Unknown Actor')))) AS actors_list
     FROM 
         cast_info c
     LEFT JOIN 
@@ -47,7 +47,7 @@ SELECT
     md.actor_count,
     md.actors_list,
     md.position_desc,
-    (SELECT STRING_AGG(DISTINCT k.keyword, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
      FROM movie_keyword mk 
      JOIN keyword k ON mk.keyword_id = k.id 
      WHERE mk.movie_id = md.movie_id) AS keywords,
@@ -67,4 +67,4 @@ WHERE
 ORDER BY 
     md.production_year DESC, 
     md.actor_count DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments
 FROM 
     part p
 JOIN 

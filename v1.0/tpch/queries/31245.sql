@@ -19,7 +19,7 @@ SELECT
     AVG(s.s_acctbal) AS avg_supplier_balance,
     SUM(CASE WHEN l.l_discount > 0.1 THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END) AS discounted_sales,
     MAX(p.p_retailprice) AS max_part_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') FILTER (WHERE p.p_size > 10) AS large_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') FILTER (WHERE p.p_size > 10) AS large_parts
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey

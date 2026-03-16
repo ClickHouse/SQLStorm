@@ -21,7 +21,7 @@ RankedPosts AS (
         COUNT(c.Id) AS TotalComments
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.OwnerUserId, p.Title, p.CreationDate
 ),
 HighScorePosts AS (
@@ -40,7 +40,7 @@ HighScorePosts AS (
 SELECT 
     hsp.Title,
     COUNT(DISTINCT ph.PostId) AS RelatedPostCount,
-    STRING_AGG(DISTINCT ph.Comment, '; ') AS CloseReasons,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS CloseReasons,
     hsp.Reputation * hsp.TotalComments AS EngagementScore
 FROM HighScorePosts hsp
 LEFT JOIN PostHistory ph ON hsp.PostId = ph.PostId

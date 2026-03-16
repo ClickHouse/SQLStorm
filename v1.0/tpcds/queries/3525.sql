@@ -55,4 +55,4 @@ WHERE
     AND (sa.total_orders IS NOT NULL AND sa.total_orders > 5)
 ORDER BY 
     sa.total_spent DESC NULLS LAST
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

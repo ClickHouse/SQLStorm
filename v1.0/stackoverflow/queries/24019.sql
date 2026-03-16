@@ -16,7 +16,7 @@ WITH RankedUsers AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(*) FILTER (WHERE b.Class = 1) AS GoldCount,
         COUNT(*) FILTER (WHERE b.Class = 2) AS SilverCount,
         COUNT(*) FILTER (WHERE b.Class = 3) AS BronzeCount
@@ -28,7 +28,7 @@ UserBadges AS (
 PostCloseReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     LEFT JOIN 
@@ -58,7 +58,7 @@ LEFT JOIN
     PostCloseReasons pcr ON p.Id = pcr.PostId
 WHERE 
     (ru.PostCount > 5 OR ub.GoldCount > 0)
-    AND (p.LastActivityDate IS NULL OR p.LastActivityDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+    AND (p.LastActivityDate IS NULL OR p.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ORDER BY 
     ru.ViewRank,
     ru.PostCount DESC;

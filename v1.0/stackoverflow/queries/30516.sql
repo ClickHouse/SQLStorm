@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
         AND P.PostTypeId = 1 
 ),
 HighScorePosts AS (
@@ -44,11 +44,11 @@ ClosureReasons AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(CAST(CRT.Name AS TEXT), ', ') AS ClosureReasons
+        arrayStringConcat(groupArray(assumeNotNull(CAST(CRT.Name AS TEXT))), ', ') AS ClosureReasons
     FROM 
         PostHistory PH
     JOIN 
-        CloseReasonTypes CRT ON PH.Comment::INTEGER = CRT.Id
+        CloseReasonTypes CRT ON CAST(PH.Comment AS INTEGER) = CRT.Id
     WHERE 
         PH.PostHistoryTypeId = 10 
     GROUP BY 

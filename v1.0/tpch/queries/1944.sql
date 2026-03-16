@@ -34,7 +34,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue,
     COUNT(DISTINCT l.l_partkey) AS part_count,
     MAX(p.p_retailprice) AS max_retail_price,
-    STRING_AGG(s.s_name, ', ') AS supplier_names
+    arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS supplier_names
 FROM 
     customer c
 JOIN 

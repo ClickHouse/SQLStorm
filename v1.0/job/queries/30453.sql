@@ -28,7 +28,7 @@ SELECT
     mh.production_year AS linked_movie_year,
     a_name.name AS actor_name,
     COUNT(DISTINCT mc.company_id) AS company_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     RANK() OVER (PARTITION BY mh.production_year ORDER BY COUNT(DISTINCT mc.company_id) DESC) AS company_rank
 FROM 
     movie_hierarchy mh

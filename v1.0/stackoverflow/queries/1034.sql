@@ -15,7 +15,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId, p.CreationDate, p.Score, u.DisplayName
 ),
@@ -47,7 +47,7 @@ SELECT
     rp.CreationDate,
     rp.Score,
     rp.CommentCount,
-    ARRAY_AGG(pt.TagName) AS AssociatedTags,
+    groupArray(assumeNotNull(pt.TagName)) AS AssociatedTags,
     CASE 
         WHEN ur.ReputationRank <= 10 THEN 'Top Contributor'
         WHEN ur.ReputationRank BETWEEN 11 AND 50 THEN 'Veteran Contributor'

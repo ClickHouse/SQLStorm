@@ -10,14 +10,14 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.CreationDate DESC) AS Rank
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.Score, p.CreationDate, p.ViewCount, p.PostTypeId
 ),
 UserBadges AS (
     SELECT
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM Badges b
     GROUP BY b.UserId
 ),

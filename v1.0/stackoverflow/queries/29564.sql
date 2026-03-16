@@ -11,7 +11,7 @@ WITH PostDetails AS (
         P.Tags,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
         COUNT(CASE WHEN V.Id IS NOT NULL THEN 1 END) AS VoteCount,
-        STRING_AGG(DISTINCT B.Name, ', ') AS BadgeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(B.Name))), ', ') AS BadgeNames
     FROM 
         Posts P
     LEFT JOIN 
@@ -31,9 +31,9 @@ WITH PostDetails AS (
 PostHistories AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(CASE WHEN PHT.Name = 'Edit Title' THEN PH.Text END, '; ') AS EditedTitles,
-        STRING_AGG(CASE WHEN PHT.Name = 'Edit Body' THEN PH.Text END, '; ') AS EditedBodies,
-        STRING_AGG(CASE WHEN PHT.Name = 'Initial Tags' THEN PH.Text END, '; ') AS InitialTags
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PHT.Name = 'Edit Title' THEN PH.Text END)), '; ') AS EditedTitles,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PHT.Name = 'Edit Body' THEN PH.Text END)), '; ') AS EditedBodies,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PHT.Name = 'Initial Tags' THEN PH.Text END)), '; ') AS InitialTags
     FROM 
         PostHistory PH
     JOIN 

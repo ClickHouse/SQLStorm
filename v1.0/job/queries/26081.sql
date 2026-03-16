@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         t.production_year,
         c.name AS company_name,
         k.keyword,
-        ARRAY_AGG(DISTINCT a.name) AS actor_names
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actor_names
     FROM 
         aka_title t
     JOIN 
@@ -36,7 +36,7 @@ FilteredMovies AS (
     FROM 
         MovieDetails md
     WHERE 
-        ARRAY_LENGTH(md.actor_names, 1) > 3 
+        length(md.actor_names, 1) > 3 
       AND 
         md.production_year = (
             SELECT MAX(production_year) FROM MovieDetails

@@ -24,7 +24,7 @@ ActorMovies AS (
 MovieDetails AS (
     SELECT 
         m.movie_id, 
-        STRING_AGG(DISTINCT a.actor_name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.actor_name))), ', ') AS actors,
         MAX(m.rank) AS max_rank
     FROM 
         RankedMovies m

@@ -3,7 +3,7 @@ WITH StringAggregates AS (
         p.p_brand,
         SUM(LENGTH(p.p_name)) AS total_name_length,
         COUNT(DISTINCT s.s_name) AS unique_suppliers,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
         AVG(LENGTH(ps.ps_comment)) AS avg_partsupp_comment_length
     FROM part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey

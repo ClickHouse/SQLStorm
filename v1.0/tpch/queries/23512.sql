@@ -68,7 +68,7 @@ LEFT JOIN
         WHERE p2.p_retailprice > (
             SELECT AVG(p3.p_retailprice) FROM part p3 WHERE p3.p_size = 10
         )
-        ORDER BY RANDOM()
+        ORDER BY rand()
         LIMIT 1 
     )
 LEFT JOIN 
@@ -76,7 +76,7 @@ LEFT JOIN
         SELECT o2.o_orderkey
         FROM orders o2
         WHERE o2.o_totalprice > 5000 AND o2.o_orderstatus = 'O'
-        ORDER BY RANDOM()
+        ORDER BY rand()
         LIMIT 1 
     )
 WHERE 

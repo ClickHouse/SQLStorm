@@ -14,7 +14,7 @@ title_with_keywords AS (
     SELECT 
         t.id AS title_id,
         t.title,
-        COALESCE(ARRAY_AGG(k.keyword), '{}') AS keywords
+        COALESCE(groupArray(assumeNotNull(k.keyword)), '{}') AS keywords
     FROM 
         title t
     LEFT JOIN 

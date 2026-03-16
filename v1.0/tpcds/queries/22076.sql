@@ -39,7 +39,7 @@ DateInfo AS (
         d.d_month_seq,
         d.d_year,
         CASE 
-            WHEN MOD(EXTRACT(DOW FROM d.d_date) + 1, 7) = 0 THEN 'Weekend'
+            WHEN MOD(toDayOfWeek(d.d_date) + 1, 7) = 0 THEN 'Weekend'
             ELSE 'Weekday'
         END AS DayType
     FROM 
@@ -61,7 +61,7 @@ FROM
 FULL OUTER JOIN 
     DateInfo di ON 1=1
 WHERE 
-    di.d_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31'
+    di.d_date BETWEEN toDate('2023-01-01') AND toDate('2023-12-31')
     AND (COALESCE(hvc.TotalNetPaid, 0) > 3000 OR (di.DayType = 'Weekend' AND hvc.TotalStoreSales > 10))
 ORDER BY 
     COALESCE(hvc.TotalNetPaid, 0) DESC, 

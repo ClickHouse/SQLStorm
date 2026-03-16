@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id 
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 ),
 
 DetailedPostHistory AS (
@@ -35,14 +35,14 @@ DetailedPostHistory AS (
     JOIN 
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'  
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH  
 ),
 
 CommentDetails AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS CommentsSummary
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS CommentsSummary
     FROM 
         Comments c
     GROUP BY 

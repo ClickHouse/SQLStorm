@@ -37,7 +37,7 @@ MovieDetails AS (
         (SELECT COUNT(*) 
          FROM complete_cast cc 
          WHERE cc.movie_id = mh.movie_id) AS num_cast,
-        (SELECT STRING_AGG(DISTINCT ak.name, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') 
          FROM cast_info ci
          JOIN aka_name ak ON ci.person_id = ak.person_id
          WHERE ci.movie_id = mh.movie_id) AS cast_names
@@ -59,7 +59,7 @@ SELECT
          WHERE mc.movie_id = md.movie_id AND mc.note IS NOT NULL), 
         0
     ) AS num_companies,
-    (SELECT STRING_AGG(DISTINCT kw.keyword, ', ')
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ')
      FROM movie_keyword mk
      JOIN keyword kw ON mk.keyword_id = kw.id
      WHERE mk.movie_id = md.movie_id) AS keywords

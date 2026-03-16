@@ -19,12 +19,12 @@ WITH RankedPosts AS (
         Users U ON P.OwnerUserId = U.Id
     WHERE 
         P.PostTypeId = 1 
-        AND P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 
 TagSummary AS (
     SELECT 
-        TRIM(unnest(string_to_array(Tags, '>'))) AS TagName,
+        TRIM(arrayJoin(splitByString('>', Tags))) AS TagName,
         COUNT(PostId) AS PostCount,
         SUM(Score) AS TotalScore,
         SUM(ViewCount) AS TotalViews,
@@ -62,7 +62,7 @@ SELECT
 FROM 
     TopTags TT
 JOIN 
-    RankedPosts P ON TT.TagName = ANY(string_to_array(P.Tags, '>'))
+    RankedPosts P ON TT.TagName = ANY(splitByString('>', P.Tags))
 WHERE 
     TT.Rank <= 5 
 ORDER BY 

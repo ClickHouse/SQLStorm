@@ -64,4 +64,4 @@ WHERE
     cr.total_return_amount > 1000
 ORDER BY 
     cr.total_return_amount DESC, tc.total_purchases DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

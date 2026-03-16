@@ -47,7 +47,7 @@ FinalResults AS (
     SELECT 
         ta.actor_name,
         ta.movie_count,
-        ARRAY_AGG(DISTINCT rm.movie_title) AS movies
+        arrayDistinct(groupArray(assumeNotNull(rm.movie_title))) AS movies
     FROM 
         TopActors ta
     JOIN 

@@ -5,7 +5,7 @@ WITH AddressStatistics AS (
         COUNT(*) AS total_addresses,
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length,
         SUM(CASE WHEN ca_street_type IS NOT NULL THEN 1 ELSE 0 END) AS type_count,
-        ARRAY_AGG(DISTINCT ca_city) AS unique_cities
+        arrayDistinct(groupArray(assumeNotNull(ca_city))) AS unique_cities
     FROM customer_address
     GROUP BY ca_state
 ),

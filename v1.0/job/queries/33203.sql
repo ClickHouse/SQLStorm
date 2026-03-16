@@ -25,7 +25,7 @@ WITH RECURSIVE MovieHierarchy AS (
 MovieKeywords AS (
     SELECT
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -38,7 +38,7 @@ CastRoles AS (
     SELECT
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(CONCAT(n.name, ' (', rt.role, ')'), ', ') AS cast_list
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(n.name, ' (', rt.role, ')'))), ', ') AS cast_list
     FROM 
         cast_info ci
     JOIN 
@@ -52,7 +52,7 @@ CastRoles AS (
 MovieCompanies AS (
     SELECT
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS companies
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 

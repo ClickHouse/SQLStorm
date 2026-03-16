@@ -26,7 +26,7 @@ QuestionHistory AS (
         (SELECT COUNT(*) FROM Comments C WHERE C.PostId = Q.Id) AS CommentCount,
         (SELECT COUNT(*) FROM Votes V WHERE V.PostId = Q.Id AND V.VoteTypeId = 2) AS UpVotes,
         (SELECT COUNT(*) FROM Votes V WHERE V.PostId = Q.Id AND V.VoteTypeId = 3) AS DownVotes,
-        (SELECT STRING_AGG(CAST(HT.PostHistoryTypeId AS VARCHAR), ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(CAST(HT.PostHistoryTypeId AS VARCHAR))), ', ') 
          FROM PostHistory HT 
          WHERE HT.PostId = Q.Id AND HT.CreationDate > Q.CreationDate) AS HistoryTypes
     FROM 

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.PostTypeId IN (1, 2)
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount
@@ -34,7 +34,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastClosedDate,
-        STRING_AGG(cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

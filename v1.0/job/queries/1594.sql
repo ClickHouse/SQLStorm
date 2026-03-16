@@ -2,7 +2,7 @@ WITH movie_details AS (
     SELECT 
         a.title AS movie_title,
         a.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COUNT(DISTINCT CASE WHEN c.person_role_id IS NOT NULL THEN c.person_id END) AS cast_count
     FROM 
         aka_title a

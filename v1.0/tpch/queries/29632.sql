@@ -3,7 +3,7 @@ SELECT
     CONCAT('Supplier: ', s_name, ', Region: ', r_name) AS supplier_region,
     SUM(CASE WHEN l_returnflag = 'R' THEN l_quantity ELSE 0 END) AS total_returned_quantity,
     AVG(l_extendedprice * (1 - l_discount)) AS avg_discounted_price,
-    STRING_AGG(DISTINCT p_name, ', ') AS parts_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p_name))), ', ') AS parts_list,
     COUNT(DISTINCT c.c_custkey) AS distinct_customers
 FROM 
     supplier s

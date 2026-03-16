@@ -16,5 +16,5 @@ SELECT
     AVG(description_length) AS avg_length,
     COUNT(*) AS total_records,
     MAX(short_comment) AS longest_short_comment,
-    STRING_AGG(cleaned_supplier_comment, '; ') AS all_supplier_comments
+    arrayStringConcat(groupArray(assumeNotNull(cleaned_supplier_comment)), '; ') AS all_supplier_comments
 FROM StringBench;

@@ -5,8 +5,8 @@ WITH
             ca_city,
             ca_state,
             COUNT(*) AS address_count,
-            STRING_AGG(ca_street_name, ', ') AS street_names,
-            STRING_AGG(DISTINCT ca_street_type, ', ') AS street_types,
+            arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names,
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_type))), ', ') AS street_types,
             AVG(ca_gmt_offset) AS avg_gmt_offset
         FROM 
             customer_address

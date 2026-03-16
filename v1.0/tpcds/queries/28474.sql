@@ -32,7 +32,7 @@ SELECT
     ca_state AS state, 
     cd_gender AS gender, 
     COUNT(*) AS number_of_customers,
-    ARRAY_AGG(full_name) AS customer_names
+    groupArray(assumeNotNull(full_name)) AS customer_names
 FROM 
     FilteredCustomers
 GROUP BY 

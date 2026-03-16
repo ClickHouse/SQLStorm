@@ -26,4 +26,4 @@ WHERE cd.cd_gender = 'F'
   AND cd.cd_marital_status = 'M'
   AND sr.total_sales IS NOT NULL
 ORDER BY sales_rank
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10;

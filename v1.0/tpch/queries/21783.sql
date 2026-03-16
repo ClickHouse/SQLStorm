@@ -76,4 +76,4 @@ WHERE
 ORDER BY 
     r.o_totalprice DESC, 
     sd.total_sales ASC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

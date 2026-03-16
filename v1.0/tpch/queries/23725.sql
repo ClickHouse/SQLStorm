@@ -59,4 +59,4 @@ WHERE
     (p.total_returned > 0 OR p.p_retailprice > 100)
     AND (c.total_spent IS NULL OR c.total_spent < 10000)
 ORDER BY r.o_orderdate DESC, r.o_totalprice ASC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

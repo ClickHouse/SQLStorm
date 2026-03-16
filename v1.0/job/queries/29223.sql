@@ -24,7 +24,7 @@ titles_with_keywords AS (
         rt.production_year, 
         rt.cast_member_count, 
         rt.avg_info_length, 
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM ranked_titles rt
     JOIN movie_keyword mk ON rt.movie_id = mk.movie_id
     JOIN keyword k ON mk.keyword_id = k.id

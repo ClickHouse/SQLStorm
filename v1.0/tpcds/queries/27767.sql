@@ -48,4 +48,4 @@ SELECT
     fs.max_dependents
 FROM FullStatistics fs
 ORDER BY fs.total_addresses DESC, fs.avg_purchase_estimate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -5,7 +5,7 @@ SELECT
     r.role AS actor_role,
     COUNT(DISTINCT kw.keyword) AS keyword_count,
     ci.note AS cast_note,
-    STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) AS company_names,
     COALESCE(mi.info, 'No additional info') AS additional_info
 FROM 
     title t

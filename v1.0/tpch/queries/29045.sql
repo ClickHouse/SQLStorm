@@ -4,7 +4,7 @@ SELECT
     p.p_name AS part_name,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_price,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     MAX(o.o_totalprice) AS max_order_price,
     MIN(o.o_orderdate) AS first_order_date,

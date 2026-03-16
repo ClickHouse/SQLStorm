@@ -38,4 +38,4 @@ JOIN HighProfitItems hp ON c.c_customer_sk IN (
 WHERE c.c_birth_month = 10 
 AND ca.ca_state IN ('CA', 'NY')
 ORDER BY hp.total_profit DESC, c.c_last_name ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

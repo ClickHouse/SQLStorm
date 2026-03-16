@@ -20,7 +20,7 @@ WITH StringAggregation AS (
 )
 SELECT 
     supplier_name,
-    STRING_AGG(full_description, '; ') AS concatenated_descriptions
+    arrayStringConcat(groupArray(assumeNotNull(full_description)), '; ') AS concatenated_descriptions
 FROM 
     StringAggregation
 GROUP BY 

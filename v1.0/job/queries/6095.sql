@@ -29,8 +29,8 @@ ActorRoles AS (
 MovieCompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(CASE WHEN ct.kind = 'Producer' THEN cn.name ELSE NULL END, ', ') AS producers,
-        STRING_AGG(CASE WHEN ct.kind = 'Distributor' THEN cn.name ELSE NULL END, ', ') AS distributors
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ct.kind = 'Producer' THEN cn.name ELSE NULL END)), ', ') AS producers,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ct.kind = 'Distributor' THEN cn.name ELSE NULL END)), ', ') AS distributors
     FROM 
         movie_companies mc
     JOIN 

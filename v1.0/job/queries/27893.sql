@@ -43,7 +43,7 @@ SELECT
     t.title,
     t.production_year,
     COUNT(DISTINCT ad.actor_name) AS actor_count,
-    STRING_AGG(DISTINCT ad.actor_name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ad.actor_name))), ', ') AS actor_names,
     t.company_count
 FROM
     TopRatedTitles t

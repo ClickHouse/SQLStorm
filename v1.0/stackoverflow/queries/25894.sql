@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id 
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.OwnerUserId
 )
@@ -31,7 +31,7 @@ SELECT
     rp.AnswerCount,
     rp.UpVotes,
     rp.DownVotes,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     RankedPosts rp 
 JOIN 
@@ -44,7 +44,7 @@ JOIN
             Id = rp.PostId
     )
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(rp.Tags, '><')) AS tagArray ON TRUE
+    arrayJoin(splitByString('><', rp.Tags)) AS tagArray ON TRUE
 JOIN 
     Tags t ON t.TagName = tagArray 
 WHERE 

@@ -3,9 +3,9 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(p.p_retailprice) AS average_retail_price,
     COUNT(DISTINCT s.s_suppkey) AS number_of_suppliers,
-    STRING_AGG(DISTINCT s.s_name, '; ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), '; ') AS supplier_names,
     MAX(o.o_totalprice) AS max_order_total,
-    ARRAY_AGG(DISTINCT c.c_mktsegment) AS market_segments,
+    arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))) AS market_segments,
     MIN(p.p_size) AS smallest_part_size,
     CONCAT('Region: ', r.r_name, ', Nation: ', n.n_name) AS region_nation_info
 FROM 

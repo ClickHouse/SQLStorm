@@ -15,7 +15,7 @@ CastDetails AS (
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS total_cast,
         SUM(CASE WHEN c.person_role_id IS NOT NULL THEN 1 ELSE 0 END) AS roles_filled,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM
         cast_info c
     JOIN

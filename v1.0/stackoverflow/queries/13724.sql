@@ -12,7 +12,7 @@ JOIN
 LEFT JOIN 
     Comments C ON P.Id = C.PostId
 WHERE 
-    P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
+    P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 GROUP BY 
     U.Reputation, P.Score, P.ViewCount, P.CreationDate
 ORDER BY 

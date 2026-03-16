@@ -28,7 +28,7 @@ ClosedPosts AS (
 UserBadges AS (
     SELECT 
         UserId,
-        STRING_AGG(Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS Badges
     FROM Badges
     GROUP BY UserId
 )

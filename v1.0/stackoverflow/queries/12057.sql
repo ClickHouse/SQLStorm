@@ -9,7 +9,7 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     COUNT(co.Id) AS CommentCount,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id) AS VoteCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     Posts p
 JOIN 
@@ -17,7 +17,7 @@ JOIN
 LEFT JOIN 
     Comments co ON p.Id = co.PostId
 LEFT JOIN 
-    LATERAL (SELECT UNNEST(string_to_array(p.Tags, '><')) AS tag) AS tag ON true
+    (SELECT arrayJoin(splitByString('><', p.Tags)) AS tag) AS tag ON true
 LEFT JOIN 
     Tags t ON t.TagName = tag
 WHERE 

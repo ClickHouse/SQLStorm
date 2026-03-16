@@ -9,7 +9,7 @@ SELECT
     AVG(i.i_current_price) AS avg_item_price,
     MAX(i.i_current_price) AS max_item_price,
     MIN(i.i_current_price) AS min_item_price,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promo_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promo_list
 FROM 
     customer c
 JOIN 

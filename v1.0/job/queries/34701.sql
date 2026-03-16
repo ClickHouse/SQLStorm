@@ -32,7 +32,7 @@ SELECT
     mh.title,
     mh.production_year,
     COUNT(DISTINCT ci.person_id) AS cast_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
     MAX(CASE WHEN mi.info_type_id = 1 THEN mi.info END) AS genre,
     SUM(CASE 
             WHEN ci.nr_order IS NULL THEN 1 

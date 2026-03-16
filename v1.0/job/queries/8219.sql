@@ -28,7 +28,7 @@ SELECT
     tt.title,
     tt.production_year,
     tt.actor_count,
-    STRING_AGG(aka.name, ', ') AS actor_names,
+    arrayStringConcat(groupArray(assumeNotNull(aka.name)), ', ') AS actor_names,
     GROUP_CONCAT(DISTINCT kw.keyword) AS keywords 
 FROM 
     TopTitles tt

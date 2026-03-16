@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Tags,
         p.Score,
         p.CreationDate,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagList,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagList,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT b.Id) AS BadgeCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank
@@ -20,10 +20,10 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     LEFT JOIN 
-        Tags t ON t.Id = ANY(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM '\\[(.*?)\\]'), ',')::int[])  
+        Tags t ON t.Id = ANY(splitByString(',', SUBSTRING(p.Tags FROM '\\[(.*?)\\]')CAST() AS int)[])  
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Body, p.Score, p.CreationDate
     HAVING 
@@ -42,7 +42,7 @@ TopPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        unnest(tv.TagList) AS TagName,
+        arrayJoin(tv.TagList) AS TagName,
         COUNT(*) AS PostCount,
         AVG(tg.Count) AS AverageUsage,
         MAX(tg.Count) AS MaxUsage
@@ -51,7 +51,7 @@ TagStatistics AS (
     JOIN 
         Tags tg ON tg.TagName = ANY(tv.TagList)
     GROUP BY 
-        unnest(tv.TagList)
+        arrayJoin(tv.TagList)
 )
 SELECT 
     ts.TagName,

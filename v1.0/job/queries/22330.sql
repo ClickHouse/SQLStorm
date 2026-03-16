@@ -50,7 +50,7 @@ SELECT
         WHEN mw.movie_count BETWEEN 6 AND 10 THEN 'Frequent Actor'
         ELSE 'Occasional Actor'
     END AS actor_type,
-    COALESCE((SELECT STRING_AGG(note, ', ') 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(note)), ', ') 
               FROM movie_info mi 
               WHERE mi.movie_id = mw.movie_id 
               AND mi.info_type_id IN (SELECT id FROM info_type WHERE info = 'Award')), 

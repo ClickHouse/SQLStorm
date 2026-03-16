@@ -21,7 +21,7 @@ PostWithTags AS (
         P.Title,
         P.CreationDate,
         P.Score,
-        STRING_AGG(T.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM 
         Posts P
         LEFT JOIN Tags T ON P.Tags LIKE '%' || T.TagName || '%'
@@ -46,7 +46,7 @@ RecentPostStatistics AS (
         LEFT JOIN UserVotes UP ON P.Score > (SELECT AVG(Score) FROM Posts)
         LEFT JOIN PostHistory PH ON P.PostId = PH.PostId 
     WHERE 
-        P.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 )
 SELECT 
     R.DisplayName, 

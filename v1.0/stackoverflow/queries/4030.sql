@@ -18,7 +18,7 @@ PostStatistics AS (
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (8, 9) 
-    LEFT JOIN (SELECT unnest(string_to_array(P.Tags, '>')) AS TagName, P.Id FROM Posts P) AS TAGS ON TAGS.Id = P.Id
+    LEFT JOIN (SELECT arrayJoin(splitByString('>', P.Tags)) AS TagName, P.Id FROM Posts P) AS TAGS ON TAGS.Id = P.Id
     GROUP BY P.Id, P.OwnerUserId, P.Title
 ), 
 PostHistoryDetails AS (
@@ -26,7 +26,7 @@ PostHistoryDetails AS (
         PH.PostId,
         MAX(PH.CreationDate) AS LastEditDate,
         COUNT(DISTINCT PH.UserId) AS EditorsCount,
-        STRING_AGG(DISTINCT PH.UserDisplayName, ', ') AS Editors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.UserDisplayName))), ', ') AS Editors
     FROM PostHistory PH
     WHERE PH.PostHistoryTypeId IN (4, 5, 6, 10, 11)  
     GROUP BY PH.PostId

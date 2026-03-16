@@ -12,7 +12,7 @@ WITH UserTags AS (
         Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN 
         (SELECT DISTINCT 
-            UNNEST(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName, 
+            arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName, 
             p.Id AS PostId
         FROM 
             Posts p 

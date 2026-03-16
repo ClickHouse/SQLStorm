@@ -8,7 +8,7 @@ SELECT
     SUM(l.l_extendedprice) AS total_extended_price,
     AVG(l.l_discount) AS average_discount,
     MAX(l.l_tax) AS highest_tax,
-    STRING_AGG(DISTINCT CONCAT(p.p_comment, ' - ', s.s_comment), '; ') AS combined_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_comment, ' - ', s.s_comment)))), '; ') AS combined_comments
 FROM 
     part p
 JOIN 

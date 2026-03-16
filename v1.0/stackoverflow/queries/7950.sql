@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         COUNT(c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     JOIN 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        (SELECT unnest(string_to_array(p.Tags, '<>')) AS tag FROM Posts p) AS tag ON TRUE
+        (SELECT arrayJoin(splitByString('<>', p.Tags)) AS tag FROM Posts p) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag.tag
     WHERE 
@@ -56,4 +56,4 @@ FROM
     PostStatistics p
 ORDER BY 
     p.Rank
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

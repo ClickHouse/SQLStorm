@@ -17,7 +17,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS TotalRevenue,
     COUNT(DISTINCT c.c_custkey) AS UniqueCustomers,
     AVG(p.p_retailprice) OVER (PARTITION BY n.n_name) AS AvgRetailPrice,
-    STRING_AGG(p.p_name, ', ') AS ProductList,
+    arrayStringConcat(groupArray(assumeNotNull(p.p_name)), ', ') AS ProductList,
     CASE 
         WHEN SUM(l.l_extendedprice * (1 - l.l_discount)) > 100000 THEN 'High Revenue'
         WHEN SUM(l.l_extendedprice * (1 - l.l_discount)) BETWEEN 50000 AND 100000 THEN 'Moderate Revenue'

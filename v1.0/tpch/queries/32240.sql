@@ -2,7 +2,7 @@ WITH RECURSIVE CustomerOrderCTE AS (
     SELECT c.c_custkey, c.c_name, o.o_orderkey, o.o_orderdate, o.o_totalprice
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= DATE '1996-01-01'
+    WHERE o.o_orderdate >= toDate('1996-01-01')
     
     UNION ALL
     

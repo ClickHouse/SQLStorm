@@ -44,7 +44,7 @@ SELECT
         ELSE 'Low Value' 
     END AS customer_value,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
-    ARRAY_AGG(DISTINCT ws.ws_order_number) AS order_numbers
+    arrayDistinct(groupArray(assumeNotNull(ws.ws_order_number))) AS order_numbers
 FROM customer_summary cs
 LEFT JOIN web_sales ws ON cs.c_customer_sk = ws.ws_bill_customer_sk
 LEFT JOIN high_value_customers hvc ON cs.c_customer_sk = hvc.c_customer_sk

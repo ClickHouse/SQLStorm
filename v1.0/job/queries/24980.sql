@@ -33,7 +33,7 @@ popular_companies AS (
 title_keywords AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mt
     INNER JOIN 
@@ -64,5 +64,4 @@ WHERE
 ORDER BY 
     rm.production_year DESC, 
     rm.num_cast DESC 
-OFFSET 20 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 20;

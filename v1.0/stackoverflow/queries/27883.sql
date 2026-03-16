@@ -43,7 +43,7 @@ PostStatistics AS (
         p.ViewCount,
         p.Score,
         p.Tags,
-        ARRAY_AGG(DISTINCT pi.LinkTypeId) AS RelatedLinkTypes,
+        arrayDistinct(groupArray(assumeNotNull(pi.LinkTypeId))) AS RelatedLinkTypes,
         COUNT(c.Id) AS TotalComments,
         MAX(p.LastActivityDate) AS LastActivity
     FROM 
@@ -53,7 +53,7 @@ PostStatistics AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score, p.Tags
 ),

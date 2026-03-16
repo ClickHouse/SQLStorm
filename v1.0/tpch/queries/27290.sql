@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS order_count, 
     AVG(l.l_extendedprice) AS avg_extended_price,
     MAX(l.l_discount) AS max_discount,
-    STRING_AGG(DISTINCT CONCAT(c.c_address, ' ', c.c_phone), '; ') AS customer_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_address, ' ', c.c_phone)))), '; ') AS customer_details,
     CONCAT(r.r_name, ' (', r.r_regionkey, ')') AS region_info
 FROM 
     part p

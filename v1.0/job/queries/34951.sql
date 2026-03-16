@@ -39,7 +39,7 @@ actor_role AS (
 movie_info_collection AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(mi.info, ', ') AS movie_info
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS movie_info
     FROM 
         aka_title m
     LEFT JOIN 

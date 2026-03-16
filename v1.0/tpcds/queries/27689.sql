@@ -25,7 +25,7 @@ sales_summary AS (
         ws_bill_customer_sk,
         SUM(ws_sales_price) AS total_sales,
         COUNT(ws_order_number) AS order_count,
-        STRING_AGG(DISTINCT CONCAT(ca_address_id, '-', ca_city, '-', ca_state), '; ') AS address_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_address_id, '-', ca_city, '-', ca_state)))), '; ') AS address_details
     FROM 
         web_sales ws
     JOIN 

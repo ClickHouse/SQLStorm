@@ -16,7 +16,7 @@ WITH RecursiveMovies AS (
 MovieCredits AS (
     SELECT
         m.movie_id,
-        STRING_AGG(DISTINCT CONCAT(a.name, ' (', r.role, ')'), ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', r.role, ')')))), ', ') AS cast_names
     FROM
         cast_info ci
     JOIN
@@ -50,7 +50,7 @@ FinalOutput AS (
         md.title,
         md.production_year,
         md.cast_details,
-        STRING_AGG(DISTINCT md.keywords, ', ') AS combined_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keywords))), ', ') AS combined_keywords
     FROM
         MovieDetails md
     GROUP BY

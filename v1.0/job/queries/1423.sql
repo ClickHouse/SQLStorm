@@ -52,7 +52,7 @@ FilteredRoles AS (
 SELECT 
     tm.title AS movie_title,
     tm.production_year,
-    STRING_AGG(DISTINCT fr.person_name, ', ') AS cast_members,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fr.person_name))), ', ') AS cast_members,
     COUNT(DISTINCT fr.role) AS unique_roles
 FROM 
     TopMovies tm

@@ -2,7 +2,7 @@ WITH movie_cast AS (
     SELECT 
         c.movie_id,
         count(DISTINCT a.person_id) AS actor_count,
-        array_agg(DISTINCT a.name) AS actors
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actors
     FROM 
         cast_info c
     JOIN 
@@ -13,7 +13,7 @@ WITH movie_cast AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        array_agg(mk.keyword_id) AS keyword_ids,
+        groupArray(assumeNotNull(mk.keyword_id)) AS keyword_ids,
         CASE 
             WHEN COUNT(mk.keyword_id) > 0 THEN 'Has Keywords'
             ELSE 'No Keywords'
@@ -45,7 +45,7 @@ ranked_movies AS (
         mi.synopsis,
         mi.budget,
         mi.revenue,
-        RANK() OVER (ORDER BY COALESCE(mi.revenue::numeric, 0) DESC) AS revenue_rank
+        RANK() OVER (ORDER BY COALESCE(CAST(mi.revenue AS numeric), 0) DESC) AS revenue_rank
     FROM 
         aka_title m
     LEFT JOIN 

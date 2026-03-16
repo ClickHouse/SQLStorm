@@ -18,7 +18,7 @@ PostAnalytics AS (
         P.OwnerUserId,
         COALESCE(P.AcceptedAnswerId, 0) AS AcceptedAnswerId,
         P.CreationDate,
-        EXTRACT(YEAR FROM P.CreationDate) AS CreationYear,
+        toYear(P.CreationDate) AS CreationYear,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
         SUM(COALESCE(GREATEST(V.BountyAmount, 0), 0)) AS TotalBountyAmount,
         DENSE_RANK() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS UserPostRank
@@ -45,7 +45,7 @@ PostHistoryDetails AS (
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
+        PH.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
 ),
 RelevantPosts AS (
     SELECT 
@@ -67,7 +67,7 @@ RelevantPosts AS (
     LEFT JOIN 
         PostHistoryDetails PHD ON PA.PostId = PHD.PostId
     WHERE 
-        PA.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '2 years')
+        PA.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 2 YEAR)
 )
 SELECT 
     RP.PostId,

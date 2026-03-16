@@ -30,7 +30,7 @@ movie_info_summary AS (
     SELECT 
         mw.movie_id,
         mw.movie_title,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COUNT(DISTINCT ci.person_id) AS actor_count
     FROM 
         movie_with_actors mw

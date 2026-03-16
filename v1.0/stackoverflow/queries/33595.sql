@@ -21,7 +21,7 @@ PostVoteSummary AS (
     LEFT JOIN
         Votes v ON p.Id = v.PostId
     WHERE
-        p.LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY
         p.Id
 ),
@@ -38,14 +38,14 @@ RecentUserActivities AS (
     LEFT JOIN
         Votes v ON u.Id = v.UserId
     WHERE
-        u.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '90 days'
+        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY
     GROUP BY
         u.Id, u.DisplayName
 ),
 ClosedPostReason AS (
     SELECT
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
     FROM
         PostHistory ph
     JOIN

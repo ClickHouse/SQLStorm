@@ -7,7 +7,7 @@ RecentOrders AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_orderdate, o.o_totalprice,
            ROW_NUMBER() OVER (PARTITION BY o.o_custkey ORDER BY o.o_orderdate DESC) AS recent_rank
     FROM orders o
-    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
 ),
 DetailedLineItems AS (
     SELECT l.l_orderkey, l.l_partkey, l.l_suppkey, l.l_quantity, l.l_discount, l.l_extendedprice,

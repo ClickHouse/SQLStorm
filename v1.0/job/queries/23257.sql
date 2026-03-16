@@ -16,8 +16,8 @@ WITH RecursiveActorRoles AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        COALESCE(string_agg(k.keyword, ', '), 'No Keywords') AS keywords,
-        string_agg(DISTINCT c.name, ', ') AS companies
+        COALESCE(arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', '), 'No Keywords') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies
     FROM 
         aka_title m
     LEFT JOIN 

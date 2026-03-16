@@ -40,7 +40,7 @@ UserStats AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -58,7 +58,7 @@ PostInteractionStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate > CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         p.Id
 )

@@ -21,8 +21,8 @@ SELECT
     balance_category,
     COUNT(*) AS supplier_count,
     AVG(p_retailprice) AS avg_retail_price,
-    STRING_AGG(trimmed_comment, '; ') AS sample_comments,
-    STRING_AGG(supplier_part_info, ', ') AS supplier_part_details
+    arrayStringConcat(groupArray(assumeNotNull(trimmed_comment)), '; ') AS sample_comments,
+    arrayStringConcat(groupArray(assumeNotNull(supplier_part_info)), ', ') AS supplier_part_details
 FROM 
     processed_data
 GROUP BY 

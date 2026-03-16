@@ -5,7 +5,7 @@ SELECT
     p.CreationDate AS PostCreationDate,
     u.DisplayName AS AuthorDisplayName,
     COUNT(c.Id) AS CommentCount,
-    AVG(EXTRACT(EPOCH FROM (c.CreationDate - p.CreationDate))) AS AvgCommentTime
+    AVG(toUnixTimestamp((c.CreationDate - p.CreationDate))) AS AvgCommentTime
 FROM 
     Posts p
 INNER JOIN 

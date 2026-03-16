@@ -12,7 +12,7 @@ WITH TaggedPosts AS (
     FROM 
         Posts p
     JOIN 
-        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS t(TagName) ON t.TagName IS NOT NULL
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE 
         p.PostTypeId = 1 AND 
         p.Score > 0
@@ -25,14 +25,14 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        v.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     GROUP BY 
         v.PostId
 ), 
 PostHistories AS (
     SELECT 
         ph.PostId,
-        ARRAY_AGG(DISTINCT pht.Name) AS ChangeTypes
+        arrayDistinct(groupArray(assumeNotNull(pht.Name))) AS ChangeTypes
     FROM 
         PostHistory ph
     JOIN 
@@ -84,4 +84,4 @@ WHERE
 ORDER BY 
     ps.AdjustedScore DESC NULLS LAST, 
     ps.ViewCount DESC 
-OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

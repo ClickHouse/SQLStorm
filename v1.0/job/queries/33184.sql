@@ -31,7 +31,7 @@ movie_stats AS (
         mh.title,
         mh.production_year,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
         AVG(mk.keyword_count) AS avg_keywords
     FROM
         movie_hierarchy mh

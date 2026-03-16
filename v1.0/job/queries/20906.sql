@@ -62,7 +62,7 @@ SELECT
         WHEN fm.max_actor_order BETWEEN 2 AND 5 THEN 'Moderate Actors'
         ELSE 'Few Actors'
     END AS actor_category,
-    STRING_AGG(DISTINCT rmd.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rmd.keyword))), ', ') AS keywords
 FROM 
     FilteredMovies fm
 LEFT JOIN 

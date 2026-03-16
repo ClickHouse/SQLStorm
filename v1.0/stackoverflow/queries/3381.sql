@@ -19,7 +19,7 @@ PostStats AS (
         COUNT(CASE WHEN P.PostTypeId = 2 THEN 1 END) AS Answers,
         SUM(P.Score) AS TotalScore,
         SUM(P.ViewCount) AS TotalViews,
-        AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - P.CreationDate))) AS AverageAgeInSeconds
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.CreationDate))) AS AverageAgeInSeconds
     FROM 
         Posts P
     GROUP BY 

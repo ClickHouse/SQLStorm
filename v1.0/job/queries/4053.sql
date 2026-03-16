@@ -40,7 +40,7 @@ SELECT
         WHEN ac.actor_count IS NULL THEN 'No Actors'
         ELSE CONCAT('Total Actors: ', ac.actor_count)
     END AS actor_info,
-    STRING_AGG(k.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
 FROM 
     ranked_titles rt
 LEFT JOIN 

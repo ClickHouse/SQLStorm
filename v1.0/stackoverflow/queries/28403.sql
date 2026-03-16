@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         COALESCE(pa.AcceptedAnswerId, 0) AS AcceptedAnswerId,
         COUNT(DISTINCT c.Id) AS CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.CreationDate DESC) AS Rank,
-        STRING_AGG(t.TagName, ',') AS FormattedTags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ',') AS FormattedTags
     FROM 
         Posts p
     LEFT JOIN 

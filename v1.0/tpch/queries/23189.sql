@@ -7,7 +7,7 @@ WITH RankedOrders AS (
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rnk
     FROM orders o
     WHERE o.o_orderdate >= '1996-01-01' 
-      AND o.o_orderdate < DATE '1998-10-01'
+      AND o.o_orderdate < toDate('1998-10-01')
 ),
 SupplierDetails AS (
     SELECT 

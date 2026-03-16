@@ -34,11 +34,11 @@ UserVoteCounts AS (
 RecentBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
-        b.Date > cast('2024-10-01' as date) - INTERVAL '1 year'
+        b.Date > cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 )

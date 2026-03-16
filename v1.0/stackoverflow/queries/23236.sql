@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 PostVoteCounts AS (
     SELECT 
@@ -27,7 +27,7 @@ PostVoteCounts AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasonNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasonNames
     FROM 
         PostHistory ph
     JOIN 

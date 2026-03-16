@@ -30,7 +30,7 @@ SELECT
     a.actor_id,
     ak.name AS actor_name,
     COUNT(DISTINCT c.movie_id) AS movie_count,
-    STRING_AGG(DISTINCT t.title, ', ') AS movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movies,
     MAX(CASE WHEN t.production_year IS NULL THEN 'Unknown' ELSE CAST(t.production_year AS TEXT) END) AS last_known_year,
     ROW_NUMBER() OVER (PARTITION BY a.actor_id ORDER BY COUNT(DISTINCT c.movie_id) DESC) AS rank
 FROM 

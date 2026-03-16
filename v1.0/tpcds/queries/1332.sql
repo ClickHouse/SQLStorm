@@ -37,7 +37,7 @@ SELECT
     sr.total_catalog_sales,
     sr.total_store_sales,
     sr.sales_rank,
-    STRING_AGG(DISTINCT w.w_warehouse_name, ', ') AS warehouses_used
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(w.w_warehouse_name))), ', ') AS warehouses_used
 FROM 
     SalesRanking sr
 LEFT JOIN store s ON sr.total_store_sales > 0 AND s.s_store_sk = sr.c_customer_sk 

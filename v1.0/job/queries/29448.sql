@@ -42,7 +42,7 @@ title_keywords AS (
 final_results AS (
     SELECT 
         ft.aka_name,
-        array_agg(DISTINCT tk.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(tk.keyword))) AS keywords,
         COUNT(tk.keyword) AS keyword_count,
         MIN(ft.production_year) AS first_year,
         MAX(ft.production_year) AS last_year

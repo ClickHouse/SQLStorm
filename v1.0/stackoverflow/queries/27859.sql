@@ -7,7 +7,7 @@ WITH TaggedPosts AS (
         p.Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagNames
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagNames
     FROM 
         Posts p
     LEFT JOIN 
@@ -15,7 +15,7 @@ WITH TaggedPosts AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2  
     LEFT JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 

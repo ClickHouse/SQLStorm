@@ -33,7 +33,7 @@ company_movies AS (
 movie_info_text AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS combined_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS combined_info
     FROM movie_info mi
     WHERE mi.note IS NULL OR mi.note != 'discard'
     GROUP BY mi.movie_id

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         (SELECT ParentId, COUNT(*) AS AnswerCount FROM Posts WHERE PostTypeId = 2 GROUP BY ParentId) p2 ON p.Id = p2.ParentId
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     rp.PostId,
@@ -28,7 +28,7 @@ SELECT
     rp.RankScore,
     rp.RankViews,
     COUNT(ph.Id) AS HistoryCount,
-    STRING_AGG(DISTINCT pht.Name, ', ') AS PostHistoryTypes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS PostHistoryTypes
 FROM 
     RankedPosts rp
 LEFT JOIN 

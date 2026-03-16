@@ -55,4 +55,4 @@ SELECT
 FROM RankedItems
 WHERE returns > 0 AND total_profit > 1000
 ORDER BY profit_rank, total_quantity DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -4,7 +4,7 @@ SELECT
     CONCAT('Manufacturer: ', p.p_mfgr, ', Brand: ', p.p_brand) AS product_info,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', s.s_name, ')'), '; ') AS customer_supplier_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', s.s_name, ')')))), '; ') AS customer_supplier_info
 FROM 
     part p
 JOIN 

@@ -58,9 +58,9 @@ SELECT
     movie_id,
     movie_title,
     production_year,
-    ARRAY_AGG(DISTINCT actor_name) AS actors,
+    arrayDistinct(groupArray(assumeNotNull(actor_name))) AS actors,
     MAX(roles_count) AS highest_roles_count,
-    STRING_AGG(DISTINCT company_name || ' (' || company_type || ')', ', ') AS production_companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name || ' (' || company_type || ')'))), ', ') AS production_companies
 FROM 
     CombinedData
 GROUP BY 

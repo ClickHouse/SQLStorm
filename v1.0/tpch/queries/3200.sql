@@ -44,7 +44,7 @@ SELECT
             ELSE 0 
         END) AS total_returns,
     SUM(SP.total_supply_value) AS total_supplier_value,
-    string_agg(CONCAT_WS(',', TOP.c_name, TOP.total_spent), '; ') AS top_customers
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT_WS(',', TOP.c_name, TOP.total_spent))), '; ') AS top_customers
 FROM 
     lineitem l
 JOIN 
@@ -58,8 +58,8 @@ LEFT JOIN
 LEFT JOIN 
     TopCustomers TOP ON TOP.c_custkey = c.c_custkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' AND 
-    l.l_shipdate < DATE '1998-01-01'
+    l.l_shipdate >= toDate('1997-01-01') AND 
+    l.l_shipdate < toDate('1998-01-01')
 GROUP BY 
     nc.n_name
 ORDER BY 

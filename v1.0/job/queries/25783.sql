@@ -28,7 +28,7 @@ MovieDetails AS (
         c.name AS company_name,
         ct.kind AS company_type,
         COUNT(DISTINCT ca.person_id) AS cast_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS cast_names
     FROM 
         TopRatedMovies t
     JOIN 

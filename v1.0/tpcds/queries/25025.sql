@@ -4,7 +4,7 @@ WITH Address_summary AS (
         ca_state,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
         SUM(CASE WHEN LENGTH(ca_street_name) > 20 THEN 1 ELSE 0 END) AS long_street_names,
-        ARRAY_AGG(DISTINCT ca_city || ', ' || ca_street_name) AS city_street_combinations
+        arrayDistinct(groupArray(assumeNotNull(ca_city || ', ' || ca_street_name))) AS city_street_combinations
     FROM 
         customer_address 
     GROUP BY 
@@ -15,7 +15,7 @@ Demographics_summary AS (
         cd_gender,
         COUNT(*) AS num_customers,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_levels
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_levels
     FROM 
         customer_demographics 
     GROUP BY 

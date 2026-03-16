@@ -36,8 +36,8 @@ SELECT
     tm.production_year,
     tm.cast_count,
     tm.female_cast_ratio,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     TopMovies tm
 LEFT JOIN 

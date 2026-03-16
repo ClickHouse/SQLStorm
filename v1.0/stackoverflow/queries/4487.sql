@@ -4,7 +4,7 @@ WITH UserActivity AS (
         U.Id AS UserId,
         U.DisplayName,
         U.Reputation,
-        COALESCE(MAX(P.CreationDate), '1970-01-01'::date) AS LastPostDate,
+        COALESCE(MAX(P.CreationDate), CAST('1970-01-01' AS date)) AS LastPostDate,
         COUNT(DISTINCT P.Id) AS TotalPosts,
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions

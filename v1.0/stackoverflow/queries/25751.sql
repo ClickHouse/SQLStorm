@@ -39,13 +39,13 @@ SELECT
     fp.Author,
     fp.CommentCount,
     fp.VoteCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS TagList
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagList
 FROM 
     FilteredPosts fp
 LEFT JOIN 
     Posts p ON fp.PostId = p.Id
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag ON TRUE
+    arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag ON TRUE
 LEFT JOIN 
     Tags t ON tag = t.TagName
 GROUP BY 

@@ -16,7 +16,7 @@ WITH PopularTags AS (
     LEFT JOIN 
         Votes V ON V.PostId = P.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         T.TagName, T.Count, P.Title
 ),
@@ -43,7 +43,7 @@ SELECT
     TT.TotalUpvotes, 
     TT.TotalDownvotes, 
     TT.PostCount,
-    ROUND((TotalUpvotes::FLOAT / NULLIF(PostCount, 0)) * 100, 2) AS UpvotePercentage
+    ROUND((CAST(TotalUpvotes AS FLOAT) / NULLIF(PostCount, 0)) * 100, 2) AS UpvotePercentage
 FROM 
     TopTags TT
 ORDER BY 

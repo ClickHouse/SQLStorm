@@ -48,4 +48,4 @@ WHERE
     AND i.i_current_price BETWEEN 10.00 AND 100.00
 ORDER BY 
     sales_to_stock_ratio DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

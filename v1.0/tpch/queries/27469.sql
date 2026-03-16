@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS Total_Revenue,
     AVG(l.l_quantity) AS Average_Quantity,
     MAX(l.l_shipdate) AS Last_Shipment_Date,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS Product_Names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS Product_Names
 FROM 
     supplier s
 JOIN 

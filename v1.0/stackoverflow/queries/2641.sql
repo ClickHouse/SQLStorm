@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
 ), 
 UserActivity AS (
     SELECT 
@@ -55,4 +55,4 @@ WHERE
     (ua.CommentCount > 50 OR ua.VoteCount > 100)
 ORDER BY 
     ua.DisplayName ASC, rp.ViewCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

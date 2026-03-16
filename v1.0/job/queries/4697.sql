@@ -21,7 +21,7 @@ ActorCount AS (
 KeywordStats AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords,
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
         COUNT(*) AS keyword_count
     FROM 
         movie_keyword mk

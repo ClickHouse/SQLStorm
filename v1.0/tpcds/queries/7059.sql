@@ -49,4 +49,4 @@ JOIN
     TopItems ti ON cs.total_orders > 5
 ORDER BY 
     cs.total_items_purchased DESC, ti.total_sales DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -58,4 +58,4 @@ WHERE
     hrc.sales_rank <= 10
 ORDER BY 
     hrc.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

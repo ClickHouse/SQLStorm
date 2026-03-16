@@ -20,7 +20,7 @@ JOIN
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
     c.c_acctbal > 1000
-    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND p.p_type LIKE '%cotton%'
 GROUP BY 
     cust_name_prefix, p.p_name, supplier_name

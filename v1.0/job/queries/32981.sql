@@ -52,7 +52,7 @@ SELECT
     fm.actor_count AS Actor_Count,
     coalesce(cn.name, 'Unknown') AS Company_Name,
     COALESCE (
-        (SELECT STRING_AGG(ki.keyword, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(ki.keyword)), ', ') 
          FROM movie_keyword mk 
          JOIN keyword ki ON mk.keyword_id = ki.id 
          WHERE mk.movie_id = fm.movie_id), 

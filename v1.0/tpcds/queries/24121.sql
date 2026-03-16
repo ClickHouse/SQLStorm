@@ -38,7 +38,7 @@ SELECT
     ca.ca_city,
     SUM(ti.total_net_profit) AS city_total_profit,
     COUNT(DISTINCT ca.ca_address_id) AS shipping_addresses,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customers,
     CASE WHEN COUNT(DISTINCT c.c_customer_sk) > 10 THEN 'Y' ELSE 'N/A' END AS high_value_customers
 FROM customer_address ca
 JOIN TopItems ti ON ti.ws_item_sk = ca.ca_address_sk

@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         p.Tags,
         ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY p.Score DESC) AS RankByScore,
-        STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypeNames
     FROM 
         Posts p
     JOIN 
@@ -17,13 +17,13 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, u.Id
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(p.Tags, '>')) AS Tag
+        arrayJoin(splitByString('>', p.Tags)) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -49,7 +49,7 @@ UserStatistics AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositivePosts,
         SUM(CASE WHEN p.Score <= 0 THEN 1 ELSE 0 END) AS NegativePosts,
-        STRING_AGG(DISTINCT b.Name, ', ') AS BadgesEarned
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgesEarned
     FROM 
         Users u
     LEFT JOIN 

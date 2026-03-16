@@ -18,7 +18,7 @@ WITH RankedMovies AS (
 ), MovieInfo AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT ki.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ki.keyword))), ', ') AS keywords,
         MAX(mi.info) FILTER (WHERE it.info = 'plot') AS plot_info
     FROM 
         movie_keyword AS mk

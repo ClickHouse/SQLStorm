@@ -30,7 +30,7 @@ OrderDetails AS (
         o.o_orderkey,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_value,
         COUNT(l.l_orderkey) AS item_count,
-        STRING_AGG(DISTINCT CONCAT(l.l_partkey, '; ', l.l_quantity), ', ') AS line_item_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(l.l_partkey, '; ', l.l_quantity)))), ', ') AS line_item_details
     FROM 
         lineitem l
     JOIN 

@@ -20,7 +20,7 @@ ActorCounts AS (
 MoviesWithKeywords AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mkw
     JOIN keyword k ON mkw.keyword_id = k.id
     JOIN aka_title m ON mkw.movie_id = m.id
@@ -30,7 +30,7 @@ MoviesWithKeywords AS (
 Companies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, '; ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), '; ') AS companies
     FROM movie_companies mc
     JOIN company_name cn ON mc.company_id = cn.id
     WHERE cn.country_code IS NOT NULL
@@ -59,4 +59,4 @@ WHERE
 ORDER BY 
     r.production_year DESC,
     ac.movie_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

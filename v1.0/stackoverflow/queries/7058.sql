@@ -25,7 +25,7 @@ TopPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserWithTopPosts AS (
     SELECT 
@@ -51,7 +51,7 @@ SELECT
     SUM(COALESCE(b.Class, 0)) AS TotalBadges,
     AVG(tp.PostScore) AS AveragePostScore,
     SUM(tp.ViewCount) AS TotalViews,
-    STRING_AGG(DISTINCT tp.Title, '; ') AS TopPostTitles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.Title))), '; ') AS TopPostTitles
 FROM 
     UserWithTopPosts tp
 LEFT JOIN 

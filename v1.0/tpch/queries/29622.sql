@@ -5,7 +5,7 @@ SELECT
     o.o_orderkey AS order_key, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT CONCAT(l.l_shipmode, '(', l.l_shipinstruct, ')'), ', ') AS shipping_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(l.l_shipmode, '(', l.l_shipinstruct, ')')))), ', ') AS shipping_details,
     MAX(l.l_shipdate) AS latest_ship_date,
     MIN(l.l_shipdate) AS earliest_ship_date
 FROM 

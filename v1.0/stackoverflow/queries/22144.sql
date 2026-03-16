@@ -67,8 +67,8 @@ WHERE
     AND NOT EXISTS (
         SELECT 1 
         FROM Votes V 
-        WHERE V.UserId = U.UserId AND V.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        WHERE V.UserId = U.UserId AND V.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     )
 ORDER BY 
     R.UserRank
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

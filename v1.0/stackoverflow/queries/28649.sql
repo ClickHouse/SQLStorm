@@ -7,7 +7,7 @@ WITH FilteredPosts AS (
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         COUNT(rev.Id) AS RevisionCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagList
     FROM 
         Posts p
     JOIN 
@@ -15,11 +15,11 @@ WITH FilteredPosts AS (
     LEFT JOIN 
         PostHistory rev ON p.Id = rev.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag_name ON tag_name IS NOT NULL
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_name ON tag_name IS NOT NULL
     LEFT JOIN 
         Tags t ON tag_name = t.TagName
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Tags, p.CreationDate, u.DisplayName
 ),

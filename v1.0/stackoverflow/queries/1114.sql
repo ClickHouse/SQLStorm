@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.CreationDate, p.PostTypeId
@@ -45,7 +45,7 @@ PostStatistics AS (
         tp.CreationDate,
         tp.CommentCount,
         (tp.UpVotes - tp.DownVotes) AS NetVotes,
-        COALESCE((SELECT AVG(u.Reputation) FROM Users u WHERE u.LastAccessDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'), 0) AS AvgUserReputation
+        COALESCE((SELECT AVG(u.Reputation) FROM Users u WHERE u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR), 0) AS AvgUserReputation
     FROM 
         TopPosts tp
 )

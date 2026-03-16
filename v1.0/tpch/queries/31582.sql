@@ -30,7 +30,7 @@ SELECT
     SUM(COALESCE(l.l_extendedprice * (1 - l.l_discount), 0)) AS total_sales,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     MAX(l.l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS product_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS product_names
 FROM 
     lineitem l 
 LEFT JOIN 
@@ -42,8 +42,8 @@ LEFT JOIN
 LEFT JOIN 
     part p ON l.l_partkey = p.p_partkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01'
-    AND l.l_shipdate < DATE '1997-12-31'
+    l.l_shipdate >= toDate('1997-01-01')
+    AND l.l_shipdate < toDate('1997-12-31')
     AND p.p_size IS NOT NULL
 GROUP BY 
     n.n_name

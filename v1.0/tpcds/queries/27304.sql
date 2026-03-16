@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT c.c_customer_id) AS total_customers,
     SUM(CASE WHEN cd.cd_gender = 'M' THEN 1 ELSE 0 END) AS male_count,
     SUM(CASE WHEN cd.cd_gender = 'F' THEN 1 ELSE 0 END) AS female_count,
-    STRING_AGG(DISTINCT cd.cd_education_status, ', ') AS unique_education_status,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_education_status))), ', ') AS unique_education_status,
     COUNT(DISTINCT CASE WHEN cd.cd_marital_status = 'M' THEN c.c_customer_id END) AS married_count,
     COUNT(DISTINCT CASE WHEN cd.cd_marital_status = 'S' THEN c.c_customer_id END) AS single_count
 FROM 

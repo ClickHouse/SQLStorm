@@ -6,7 +6,7 @@ WITH UserEngagement AS (
         COALESCE(SUM(CASE WHEN VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotesCount,
         COALESCE(SUM(CASE WHEN VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotesCount,
         COUNT(DISTINCT P.Id) AS AnswerCount,
-        AVG(EXTRACT(EPOCH FROM (P.LastActivityDate - P.CreationDate)) / 3600.0) AS AvgResponseTime
+        AVG(toUnixTimestamp((P.LastActivityDate - P.CreationDate)) / 3600.0) AS AvgResponseTime
     FROM Users U
     LEFT JOIN Votes V ON U.Id = V.UserId
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId AND P.PostTypeId = 2

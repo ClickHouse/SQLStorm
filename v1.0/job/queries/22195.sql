@@ -66,7 +66,7 @@ SELECT
     md.actor_count,
     md.description,
     COALESCE(cn.name, 'Unknown Company') AS company_name,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     MovieDetails md
 LEFT JOIN 

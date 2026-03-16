@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS Total_Available_Quantity,
     COUNT(DISTINCT o.o_orderkey) AS Total_Orders,
     AVG(o.o_totalprice) AS Average_Order_Value,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS Customer_Names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS Customer_Names
 FROM 
     supplier s
 JOIN 
@@ -28,7 +28,7 @@ WHERE
         )
     )
 AND 
-    o.o_orderdate >= DATE '1997-01-01'
+    o.o_orderdate >= toDate('1997-01-01')
 GROUP BY 
     s.s_name, p.p_name
 ORDER BY 

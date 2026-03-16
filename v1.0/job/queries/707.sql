@@ -31,7 +31,7 @@ actor_counts AS (
 studios AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS companies
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies
     FROM 
         movie_companies mc
     JOIN 

@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(o.o_totalprice) AS total_revenue,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_sales_price,
-    STRING_AGG(DISTINCT p.p_name, '; ') AS popular_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), '; ') AS popular_parts,
     MAX(l.l_shipdate) AS latest_ship_date
 FROM
     customer c
@@ -19,7 +19,7 @@ JOIN
     part p ON ps.ps_partkey = p.p_partkey
 WHERE
     n.n_name LIKE '%USA%' AND
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY
     n.n_name
 ORDER BY

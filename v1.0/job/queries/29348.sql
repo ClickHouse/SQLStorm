@@ -5,8 +5,8 @@ WITH movie_details AS (
         mt.title,
         mt.production_year,
         c.name AS company_name,
-        STRING_AGG(DISTINCT an.name, ', ') AS actors,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         aka_title mt
     JOIN 
@@ -36,8 +36,8 @@ WITH movie_details AS (
         keywords,
         LENGTH(title) AS title_length,
         LENGTH(company_name) AS company_length,
-        ARRAY_LENGTH(STRING_TO_ARRAY(actors, ', '), 1) AS actor_count,
-        ARRAY_LENGTH(STRING_TO_ARRAY(keywords, ', '), 1) AS keyword_count
+        length(splitByString(', ', actors), 1) AS actor_count,
+        length(splitByString(', ', keywords), 1) AS keyword_count
     FROM 
         movie_details
 )

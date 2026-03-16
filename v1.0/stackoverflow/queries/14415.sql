@@ -5,7 +5,7 @@ WITH Benchmark AS (
         COUNT(PH.Id) AS ActionCount,
         MIN(PH.CreationDate) AS FirstActionDate,
         MAX(PH.CreationDate) AS LastActionDate,
-        EXTRACT(EPOCH FROM (MAX(PH.CreationDate) - MIN(PH.CreationDate))) AS DurationSeconds
+        toUnixTimestamp((MAX(PH.CreationDate) - MIN(PH.CreationDate))) AS DurationSeconds
     FROM 
         PostHistory PH
     GROUP BY 

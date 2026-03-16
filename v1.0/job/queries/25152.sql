@@ -28,7 +28,7 @@ TopMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -52,7 +52,7 @@ SELECT
     mwk.title,
     mwk.production_year,
     mwk.cast_count,
-    STRING_AGG(mwk.keywords::varchar, ', ') AS all_keywords
+    arrayStringConcat(groupArray(assumeNotNull(CAST(mwk.keywords AS varchar))), ', ') AS all_keywords
 FROM 
     MoviesWithKeywords mwk
 GROUP BY 

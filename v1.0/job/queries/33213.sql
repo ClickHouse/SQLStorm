@@ -29,7 +29,7 @@ SELECT
     ah.actor_name,
     COUNT(DISTINCT ci.movie_id) AS movies_count,
     AVG(m.production_year) AS average_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ah.actor_name ORDER BY COUNT(DISTINCT ci.movie_id) DESC) AS rank
 FROM 
     ActorHierarchy ah

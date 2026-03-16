@@ -20,4 +20,4 @@ GROUP BY
     u.Id, u.DisplayName, u.Reputation
 ORDER BY 
     TotalPosts DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

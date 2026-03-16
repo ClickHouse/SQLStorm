@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         Comments C ON P.Id = C.PostId
     WHERE 
         P.PostTypeId = 1 
-        AND P.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
+        AND P.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
 ),
 FilteredRankedPosts AS (
     SELECT 
@@ -38,8 +38,8 @@ SELECT
     R.Tags,
     COUNT(R.PostId) AS PostCount,
     AVG(R.TotalComments) AS AvgComments,
-    STRING_AGG(R.OwnerDisplayName, ', ') AS Owners,
-    STRING_AGG(R.Title, '; ') AS Titles
+    arrayStringConcat(groupArray(assumeNotNull(R.OwnerDisplayName)), ', ') AS Owners,
+    arrayStringConcat(groupArray(assumeNotNull(R.Title)), '; ') AS Titles
 FROM 
     FilteredRankedPosts R
 GROUP BY 

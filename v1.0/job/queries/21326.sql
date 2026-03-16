@@ -26,7 +26,7 @@ MovieDetails AS (
         m.title,
         COALESCE(c.actor_count, 0) AS actor_count,
         COALESCE(c.known_roles, 0) AS known_roles,
-        (SELECT STRING_AGG(DISTINCT k.keyword, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
          FROM movie_keyword mk 
          JOIN keyword k ON mk.keyword_id = k.id 
          WHERE mk.movie_id = m.id) AS keywords

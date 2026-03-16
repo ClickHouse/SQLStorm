@@ -18,11 +18,11 @@ RecentBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        b.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 ),
@@ -54,8 +54,8 @@ SELECT
     tu.TotalScore,
     tu.RecentBadgeCount,
     tu.BadgeNames,
-    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = tu.Id AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month') AS RecentPostsCount,
-    (SELECT COUNT(*) FROM Comments c WHERE c.UserId = tu.Id AND c.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month') AS RecentCommentsCount
+    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = tu.Id AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH) AS RecentPostsCount,
+    (SELECT COUNT(*) FROM Comments c WHERE c.UserId = tu.Id AND c.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH) AS RecentCommentsCount
 FROM 
     TopUsers tu
 WHERE 

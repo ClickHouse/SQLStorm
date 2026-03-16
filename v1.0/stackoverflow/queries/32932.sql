@@ -21,7 +21,7 @@ RecentPostHistories AS (
         ROW_NUMBER() OVER (PARTITION BY ph.PostId ORDER BY ph.CreationDate DESC) AS LatestHistory
     FROM PostHistory ph
     JOIN Posts p ON ph.PostId = p.Id
-    WHERE ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     ups.UserId,
@@ -35,7 +35,7 @@ FROM UserPostStats ups
 LEFT JOIN (
     SELECT 
         UserId,
-        STRING_AGG(CONCAT('Post ID: ', PostId, ' - Title: ', Title, ' (', Comment, ')'), '; ') AS RecentActivity
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT('Post ID: ', PostId, ' - Title: ', Title, ' (', Comment, ')'))), '; ') AS RecentActivity
     FROM RecentPostHistories
     WHERE LatestHistory = 1
     GROUP BY UserId

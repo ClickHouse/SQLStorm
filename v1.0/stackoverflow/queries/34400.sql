@@ -34,12 +34,12 @@ FilteredPosts AS (
         RankedPosts rp
     WHERE 
         rp.Rank <= 10
-        AND rp.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
+        AND rp.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
 ),
 PostClosureDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT ph.Comment, '; ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS CloseReasons
     FROM 
         PostHistory ph
     WHERE 

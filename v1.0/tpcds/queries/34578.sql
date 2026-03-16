@@ -55,4 +55,4 @@ WHERE
     (cd.cd_marital_status = 'S' OR cd.cd_marital_status IS NULL)
 ORDER BY 
     total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

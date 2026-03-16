@@ -16,7 +16,7 @@ UserBadges AS (
     SELECT 
         B.UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeList
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeList
     FROM 
         Badges B
     GROUP BY 

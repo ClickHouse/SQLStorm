@@ -49,15 +49,15 @@ SELECT
     END AS EngagementLevel,
     (SELECT AVG(ViewCount) 
      FROM Posts 
-     WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
+     WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
        AND PostTypeId = 1) AS AvgRecentViews,
     tp.BadgeName,
     COUNT(DISTINCT ph.Id) AS HistoryCount,
-    STRING_AGG(DISTINCT CASE 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE 
         WHEN ph.PostHistoryTypeId = 10 THEN 'Closed'
         WHEN ph.PostHistoryTypeId = 11 THEN 'Reopened'
         ELSE 'Other' 
-    END, ', ') AS ClosureStatus
+    END))), ', ') AS ClosureStatus
 FROM 
     TopPosts tp
 LEFT JOIN 

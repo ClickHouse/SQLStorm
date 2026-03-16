@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(mc.company_id) AS company_count,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(mc.company_id) DESC) AS rank_by_companies
     FROM 
         aka_title t

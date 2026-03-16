@@ -7,7 +7,7 @@ WITH RankedParts AS (
         p.p_type,
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
         SUM(ps.ps_availqty) AS total_avail_qty,
-        STRING_AGG(CONCAT(s.s_name, ' (', s.s_phone, ')'), ', ') AS supplier_details
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')'))), ', ') AS supplier_details
     FROM 
         part p
     JOIN 

@@ -4,8 +4,8 @@ SELECT
     m.production_year,
     m.kind_id,
     COUNT(DISTINCT mc.company_id) AS num_companies,
-    STRING_AGG(DISTINCT c.kind, ', ') AS company_types,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords_used,
     char.name AS character_name
 FROM 
     aka_name a

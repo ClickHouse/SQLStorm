@@ -3,7 +3,7 @@ SELECT
     s.s_name, 
     n.n_name, 
     SUM(ps.ps_availqty) AS total_available_qty,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS aggregated_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS aggregated_comments,
     CONCAT('Supplier: ', s.s_name, ', Part: ', p.p_name, ', Nation: ', n.n_name) AS detailed_info
 FROM 
     part p

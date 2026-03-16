@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1
-        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 ClosedPostDetails AS (
@@ -29,7 +29,7 @@ ClosedPostDetails AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes c ON ph.Comment::jsonb ->> 'reason' IS NOT NULL
+        CloseReasonTypes c ON CAST(ph.Comment AS jsonb) ->> 'reason' IS NOT NULL
     WHERE 
         ph.PostHistoryTypeId = 10
 )

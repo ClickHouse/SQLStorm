@@ -31,7 +31,7 @@ SupplierDetails AS (
 )
 SELECT 
     sd.region_name,
-    STRING_AGG(sd.s_name, ', ') AS top_suppliers,
+    arrayStringConcat(groupArray(assumeNotNull(sd.s_name)), ', ') AS top_suppliers,
     SUM(sd.part_count) AS total_parts_supplied
 FROM 
     SupplierDetails sd

@@ -17,8 +17,8 @@ MovieDetails AS (
         m.title,
         m.production_year,
         k.keyword,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_types,
-        STRING_AGG(DISTINCT ca.actor_name, ', ') AS cast
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.actor_name))), ', ') AS cast
     FROM aka_title m
     LEFT JOIN movie_keyword mk ON m.id = mk.movie_id
     LEFT JOIN keyword k ON mk.keyword_id = k.id

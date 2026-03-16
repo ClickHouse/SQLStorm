@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.UserId) AS VoteCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -15,12 +15,12 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '><')) AS tag_name ON TRUE
+        arrayJoin(splitByString('><', p.Tags)) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'  
+        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR  
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate
     ORDER BY 
@@ -40,7 +40,7 @@ RecentActivities AS (
     JOIN 
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
-        ph.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 month'  
+        ph.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 MONTH  
         AND ph.PostId IN (SELECT PostId FROM RankedPosts)
 )
 SELECT 

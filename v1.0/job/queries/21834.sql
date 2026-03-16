@@ -61,4 +61,4 @@ WHERE
 ORDER BY 
     production_year DESC, 
     name
-OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 0;

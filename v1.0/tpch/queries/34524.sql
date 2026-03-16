@@ -21,7 +21,7 @@ WITH RECURSIVE NationalSales AS (
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     JOIN part p ON ps.ps_partkey = p.p_partkey
     JOIN lineitem l ON p.p_partkey = l.l_partkey
-    WHERE l.l_shipdate >= (SELECT MAX(l2.l_shipdate) FROM lineitem l2) - INTERVAL '1 YEAR'
+    WHERE l.l_shipdate >= (SELECT MAX(l2.l_shipdate) FROM lineitem l2) - INTERVAL 1 YEAR
     GROUP BY n.n_nationkey, n.n_name
 )
 

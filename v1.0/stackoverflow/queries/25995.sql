@@ -18,14 +18,14 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY
         AND p.PostTypeId = 1  
     GROUP BY 
         p.Id, u.DisplayName
 ),
 TopTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', Tags)) AS Tag
     FROM 
         RecentPosts
 ),
@@ -48,11 +48,11 @@ SELECT
     rp.CommentCount,
     rp.UpVotes,
     rp.DownVotes,
-    STRING_AGG(tt.Tag, ', ') AS TopTags
+    arrayStringConcat(groupArray(assumeNotNull(tt.Tag)), ', ') AS TopTags
 FROM 
     RecentPosts rp
 JOIN 
-    TagStatistics tt ON tt.Tag = ANY(string_to_array(rp.Tags, '><'))
+    TagStatistics tt ON tt.Tag = ANY(splitByString('><', rp.Tags))
 GROUP BY 
     rp.PostId, rp.Title, rp.OwnerName, rp.CommentCount, rp.UpVotes, rp.DownVotes
 ORDER BY 

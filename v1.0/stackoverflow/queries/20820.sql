@@ -32,7 +32,7 @@ PostStats AS (
 PostHistoryStats AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(PHT.Name, ', ' ORDER BY PH.CreationDate) AS HistoryTypes,
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ' ORDER BY PH.CreationDate) AS HistoryTypes,
         COUNT(*) AS HistoryCount,
         MAX(PH.CreationDate) AS LastHistoryDate
     FROM PostHistory PH
@@ -52,7 +52,7 @@ FinalStats AS (
             WHEN P.TotalBounties > 0 THEN 'Has Bounties' 
             ELSE 'No Bounties' 
         END AS BountyStatus,
-        EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - P.PostCreationDate)) / 3600 AS AgeInHours
+        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.PostCreationDate)) / 3600 AS AgeInHours
     FROM RankedUsers U
     JOIN PostStats P ON U.Id = P.PostId
     JOIN PostHistoryStats PH ON P.PostId = PH.PostId

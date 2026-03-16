@@ -30,7 +30,7 @@ SELECT
     COUNT(DISTINCT c.c_customer_id) AS customer_count,
     AVG(s.net_sales) AS average_net_sales,
     MAX(s.net_sales) AS max_net_sales,
-    STRING_AGG(CONCAT(c.c_first_name, ' ', c.c_last_name), '; ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name))), '; ') AS customer_names
 FROM SalesWithReturns s
 JOIN customer c ON c.c_customer_sk = s.c_customer_sk
 JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk

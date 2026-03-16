@@ -27,7 +27,7 @@ aggregate_info AS (
         actor_name,
         COUNT(DISTINCT movie_title) AS total_movies,
         COUNT(DISTINCT production_year) AS unique_years,
-        STRING_AGG(DISTINCT company_name, ', ') AS production_companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS production_companies
     FROM 
         movie_actor_info
     GROUP BY 

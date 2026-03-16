@@ -38,7 +38,7 @@ AggregatedInfo AS (
            COUNT(*) AS address_count,
            MIN(ca_state) AS first_state,
            MAX(ca_state) AS last_state,
-           STRING_AGG(full_name, ', ') AS customer_names
+           arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names
     FROM AddressInfo
     GROUP BY full_address
 )

@@ -4,7 +4,7 @@ WITH CTE_Movies AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors_list
     FROM 
         aka_title t
     LEFT JOIN 
@@ -43,7 +43,7 @@ SELECT
     f.cast_count,
     f.actors_list,
     f.synopsis,
-    STRING_AGG(DISTINCT f.keywords, ', ') AS all_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.keywords))), ', ') AS all_keywords
 FROM 
     CTE_Full_Movie_Info f
 GROUP BY 

@@ -19,7 +19,7 @@ WITH ranked_titles AS (
 ), cast_details AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(CONCAT(a.name, ' as ', rt.role), ', ') AS cast_list
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.name, ' as ', rt.role))), ', ') AS cast_list
     FROM cast_info ci
     JOIN aka_name a ON ci.person_id = a.person_id
     JOIN role_type rt ON ci.role_id = rt.id

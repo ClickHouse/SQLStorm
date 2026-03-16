@@ -13,8 +13,8 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE
     c.c_mktsegment = 'BUILDING'
-    AND l.l_shipdate >= DATE '1995-01-01'
-    AND l.l_shipdate < DATE '1996-01-01'
+    AND l.l_shipdate >= toDate('1995-01-01')
+    AND l.l_shipdate < toDate('1996-01-01')
 GROUP BY
     p.p_partkey, p.p_name, p.p_brand
 ORDER BY

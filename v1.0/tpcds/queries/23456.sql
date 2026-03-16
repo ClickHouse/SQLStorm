@@ -77,4 +77,4 @@ WHERE
     (ca.ca_state IS NOT NULL OR ca.ca_city IS NOT NULL)
 ORDER BY 
     ap.total_final_profit DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

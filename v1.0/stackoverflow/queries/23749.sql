@@ -36,13 +36,13 @@ SELECT
         ELSE 'Regular User'
     END AS UserCategory,
     (SELECT 
-        STRING_AGG(DISTINCT t.TagName, ', ') 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Posts p
-     JOIN UNNEST(STRING_TO_ARRAY(p.Tags, ', ')) AS tagArray ON tagArray IS NOT NULL
+     JOIN arrayJoin(splitByString(', ', p.Tags)) AS tagArray ON tagArray IS NOT NULL
      JOIN Tags t ON t.TagName = TRIM(tagArray)
      WHERE p.OwnerUserId = tu.UserId) AS UserTags,
     (SELECT 
-        COALESCE(STRING_AGG(DISTINCT c.Text, '; '), 'No Comments') 
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Text))), '; '), 'No Comments') 
         FROM Comments c 
         WHERE c.UserId = tu.UserId) AS UserComments
 FROM TopUsers tu
@@ -50,7 +50,7 @@ WHERE tu.UserId IN (
     SELECT DISTINCT u.Id 
     FROM Users u 
     LEFT JOIN Posts p ON p.OwnerUserId = u.Id 
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 ORDER BY tu.UserRank
 LIMIT 50;

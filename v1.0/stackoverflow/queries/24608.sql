@@ -9,13 +9,13 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostBadges AS (
     SELECT 
         b.UserId,
         COUNT(DISTINCT b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges
     FROM 
         Badges b
     GROUP BY 
@@ -25,7 +25,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        STRING_AGG(c.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(c.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -66,5 +66,4 @@ WHERE
 ORDER BY 
     rp.Score DESC,
     rp.CreationDate DESC
-OFFSET 10 ROWS 
-FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

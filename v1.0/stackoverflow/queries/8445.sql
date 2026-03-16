@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         LEFT JOIN Comments c ON p.Id = c.PostId
         LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2  
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName
 ), PopularPosts AS (
@@ -34,7 +34,7 @@ FROM
     LEFT JOIN (
         SELECT 
             pt.Id,
-            STRING_AGG(t.TagName, ', ') AS TagName
+            arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagName
         FROM 
             Posts pt
             JOIN Tags t ON pt.Tags LIKE '%' || t.TagName || '%'

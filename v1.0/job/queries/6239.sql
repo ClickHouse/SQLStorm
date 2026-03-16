@@ -32,7 +32,7 @@ TopActors AS (
 MovieCompaniesInfo AS (
     SELECT 
         m.id AS movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS companies
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies
     FROM 
         movie_companies m
     JOIN 

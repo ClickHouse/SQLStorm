@@ -25,7 +25,7 @@ nation_sales AS (
 filtered_line_items AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS net_sales
     FROM lineitem l
-    WHERE l.l_shipdate > DATE '1997-01-01' AND l.l_discount < 0.05
+    WHERE l.l_shipdate > toDate('1997-01-01') AND l.l_discount < 0.05
     GROUP BY l.l_orderkey
 )
 SELECT n.n_name, ns.order_count, ns.total_sales, COALESCE(fli.net_sales, 0) AS line_item_sales,

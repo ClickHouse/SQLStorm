@@ -29,7 +29,7 @@ WITH RECURSIVE movie_hierarchy AS (
 SELECT 
     a.name as actor_name,
     COUNT(DISTINCT mh.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT mt.title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mt.title))), ', ') AS movie_titles,
     avg(mh.production_year) AS avg_production_year,
     MAX(mh.depth) AS max_depth
 FROM 

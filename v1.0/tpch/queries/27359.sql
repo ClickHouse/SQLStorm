@@ -3,7 +3,7 @@ SELECT
     s.s_name,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price_after_discount,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, '(', c.c_mktsegment, ')'), '; ') AS customers_segment_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, '(', c.c_mktsegment, ')')))), '; ') AS customers_segment_info
 FROM 
     part p
 JOIN 

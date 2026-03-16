@@ -38,7 +38,7 @@ SELECT
     AVG(P.Score) AS AverageQuestionScore,
     SUM(B.Class) AS TotalGoldBadges,
     MAX(PH.CreationDate) AS MostRecentQuestion,
-    STRING_AGG(DISTINCT T.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS AssociatedTags
 FROM 
     Users U
 LEFT JOIN 
@@ -48,9 +48,9 @@ LEFT JOIN
 LEFT JOIN 
     Badges B ON U.Id = B.UserId AND B.Class = 1 
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(P.Tags, '<>')) AS TagName
+            arrayJoin(splitByString('<>', P.Tags)) AS TagName
     ) T ON TRUE
 WHERE 
     U.Reputation > 100

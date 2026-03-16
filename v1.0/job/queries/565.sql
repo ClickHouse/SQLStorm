@@ -30,7 +30,7 @@ movie_info_summary AS (
     SELECT am.id AS movie_id, 
            am.title, 
            COALESCE(a.avg_actor_count, 0) AS avg_actor_count,
-           STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM aka_title am
     LEFT JOIN average_actor_roles a ON am.id = a.movie_id
     LEFT JOIN movie_keyword mk ON am.id = mk.movie_id

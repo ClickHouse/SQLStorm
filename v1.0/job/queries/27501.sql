@@ -3,7 +3,7 @@ WITH RECURSIVE ActorMovies AS (
         a.id AS actor_id,
         a.name AS actor_name,
         COUNT(c.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT t.title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movie_titles
     FROM 
         aka_name a
     JOIN 
@@ -27,7 +27,7 @@ MoviesWithKeywords AS (
     SELECT 
         m.id AS movie_id,
         m.title AS movie_title,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title m
     LEFT JOIN 

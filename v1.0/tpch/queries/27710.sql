@@ -2,8 +2,8 @@ WITH StringAggregates AS (
     SELECT
         p_brand,
         COUNT(DISTINCT p_partkey) AS part_count,
-        STRING_AGG(DISTINCT p_name, ', ') AS part_names,
-        STRING_AGG(DISTINCT p_comment, '; ') AS comments_overview
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p_name))), ', ') AS part_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p_comment))), '; ') AS comments_overview
     FROM part
     GROUP BY p_brand
 ),
@@ -21,7 +21,7 @@ OrderDetails AS (
         o.o_orderkey,
         o.o_orderdate,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,
-        STRING_AGG(DISTINCT CONCAT(l.l_linestatus, ' (', l.l_quantity, ')'), ', ') AS lineitem_summary
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(l.l_linestatus, ' (', l.l_quantity, ')')))), ', ') AS lineitem_summary
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
     GROUP BY o.o_orderkey, o.o_orderdate

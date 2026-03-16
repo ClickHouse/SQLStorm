@@ -44,7 +44,7 @@ total_sales AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1998-01-01'
+        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1998-01-01')
     GROUP BY 
         l.l_partkey
 ),
@@ -75,7 +75,7 @@ SELECT
         ELSE 'Break Even'
     END AS profitability,
     COUNT(co.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT CAST(co.o_orderkey AS VARCHAR), ', ') AS order_keys
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(co.o_orderkey AS VARCHAR)))), ', ') AS order_keys
 FROM 
     final_summary fs
 LEFT JOIN 

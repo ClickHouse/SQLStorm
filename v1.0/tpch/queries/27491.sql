@@ -29,7 +29,7 @@ SELECT
     ns.n_name AS nation_name,
     COUNT(DISTINCT fs.s_suppkey) AS number_of_suppliers,
     SUM(fs.s_acctbal) AS total_account_balance,
-    STRING_AGG(DISTINCT fs.p_name, ', ') AS product_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fs.p_name))), ', ') AS product_names
 FROM 
     FilteredSuppliers fs
 JOIN 

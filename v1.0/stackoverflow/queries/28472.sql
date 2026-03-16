@@ -10,25 +10,25 @@ WITH PostDetails AS (
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id) AS CommentCount,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpVoteCount,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3) AS DownVoteCount,
-        (SELECT STRING_AGG(b.Name, ', ') FROM Badges b WHERE b.UserId = p.OwnerUserId) AS UserBadges
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') FROM Badges b WHERE b.UserId = p.OwnerUserId) AS UserBadges
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' 
+        AND p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR 
 ),
 TagStatistics AS (
     SELECT 
-        unnest(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 
-        unnest(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '><'))
+        arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2)))
 ),
 TopTags AS (
     SELECT 
@@ -56,7 +56,7 @@ RankedPosts AS (
     JOIN 
         TagStatistics ts ON EXISTS (
             SELECT 1 
-            FROM unnest(string_to_array(substring(pd.Tags, 2, LENGTH(pd.Tags) - 2), '><')) AS tbl(Tag) 
+            FROM arrayJoin(splitByString('><', substring(pd.Tags, 2, LENGTH(pd.Tags) - 2))) AS tbl(Tag) 
             WHERE tbl.Tag = ts.Tag
         )
     JOIN 

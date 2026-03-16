@@ -8,7 +8,7 @@ WITH UserStats AS (
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(COALESCE(V.BountyAmount, 0)) AS TotalBounties,
-        AVG(COALESCE(EXTRACT(EPOCH FROM (COALESCE(P.LastActivityDate, P.CreationDate) - P.CreationDate)), 0)) AS AvgActiveTime
+        AVG(COALESCE(toUnixTimestamp((COALESCE(P.LastActivityDate, P.CreationDate) - P.CreationDate)), 0)) AS AvgActiveTime
     FROM 
         Users U
     LEFT JOIN 
@@ -36,7 +36,7 @@ TopUsers AS (
 UserBadges AS (
     SELECT 
         U.Id AS UserId,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 

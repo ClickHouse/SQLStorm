@@ -7,7 +7,7 @@ WITH MostActiveUsers AS (
     GROUP BY U.Id, U.DisplayName
 ),
 TopPostTags AS (
-    SELECT UNNEST(string_to_array(P.Tags, ',')) AS Tag, COUNT(P.Id) AS PostCount
+    SELECT arrayJoin(splitByString(',', P.Tags)) AS Tag, COUNT(P.Id) AS PostCount
     FROM Posts P
     WHERE P.PostTypeId = 1 
     GROUP BY Tag

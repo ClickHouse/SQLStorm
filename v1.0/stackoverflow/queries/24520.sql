@@ -29,7 +29,7 @@ PostStats AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
 ), 
 RecentPosts AS (
     SELECT 
@@ -61,7 +61,7 @@ SELECT
         WHEN rp.TotalDownvotes > 3 THEN 'Content Issues'
         ELSE 'Moderate User'
     END AS UserActivityStatus,
-    STRING_AGG(DISTINCT pt.Name, ', ') AS RelatedPostTypes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS RelatedPostTypes
 FROM 
     RecentPosts rp
 LEFT JOIN 

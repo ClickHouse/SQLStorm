@@ -43,14 +43,14 @@ LEFT JOIN
         SELECT p.p_partkey 
         FROM part p 
         WHERE p.p_partkey IN (SELECT ps.ps_partkey FROM partsupp ps)
-        ORDER BY RANDOM() LIMIT 1
+        ORDER BY rand() LIMIT 1
     ) 
 LEFT JOIN 
     customer_orders co ON co.o_custkey IN (
         SELECT o.o_custkey 
         FROM orders o 
         WHERE o.o_orderstatus = 'O' 
-        AND o.o_orderdate >= (DATE '1998-10-01' - INTERVAL '1 year')
+        AND o.o_orderdate >= (toDate('1998-10-01') - INTERVAL 1 YEAR)
     )
 WHERE 
     ns.avg_supplier_balance > (
@@ -68,4 +68,4 @@ OR (
 ORDER BY 
     pc.total_cost DESC, 
     co.avg_order_value ASC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

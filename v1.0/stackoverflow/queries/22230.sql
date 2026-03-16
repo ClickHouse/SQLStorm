@@ -8,13 +8,13 @@ WITH RankedPosts AS (
         p.Score,
         p.AnswerCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray
     FROM 
         Posts p
     LEFT JOIN 
         Tags t ON t.WikiPostId = p.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.Score, p.AnswerCount
 ),
@@ -48,7 +48,7 @@ RecentPostVotes AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '60 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 60 DAY
     GROUP BY 
         p.Id
 )

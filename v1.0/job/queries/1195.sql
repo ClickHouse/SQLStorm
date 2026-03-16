@@ -26,7 +26,7 @@ DetailedMovieInfo AS (
     SELECT 
         mi.movie_id,
         COUNT(DISTINCT mi.id) AS info_count,
-        STRING_AGG(DISTINCT mi.info, ', ') AS additional_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS additional_info
     FROM 
         movie_info mi
     JOIN 

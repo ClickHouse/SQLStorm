@@ -27,7 +27,7 @@ RecentVotes AS (
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes
     FROM Votes V
-    WHERE V.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+    WHERE V.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY V.UserId
 ),
 UserStatistics AS (

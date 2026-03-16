@@ -5,7 +5,7 @@ WITH RECURSIVE order_summary AS (
         o.o_orderdate,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_spent,
         COUNT(DISTINCT c.c_custkey) AS unique_customers,
-        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS rank_spent
+        RANK() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS rank_spent
     FROM
         orders o
     JOIN

@@ -26,7 +26,7 @@ recent_sales AS (
 SELECT tc.c_customer_sk, tc.total_spent, 
        COUNT(rs.ss_item_sk) AS items_purchased,
        COALESCE(SUM(rs.ss_net_paid), 0) AS total_sales,
-       STRING_AGG(DISTINCT i.i_item_id, ', ') AS purchased_items
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_id))), ', ') AS purchased_items
 FROM top_customers tc
 LEFT JOIN recent_sales rs ON rs.ss_item_sk IN (
     SELECT ss_item_sk 

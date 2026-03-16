@@ -43,7 +43,7 @@ SELECT
     COUNT(DISTINCT cu.c_custkey) AS customer_count,
     SUM(hv.total_orders) AS total_value_orders,
     AVG(hv.order_count) AS avg_order_count,
-    ARRAY_AGG(DISTINCT CONCAT(hv.c_name, ' (Balance: ', hv.c_acctbal, ')')) AS high_value_customers,
+    arrayDistinct(groupArray(assumeNotNull(CONCAT(hv.c_name, ' (Balance: ', hv.c_acctbal, ')')))) AS high_value_customers,
     (SELECT COUNT(*) FROM RankedSuppliers WHERE rn = 1) AS top_supplier_count
 FROM 
     nation n

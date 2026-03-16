@@ -28,7 +28,7 @@ PostStats AS (
     LEFT JOIN (
         SELECT 
             PostId, 
-            STRING_AGG(CASE WHEN Comment IS NOT NULL THEN Comment ELSE '' END, ', ') AS CloseReason
+            arrayStringConcat(groupArray(assumeNotNull(CASE WHEN Comment IS NOT NULL THEN Comment ELSE '' END)), ', ') AS CloseReason
         FROM 
             PostHistory PH
         WHERE 

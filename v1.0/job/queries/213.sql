@@ -30,7 +30,7 @@ ActorRoles AS (
 MovieKeywords AS (
     SELECT 
         m.movie_id,
-        ARRAY_AGG(k.keyword) AS keywords_list
+        groupArray(assumeNotNull(k.keyword)) AS keywords_list
     FROM 
         movie_keyword m
     JOIN 

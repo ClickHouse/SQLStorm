@@ -20,7 +20,7 @@ TopSuppliers AS (
 )
 SELECT ts.supplier_name,
        ROUND(ts.total_supply_cost, 2) AS total_supply_cost,
-       STRING_AGG(sp.supply_details, '; ') AS detailed_supply_info
+       arrayStringConcat(groupArray(assumeNotNull(sp.supply_details)), '; ') AS detailed_supply_info
 FROM TopSuppliers ts
 JOIN SupplierParts sp ON ts.supplier_name = sp.supplier_name
 GROUP BY ts.supplier_name, ts.total_supply_cost

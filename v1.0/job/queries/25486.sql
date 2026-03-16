@@ -7,7 +7,7 @@ WITH MovieData AS (
         a.name AS actor_name,
         a.person_id,
         COALESCE(SUM(CASE WHEN cc.role_id IS NOT NULL THEN 1 ELSE 0 END), 0) AS num_roles,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COUNT(DISTINCT mc.company_id) AS num_production_companies
     FROM 
         aka_title t
@@ -34,7 +34,7 @@ ProductionStats AS (
         COUNT(DISTINCT md.actor_name) AS unique_actors,
         SUM(md.num_roles) AS total_roles,
         SUM(md.num_production_companies) AS total_production_companies,
-        STRING_AGG(DISTINCT md.keywords, ', ') AS all_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keywords))), ', ') AS all_keywords
     FROM 
         MovieData md
     GROUP BY 

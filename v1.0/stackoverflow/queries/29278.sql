@@ -38,7 +38,7 @@ SELECT
         WHEN rp.Score < 0 THEN 'Negative' 
         ELSE 'Neutral' 
     END AS Score_Category,
-    (SELECT COUNT(*) FROM unnest(string_to_array(rp.Tags, '>')) AS tag) AS Tag_Count
+    (SELECT COUNT(*) FROM arrayJoin(splitByString('>', rp.Tags)) AS tag) AS Tag_Count
 FROM 
     RankedPosts rp
 WHERE 

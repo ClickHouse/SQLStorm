@@ -19,13 +19,13 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, u.DisplayName, pt.Name
 ),
 FrequentTags AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -57,7 +57,7 @@ SELECT
     pd.DisplayName,
     pd.PostType,
     pd.CommentCount,
-    ARRAY_AGG(DISTINCT pd.Tag) AS Tags,
+    arrayDistinct(groupArray(assumeNotNull(pd.Tag))) AS Tags,
     SUM(pd.TagCount) AS TotalTagCount
 FROM 
     PostDetails pd

@@ -16,8 +16,8 @@ WITH RankedSales AS (
     JOIN 
         nation n ON s.s_nationkey = n.n_nationkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' AND 
-        o.o_orderdate <= DATE '1996-12-31' AND 
+        o.o_orderdate >= toDate('1996-01-01') AND 
+        o.o_orderdate <= toDate('1996-12-31') AND 
         l.l_shipmode = 'AIR'
     GROUP BY 
         s.s_suppkey, s.s_name, n.n_name

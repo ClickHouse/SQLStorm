@@ -63,7 +63,7 @@ WHERE
         WHERE n.n_name LIKE '%land%'
     )) 
     AND (ro.total_revenue > (SELECT AVG(total_revenue) FROM RankedOrders))
-    AND (COALESCE(ro.o_orderdate, '1900-01-01') > DATE('1998-10-01') - INTERVAL '1 year')
+    AND (COALESCE(ro.o_orderdate, '1900-01-01') > DATE('1998-10-01') - INTERVAL 1 YEAR)
 ORDER BY 
     ro.o_orderdate DESC, 
     pd.avg_supplier_acctbal DESC;

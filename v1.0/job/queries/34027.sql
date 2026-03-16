@@ -27,7 +27,7 @@ SELECT
     p.name AS person_name,
     COUNT(DISTINCT c.movie_id) AS movie_count,
     AVG(CASE WHEN c.nr_order IS NULL THEN 0 ELSE c.nr_order END) AS avg_cast_order,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     MAX(mh.level) AS max_link_level
 FROM 
     aka_name p

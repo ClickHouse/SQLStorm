@@ -51,5 +51,5 @@ SELECT
 FROM RankedSales r
 WHERE r.total_quantity > 10 OR r.total_net_paid IS NULL
 ORDER BY avg_net_per_unit DESC, total_orders ASC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;
 

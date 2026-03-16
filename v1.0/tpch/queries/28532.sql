@@ -5,7 +5,7 @@ SELECT
     n.n_name AS nation_name, 
     COUNT(o.o_orderkey) AS total_orders, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT l.l_comment, '; ') AS comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_comment))), '; ') AS comments,
     LENGTH(p.p_comment) AS part_comment_length
 FROM 
     part p
@@ -21,7 +21,7 @@ JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     n.n_name LIKE 'A%' 
-    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_name, s.s_name, n.n_name, LENGTH(p.p_comment)
 ORDER BY 

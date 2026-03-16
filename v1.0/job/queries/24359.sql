@@ -5,7 +5,7 @@ WITH RankedTitles AS (
         t.title,
         t.production_year,
         ROW_NUMBER() OVER (PARTITION BY t.kind_id ORDER BY t.production_year DESC) AS rn,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title t
     JOIN 
@@ -32,7 +32,7 @@ CastWithRoles AS (
 MovieInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(mi.info, '; ') AS company_info
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS company_info
     FROM 
         movie_companies mc
     JOIN 

@@ -20,8 +20,8 @@ RankedMovies AS (
 MovieDetails AS (
     
     SELECT rm.movie_id, rm.movie_title, rm.production_year, rm.rank_within_year,
-           STRING_AGG(DISTINCT CONCAT(a.name, ' as ', r.role), ', ') AS cast_list,
-           STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' as ', r.role)))), ', ') AS cast_list,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM RankedMovies rm
     LEFT JOIN complete_cast cc ON cc.movie_id = rm.movie_id
     LEFT JOIN cast_info ci ON ci.movie_id = cc.movie_id

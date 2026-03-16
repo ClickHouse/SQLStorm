@@ -3,8 +3,8 @@ WITH RankedMovies AS (
         mt.id AS movie_id,
         mt.title,
         mt.production_year,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY mt.production_year DESC) AS year_rank
     FROM 
         aka_title mt
@@ -35,8 +35,8 @@ SELECT
     f.movie_id,
     f.title,
     f.production_year,
-    STRING_AGG(DISTINCT f.company_names::text, ', ') AS companies,
-    STRING_AGG(DISTINCT f.keywords::text, ', ') AS tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(f.company_names AS text)))), ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(f.keywords AS text)))), ', ') AS tags
 FROM 
     FilteredMovies f
 GROUP BY 

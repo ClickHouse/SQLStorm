@@ -20,7 +20,7 @@ TopPosts AS (
     WHERE OwnerPostRank <= 5
 ),
 ClosingReasons AS (
-    SELECT ph.PostId, STRING_AGG(cr.Name, ', ') AS Reasons
+    SELECT ph.PostId, arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS Reasons
     FROM PostHistory ph
     JOIN CloseReasonTypes cr ON CAST(ph.Comment AS integer) = cr.Id
     WHERE ph.PostHistoryTypeId = 10

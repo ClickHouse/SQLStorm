@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserActivity AS (
     SELECT 
@@ -55,7 +55,7 @@ SELECT
         WHEN cp.CloseCount IS NULL THEN 'Not Closed'
         ELSE 'Closed'
     END AS ClosureStatus,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     UserActivity up
 JOIN 
@@ -65,7 +65,7 @@ LEFT JOIN
 LEFT JOIN 
     Posts p ON rp.PostId = p.Id
 LEFT JOIN 
-    LATERAL (SELECT UNNEST(string_to_array(p.Tags, '><')) AS TagName) AS t ON TRUE
+    (SELECT arrayJoin(splitByString('><', p.Tags)) AS TagName) AS t ON TRUE
 WHERE 
     up.Reputation >= 1000
 GROUP BY 

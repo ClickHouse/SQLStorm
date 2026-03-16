@@ -73,4 +73,4 @@ HAVING
     OR SUM(hs.ws_sales_price * hs.ws_quantity) IS NULL
 ORDER BY 
     total_spent DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

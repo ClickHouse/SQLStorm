@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.PostTypeId = 1 
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.ViewCount, p.CreationDate, p.OwnerUserId
@@ -31,7 +31,7 @@ RecentPostHistory AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 
 SELECT 
@@ -46,7 +46,7 @@ SELECT
               WHERE v.PostId = rp.PostId 
                 AND v.VoteTypeId IN (2, 3, 4) 
              ), 0) AS VoteCount,
-    (SELECT STRING_AGG(DISTINCT pht.Name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') 
      FROM PostHistory ph
      JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id 
      WHERE ph.PostId = rp.PostId) AS PostHistoryActions,

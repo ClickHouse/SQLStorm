@@ -8,7 +8,7 @@ SELECT
         ELSE NULL 
     END) AS avg_cost_small_parts,
     COUNT(DISTINCT c.c_custkey) AS total_customers,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     CONCAT('Total Price: $', CAST(SUM(l.l_extendedprice * (1 - l.l_discount)) AS VARCHAR)) AS total_sales
 FROM 
     supplier s

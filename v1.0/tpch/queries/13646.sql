@@ -10,8 +10,8 @@ JOIN
 JOIN 
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' AND 
-    o.o_orderdate < DATE '1997-12-31'
+    o.o_orderdate >= toDate('1997-01-01') AND 
+    o.o_orderdate < toDate('1997-12-31')
 GROUP BY 
     l.l_orderkey, o.o_orderdate, c.c_mktsegment
 ORDER BY 

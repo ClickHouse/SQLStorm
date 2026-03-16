@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COUNT(DISTINCT c.person_id) AS cast_count,
         RANK() OVER (ORDER BY COUNT(DISTINCT c.person_id) DESC) AS rank_by_cast
     FROM 
@@ -23,7 +23,7 @@ ActorsInfo AS (
         a.person_id,
         a.name,
         COUNT(DISTINCT ci.movie_id) AS movies_count,
-        ARRAY_AGG(DISTINCT ti.title) AS movies
+        arrayDistinct(groupArray(assumeNotNull(ti.title))) AS movies
     FROM 
         aka_name a
     JOIN 

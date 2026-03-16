@@ -23,7 +23,7 @@ actor_role_count AS (
 movie_info_filtered AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS info_aggregation
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS info_aggregation
     FROM 
         movie_info mi
     WHERE 

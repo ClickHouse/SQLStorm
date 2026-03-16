@@ -9,19 +9,19 @@ WITH RecentPosts AS (
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id) AS CommentCount,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpVotes,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3) AS DownVotes,
-        string_agg(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM
         Posts p
     JOIN
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN
         (SELECT
-            unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName,
+            arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
             Id
         FROM
             Posts) t ON p.Id = t.Id
     WHERE
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, u.DisplayName
 ),

@@ -37,7 +37,7 @@ SELECT
     AVG(TotalSales) AS AverageSales,
     MIN(TotalSales) AS MinimalSales,
     MAX(TotalSales) AS MaximumSales,
-    STRING_AGG(DISTINCT CONCAT(c_name, ' (', CustomerType, ')'), ', ') AS CustomerList
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_name, ' (', CustomerType, ')')))), ', ') AS CustomerList
 FROM 
     RankedSales
 WHERE 
@@ -48,4 +48,4 @@ HAVING
     AVG(TotalSales) > (SELECT AVG(TotalSales) FROM SalesCTE WHERE TotalSales IS NOT NULL)
 ORDER BY 
     CustomerCount DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

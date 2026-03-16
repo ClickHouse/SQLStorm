@@ -30,7 +30,7 @@ SELECT
     tu.Reputation,
     tu.TotalBounty,
     COALESCE(c.CommentCount, 0) AS TotalComments,
-    ARRAY_AGG(DISTINCT p.Title) AS PostTitles,
+    arrayDistinct(groupArray(assumeNotNull(p.Title))) AS PostTitles,
     COALESCE(NullHandling.NullCount, 0) AS NullPostCount,
     SUM(CASE WHEN p.ViewCount > 100 THEN 1 ELSE 0 END) AS PopularPosts
 FROM TopUsers tu

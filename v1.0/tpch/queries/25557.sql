@@ -37,7 +37,7 @@ SELECT
     spd.supply_info,
     MAX(spd.ps_supplycost) AS max_supply_cost,
     AVG(spd.ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(spd.s_comment, '; ') AS aggregated_comments
+    arrayStringConcat(groupArray(assumeNotNull(spd.s_comment)), '; ') AS aggregated_comments
 FROM 
     RankedParts rp
 JOIN 

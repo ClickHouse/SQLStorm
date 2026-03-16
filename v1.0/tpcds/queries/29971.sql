@@ -10,8 +10,8 @@ WITH ranked_items AS (
     FROM 
         item i
     WHERE 
-        i.i_rec_start_date <= DATE '2002-10-01' AND 
-        (i.i_rec_end_date IS NULL OR i.i_rec_end_date > DATE '2002-10-01')
+        i.i_rec_start_date <= toDate('2002-10-01') AND 
+        (i.i_rec_end_date IS NULL OR i.i_rec_end_date > toDate('2002-10-01'))
 ), 
 customer_sales AS (
     SELECT 
@@ -28,7 +28,7 @@ SELECT
     c.c_customer_id,
     COUNT(DISTINCT ri.i_item_id) AS total_distinct_items,
     cs.total_sales,
-    STRING_AGG(ri.item_desc_upper, ', ') AS upper_desc_items
+    arrayStringConcat(groupArray(assumeNotNull(ri.item_desc_upper)), ', ') AS upper_desc_items
 FROM 
     customer c
 LEFT JOIN 

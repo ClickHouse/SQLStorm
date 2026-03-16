@@ -59,7 +59,7 @@ DetailedPostStats AS (
     LEFT JOIN 
         ClosedPosts CP ON P.Id = CP.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     TU.DisplayName,

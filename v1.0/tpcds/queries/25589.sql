@@ -5,7 +5,7 @@ WITH AddressData AS (
         ca_state, 
         ca_country, 
         COUNT(*) AS num_addresses,
-        STRING_AGG(DISTINCT ca_street_name || ' ' || ca_street_type, ', ') AS unique_streets
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_type))), ', ') AS unique_streets
     FROM 
         customer_address
     GROUP BY 

@@ -13,7 +13,7 @@ WITH RECURSIVE ActorHierarchy AS (
 ),
 FilteredMovies AS (
     SELECT m.movie_id, COUNT(DISTINCT m.company_id) AS total_companies,
-           STRING_AGG(DISTINCT cn.name, ', ') AS companies
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM movie_companies m
     JOIN company_name cn ON m.company_id = cn.id
     GROUP BY m.movie_id
@@ -27,7 +27,7 @@ RankedMovies AS (
 )
 SELECT rm.actor_id, an.name, COUNT(DISTINCT rm.movie_title) AS num_movies,
        AVG(rm.total_companies) AS avg_companies,
-       STRING_AGG(DISTINCT rm.companies, '; ') AS companies_in_movies
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.companies))), '; ') AS companies_in_movies
 FROM RankedMovies rm
 JOIN aka_name an ON rm.actor_id = an.person_id
 GROUP BY rm.actor_id, an.name

@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     AVG(o.o_totalprice) AS average_order_value,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     part p
 JOIN 
@@ -24,9 +24,9 @@ JOIN
 WHERE 
     p.p_type LIKE '%metal%'
 AND 
-    o.o_orderdate >= DATE '1996-01-01'
+    o.o_orderdate >= toDate('1996-01-01')
 AND 
-    o.o_orderdate < DATE '1997-01-01'
+    o.o_orderdate < toDate('1997-01-01')
 GROUP BY 
     p.p_name, s.s_name
 HAVING 

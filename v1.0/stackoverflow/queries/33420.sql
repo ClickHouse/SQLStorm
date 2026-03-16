@@ -16,7 +16,7 @@ RecentPosts AS (
     SELECT p.Id, p.Title, p.OwnerUserId, p.CreationDate, p.Score, p.ViewCount,
            ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RN
     FROM Posts p
-    WHERE p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     ub.DisplayName, 
@@ -29,7 +29,7 @@ SELECT
     (SELECT COUNT(c.Id) 
      FROM Comments c 
      WHERE c.PostId = pp.Id) AS CommentCount,
-    (SELECT STRING_AGG(cht.Name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(cht.Name)), ', ') 
      FROM PostHistory ph
      JOIN PostHistoryTypes cht ON ph.PostHistoryTypeId = cht.Id
      WHERE ph.PostId = pp.Id) AS ChangeHistory

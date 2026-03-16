@@ -9,7 +9,7 @@ WITH PostStats AS (
         p.AnswerCount,
         p.CommentCount,
         COUNT(v.Id) AS VoteCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         u.DisplayName AS OwnerDisplayName,
         u.Reputation AS OwnerReputation
     FROM 

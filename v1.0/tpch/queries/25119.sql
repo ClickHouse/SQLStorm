@@ -5,7 +5,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity, 
     AVG(l.l_extendedprice) AS average_price, 
     COUNT(DISTINCT c.c_custkey) AS customer_count, 
-    STRING_AGG(DISTINCT n.n_name, '; ') AS nations_served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), '; ') AS nations_served
 FROM 
     part p
 JOIN 
@@ -21,7 +21,7 @@ JOIN
 WHERE 
     p.p_size > 10 
     AND p.p_retailprice BETWEEN 50.00 AND 100.00
-    AND l.l_shipdate >= DATE '1997-01-01' 
+    AND l.l_shipdate >= toDate('1997-01-01') 
 GROUP BY 
     p.p_name, 
     s.s_name 

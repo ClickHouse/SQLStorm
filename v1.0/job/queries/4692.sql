@@ -29,7 +29,7 @@ CompanyMovieInfo AS (
         m.title,
         c.name AS company_name,
         ct.kind AS company_type,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_companies mc
     JOIN 

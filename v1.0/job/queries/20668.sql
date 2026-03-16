@@ -13,7 +13,7 @@ WITH RECURSIVE MovieHierarchy AS (
 CoCast AS (
     
     SELECT c.movie_id, 
-           STRING_AGG(CONCAT(n.name, ' (', rt.role, ')'), ', ') AS cast_details,
+           arrayStringConcat(groupArray(assumeNotNull(CONCAT(n.name, ' (', rt.role, ')'))), ', ') AS cast_details,
            COUNT(DISTINCT c.person_id) AS cast_count
     FROM cast_info c
     JOIN name n ON c.person_id = n.id
@@ -32,7 +32,7 @@ YearlyProductions AS (
 KeywordUsage AS (
     
     SELECT mk.movie_id,
-           STRING_AGG(k.keyword, ', ') AS keywords,
+           arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
            COUNT(*) AS keyword_count
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id

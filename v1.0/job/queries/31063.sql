@@ -27,7 +27,7 @@ WITH RECURSIVE movie_hierarchy AS (
 keyword_movie AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords,
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
         COUNT(mk.keyword_id) AS keyword_count
     FROM 
         title m 
@@ -59,7 +59,7 @@ final_selection AS (
         t.title,
         COALESCE(km.keywords, 'None') AS keywords,
         km.keyword_count,
-        STRING_AGG(cd.actor_name || ' as ' || cd.actor_role, ', ') AS cast_details,
+        arrayStringConcat(groupArray(assumeNotNull(cd.actor_name || ' as ' || cd.actor_role)), ', ') AS cast_details,
         mh.level AS original_depth
     FROM 
         movie_hierarchy mh

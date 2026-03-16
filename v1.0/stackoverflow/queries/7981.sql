@@ -9,9 +9,9 @@ WITH RecentUserActivity AS (
            SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
            RANK() OVER (ORDER BY COUNT(DISTINCT p.Id) DESC) AS PostRank
     FROM Users u
-    LEFT JOIN Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
-    LEFT JOIN Comments c ON u.Id = c.UserId AND c.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
-    LEFT JOIN Votes v ON u.Id = v.UserId AND v.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
+    LEFT JOIN Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
+    LEFT JOIN Comments c ON u.Id = c.UserId AND c.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
+    LEFT JOIN Votes v ON u.Id = v.UserId AND v.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
     GROUP BY u.Id, u.DisplayName, u.Reputation
 ), TopUsers AS (
     SELECT UserId, 
@@ -32,7 +32,7 @@ SELECT t.UserId,
        t.UpVotes, 
        t.DownVotes,
        (SELECT COUNT(*) FROM Badges b WHERE b.UserId = t.UserId) AS BadgeCount,
-       (SELECT STRING_AGG(DISTINCT pt.Name, ', ') 
+       (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') 
         FROM Posts p
         JOIN PostTypes pt ON p.PostTypeId = pt.Id
         WHERE p.OwnerUserId = t.UserId) AS PostTypes

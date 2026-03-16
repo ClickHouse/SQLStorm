@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     AVG(o.o_totalprice) AS avg_order_value,
-    STRING_AGG(CONCAT(s.s_name, ':', s.s_address), '; ') AS supplier_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_name, ':', s.s_address))), '; ') AS supplier_details
 FROM 
     supplier s
 JOIN 

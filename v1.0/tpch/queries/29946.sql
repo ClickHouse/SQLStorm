@@ -1,6 +1,6 @@
 WITH SupplierParts AS (
     SELECT s.s_name AS Supplier_name, COUNT(ps.ps_partkey) AS Total_parts, 
-           STRING_AGG(DISTINCT p.p_name, ', ') AS Part_names,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS Part_names,
            SUM(ps.ps_availqty) AS Total_available_quantity,
            AVG(ps.ps_supplycost) AS Average_supply_cost
     FROM supplier s

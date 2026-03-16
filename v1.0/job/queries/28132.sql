@@ -18,7 +18,7 @@ WITH RankedTitles AS (
 TitleKeywords AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -32,7 +32,7 @@ TitleKeywords AS (
 TitleInfo AS (
     SELECT 
         ti.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS info_content
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS info_content
     FROM 
         movie_info mi
     JOIN 

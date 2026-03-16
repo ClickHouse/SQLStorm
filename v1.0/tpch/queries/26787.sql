@@ -6,7 +6,7 @@ WITH RankedParts AS (
         p.p_brand,
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
         AVG(ps.ps_supplycost) AS avg_supplycost,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
         RANK() OVER (PARTITION BY p.p_brand ORDER BY COUNT(DISTINCT ps.ps_suppkey) DESC) AS rank_by_suppliers
     FROM 
         part p

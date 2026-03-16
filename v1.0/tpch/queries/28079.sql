@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     AVG(s.s_acctbal) AS avg_supplier_acctbal,
     SUM(l.l_quantity) AS total_quantity_ordered,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     MAX(o.o_orderdate) AS latest_order_date
 FROM 
     part p

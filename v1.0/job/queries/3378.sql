@@ -3,8 +3,8 @@ WITH RankedMovies AS (
     SELECT 
         title.id AS movie_id,
         title.title,
-        AVG(COALESCE(movie_info.info, '0')::numeric) AS avg_rating,
-        ROW_NUMBER() OVER (PARTITION BY title.production_year ORDER BY AVG(COALESCE(movie_info.info, '0')::numeric) DESC) AS rank
+        AVG(COALESCE(movie_info.info, '0'CAST() AS numeric)) AS avg_rating,
+        ROW_NUMBER() OVER (PARTITION BY title.production_year ORDER BY AVG(COALESCE(movie_info.info, '0'CAST() AS numeric)) DESC) AS rank
     FROM 
         title
     LEFT JOIN movie_info ON title.id = movie_info.movie_id AND movie_info.info_type_id = (SELECT id FROM info_type WHERE info = 'rating')

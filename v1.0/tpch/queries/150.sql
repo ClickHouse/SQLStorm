@@ -47,5 +47,4 @@ WHERE
     r.r_name LIKE 'S%'
 ORDER BY 
     total_sales DESC, supplier_count ASC
-OFFSET 10 ROWS
-FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

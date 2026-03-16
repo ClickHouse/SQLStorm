@@ -5,7 +5,7 @@ WITH RECURSIVE ranked_orders AS (
         o.o_totalprice,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rank
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01' 
+    WHERE o.o_orderdate >= toDate('1997-01-01') 
         AND o.o_orderstatus IN ('O', 'F')
 ), 
 supplier_summary AS (
@@ -14,7 +14,7 @@ supplier_summary AS (
         s.s_name,
         COUNT(DISTINCT ps.ps_partkey) AS total_parts,
         SUM(ps.ps_supplycost * ps.ps_availqty) AS total_cost,
-        STRING_AGG(DISTINCT p.p_type, ', ') AS part_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS part_types
     FROM supplier s
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     JOIN part p ON ps.ps_partkey = p.p_partkey

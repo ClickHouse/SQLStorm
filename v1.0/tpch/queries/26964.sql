@@ -4,8 +4,8 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     MAX(l.l_extendedprice * (1 - l.l_discount)) AS max_discounted_price,
-    STRING_AGG(DISTINCT c.c_name, '; ') AS customer_names,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nation_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), '; ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nation_names
 FROM
     part p
 JOIN

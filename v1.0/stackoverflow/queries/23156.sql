@@ -46,13 +46,13 @@ HighScorePosts AS (
             WHEN P.Score < 0 THEN 'Negative'
             ELSE 'Neutral'
         END AS ScoreType,
-        ARRAY_AGG(T.TagName) AS PostTags
+        groupArray(assumeNotNull(T.TagName)) AS PostTags
     FROM 
         Posts AS P
     JOIN 
         Users AS U ON P.OwnerUserId = U.Id
     LEFT JOIN 
-        UNNEST(string_to_array(P.Tags, ',')) AS tag_name ON TRUE
+        arrayJoin(splitByString(',', P.Tags)) AS tag_name ON TRUE
     LEFT JOIN 
         Tags AS T ON T.TagName = TRIM(tag_name)
     WHERE 
@@ -90,7 +90,7 @@ SELECT
     COALESCE(TU.TotalViews, 0) AS TotalViews,
     (SELECT COUNT(*) FROM HighScorePosts WHERE OwnerName = U.DisplayName AND Score > 0) AS PositivePostCount,
     (SELECT COUNT(*) FROM HighScorePosts WHERE OwnerName = U.DisplayName AND Score < 0) AS NegativePostCount,
-    ARRAY_AGG(DISTINCT PH.Comment) AS RecentComments
+    arrayDistinct(groupArray(assumeNotNull(PH.Comment))) AS RecentComments
 FROM 
     Users AS U
 LEFT JOIN 

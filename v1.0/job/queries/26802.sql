@@ -37,7 +37,7 @@ SELECT
     COUNT(movie_title) AS total_movies,
     AVG(actor_count) AS avg_actors_per_movie,
     AVG(company_count) AS avg_companies_per_movie,
-    STRING_AGG(DISTINCT genre, ', ') AS genres
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(genre))), ', ') AS genres
 FROM 
     RankedMovies
 GROUP BY 

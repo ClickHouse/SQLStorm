@@ -6,7 +6,7 @@ WITH ranked_movies AS (
         t.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
         AVG(LENGTH(c.note)) AS avg_note_length,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM
         aka_title t
     LEFT JOIN
@@ -37,8 +37,7 @@ SELECT
     tm.title,
     tm.production_year,
     tm.total_cast,
-    tm.avg_note_length,
-    UNNEST(tm.keywords) AS keyword,
+    tm.avg_note_length ARRAY JOIN tm.keywords AS keyword,
     COALESCE(a.name, 'Unknown') AS director
 FROM
     top_movies tm

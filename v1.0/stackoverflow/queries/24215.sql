@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= CURRENT_DATE - INTERVAL '30 days'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY
         AND p.ViewCount > 100
         AND p.Score IS NOT NULL
 ),
@@ -95,7 +95,7 @@ SELECT
         ELSE 'Low Score'
     END AS ScoreCategory,
     CASE
-        WHEN ep.FirstCommentDate < CURRENT_DATE - INTERVAL '7 days' THEN 'Stale'
+        WHEN ep.FirstCommentDate < CURRENT_DATE - INTERVAL 7 DAY THEN 'Stale'
         ELSE 'Recent'
     END AS CommentRecency
 FROM

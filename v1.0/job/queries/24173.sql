@@ -29,7 +29,7 @@ null_benchmarks AS (
 companies AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names
     FROM movie_companies mc
     JOIN company_name cn ON mc.company_id = cn.id
     WHERE cn.country_code IS NOT NULL

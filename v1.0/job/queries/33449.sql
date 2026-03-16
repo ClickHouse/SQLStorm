@@ -46,20 +46,20 @@ SELECT mh.movie_id,
 FROM MovieHierarchy mh
 LEFT JOIN (
     SELECT mw.movie_id, 
-           STRING_AGG(mk.keyword, ', ') AS keyword_list 
+           arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keyword_list 
     FROM movie_keyword mw 
     JOIN keyword mk ON mw.keyword_id = mk.id 
     GROUP BY mw.movie_id
 ) mk ON mh.movie_id = mk.movie_id 
 LEFT JOIN (
     SELECT movie_id, 
-           STRING_AGG(actor_name, ', ') AS actor_list 
+           arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS actor_list 
     FROM MovieCast 
     GROUP BY movie_id
 ) mc ON mh.movie_id = mc.movie_id 
 LEFT JOIN (
     SELECT movie_id, 
-           STRING_AGG(company_name || ' (' || company_type || ')', ', ') AS company_name 
+           arrayStringConcat(groupArray(assumeNotNull(company_name || ' (' || company_type || ')')), ', ') AS company_name 
     FROM MovieCompanies 
     GROUP BY movie_id
 ) mco ON mh.movie_id = mco.movie_id 

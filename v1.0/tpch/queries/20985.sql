@@ -51,12 +51,12 @@ TopSuppliers AS (
 ),
 OrderYears AS (
     SELECT
-        EXTRACT(YEAR FROM o.o_orderdate) AS order_year,
+        toYear(o.o_orderdate) AS order_year,
         AVG(o.o_totalprice) AS average_price
     FROM
         orders o
     GROUP BY
-        EXTRACT(YEAR FROM o.o_orderdate)
+        toYear(o.o_orderdate)
 ),
 BizarreJoin AS (
     SELECT

@@ -54,7 +54,7 @@ LEFT JOIN supplier_availability sa ON p.p_partkey = sa.ps_partkey
 JOIN orders o ON l.l_orderkey = o.o_orderkey
 JOIN high_value_customers c ON o.o_custkey = c.c_custkey
 JOIN nation_region n ON s.s_nationkey = n.n_nationkey
-WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND CURRENT_DATE
+WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND CURRENT_DATE
 GROUP BY n.r_name, p.p_name
 HAVING COUNT(DISTINCT c.c_custkey) > 5 
    OR SUM(l.l_discount) IS NOT NULL

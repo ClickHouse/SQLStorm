@@ -32,7 +32,7 @@ SELECT
     COALESCE(SUM(l.l_quantity), 0) AS total_quantity_sold,
     COUNT(DISTINCT o.o_orderkey) AS distinct_orders,
     RANK() OVER (ORDER BY AVG(l.l_extendedprice) DESC) AS price_rank,
-    STRING_AGG(DISTINCT sh.hierarchy_path, ', ') AS supplier_paths
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sh.hierarchy_path))), ', ') AS supplier_paths
 FROM 
     part p
 LEFT JOIN 

@@ -37,7 +37,7 @@ JOIN customer c ON oh.o_custkey = c.c_custkey
 JOIN nation n ON c.c_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey
 JOIN SupplierRating sr ON ol.l_suppkey = sr.ps_suppkey
-WHERE DATE_PART('year', oh.o_orderdate) = 1997
+WHERE datePart('year', oh.o_orderdate) = 1997
 AND n.n_name IN (SELECT DISTINCT n_name FROM nation WHERE n_regionkey IN (1, 2, 3))
 GROUP BY n.n_name, r.r_name, sr.avg_acctbal
 HAVING SUM(ol.effective_price) > (SELECT AVG(l_extendedprice) FROM lineitem)

@@ -25,7 +25,7 @@ SELECT
     c.c_custkey,
     c.c_name,
     SUM(o.o_totalprice) AS total_orders_value,
-    ARRAY_AGG(DISTINCT ts.s_name) AS top_suppliers
+    arrayDistinct(groupArray(assumeNotNull(ts.s_name))) AS top_suppliers
 FROM 
     customer c
 JOIN 
@@ -35,7 +35,7 @@ JOIN
 JOIN 
     TopSuppliers ts ON l.l_suppkey = ts.s_suppkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
+    o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
 GROUP BY 
     c.c_custkey, c.c_name
 ORDER BY 

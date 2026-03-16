@@ -37,7 +37,7 @@ top_sales AS (
     LEFT JOIN (
         SELECT 
             i_category_id, 
-            STRING_AGG(i_item_desc, ', ') AS ca_item_desc, 
+            arrayStringConcat(groupArray(assumeNotNull(i_item_desc)), ', ') AS ca_item_desc, 
             MAX(i_category) AS ca_category
         FROM item
         GROUP BY i_category_id

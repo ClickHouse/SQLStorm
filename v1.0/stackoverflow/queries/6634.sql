@@ -14,14 +14,14 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH 
         AND p.PostTypeId = 1 
 ),
 TaggedPosts AS (
     SELECT 
         rp.Id,
         rp.Title,
-        STRING_AGG(t.TagName, ', ') AS Tags,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
         rp.OwnerDisplayName,
         rp.CreationDate,
         rp.Score,
@@ -31,7 +31,7 @@ TaggedPosts AS (
     FROM 
         RankedPosts rp
     JOIN 
-        LATERAL (SELECT unnest(string_to_array(rp.Title, ' ')) AS TagName) t ON t.TagName IS NOT NULL
+        (SELECT arrayJoin(splitByString(' ', rp.Title)) AS TagName) t ON t.TagName IS NOT NULL
     GROUP BY 
         rp.Id, rp.Title, rp.OwnerDisplayName, rp.CreationDate, rp.Score, rp.ViewCount, rp.AnswerCount, rp.RankScore
 )

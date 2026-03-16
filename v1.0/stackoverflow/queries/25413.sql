@@ -25,11 +25,11 @@ ActivePosts AS (
         p.ViewCount,
         p.OwnerUserId,
         MAX(CASE WHEN Ph.PostHistoryTypeId = 10 THEN 1 ELSE 0 END) AS IsClosed,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM Posts p
     LEFT JOIN PostHistory Ph ON p.Id = Ph.PostId
-    LEFT JOIN LATERAL (
-        SELECT UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS TagName
+    LEFT JOIN (
+        SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS TagName
     ) t ON TRUE
     GROUP BY p.Id, p.Title, p.Score, p.AnswerCount, p.CommentCount, p.CreationDate, p.ViewCount, p.OwnerUserId
 ),
@@ -61,7 +61,7 @@ SELECT
     SUM(ua.TotalBounty) AS TotalBountyReward,
     SUM(ua.UpVotes) AS TotalUpVotes,
     SUM(ua.DownVotes) AS TotalDownVotes,
-    STRING_AGG(DISTINCT ap.Tags, '; ') AS AllPostTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ap.Tags))), '; ') AS AllPostTags
 FROM RankedUsers ru
 JOIN ActivePosts ap ON ru.Id = ap.OwnerUserId
 JOIN UserActivity ua ON ru.Id = ua.UserId

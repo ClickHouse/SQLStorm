@@ -7,7 +7,7 @@ WITH RecentPosts AS (
            p.Score,
            RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS PostRank
     FROM Posts p 
-    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 TopUsers AS (
     SELECT u.Id AS UserId,
@@ -25,7 +25,7 @@ PostHistoryDetails AS (
            ph.CreationDate,
            ROW_NUMBER() OVER (PARTITION BY ph.PostId ORDER BY ph.CreationDate DESC) AS HistoryRank
     FROM PostHistory ph
-    WHERE ph.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 MostEditedPosts AS (
     SELECT ph.PostId,
@@ -60,7 +60,7 @@ SELECT DISTINCT p.Id AS PostId,
                     ELSE 'Other'
                 END AS ClosureStatus,
                 CASE 
-                    WHEN p.CreationDate < (CAST('2024-10-01' AS DATE) - INTERVAL '1 year') AND 
+                    WHEN p.CreationDate < (CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR) AND 
                          (SELECT COUNT(*) FROM MostEditedPosts ep WHERE ep.PostId = p.Id) > 5
                     THEN 'Veteran'
                     ELSE 'Regular'

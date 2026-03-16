@@ -53,7 +53,7 @@ SELECT
         WHEN twc.production_year BETWEEN 1950 AND 2000 THEN 'Modern Era'
         ELSE 'Contemporary Era'
     END AS era,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     titles_with_cast twc
 LEFT JOIN 

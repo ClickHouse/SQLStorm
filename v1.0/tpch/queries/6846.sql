@@ -59,7 +59,7 @@ LEFT JOIN
         )
         GROUP BY ps.ps_suppkey
         ORDER BY SUM(ps.ps_availqty) DESC 
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
 WHERE 
     ts.supply_rank <= 5

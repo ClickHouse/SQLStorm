@@ -6,7 +6,7 @@ WITH TagStatistics AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(p.ViewCount) AS TotalViews,
         AVG(p.Score) AS AverageScore,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS ActiveUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS ActiveUsers
     FROM
         Tags t
     LEFT JOIN

@@ -8,7 +8,7 @@ WITH RecentPosts AS (
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         u.Reputation,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'), 1) AS TagCount,
+        length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount,
         COUNT(c.Id) AS CommentCount,
         COALESCE((SELECT COUNT(*)
                   FROM Votes v
@@ -23,7 +23,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.CreationDate, u.DisplayName, u.Reputation
 ),

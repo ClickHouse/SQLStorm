@@ -4,7 +4,7 @@ WITH RankedSuppliers AS (
         s.s_name, 
         r.r_name AS region_name,
         COUNT(DISTINCT ps.ps_partkey) AS part_count,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS parts_supplied
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS parts_supplied
     FROM supplier s
     JOIN nation n ON s.s_nationkey = n.n_nationkey
     JOIN region r ON n.n_regionkey = r.r_regionkey

@@ -24,7 +24,7 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= CURRENT_DATE - INTERVAL '1 year'
+        b.Date >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 

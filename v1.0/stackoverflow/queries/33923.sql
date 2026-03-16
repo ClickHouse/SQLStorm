@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -41,7 +41,7 @@ RelatedPosts AS (
     JOIN 
         LinkTypes lt ON pl.LinkTypeId = lt.Id
     WHERE 
-        p1.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        p1.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 PostComments AS (
     SELECT 
@@ -56,7 +56,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(ph.PostHistoryTypeId::text || ': ' || ph.Comment, '; ') AS EditComments
+        arrayStringConcat(groupArray(assumeNotNull(CAST(ph.PostHistoryTypeId AS text) || ': ' || ph.Comment)), '; ') AS EditComments
     FROM 
         PostHistory ph
     GROUP BY 

@@ -30,7 +30,7 @@ TopUsers AS (
 ),
 TagStats AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(Tags, '>'))) AS TagName,
+        TRIM(arrayJoin(splitByString('>', Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts

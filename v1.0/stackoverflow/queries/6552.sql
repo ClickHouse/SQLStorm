@@ -19,20 +19,20 @@ WITH UserActivity AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        u.CreationDate >= DATE '2020-01-01'
+        u.CreationDate >= toDate('2020-01-01')
     GROUP BY 
         u.Id, u.DisplayName
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS TagName, 
+        arrayJoin(splitByString(',', Tags)) AS TagName, 
         COUNT(*) AS TagUsageCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        unnest(string_to_array(Tags, ','))
+        arrayJoin(splitByString(',', Tags))
 )
 SELECT 
     ua.UserId, 

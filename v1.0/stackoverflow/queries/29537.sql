@@ -48,13 +48,13 @@ SELECT
     CommentCount,
     BadgeCount,
     LastActivityDate,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(tp.Tags, '>')) AS TagName
+            arrayJoin(splitByString('>', tp.Tags)) AS TagName
     ) t ON TRUE
 WHERE 
     Rank <= 10  

@@ -31,7 +31,7 @@ SELECT
     mt.title AS movie_title,
     mt.production_year,
     COUNT(DISTINCT mc.company_id) AS company_count,
-    STRING_AGG(DISTINCT COALESCE(cn.name, 'Unknown'), ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(cn.name, 'Unknown')))), ', ') AS company_names,
     ROW_NUMBER() OVER (PARTITION BY ah.name ORDER BY mt.production_year DESC) AS ranking
 FROM 
     cast_info ci

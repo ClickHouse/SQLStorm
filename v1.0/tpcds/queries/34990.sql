@@ -68,7 +68,7 @@ combined_sales AS (
     FROM 
         sales_hierarchy sh
     LEFT JOIN 
-        date_sales ds ON ds.d_date = DATE '2002-10-01'
+        date_sales ds ON ds.d_date = toDate('2002-10-01')
     JOIN 
         customer_info ci ON ci.c_customer_sk = sh.s_store_sk 
 )

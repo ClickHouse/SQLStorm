@@ -21,7 +21,7 @@ PostTagStats AS (
         P.Id AS PostId,
         P.Title,
         P.CreationDate,
-        STRING_AGG(T.TagName, ', ') AS Tags,
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags,
         COALESCE(PH.CreationDate, P.CreationDate) AS LastActivity,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
         COUNT(V.Id) AS VoteCount

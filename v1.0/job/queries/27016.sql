@@ -36,7 +36,7 @@ SELECT
     t.title,
     t.production_year,
     ak.name AS director_name,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     GROUP_CONCAT(DISTINCT cn.name) AS production_companies
 FROM 
     TopMovies t

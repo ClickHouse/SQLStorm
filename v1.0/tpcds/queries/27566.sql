@@ -7,7 +7,7 @@ SELECT
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
     MIN(d.d_date) AS first_purchase_date,
     MAX(d.d_date) AS last_purchase_date,
-    STRING_AGG(DISTINCT item.i_category, ', ') AS categories_purchased
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(item.i_category))), ', ') AS categories_purchased
 FROM 
     customer_address ca
 JOIN 

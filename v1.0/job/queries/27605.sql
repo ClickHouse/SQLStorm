@@ -21,7 +21,7 @@ FilteredMovies AS (
     SELECT 
         rm.movie_title,
         rm.production_year,
-        STRING_AGG(rm.actor_name, ', ') AS actor_list,
+        arrayStringConcat(groupArray(assumeNotNull(rm.actor_name)), ', ') AS actor_list,
         COUNT(DISTINCT rm.actor_name) AS unique_actors
     FROM 
         RankedMovies rm

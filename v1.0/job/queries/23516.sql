@@ -47,7 +47,7 @@ SELECT
         WHEN nh.cast_count < nh.named_roles_count THEN 'More named roles than total cast'
         ELSE 'Total cast equals named roles'
     END AS cast_analysis,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
     COUNT(DISTINCT mi.info) AS movie_info_count
 FROM 
     NullHandling nh

@@ -6,7 +6,7 @@ SELECT
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price_after_discount,
     SUM(l.l_quantity) AS total_quantity,
     MAX(l.l_tax) AS max_tax_rate,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     part p
 JOIN 

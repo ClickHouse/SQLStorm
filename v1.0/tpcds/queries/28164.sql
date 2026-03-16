@@ -9,7 +9,7 @@ WITH String_Benchmark AS (
         LENGTH(ca_city) AS city_length,
         REGEXP_REPLACE(ca_zip, '[^0-9]', '') AS cleaned_zip,
         SUBSTRING(ca_country FROM 1 FOR 3) AS country_code,
-        STRING_AGG(CAST(ca_address_id AS varchar), ',') OVER (PARTITION BY ca_state ORDER BY ca_address_sk) AS address_ids
+        arrayStringConcat(groupArray(assumeNotNull(CAST(ca_address_id AS varchar))), ',') OVER (PARTITION BY ca_state ORDER BY ca_address_sk) AS address_ids
     FROM 
         customer_address
 ),

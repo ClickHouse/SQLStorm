@@ -43,8 +43,8 @@ AggregatedData AS (
         COUNT(DISTINCT p_partkey) AS total_parts,
         SUM(p_retailprice) AS total_retail_price,
         AVG(ps_availqty) AS avg_availability,
-        STRING_AGG(DISTINCT supplier_name, '; ') AS suppliers_list,
-        STRING_AGG(DISTINCT customer_name, '; ') AS customers_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(supplier_name))), '; ') AS suppliers_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(customer_name))), '; ') AS customers_list,
         MAX(o_totalprice) AS max_order_value
     FROM 
         PartDetails

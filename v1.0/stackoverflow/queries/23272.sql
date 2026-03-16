@@ -19,7 +19,7 @@ PopularPosts AS (
         ROW_NUMBER() OVER (ORDER BY P.Score DESC, P.ViewCount DESC) AS PopularityRank
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY P.Id, P.Title, P.Score, P.ViewCount
 ),
 PostVoteDetails AS (

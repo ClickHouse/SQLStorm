@@ -61,7 +61,7 @@ SELECT
         ELSE 'Regular User'
     END AS Recommendation,
     (
-        SELECT STRING_AGG(DISTINCT pt.Name, ', ') 
+        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') 
         FROM PostHistory ph
         JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
         WHERE ph.UserId = su.Id

@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01'
+        o.o_orderdate >= toDate('1997-01-01')
     GROUP BY 
         o.o_orderkey, o.o_orderdate, o.o_custkey
 ),
@@ -31,7 +31,7 @@ PartSupplierInfo AS (
     SELECT
         ps.ps_partkey,
         SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supplier_cost,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM 
         partsupp ps
     JOIN 

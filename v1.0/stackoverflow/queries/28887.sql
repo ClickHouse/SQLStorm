@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 AND /* Only considering questions */
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' /* Posts created in the last year */
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR /* Posts created in the last year */
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, u.DisplayName
 ),
@@ -28,11 +28,11 @@ PopularTags AS (
         COUNT(*) as TagCount
     FROM (
         SELECT 
-            UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) as tag
+            arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) as tag
         FROM 
             Posts p
         WHERE 
-            p.PostTypeId = 1 AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+            p.PostTypeId = 1 AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     ) AS tag_list
     GROUP BY 
         tag

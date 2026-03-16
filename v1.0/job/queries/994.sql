@@ -34,7 +34,7 @@ SELECT
     tm.title,
     tm.production_year,
     COUNT(DISTINCT cmi.cast_id) AS cast_count,
-    STRING_AGG(DISTINCT cmi.character_name, ', ') AS character_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cmi.character_name))), ', ') AS character_names,
     COALESCE(MAX(p.info), 'No Info') AS director_info
 FROM 
     TopMovies tm

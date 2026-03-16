@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     AVG(l.l_extendedprice) AS avg_price_per_unit,
     MAX(l.l_discount) AS max_discount,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     CONCAT('Item: ', p.p_name, ' | Quantity: ', CAST(SUM(l.l_quantity) AS VARCHAR), ' | Orders: ', CAST(COUNT(DISTINCT o.o_orderkey) AS VARCHAR)) AS item_summary
 FROM 
     part p

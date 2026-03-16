@@ -70,7 +70,7 @@ SELECT
         ELSE 'No bounty on this post'
     END AS BountyStatus,
     (SELECT COUNT(*) FROM Comments C WHERE C.PostId = FP.PostId) AS NumberOfComments,
-    (SELECT STRING_AGG(CONCAT('[', PHT.Name, ']'), ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(CONCAT('[', PHT.Name, ']'))), ', ') 
      FROM PostHistory PH 
      JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id 
      WHERE PH.PostId = FP.PostId AND PH.UserId <> (SELECT OwnerUserId FROM Posts WHERE Id = FP.PostId)) AS EditReasons

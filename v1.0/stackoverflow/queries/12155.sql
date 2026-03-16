@@ -20,9 +20,9 @@ PostDetails AS (
 TaggedPosts AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM Posts p
-    CROSS JOIN UNNEST(string_to_array(p.Tags, '><')) AS tag
+    CROSS JOIN arrayJoin(splitByString('><', p.Tags)) AS tag
     JOIN Tags t ON t.TagName = tag
     GROUP BY p.Id
 )

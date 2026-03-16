@@ -10,7 +10,7 @@ SELECT
     AVG(ws.ws_sales_price) AS avg_sale_price,
     MAX(ca.ca_zip) AS max_zip_code,
     MIN(ca.ca_zip) AS min_zip_code,
-    STRING_AGG(DISTINCT ca.ca_street_name, ', ' ORDER BY ca.ca_street_name) AS street_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_street_name))), ', ' ORDER BY ca.ca_street_name) AS street_names,
     DENSE_RANK() OVER (PARTITION BY ca.ca_state ORDER BY SUM(COALESCE(ws.ws_quantity, 0)) DESC) AS state_rank
 FROM 
     customer c

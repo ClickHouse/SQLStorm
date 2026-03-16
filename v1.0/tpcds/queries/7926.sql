@@ -35,7 +35,7 @@ SELECT
     ts.avg_sales_price,
     ts.total_quantity_sold,
     ts.unique_customers,
-    CURRENT_DATE - INTERVAL '1 month' AS report_month
+    CURRENT_DATE - INTERVAL 1 MONTH AS report_month
 FROM 
     TopStores ts
 WHERE 

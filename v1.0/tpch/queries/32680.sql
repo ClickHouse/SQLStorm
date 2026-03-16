@@ -19,7 +19,7 @@ SELECT p.p_partkey,
        p.p_name, 
        SUM(COALESCE(l.l_extendedprice, 0) * (1 - l.l_discount)) AS total_revenue,
        ROW_NUMBER() OVER (PARTITION BY p.p_partkey ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank,
-       STRING_AGG(DISTINCT CONCAT(n.n_name, ': ', s.s_name), '; ') AS supplier_info
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ': ', s.s_name)))), '; ') AS supplier_info
 FROM part p
 LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
 LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
@@ -37,4 +37,4 @@ AND EXISTS (
 GROUP BY p.p_partkey, p.p_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 2000
 ORDER BY total_revenue DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

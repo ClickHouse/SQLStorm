@@ -38,7 +38,7 @@ SELECT
     rp.OwnerDisplayName,
     rp.CreationDate,
     rp.CommentCount,
-    STRING_AGG(pt.TagName, ', ') AS PopularTags,
+    arrayStringConcat(groupArray(assumeNotNull(pt.TagName)), ', ') AS PopularTags,
     CASE
         WHEN rp.PostRank <= 10 THEN 'Top 10 Recent Posts'
         ELSE 'Other Posts'
@@ -46,7 +46,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(string_to_array(rp.Tags, ','))
+    PopularTags pt ON pt.TagName = ANY(splitByString(',', rp.Tags))
 WHERE 
     rp.PostRank <= 100 
 GROUP BY 

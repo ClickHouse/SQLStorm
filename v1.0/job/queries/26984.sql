@@ -26,7 +26,7 @@ PopularTitles AS (
 ActedTitles AS (
     SELECT
         ct.movie_id,
-        ARRAY_AGG(DISTINCT an.name) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(an.name))) AS cast_names,
         COUNT(DISTINCT an.id) AS cast_count
     FROM
         cast_info ct

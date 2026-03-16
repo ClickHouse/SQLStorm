@@ -28,17 +28,17 @@ PostMetrics AS (
         p.ViewCount,
         p.Score,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, p.Score
 ),
@@ -66,7 +66,7 @@ SELECT
     COUNT(a.PostId) AS NumberOfPosts,
     SUM(a.ViewCount) AS TotalViews,
     AVG(a.Score) AS AvgScore,
-    STRING_AGG(a.Tags, ', ') AS AssociatedTags
+    arrayStringConcat(groupArray(assumeNotNull(a.Tags)), ', ') AS AssociatedTags
 FROM 
     ActiveUserPosts a
 GROUP BY 

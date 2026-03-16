@@ -50,6 +50,6 @@ SELECT
 FROM 
     PostDetails pd
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(string_to_array(pd.Title, ' ')) 
+    PopularTags pt ON pt.TagName = ANY(splitByString(' ', pd.Title)) 
 ORDER BY 
     pd.Score DESC, pd.ViewCount DESC;

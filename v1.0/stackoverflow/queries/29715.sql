@@ -9,8 +9,8 @@ WITH ProcessedPostData AS (
         p.ViewCount,
         p.Score,
         p.OwnerUserId,
-        STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypeNames,
-        STRING_AGG(DISTINCT l.Name, ', ') AS LinkTypeNames,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypeNames,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.Name))), ', ') AS LinkTypeNames,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT b.Id) AS BadgeCount
     FROM 
@@ -36,7 +36,7 @@ ProcessedTagData AS (
         t.TagName,
         SUM(CASE WHEN p.Id IS NOT NULL THEN 1 ELSE 0 END) AS PostCount,
         SUM(t.Count) AS TotalCount,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS UserNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS UserNames
     FROM 
         Tags t
     LEFT JOIN 

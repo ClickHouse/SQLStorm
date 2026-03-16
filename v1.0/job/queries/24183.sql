@@ -29,7 +29,7 @@ SELECT
     mt.production_year,
     COUNT(*) OVER (PARTITION BY mt.id) AS actor_count,
     ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY ak.name) AS actor_rank,
-    STRING_AGG(DISTINCT k.keyword, ', ') FILTER (WHERE k.keyword IS NOT NULL) AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') FILTER (WHERE k.keyword IS NOT NULL) AS keywords,
     CASE 
         WHEN cg.kind IS NULL THEN 'Unknown'
         ELSE cg.kind

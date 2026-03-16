@@ -3,7 +3,7 @@ WITH UserStats AS (
         U.Id AS UserId,
         U.Reputation,
         COUNT(B.Id) AS BadgeCount,
-        SUM(CASE WHEN P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 1 ELSE 0 END) AS RecentPostCount,
+        SUM(CASE WHEN P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 1 ELSE 0 END) AS RecentPostCount,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpvotesReceived,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownvotesReceived
     FROM Users U
@@ -19,10 +19,10 @@ PostDetails AS (
         P.Score,
         P.ViewCount,
         COUNT(C.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT TAG.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(TAG.TagName))) AS Tags
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    LEFT JOIN LATERAL UNNEST(string_to_array(P.Tags, '><')) AS TAG(TagName) ON TRUE
+    LEFT JOIN arrayJoin(splitByString('><', P.Tags)) AS TAG(TagName) ON TRUE
     GROUP BY P.Id, P.Title, P.Score, P.ViewCount
 ),
 TopUsers AS (

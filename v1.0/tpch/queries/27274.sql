@@ -3,7 +3,7 @@ SELECT
     LEFT(p.p_name, 10) AS short_name,
     SUM(ps.ps_availqty) AS total_available_quantity,
     COUNT(DISTINCT s.s_name) AS total_suppliers,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, '(', s.s_phone, ')'), ', ') AS supplier_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, '(', s.s_phone, ')')))), ', ') AS supplier_details,
     SUBSTRING(p.p_comment, 1, 15) AS short_comment,
     MAX(l.l_extendedprice) AS max_price,
     AVG(CASE 

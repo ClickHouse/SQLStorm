@@ -3,7 +3,7 @@ WITH MovieDetails AS (
         t.title,
         t.production_year,
         c.kind AS company_kind,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
     FROM 
         aka_title AS t
         JOIN movie_companies AS mc ON t.id = mc.movie_id

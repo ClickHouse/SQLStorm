@@ -21,7 +21,7 @@ JOIN
 JOIN 
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
+    o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
     AND p.p_type LIKE '%metal%'
 GROUP BY 
     c.c_custkey, c.c_name, short_address, n.n_name, p.p_brand

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 ),
 UserReputation AS (
     SELECT 
@@ -30,7 +30,7 @@ PostFeedback AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        ARRAY_AGG(DISTINCT ph.Comment) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11, 52, 53)) AS CloseRevisions,
+        arrayDistinct(groupArray(assumeNotNull(ph.Comment))) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11, 52, 53)) AS CloseRevisions,
         COUNT(DISTINCT c.Id) AS CommentCount
     FROM 
         PostHistory ph
@@ -85,4 +85,4 @@ WHERE
     f.CommentCount > 5
 ORDER BY 
     f.ViewCount DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

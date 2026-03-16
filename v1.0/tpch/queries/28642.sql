@@ -7,7 +7,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     MAX(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice ELSE 0 END) AS max_returned_price,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     SUBSTRING(p.p_comment FROM 1 FOR 23) AS truncated_comment
 FROM 
     supplier s

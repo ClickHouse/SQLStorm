@@ -5,7 +5,7 @@ WITH PostTagCounts AS (
     FROM 
         Posts p
     JOIN 
-        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '> <')) AS tag_name ON TRUE
+        arrayJoin(splitByString('> <', substring(p.Tags, 2, length(p.Tags)-2))) AS tag_name ON TRUE
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
@@ -26,7 +26,7 @@ PostVoteStats AS (
 PostHistoryStats AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS PostHistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS PostHistoryTypes,
         COUNT(*) AS TotalHistoryRecords
     FROM 
         PostHistory ph
@@ -53,7 +53,7 @@ FinalStats AS (
     LEFT JOIN 
         PostHistoryStats phs ON p.Id = phs.PostId
     WHERE 
-        p.CreationDate > (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR')  
+        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)  
 )
 SELECT 
     PostId,

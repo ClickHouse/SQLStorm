@@ -31,8 +31,8 @@ SELECT
     rm.title,
     rm.production_year,
     COUNT(DISTINCT am.person_id) AS actor_count,
-    STRING_AGG(DISTINCT am.actor_role, ', ') AS roles,
-    STRING_AGG(DISTINCT cm.company_name || ' (' || cm.company_type || ')', '; ') AS companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(am.actor_role))), ', ') AS roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cm.company_name || ' (' || cm.company_type || ')'))), '; ') AS companies
 FROM ranked_movies rm
 LEFT JOIN actor_movies am ON rm.movie_id = am.movie_id AND am.role_rank <= 2
 LEFT JOIN company_movies cm ON rm.movie_id = cm.movie_id

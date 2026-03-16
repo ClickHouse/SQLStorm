@@ -13,7 +13,7 @@ WITH RankedTitles AS (
 CastByCompany AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT co.name) AS companies
+        arrayDistinct(groupArray(assumeNotNull(co.name))) AS companies
     FROM 
         movie_companies mc
     JOIN 
@@ -25,7 +25,7 @@ MovieDetails AS (
     SELECT 
         ti.title,
         ti.production_year,
-        COALESCE(ARRAY_AGG(DISTINCT ka.name), '{}') AS alias_names,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(ka.name))), '{}') AS alias_names,
         cb.companies,
         COUNT(DISTINCT ci.id) AS cast_count,
         MAX(ti.production_year) OVER () AS max_year
@@ -49,20 +49,20 @@ FilteredMovies AS (
             ELSE 'Modern'
         END AS era,
         CASE 
-            WHEN array_length(alias_names, 1) IS NULL THEN 'No Aliases'
+            WHEN length(alias_names, 1) IS NULL THEN 'No Aliases'
             ELSE array_to_string(alias_names, ', ')
         END AS alias_summary
     FROM 
         MovieDetails
     WHERE 
-        NOT (array_length(companies, 1) = 1 AND companies[1] IS NULL) 
+        NOT (length(companies, 1) = 1 AND companies[1] IS NULL) 
         AND (cast_count > 5 OR production_year >= (SELECT MAX(production_year) - 20 FROM RankedTitles))
 )
 SELECT 
     era,
     COUNT(*) AS movie_count,
     MIN(production_year) AS earliest_movie,
-    STRING_AGG(DISTINCT alias_summary, '; ') AS all_aliases
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(alias_summary))), '; ') AS all_aliases
 FROM 
     FilteredMovies
 GROUP BY 

@@ -21,7 +21,7 @@ OrderDetails AS (
            ROW_NUMBER() OVER (PARTITION BY o.o_orderkey ORDER BY o.o_orderdate DESC) AS rn
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate >= DATE '1997-01-01'
+    WHERE l.l_shipdate >= toDate('1997-01-01')
     GROUP BY o.o_orderkey
 ),
 CustomerRevenue AS (

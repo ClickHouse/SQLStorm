@@ -29,7 +29,7 @@ title_keywords AS (
 keyword_groups AS (
     SELECT 
         tk.movie_id,
-        STRING_AGG(tk.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(tk.keyword)), ', ') AS keywords
     FROM title_keywords tk
     GROUP BY tk.movie_id
 )

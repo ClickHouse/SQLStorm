@@ -9,7 +9,7 @@ WITH TagDetails AS (
     FROM
         Posts p
     INNER JOIN
-        Tags t ON t.TagName = ANY(string_to_array(TRIM(BOTH '{}' FROM p.Tags), '><'))
+        Tags t ON t.TagName = ANY(splitByString('><', TRIM(BOTH '{}' FROM p.Tags)))
     WHERE
         p.PostTypeId = 1 
     GROUP BY

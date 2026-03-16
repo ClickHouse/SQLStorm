@@ -15,7 +15,7 @@ RecentPosts AS (
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostMetrics AS (
     SELECT 
@@ -52,4 +52,4 @@ FROM UserScores us
 WHERE us.Reputation > 1000
   AND us.RecentPostCount > 0
 ORDER BY us.TotalViews DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

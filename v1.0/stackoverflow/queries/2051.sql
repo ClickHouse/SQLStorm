@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS PostRank
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 UserStats AS (
@@ -35,7 +35,7 @@ SELECT
     COUNT(DISTINCT rp.Id) AS TopPostsCount,
     MAX(rp.Score) AS MaxScore,
     MIN(rp.Score) AS MinScore,
-    STRING_AGG(rp.Title, '; ') AS TopPostTitles
+    arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS TopPostTitles
 FROM UserStats us
 LEFT JOIN RankedPosts rp ON us.UserId = rp.OwnerUserId
 WHERE us.TotalPosts > 0

@@ -50,13 +50,13 @@ SELECT
     pd.DownVoteCount,
     pd.PostSentiment,
     COALESCE(p.Title, 'No Title') AS PostTitle,
-    COALESCE(ARRAY_AGG(DISTINCT t.TagName), '{}') AS Tags
+    COALESCE(arrayDistinct(groupArray(assumeNotNull(t.TagName))), '{}') AS Tags
 FROM UserReputation ur
 LEFT JOIN PostDetails pd ON ur.Id = pd.OwnerUserId
 LEFT JOIN Posts p ON pd.PostId = p.Id
-LEFT JOIN LATERAL (
+LEFT JOIN (
     SELECT 
-        unnest(string_to_array(p.Tags, '>')) AS TagName
+        arrayJoin(splitByString('>', p.Tags)) AS TagName
 ) AS t ON true
 GROUP BY 
     ur.DisplayName, 

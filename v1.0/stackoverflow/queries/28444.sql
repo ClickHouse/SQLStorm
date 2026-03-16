@@ -9,13 +9,13 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.PostTypeId = 2 AND p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswerCount,
         AVG(p.Score) AS AvgPostScore,
         AVG(p.ViewCount) AS AvgViewCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Users u
     LEFT JOIN 
         Posts p ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(p.Tags, '><')) AS tag ON TRUE
+        arrayJoin(splitByString('><', p.Tags)) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
     WHERE 

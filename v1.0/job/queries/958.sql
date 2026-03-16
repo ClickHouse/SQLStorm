@@ -26,7 +26,7 @@ MovieInfo AS (
     SELECT 
         m.title,
         m.production_year,
-        STRING_AGG(DISTINCT mi.info, ', ') AS movie_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS movie_info
     FROM 
         TopRankedMovies m
     LEFT JOIN 

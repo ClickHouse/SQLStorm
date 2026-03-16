@@ -8,7 +8,7 @@ WITH RECURSIVE OrderHierarchy AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1995-01-01'
+        o.o_orderdate >= toDate('1995-01-01')
 
     UNION ALL
 

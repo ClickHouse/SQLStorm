@@ -55,4 +55,4 @@ WHERE
     c.c_current_addr_sk IS NOT NULL
 ORDER BY 
     h.total_net_profit DESC, adjusted_price ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

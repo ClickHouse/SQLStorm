@@ -3,7 +3,7 @@ WITH TagStats AS (
     SELECT 
         t.TagName, 
         COUNT(p.Id) AS PostCount,
-        STRING_AGG(DISTINCT CONCAT(u.DisplayName, ' ', u.Reputation), ', ') AS UserContributors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' ', u.Reputation)))), ', ') AS UserContributors,
         MAX(p.CreationDate) AS LastPostDate,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes

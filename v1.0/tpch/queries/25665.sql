@@ -8,7 +8,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT CONCAT('Supplier: ', s.s_name, ', Order Date: ', CAST(o.o_orderdate AS text)), '; ') AS supplier_order_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Supplier: ', s.s_name, ', Order Date: ', CAST(o.o_orderdate AS text))))), '; ') AS supplier_order_info
 FROM 
     part p
 JOIN 

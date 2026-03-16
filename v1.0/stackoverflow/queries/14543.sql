@@ -17,7 +17,7 @@ LEFT JOIN
 LEFT JOIN 
     Comments c ON p.Id = c.PostId
 WHERE 
-    p.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+    p.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
 GROUP BY 
     u.Reputation
 ORDER BY 

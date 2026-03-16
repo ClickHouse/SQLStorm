@@ -34,7 +34,7 @@ movies_with_info AS (
         tm.production_year,
         tm.keyword,
         tm.cast_count,
-        STRING_AGG(DISTINCT ci.note, ', ') AS cast_notes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), ', ') AS cast_notes
     FROM 
         top_movies tm
     LEFT JOIN 

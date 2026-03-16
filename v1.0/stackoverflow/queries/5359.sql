@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -37,16 +37,16 @@ SELECT
     tp.AnswerCount,
     tp.CommentCount,
     COUNT(c.Id) AS TotalComments,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
     Comments c ON c.PostId = tp.PostId
 LEFT JOIN 
-    (SELECT p.Id, STRING_AGG(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '>') AS tag_list 
+    (SELECT p.Id, arrayStringConcat(groupArray(assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))), '>') AS tag_list 
      FROM Posts p GROUP BY p.Id) AS tag_list ON tag_list.Id = tp.PostId
 LEFT JOIN 
-    Tags t ON t.TagName = ANY(STRING_TO_ARRAY(tag_list.tag_list, '><'))
+    Tags t ON t.TagName = ANY(splitByString('><', tag_list.tag_list))
 GROUP BY 
     tp.PostId, tp.Title, tp.OwnerName, tp.ViewCount, tp.Score, tp.UpVotes, tp.DownVotes, tp.AnswerCount, tp.CommentCount
 ORDER BY 

@@ -16,7 +16,7 @@ WITH
             rm.movie_id, 
             rm.title, 
             COUNT(ci.person_id) AS actor_count,
-            STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
         FROM 
             ranked_movies rm
         LEFT JOIN 
@@ -32,7 +32,7 @@ WITH
             mw.title, 
             mw.actor_count, 
             mw.actor_names,
-            COALESCE(STRING_AGG(DISTINCT k.keyword, ', '), 'No Keywords') AS keywords_list
+            COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'No Keywords') AS keywords_list
         FROM 
             movie_with_actors mw
         LEFT JOIN 

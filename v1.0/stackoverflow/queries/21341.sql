@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         SUM(v.BountyAmount) AS TotalBounty,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT ba.Id) AS BadgeCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagList
     FROM 
         Posts p
     LEFT JOIN 
@@ -20,11 +20,11 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges ba ON p.OwnerUserId = ba.UserId
     LEFT JOIN 
-        LATERAL unnest(string_to_array(p.Tags, ',')) AS tag ON TRUE
+        arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON TRIM(tag) = t.TagName
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
         AND p.Score IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId
@@ -75,7 +75,7 @@ SELECT
     qp.BadgeCount,
     qp.TagList,
     qp.CloseReason,
-    COALESCE(EXTRACT(EPOCH FROM TIMESTAMP '2024-10-01 12:34:56' - qp.CloseDate), 0) AS TimeSinceClose
+    COALESCE(toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - qp.CloseDate), 0) AS TimeSinceClose
 FROM 
     QualifiedPosts qp
 ORDER BY 

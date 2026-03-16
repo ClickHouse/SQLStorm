@@ -23,7 +23,7 @@ FilteredActors AS (
 MovieInfoWithNotes AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(mn.info, '; ') AS info_notes
+        arrayStringConcat(groupArray(assumeNotNull(mn.info)), '; ') AS info_notes
     FROM movie_info mi
     LEFT JOIN movie_info_idx mn ON mi.movie_id = mn.movie_id
     GROUP BY mi.movie_id

@@ -64,4 +64,4 @@ WHERE
 ORDER BY 
     COALESCE(ss.total_profit, 0) DESC,
     i.i_item_id
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

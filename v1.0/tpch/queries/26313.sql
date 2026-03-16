@@ -22,7 +22,7 @@ CustomerOrderDetails AS (
         o.o_orderdate,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_order_value,
         COUNT(l.l_orderkey) AS line_item_count,
-        STRING_AGG(DISTINCT CONCAT(p.p_name, ' x', l.l_quantity), ', ') AS items_ordered
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' x', l.l_quantity)))), ', ') AS items_ordered
     FROM 
         customer c
     JOIN 
@@ -39,7 +39,7 @@ SELECT
     COUNT(DISTINCT co.c_custkey) AS unique_customers,
     SUM(co.total_order_value) AS total_revenue,
     COUNT(DISTINCT sp.s_suppkey) AS total_suppliers,
-    STRING_AGG(DISTINCT co.items_ordered, '; ') AS top_items_ordered
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.items_ordered))), '; ') AS top_items_ordered
 FROM 
     region rp
 JOIN 

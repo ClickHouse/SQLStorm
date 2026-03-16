@@ -45,4 +45,4 @@ LEFT JOIN SupplierPartHierarchy sp ON sp.s_suppkey = (
 )
 WHERE rs.nation_count > 1 OR (sp.p_name IS NOT NULL AND rs.total_supplier_balance IS NOT NULL)
 ORDER BY r.r_name, om.avg_order_price DESC NULLS LAST
-OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

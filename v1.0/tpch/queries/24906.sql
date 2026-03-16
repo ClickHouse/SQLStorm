@@ -9,8 +9,8 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' AND 
-        o.o_orderdate < DATE '1997-12-31'
+        o.o_orderdate >= toDate('1997-01-01') AND 
+        o.o_orderdate < toDate('1997-12-31')
 ), 
 
 SupplierDetails AS (
@@ -60,7 +60,7 @@ LEFT JOIN
 WHERE 
     n.n_name IS NOT NULL 
     AND (o.o_orderstatus IS NULL OR o.o_orderstatus <> 'F') 
-    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-06-30'
+    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-06-30')
 GROUP BY 
     n.n_name
 HAVING 

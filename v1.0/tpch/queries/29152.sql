@@ -7,7 +7,7 @@ WITH StringAggregates AS (
         SUM(LENGTH(s.s_address)) AS total_address_length,
         COUNT(DISTINCT s.s_nationkey) AS unique_nations,
         COUNT(DISTINCT p.p_partkey) AS total_parts,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
     FROM 
         supplier s
     LEFT JOIN 

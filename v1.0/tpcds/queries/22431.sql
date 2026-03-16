@@ -63,4 +63,4 @@ FROM
     final_report fr
 ORDER BY 
     fr.total_sales DESC, fr.c_customer_sk
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

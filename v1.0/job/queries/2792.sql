@@ -24,7 +24,7 @@ FilmDetails AS (
     SELECT 
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         COALESCE(MAX(m_info.info) FILTER (WHERE it.info = 'Budget'), 'N/A') AS budget_info,
         COALESCE(MAX(m_info.info) FILTER (WHERE it.info = 'Runtime'), 'N/A') AS runtime_info
     FROM 

@@ -21,7 +21,7 @@ PostAnalytics AS (
     SELECT P.Id, P.Title, P.ViewCount, P.Score, COALESCE(CC.TotalComments, 0) AS CommentCount
     FROM Posts P
     LEFT JOIN RecursiveCommentCounts CC ON P.Id = CC.PostId
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     AND P.PostTypeId = 1
 ),
 PostHistoryAnalytics AS (

@@ -59,7 +59,7 @@ LEFT JOIN
 LEFT JOIN 
     TopNations tn ON tn.n_name = 'United States'  
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1998-01-01'
+    l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1998-01-01')
 GROUP BY 
     p.p_name, ss.total_parts, co.avg_order_value, tn.total_revenue
 ORDER BY 

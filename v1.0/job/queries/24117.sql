@@ -50,7 +50,7 @@ SELECT
         ELSE 'Low'
     END AS company_funding_level,
     (SELECT COUNT(*) FROM aka_title WHERE production_year = tm.production_year) AS titles_in_year,
-    (SELECT STRING_AGG(name.name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(name.name)), ', ') 
      FROM aka_name name 
      WHERE name.person_id IN (SELECT DISTINCT person_id FROM cast_info WHERE movie_id = tm.movie_id)) AS starring_actors
 FROM 

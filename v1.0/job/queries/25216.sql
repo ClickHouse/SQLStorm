@@ -2,7 +2,7 @@ WITH ranked_movies AS (
     SELECT 
         t.title AS movie_title,
         t.production_year,
-        ARRAY_AGG(DISTINCT a.name) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS cast_names,
         COUNT(DISTINCT kc.keyword) AS keyword_count,
         ROW_NUMBER() OVER (ORDER BY t.production_year DESC) AS rank
     FROM 

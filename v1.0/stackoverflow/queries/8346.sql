@@ -14,7 +14,7 @@ WITH RecentPosts AS (
         LEFT JOIN Comments c ON p.Id = c.PostId
         LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, u.DisplayName
 ),
@@ -45,11 +45,11 @@ SELECT
 FROM 
     TopPosts tp
     JOIN Posts p ON tp.PostId = p.Id
-    CROSS JOIN LATERAL (
+    CROSS JOIN (
         SELECT 
-            STRING_AGG(t.TagName, ', ') AS Name
+            arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Name
         FROM 
-            unnest(string_to_array(p.Tags, ',')) AS tag
+            arrayJoin(splitByString(',', p.Tags)) AS tag
             JOIN Tags t ON TRIM(tag) = t.TagName
     ) AS t
 WHERE 

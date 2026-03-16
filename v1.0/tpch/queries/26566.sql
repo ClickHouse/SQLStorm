@@ -2,7 +2,7 @@ SELECT
     p.p_name,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_quantity,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ': ', s.s_name), '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ': ', s.s_name)))), '; ') AS supplier_details
 FROM 
     part p
 JOIN 

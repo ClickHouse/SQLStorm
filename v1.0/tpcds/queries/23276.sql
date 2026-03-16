@@ -81,7 +81,7 @@ LEFT JOIN
 LEFT JOIN 
     SalesData sd ON cs.c_customer_sk = sd.ws_item_sk
 LEFT JOIN 
-    AnnualSales asd ON asd.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
+    AnnualSales asd ON asd.d_year = toYear(cast('2002-10-01' as date))
 WHERE 
     (cs.avg_spending IS NOT NULL OR cs.store_count > 0)
 AND 

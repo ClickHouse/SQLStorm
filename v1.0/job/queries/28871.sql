@@ -4,8 +4,8 @@ WITH movie_stats AS (
         t.title AS movie_title,
         t.production_year,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         t.id AS movie_id  -- Added to GROUP BY
     FROM 
         aka_title t
@@ -31,7 +31,7 @@ WITH movie_stats AS (
 company_stats AS (
     SELECT
         m.movie_id,
-        STRING_AGG(DISTINCT c.name, ', ') AS production_companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS production_companies
     FROM 
         movie_companies m
     JOIN 

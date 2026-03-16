@@ -25,7 +25,7 @@ full_cast_info AS (
 movie_info_data AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(mi.info, ', ') AS info_details
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS info_details
     FROM 
         aka_title m
     LEFT JOIN 
@@ -37,7 +37,7 @@ cast_aggregate AS (
     SELECT 
         movie_id,
         COUNT(DISTINCT actor_name) AS actor_count,
-        STRING_AGG(DISTINCT actor_name, ', ') AS all_actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS all_actors
     FROM 
         full_cast_info
     GROUP BY 

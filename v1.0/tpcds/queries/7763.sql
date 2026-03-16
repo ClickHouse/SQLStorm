@@ -52,4 +52,4 @@ GROUP BY
     ds.d_year, ds.d_month_seq, ds.total_sales, ds.customer_count
 ORDER BY 
     ds.d_year DESC, ds.d_month_seq DESC
-FETCH FIRST 1000 ROWS ONLY;
+LIMIT 1000;

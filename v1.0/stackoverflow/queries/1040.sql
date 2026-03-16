@@ -39,7 +39,7 @@ SELECT
     COALESCE(tu.AverageScore, 0) AS AverageScore,
     COALESCE(tu.TotalBounty, 0) AS TotalBounty,
     CASE 
-        WHEN tu.LastPostDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR' THEN 'Inactive'
+        WHEN tu.LastPostDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Inactive'
         ELSE 'Active'
     END AS UserStatus
 FROM 

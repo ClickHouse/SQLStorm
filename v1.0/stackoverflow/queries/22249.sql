@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score > 0
 ),
 UserActivity AS (
@@ -29,21 +29,21 @@ UserActivity AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        u.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 years'
+        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
     GROUP BY 
         u.Id, u.DisplayName
 ),
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name || ': ' || ph.Comment, '; ') AS HistoryComments,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name || ': ' || ph.Comment))), '; ') AS HistoryComments,
         COUNT(*) AS HistoryCount
     FROM 
         PostHistory ph
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         ph.PostId
 )

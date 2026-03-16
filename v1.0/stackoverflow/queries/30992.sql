@@ -24,12 +24,12 @@ RecentPosts AS (
     LEFT JOIN PostVoteCounts v ON p.Id = v.PostId
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN UserBadgeCounts bc ON u.Id = bc.UserId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 CloseReasons AS (
     SELECT ph.PostId, 
            MAX(ph.CreationDate) AS LastCloseDate, 
-           STRING_AGG(cr.Name, ', ') AS CloseReasonNames
+           arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasonNames
     FROM PostHistory ph
     JOIN CloseReasonTypes cr ON CAST(ph.Comment AS INTEGER) = cr.Id
     WHERE ph.PostHistoryTypeId = 10

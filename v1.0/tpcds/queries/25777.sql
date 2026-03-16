@@ -59,4 +59,4 @@ JOIN
     DateSummary ds ON (ds.transaction_count > 100) 
 ORDER BY
     ds.total_sales DESC, ad.address_count DESC, cd.total_purchase_estimate DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

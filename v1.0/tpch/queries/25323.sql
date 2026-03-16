@@ -27,7 +27,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(s.s_acctbal) AS total_supplier_balance,
     AVG(num_parts) AS avg_parts_per_supplier,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     region r
 JOIN 

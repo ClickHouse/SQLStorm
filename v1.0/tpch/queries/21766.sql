@@ -21,7 +21,7 @@ filtered_suppliers AS (
            SUM(l.l_quantity) AS total_quantity
     FROM supplier s
     JOIN lineitem l ON s.s_suppkey = l.l_suppkey
-    WHERE l.l_shipdate >= '1997-01-01' AND l.l_shipdate < DATE '1998-10-01' - INTERVAL '1 DAY'
+    WHERE l.l_shipdate >= '1997-01-01' AND l.l_shipdate < toDate('1998-10-01') - INTERVAL 1 DAY
     GROUP BY s.s_suppkey, s.s_name, s.s_acctbal, s.s_comment
     HAVING SUM(l.l_quantity) > 100
 ),

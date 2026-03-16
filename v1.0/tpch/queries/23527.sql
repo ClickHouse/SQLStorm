@@ -15,7 +15,7 @@ SELECT
     n.n_name AS NationName,
     COALESCE(SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END), 0) AS ReturnedSales,
     COUNT(DISTINCT CASE WHEN c.c_mktsegment = 'BUILDING' THEN c.c_custkey END) AS BuildingCustomers,
-    STRING_AGG(s.s_name, ', ' ORDER BY s.s_name) AS SupplierNames
+    arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ' ORDER BY s.s_name) AS SupplierNames
 FROM 
     region r
 LEFT JOIN 
@@ -31,7 +31,7 @@ LEFT JOIN
 LEFT JOIN 
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1990-01-01' AND DATE '1995-12-31'
+    o.o_orderdate BETWEEN toDate('1990-01-01') AND toDate('1995-12-31')
     AND (c.c_acctbal > (SELECT AVG(c2.c_acctbal) FROM customer c2 WHERE c2.c_mktsegment = c.c_mktsegment) OR c.c_acctbal IS NULL)
 GROUP BY 
     r.r_name, n.n_name

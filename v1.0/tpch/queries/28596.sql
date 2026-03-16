@@ -33,7 +33,7 @@ PartSuppliers AS (
 )
 SELECT 
     p.part_name,
-    STRING_AGG(DISTINCT ps.supplier_name, ', ') AS suppliers_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ps.supplier_name))), ', ') AS suppliers_list,
     COUNT(DISTINCT ps.supplier_name) AS total_suppliers,
     MAX(p.p_retailprice) AS highest_price
 FROM 

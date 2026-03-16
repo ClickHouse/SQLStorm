@@ -5,7 +5,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT SUBSTRING(l.l_comment FROM 1 FOR 20), '; ') AS abbreviated_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(l.l_comment FROM 1 FOR 20)))), '; ') AS abbreviated_comments
 FROM 
     part p
 JOIN 

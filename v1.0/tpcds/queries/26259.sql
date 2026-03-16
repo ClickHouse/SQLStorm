@@ -6,7 +6,7 @@ WITH Address_Analysis AS (
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length,
         AVG(LENGTH(ca_city)) AS avg_city_length,
         SUM(CASE WHEN ca_street_type LIKE '%Avenue%' THEN 1 ELSE 0 END) AS is_avenue_count,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities
     FROM customer_address
     GROUP BY ca_state
 ),

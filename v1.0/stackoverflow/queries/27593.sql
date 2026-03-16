@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS RankByScore,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
@@ -24,7 +24,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON POSITION(',' || t.TagName || ',' IN ',' || p.Tags || ',') > 0
     WHERE 
-        p.CreationDate >= DATE '2023-01-01' 
+        p.CreationDate >= toDate('2023-01-01') 
         AND p.Score IS NOT NULL
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.Body, p.CreationDate, p.ViewCount, pt.Name

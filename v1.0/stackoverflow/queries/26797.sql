@@ -1,7 +1,7 @@
 
 WITH TagStats AS (
     SELECT 
-        TRIM(UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><'))) AS Tag,
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS Tag,
         COUNT(*) AS TagCount,
         SUM(ViewCount) AS TotalViews,
         SUM(AnswerCount) AS TotalAnswers
@@ -10,7 +10,7 @@ WITH TagStats AS (
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        TRIM(UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')))
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))))
 ), UserStats AS (
     SELECT 
         u.Id AS UserId,

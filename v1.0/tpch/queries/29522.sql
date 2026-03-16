@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     COUNT(DISTINCT o.o_orderkey) AS number_of_orders,
     AVG(o.o_totalprice) AS average_order_value,
-    string_agg(DISTINCT c.c_name, ', ') AS customers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customers
 FROM 
     supplier s
 JOIN 

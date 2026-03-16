@@ -31,7 +31,7 @@ top_suppliers AS (
 )
 SELECT 
     r_name,
-    STRING_AGG(CONCAT(s_name, ' (', total_supply_cost, ')'), ', ') AS top_suppliers_list
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(s_name, ' (', total_supply_cost, ')'))), ', ') AS top_suppliers_list
 FROM 
     top_suppliers
 GROUP BY 

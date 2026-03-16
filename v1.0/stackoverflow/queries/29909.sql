@@ -4,7 +4,7 @@ WITH TagAggregates AS (
         COUNT(DISTINCT Posts.Id) AS PostCount,
         SUM(Posts.ViewCount) AS TotalViews,
         AVG(Posts.Score) AS AvgScore,
-        STRING_AGG(DISTINCT Users.DisplayName, ', ') AS Contributors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Users.DisplayName))), ', ') AS Contributors
     FROM 
         Tags
     JOIN 
@@ -12,7 +12,7 @@ WITH TagAggregates AS (
     JOIN 
         Users ON Posts.OwnerUserId = Users.Id
     WHERE 
-        Posts.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        Posts.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
     GROUP BY 
         Tags.TagName
 ),
@@ -38,7 +38,7 @@ TopContributors AS (
     JOIN 
         Posts ON Posts.OwnerUserId = Users.Id
     WHERE 
-        Posts.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        Posts.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         Users.DisplayName
     ORDER BY 

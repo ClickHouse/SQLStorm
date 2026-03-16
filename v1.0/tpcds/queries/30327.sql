@@ -51,8 +51,8 @@ SELECT
         ELSE 'Below Average'
     END) AS sales_performance,
     (SELECT 
-        STRING_AGG(CONCAT('Income Band ', ib.ib_income_band_sk, ': ', 
-        ib.ib_lower_bound, ' - ', ib.ib_upper_bound), ', ')
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT('Income Band ', ib.ib_income_band_sk, ': ', 
+        ib.ib_lower_bound, ' - ', ib.ib_upper_bound))), ', ')
      FROM 
         income_breakdown ib
      WHERE 

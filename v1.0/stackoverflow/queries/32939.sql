@@ -40,7 +40,7 @@ SELECT
     uv.Reputation AS UserReputation,
     ba.BadgeCount,
     CASE 
-        WHEN ph.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Old Answer'
+        WHEN ph.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Old Answer'
         ELSE 'New Answer'
     END AS AnswerAgeCategory
 FROM 

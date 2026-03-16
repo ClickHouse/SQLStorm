@@ -22,7 +22,7 @@ PostHistoryStats AS (
         COUNT(*) AS HistoryActions,
         MAX(CASE WHEN PH.PostHistoryTypeId = 10 THEN 1 ELSE 0 END) AS ClosedPost,
         MAX(CASE WHEN PH.PostHistoryTypeId = 11 THEN 1 ELSE 0 END) AS ReopenedPost,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryTypes
     FROM 
         PostHistory PH
     INNER JOIN 
@@ -76,4 +76,4 @@ WHERE
     AND (PS.TotalPosts > 0 OR PH.HistoryActions > 0)
 ORDER BY 
     U.Reputation DESC, PS.TotalPosts DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

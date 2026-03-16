@@ -5,7 +5,7 @@ SELECT
     o.o_orderkey AS order_id,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS average_price,
-    STRING_AGG(DISTINCT p.p_type, ', ') AS distinct_part_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS distinct_part_types,
     CONCAT('Order from ', s.s_name, ' containing part ', p.p_name, ' for customer ', c.c_name) AS order_description
 FROM 
     lineitem l

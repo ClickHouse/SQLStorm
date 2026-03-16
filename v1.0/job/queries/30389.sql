@@ -32,7 +32,7 @@ SELECT
     mh.production_year,
     COUNT(DISTINCT mj.keyword_id) AS keyword_count,
     AVG(COALESCE(mi.info_type_id, 0)) AS average_info_type,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER(PARTITION BY at.title ORDER BY mh.level DESC) AS rank
 FROM 
     movie_hierarchy mh

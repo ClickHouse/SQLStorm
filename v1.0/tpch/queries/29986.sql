@@ -21,10 +21,10 @@ AggregatedResults AS (
         AVG(name_length) AS avg_length,
         COUNT(DISTINCT p_partkey) AS unique_parts,
         COUNT(*) AS total_records,
-        STRING_AGG(lower_name, ', ') AS all_lower_names,
-        STRING_AGG(upper_name, ', ') AS all_upper_names,
-        STRING_AGG(short_comment, '; ') AS all_short_comments,
-        STRING_AGG(modified_comment, '; ') AS all_modified_comments
+        arrayStringConcat(groupArray(assumeNotNull(lower_name)), ', ') AS all_lower_names,
+        arrayStringConcat(groupArray(assumeNotNull(upper_name)), ', ') AS all_upper_names,
+        arrayStringConcat(groupArray(assumeNotNull(short_comment)), '; ') AS all_short_comments,
+        arrayStringConcat(groupArray(assumeNotNull(modified_comment)), '; ') AS all_modified_comments
     FROM 
         StringProcessingBenchmark
 )

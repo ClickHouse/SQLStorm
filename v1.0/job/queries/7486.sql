@@ -17,7 +17,7 @@ TopMovies AS (
         rt.title_id,
         rt.title,
         rt.production_year,
-        STRING_AGG(rt.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(rt.keyword)), ', ') AS keywords
     FROM 
         RankedTitles rt
     WHERE 

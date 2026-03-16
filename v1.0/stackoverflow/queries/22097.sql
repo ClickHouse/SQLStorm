@@ -11,7 +11,7 @@ WITH PostScores AS (
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Badges b ON p.OwnerUserId = b.UserId
-    WHERE p.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year')
+    WHERE p.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR)
     GROUP BY p.Id, p.OwnerUserId
 ),
 UserStatistics AS (
@@ -35,7 +35,7 @@ ClosingReasons AS (
     SELECT
         ph.UserId AS CloserUserId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasons
     FROM PostHistory ph
     JOIN CloseReasonTypes ctr ON CAST(ph.Comment AS INTEGER) = ctr.Id 
     WHERE ph.PostHistoryTypeId = 10 

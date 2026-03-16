@@ -27,7 +27,7 @@ WITH RankedSuppliers AS (
 ), StringAggregation AS (
     SELECT 
         r.r_name AS region_name,
-        STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', p.p_name, ')'), '; ') AS customer_product_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', p.p_name, ')')))), '; ') AS customer_product_details
     FROM 
         region r
     JOIN 

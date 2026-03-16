@@ -4,7 +4,7 @@ SELECT
     s.s_name AS supplier_name,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(l.l_discount) AS total_discount,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_served
 FROM 
     part p
 JOIN 

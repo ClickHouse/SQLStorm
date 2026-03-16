@@ -15,7 +15,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ': ', CAST(p.p_retailprice AS VARCHAR)), '; ') AS product_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ': ', CAST(p.p_retailprice AS VARCHAR))))), '; ') AS product_info,
     CASE 
         WHEN AVG(l.l_discount) IS NULL THEN 'No Discounts'
         WHEN AVG(l.l_discount) < 0.05 THEN 'Low Discounts'

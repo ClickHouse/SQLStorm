@@ -12,13 +12,13 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -34,7 +34,7 @@ RecentVotes AS (
     JOIN
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE
-        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY
         v.PostId, vt.Name
 ),

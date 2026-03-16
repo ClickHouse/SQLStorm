@@ -3,7 +3,7 @@ WITH TagStats AS (
         t.TagName,
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(CASE WHEN p.ViewCount > 1000 THEN 1 ELSE 0 END) AS HighViewCountPosts,
-        STRING_AGG(DISTINCT p.Title, ', ') AS TopPostTitles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), ', ') AS TopPostTitles,
         COUNT(DISTINCT c.Id) AS TotalComments,
         SUM(v.BountyAmount) AS TotalBountyAmount
     FROM 
@@ -15,7 +15,7 @@ WITH TagStats AS (
     LEFT JOIN 
         Votes AS v ON v.PostId = p.Id AND v.VoteTypeId IN (8, 9) 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
     GROUP BY 
         t.TagName
 ),

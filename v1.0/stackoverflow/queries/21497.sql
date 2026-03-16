@@ -4,12 +4,12 @@ WITH RankedPosts AS (
         p.Title,
         p.Score,
         p.ViewCount,
-        ARRAY_LENGTH(string_to_array(p.Tags, '>'), 1) AS TagCount,
+        length(splitByString('>', p.Tags), 1) AS TagCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
 ),
 ClosedPosts AS (

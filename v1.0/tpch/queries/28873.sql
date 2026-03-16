@@ -4,7 +4,7 @@ SELECT
     p.p_name AS part_name,
     SUM(ps.ps_availqty) AS total_available_quantity,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ' (', r.r_name, ')'), '; ') AS nation_region_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ' (', r.r_name, ')')))), '; ') AS nation_region_info,
     AVG(p.p_retailprice) AS avg_retail_price,
     MAX(o.o_totalprice) AS max_order_price 
 FROM 

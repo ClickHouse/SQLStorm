@@ -28,9 +28,9 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_size > 25 
-    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_partkey, p.p_name, p.p_mfgr, p.p_comment, r.r_name, n.n_name, s.s_name, c.c_name, o.o_orderkey
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

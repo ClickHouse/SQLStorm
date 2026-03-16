@@ -30,7 +30,7 @@ TopUsers AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS Tag,
+        arrayJoin(splitByString(',', Tags)) AS Tag,
         COUNT(*) AS TagCount
     FROM Posts
     GROUP BY Tag
@@ -44,7 +44,7 @@ UserTagStats AS (
     FROM 
         Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
-    JOIN PopularTags t ON t.Tag = ANY (string_to_array(p.Tags, ','))
+    JOIN PopularTags t ON t.Tag = ANY (splitByString(',', p.Tags))
     GROUP BY u.Id, t.Tag
 )
 SELECT 

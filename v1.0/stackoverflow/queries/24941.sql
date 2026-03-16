@@ -43,7 +43,7 @@ OverallStats AS (
         Votes v ON p.Id = v.PostId
     WHERE 
         u.Reputation IS NOT NULL 
-        AND u.CreationDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        AND u.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         u.Id
 )
@@ -65,7 +65,7 @@ LEFT JOIN
 WHERE 
     os.TotalScore > (SELECT AVG(TotalScore) FROM OverallStats)
     AND os.BadgeCount > 1
-    AND (os.LatestPostDate IS NOT NULL OR os.LatestPostDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'))
+    AND (os.LatestPostDate IS NOT NULL OR os.LatestPostDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY))
 ORDER BY 
     os.TotalScore DESC
 LIMIT 10;

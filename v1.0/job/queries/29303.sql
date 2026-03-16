@@ -36,7 +36,7 @@ MovieKeywordInfo AS (
 AggregatedKeywords AS (
     SELECT 
         movie_title,
-        STRING_AGG(keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords
     FROM 
         MovieKeywordInfo
     GROUP BY 

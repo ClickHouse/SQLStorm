@@ -16,7 +16,7 @@ ActorRoleCounts AS (
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS actor_count,
         MAX(CASE WHEN r.role = 'Director' THEN 1 ELSE 0 END) AS is_directed,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors
     FROM 
         cast_info c
     JOIN 
@@ -30,7 +30,7 @@ CompanyInfo AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT cn.id) AS company_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 

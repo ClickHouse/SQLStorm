@@ -26,7 +26,7 @@ movies_info AS (
         m.id AS movie_id,
         COALESCE(m.title, 'Unknown Title') AS title,
         COALESCE(m.production_year, 0) AS production_year,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         aka_title m
     LEFT JOIN 

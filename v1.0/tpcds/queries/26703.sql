@@ -3,7 +3,7 @@ WITH AddressSummary AS (
     SELECT 
         ca_state,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
-        STRING_AGG(ca_street_name, ', ') AS street_names,
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names,
         SUM(CASE WHEN ca_suite_number IS NOT NULL THEN 1 ELSE 0 END) AS suite_count
     FROM 
         customer_address

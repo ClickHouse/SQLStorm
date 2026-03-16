@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS VoteCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.CreationDate DESC) AS Rank
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.Score, p.ViewCount
 ),
@@ -52,6 +52,6 @@ JOIN
 LEFT JOIN 
     Badges bh ON bh.UserId = u.Id
 WHERE 
-    bh.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+    bh.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ORDER BY 
     tp.Score DESC, tp.ViewCount DESC;

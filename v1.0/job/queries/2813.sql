@@ -38,7 +38,7 @@ CompanyDetails AS (
 SELECT 
     tm.title,
     tm.production_year,
-    ARRAY_AGG(DISTINCT cd.company_name) AS production_companies,
+    arrayDistinct(groupArray(assumeNotNull(cd.company_name))) AS production_companies,
     tm.cast_count,
     CASE 
         WHEN tm.production_year < 2000 THEN 'Classic'

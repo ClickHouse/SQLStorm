@@ -56,7 +56,7 @@ SELECT
     tp.AuthorDisplayName,
     COALESCE(tp.CommentCount, 0) AS TotalComments,
     COALESCE(tp.HistoricalVoteCount, 0) AS HistoricalVoteCount,
-    COALESCE(EXTRACT(EPOCH FROM tp.FirstVoteDate), 0) AS FirstVoteTimeInSeconds
+    COALESCE(toUnixTimestamp(tp.FirstVoteDate), 0) AS FirstVoteTimeInSeconds
 FROM 
     TopPosts tp
 ORDER BY 

@@ -46,7 +46,7 @@ JOIN NationDetails nd ON hd.s_suppkey = (
         SELECT l.l_partkey 
         FROM lineitem l 
         WHERE l.l_returnflag = 'R' 
-        AND l.l_shipdate >= DATE '1997-01-01'
+        AND l.l_shipdate >= toDate('1997-01-01')
     )
     LIMIT 1
 )

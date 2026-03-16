@@ -46,8 +46,8 @@ SELECT
     tp.Author,
     tp.CommentCount,
     tp.VoteCount,
-    STRING_AGG(b.Name, ', ' ORDER BY b.Name) AS Badges,
-    COALESCE((SELECT STRING_AGG(c.Text, ' | ' ORDER BY c.CreationDate) 
+    arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ' ORDER BY b.Name) AS Badges,
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ' ORDER BY c.CreationDate) 
               FROM Comments c 
               WHERE c.PostId = tp.PostId), 'No comments') AS LatestComments
 FROM 

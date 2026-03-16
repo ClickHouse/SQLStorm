@@ -34,7 +34,7 @@ SELECT
     SUM(CASE WHEN l_returnflag = 'R' THEN 1 ELSE 0 END) AS total_returns,
     MAX(l_shipdate) AS latest_shipping,
     discount_category,
-    STRING_AGG(DISTINCT short_address, '; ') AS unique_addresses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(short_address))), '; ') AS unique_addresses
 FROM 
     OrderedData
 GROUP BY 

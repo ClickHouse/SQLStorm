@@ -44,7 +44,7 @@ PostStatistics AS (
         SUM(f.Score) AS TotalScore,
         AVG(f.Score) AS AvgScore,
         MAX(f.CreationDate) AS LatestPostDate,
-        STRING_AGG(DISTINCT CASE WHEN f.ActivityStatus = 'Active' THEN f.Title END, ', ') AS ActivePosts
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN f.ActivityStatus = 'Active' THEN f.Title END))), ', ') AS ActivePosts
     FROM 
         FilteredPosts f
     GROUP BY 

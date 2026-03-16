@@ -1,6 +1,6 @@
 WITH PostTags AS (
     SELECT p.Id AS PostId,
-           STRING_AGG(t.TagName, ', ') AS TagsAggregated,
+           arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsAggregated,
            p.OwnerUserId,
            p.Title,
            p.CreationDate,

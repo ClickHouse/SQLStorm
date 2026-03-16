@@ -31,7 +31,7 @@ WITH RECURSIVE MovieHierarchy AS (
 MovieCast AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
         COUNT(DISTINCT c.person_id) AS actor_count,
         MAX(CASE WHEN r.role = 'Lead' THEN 1 ELSE 0 END) AS has_lead
     FROM 
@@ -46,8 +46,8 @@ MovieCast AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT CASE WHEN it.info = 'Genre' THEN mi.info END, ', ') AS genres,
-        STRING_AGG(DISTINCT CASE WHEN it.info = 'Language' THEN mi.info END, ', ') AS languages
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN it.info = 'Genre' THEN mi.info END))), ', ') AS genres,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN it.info = 'Language' THEN mi.info END))), ', ') AS languages
     FROM 
         movie_info mi
     JOIN 

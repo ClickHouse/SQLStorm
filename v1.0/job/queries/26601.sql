@@ -41,7 +41,7 @@ SELECT
     tm.production_year,
     tm.company_type,
     tm.actor_count,
-    STRING_AGG(DISTINCT a.name, ', ') AS actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors
 FROM 
     TopMovies tm
 JOIN 

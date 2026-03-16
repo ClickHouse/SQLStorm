@@ -24,7 +24,7 @@ NationSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY 
         n.n_nationkey, n.n_name
 ),
@@ -41,7 +41,7 @@ SupplierSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        l.l_shipdate >= o.o_orderdate AND l.l_shipdate <= o.o_orderdate + INTERVAL '30 days'
+        l.l_shipdate >= o.o_orderdate AND l.l_shipdate <= o.o_orderdate + INTERVAL 30 DAY
     GROUP BY 
         s.s_suppkey
 ),

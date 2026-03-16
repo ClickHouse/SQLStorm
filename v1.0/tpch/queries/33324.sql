@@ -16,7 +16,7 @@ SELECT
     SUM(CASE WHEN o.o_orderstatus = 'F' THEN o.o_totalprice ELSE 0 END) AS Total_Finished_Orders,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS Avg_Adjusted_Price,
     MAX(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity END) AS Max_Returned_Quantity,
-    STRING_AGG(DISTINCT p.p_comment, '; ') as Comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') as Comments,
     SUM(COALESCE(ps.ps_availqty, 0) * COALESCE(ps.ps_supplycost, 0)) AS Total_Supply_Cost
 FROM nation n
 LEFT JOIN customer c ON n.n_nationkey = c.c_nationkey

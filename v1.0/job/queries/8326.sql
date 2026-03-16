@@ -23,7 +23,7 @@ MovieDetails AS (
         rm.actor_count,
         mii.info AS budget,
         mii.note AS budget_note,
-        STRING_AGG(DISTINCT CONCAT(ak.name, ' (', rt.role, ')'), ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ak.name, ' (', rt.role, ')')))), ', ') AS actors
     FROM 
         RankedMovies rm
     LEFT JOIN 

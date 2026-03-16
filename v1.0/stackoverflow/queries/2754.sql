@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId, p.ViewCount
 ),
@@ -54,4 +54,4 @@ AND
     rp.Score > 0
 ORDER BY 
     rp.Score DESC, rp.ViewCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

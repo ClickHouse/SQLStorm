@@ -32,7 +32,7 @@ SELECT
         WHEN rm.production_year IS NULL THEN 'Year not available'
         ELSE 'Released in ' || CAST(rm.production_year AS VARCHAR) 
     END AS release_message,
-    ARRAY_AGG(DISTINCT kw.keyword) AS keywords
+    arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords
 FROM 
     RecentMovies rm
 LEFT JOIN 

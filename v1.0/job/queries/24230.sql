@@ -16,7 +16,7 @@ WITH RankedMovies AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         MAX(CASE WHEN ct.kind = 'Distributor' THEN cn.name END) AS distributor_name
     FROM 
         movie_companies mc
@@ -56,7 +56,7 @@ SELECT
         WHEN emi.keyword_count BETWEEN 3 AND 5 THEN 'Moderately Tagged'
         ELSE 'Low Tags'
     END AS tagline,
-    COALESCE((SELECT STRING_AGG(DISTINCT p.info, ', ') 
+    COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.info))), ', ') 
               FROM person_info p 
               WHERE p.person_id IN (
                   SELECT c.person_id 

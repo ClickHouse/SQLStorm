@@ -44,4 +44,4 @@ JOIN UserReputation ur ON up.Id = ur.UserId
 WHERE ur.Reputation > 1000
   AND rp.PostRank <= 10
 ORDER BY rp.Score DESC, ur.Reputation DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

@@ -3,7 +3,7 @@ WITH Address_City AS (
     SELECT 
         ca_city,
         COUNT(*) AS city_count,
-        STRING_AGG(ca_street_name || ' ' || ca_street_type || ' ' || ca_street_number, ', ') AS streets
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_type || ' ' || ca_street_number)), ', ') AS streets
     FROM 
         customer_address
     GROUP BY 
@@ -14,7 +14,7 @@ Demographics AS (
         cd_gender,
         cd_marital_status,
         COUNT(*) AS demo_count,
-        STRING_AGG(CONCAT(cd_education_status, ' (', cd_credit_rating, ')'), ', ') AS education_info
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(cd_education_status, ' (', cd_credit_rating, ')'))), ', ') AS education_info
     FROM 
         customer_demographics
     GROUP BY 

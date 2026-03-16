@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS actor_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
         AVG(CASE WHEN m_info.info_type_id = 1 THEN NULLIF(LENGTH(m_info.info), 0) END) AS avg_info_length
     FROM 
         aka_title t

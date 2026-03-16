@@ -25,8 +25,8 @@ MovieDetails AS (
     SELECT 
         tm.title,
         tm.production_year,
-        COALESCE(STRING_AGG(DISTINCT cn.name, ', '), 'No Companies') AS company_names,
-        COALESCE(STRING_AGG(DISTINCT k.keyword, ', '), 'No Keywords') AS keywords
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', '), 'No Companies') AS company_names,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'No Keywords') AS keywords
     FROM 
         TopMovies tm
     LEFT JOIN 

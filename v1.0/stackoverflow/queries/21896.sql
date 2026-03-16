@@ -10,7 +10,7 @@ WITH RecursivePostHistory AS (
     JOIN 
         Posts p ON p.Id = ph.PostId
     WHERE 
-        ph.CreationDate < cast('2024-10-01 12:34:56' as timestamp) 
+        ph.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) 
 ),
 AggregatedVotes AS (
     SELECT 

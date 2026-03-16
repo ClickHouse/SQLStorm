@@ -56,7 +56,7 @@ UserRankings AS (
 SELECT 
     rp.PostId,
     rp.Title,
-    STRING_AGG(DISTINCT ft.TagName, ', ') AS Tags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ft.TagName))), ', ') AS Tags,
     rp.CommentCount,
     rp.VoteCount,
     ur.DisplayName AS TopOwnerUser,

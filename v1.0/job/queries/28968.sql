@@ -3,7 +3,7 @@ WITH movie_ratings AS (
         t.id AS movie_id,
         t.title AS movie_title,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         MAX(t.production_year) AS production_year,
         CASE 
             WHEN MAX(t.production_year) >= 2000 THEN 'Modern'

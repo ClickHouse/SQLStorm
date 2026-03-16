@@ -33,7 +33,7 @@ SELECT
     rc.movie_id,
     rc.movie_title,
     rc.production_year,
-    STRING_AGG(CONCAT(rc.actor_name, ' (', rc.role_name, ')'), ', ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(rc.actor_name, ' (', rc.role_name, ')'))), ', ') AS actors
 FROM 
     ranked_cast rc
 GROUP BY 

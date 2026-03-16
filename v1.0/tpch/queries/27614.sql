@@ -2,7 +2,7 @@ SELECT
     p.p_partkey,
     p.p_name,
     CONCAT('Supplier: ', s.s_name, ', Region: ', r.r_name) AS supplier_info,
-    STRING_AGG(DISTINCT CONCAT('Customer: ', c.c_name, ' (', c.c_nationkey, ')'), '; ') AS customer_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Customer: ', c.c_name, ' (', c.c_nationkey, ')')))), '; ') AS customer_details,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(o.o_totalprice) AS avg_order_value

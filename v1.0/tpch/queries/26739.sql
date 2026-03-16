@@ -42,8 +42,8 @@ CustomerOrders AS (
 StringAggregates AS (
     SELECT 
         r.r_name AS region_name,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nations,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers
     FROM 
         region r
     JOIN 

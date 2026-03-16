@@ -8,7 +8,7 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     COUNT(DISTINCT c.Id) AS CommentCount,
     COUNT(DISTINCT v.Id) AS VoteCount,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
     p.AcceptedAnswerId,
     MAX(ph.CreationDate) AS LastEdited
 FROM 
@@ -20,7 +20,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    UNNEST(string_to_array(p.Tags, '>')) AS tag_ids ON true
+    arrayJoin(splitByString('>', p.Tags)) AS tag_ids ON true
 LEFT JOIN 
     Tags t ON t.TagName = tag_ids
 LEFT JOIN 

@@ -24,7 +24,7 @@ TopCast AS (
 MoviesWithKeywords AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(mk.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mt
     JOIN 

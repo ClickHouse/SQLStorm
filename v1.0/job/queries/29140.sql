@@ -5,7 +5,7 @@ WITH ActorMovies AS (
         ak.person_id AS actor_id,
         at.title AS movie_title,
         at.production_year,
-        STRING_AGG(DISTINCT kw.keyword, ',' ORDER BY kw.keyword) AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ',' ORDER BY kw.keyword) AS keywords
     FROM 
         aka_name ak
     JOIN 

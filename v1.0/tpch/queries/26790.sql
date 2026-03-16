@@ -22,7 +22,7 @@ AggregatedData AS (
         np.n_name,
         SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_value,
         COUNT(DISTINCT sp.s_suppkey) AS unique_suppliers,
-        STRING_AGG(DISTINCT rp.part_description, '; ') AS part_summaries
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.part_description))), '; ') AS part_summaries
     FROM 
         nation np
     JOIN 

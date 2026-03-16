@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
 ),
 PostWithComments AS (
@@ -85,4 +85,4 @@ WHERE
     cp.CommentCount > 5 
 ORDER BY 
     EngagementScore DESC, cp.Score DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

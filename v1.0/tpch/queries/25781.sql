@@ -1,6 +1,6 @@
 
 SELECT
-    CONCAT('Supplier: ', s.s_name, ' from ', n.n_name, ' supplies ', COUNT(ps.ps_partkey), ' parts with comments: ', STRING_AGG(DISTINCT ps.ps_comment, '; ')) AS Supplier_Details,
+    CONCAT('Supplier: ', s.s_name, ' from ', n.n_name, ' supplies ', COUNT(ps.ps_partkey), ' parts with comments: ', arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ps.ps_comment))), '; ')) AS Supplier_Details,
     SUM(ps.ps_supplycost * ps.ps_availqty) AS Total_Supply_Value,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS Avg_Sale_Price,
     COUNT(DISTINCT o.o_orderkey) AS Total_Orders

@@ -52,7 +52,7 @@ PostScoreAnalysis AS (
 SELECT 
     psa.ScoreCategory,
     COUNT(psa.PostID) AS NumberOfPosts,
-    STRING_AGG(lp.Tags, ', ') AS AssociatedTags
+    arrayStringConcat(groupArray(assumeNotNull(lp.Tags)), ', ') AS AssociatedTags
 FROM 
     PostScoreAnalysis psa
 JOIN 

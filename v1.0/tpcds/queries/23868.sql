@@ -28,7 +28,7 @@ ReturnDetails AS (
         cr.cr_item_sk,
         SUM(cr.cr_return_quantity) AS total_returned,
         SUM(cr.cr_return_amt_inc_tax) AS total_returned_amount,
-        STRING_AGG(DISTINCT p.p_promo_name || ' (' || p.p_discount_active || ')', ', ') AS promotional_discount_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name || ' (' || p.p_discount_active || ')'))), ', ') AS promotional_discount_info
     FROM 
         catalog_returns cr
     JOIN 

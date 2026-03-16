@@ -26,16 +26,16 @@ RecentPosts AS (
         p.LastActivityDate,
         LEAD(p.CreationDate) OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate) AS NextPostDate
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostHistoryStats AS (
     SELECT 
         ph.PostId,
         ph.PostHistoryTypeId,
         COUNT(*) AS HistoryCount,
-        STRING_AGG(DISTINCT ph.Comment, '; ') AS Comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS Comments
     FROM PostHistory ph
-    WHERE ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY ph.PostId, ph.PostHistoryTypeId
 ),
 ActiveUsers AS (
@@ -46,7 +46,7 @@ ActiveUsers AS (
     FROM Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    WHERE p.LastActivityDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+    WHERE p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY u.DisplayName
 )
 SELECT 

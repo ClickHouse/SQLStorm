@@ -33,7 +33,7 @@ AggregatedData AS (
         cd.cd_marital_status AS marital_status,
         COUNT(*) AS customer_count,
         AVG(cd.street_name_length) AS avg_street_name_length,
-        STRING_AGG(DISTINCT cd.city_state_zip, ', ') AS unique_locations
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.city_state_zip))), ', ') AS unique_locations
     FROM 
         CustomerDetails cd
     GROUP BY 

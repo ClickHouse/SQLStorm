@@ -9,7 +9,7 @@ SELECT
     COUNT(DISTINCT c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-    AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgResponseTime,
+    AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgResponseTime,
     COUNT(DISTINCT ph.Id) AS EditCount
 FROM 
     Posts p

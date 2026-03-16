@@ -48,7 +48,7 @@ MovieStats AS (
 KeywordStats AS (
     SELECT 
         mk.movie_id, 
-        ARRAY_AGG(mk.keyword_id) AS Keywords
+        groupArray(assumeNotNull(mk.keyword_id)) AS Keywords
     FROM 
         movie_keyword mk
     GROUP BY 

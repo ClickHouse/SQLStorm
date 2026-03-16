@@ -49,4 +49,4 @@ WHERE
     t.store_sales > 100 OR t.web_sales > 100
 ORDER BY
     t.overall_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

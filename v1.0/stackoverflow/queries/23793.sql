@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
         AND p.Score IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
@@ -23,11 +23,11 @@ WITH RankedPosts AS (
 CloseReasons AS (
     SELECT 
         ph.PostId, 
-        ARRAY_AGG(DISTINCT crt.Name) AS CloseReasonNames
+        arrayDistinct(groupArray(assumeNotNull(crt.Name))) AS CloseReasonNames
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes crt ON ph.Comment::int = crt.Id
+        CloseReasonTypes crt ON CAST(ph.Comment AS int) = crt.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY 
@@ -52,7 +52,7 @@ HighScoringQuestions AS (
 PostDetails AS (
     SELECT 
         hsq.*,
-        (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
          FROM Tags t 
          WHERE t.ExcerptPostId = hsq.PostId) AS Tags
     FROM 
@@ -71,7 +71,7 @@ SELECT
         WHEN pd.CloseReasons != '{}' THEN 'Closed'
         ELSE 'Open'
     END AS PostStatus,
-    ROUND(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - pd.CreationDate)) / 3600, 2) AS AgeInHours
+    ROUND(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - pd.CreationDate)) / 3600, 2) AS AgeInHours
 FROM 
     PostDetails pd
 WHERE 

@@ -60,5 +60,4 @@ WHERE
     AND (r.s_name IS NOT NULL OR m.order_count > 5)
 ORDER BY 
     e.total_supply_cost DESC, m.order_count ASC
-OFFSET 10 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

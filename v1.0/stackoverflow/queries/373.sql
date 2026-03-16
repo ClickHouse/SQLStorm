@@ -28,7 +28,7 @@ PostVoteCounts AS (
 ClosedPostHistory AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT cht.Name, ', ') AS CloseReasons,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cht.Name))), ', ') AS CloseReasons,
         COUNT(*) AS CloseCount
     FROM 
         PostHistory ph

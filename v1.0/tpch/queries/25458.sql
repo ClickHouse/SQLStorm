@@ -4,8 +4,8 @@ WITH SupplierAggregates AS (
         s.s_name,
         SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,
         COUNT(ps.ps_partkey) AS total_parts_supplied,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
-        STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
     FROM 
         supplier s
     JOIN 

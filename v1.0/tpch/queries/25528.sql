@@ -21,7 +21,7 @@ part_info AS (
         p.p_brand,
         AVG(ps.ps_supplycost) AS avg_supplycost,
         SUM(ps.ps_availqty) AS total_availqty,
-        STRING_AGG(TRIM(ps.ps_comment), '; ') AS combined_comments
+        arrayStringConcat(groupArray(assumeNotNull(TRIM(ps.ps_comment))), '; ') AS combined_comments
     FROM 
         part p
     JOIN 

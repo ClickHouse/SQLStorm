@@ -27,7 +27,7 @@ WITH RECURSIVE MovieHierarchy AS (
 SELECT 
     a.name AS actor_name,
     COUNT(DISTINCT mh.movie_id) AS number_of_movies,
-    STRING_AGG(DISTINCT CONCAT(mh.title, ' (', mh.production_year, ')'), ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(mh.title, ' (', mh.production_year, ')')))), ', ') AS movie_titles,
     AVG(CASE 
             WHEN mt.info_type_id IS NOT NULL THEN 1 
             ELSE 0 

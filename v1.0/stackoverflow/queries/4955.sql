@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= (DATE '2024-10-01' - INTERVAL '30 days')
+        p.CreationDate >= (toDate('2024-10-01') - INTERVAL 30 DAY)
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.CreationDate, u.DisplayName, p.PostTypeId
 ),
@@ -29,7 +29,7 @@ RecentPostHistory AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= (DATE '2024-10-01' - INTERVAL '7 days')
+        ph.CreationDate >= (toDate('2024-10-01') - INTERVAL 7 DAY)
 )
 
 SELECT 
@@ -39,7 +39,7 @@ SELECT
     rp.OwnerDisplayName,
     rp.CommentCount,
     (SELECT 
-        STRING_AGG(DISTINCT pt.Name, ', ') 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') 
      FROM 
         PostHistoryTypes pt 
      JOIN 

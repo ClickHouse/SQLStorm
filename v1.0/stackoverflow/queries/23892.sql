@@ -17,14 +17,14 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.PostTypeId, p.AcceptedAnswerId
 ),
 
 PopularTags AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS TagName, 
+        arrayJoin(splitByString('><', Tags)) AS TagName, 
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -63,7 +63,7 @@ ClosedPosts AS (
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
-        AND ph.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')
+        AND ph.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
 )
 
 SELECT 

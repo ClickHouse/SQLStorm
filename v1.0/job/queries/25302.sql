@@ -33,7 +33,7 @@ actor_movie_details AS (
         ti.title,
         ti.production_year,
         COUNT(mr.movie_id) AS role_count,
-        STRING_AGG(DISTINCT ti.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ti.keyword))), ', ') AS keywords
     FROM 
         movie_roles mr
     JOIN 

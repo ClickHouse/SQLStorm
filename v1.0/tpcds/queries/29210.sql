@@ -8,7 +8,7 @@ SELECT
     SUM(ws.ws_sales_price) AS total_sales,
     COUNT(DISTINCT ws.ws_order_number) AS order_count,
     COUNT(DISTINCT ws.ws_web_page_sk) AS unique_web_pages,
-    STRING_AGG(DISTINCT wp.wp_url, ', ') AS viewed_web_pages,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp.wp_url))), ', ') AS viewed_web_pages,
     DATE_TRUNC('month', d.d_date) AS sales_month
 FROM 
     customer AS c

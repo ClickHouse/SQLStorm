@@ -2,7 +2,7 @@ WITH RecursiveCTE AS (
     SELECT 
         ca.person_id,
         COUNT(DISTINCT t.id) AS movie_count,
-        STRING_AGG(DISTINCT t.title, ', ') AS titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS titles
     FROM 
         cast_info ca
     JOIN 

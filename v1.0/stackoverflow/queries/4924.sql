@@ -29,7 +29,7 @@ UserStatistics AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CAST(ph.CreationDate AS VARCHAR), ', ') AS CloseDates,
+        arrayStringConcat(groupArray(assumeNotNull(CAST(ph.CreationDate AS VARCHAR))), ', ') AS CloseDates,
         COUNT(*) AS CloseReasonCount
     FROM 
         PostHistory ph

@@ -58,4 +58,4 @@ WHERE
     i.i_current_price > (SELECT AVG(i2.i_current_price) FROM item i2)
 ORDER BY 
     total_net_paid DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

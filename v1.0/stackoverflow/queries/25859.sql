@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
         COUNT(*) AS PostCount
     FROM Posts
     WHERE PostTypeId = 1
@@ -33,7 +33,7 @@ PostHistorySummary AS (
         COUNT(*) AS HistoryCount,
         MIN(ph.CreationDate) AS FirstHistoryDate,
         MAX(ph.CreationDate) AS LastHistoryDate,
-        STRING_AGG(DISTINCT ph.Comment, ', ') AS Comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), ', ') AS Comments
     FROM Posts p
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
     GROUP BY p.Id, ph.PostHistoryTypeId
@@ -51,7 +51,7 @@ RecentActivePosts AS (
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 month'
+    WHERE p.CreationDate > now64(6) - INTERVAL 1 MONTH
     GROUP BY p.Id, p.Title, u.DisplayName, p.CreationDate, p.LastActivityDate
 )
 SELECT 

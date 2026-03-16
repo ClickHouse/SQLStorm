@@ -18,7 +18,7 @@ WITH OrderedItems AS (
     JOIN 
         region r ON n.n_regionkey = r.r_regionkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
+        o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1996-12-31')
         AND l.l_shipdate > o.o_orderdate
     GROUP BY 
         o.o_orderkey, o.o_orderdate, c.c_mktsegment, n.n_name, r.r_name

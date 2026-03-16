@@ -4,8 +4,8 @@ SELECT
     t.title AS movie_title,
     c.note AS role_note,
     COUNT(mk.keyword_id) AS keyword_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT cn.name, ', ') AS companies_involved,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies_involved,
     pi.info AS person_info,
     it.info AS extra_info
 FROM 

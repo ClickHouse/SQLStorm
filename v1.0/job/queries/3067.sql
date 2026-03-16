@@ -26,7 +26,7 @@ TopMovies AS (
 MovieGenres AS (
     SELECT 
         at.id AS movie_id,
-        COALESCE(string_agg(DISTINCT kt.keyword, ', '), 'No Genres') AS genres
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', '), 'No Genres') AS genres
     FROM 
         aka_title at
     LEFT JOIN 

@@ -15,17 +15,17 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.PostTypeId = 1
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
-        CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         TagName
     ORDER BY 

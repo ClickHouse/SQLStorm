@@ -13,7 +13,7 @@ WITH RankedTitles AS (
 DistinctKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords_list
     FROM 
         movie_keyword mk
     JOIN 

@@ -24,7 +24,7 @@ JOIN supplier_hierarchy sh ON l.l_suppkey = sh.s_suppkey
 LEFT JOIN supplier s ON l.l_suppkey = s.s_suppkey
 JOIN nation n ON c.c_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey
-WHERE o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+WHERE o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
   AND l.l_shipdate IS NOT NULL
   AND (l.l_discount IS NOT NULL AND l.l_discount < 0.15)
 GROUP BY n.n_name, r.r_name, s.s_name

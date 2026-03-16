@@ -6,7 +6,7 @@ WITH TagStats AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         AVG(u.Reputation) AS AvgReputation,
-        STRING_AGG(DISTINCT CASE WHEN u.Id IS NOT NULL THEN u.DisplayName END, ', ') AS ActiveUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN u.Id IS NOT NULL THEN u.DisplayName END))), ', ') AS ActiveUsers
     FROM 
         Tags t
     LEFT JOIN 
@@ -55,7 +55,7 @@ LEFT JOIN (
         PostHistory ph ON ph.PostId = p.Id AND ph.PostHistoryTypeId IN (4, 5, 6)  
     GROUP BY 
         p.Tags
-) AS PH ON tt.TagName IN (SELECT unnest(string_to_array(PH.Tags, ', ')))
+) AS PH ON tt.TagName IN (SELECT arrayJoin(splitByString(', ', PH.Tags)))
 JOIN 
     PostTypes PT ON pt.Id = (SELECT DISTINCT p.PostTypeId FROM Posts p WHERE p.Tags LIKE CONCAT('%', tt.TagName, '%'))
 ORDER BY 

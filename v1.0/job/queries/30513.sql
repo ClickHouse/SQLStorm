@@ -39,7 +39,7 @@ MoviesWithKeywords AS (
     SELECT
         m.id AS movie_id,
         m.title,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM
         aka_title m
     LEFT JOIN movie_keyword mk ON m.id = mk.movie_id
@@ -51,7 +51,7 @@ MoviesWithKeywords AS (
 MovieCompanies AS (
     SELECT
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM
         movie_companies mc
     LEFT JOIN company_name cn ON mc.company_id = cn.id

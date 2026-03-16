@@ -73,6 +73,6 @@ LEFT JOIN
 WHERE 
     rp.CommentCount > 5 
 AND 
-    rp.CreationDate >= CURRENT_DATE - INTERVAL '30 days'
+    rp.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY
 ORDER BY 
     rp.Score DESC, rp.CommentCount DESC;

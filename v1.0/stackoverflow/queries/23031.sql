@@ -51,5 +51,4 @@ LEFT JOIN RankedUserVotes ru ON ps.OwnerUserId = ru.UserId
 WHERE ps.MostEditedRank = 1 
 AND (ps.HistoryCount > 5 OR ps.CommentCount > 10)
 ORDER BY ps.HistoryCount DESC, ps.CommentCount DESC
-OFFSET 10 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

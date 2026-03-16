@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     AVG(s.s_acctbal) AS avg_supplier_balance,
     MAX(CASE WHEN p.p_size > 20 THEN p.p_retailprice ELSE NULL END) AS max_retailprice_large,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations,
     CONCAT('Total ', SUM(l.l_quantity), ' items, Average Price ', ROUND(AVG(l.l_extendedprice), 2)) AS item_summary
 FROM 
     part p 

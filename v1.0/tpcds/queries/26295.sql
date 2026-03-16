@@ -15,7 +15,7 @@ AddressCounts AS (
     SELECT 
         a.ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(a.full_address, '; ' ORDER BY a.full_address) AS address_list
+        arrayStringConcat(groupArray(assumeNotNull(a.full_address)), '; ' ORDER BY a.full_address) AS address_list
     FROM 
         AddressParts a
     GROUP BY 

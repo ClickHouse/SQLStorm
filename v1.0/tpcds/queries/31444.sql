@@ -41,4 +41,4 @@ JOIN CustomerCTE cte ON ca.ca_address_sk = cte.c_current_addr_sk
 GROUP BY ca.ca_city
 HAVING COUNT(DISTINCT cte.c_customer_sk) > 10
 ORDER BY Total_Customers DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

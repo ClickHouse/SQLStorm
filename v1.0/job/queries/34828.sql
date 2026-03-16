@@ -30,7 +30,7 @@ SELECT
     ak.name AS actor_name,
     mt.title AS movie_title,
     mt.production_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     COUNT(DISTINCT c.role_id) AS role_count,
     SUM(CASE WHEN c.note IS NULL THEN 1 ELSE 0 END) AS null_notes
 FROM 

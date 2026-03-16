@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
         AND p.PostTypeId IN (1, 2)  
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate
@@ -36,7 +36,7 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     u.Reputation,
     COUNT(v.Id) AS VoteCount,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
 FROM 
     TopPosts tp
 JOIN 
@@ -46,7 +46,7 @@ JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2  
 LEFT JOIN 
-    LATERAL unnest(string_to_array(p.Tags, ',')) AS tag_name ON TRUE
+    arrayJoin(splitByString(',', p.Tags)) AS tag_name ON TRUE
 LEFT JOIN 
     Tags t ON t.TagName = tag_name
 GROUP BY 

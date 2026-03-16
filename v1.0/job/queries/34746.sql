@@ -33,7 +33,7 @@ SELECT
     at.title AS movie_title,
     at.production_year,
     COUNT(DISTINCT ak.id) AS num_actors,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     SUM(CASE 
             WHEN c.nr_order IS NOT NULL THEN 1 
             ELSE 0 

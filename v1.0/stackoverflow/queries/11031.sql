@@ -20,9 +20,9 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    LATERAL (SELECT UNNEST(REGEXP_SPLIT_TO_ARRAY(p.Tags, '><')) AS TagName) AS t ON TRUE
+    (SELECT arrayJoin(splitByRegexp('><', p.Tags)) AS TagName) AS t ON TRUE
 WHERE 
-    p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year' 
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount, u.DisplayName, t.TagName
 ORDER BY 

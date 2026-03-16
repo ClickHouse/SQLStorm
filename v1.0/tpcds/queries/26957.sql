@@ -68,4 +68,4 @@ GROUP BY
     sd.total_sales_count
 ORDER BY 
     cd.cd_purchase_estimate DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

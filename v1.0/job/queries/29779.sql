@@ -4,8 +4,8 @@ WITH MovieDetails AS (
         t.production_year,
         ka.name AS actor_name,
         ra.role AS actor_role,
-        STRING_AGG(kw.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT cn.name, ', ') AS production_companies
+        arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS production_companies
     FROM 
         aka_title t
     JOIN 
@@ -42,7 +42,7 @@ RankedMovies AS (
 )
 SELECT 
     production_year,
-    STRING_AGG(CONCAT(rank, ': ', movie_title, ' - ', actor_name, ' (', actor_role, ') - Keywords: ', keywords, ' - Companies: ', production_companies), '; ') AS movie_info
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(rank, ': ', movie_title, ' - ', actor_name, ' (', actor_role, ') - Keywords: ', keywords, ' - Companies: ', production_companies))), '; ') AS movie_info
 FROM 
     RankedMovies
 GROUP BY 

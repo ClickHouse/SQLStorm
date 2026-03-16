@@ -14,7 +14,7 @@ WITH RankedMovies AS (
 TopCast AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(ka.name, ', ') AS cast_names,
+        arrayStringConcat(groupArray(assumeNotNull(ka.name)), ', ') AS cast_names,
         COUNT(ci.person_id) AS total_cast
     FROM 
         cast_info ci
@@ -39,7 +39,7 @@ FilteredMovies AS (
 )
 SELECT 
     fm.title,
-    COALESCE(fm.production_year::VARCHAR, 'Unknown Year') AS production_year,
+    COALESCE(CAST(fm.production_year AS VARCHAR), 'Unknown Year') AS production_year,
     COALESCE(fm.cast_names, 'No Cast Available') AS cast_names,
     CASE 
         WHEN fm.total_cast IS NOT NULL AND fm.total_cast > 0 THEN 'Active Cast'

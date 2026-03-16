@@ -39,14 +39,14 @@ RecentPosts AS (
         P.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RN
     FROM Posts P
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostLinkStats AS (
     SELECT 
         PL.PostId,
         COUNT(PL.RelatedPostId) AS RelatedCount
     FROM PostLinks PL
-    WHERE PL.CreationDate <= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE PL.CreationDate <= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY PL.PostId
 )
 

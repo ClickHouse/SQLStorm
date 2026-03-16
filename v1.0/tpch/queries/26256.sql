@@ -5,7 +5,7 @@ SELECT
     AVG(l.l_extendedprice) AS average_price,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     MAX(l.l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM
     part AS p
 JOIN

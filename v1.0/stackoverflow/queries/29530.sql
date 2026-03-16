@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopQuestions AS (
     SELECT 
@@ -37,7 +37,7 @@ SELECT
     tq.OwnerDisplayName,
     tq.CreationDate,
     tq.ViewCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags,
     COUNT(c.Id) AS CommentCount,
     COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
     COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes
@@ -48,7 +48,7 @@ LEFT JOIN
 LEFT JOIN 
     Posts p ON tq.PostId = p.Id
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(tq.Tags, '<>')) AS tag ON tag IS NOT NULL
+    arrayJoin(splitByString('<>', tq.Tags)) AS tag ON tag IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag
 LEFT JOIN 

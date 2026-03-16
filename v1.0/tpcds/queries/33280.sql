@@ -74,4 +74,4 @@ HAVING
     SUM(ci.total_net_profit) > 1000
 ORDER BY 
     customer_net_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

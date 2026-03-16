@@ -5,9 +5,9 @@ WITH movie_details AS (
         t.title,
         t.production_year,
         t.kind_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies
     FROM 
         aka_title AS t
     LEFT JOIN 
@@ -68,7 +68,7 @@ SELECT
     dmi.keywords,
     dmi.companies,
     SUM(dmi.role_count) AS total_roles,
-    STRING_AGG(DISTINCT dmi.role, ', ') AS roles_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(dmi.role))), ', ') AS roles_list
 FROM 
     detailed_movie_info AS dmi
 GROUP BY 

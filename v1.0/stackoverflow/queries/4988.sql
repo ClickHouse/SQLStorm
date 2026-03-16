@@ -24,7 +24,7 @@ WITH UserReputation AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.Score, P.OwnerUserId
 ), PostDetails AS (
@@ -66,4 +66,4 @@ WHERE
     PD.CommentCount > 5
 ORDER BY 
     PD.Score DESC, PD.CreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

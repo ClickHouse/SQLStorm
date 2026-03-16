@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
+        p.CreationDate > now64(6) - INTERVAL 1 YEAR
 ),
 PostStatistics AS (
     SELECT 
@@ -44,14 +44,14 @@ SELECT
     ps.TotalDownvotes,
     ps.AvgScore,
     CASE 
-        WHEN ps.TotalPosts > 0 THEN ps.TotalUpvotes::decimal / ps.TotalPosts 
+        WHEN ps.TotalPosts > 0 THEN CAST(ps.TotalUpvotes AS decimal) / ps.TotalPosts 
         ELSE 0 
     END AS UpvoteRatio,
     CASE 
-        WHEN ps.TotalPosts > 0 THEN ps.TotalDownvotes::decimal / ps.TotalPosts 
+        WHEN ps.TotalPosts > 0 THEN CAST(ps.TotalDownvotes AS decimal) / ps.TotalPosts 
         ELSE 0 
     END AS DownvoteRatio,
-    (SELECT STRING_AGG(DISTINCT pt.Name, ', ') FROM PostTypes pt 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') FROM PostTypes pt 
      JOIN Posts p ON p.PostTypeId = pt.Id 
      WHERE p.OwnerUserId = (SELECT MIN(u.Id) FROM Users u WHERE u.DisplayName = ps.OwnerDisplayName)
     ) AS PostTypes

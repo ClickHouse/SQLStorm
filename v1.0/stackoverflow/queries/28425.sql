@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
 ),
 TopPosts AS (
     SELECT 
@@ -35,7 +35,7 @@ TopPosts AS (
 TagsExploded AS (
     SELECT 
         tp.PostId,
-        unnest(string_to_array(tp.Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', tp.Tags)) AS Tag
     FROM 
         TopPosts tp
 ),

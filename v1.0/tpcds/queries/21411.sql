@@ -72,4 +72,4 @@ WHERE
 ORDER BY 
     s.total_sales_value DESC,
     s.total_quantity_sold ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

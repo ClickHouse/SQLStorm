@@ -18,7 +18,7 @@ movie_info_summary AS (
     SELECT 
         m.id AS movie_id,
         m.title,
-        STRING_AGG(DISTINCT mi.info, ', ') AS info_tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS info_tags
     FROM 
         title m
     JOIN 

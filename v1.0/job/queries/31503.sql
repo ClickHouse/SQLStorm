@@ -27,7 +27,7 @@ SELECT
     akn.name AS actor_name,
     COUNT(DISTINCT mh.movie_id) AS total_movies,
     AVG(mh.level) AS average_hierarchy_level,
-    STRING_AGG(DISTINCT kt.keyword, ', ') AS associated_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS associated_keywords,
     MAX(mv.title) AS latest_movie_title
 FROM 
     MovieHierarchy mh

@@ -29,7 +29,7 @@ SELECT
     AVG(name_length) AS avg_name_length,
     MAX(name_length) AS max_name_length,
     MIN(name_length) AS min_name_length,
-    STRING_AGG(upper_name, ', ') AS all_upper_names,
-    STRING_AGG(truncated_name, ', ') AS all_truncated_names
+    arrayStringConcat(groupArray(assumeNotNull(upper_name)), ', ') AS all_upper_names,
+    arrayStringConcat(groupArray(assumeNotNull(truncated_name)), ', ') AS all_truncated_names
 FROM 
     StringBenchmark;

@@ -47,7 +47,7 @@ JOIN
     TopSuppliers ts ON l.l_partkey IN (SELECT ps.ps_partkey FROM partsupp ps WHERE ps.ps_suppkey = ts.s_suppkey)
 WHERE 
     o.o_orderstatus = 'F' AND 
-    l.l_shipdate >= DATE '1997-01-01' AND 
-    l.l_shipdate < DATE '1997-12-31'
+    l.l_shipdate >= toDate('1997-01-01') AND 
+    l.l_shipdate < toDate('1997-12-31')
 ORDER BY 
     ts.total_supply_cost DESC, c.c_name;

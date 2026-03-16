@@ -27,7 +27,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     MAX(os.total_revenue) AS max_revenue,
     AVG(NULLIF(s.s_acctbal, 0)) AS avg_supplier_balance,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ': ', s.s_comment), '; ') AS supplier_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ': ', s.s_comment)))), '; ') AS supplier_info
 FROM nation n
 JOIN supplier s ON n.n_nationkey = s.s_nationkey
 LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey

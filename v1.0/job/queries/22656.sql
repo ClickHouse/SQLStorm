@@ -4,7 +4,7 @@ WITH RecursiveCTE AS (
         t.title AS movie_title,
         t.production_year,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY ak.name) AS name_order,
-        COALESCE(STRING_AGG(DISTINCT c.note, ', ') FILTER (WHERE c.note IS NOT NULL), 'No Notes') AS notes,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.note))), ', ') FILTER (WHERE c.note IS NOT NULL), 'No Notes') AS notes,
         COUNT(DISTINCT c.person_id) AS cast_count
     FROM 
         aka_name ak

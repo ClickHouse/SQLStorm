@@ -28,7 +28,7 @@ SELECT
     COUNT(DISTINCT c.person_id) AS total_actors,
     SUM(CASE WHEN p.info IS NOT NULL THEN 1 ELSE 0 END) AS total_awards,
     RANK() OVER (PARTITION BY mt.production_year ORDER BY COUNT(DISTINCT c.person_id) DESC) AS award_rank,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     MovieHierarchy mh
 JOIN 

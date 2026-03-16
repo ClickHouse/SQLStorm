@@ -26,7 +26,7 @@ MovieDetails AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        STRING_AGG(DISTINCT CAST(c.person_id AS TEXT), ', ') AS cast_members,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.person_id AS TEXT)))), ', ') AS cast_members,
         COUNT(DISTINCT kc.keyword_id) AS keyword_count,
         COALESCE(mt.kind, 'Unknown') AS movie_type,
         ROW_NUMBER() OVER (PARTITION BY m.id ORDER BY m.production_year DESC) AS rank,

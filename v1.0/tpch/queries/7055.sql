@@ -8,10 +8,10 @@ WITH RegionSummary AS (
     JOIN part p ON ps.ps_partkey = p.p_partkey
     JOIN lineitem l ON p.p_partkey = l.l_partkey
     JOIN orders o ON l.l_orderkey = o.o_orderkey
-    WHERE o.o_orderdate >= DATE '1996-01-01' 
-      AND o.o_orderdate < DATE '1997-01-01'
-      AND l.l_shipdate >= DATE '1996-01-01' 
-      AND l.l_shipdate < DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1996-01-01') 
+      AND o.o_orderdate < toDate('1997-01-01')
+      AND l.l_shipdate >= toDate('1996-01-01') 
+      AND l.l_shipdate < toDate('1997-01-01')
     GROUP BY r.r_name
 ),
 CustomerSummary AS (
@@ -20,8 +20,8 @@ CustomerSummary AS (
            COUNT(o.o_orderkey) AS total_orders
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= DATE '1996-01-01' 
-      AND o.o_orderdate < DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1996-01-01') 
+      AND o.o_orderdate < toDate('1997-01-01')
     GROUP BY c.c_nationkey
 )
 SELECT rs.region_name,

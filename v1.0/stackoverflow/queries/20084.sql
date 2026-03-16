@@ -21,7 +21,7 @@ PostHistoryDetails AS (
         MAX(PH.CreationDate) AS LastEditDate,
         COUNT(CASE WHEN PHT.Name = 'Edit Body' THEN 1 END) AS EditBodyCount,
         COUNT(CASE WHEN PHT.Name = 'Edit Title' THEN 1 END) AS EditTitleCount,
-        STRING_AGG(DISTINCT CAST(PHT.Name AS VARCHAR), ', ') AS ChangeTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(PHT.Name AS VARCHAR)))), ', ') AS ChangeTypes
     FROM 
         PostHistory PH
     JOIN 
@@ -79,4 +79,4 @@ WHERE
 ORDER BY 
     U.TotalScore DESC,
     UE.CommentCount DESC NULLS LAST
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

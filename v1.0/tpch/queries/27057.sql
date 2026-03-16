@@ -33,7 +33,7 @@ TopSuppliers AS (
 )
 SELECT 
     r_name, 
-    STRING_AGG(FormattedOutput, '; ') AS SupplierInfo
+    arrayStringConcat(groupArray(assumeNotNull(FormattedOutput)), '; ') AS SupplierInfo
 FROM 
     TopSuppliers
 GROUP BY 

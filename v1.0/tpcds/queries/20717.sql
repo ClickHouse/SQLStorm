@@ -46,4 +46,4 @@ GROUP BY
 ORDER BY 
     total_profit_by_location DESC,
     customer_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

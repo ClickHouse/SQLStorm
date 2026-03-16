@@ -20,7 +20,7 @@ QuestionStats AS (
         p.OwnerUserId,
         COUNT(*) AS QuestionsClosed,
         COUNT(CASE WHEN ph.PostHistoryTypeId = 10 THEN 1 END) AS CloseVotes,
-        STRING_AGG(CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.Comment END, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.Comment END)), ', ') AS CloseReasons
     FROM 
         Posts p
     LEFT JOIN 

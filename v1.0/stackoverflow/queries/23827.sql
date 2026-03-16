@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) OVER (PARTITION BY p.Id), 0) AS DownVotes
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+    WHERE p.CreationDate >= now64(6) - INTERVAL 1 YEAR
 )
 SELECT 
     rp.Id,
@@ -31,7 +31,7 @@ SELECT
     (SELECT COUNT(*)
      FROM Comments c
      WHERE c.PostId = rp.Id) AS CommentCount,
-    (SELECT STRING_AGG(CONCAT(u.DisplayName, ' - ', b.Name), ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' - ', b.Name))), ', ') 
      FROM Badges b
      JOIN Users u ON b.UserId = u.Id
      WHERE u.Id IN (SELECT DISTINCT OwnerUserId 

@@ -35,7 +35,7 @@ SELECT
         WHEN rm.cast_count BETWEEN 5 AND 10 THEN 'Medium Cast'
         ELSE 'Small Cast'
     END AS cast_size_category,
-    (SELECT STRING_AGG(DISTINCT a.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') 
      FROM aka_name a 
      JOIN cast_info ci ON a.person_id = ci.person_id 
      WHERE ci.movie_id = rm.title_id) AS cast_names

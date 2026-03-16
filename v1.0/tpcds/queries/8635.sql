@@ -52,4 +52,4 @@ JOIN
 ORDER BY 
     cd.total_sales DESC, 
     sd.total_sales ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

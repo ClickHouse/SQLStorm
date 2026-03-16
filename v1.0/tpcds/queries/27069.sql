@@ -3,7 +3,7 @@ WITH AddressDetails AS (
         ca_city, 
         ca_state, 
         COUNT(*) AS address_count,
-        STRING_AGG(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), '; ') AS full_address
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type))), '; ') AS full_address
     FROM 
         customer_address
     GROUP BY 
@@ -14,7 +14,7 @@ CustomerInfo AS (
         cd_gender,
         cd_marital_status,
         COUNT(DISTINCT c_customer_sk) AS customer_count,
-        STRING_AGG(CONCAT(c_first_name, ' ', c_last_name), ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name))), ', ') AS customer_names
     FROM 
         customer AS c
     JOIN 

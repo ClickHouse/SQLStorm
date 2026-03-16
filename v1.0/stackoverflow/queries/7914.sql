@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
         AND p.PostTypeId = 1 
 ),
 TopPosts AS (
@@ -38,7 +38,7 @@ PostMetrics AS (
         tp.OwnerDisplayName,
         COALESCE(AVG(c.Score), 0) AS AverageCommentScore,
         COUNT(v.Id) AS VoteCount,
-        COALESCE(STDDEV(v.BountyAmount), 0) AS AverageBountyAmount
+        COALESCE(stddevPop(v.BountyAmount), 0) AS AverageBountyAmount
     FROM 
         TopPosts tp
     LEFT JOIN 

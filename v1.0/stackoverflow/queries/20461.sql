@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON p.OwnerUserId = U.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 RecentHistory AS (
     SELECT 
@@ -22,13 +22,13 @@ RecentHistory AS (
         ph.CreationDate AS HistoryDate,
         CASE 
             WHEN ph.PostHistoryTypeId IN (10, 11) 
-            THEN CURRENT_TIMESTAMP - ph.CreationDate 
+            THEN now64(6) - ph.CreationDate 
             ELSE NULL 
         END AS CloseReopenDuration
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ),
 PostClosed AS (
     SELECT 
@@ -44,10 +44,10 @@ PostClosed AS (
 PostsWithTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(TRIM(tag), ', ') AS CombinedTags
+        arrayStringConcat(groupArray(assumeNotNull(TRIM(tag))), ', ') AS CombinedTags
     FROM 
         Posts p,
-        UNNEST(string_to_array(p.Tags, '>')) AS tag
+        arrayJoin(splitByString('>', p.Tags)) AS tag
     GROUP BY 
         p.Id
 )

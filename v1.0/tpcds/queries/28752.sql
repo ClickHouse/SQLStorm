@@ -9,8 +9,8 @@ SELECT
     AVG(ws.ws_net_profit) AS average_profit,
     MAX(ws.ws_sales_price) AS highest_item_price,
     MIN(ws.ws_sales_price) AS lowest_item_price,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS applied_promotions,
-    STRING_AGG(DISTINCT item.i_item_desc, '; ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS applied_promotions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(item.i_item_desc))), '; ') AS purchased_items
 FROM 
     customer c
 JOIN 

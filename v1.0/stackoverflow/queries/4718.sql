@@ -22,14 +22,14 @@ PopularPosts AS (
         p.ViewCount,
         DENSE_RANK() OVER (ORDER BY p.Score DESC, p.ViewCount DESC) AS PostRank
     FROM Posts p
-    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    WHERE p.CreationDate >= now64(6) - INTERVAL 30 DAY
 ),
 ClosingReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS ClosingReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS ClosingReasons
     FROM PostHistory ph
-    JOIN CloseReasonTypes cr ON ph.Comment::integer = cr.Id
+    JOIN CloseReasonTypes cr ON CAST(ph.Comment AS integer) = cr.Id
     WHERE ph.PostHistoryTypeId = 10
     GROUP BY ph.PostId
 )

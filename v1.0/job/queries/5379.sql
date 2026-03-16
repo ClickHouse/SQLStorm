@@ -3,7 +3,7 @@ SELECT
     t.title AS movie_title, 
     a.name AS actor_name, 
     ct.kind AS company_type, 
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords, 
     COUNT(mi.id) AS info_count
 FROM 
     title t

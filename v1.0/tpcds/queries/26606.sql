@@ -17,7 +17,7 @@ WITH customer_info AS (
 SELECT 
     full_name,
     COUNT(*) AS transaction_count,
-    STRING_AGG(DISTINCT ca_city || ', ' || ca_state, '; ') AS locations,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city || ', ' || ca_state))), '; ') AS locations,
     MAX(birth_date) AS latest_birth_date,
     CASE 
         WHEN cd_gender = 'M' THEN 'Male'

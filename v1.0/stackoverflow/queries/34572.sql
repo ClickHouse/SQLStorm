@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserActivity AS (
     SELECT 
@@ -21,7 +21,7 @@ UserActivity AS (
         COUNT(v.Id) AS VoteCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Users u
     LEFT JOIN 
@@ -29,7 +29,7 @@ UserActivity AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag_name ON TRUE
+        arrayJoin(splitByString(',', p.Tags)) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     GROUP BY 

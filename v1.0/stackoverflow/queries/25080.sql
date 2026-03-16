@@ -35,7 +35,7 @@ FilteredPosts AS (
 )
 SELECT 
     fp.Tags,
-    STRING_AGG(fp.Title, '; ') AS TopQuestions,
+    arrayStringConcat(groupArray(assumeNotNull(fp.Title)), '; ') AS TopQuestions,
     SUM(fp.CommentCount) AS TotalComments,
     SUM(fp.UpVotes) AS TotalUpVotes,
     SUM(fp.DownVotes) AS TotalDownVotes,

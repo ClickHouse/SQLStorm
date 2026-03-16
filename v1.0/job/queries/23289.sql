@@ -37,7 +37,7 @@ SELECT
     rt.production_year,
     ac.movie_count,
     ac.highest_order,
-    STRING_AGG(DISTINCT kc.keyword, ', ' ORDER BY kc.keyword) AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kc.keyword))), ', ' ORDER BY kc.keyword) AS keywords,
     COALESCE(ct.kind, 'Unknown') AS company_type
 FROM 
     aka_name a

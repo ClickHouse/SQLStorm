@@ -86,4 +86,4 @@ WHERE
 ORDER BY 
     da.total_purchase_estimate DESC, 
     sa.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

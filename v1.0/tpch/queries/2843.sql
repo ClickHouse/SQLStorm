@@ -20,7 +20,7 @@ TotalSales AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+        l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     GROUP BY 
         l.l_partkey
 ),
@@ -44,7 +44,7 @@ SELECT
     p.p_name,
     COALESCE(SUM(ts.total_revenue), 0) AS total_revenue,
     COUNT(DISTINCT fc.c_custkey) AS num_frequent_customers,
-    STRING_AGG(rs.s_name, ', ') AS top_suppliers
+    arrayStringConcat(groupArray(assumeNotNull(rs.s_name)), ', ') AS top_suppliers
 FROM 
     part p
 LEFT JOIN 

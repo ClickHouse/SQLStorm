@@ -1,5 +1,5 @@
 SELECT 
-    EXTRACT(YEAR FROM p.CreationDate) AS Year,
+    toYear(p.CreationDate) AS Year,
     COUNT(p.Id) AS TotalPosts,
     AVG(CASE WHEN p.PostTypeId = 1 THEN p.Score END) AS AverageQuestionScore,
     COUNT(DISTINCT b.UserId) AS TotalUsersWithBadges

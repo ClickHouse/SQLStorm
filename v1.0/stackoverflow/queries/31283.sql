@@ -18,7 +18,7 @@ TopUsers AS (
     FROM 
         UserReputation U
     WHERE 
-        U.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
+        U.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
 )
 SELECT 
     U.Id AS UserId,

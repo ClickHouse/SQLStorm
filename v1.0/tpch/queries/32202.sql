@@ -32,7 +32,7 @@ SELECT
     SUM(o.o_totalprice) AS total_sales,
     AVG(o.o_totalprice) AS avg_order_value,
     MAX(o.o_orderdate) AS last_order_date,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS popular_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS popular_parts,
     ROW_NUMBER() OVER (PARTITION BY n.n_name ORDER BY SUM(o.o_totalprice) DESC) AS sales_rank
 FROM 
     customer c

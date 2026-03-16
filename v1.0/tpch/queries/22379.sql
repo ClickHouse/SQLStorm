@@ -65,7 +65,7 @@ LEFT JOIN
 LEFT JOIN 
     FrequentCustomers fc ON s.s_nationkey = fc.c_custkey
 WHERE 
-    (l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year' OR l.l_shipdate IS NULL)
+    (l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR OR l.l_shipdate IS NULL)
     AND (h.part_count IS NULL OR h.part_count < 10)
 GROUP BY 
     r.r_name

@@ -37,7 +37,7 @@ SELECT
     B.address_count,
     B.avg_zip_length,
     (B.avg_zip_length * 1.0) / NULLIF(B.address_count, 0) AS zip_length_per_address,
-    STRING_AGG(B.max_street_name_prefix, ', ') AS max_street_names
+    arrayStringConcat(groupArray(assumeNotNull(B.max_street_name_prefix)), ', ') AS max_street_names
 FROM 
     Aggregated_Results B
 GROUP BY 

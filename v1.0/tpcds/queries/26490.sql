@@ -43,4 +43,4 @@ GROUP BY
     a.max_address,
     cd.cd_gender
 ORDER BY a.total_addresses DESC, a.ca_city
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

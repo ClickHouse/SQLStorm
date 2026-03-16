@@ -44,7 +44,7 @@ final_output AS (
     SELECT 
         e.title, 
         e.production_year, 
-        STRING_AGG(DISTINCT e.keyword, ', ') AS keywords, 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(e.keyword))), ', ') AS keywords, 
         COALESCE(cn.name, 'Unknown') AS company_name,
         COUNT(DISTINCT p.id) AS actor_count
     FROM 

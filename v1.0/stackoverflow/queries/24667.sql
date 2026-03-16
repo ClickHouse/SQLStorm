@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserPostStats AS (
     SELECT 

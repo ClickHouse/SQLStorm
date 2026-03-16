@@ -41,7 +41,7 @@ JOIN OrderSummary o ON o.o_orderkey = l.l_orderkey
 JOIN supplier s ON s.s_suppkey = l.l_suppkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
 WHERE p.p_retailprice > 20.00
-AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 AND n.n_nationkey IN (SELECT n_nationkey FROM TopNations)
 GROUP BY p.p_name, n.n_nationkey
 HAVING COUNT(DISTINCT o.o_orderkey) > 5

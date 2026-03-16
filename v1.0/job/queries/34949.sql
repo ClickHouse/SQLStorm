@@ -28,8 +28,8 @@ SELECT
     mh.path,
     COUNT(DISTINCT ci.person_id) AS cast_count,
     AVG(CASE WHEN ci.note IS NULL THEN 0 ELSE 1 END) AS has_note,
-    STRING_AGG(DISTINCT a.name, ', ') AS actors,
-    ARRAY_AGG(DISTINCT k.keyword) FILTER (WHERE k.keyword IS NOT NULL) AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) FILTER (WHERE k.keyword IS NOT NULL) AS keywords,
     COALESCE(cn.name, 'Unknown Company') AS production_company
 FROM 
     MovieHierarchy mh

@@ -11,7 +11,7 @@ SELECT
     cd.cd_education_status,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid_inc_tax) AS total_spent,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
     MAX(d.d_date) AS last_purchase_date
 FROM 
     customer c

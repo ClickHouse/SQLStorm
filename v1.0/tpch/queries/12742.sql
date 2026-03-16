@@ -16,7 +16,7 @@ JOIN
 JOIN 
     nation ON s_nationkey = n_nationkey
 WHERE 
-    o_orderdate >= DATE '1994-01-01' AND o_orderdate < DATE '1995-01-01'
+    o_orderdate >= toDate('1994-01-01') AND o_orderdate < toDate('1995-01-01')
     AND n_name = 'USA'
 GROUP BY 
     n_name

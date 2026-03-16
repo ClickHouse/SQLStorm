@@ -25,7 +25,7 @@ TagStatistics AS (
         AVG(Score) AS AvgScore
     FROM (
         SELECT 
-            unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag,
+            arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag,
             p.ViewCount,
             p.Score
         FROM 

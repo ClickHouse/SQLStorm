@@ -5,7 +5,7 @@ WITH StringBenchmark AS (
         s.s_name,
         CONCAT(p.p_name, ' | ', s.s_name) AS combined_string,
         LENGTH(CONCAT(p.p_name, ' | ', s.s_name)) AS combined_length,
-        CARDINALITY(STRING_TO_ARRAY(p.p_comment, ' ')) AS word_count,
+        CARDINALITY(splitByString(' ', p.p_comment)) AS word_count,
         LOWER(p.p_name) AS lower_name,
         UPPER(s.s_name) AS upper_name
     FROM 

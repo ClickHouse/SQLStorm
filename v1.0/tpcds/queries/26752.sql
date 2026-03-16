@@ -33,7 +33,7 @@ SELECT
     city,
     state,
     COUNT(*) AS customer_count,
-    STRING_AGG(c_email_address, ', ') AS emails
+    arrayStringConcat(groupArray(assumeNotNull(c_email_address)), ', ') AS emails
 FROM 
     customer_with_addresses
 GROUP BY 

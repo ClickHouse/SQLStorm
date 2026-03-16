@@ -4,8 +4,8 @@ WITH AddressAnalysis AS (
         ca_city,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
         AVG(ca_gmt_offset) AS average_gmt_offset,
-        STRING_AGG(ca_street_name, ', ') AS all_street_names,
-        STRING_AGG(ca_street_type, ', ') AS all_street_types
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS all_street_names,
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_type)), ', ') AS all_street_types
     FROM 
         customer_address
     GROUP BY 
@@ -27,7 +27,7 @@ DateAnalysis AS (
         d_year,
         d_month_seq,
         COUNT(DISTINCT d_date_id) AS unique_dates,
-        STRING_AGG(d_day_name, ', ') AS all_day_names
+        arrayStringConcat(groupArray(assumeNotNull(d_day_name)), ', ') AS all_day_names
     FROM 
         date_dim
     GROUP BY 

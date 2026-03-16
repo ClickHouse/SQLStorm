@@ -18,7 +18,7 @@ AddressSummary AS (
         COUNT(*) as address_count,
         MIN(ca_state) as min_state,
         MAX(ca_state) as max_state,
-        STRING_AGG(DISTINCT ca_country, ', ') as unique_countries
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_country))), ', ') as unique_countries
     FROM 
         RankedAddresses
     GROUP BY 

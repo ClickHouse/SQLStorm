@@ -23,7 +23,7 @@ counted_customers AS (
         gender,
         COUNT(*) AS customer_count,
         AVG(LENGTH(full_name)) AS avg_name_length,
-        STRING_AGG(DISTINCT location, ', ') AS unique_locations
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(location))), ', ') AS unique_locations
     FROM 
         processed_customers
     GROUP BY 

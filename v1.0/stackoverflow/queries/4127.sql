@@ -29,7 +29,7 @@ CommentCounts AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LastModified
     FROM 
         PostHistory ph
@@ -59,8 +59,8 @@ LEFT JOIN
     PostHistoryDetails phd ON rp.Id = phd.PostId
 WHERE 
     rp.UserReputation > 100
-    AND rp.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
-   OR (phd.LastModified IS NOT NULL AND phd.LastModified > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
+    AND rp.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+   OR (phd.LastModified IS NOT NULL AND phd.LastModified > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ORDER BY 
     rp.Score DESC, 
     rp.CreationDate DESC

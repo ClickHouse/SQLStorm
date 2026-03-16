@@ -31,8 +31,8 @@ aggregate_data AS (
     SELECT 
         movie_title,
         COUNT(DISTINCT character_name) AS unique_characters,
-        STRING_AGG(DISTINCT company_name, ', ') AS producing_companies,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS associated_keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS producing_companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS associated_keywords,
         MIN(production_year) AS earliest_year
     FROM 
         movie_characteristics

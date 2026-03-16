@@ -6,7 +6,7 @@ SELECT
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
     SUM(CASE WHEN cd.cd_gender = 'M' THEN 1 ELSE 0 END) AS male_count,
     SUM(CASE WHEN cd.cd_gender = 'F' THEN 1 ELSE 0 END) AS female_count,
-    STRING_AGG(DISTINCT cd.cd_marital_status, ', ') AS unique_marital_statuses,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_marital_status))), ', ') AS unique_marital_statuses,
     MAX(cd.cd_dep_count) AS max_dependencies,
     MIN(cd.cd_dep_employed_count) AS min_employed_dependencies
 FROM

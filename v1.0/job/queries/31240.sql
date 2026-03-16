@@ -31,7 +31,7 @@ SELECT
     COUNT(DISTINCT c.movie_id) AS total_movies,
     MIN(m.production_year) AS first_movie_year,
     MAX(m.production_year) AS last_movie_year,
-    STRING_AGG(DISTINCT m.title, '; ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.title))), '; ') AS movie_titles,
     ROW_NUMBER() OVER (PARTITION BY a.name ORDER BY COUNT(DISTINCT c.movie_id) DESC) AS actor_rank
 FROM 
     aka_name a

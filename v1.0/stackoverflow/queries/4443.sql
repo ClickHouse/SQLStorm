@@ -34,7 +34,7 @@ UserBadges AS (
     SELECT 
         UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames
     FROM 
         Badges
     GROUP BY UserId
@@ -42,11 +42,11 @@ UserBadges AS (
 PostHistoryAggregated AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, ' | ') AS HistoryComments
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ' | ') AS HistoryComments
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         ph.PostId
 )

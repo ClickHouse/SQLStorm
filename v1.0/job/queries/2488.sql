@@ -26,7 +26,7 @@ TopActorMovies AS (
 MovieDetails AS (
     SELECT
         m.title,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         m.production_year,
         c.kind AS company_type
     FROM

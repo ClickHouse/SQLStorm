@@ -43,7 +43,7 @@ PostAudit AS (
     JOIN 
         Posts P ON PH.PostId = P.Id
     WHERE 
-        PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     AND 
         P.PostTypeId IN (1, 2) 
 )

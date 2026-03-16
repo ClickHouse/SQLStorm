@@ -5,7 +5,7 @@ SELECT
     o.o_orderkey AS order_key,
     COUNT(l.l_orderkey) AS line_item_count,
     SUM(l.l_extendedprice) AS total_extended_price,
-    ARRAY_AGG(DISTINCT r.r_name) AS regions_involved,
+    arrayDistinct(groupArray(assumeNotNull(r.r_name))) AS regions_involved,
     CASE 
         WHEN SUM(l.l_discount) > 0 THEN 'Discounted'
         ELSE 'Regular Price'

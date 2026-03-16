@@ -2,9 +2,9 @@ SELECT
     ph.PostId,
     COUNT(ph.Id) AS HistoryCount,
     MAX(ph.CreationDate) AS LastModified,
-    STRING_AGG(DISTINCT p.Title, ', ') AS PostTitles,
-    STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypes,
-    STRING_AGG(DISTINCT u.DisplayName, ', ') AS ModifiedByUsers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), ', ') AS PostTitles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS ModifiedByUsers
 FROM 
     PostHistory ph
 JOIN 

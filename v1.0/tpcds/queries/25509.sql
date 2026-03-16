@@ -6,7 +6,7 @@ SELECT
     ca.ca_state, 
     SUM(ws.ws_ext_sales_price) AS total_spent, 
     COUNT(ws.ws_order_number) AS total_orders,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS purchased_items,
     MIN(d.d_date) AS first_purchase_date,
     MAX(d.d_date) AS last_purchase_date,
     CASE 

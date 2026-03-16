@@ -7,8 +7,8 @@ SELECT
     MIN(CASE 
         WHEN LENGTH(p.p_comment) > 10 THEN SUBSTRING(p.p_comment FROM 1 FOR 10) || '...' 
         ELSE p.p_comment END) AS truncated_comment,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regional_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regional_names
 FROM 
     part p
 JOIN 

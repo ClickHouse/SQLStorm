@@ -12,7 +12,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         p.Id
 ),

@@ -7,7 +7,7 @@ WITH RankedOrders AS (
         o.o_orderdate,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 CustomerSpend AS (
     SELECT 

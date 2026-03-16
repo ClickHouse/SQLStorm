@@ -3,7 +3,7 @@ WITH MovieDetails AS (
     SELECT 
         a.title AS movie_title,
         a.production_year,
-        ARRAY_AGG(DISTINCT ka.name) AS aka_names,
+        arrayDistinct(groupArray(assumeNotNull(ka.name))) AS aka_names,
         COUNT(DISTINCT c.person_id) AS total_actors,
         a.id AS movie_id
     FROM 

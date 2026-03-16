@@ -10,7 +10,7 @@ WITH PostDetails AS (
         p.CommentCount,
         p.Tags,
         u.DisplayName AS OwnerDisplayName,
-        array_length(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '> <'), 1) AS TagCount,
+        length(splitByString('> <', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
         COALESCE((
             SELECT COUNT(*) 
             FROM PostHistory ph 
@@ -35,7 +35,7 @@ SELECT
         WHEN pd.ClosureReopenCount > 0 THEN 'Reopened'
         ELSE 'Active'
     END AS PostStatus,
-    ROUND(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - pd.CreationDate)) / 3600, 2) AS HoursSinceCreation,
+    ROUND(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - pd.CreationDate)) / 3600, 2) AS HoursSinceCreation,
     pd.TagCount * pd.Score AS TagScoreImpact
 FROM 
     PostDetails pd

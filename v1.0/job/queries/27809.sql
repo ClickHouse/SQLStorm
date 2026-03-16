@@ -43,7 +43,7 @@ MovieSummary AS (
         tm.movie_id,
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT cd.actor_name || ' as ' || cd.role_name, ', ') AS cast
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.actor_name || ' as ' || cd.role_name))), ', ') AS cast
     FROM 
         TopMovies tm
     LEFT JOIN 

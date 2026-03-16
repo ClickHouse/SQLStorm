@@ -4,7 +4,7 @@ SELECT
     t.title AS movie_title,
     c.kind AS company_type,
     COUNT(DISTINCT mc.company_id) AS company_count,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     MIN(t.production_year) AS first_year,
     MAX(t.production_year) AS last_year
 FROM 

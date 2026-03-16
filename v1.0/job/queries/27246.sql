@@ -3,8 +3,8 @@ WITH actor_movies AS (
     SELECT 
         ca.person_id,
         COUNT(DISTINCT ca.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT t.title, ', ') AS titles,
-        STRING_AGG(DISTINCT CAST(t.production_year AS VARCHAR), ', ') AS production_years
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS titles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(t.production_year AS VARCHAR)))), ', ') AS production_years
     FROM 
         cast_info ca
     JOIN 
@@ -17,7 +17,7 @@ award_winning_companies AS (
     SELECT 
         mc.company_id,
         cn.name AS company_name,
-        STRING_AGG(DISTINCT t.title, ', ') AS award_winning_movies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS award_winning_movies
     FROM 
         movie_companies mc
     JOIN 

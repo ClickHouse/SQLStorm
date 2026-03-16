@@ -8,8 +8,8 @@ SELECT
     u.DisplayName as OwnerDisplayName,
     COUNT(c.Id) as CommentCount,
     COUNT(v.Id) as VoteCount,
-    ARRAY_AGG(DISTINCT pt.Name) as PostTypeNames,
-    ARRAY_AGG(DISTINCT ht.Name) as PostHistoryTypeNames
+    arrayDistinct(groupArray(assumeNotNull(pt.Name))) as PostTypeNames,
+    arrayDistinct(groupArray(assumeNotNull(ht.Name))) as PostHistoryTypeNames
 FROM 
     Posts p
 JOIN 
@@ -25,7 +25,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistoryTypes ht ON ph.PostHistoryTypeId = ht.Id
 WHERE 
-    p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ORDER BY 

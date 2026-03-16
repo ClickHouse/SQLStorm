@@ -24,7 +24,7 @@ JOIN orders o ON l.l_orderkey = o.o_orderkey
 LEFT JOIN supplier s ON l.l_suppkey = s.s_suppkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND l.l_returnflag IS NULL
     AND n.n_name LIKE 'A%' 
 GROUP BY p.p_partkey, p.p_name

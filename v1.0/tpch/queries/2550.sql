@@ -11,7 +11,7 @@ WITH RankedOrders AS (
         o.o_totalprice > (
             SELECT AVG(o2.o_totalprice)
             FROM orders o2
-            WHERE o2.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+            WHERE o2.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
         )
 ),
 SupplierStats AS (

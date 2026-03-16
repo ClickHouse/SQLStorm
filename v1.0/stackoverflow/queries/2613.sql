@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -33,13 +33,13 @@ TopUsers AS (
 ClosedPosts AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons
     FROM 
         Posts p
     JOIN 
         PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10
     JOIN 
-        CloseReasonTypes cr ON ph.Comment::integer = cr.Id 
+        CloseReasonTypes cr ON CAST(ph.Comment AS integer) = cr.Id 
     GROUP BY 
         p.Id
 )

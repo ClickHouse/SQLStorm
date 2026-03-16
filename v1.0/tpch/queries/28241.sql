@@ -6,7 +6,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_avail_qty, 
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     MAX(LENGTH(p.p_comment)) AS max_comment_length,
-    STRING_AGG(s.s_name, ', ') AS supplier_names
+    arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS supplier_names
 FROM 
     part p
 JOIN 

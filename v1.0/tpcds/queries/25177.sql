@@ -4,7 +4,7 @@ WITH AddressAggregate AS (
         ca_city, 
         ca_state, 
         COUNT(*) AS address_count, 
-        STRING_AGG(ca_street_name, ', ') AS street_names
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names
     FROM 
         customer_address
     GROUP BY 
@@ -53,7 +53,7 @@ SalesData AS (
     JOIN 
         CustomerSummary AS CUSTOMER ON ADDRESS.ca_state = CUSTOMER.cd_marital_status
     JOIN 
-        DateSummary AS DATE ON DATE.d_year = EXTRACT(YEAR FROM CURRENT_TIMESTAMP)
+        DateSummary AS DATE ON DATE.d_year = toYear(now64(6))
 )
 SELECT 
     ca_city, 

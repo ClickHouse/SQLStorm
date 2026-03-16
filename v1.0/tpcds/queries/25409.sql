@@ -3,8 +3,8 @@ WITH address_summary AS (
     SELECT 
         ca_state,
         COUNT(DISTINCT ca_address_sk) AS unique_addresses,
-        STRING_AGG(ca_street_name, '; ') AS street_names,
-        STRING_AGG(DISTINCT CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), '; ') AS full_addresses
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), '; ') AS street_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type)))), '; ') AS full_addresses
     FROM 
         customer_address
     GROUP BY 
@@ -13,7 +13,7 @@ WITH address_summary AS (
 customer_summary AS (
     SELECT 
         cd_gender,
-        STRING_AGG(CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customers,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name))), ', ') AS customers,
         SUM(cd_purchase_estimate) AS total_estimate,
         COUNT(DISTINCT c.c_customer_sk) AS customer_count
     FROM 
@@ -28,7 +28,7 @@ sales_summary AS (
         d.d_year,
         SUM(ws.ws_ext_sales_price) AS total_sales,
         SUM(ws.ws_quantity) AS total_quantity,
-        STRING_AGG(DISTINCT i.i_product_name, ', ') AS sold_products
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), ', ') AS sold_products
     FROM 
         web_sales ws
     JOIN 

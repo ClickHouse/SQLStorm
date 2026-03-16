@@ -55,7 +55,7 @@ SELECT
 FROM Summary s
 FULL OUTER JOIN RankedOrders ro ON s.order_count IS NOT NULL AND ro.o_orderkey IS NOT NULL
 WHERE (s.customer_name IS NOT NULL OR s.total_available_qty IS NULL)
-AND (EXTRACT(YEAR FROM ro.o_orderdate) >= 1994 OR s.n_name IS NOT NULL)
+AND (toYear(ro.o_orderdate) >= 1994 OR s.n_name IS NOT NULL)
 ORDER BY 
     s.total_spent DESC NULLS LAST,
     s.n_name ASC,

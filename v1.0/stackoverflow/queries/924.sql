@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 9 
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
+        AND p.CreationDate > now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount
 ),
@@ -25,7 +25,7 @@ RecentActivities AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(CONCAT(ph.UserDisplayName, ': ', ph.Comment), '; ') AS EditComments
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.UserDisplayName, ': ', ph.Comment))), '; ') AS EditComments
     FROM 
         PostHistory ph
     WHERE 

@@ -64,4 +64,4 @@ WHERE
     OR r.total_sales > 5000
 ORDER BY 
     r.return_percentage DESC NULLS LAST
-OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

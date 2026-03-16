@@ -7,7 +7,7 @@ SELECT
             WHEN p.p_size BETWEEN 15 AND 30 THEN 2 
             ELSE 3 
         END) AS size_category,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     COUNT(DISTINCT o.o_orderkey) AS total_orders
 FROM 
     part p

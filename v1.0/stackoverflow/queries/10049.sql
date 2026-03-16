@@ -9,7 +9,7 @@ WITH PostStats AS (
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
         COUNT(CASE WHEN A.Id IS NOT NULL THEN 1 END) AS AnswerCount,
         COUNT(DISTINCT V.Id) AS VoteCount,
-        COALESCE(MAX(B.Date), DATE '1900-01-01') AS LastBadgeDate,
+        COALESCE(MAX(B.Date), toDate('1900-01-01')) AS LastBadgeDate,
         P.OwnerUserId
     FROM 
         Posts P

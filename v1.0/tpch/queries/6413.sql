@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 ),
 TopSuppliers AS (
     SELECT 
@@ -47,7 +47,7 @@ SELECT
     SUM(f.l_extendedprice) AS total_extended_price,
     AVG(f.l_discount) AS average_discount,
     COUNT(DISTINCT f.l_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT s.s_name, ',' ORDER BY s.s_name) AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ',' ORDER BY s.s_name) AS supplier_names
 FROM 
     FilteredLineItems f
 JOIN 

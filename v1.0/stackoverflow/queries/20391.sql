@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
 ),
 PostClosureReasons AS (
     SELECT 
@@ -91,7 +91,7 @@ SELECT
     fr.TotalBadges,
     fr.TotalGoldBadges,
     fr.InterestLevel,
-    string_agg(tt.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(groupArray(assumeNotNull(tt.TagName)), ', ') AS AssociatedTags
 FROM 
     FinalResults fr
 LEFT JOIN 

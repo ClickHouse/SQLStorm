@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -32,7 +32,7 @@ SELECT
     us.TotalViewCount,
     us.TotalScore,
     COUNT(DISTINCT rp.PostId) AS TopPostsCount,
-    STRING_AGG(rp.Title, '; ') AS TopPostTitles,
+    arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS TopPostTitles,
     MAX(rp.Score) AS MaxScorePost,
     MIN(rp.Score) AS MinScorePost,
     AVG(rp.Score) AS AvgScorePost

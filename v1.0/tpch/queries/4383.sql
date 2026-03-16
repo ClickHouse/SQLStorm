@@ -36,4 +36,4 @@ FROM RecentOrders r
 LEFT JOIN SupplierInfo si ON r.o_custkey = si.s_suppkey
 WHERE r.o_totalprice > 5000
 ORDER BY r.o_orderdate DESC, price_supply_ratio DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

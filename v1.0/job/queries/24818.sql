@@ -26,7 +26,7 @@ MovieDetails AS (
         t.production_year,
         a.actor_count,
         COALESCE(NULLIF(c.name, ''), 'Unknown') AS company_name,
-        STRING_AGG(DISTINCT m_info.info, ', ') AS movie_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m_info.info))), ', ') AS movie_info
     FROM 
         aka_title t
     LEFT JOIN 

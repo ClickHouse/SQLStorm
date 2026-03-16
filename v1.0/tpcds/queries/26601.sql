@@ -27,7 +27,7 @@ date_stats AS (
     SELECT 
         d_year,
         COUNT(*) AS total_dates,
-        AVG(DATE_PART('day', d_date)) AS avg_days_in_month,
+        AVG(datePart('day', d_date)) AS avg_days_in_month,
         SUM(CASE WHEN d_holiday = 'Y' THEN 1 ELSE 0 END) AS total_holidays
     FROM 
         date_dim

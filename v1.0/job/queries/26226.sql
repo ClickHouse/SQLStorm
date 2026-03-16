@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COUNT(DISTINCT ci.person_id) AS cast_count
     FROM 
         aka_title t
@@ -39,7 +39,7 @@ FROM
 LEFT JOIN (
     SELECT 
         p.person_id,
-        STRING_AGG(pi.info, ', ') AS info
+        arrayStringConcat(groupArray(assumeNotNull(pi.info)), ', ') AS info
     FROM 
         person_info pi
     JOIN 

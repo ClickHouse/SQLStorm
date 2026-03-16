@@ -9,9 +9,9 @@ SELECT
     AVG(l.l_discount) AS average_discount,
     MAX(l.l_tax) AS max_tax,
     MIN(l.l_quantity) AS min_quantity,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments,
-    STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments,
-    STRING_AGG(DISTINCT c.c_comment, '; ') AS customer_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_comment))), '; ') AS customer_comments,
     ROW_NUMBER() OVER (PARTITION BY n.n_nationkey ORDER BY COUNT(l.l_linenumber) DESC) AS rn
 FROM 
     part p

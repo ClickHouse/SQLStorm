@@ -18,7 +18,7 @@ RecentPosts AS (
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostVoteCounts AS (
     SELECT 
@@ -52,7 +52,7 @@ FROM Posts p
 JOIN UserReputation ur ON p.OwnerUserId = ur.Id
 LEFT JOIN PostVoteCounts pvc ON p.Id = pvc.PostId
 LEFT JOIN ClosedPosts cp ON p.Id = cp.PostId
-WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
   AND ur.ReputationTier IN ('High', 'Medium')
   AND p.ViewCount > 0
   AND (SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id) > 3

@@ -40,7 +40,7 @@ SELECT
         WHEN tm.actor_count IS NULL THEN 'No cast information'
         ELSE 'Has cast information'
     END AS cast_info_status,
-    STRING_AGG(CONCAT(a.name, ' as ', r.role), ', ') AS cast_detail
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.name, ' as ', r.role))), ', ') AS cast_detail
 FROM 
     TopMovies tm
 LEFT JOIN 

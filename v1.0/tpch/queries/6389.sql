@@ -53,7 +53,7 @@ JOIN
 JOIN 
     SupplierStats ss ON s.s_suppkey = ss.s_suppkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     r.r_name, n.n_name, s.s_name, ts.total_quantity, ss.total_cost
 ORDER BY 

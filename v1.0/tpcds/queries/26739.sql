@@ -4,8 +4,8 @@ WITH string_benchmark AS (
         c.c_first_name,
         c.c_last_name,
         CONCAT(c.c_first_name, ' ', c.c_last_name) AS full_name,
-        STRING_AGG(DISTINCT ca.ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT ca.ca_state, ', ') AS states,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_city))), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_state))), ', ') AS states,
         COUNT(DISTINCT ca.ca_address_sk) AS address_count,
         COUNT(DISTINCT cd.cd_demo_sk) AS demographic_count,
         COUNT(DISTINCT ss.ss_ticket_number) AS store_sales_count

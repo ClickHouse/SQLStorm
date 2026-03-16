@@ -10,14 +10,14 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.CommentCount,
         p.Tags,
-        STRING_AGG(t.TagName, ', ') AS TagNames,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagNames,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.ViewCount DESC) AS Rank
     FROM 
         Posts p
     LEFT JOIN 
         Tags t ON POSITION(CONCAT('<', t.TagName, '>') IN p.Tags) > 0
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, p.Score, p.AnswerCount, p.CommentCount, p.Tags
 ),

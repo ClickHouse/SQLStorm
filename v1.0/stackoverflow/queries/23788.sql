@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 PostAggregates AS (
@@ -23,7 +23,7 @@ PostAggregates AS (
         MAX(ViewCount) AS MaxViews,
         SUM(CASE WHEN Score > 0 THEN 1 ELSE 0 END) AS PositiveScores,
         SUM(CASE WHEN Score < 0 THEN 1 ELSE 0 END) AS NegativeScores,
-        STRING_AGG(Tags, ', ') AS AllTags
+        arrayStringConcat(groupArray(assumeNotNull(Tags)), ', ') AS AllTags
     FROM 
         RankedPosts
     GROUP BY 

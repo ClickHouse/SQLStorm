@@ -17,7 +17,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '3 months'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 3 MONTH
     GROUP BY 
         p.Id
 ),

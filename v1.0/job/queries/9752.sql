@@ -32,7 +32,7 @@ extended_info AS (
         md.movie_title,
         md.production_year,
         at.actor_name,
-        STRING_AGG(DISTINCT md.movie_keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.movie_keyword))), ', ') AS keywords
     FROM 
         movie_details md
     JOIN 

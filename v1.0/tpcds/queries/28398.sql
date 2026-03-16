@@ -4,7 +4,7 @@ WITH AddressInfo AS (
         ca_city,
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), ', ') AS street_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type)))), ', ') AS street_info
     FROM customer_address
     GROUP BY ca_city, ca_state
 ),
@@ -19,7 +19,7 @@ DateStats AS (
     SELECT 
         d_year,
         COUNT(*) AS sales_count,
-        SUM(EXTRACT(DOY FROM d_date)) AS total_days_of_year
+        SUM(toDayOfYear(d_date)) AS total_days_of_year
     FROM date_dim
     JOIN web_sales ON d_date_sk = ws_sold_date_sk
     GROUP BY d_year
@@ -56,7 +56,7 @@ SELECT
     gender_count,
     d_year,
     sales_count,
-    ROUND(total_days_of_year::decimal / NULLIF(sales_count, 0), 2) AS avg_sales_per_day,
-    ROUND(avg_warehouse_size::decimal, 2) AS average_warehouse_size
+    ROUND(CAST(total_days_of_year AS decimal) / NULLIF(sales_count, 0), 2) AS avg_sales_per_day,
+    ROUND(CAST(avg_warehouse_size AS decimal), 2) AS average_warehouse_size
 FROM FinalBenchmark
 ORDER BY location, d_year;

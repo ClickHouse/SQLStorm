@@ -33,7 +33,7 @@ MoviesWithKeywords AS (
     SELECT 
         M.title,
         M.production_year,
-        array_agg(K.keyword) AS keywords
+        groupArray(assumeNotNull(K.keyword)) AS keywords
     FROM 
         aka_title M
     JOIN 

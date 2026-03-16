@@ -34,7 +34,7 @@ SELECT
     fs.s_address,
     fs.nation,
     COUNT(DISTINCT ps.ps_partkey) AS part_count,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_type, ')'), ', ') AS part_names 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_type, ')')))), ', ') AS part_names 
 FROM 
     FilteredSuppliers fs
 JOIN 

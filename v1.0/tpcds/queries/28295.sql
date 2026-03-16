@@ -63,6 +63,6 @@ FROM
 JOIN 
     CustomerStats c ON a.unique_addresses > 1000
 JOIN 
-    DateStats d ON EXTRACT(YEAR FROM cast('2002-10-01' as date)) - d.d_year <= 5
+    DateStats d ON toYear(cast('2002-10-01' as date)) - d.d_year <= 5
 ORDER BY 
     a.ca_state, c.cd_marital_status;

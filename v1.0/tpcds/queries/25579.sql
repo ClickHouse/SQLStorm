@@ -17,7 +17,7 @@ location_summary AS (
     SELECT 
         ca_state,
         COUNT(*) AS total_addresses,
-        STRING_AGG(ca_address_id, ', ') AS address_ids
+        arrayStringConcat(groupArray(assumeNotNull(ca_address_id)), ', ') AS address_ids
     FROM 
         customer_address
     GROUP BY 
@@ -53,4 +53,4 @@ LEFT JOIN
     sales_summary ss ON ds.cd_demo_sk = ss.ws_bill_cdemo_sk
 ORDER BY 
     ds.total_customers DESC, ss.total_net_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

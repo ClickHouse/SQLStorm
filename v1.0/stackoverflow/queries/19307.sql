@@ -6,4 +6,4 @@ LEFT JOIN Comments c ON p.Id = c.PostId
 WHERE p.PostTypeId = 1
 GROUP BY p.Title, u.DisplayName
 ORDER BY CommentCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

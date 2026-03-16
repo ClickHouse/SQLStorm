@@ -5,8 +5,8 @@ WITH MovieDetails AS (
         t.production_year,
         a.name AS actor_name,
         rt.role AS actor_role,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         aka_title t
     JOIN 
@@ -42,4 +42,4 @@ FROM
 WHERE 
     md.keywords LIKE '%drama%' 
     AND md.companies IS NOT NULL
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

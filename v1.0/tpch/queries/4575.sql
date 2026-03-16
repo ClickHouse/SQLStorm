@@ -33,7 +33,7 @@ HighValueOrders AS (
         o.o_orderkey, 
         o.o_orderdate, 
         od.OrderValue, 
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY od.OrderValue DESC) AS OrderRank
+        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY od.OrderValue DESC) AS OrderRank
     FROM 
         OrderDetails od
     JOIN 
@@ -68,7 +68,7 @@ FULL OUTER JOIN
     HighValueOrders hvo ON hvo.o_orderkey = (
         SELECT o.o_orderkey 
         FROM orders o 
-        WHERE o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31' 
+        WHERE o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31') 
         ORDER BY o.o_orderdate DESC 
         LIMIT 1
     )

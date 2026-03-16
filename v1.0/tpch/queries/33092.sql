@@ -7,7 +7,7 @@ WITH RECURSIVE RevenueCTE AS (
     FROM 
         lineitem
     WHERE 
-        l_shipdate >= DATE '1996-01-01'
+        l_shipdate >= toDate('1996-01-01')
     GROUP BY 
         l_orderkey
 ),
@@ -44,7 +44,7 @@ LEFT JOIN
 JOIN 
     SupplierRank sr ON s.s_suppkey = sr.s_suppkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     AND (c.c_acctbal IS NOT NULL OR sr.supplier_rank <= 5)
 GROUP BY 
     o.o_orderkey, c.c_name, r.r_name, sr.supplier_rank

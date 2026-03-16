@@ -36,7 +36,7 @@ MovieDetails AS (
     SELECT 
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT mk.keyword, ', ') AS keywords  -- Adjust for standard SQL string aggregation
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.keyword))), ', ') AS keywords  -- Adjust for standard SQL string aggregation
     FROM 
         TopMovies tm
     LEFT JOIN 

@@ -5,7 +5,7 @@ WITH ranked_orders AS (
         o.o_totalprice,
         c.c_name,
         c.c_acctbal,
-        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS order_rank
+        RANK() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS order_rank
     FROM 
         orders o
     JOIN 

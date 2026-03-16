@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score >= 0
 ),
 ClosedPosts AS (
@@ -38,7 +38,7 @@ TopUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '5 years'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 5 YEAR
     GROUP BY 
         u.Id, u.DisplayName
     HAVING 
@@ -53,7 +53,7 @@ ActiveUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '3 months'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
     GROUP BY 
         u.Id
 ),

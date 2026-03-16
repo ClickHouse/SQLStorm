@@ -20,7 +20,7 @@ RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 UserStatistics AS (
     SELECT 
@@ -49,7 +49,7 @@ UserStatistics AS (
         FROM
             Posts p
         WHERE
-            AcceptedAnswerId IS NOT NULL AND CreationDate > cast('2024-10-01' as date) - INTERVAL '90 days'
+            AcceptedAnswerId IS NOT NULL AND CreationDate > cast('2024-10-01' as date) - INTERVAL 90 DAY
         GROUP BY
             p.OwnerUserId
     ) AP ON u.Id = AP.OwnerUserId

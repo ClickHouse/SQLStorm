@@ -8,7 +8,7 @@ WITH RankedUserVotes AS (
         RANK() OVER (ORDER BY COUNT(v.Id) DESC) AS VoteRank
     FROM Votes v
     JOIN Posts p ON v.PostId = p.Id
-    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY v.UserId
 ),
 ActiveUsers AS (
@@ -20,7 +20,7 @@ ActiveUsers AS (
         COUNT(DISTINCT p.Id) AS ActivePosts
     FROM Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
-    WHERE u.LastAccessDate >= CURRENT_DATE - INTERVAL '6 months'
+    WHERE u.LastAccessDate >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY u.Id, u.DisplayName, u.Reputation, u.LastAccessDate
 )
 SELECT 

@@ -48,7 +48,7 @@ SELECT
         WHEN td.total_actors > 10 THEN 'Blockbuster'
         ELSE 'Indie Film'
     END AS film_type,
-    STRING_AGG(DISTINCT c.name, ', ' ORDER BY c.name) AS actors_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ' ORDER BY c.name) AS actors_list
 FROM 
     TitleDetails td
 LEFT JOIN 
@@ -62,4 +62,4 @@ HAVING
 ORDER BY 
     td.production_year DESC, 
     td.total_actors DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

@@ -38,7 +38,7 @@ PostAnalytics AS (
 ClosedPostDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CASE WHEN ph.PostHistoryTypeId = 10 THEN cr.Name END, ', ') AS CloseReasons,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId = 10 THEN cr.Name END)), ', ') AS CloseReasons,
         COUNT(*) AS CloseCount,
         MIN(ph.CreationDate) AS FirstCloseDate
     FROM 

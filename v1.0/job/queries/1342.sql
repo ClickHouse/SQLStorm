@@ -36,7 +36,7 @@ MovieKeywords AS (
 )
 SELECT 
     mk.title,
-    STRING_AGG(mk.keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keywords,
     COALESCE((SELECT COUNT(*) 
               FROM movie_info mi 
               WHERE mi.movie_id = a.id 

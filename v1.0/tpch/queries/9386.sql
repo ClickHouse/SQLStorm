@@ -11,7 +11,7 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 MONTH'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 SupplierDetails AS (
     SELECT 

@@ -31,7 +31,7 @@ SELECT
     f.total_cost,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     FilteredSuppliers f
 LEFT JOIN 

@@ -34,7 +34,7 @@ LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 LEFT JOIN HighValueSupplier hv ON l.l_partkey = hv.ps_partkey AND l.l_suppkey = hv.ps_suppkey
 LEFT JOIN supplier s ON hv.ps_suppkey = s.s_suppkey
 JOIN part p ON l.l_partkey = p.p_partkey
-WHERE (EXTRACT(YEAR FROM o.o_orderdate) = 1997 AND o.o_totalprice > 1000)
+WHERE (toYear(o.o_orderdate) = 1997 AND o.o_totalprice > 1000)
   AND (p.p_retailprice BETWEEN 50 AND 500)
 GROUP BY c.c_name, o.o_orderkey, o.o_totalprice, p.p_name, s.s_name
 ORDER BY o.o_totalprice DESC, c.c_name;

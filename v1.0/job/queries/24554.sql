@@ -39,7 +39,7 @@ CompanyDetails AS (
 CastRoles AS (
     SELECT 
         cc.movie_id, 
-        STRING_AGG(DISTINCT rt.role, ', ') AS roles 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS roles 
     FROM 
         cast_info cc
     JOIN 

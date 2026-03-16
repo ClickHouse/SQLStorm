@@ -5,7 +5,7 @@ WITH PostWithTags AS (
         p.CreationDate,
         p.Score,
         p.Tags,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'), 1) AS TagCount,
+        length(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         p.AnswerCount,
         p.ViewCount,
@@ -21,11 +21,11 @@ WITH PostWithTags AS (
     JOIN 
         Users u ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
         COUNT(*) AS TagUsage
     FROM 
         PostWithTags
@@ -59,7 +59,7 @@ PostsWithTopTags AS (
     FROM 
         PostWithTags pwt
     JOIN 
-        TopTags tt ON tt.Tag = ANY(string_to_array(substring(pwt.Tags, 2, length(pwt.Tags)-2), '><'))
+        TopTags tt ON tt.Tag = ANY(splitByString('><', substring(pwt.Tags, 2, length(pwt.Tags)-2)))
 )
 SELECT 
     p.PostId,

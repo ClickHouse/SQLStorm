@@ -9,7 +9,7 @@ WITH total_revenue AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
+        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
     GROUP BY 
         c.c_custkey
 ),
@@ -67,6 +67,6 @@ JOIN
 JOIN 
     supplier_part_info spi ON l.l_suppkey = spi.s_suppkey
 WHERE 
-    l.l_shipdate >= DATE '1996-01-01' AND l.l_shipdate < DATE '1997-01-01'
+    l.l_shipdate >= toDate('1996-01-01') AND l.l_shipdate < toDate('1997-01-01')
 ORDER BY 
     tc.revenue DESC, spi.total_available DESC;

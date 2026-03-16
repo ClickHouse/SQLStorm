@@ -52,7 +52,7 @@ MovieInfoForAnalysis AS (
         md.production_year,
         COUNT(distinct mi.id) AS info_count,
         COUNT(distinct mc.company_id) AS company_count,
-        STRING_AGG(DISTINCT mi.info, ', ') AS info_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS info_details
     FROM 
         MovieDetails md
     LEFT JOIN 

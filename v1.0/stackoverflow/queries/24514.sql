@@ -8,7 +8,7 @@ WITH RankedPosts AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 UserActivity AS (
     SELECT
@@ -63,7 +63,7 @@ SELECT
         ) THEN 'Gold Badge Holder'
         ELSE 'No Gold Badge'
     END AS BadgeStatus,
-    (SELECT STRING_AGG(p.Title, '; ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(p.Title)), '; ') 
      FROM RankedPosts p 
      WHERE p.PostRank <= 5 AND p.PostId IN (
          SELECT PostId 

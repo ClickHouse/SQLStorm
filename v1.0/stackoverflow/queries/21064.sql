@@ -15,7 +15,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 year')
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR)
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.Reputation
 ),
@@ -36,7 +36,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -85,4 +85,4 @@ WHERE
     (NetVotes > 0 OR AcceptedAnswersCount > 0)
 ORDER BY 
     NetVotes DESC, Title
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

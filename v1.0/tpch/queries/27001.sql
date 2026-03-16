@@ -29,4 +29,4 @@ GROUP BY
     p.p_name, s.s_name, r.r_name
 ORDER BY 
     total_revenue DESC, total_orders DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

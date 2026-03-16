@@ -4,7 +4,7 @@ WITH RECURSIVE MovieCTE AS (
         t.id AS movie_id,
         t.title AS movie_title,
         t.production_year,
-        COALESCE(ARRAY_AGG(DISTINCT k.keyword) FILTER (WHERE k.keyword IS NOT NULL), ARRAY[]::text[]) AS keywords,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(k.keyword))) FILTER (WHERE k.keyword IS NOT NULL), ARRAY[]::text[]) AS keywords,
         COUNT(DISTINCT ci.person_id) AS cast_count,
         SUM(CASE WHEN ci.nr_order IS NOT NULL THEN 1 ELSE 0 END) AS ordered_cast_count
     FROM 

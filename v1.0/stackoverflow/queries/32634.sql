@@ -10,7 +10,7 @@ WITH LatestPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserPostStats AS (
     SELECT 
@@ -28,12 +28,12 @@ UserPostStats AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS Tag,
+        arrayJoin(splitByString('>', Tags)) AS Tag,
         COUNT(p.Id) AS TagCount
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         Tag
     ORDER BY 
@@ -55,7 +55,7 @@ JOIN
 JOIN 
     Posts p ON lp.PostId = p.Id
 LEFT JOIN 
-    PopularTags pt ON pt.Tag = ANY(string_to_array(p.Tags, '>'))
+    PopularTags pt ON pt.Tag = ANY(splitByString('>', p.Tags))
 WHERE 
     ups.NumberOfPosts > 0
 GROUP BY 

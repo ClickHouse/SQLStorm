@@ -20,7 +20,7 @@ PostStats AS (
         p.ViewCount,
         p.CreationDate,
         p.AcceptedAnswerId,
-        COALESCE(ARRAY_LENGTH(STRING_TO_ARRAY(p.Tags, '><'), 1), 0) AS TagCount,
+        COALESCE(length(splitByString('><', p.Tags), 1), 0) AS TagCount,
         ROW_NUMBER() OVER (ORDER BY p.CreationDate DESC) AS RecentPostRank
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
@@ -31,7 +31,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        STRING_AGG(DISTINCT c.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Name))), ', ') AS CloseReasons
     FROM PostHistory ph
     JOIN CloseReasonTypes c ON c.Id = CAST(ph.Comment AS INTEGER)
     WHERE ph.PostHistoryTypeId IN (10, 11) 

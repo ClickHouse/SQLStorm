@@ -49,8 +49,8 @@ SELECT
     ca_country,
     COUNT(*) AS address_count,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(cd_gender, ', ') AS unique_genders,
-    STRING_AGG(cd_marital_status, ', ') AS unique_marital_statuses
+    arrayStringConcat(groupArray(assumeNotNull(cd_gender)), ', ') AS unique_genders,
+    arrayStringConcat(groupArray(assumeNotNull(cd_marital_status)), ', ') AS unique_marital_statuses
 FROM 
     FullAddressInfo
 GROUP BY 

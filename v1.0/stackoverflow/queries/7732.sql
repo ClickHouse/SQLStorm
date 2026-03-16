@@ -15,13 +15,13 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, U.DisplayName, P.Title, P.CreationDate, P.Score
 ),
 PopularTags AS (
     SELECT 
-        DISTINCT UNNEST(STRING_TO_ARRAY(T.Tags, '><')) AS Tag
+        DISTINCT arrayJoin(splitByString('><', T.Tags)) AS Tag
     FROM 
         Posts T
     WHERE 

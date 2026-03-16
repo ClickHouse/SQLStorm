@@ -57,4 +57,4 @@ WHERE
     )
 ORDER BY 
     pi.total_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

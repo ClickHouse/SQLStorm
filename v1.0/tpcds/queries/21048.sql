@@ -60,4 +60,4 @@ WHERE
     l.total_sales is not NULL
 ORDER BY 
     l.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -45,4 +45,4 @@ WHERE
     p.p_retailprice BETWEEN 100.00 AND 500.00
 ORDER BY 
     ts.TotalCost DESC, p.p_name ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

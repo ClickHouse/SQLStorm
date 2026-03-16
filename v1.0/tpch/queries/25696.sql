@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     SUM(l.l_extendedprice) AS total_revenue,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(CONCAT('Order: ', o.o_orderkey, ', Date: ', o.o_orderdate, ', Price: ', o.o_totalprice), '; ') AS order_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT('Order: ', o.o_orderkey, ', Date: ', o.o_orderdate, ', Price: ', o.o_totalprice))), '; ') AS order_details
 FROM 
     part p
 JOIN 

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score > 10
 ),
 UserScore AS (
@@ -34,14 +34,14 @@ UserScore AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS Tag,
+        arrayJoin(splitByString(',', Tags)) AS Tag,
         COUNT(p.Id) AS PostCount
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
-        unnest(string_to_array(Tags, ','))
+        arrayJoin(splitByString(',', Tags))
     ORDER BY 
         PostCount DESC
     LIMIT 10
@@ -68,7 +68,7 @@ LEFT JOIN
         FROM 
             PopularTags 
         WHERE 
-            Tag = ANY(string_to_array(ps.Tags, ','))
+            Tag = ANY(splitByString(',', ps.Tags))
     )
 WHERE 
     ps.Rank = 1

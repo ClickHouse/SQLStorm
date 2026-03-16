@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 PostTagCounts AS (
     SELECT 
         p.Id AS PostId, 
-        UNNEST(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -56,7 +56,7 @@ SELECT
     rp.Score,
     rp.OwnerDisplayName,
     rp.AnswerCount,
-    (SELECT STRING_AGG(tt.Tag, ', ') FROM TopTags tt JOIN PostTagCounts pt ON tt.Tag = pt.Tag WHERE pt.PostId = rp.PostId) AS PopularTags
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(tt.Tag)), ', ') FROM TopTags tt JOIN PostTagCounts pt ON tt.Tag = pt.Tag WHERE pt.PostId = rp.PostId) AS PopularTags
 FROM 
     RankedPosts rp
 WHERE 

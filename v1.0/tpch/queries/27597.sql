@@ -31,7 +31,7 @@ FilteredSuppliers AS (
 SELECT 
     region_name,
     nation_name,
-    STRING_AGG(supplier_name || ' (Balance: ' || supplier_acctbal || ')', ', ') AS top_suppliers
+    arrayStringConcat(groupArray(assumeNotNull(supplier_name || ' (Balance: ' || supplier_acctbal || ')')), ', ') AS top_suppliers
 FROM 
     FilteredSuppliers
 GROUP BY 

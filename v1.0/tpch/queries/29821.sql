@@ -2,7 +2,7 @@ SELECT
     SUBSTRING(p_name, 1, 20) AS truncated_part_name,
     COUNT(DISTINCT l_orderkey) AS order_count,
     SUM(l_extendedprice * (1 - l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s_name))), ', ') AS supplier_names,
     r_name AS region_name,
     MIN(l_shipdate) AS first_ship_date,
     MAX(l_shipdate) AS last_ship_date,

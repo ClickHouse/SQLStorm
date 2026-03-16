@@ -27,7 +27,7 @@ SELECT
     ak.name AS actor_name,
     COUNT(DISTINCT mc.movie_id) AS total_movies,
     AVG(CASE WHEN m.production_year < 2000 THEN m.production_year ELSE NULL END) AS avg_pre_2000_movies,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ak.person_id ORDER BY COUNT(DISTINCT mc.movie_id) DESC) AS rank
 FROM 
     aka_name ak

@@ -9,7 +9,7 @@ WITH customer_stats AS (
         cd.cd_credit_rating,
         COUNT(DISTINCT ws.ws_order_number) AS total_orders,
         SUM(ws.ws_net_profit) AS total_profit,
-        AVG(EXTRACT(YEAR FROM AGE(CURRENT_DATE, DATE(c.c_birth_year || '-' || c.c_birth_month || '-' || c.c_birth_day)))::INTEGER) AS age,
+        AVG(toYear(AGE(CURRENT_DATE, DATE(c.c_birth_year || '-' || c.c_birth_month || '-' || c.c_birth_day))CAST() AS INTEGER)) AS age,
         GREATEST(COALESCE(cd.cd_dep_count, 0), COALESCE(hd.hd_dep_count, 0)) AS max_dependents
     FROM
         customer AS c
@@ -72,4 +72,4 @@ WHERE
     AND (LOWER(cs.c_last_name) LIKE 'a%' OR cs.cd_gender = 'F')
 ORDER BY
     cs.total_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

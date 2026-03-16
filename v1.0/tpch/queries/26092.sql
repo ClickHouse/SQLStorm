@@ -2,7 +2,7 @@ WITH NationCounts AS (
     SELECT 
         n.n_name AS nation_name,
         COUNT(s.s_suppkey) AS supplier_count,
-        STRING_AGG(s.s_name, ', ') AS suppliers
+        arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS suppliers
     FROM 
         nation n
     JOIN 
@@ -19,7 +19,7 @@ PartDetails AS (
         p.p_size,
         p.p_retailprice,
         p.p_comment,
-        STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_acctbal, ')'), '; ') AS supplier_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_acctbal, ')')))), '; ') AS supplier_details
     FROM 
         part p
     JOIN 

@@ -4,7 +4,7 @@ SELECT
     p.p_name AS part_name, 
     SUM(ps.ps_availqty) AS total_avail_qty, 
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost, 
-    STRING_AGG(DISTINCT p.p_type, ', ' ORDER BY p.p_type) AS part_types_sample,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ' ORDER BY p.p_type) AS part_types_sample,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     ROUND(AVG(l.l_discount), 2) AS average_discount
 FROM 

@@ -17,9 +17,9 @@ WITH RankedTitles AS (
 SELECT 
     rt.production_year,
     COUNT(DISTINCT rt.movie_title) AS total_movies,
-    STRING_AGG(rt.movie_title, ', ') AS movie_titles,
+    arrayStringConcat(groupArray(assumeNotNull(rt.movie_title)), ', ') AS movie_titles,
     COUNT(DISTINCT rt.actor_name) AS total_actors,
-    STRING_AGG(DISTINCT rt.actor_name, ', ') AS actor_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.actor_name))), ', ') AS actor_names
 FROM 
     RankedTitles rt
 WHERE 

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 PostStats AS (
@@ -34,11 +34,11 @@ ActiveBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
-        b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         b.UserId
 ),
@@ -69,7 +69,7 @@ SELECT
         WHEN ra.LastActivityDate IS NULL THEN 'Inactive'
         ELSE 'Active'
     END AS UserStatus,
-    ARRAY_AGG(DISTINCT rp.Title) FILTER (WHERE rp.Rank <= 5) AS TopPosts
+    arrayDistinct(groupArray(assumeNotNull(rp.Title))) FILTER (WHERE rp.Rank <= 5) AS TopPosts
 FROM 
     Users u
 LEFT JOIN 

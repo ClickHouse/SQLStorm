@@ -30,7 +30,7 @@ PostSummary AS (
     LEFT JOIN 
         (SELECT PostId, COUNT(*) AS CommentCount FROM Comments GROUP BY PostId) PC ON P.Id = PC.PostId
     WHERE 
-        P.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
+        P.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
 ),
 UserPostDetails AS (
     SELECT 

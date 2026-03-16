@@ -33,7 +33,7 @@ SELECT
     actor_hierarchy.actor_name,
     COUNT(DISTINCT ci.movie_id) AS movie_count,
     MAX(at.production_year) AS latest_movie_year,
-    STRING_AGG(DISTINCT at.title, ', ') AS movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(at.title))), ', ') AS movies,
     AVG(CASE 
             WHEN mi.info_type_id IN (SELECT id FROM info_type WHERE info = 'box office') 
             THEN CAST(mi.info AS FLOAT)

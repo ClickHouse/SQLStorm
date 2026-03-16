@@ -49,7 +49,7 @@ SELECT
     md.production_year,
     md.keywords,
     md.company_count,
-    STRING_AGG(tma.actor_name, ', ' ORDER BY tma.actor_rank) AS top_actors
+    arrayStringConcat(groupArray(assumeNotNull(tma.actor_name)), ', ' ORDER BY tma.actor_rank) AS top_actors
 FROM
     MovieDetails md
 LEFT JOIN

@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT p.p_partkey) AS unique_parts,
     SUM(ps.ps_availqty) AS total_quantity,
     AVG(ps.ps_supplycost) AS average_cost,
-    STRING_AGG(DISTINCT p.p_type, ', ') AS part_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS part_types,
     CASE 
         WHEN AVG(ps.ps_supplycost) > 100 THEN 'Expensive Supplies'
         ELSE 'Affordable Supplies'

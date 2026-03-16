@@ -7,7 +7,7 @@ SELECT
     AVG(l.l_discount) AS avg_discount,
     MAX(l.l_tax) AS max_tax,
     MIN(l.l_quantity) AS min_quantity,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     supplier s 
 JOIN 

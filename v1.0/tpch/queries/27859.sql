@@ -4,7 +4,7 @@ SELECT
     p.p_name AS part_name,
     COUNT(DISTINCT ps.ps_partkey) AS part_supply_count,
     SUM(ps.ps_supplycost) AS total_supply_cost,
-    STRING_AGG(DISTINCT SUBSTRING(s.s_comment, 1, 15), '; ') AS unique_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(s.s_comment, 1, 15)))), '; ') AS unique_comments,
     RANK() OVER (PARTITION BY p.p_partkey ORDER BY SUM(ps.ps_supplycost) DESC) AS supply_rank
 FROM 
     supplier s

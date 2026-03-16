@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 UserStatistics AS (
     SELECT 
@@ -35,7 +35,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ' ORDER BY c.Id) AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ' ORDER BY c.Id) AS Comments
     FROM 
         Comments c
     GROUP BY 

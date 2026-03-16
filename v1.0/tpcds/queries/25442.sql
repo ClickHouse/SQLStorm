@@ -25,7 +25,7 @@ Filtered_Customers AS (
 ),
 Concatenated_Customers AS (
     SELECT 
-        STRING_AGG(full_name, ', ') AS top_customers, 
+        arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS top_customers, 
         cd_gender, 
         cd_marital_status, 
         cd_education_status

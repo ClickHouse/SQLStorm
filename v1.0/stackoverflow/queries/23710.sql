@@ -35,7 +35,7 @@ Closed_Posts AS (
     SELECT 
         H.PostId,
         COUNT(H.Id) AS CloseVoteCount,
-        STRING_AGG(CASE WHEN H.Comment IS NOT NULL THEN H.Comment ELSE 'No comment' END, '; ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN H.Comment IS NOT NULL THEN H.Comment ELSE 'No comment' END)), '; ') AS CloseReasons
     FROM PostHistory H
     WHERE H.PostHistoryTypeId = 10
     GROUP BY H.PostId

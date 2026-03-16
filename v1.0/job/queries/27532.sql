@@ -28,7 +28,7 @@ top_movies AS (
 movie_cast AS (
     SELECT 
         tc.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
         COUNT(DISTINCT a.id) AS cast_count
     FROM 
         top_movies tc

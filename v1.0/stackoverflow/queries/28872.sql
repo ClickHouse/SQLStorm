@@ -1,7 +1,7 @@
 WITH TagCounts AS (
     SELECT 
         Posts.Id AS PostId,
-        UNNEST(string_to_array(substring(Posts.Tags, 2, length(Posts.Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(Posts.Tags, 2, length(Posts.Tags)-2))) AS Tag
     FROM 
         Posts
     WHERE 
@@ -12,7 +12,7 @@ TagStatistics AS (
         TagCounts.Tag,
         COUNT(DISTINCT TagCounts.PostId) AS PostCount,
         COUNT(DISTINCT Votes.UserId) AS UniqueVoteCounts,
-        ARRAY_AGG(DISTINCT Users.DisplayName) AS VotedUsers,
+        arrayDistinct(groupArray(assumeNotNull(Users.DisplayName))) AS VotedUsers,
         AVG(Posts.Score) AS AverageScore,
         SUM(Posts.ViewCount) AS TotalViews,
         SUM(Posts.AnswerCount) AS TotalAnswers

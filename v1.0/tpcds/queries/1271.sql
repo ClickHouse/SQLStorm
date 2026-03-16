@@ -46,7 +46,7 @@ SELECT
          ELSE 'Lower or Equal Sales'
      END) AS sales_comparison,
     COUNT(DISTINCT s.s_store_sk) AS store_count,
-    STRING_AGG(DISTINCT s.s_store_name, ', ') AS store_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_store_name))), ', ') AS store_names
 FROM 
     TopCustomers TC
 LEFT JOIN 

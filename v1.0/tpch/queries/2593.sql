@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
 ), SupplierDetails AS (
     SELECT 
         s.s_suppkey,
@@ -42,7 +42,7 @@ SELECT
     s.s_name AS supplier_name,
     sd.total_avail_qty,
     sd.total_supply_cost,
-    EXTRACT(MONTH FROM o.o_orderdate) AS order_month,
+    toMonth(o.o_orderdate) AS order_month,
     CASE 
         WHEN o.o_orderstatus = 'F' THEN 'Finished'
         WHEN o.o_orderstatus = 'P' THEN 'Pending'

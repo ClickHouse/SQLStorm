@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
         AND p.PostTypeId IN (1, 2) 
     GROUP BY 
         p.Id
@@ -47,7 +47,7 @@ MostActiveUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '90 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 90 DAY
     GROUP BY 
         u.Id
     ORDER BY 

@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_ext_sales_price) AS total_sales,
     AVG(ws.ws_ext_sales_price) AS avg_order_value,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS items_purchased,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS items_purchased,
     d.d_day_name,
     d.d_date
 FROM 

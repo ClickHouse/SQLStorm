@@ -44,7 +44,7 @@ SELECT
     tu.Downvotes,
     tu.LastPostDate,
     COALESCE(SUM(b.Class), 0) AS BadgeCount,
-    STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypes
 FROM 
     TopUsers tu
 LEFT JOIN 

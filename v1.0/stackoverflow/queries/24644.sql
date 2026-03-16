@@ -11,13 +11,13 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS Comments
     FROM 
         Comments c
     GROUP BY 
@@ -30,26 +30,26 @@ PostHistoryDetails AS (
         ph.CreationDate AS HistoryCreationDate,
         CASE 
             WHEN ph.PostHistoryTypeId IN (10, 11) THEN 
-                'Closed on ' || ph.CreationDate::text
+                'Closed on ' || CAST(ph.CreationDate AS text)
             WHEN ph.PostHistoryTypeId IN (12, 13) THEN 
-                'Deleted on ' || ph.CreationDate::text
+                'Deleted on ' || CAST(ph.CreationDate AS text)
             ELSE 
-                'Edited on ' || ph.CreationDate::text
+                'Edited on ' || CAST(ph.CreationDate AS text)
         END AS HistoryText
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        ph.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 UserBadges AS (
     SELECT
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS AwardedBadges
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS AwardedBadges
     FROM 
         Badges b
     WHERE 
-        b.Date >= CURRENT_DATE - INTERVAL '2 years'
+        b.Date >= CURRENT_DATE - INTERVAL 2 YEAR
     GROUP BY 
         b.UserId
 )

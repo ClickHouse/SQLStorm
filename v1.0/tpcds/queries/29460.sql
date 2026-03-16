@@ -39,7 +39,7 @@ SELECT
     rank_in_state,
     COUNT(*) AS customer_count,
     AVG(cd_purchase_estimate) AS average_purchase_estimate,
-    STRING_AGG(full_address, '; ') AS addresses
+    arrayStringConcat(groupArray(assumeNotNull(full_address)), '; ') AS addresses
 FROM 
     filtered_data
 GROUP BY 

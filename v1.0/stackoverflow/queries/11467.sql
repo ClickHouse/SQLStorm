@@ -10,7 +10,7 @@ WITH PostStats AS (
         p.CommentCount,
         u.DisplayName AS OwnerDisplayName,
         COUNT(v.Id) AS VoteCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         Posts p
@@ -19,7 +19,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '><')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('><', p.Tags)) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON tag = t.TagName
     LEFT JOIN 

@@ -49,4 +49,4 @@ JOIN
     TagUsage T ON U.PostCount > 0 
 ORDER BY 
     U.Reputation DESC, T.TotalViews DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

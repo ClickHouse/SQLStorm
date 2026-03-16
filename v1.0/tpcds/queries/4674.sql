@@ -57,4 +57,4 @@ WHERE
     AND UPPER(rc.cd_credit_rating) IN ('EXCELLENT', 'GOOD')
 ORDER BY 
     rc.cd_gender, rc.total_spent DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

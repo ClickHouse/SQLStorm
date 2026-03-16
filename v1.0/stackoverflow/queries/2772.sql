@@ -17,7 +17,7 @@ RecentPosts AS (
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostStats AS (
     SELECT 
@@ -25,7 +25,7 @@ PostStats AS (
         COUNT(RP.PostId) AS PostCount,
         SUM(RP.Score) AS TotalScore,
         AVG(RP.Score) AS AverageScore,
-        STRING_AGG(DISTINCT RP.Title, ', ') AS PostTitles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(RP.Title))), ', ') AS PostTitles
     FROM RecentPosts RP
     GROUP BY RP.OwnerUserId
 ),

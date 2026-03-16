@@ -13,11 +13,11 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName
     FROM 
         Posts
     WHERE 
@@ -47,7 +47,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagPopularity tp ON tp.TagName = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags)-2), '><'))
+    TagPopularity tp ON tp.TagName = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
 WHERE 
     rp.PostRank = 1
 ORDER BY 

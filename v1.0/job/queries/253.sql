@@ -28,7 +28,7 @@ SELECT
     tm.title,
     tm.production_year,
     COALESCE(ai.name, 'Unknown') AS actor_name,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     COUNT(DISTINCT mc.company_id) AS company_count
 FROM 
     top_movies tm

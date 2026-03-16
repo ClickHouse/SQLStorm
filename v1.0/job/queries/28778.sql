@@ -24,10 +24,10 @@ WITH MovieDetails AS (
 AggregateDetails AS (
     SELECT 
         md.movie_title,
-        STRING_AGG(DISTINCT md.person_name, ', ') AS cast_names,
-        STRING_AGG(DISTINCT CAST(md.production_year AS TEXT), ', ') AS production_years,
-        STRING_AGG(DISTINCT md.company_name, ', ') AS companies_involved,
-        STRING_AGG(DISTINCT md.movie_keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.person_name))), ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(md.production_year AS TEXT)))), ', ') AS production_years,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.company_name))), ', ') AS companies_involved,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.movie_keyword))), ', ') AS keywords,
         COUNT(DISTINCT md.alias_name) AS total_aliases
     FROM MovieDetails md
     GROUP BY md.movie_title

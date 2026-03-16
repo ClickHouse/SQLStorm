@@ -59,7 +59,7 @@ FinalOutput AS (
         md.keywords,
         md.era,
         COALESCE(c.role_count, 0) AS total_roles,
-        STRING_AGG(DISTINCT cr.role, ', ') AS aggregated_roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.role))), ', ') AS aggregated_roles
     FROM
         MovieDetails md
     LEFT JOIN

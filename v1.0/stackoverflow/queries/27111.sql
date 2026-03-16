@@ -18,11 +18,11 @@ WITH RankedPosts AS (
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
 ),
 TagStatistics AS (
     SELECT 
-        unnest(string_to_array(Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', Tags)) AS Tag
     FROM 
         RankedPosts
     WHERE 
@@ -48,11 +48,11 @@ SELECT
     rp.CreationDate,
     rp.Score,
     rp.ViewCount,
-    STRING_AGG(DISTINCT pt.Tag, ', ') AS PopularTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Tag))), ', ') AS PopularTags
 FROM 
     RankedPosts rp
 JOIN 
-    PopularTags pt ON pt.Tag = ANY(string_to_array(rp.Tags, '><'))
+    PopularTags pt ON pt.Tag = ANY(splitByString('><', rp.Tags))
 WHERE 
     rp.PostRank = 1
 GROUP BY 

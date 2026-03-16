@@ -41,7 +41,7 @@ top_products AS (
 SELECT 
     hvc.c_customer_id,
     hvc.total_sales,
-    CONCAT('Top Products: ', STRING_AGG(tp.i_item_id, ', ')) AS top_products
+    CONCAT('Top Products: ', arrayStringConcat(groupArray(assumeNotNull(tp.i_item_id)), ', ')) AS top_products
 FROM 
     high_value_customers hvc
 CROSS JOIN 

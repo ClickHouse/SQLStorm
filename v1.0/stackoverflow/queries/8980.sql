@@ -23,7 +23,7 @@ RecentPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.PostTypeId
 ),
 UserPostInteractions AS (
@@ -44,7 +44,7 @@ SELECT
     upi.TotalComments,
     upi.TotalNetVotes,
     COUNT(b.Id) AS BadgeCount,
-    STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames
 FROM Users u
 JOIN UserPostInteractions upi ON u.Id = upi.UserId
 LEFT JOIN Badges b ON u.Id = b.UserId

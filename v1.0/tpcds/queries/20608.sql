@@ -44,7 +44,7 @@ SELECT
     cr.customer_category,
     cr.average_per_category,
     COUNT(*) AS customer_count,
-    STRING_AGG(r.r_reason_desc, ', ') AS reasons
+    arrayStringConcat(groupArray(assumeNotNull(r.r_reason_desc)), ', ') AS reasons
 FROM ComparativeResults cr
 LEFT JOIN store_returns sr ON sr.sr_customer_sk IN (SELECT c.c_customer_sk FROM customer c WHERE c.c_customer_id IS NOT NULL)
 LEFT JOIN reason r ON sr.sr_reason_sk = r.r_reason_sk

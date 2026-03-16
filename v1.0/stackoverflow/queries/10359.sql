@@ -19,7 +19,7 @@ WITH PostEngagement AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate >= DATE '2023-01-01'
+        p.CreationDate >= toDate('2023-01-01')
     GROUP BY 
         p.Id, p.Title, p.PostTypeId
 ),
@@ -41,7 +41,7 @@ UserEngagement AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        u.CreationDate >= DATE '2023-01-01'
+        u.CreationDate >= toDate('2023-01-01')
     GROUP BY 
         u.Id, u.DisplayName
 )

@@ -38,10 +38,10 @@ SELECT
     m.movie_id,
     m.title,
     m.production_year,
-    STRING_AGG(DISTINCT m.actor_name, ', ') AS all_actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.actor_name))), ', ') AS all_actors,
     COUNT(DISTINCT m.person_id) AS actor_count,
     MAX(m.production_year) OVER (PARTITION BY m.kind_id) AS max_year_in_kind,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     MovieCTE m
 LEFT JOIN 

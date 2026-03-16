@@ -14,7 +14,7 @@ MovieCrew AS (
     SELECT 
         ca.movie_id,
         COUNT(DISTINCT ca.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ca.note, ', ') AS cast_notes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.note))), ', ') AS cast_notes
     FROM 
         cast_info ca
     LEFT JOIN 

@@ -31,7 +31,7 @@ FilteredCast AS (
         ci.movie_id,
         ci.person_id,
         COUNT(*) OVER (PARTITION BY ci.movie_id) AS cast_count,
-        ARRAY_AGG(DISTINCT an.name) AS actor_names
+        arrayDistinct(groupArray(assumeNotNull(an.name))) AS actor_names
     FROM 
         cast_info ci
     LEFT JOIN 

@@ -3,8 +3,8 @@ WITH movie_details AS (
     SELECT 
         t.title AS movie_title,
         t.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
         COALESCE(COUNT(DISTINCT ca.person_id), 0) AS cast_count,
         COALESCE(COUNT(DISTINCT mc.company_id), 0) AS company_count
     FROM 

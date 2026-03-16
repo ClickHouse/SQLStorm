@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount, U.DisplayName, P.PostTypeId
 ),
@@ -42,9 +42,9 @@ SELECT
     TP.ViewCount,
     TP.Owner,
     TP.CommentCount,
-    (SELECT STRING_AGG(T.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
      FROM Tags T 
-     JOIN LATERAL unnest(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><')) AS tag ON T.TagName = tag 
+     JOIN arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2))) AS tag ON T.TagName = tag 
      WHERE P.Id = TP.PostId) AS TagsList
 FROM 
     TopPosts TP

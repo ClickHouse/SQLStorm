@@ -47,10 +47,10 @@ ranked_movies AS (
 SELECT 
     production_year,
     COUNT(*) AS total_movies,
-    STRING_AGG(DISTINCT movie_title, '; ') AS movie_titles,
-    STRING_AGG(DISTINCT actor_name || ' (' || actor_hash || ')', '; ') AS actors,
-    STRING_AGG(DISTINCT company_type, '; ') AS companies,
-    STRING_AGG(DISTINCT movie_keyword, '; ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_title))), '; ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name || ' (' || actor_hash || ')'))), '; ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), '; ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), '; ') AS keywords,
     AVG(CASE WHEN person_info IS NOT NULL THEN LENGTH(person_info) ELSE 0 END) AS avg_person_info_length
 FROM 
     ranked_movies

@@ -12,7 +12,7 @@ WITH RECURSIVE UserConnections AS (
 RecentActivity AS (
     SELECT p.OwnerUserId, COUNT(*) AS PostCount, MAX(p.CreationDate) AS LastPostDate
     FROM Posts p
-    WHERE p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
     GROUP BY p.OwnerUserId
 ),
 TopUsers AS (
@@ -29,7 +29,7 @@ SELECT
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS Upvotes, 
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS Downvotes, 
     COUNT(DISTINCT c.Id) AS CommentCount, 
-    STRING_AGG(DISTINCT p.Title, '; ') AS PostTitles 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), '; ') AS PostTitles 
 FROM UserConnections uc
 LEFT JOIN Votes v ON v.UserId = uc.Id
 LEFT JOIN Comments c ON c.UserId = uc.Id

@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserReputationHistory AS (
     SELECT 
@@ -70,7 +70,7 @@ SELECT
     MAX(uh.Reputation) AS MaxReputation,
     AVG(pm.AvgScore) AS AvgPostScore,
     COUNT(DISTINCT cp.PostId) AS ClosedPostCount,
-    STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypes,
     COUNT(DISTINCT pt.Id) FILTER (WHERE pt.Id IS NOT NULL) AS DistinctPostTypeCount,
     CASE 
         WHEN MAX(uh.Reputation) IS NULL THEN 'No Reputation'

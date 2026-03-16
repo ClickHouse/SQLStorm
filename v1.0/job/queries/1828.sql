@@ -45,7 +45,7 @@ filtered_movies AS (
 SELECT 
     f.movie_category,
     COUNT(*) AS movie_count,
-    STRING_AGG(f.title, ', ') AS movie_titles
+    arrayStringConcat(groupArray(assumeNotNull(f.title)), ', ') AS movie_titles
 FROM 
     filtered_movies f
 GROUP BY 

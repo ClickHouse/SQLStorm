@@ -5,7 +5,7 @@ WITH enriched_movie_data AS (
         t.production_year,
         a.name AS actor_name,
         c.kind AS cast_type,
-        STRING_AGG(k.keyword, ', ') AS keywords,
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
         COUNT(DISTINCT mc.company_id) AS production_companies_count
     FROM 
         aka_title t
@@ -28,7 +28,7 @@ WITH enriched_movie_data AS (
 ),
 average_keywords AS (
     SELECT 
-        AVG(COALESCE(NULLIF(ARRAY_LENGTH(STRING_TO_ARRAY(keywords, ', '), 1), 0), 0)) AS avg_keywords_per_movie
+        AVG(COALESCE(NULLIF(length(splitByString(', ', keywords), 1), 0), 0)) AS avg_keywords_per_movie
     FROM 
         enriched_movie_data
 )

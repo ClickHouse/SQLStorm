@@ -6,7 +6,7 @@ SELECT
     SUM(l.l_extendedprice) AS Total_Extended_Price, 
     AVG(l.l_discount) AS Average_Discount,
     MAX(CASE WHEN l.l_shipdate >= '1997-01-01' THEN l.l_tax ELSE 0 END) AS Max_Tax_After_1997,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS Customer_Names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS Customer_Names
 FROM 
     supplier s
 JOIN 

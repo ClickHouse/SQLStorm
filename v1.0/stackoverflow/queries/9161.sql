@@ -34,7 +34,7 @@ PostStatistics AS (
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
     GROUP BY P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount
 ),
 UserPostInteraction AS (

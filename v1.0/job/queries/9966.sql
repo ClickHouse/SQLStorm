@@ -46,9 +46,9 @@ SELECT
     pm.title,
     pm.production_year,
     pm.cast_count,
-    STRING_AGG(DISTINCT pm.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT pm.actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT pm.company_name, ', ') AS companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pm.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pm.actor_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pm.company_name))), ', ') AS companies
 FROM 
     PopularMovies pm
 GROUP BY 

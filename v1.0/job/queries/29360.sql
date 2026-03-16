@@ -20,8 +20,8 @@ MovieDetails AS (
         rm.title,
         rm.production_year,
         rm.actor_count,
-        STRING_AGG(DISTINCT a.name, ', ' ORDER BY a.name) AS actor_names,
-        STRING_AGG(DISTINCT k.keyword, ', ' ORDER BY k.keyword) AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ' ORDER BY a.name) AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ' ORDER BY k.keyword) AS keywords
     FROM 
         RankedMovies rm
     LEFT JOIN 

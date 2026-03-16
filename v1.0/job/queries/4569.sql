@@ -41,7 +41,7 @@ MovieKeywords AS (
 SELECT 
     ta.actor_name,
     ta.movie_count,
-    STRING_AGG(mk.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keywords
 FROM 
     TopActors AS ta
 LEFT JOIN 

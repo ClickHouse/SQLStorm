@@ -51,7 +51,7 @@ SELECT sa.sales_category,
        SUM(sa.order_count) AS total_orders,
        MIN(sa.ib_lower_bound) AS min_income_band,
        MAX(sa.ib_upper_bound) AS max_income_band,
-       ARRAY_AGG(DISTINCT sa.c_first_name || ' ' || sa.c_last_name) AS customer_names,
+       arrayDistinct(groupArray(assumeNotNull(sa.c_first_name || ' ' || sa.c_last_name))) AS customer_names,
        SUM(CASE WHEN sa.total_sales IS NULL THEN 1 ELSE 0 END) AS null_sales_count,
        COUNT(*) FILTER (WHERE sa.total_sales IS NOT NULL) AS not_null_sales_count
 FROM sales_analysis sa

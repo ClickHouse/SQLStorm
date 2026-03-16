@@ -64,7 +64,7 @@ SELECT
 FROM 
     UserStats U
 JOIN 
-    TagStats T ON U.UserId = (SELECT OwnerUserId FROM Posts ORDER BY RANDOM() LIMIT 1)
+    TagStats T ON U.UserId = (SELECT OwnerUserId FROM Posts ORDER BY rand() LIMIT 1)
 JOIN 
     PostStats P ON U.TotalPosts > 0
 ORDER BY 

@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         COUNT(c.Id) AS CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS Rank,
-        ARRAY_AGG(DISTINCT pt.Name) AS PostTypeNames
+        arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypeNames
     FROM 
         Posts p
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         p.Id
 ),
@@ -42,8 +42,8 @@ SELECT
     COUNT(DISTINCT tp.PostID) AS TotalPosts,
     SUM(tp.ViewCount) AS TotalViews,
     AVG(tp.Score) AS AverageScore,
-    STRING_AGG(DISTINCT tp.PostTypeNames::text, ', ') AS PostTypes,
-    STRING_AGG(DISTINCT tp.Tags, ', ') AS AllTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(tp.PostTypeNames AS text)))), ', ') AS PostTypes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.Tags))), ', ') AS AllTags
 FROM 
     TopPosts tp
 JOIN 

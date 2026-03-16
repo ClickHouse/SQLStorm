@@ -18,8 +18,8 @@ OrderSummary AS (
     SELECT co.c_custkey, co.c_name, co.o_orderkey, co.o_orderdate, co.o_totalprice, co.o_orderpriority,
            SUM(ld.l_extendedprice * (1 - ld.l_discount)) AS total_revenue,
            COUNT(DISTINCT sp.ps_partkey) AS distinct_parts,
-           STRING_AGG(DISTINCT sp.p_brand, ', ') AS brands,
-           STRING_AGG(DISTINCT ld.l_shipmode, ', ') AS shipment_modes
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sp.p_brand))), ', ') AS brands,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ld.l_shipmode))), ', ') AS shipment_modes
     FROM CustomerOrders co
     JOIN LineItemDetails ld ON co.o_orderkey = ld.l_orderkey
     JOIN SupplierParts sp ON ld.l_partkey = sp.ps_partkey

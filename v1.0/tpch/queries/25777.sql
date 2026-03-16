@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT l.l_orderkey) AS Total_Orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS Total_Revenue,
     MAX(l.l_shipdate) AS Last_Ship_Date,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS Regions_Served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS Regions_Served
 FROM 
     part p
 JOIN 

@@ -4,7 +4,7 @@ WITH TagStatistics AS (
         COUNT(P.Id) AS PostCount,
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
-        STRING_AGG(U.DisplayName, ', ') AS ActiveUsers
+        arrayStringConcat(groupArray(assumeNotNull(U.DisplayName)), ', ') AS ActiveUsers
     FROM
         Tags T
     JOIN

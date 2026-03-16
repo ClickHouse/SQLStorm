@@ -25,7 +25,7 @@ ActorsAndRoles AS (
 MovieGenres AS (
     SELECT
         m.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS genres
     FROM
         movie_keyword m
     JOIN
@@ -50,7 +50,7 @@ SELECT
     sm.title,
     sm.production_year,
     sm.genres,
-    STRING_AGG(DISTINCT ar.name || ' (' || ar.role || ')', '; ') AS actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ar.name || ' (' || ar.role || ')'))), '; ') AS actors
 FROM
     SelectedMovies sm
 LEFT JOIN

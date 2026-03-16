@@ -39,7 +39,7 @@ SELECT
     r.r_name,
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(ro.total_revenue) AS total_revenue,
-    STRING_AGG(DISTINCT si.s_name, ', ') AS suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(si.s_name))), ', ') AS suppliers
 FROM 
     region r
 LEFT JOIN 

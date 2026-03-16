@@ -17,7 +17,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS SupplierCount,
     SUM(ps.ps_availqty) AS TotalAvailableQuantity,
     AVG(ps.ps_supplycost) AS AverageSupplyCost,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS NationsSupplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS NationsSupplied,
     ROW_NUMBER() OVER (PARTITION BY p.p_partkey ORDER BY SUM(ps.ps_availqty) DESC) AS PartRank
 FROM part p
 LEFT OUTER JOIN partsupp ps ON p.p_partkey = ps.ps_partkey

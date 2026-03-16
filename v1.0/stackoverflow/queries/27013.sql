@@ -47,7 +47,7 @@ SELECT
     rp.Score,
     rp.AnswerCount,
     rp.CommentCount,
-    (SELECT STRING_AGG(DISTINCT pt.Name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') 
      FROM PostHistory ph
      JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
      WHERE ph.PostId = rp.PostId) AS HistoryTypes

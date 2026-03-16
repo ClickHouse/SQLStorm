@@ -31,9 +31,9 @@ TopCast AS (
 MovieInfo AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT m.info, ',') AS infos,
-        STRING_AGG(DISTINCT CASE WHEN it.info = 'Genre' THEN m.info END, ',') AS genres,
-        STRING_AGG(DISTINCT CASE WHEN it.info = 'Synopsis' THEN m.info END, ',') AS synopsis
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.info))), ',') AS infos,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN it.info = 'Genre' THEN m.info END))), ',') AS genres,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN it.info = 'Synopsis' THEN m.info END))), ',') AS synopsis
     FROM 
         movie_info m
     JOIN 

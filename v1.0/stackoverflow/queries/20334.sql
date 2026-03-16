@@ -28,11 +28,11 @@ RecentPosts AS (
         Posts.Title, 
         Posts.CreationDate, 
         Posts.OwnerUserId,
-        EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - Posts.CreationDate)) / 60 AS PostAge,
+        toUnixTimestamp((now64(6) - Posts.CreationDate)) / 60 AS PostAge,
         COUNT(Comments.Id) AS CommentsCount
     FROM Posts
     LEFT JOIN Comments ON Posts.Id = Comments.PostId
-    WHERE Posts.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    WHERE Posts.CreationDate >= now64(6) - INTERVAL 30 DAY
     GROUP BY Posts.Id, Posts.Title, Posts.CreationDate, Posts.OwnerUserId
     HAVING COUNT(Comments.Id) > 5
 )
@@ -45,7 +45,7 @@ SELECT
     RP.PostAge,
     RP.CommentsCount,
     CASE 
-        WHEN U.LastPostDate < CURRENT_TIMESTAMP - INTERVAL '6 months' THEN 'Inactive' 
+        WHEN U.LastPostDate < now64(6) - INTERVAL 6 MONTH THEN 'Inactive' 
         ELSE 'Active' 
     END AS UserActivityStatus
 FROM ActiveUsers U

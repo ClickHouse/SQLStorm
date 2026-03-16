@@ -45,4 +45,4 @@ WHERE
     (md.total_sales > 10000 OR md.total_sales IS NULL)
     AND (cs.customer_count IS NOT NULL AND cs.customer_count > 1)
 ORDER BY md.d_month_seq, cs.cd_gender DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

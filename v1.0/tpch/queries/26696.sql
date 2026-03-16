@@ -5,7 +5,7 @@ SELECT
     SUM(L.l_quantity) AS Total_Quantity,
     COUNT(DISTINCT O.o_orderkey) AS Total_Orders,
     AVG(L.l_extendedprice) AS Average_Price,
-    STRING_AGG(DISTINCT R.r_name, ', ') AS Regions_Supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(R.r_name))), ', ') AS Regions_Supplied
 FROM 
     customer C
 JOIN 

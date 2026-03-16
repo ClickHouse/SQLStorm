@@ -20,11 +20,11 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseCount,
-        ARRAY_AGG(DISTINCT ct.Name) AS CloseReasons
+        arrayDistinct(groupArray(assumeNotNull(ct.Name))) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes ct ON ph.Comment = ct.Id::text
+        CloseReasonTypes ct ON ph.Comment = CAST(ct.Id AS text)
     WHERE 
         ph.PostHistoryTypeId IN (10, 11)
     GROUP BY 
@@ -65,7 +65,7 @@ LEFT JOIN
     UserBadges ub ON u.Id = ub.UserId
 WHERE 
     (rp.Score > 10 OR cp.CloseCount IS NOT NULL)
-    AND rp.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '90 days'
+    AND rp.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY
 ORDER BY 
     rp.ScoreRank, rp.ViewCount DESC
 LIMIT 100;

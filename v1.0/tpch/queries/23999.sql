@@ -10,7 +10,7 @@ WITH RECURSIVE tbl AS (
     JOIN 
         lineitem li ON o.o_orderkey = li.l_orderkey
     WHERE 
-        li.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        li.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY 
         o.o_orderkey
 ),

@@ -58,4 +58,4 @@ JOIN
     ReturnsSummary rs ON ss.d_year = rs.d_year
 ORDER BY 
     cs.total_customers DESC, ss.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

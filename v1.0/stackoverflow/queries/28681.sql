@@ -24,7 +24,7 @@ FilteredPosts AS (
 ), 
 TopTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', Tags)) AS Tag
     FROM FilteredPosts
 ), 
 TagRanking AS (
@@ -47,5 +47,5 @@ SELECT
     tr.Tag,
     tr.TagCount
 FROM FilteredPosts fp
-JOIN TagRanking tr ON tr.Tag = ANY(string_to_array(fp.Tags, '><'))
+JOIN TagRanking tr ON tr.Tag = ANY(splitByString('><', fp.Tags))
 ORDER BY fp.AnswerCount DESC, tr.TagCount DESC;

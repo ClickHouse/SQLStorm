@@ -32,7 +32,7 @@ SELECT
     COUNT(DISTINCT ct.kind) FILTER (WHERE ct.kind IS NOT NULL) AS total_companies,
     AVG(CASE WHEN mi.info_type_id IS NOT NULL THEN LENGTH(mi.info) ELSE 0 END) AS avg_info_length,
     SUM(CASE WHEN ak.name IS NOT NULL THEN 1 ELSE 0 END) AS non_null_actors,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     MovieHierarchy mh
 LEFT JOIN 

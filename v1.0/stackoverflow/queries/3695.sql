@@ -21,7 +21,7 @@ WITH PostScore AS (
             PostId
     ) v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -48,10 +48,10 @@ SELECT
      FROM Users Owner 
      JOIN Posts p ON p.OwnerUserId = Owner.Id 
      WHERE p.Id = tp.PostId) AS AverageOwnerReputation,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Tags t 
-     JOIN LATERAL (
-         SELECT UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR length(p.Tags) - 2), '><')) AS tag 
+     JOIN (
+         SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR length(p.Tags) - 2))) AS tag 
          FROM Posts p
          WHERE p.Id = tp.PostId
      ) tags ON t.TagName = tags.tag) AS TagsList

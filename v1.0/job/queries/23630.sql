@@ -42,7 +42,7 @@ HighRatedTitles AS (
         at.production_year,
         COUNT(DISTINCT ci.person_id) AS cast_count,
         SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS notes_present,
-        STRING_AGG(DISTINCT ci.note, ', ') AS notes_collected
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), ', ') AS notes_collected
     FROM 
         aka_title at
     JOIN 

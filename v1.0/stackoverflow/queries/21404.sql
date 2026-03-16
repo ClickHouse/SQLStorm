@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) as Rank
     FROM Posts p
-    WHERE p.CreationDate >= '2023-01-01' AND p.CreationDate < cast('2024-10-01 12:34:56' as timestamp)
+    WHERE p.CreationDate >= '2023-01-01' AND p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6)
 ),
 TopUsers AS (
     SELECT 
@@ -26,7 +26,7 @@ TopUsers AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ',') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ',') AS BadgeNames,
         COUNT(b.Id) AS BadgeCount
     FROM Badges b
     GROUP BY b.UserId

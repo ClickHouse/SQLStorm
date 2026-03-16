@@ -3,7 +3,7 @@ SELECT
     p.p_name, 
     COUNT(DISTINCT s.s_suppkey) AS supplier_count, 
     AVG(ps.ps_supplycost) AS avg_supply_cost, 
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ': ', s.s_comment), '; ') AS supplier_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ': ', s.s_comment)))), '; ') AS supplier_comments,
     SUM(CASE 
             WHEN l.l_discount > 0.1 THEN l.l_extendedprice * (1 - l.l_discount) 
             ELSE 0 
@@ -27,4 +27,4 @@ HAVING
     COUNT(DISTINCT s.s_suppkey) > 5
 ORDER BY 
     total_discounted_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

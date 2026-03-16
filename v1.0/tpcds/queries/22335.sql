@@ -28,7 +28,7 @@ SalesWithReasons AS (
         ws_bill_customer_sk,
         ws_item_sk,
         SUM(ws_net_profit) AS total_profit,
-        STRING_AGG(DISTINCT r.r_reason_desc, ', ') AS reasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_reason_desc))), ', ') AS reasons
     FROM web_sales ws
     LEFT JOIN web_returns wr ON ws.ws_item_sk = wr.wr_item_sk AND ws.ws_order_number = wr.wr_order_number
     LEFT JOIN reason r ON wr.wr_reason_sk = r.r_reason_sk

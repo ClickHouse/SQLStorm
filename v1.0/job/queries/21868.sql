@@ -29,7 +29,7 @@ ActorCompany AS (
 MovieKeywords AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword AS m
     JOIN 
@@ -40,7 +40,7 @@ MovieKeywords AS (
 ActorNames AS (
     SELECT 
         a.person_id,
-        STRING_AGG(n.name, ', ') AS actor_names,
+        arrayStringConcat(groupArray(assumeNotNull(n.name)), ', ') AS actor_names,
         MAX(n.gender) AS gender  
     FROM 
         aka_name AS a

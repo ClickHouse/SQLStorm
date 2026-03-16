@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(c.id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM
         aka_title t
     LEFT JOIN 
@@ -37,7 +37,7 @@ SELECT
     f.cast_count,
     f.actor_names,
     (SELECT COUNT(*) FROM movie_keyword mk WHERE mk.movie_id = f.movie_id) AS keyword_count,
-    (SELECT STRING_AGG(DISTINCT k.keyword, ', ') FROM movie_keyword mk JOIN keyword k ON mk.keyword_id = k.id WHERE mk.movie_id = f.movie_id) AS keywords
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') FROM movie_keyword mk JOIN keyword k ON mk.keyword_id = k.id WHERE mk.movie_id = f.movie_id) AS keywords
 FROM
     FilteredMovies f
 ORDER BY

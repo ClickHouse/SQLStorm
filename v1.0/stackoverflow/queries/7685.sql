@@ -17,7 +17,7 @@ PopularPosts AS (
 ActiveUsers AS (
     SELECT U.Id, U.DisplayName, U.Reputation, U.LastAccessDate 
     FROM Users U
-    WHERE U.LastAccessDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    WHERE U.LastAccessDate >= now64(6) - INTERVAL 30 DAY
 ),
 PostComments AS (
     SELECT C.PostId, COUNT(C.Id) AS CommentCount

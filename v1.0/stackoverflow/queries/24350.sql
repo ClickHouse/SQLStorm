@@ -11,7 +11,7 @@ WITH RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ), UserStats AS (
     SELECT 
         u.Id AS UserId,
@@ -19,7 +19,7 @@ WITH RecentPosts AS (
         COUNT(DISTINCT p.Id) AS TotalPosts,
         SUM(COALESCE(vs.VoteScore, 0)) AS TotalScore, 
         SUM(CASE WHEN b.Id IS NOT NULL THEN 1 ELSE 0 END) AS BadgeCount,
-        ARRAY_AGG(DISTINCT b.Name) AS Badges
+        arrayDistinct(groupArray(assumeNotNull(b.Name))) AS Badges
     FROM 
         Users u
     LEFT JOIN 

@@ -22,7 +22,7 @@ PostStatistics AS (
     LEFT JOIN Votes V ON P.Id = V.PostId
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Badges B ON P.OwnerUserId = B.UserId
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY P.Id, P.Title
 ),
 TopPosts AS (

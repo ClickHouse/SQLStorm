@@ -54,7 +54,7 @@ CombinedResults AS (
 SELECT 
     production_year,
     title,
-    STRING_AGG(actor_name, ', ') AS actors,
+    arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS actors,
     MAX(role_description) AS sample_role_description
 FROM 
     CombinedResults

@@ -45,7 +45,7 @@ JOIN
 JOIN 
     TopSuppliers ts ON r.r_regionkey = ts.r_regionkey
 WHERE 
-    o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate <= DATE '1996-12-31'
+    o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate <= toDate('1996-12-31')
 GROUP BY 
     n.n_name, r.r_name, ts.top_supplier_count
 ORDER BY 

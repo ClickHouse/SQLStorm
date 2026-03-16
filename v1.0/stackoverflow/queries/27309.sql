@@ -20,7 +20,7 @@ PostTagCounts AS (
         t.TagName,
         COUNT(*) AS TagCount
     FROM Posts p
-    JOIN UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS t(TagName) ON TRUE
+    JOIN arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS t(TagName) ON TRUE
     GROUP BY p.Id, t.TagName
 ),
 TopTags AS (
@@ -41,5 +41,5 @@ SELECT
     tg.TagName,
     tg.TotalTagCount
 FROM TopUsers tu
-JOIN TopTags tg ON tg.TagName IN (SELECT UNNEST(string_to_array(tg.TagName, ' ')))
+JOIN TopTags tg ON tg.TagName IN (SELECT arrayJoin(splitByString(' ', tg.TagName)))
 ORDER BY tu.Reputation DESC, tg.TotalTagCount DESC;

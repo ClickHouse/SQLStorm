@@ -14,7 +14,7 @@ JOIN
 JOIN
     part p ON ps.ps_partkey = p.p_partkey
 WHERE
-    o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
+    o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
 GROUP BY
     n.n_name
 ORDER BY

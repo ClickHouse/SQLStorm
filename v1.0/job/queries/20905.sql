@@ -23,7 +23,7 @@ actor_movie_counts AS (
 movie_company_types AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_kinds
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_kinds
     FROM 
         movie_companies mc
     JOIN 
@@ -70,4 +70,4 @@ WHERE
 ORDER BY 
     di.production_year DESC,
     di.title ASC
-OFFSET 5 ROWS;
+OFFSET 5;

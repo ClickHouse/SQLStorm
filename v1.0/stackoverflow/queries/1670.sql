@@ -28,7 +28,7 @@ PostDetails AS (
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+    WHERE P.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score
 )
 SELECT 

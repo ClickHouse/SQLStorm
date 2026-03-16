@@ -40,4 +40,4 @@ SELECT cs.c_customer_sk, cs.c_first_name, cs.c_last_name,
         AND ca.ca_city IS NOT NULL) AS valid_address_count
 FROM customer_stats AS cs
 ORDER BY cs.total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

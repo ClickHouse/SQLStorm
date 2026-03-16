@@ -21,7 +21,7 @@ sales_summary AS (
         ws_bill_customer_sk,
         SUM(ws_net_paid) AS total_spent,
         COUNT(ws_order_number) AS order_count,
-        STRING_AGG(CAST(ws_item_sk AS TEXT), ', ' ORDER BY ws_item_sk) AS purchased_items
+        arrayStringConcat(groupArray(assumeNotNull(CAST(ws_item_sk AS TEXT))), ', ' ORDER BY ws_item_sk) AS purchased_items
     FROM 
         web_sales
     GROUP BY 

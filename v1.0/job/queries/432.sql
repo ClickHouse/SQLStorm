@@ -4,7 +4,7 @@ WITH MovieDetails AS (
         t.production_year,
         a.name AS actor_name,
         c.kind AS cast_kind,
-        ARRAY_AGG(DISTINCT kw.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords,
         ROW_NUMBER() OVER (PARTITION BY t.id ORDER BY a.name) AS actor_rank
     FROM 
         aka_title t
@@ -40,7 +40,7 @@ TopMovies AS (
 )
 
 SELECT 
-    CONCAT(tm.title, ' (', tm.production_year, ') - Starring: ', STRING_AGG(DISTINCT tm.actor_name, ', ')) AS movie_info,
+    CONCAT(tm.title, ' (', tm.production_year, ') - Starring: ', arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tm.actor_name))), ', ')) AS movie_info,
     tm.movie_count
 FROM 
     TopMovies tm

@@ -29,7 +29,7 @@ cast_contributions AS (
     SELECT 
         c.person_id,
         COUNT(c.movie_id) AS total_movies,
-        ARRAY_AGG(DISTINCT c.movie_id) AS movies
+        arrayDistinct(groupArray(assumeNotNull(c.movie_id))) AS movies
     FROM 
         cast_info c
     WHERE 
@@ -44,7 +44,7 @@ SELECT
     COUNT(DISTINCT mh.movie_id) AS movies_as_lead,
     SUM(CASE WHEN c.role_id = 1 THEN 1 ELSE 0 END) AS lead_role_count,
     AVG(mh.level) AS avg_movie_level,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     name n
 LEFT JOIN 

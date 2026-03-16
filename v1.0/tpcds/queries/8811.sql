@@ -48,4 +48,4 @@ FROM
     DemographicSales ds
 ORDER BY 
     ds.avg_total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

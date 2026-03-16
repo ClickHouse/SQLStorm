@@ -33,7 +33,7 @@ PostStatistics AS (
 RankedPosts AS (
     SELECT 
         PS.*,
-        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM PS.CreationDate) ORDER BY PS.Score DESC) AS ScoreRank
+        RANK() OVER (PARTITION BY toYear(PS.CreationDate) ORDER BY PS.Score DESC) AS ScoreRank
     FROM PostStatistics PS
 )
 SELECT 

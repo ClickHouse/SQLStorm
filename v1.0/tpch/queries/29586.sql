@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT ps.ps_partkey) AS part_count,
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,
     AVG(p.p_retailprice) AS avg_retail_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     MAX(LENGTH(s.s_comment)) AS max_comment_length
 FROM 
     supplier s

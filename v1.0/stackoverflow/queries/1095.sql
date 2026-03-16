@@ -37,7 +37,7 @@ RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
 )
 SELECT 
     tu.DisplayName,
@@ -49,7 +49,7 @@ SELECT
     COALESCE(rp.Score, 0) AS RecentPostScore,
     tu.LastPostDate,
     CASE 
-        WHEN tu.LastPostDate < cast('2024-10-01' as date) - INTERVAL '1 year' THEN 'Inactive'
+        WHEN tu.LastPostDate < cast('2024-10-01' as date) - INTERVAL 1 YEAR THEN 'Inactive'
         ELSE 'Active'
     END AS ActivityStatus
 FROM 

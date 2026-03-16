@@ -6,7 +6,7 @@ SELECT
         ELSE 0 
     END) AS total_retail_price_large_name,
     ROUND(AVG(l.l_extendedprice * (1 - l.l_discount)), 2) AS avg_sales_price,
-    STRING_AGG(DISTINCT p.p_comment, ', ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), ', ') AS part_comments
 FROM 
     nation n
 JOIN 

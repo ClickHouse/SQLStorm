@@ -7,7 +7,7 @@ FROM
 JOIN
     orders ON l_orderkey = o_orderkey
 WHERE
-    l_shipdate >= DATE '1997-01-01'
+    l_shipdate >= toDate('1997-01-01')
 GROUP BY
     l_orderkey, o_orderdate
 ORDER BY

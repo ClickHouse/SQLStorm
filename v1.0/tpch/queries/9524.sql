@@ -44,7 +44,7 @@ JOIN
 JOIN 
     TopSuppliers ts ON li.l_suppkey = ts.s_suppkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' 
-    AND o.o_orderdate <= DATE '1997-12-31'
+    o.o_orderdate >= toDate('1997-01-01') 
+    AND o.o_orderdate <= toDate('1997-12-31')
 ORDER BY 
     ts.nation_name, o.o_orderdate DESC, li.l_quantity DESC;

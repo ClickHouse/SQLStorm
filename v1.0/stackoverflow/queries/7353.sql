@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     WHERE 
         p.PostTypeId = 1 AND 
         p.Score > 0 AND
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 

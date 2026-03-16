@@ -32,7 +32,7 @@ SELECT
     AVG(ss_quantity) AS avg_quantity_sold,
     COUNT(DISTINCT c_customer_id) AS unique_customers,
     MAX(ss_sales_price) AS max_sales_price,
-    STRING_AGG(DISTINCT c_email_address, ', ') AS emails
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c_email_address))), ', ') AS emails
 FROM 
     store_sales ss
 JOIN 

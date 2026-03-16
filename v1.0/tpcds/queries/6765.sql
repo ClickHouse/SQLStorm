@@ -55,4 +55,4 @@ WHERE
     cust.order_count > 0
 ORDER BY 
     cust.total_spent DESC, cust.c_last_name, cust.c_first_name
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

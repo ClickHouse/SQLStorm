@@ -51,7 +51,7 @@ SELECT
 FROM 
     SalesSummary ss
 LEFT JOIN 
-    warehouse w ON w.w_warehouse_sk = (SELECT w_warehouse_sk FROM warehouse ORDER BY RANDOM() LIMIT 1)
+    warehouse w ON w.w_warehouse_sk = (SELECT w_warehouse_sk FROM warehouse ORDER BY rand() LIMIT 1)
 WHERE 
     ss.profit_rank IS NOT NULL AND ss.profit_rank <= 10
 ORDER BY 

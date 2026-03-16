@@ -25,8 +25,8 @@ SELECT
     mh.movie_id,
     mh.title,
     mh.production_year,
-    ARRAY_AGG(DISTINCT ak.name) AS actors,
-    ARRAY_AGG(DISTINCT cn.name) AS companies
+    arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actors,
+    arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies
 FROM 
     MovieHierarchy mh
 LEFT JOIN 

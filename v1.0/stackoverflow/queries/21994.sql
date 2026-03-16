@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -18,7 +18,7 @@ UserStats AS (
         u.DisplayName,
         u.Reputation,
         COUNT(DISTINCT p.Id) AS TotalPosts,
-        SUM(COALESCE(v.UserId IS NOT NULL, FALSE)::INTEGER) AS TotalVotes,
+        SUM(COALESCE(v.UserId IS NOT NULL, FALSE, CAST() AS INTEGER)) AS TotalVotes,
         SUM(CASE WHEN b.Class = 1 THEN 1 ELSE 0 END) AS GoldBadges,
         SUM(CASE WHEN b.Class = 2 THEN 1 ELSE 0 END) AS SilverBadges
     FROM 
@@ -30,7 +30,7 @@ UserStats AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        u.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '3 months'
+        u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation
 ),
@@ -71,7 +71,7 @@ SELECT
     rus.GoldBadges,
     rus.SilverBadges,
     COALESCE(c.Title, 'No Closed Posts') AS LastClosedPost,
-    COALESCE(c.LastClosedDate::TEXT, 'N/A') AS ClosedDate
+    COALESCE(CAST(c.LastClosedDate AS TEXT), 'N/A') AS ClosedDate
 FROM 
     TopUsers rus
 LEFT JOIN 

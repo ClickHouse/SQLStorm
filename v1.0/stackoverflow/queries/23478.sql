@@ -27,19 +27,19 @@ PostsWithReputation AS (
     LEFT JOIN UserReputation ur ON p.OwnerUserId = ur.UserId
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
+    WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, ur.Reputation, ur.ReputationGroup
 ),
 PostHistoryWithTags AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
         MAX(ph.CreationDate) AS LastEditDate,
         MAX(CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.Comment END) AS CloseReason
     FROM PostHistory ph
     JOIN Posts p ON ph.PostId = p.Id
     LEFT JOIN Tags t ON t.WikiPostId = p.Id
-    WHERE ph.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
+    WHERE ph.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
     GROUP BY ph.PostId
 )
 SELECT 

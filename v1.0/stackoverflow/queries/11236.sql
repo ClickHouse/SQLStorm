@@ -8,7 +8,7 @@ WITH UserStats AS (
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         SUM(P.Score) AS TotalScore,
         SUM(P.ViewCount) AS TotalViews,
-        SUM(CASE WHEN P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' THEN 1 ELSE 0 END) AS RecentPosts
+        SUM(CASE WHEN P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN 1 ELSE 0 END) AS RecentPosts
     FROM 
         Users U
     LEFT JOIN 

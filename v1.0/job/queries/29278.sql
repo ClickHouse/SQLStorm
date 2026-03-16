@@ -48,7 +48,7 @@ FinalOutput AS (
         a.actor_name,
         a.role_name,
         COUNT(DISTINCT a.movie_id) AS actor_movie_count,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         AwardWinningMovies m
     LEFT JOIN 

@@ -34,7 +34,7 @@ SELECT rm.rank, rm.title, rm.production_year, rm.cast_count,
            WHEN rm.production_year >= 2000 THEN 'Modern'
            ELSE 'Classic'
        END AS era,
-       STRING_AGG(kw.keyword, ', ') AS keywords
+       arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') AS keywords
 FROM ranked_movies rm
 LEFT JOIN cast_info ci ON rm.movie_id = ci.movie_id
 LEFT JOIN aka_name ak ON ci.person_id = ak.person_id

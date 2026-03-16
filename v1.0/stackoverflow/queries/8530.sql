@@ -3,7 +3,7 @@ WITH RecentPosts AS (
     SELECT P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount, P.OwnerUserId, U.DisplayName AS OwnerDisplayName
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 VoteStatistics AS (
     SELECT PostId, COUNT(*) AS VoteCount, 

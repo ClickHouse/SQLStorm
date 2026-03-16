@@ -14,12 +14,12 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score > 0
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -38,13 +38,13 @@ TopPostDetails AS (
         rp.OwnerDisplayName,
         rp.Score,
         rp.ViewCount,
-        ARRAY_AGG(pt.TagName) AS Tags
+        groupArray(assumeNotNull(pt.TagName)) AS Tags
     FROM 
         RankedPosts rp
     JOIN 
         Posts p ON rp.PostId = p.Id
     JOIN 
-        LATERAL UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS pt(TagName) ON pt.TagName IN (SELECT TagName FROM PopularTags)
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS pt(TagName) ON pt.TagName IN (SELECT TagName FROM PopularTags)
     WHERE 
         rp.RankWithinUser = 1
     GROUP BY 

@@ -29,14 +29,14 @@ SELECT
     mt.title AS movie_title,
     mt.production_year,
     COUNT(cc.id) AS cast_count,
-    STRING_AGG(DISTINCT kt.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS keywords,
     MAX(CASE WHEN mt.production_year = 2020 THEN 'Recent Release' ELSE 'Older Release' END) AS release_status,
     ROW_NUMBER() OVER (PARTITION BY ak.name ORDER BY COUNT(cc.id) DESC) AS actor_rank,
     CASE 
         WHEN COUNT(DISTINCT cc.role_id) > 1 THEN 'Versatile Actor' 
         ELSE 'Typecast Actor' 
     END AS actor_type,
-    COALESCE(NULLIF(STRING_AGG(DISTINCT cn.name, ', '), ''), 'No Companies') AS production_companies
+    COALESCE(NULLIF(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', '), ''), 'No Companies') AS production_companies
 FROM 
     aka_name ak
 JOIN 

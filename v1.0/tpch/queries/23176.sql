@@ -60,7 +60,7 @@ LEFT JOIN
 LEFT JOIN 
     nation n ON c.c_nationkey = n.n_nationkey
 WHERE 
-    (r.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31' OR r.line_count IS NULL)
+    (r.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31') OR r.line_count IS NULL)
     AND r.order_rank <= 10 
     AND (n.n_name IS NOT NULL OR n.n_name IS NULL) 
 ORDER BY 

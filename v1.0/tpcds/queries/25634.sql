@@ -41,7 +41,7 @@ SELECT
     ca_state,
     COUNT(*) AS total_addresses,
     AVG(address_length) AS avg_address_length,
-    STRING_AGG(gender_marital, ', ') AS demographics_info
+    arrayStringConcat(groupArray(assumeNotNull(gender_marital)), ', ') AS demographics_info
 FROM 
     CombinedData
 GROUP BY 

@@ -19,11 +19,11 @@ WITH RecentActivity AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ),
 TagMetrics AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS Tag,
+        arrayJoin(splitByString(',', Tags)) AS Tag,
         COUNT(*) AS PostCount,
         SUM(CommentCount) AS TotalComments,
         SUM(UpVotes) AS TotalUpVotes,

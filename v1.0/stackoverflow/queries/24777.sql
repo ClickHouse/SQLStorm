@@ -27,7 +27,7 @@ WITH RankedPosts AS (
             Users
     ) UP ON u.Id = UP.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, UP.Rank
 ),
@@ -77,7 +77,7 @@ FROM
 LEFT JOIN 
     PostHistoryDetails ph ON t.PostId = ph.PostId AND ph.HistoryRank <= 3
 WHERE 
-    (ph.HistoryDate IS NULL OR ph.HistoryDate >= cast('2024-10-01' as date) - INTERVAL '30 days')
+    (ph.HistoryDate IS NULL OR ph.HistoryDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY)
 ORDER BY 
     t.Score DESC, 
     t.UpVoteCount DESC

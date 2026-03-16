@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        ROW_NUMBER() OVER (PARTITION BY STRING_AGG(t.TagName, ',') ORDER BY p.Score DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ',') ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p
     LEFT JOIN 

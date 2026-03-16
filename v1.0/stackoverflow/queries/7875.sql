@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId IN (1, 2) 
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 RecentUsers AS (
     SELECT 
@@ -28,7 +28,7 @@ RecentUsers AS (
     FROM 
         Users u
     WHERE 
-        u.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        u.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 PostComments AS (
     SELECT 
@@ -72,4 +72,4 @@ JOIN
     RecentUsers ru ON u.Id = ru.UserId
 ORDER BY 
     tpp.Score DESC, tpp.ViewCount DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

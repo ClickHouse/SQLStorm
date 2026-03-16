@@ -3,7 +3,7 @@ WITH RECURSIVE UserBadges AS (
         Users.Id AS UserId,
         COUNT(Badges.Id) AS BadgeCount,
         MAX(Badges.Class) AS HighestBadgeClass,
-        STRING_AGG(Badges.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(Badges.Name)), ', ') AS BadgeNames
     FROM Users
     LEFT JOIN Badges ON Users.Id = Badges.UserId
     GROUP BY Users.Id

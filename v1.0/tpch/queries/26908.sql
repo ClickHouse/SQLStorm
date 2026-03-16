@@ -5,7 +5,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity, 
     AVG(p.p_retailprice) AS average_retail_price,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     REGEXP_REPLACE(p.p_comment, '[^A-Za-z]+', '') AS comment_words
 FROM 
     part p

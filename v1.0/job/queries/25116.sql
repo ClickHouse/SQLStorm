@@ -31,7 +31,7 @@ ActorCounts AS (
 TitleKeyword AS (
     SELECT 
         m.id AS movie_id,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         aka_title m
     JOIN 
@@ -49,7 +49,7 @@ SELECT
     rm.production_year,
     ac.actor_count,
     tk.keywords,
-    STRING_AGG(rm.actor_name, ', ' ORDER BY rm.actor_rank) AS actor_names
+    arrayStringConcat(groupArray(assumeNotNull(rm.actor_name)), ', ' ORDER BY rm.actor_rank) AS actor_names
 FROM 
     RankedMovies rm
 JOIN 

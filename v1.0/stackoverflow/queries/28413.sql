@@ -3,7 +3,7 @@ WITH UserBadges AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges
     FROM Users u
     LEFT JOIN Badges b ON u.Id = b.UserId
     GROUP BY u.Id, u.DisplayName
@@ -16,10 +16,10 @@ PopularPosts AS (
         p.Score,
         p.ViewCount,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    LEFT JOIN UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS t(TagName) ON TRUE
+    LEFT JOIN arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS t(TagName) ON TRUE
     WHERE p.PostTypeId = 1 
     GROUP BY p.Id, p.Title, p.OwnerDisplayName, p.Score, p.ViewCount
     ORDER BY p.Score DESC, p.ViewCount DESC

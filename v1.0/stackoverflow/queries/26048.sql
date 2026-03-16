@@ -46,10 +46,9 @@ SELECT
     rp.AnswerCount,
     rp.UpVotes,
     rp.DownVotes,
-    COALESCE((SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
                FROM Posts AS p2 
-               CROSS JOIN LATERAL 
-                   (SELECT UNNEST(STRING_TO_ARRAY(p2.Tags, ',')) AS TagName) AS t
+               CROSS JOIN (SELECT arrayJoin(splitByString(',', p2.Tags)) AS TagName) AS t
                WHERE p2.Id = rp.PostId 
                AND t.TagName IS NOT NULL), 
                'No Tags') AS Tags,

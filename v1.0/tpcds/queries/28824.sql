@@ -25,7 +25,7 @@ state_summary AS (
     SELECT 
         state, 
         COUNT(*) as address_count,
-        STRING_AGG(normalized_city, ', ') AS cities
+        arrayStringConcat(groupArray(assumeNotNull(normalized_city)), ', ') AS cities
     FROM 
         processed_addresses
     GROUP BY 

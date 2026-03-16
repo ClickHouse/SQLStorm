@@ -3,7 +3,7 @@ WITH AddressStats AS (
         ca_city, 
         ca_state, 
         COUNT(*) AS address_count, 
-        STRING_AGG(DISTINCT CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), '; ') AS unique_addresses,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type)))), '; ') AS unique_addresses,
         MAX(ca_location_type) AS max_location_type,
         MIN(ca_gmt_offset) AS min_gmt_offset
     FROM 
@@ -18,7 +18,7 @@ DemographicsStats AS (
         cd_marital_status,
         SUM(cd_dep_count) AS total_dependents,
         SUM(cd_dep_employed_count) AS employed_dependents,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_levels
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_levels
     FROM 
         customer_demographics
     GROUP BY 
@@ -29,7 +29,7 @@ DateRangeStats AS (
     SELECT 
         d_year, 
         COUNT(DISTINCT d_date) AS total_days,
-        STRING_AGG(DISTINCT d_day_name, ', ') FILTER (WHERE d_holiday = 'Y') AS holidays
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d_day_name))), ', ') FILTER (WHERE d_holiday = 'Y') AS holidays
     FROM 
         date_dim
     GROUP BY 

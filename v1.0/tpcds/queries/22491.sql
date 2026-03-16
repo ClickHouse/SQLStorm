@@ -16,8 +16,8 @@ WITH RECURSIVE customer_income AS (
 age_summary AS (
     SELECT 
         c.c_customer_sk,
-        (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c.c_birth_year) AS age,
-        COUNT(*) OVER (PARTITION BY (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c.c_birth_year)) AS count_same_age
+        (toYear(cast('2002-10-01' as date)) - c.c_birth_year) AS age,
+        COUNT(*) OVER (PARTITION BY (toYear(cast('2002-10-01' as date)) - c.c_birth_year)) AS count_same_age
     FROM 
         customer c
 )

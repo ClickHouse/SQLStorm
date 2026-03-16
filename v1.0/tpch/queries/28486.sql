@@ -5,7 +5,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity, 
     AVG(l.l_extendedprice) AS average_price_per_item,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions,
     LEFT(p.p_comment, 15) AS short_comment
 FROM 
     part p

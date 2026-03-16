@@ -25,7 +25,7 @@ SELECT
     SUM(COALESCE(l.l_extendedprice * (1 - l.l_discount), 0)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
-    STRING_AGG(DISTINCT rp.p_name, '; ') AS popular_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.p_name))), '; ') AS popular_parts
 FROM 
     lineitem l
 JOIN 
@@ -39,7 +39,7 @@ LEFT JOIN
 LEFT JOIN 
     SupplierHierarchy sh ON l.l_suppkey = sh.s_suppkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
+    o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
     AND l.l_shipdate IS NOT NULL
 GROUP BY 
     n.n_name
@@ -54,7 +54,7 @@ HAVING
             JOIN 
                 orders o ON l.l_orderkey = o.o_orderkey
             WHERE 
-                o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
+                o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
             GROUP BY 
                 o.o_orderkey
         ) AS revenue

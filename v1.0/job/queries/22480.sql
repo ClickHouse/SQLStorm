@@ -21,7 +21,7 @@ ActorCounts AS (
 MovieGenres AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(kt.keyword, ', ') AS genres
+        arrayStringConcat(groupArray(assumeNotNull(kt.keyword)), ', ') AS genres
     FROM 
         movie_keyword mk
     JOIN 
@@ -45,7 +45,7 @@ MovieDetails AS (
     LEFT JOIN (
         SELECT 
             movie_id, 
-            STRING_AGG(info, '; ') AS movie_info
+            arrayStringConcat(groupArray(assumeNotNull(info)), '; ') AS movie_info
         FROM 
             movie_info 
         GROUP BY 
@@ -71,4 +71,4 @@ WHERE
 ORDER BY 
     md.production_year DESC,
     md.title ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -41,7 +41,7 @@ PostHistoryAudit AS (
     SELECT 
         PostId,
         COUNT(*) AS RevisionCount,
-        STRING_AGG(DISTINCT CASE WHEN PostHistoryTypeId = 10 THEN CloseReasonType.Name END, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN PostHistoryTypeId = 10 THEN CloseReasonType.Name END))), ', ') AS CloseReasons
     FROM 
         PostHistory
     LEFT JOIN 
@@ -73,7 +73,7 @@ CombinedStats AS (
     JOIN 
         TopUsers tu ON u.Id = tu.UserId
     WHERE 
-        (p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year')
+        (p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR)
         AND (u.Reputation BETWEEN 100 AND 10000 OR u.Location IS NOT NULL)
 )
 SELECT 

@@ -7,7 +7,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_spent,
     AVG(ws.ws_sales_price) AS avg_spent_per_order,
-    STRING_AGG(DISTINCT CONCAT(LEFT(i.i_item_desc, 50), '...'), ', ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(LEFT(i.i_item_desc, 50), '...')))), ', ') AS purchased_items
 FROM 
     customer c
 JOIN 

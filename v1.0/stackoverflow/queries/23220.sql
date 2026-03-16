@@ -31,7 +31,7 @@ PostStats AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        P.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 TagStatistics AS (
     SELECT 

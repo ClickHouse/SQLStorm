@@ -22,4 +22,4 @@ GROUP BY
     U.Id, U.DisplayName
 ORDER BY 
     TotalPosts DESC, AveragePostScore DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

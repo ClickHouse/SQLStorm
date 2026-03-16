@@ -46,7 +46,7 @@ SELECT
     ct.kind,
     ak.name AS actor_name,
     COUNT(DISTINCT k.keyword) AS keyword_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     CASE 
         WHEN mv.production_year IS NULL THEN 'Year Unknown'
         ELSE CAST(mv.production_year AS VARCHAR)

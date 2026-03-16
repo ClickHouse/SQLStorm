@@ -48,7 +48,7 @@ SELECT
         WHEN COUNT(DISTINCT cp.PostId) > 0 THEN 'Yes'
         ELSE 'No'
     END AS IsClosed,
-    STRING_AGG(td.Tags, ', ') AS AssociatedTags,
+    arrayStringConcat(groupArray(assumeNotNull(td.Tags)), ', ') AS AssociatedTags,
     COUNT(DISTINCT c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId IN (2, 3) THEN 1 ELSE 0 END) AS VoteCount
 FROM 

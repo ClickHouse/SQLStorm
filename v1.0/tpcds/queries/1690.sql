@@ -68,4 +68,4 @@ GROUP BY
     ss.AvgSalePrice
 ORDER BY 
     ss.TotalSales DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

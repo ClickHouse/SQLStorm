@@ -26,11 +26,11 @@ PostVoteSummary AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        string_agg(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        unnest(string_to_array(p.Tags, '>')) AS tag ON TRUE
+        arrayJoin(splitByString('>', p.Tags)) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

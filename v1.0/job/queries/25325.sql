@@ -6,7 +6,7 @@ WITH movie_details AS (
         t.kind_id,
         COALESCE(k.keyword, 'No Keywords') AS keyword,
         c.kind AS company_type,
-        STRING_AGG(a.name, ', ') AS cast_names
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS cast_names
     FROM 
         aka_title t
     LEFT JOIN 
@@ -30,7 +30,7 @@ production_year_stats AS (
     SELECT 
         production_year,
         COUNT(DISTINCT title_id) AS total_movies,
-        STRING_AGG(DISTINCT keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords
     FROM 
         movie_details
     GROUP BY 

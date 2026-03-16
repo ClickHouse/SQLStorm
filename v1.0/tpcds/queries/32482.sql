@@ -44,4 +44,4 @@ HAVING
     SUM(st.total_sales) > 10000
 ORDER BY 
     total_sales_by_state DESC
-OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 0;

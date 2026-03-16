@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS VoteCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS Rank,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
         LEFT JOIN Users u ON p.OwnerUserId = u.Id
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
         LEFT JOIN Votes v ON p.Id = v.PostId
         LEFT JOIN (
             SELECT 
-                unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName,
+                arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName,
                 p.Id AS PostId
             FROM 
                 Posts p

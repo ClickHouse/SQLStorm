@@ -17,7 +17,7 @@ complex_movie_data AS (
         rm.title,
         rm.production_year,
         COALESCE(ROUND(AVG(t.rating), 2), 0) AS avg_rating,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         ranked_movies rm
     LEFT JOIN 

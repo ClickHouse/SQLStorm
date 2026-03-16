@@ -38,7 +38,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days'
+        v.CreationDate >= DATE('2024-10-01') - INTERVAL 30 DAY
     GROUP BY 
         v.PostId
 )

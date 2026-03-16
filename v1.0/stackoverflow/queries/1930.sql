@@ -61,7 +61,7 @@ SELECT
     COUNT(DISTINCT PD.PostId) AS TotalPosts,
     SUM(PD.Score) AS TotalScore,
     AVG(PD.ViewCount) AS AverageViewCount,
-    STRING_AGG(DISTINCT PD.Title, ', ') AS PostTitles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PD.Title))), ', ') AS PostTitles,
     COUNT(CASE WHEN PD.ClosestCloseDate IS NOT NULL THEN 1 END) AS ClosedPosts
 FROM 
     TopContributors T

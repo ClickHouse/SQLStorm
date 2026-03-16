@@ -54,7 +54,7 @@ SELECT
     fm.title,
     fm.production_year,
     COUNT(cc.id) AS cast_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
     COALESCE(GROUP_CONCAT(k.keyword), 'No Keywords') AS keywords,
     CASE 
         WHEN fm.production_year > 2015 

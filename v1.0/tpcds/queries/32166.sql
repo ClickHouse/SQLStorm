@@ -53,4 +53,4 @@ WHERE
     d.d_year = (SELECT MAX(d_year) FROM date_dim)
 ORDER BY 
     id.total_net_profit DESC
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;

@@ -8,7 +8,7 @@ WITH MovieData AS (
         a.name AS actor_name,
         a.md5sum AS actor_md5,
         c.kind AS company_type,
-        STRING_AGG(DISTINCT g.name_genres, ', ') AS genre_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(g.name_genres))), ', ') AS genre_list
     FROM 
         aka_title m
     JOIN 
@@ -26,7 +26,7 @@ WITH MovieData AS (
     LEFT JOIN 
         (SELECT 
             mi.movie_id, 
-            STRING_AGG(DISTINCT it.info, ', ') AS name_genres 
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(it.info))), ', ') AS name_genres 
          FROM 
             movie_info mi 
          JOIN 

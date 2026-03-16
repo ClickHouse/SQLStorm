@@ -4,7 +4,7 @@ WITH RankedOrders AS (
         o.o_orderkey, 
         o.o_orderdate, 
         o.o_totalprice, 
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS rank
+        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS rank
     FROM 
         orders o
     WHERE 
@@ -64,7 +64,7 @@ FinalResult AS (
         CustomerAnalysis ca ON r.o_orderkey = (SELECT o2.o_orderkey FROM orders o2 WHERE o2.o_custkey = ca.c_custkey ORDER BY o2.o_orderdate LIMIT 1)
     WHERE 
         (spd.ps_availqty IS NULL OR spd.ps_availqty > 5) 
-        AND (r.o_orderdate >= DATE '1997-01-01' AND r.o_orderdate <= DATE '1997-12-31') 
+        AND (r.o_orderdate >= toDate('1997-01-01') AND r.o_orderdate <= toDate('1997-12-31')) 
         AND (ca.order_count > 0 OR ca.total_spent IS NULL)
 )
 SELECT 
@@ -80,4 +80,4 @@ WHERE
 ORDER BY 
     f.total_spent DESC, 
     f.o_orderkey
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

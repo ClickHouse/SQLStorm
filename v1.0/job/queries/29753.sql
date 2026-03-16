@@ -33,7 +33,7 @@ SELECT
     a.name_pcode_nf,
     a.name_pcode_cf,
     r.role,
-    STRING_AGG(DISTINCT k.keyword, ',' ORDER BY k.keyword) AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',' ORDER BY k.keyword) AS keywords
 FROM 
     TopMovies tm
 JOIN 

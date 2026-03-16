@@ -13,7 +13,7 @@ cast_summary AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT p.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_names
     FROM 
         cast_info c
     JOIN 

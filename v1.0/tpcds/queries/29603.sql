@@ -5,7 +5,7 @@ SELECT
     COUNT(ss.ss_ticket_number) AS total_purchases,
     SUM(ss.ss_net_paid) AS total_spent,
     MAX(ss.ss_sold_date_sk) AS last_purchase_date,
-    STRING_AGG(DISTINCT i.i_product_name, ', ') AS purchased_products
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), ', ') AS purchased_products
 FROM 
     customer c
 JOIN 

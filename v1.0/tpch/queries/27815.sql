@@ -1,7 +1,7 @@
 WITH StringAggregation AS (
     SELECT 
         s.s_name AS supplier_name,
-        STRING_AGG(DISTINCT p.p_name, '; ') AS aggregated_product_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), '; ') AS aggregated_product_names,
         COUNT(DISTINCT p.p_partkey) AS product_count,
         SUBSTRING(s.s_comment, 1, 50) AS supplier_comment_excerpt
     FROM 
@@ -18,8 +18,8 @@ WITH StringAggregation AS (
 SELECT 
     r.r_name AS region_name,
     COUNT(DISTINCT n.n_nationkey) AS nation_count,
-    STRING_AGG(DISTINCT sa.aggregated_product_names, ', ') AS all_supplier_product_names,
-    STRING_AGG(DISTINCT sa.supplier_comment_excerpt, ' | ') AS unique_supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sa.aggregated_product_names))), ', ') AS all_supplier_product_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sa.supplier_comment_excerpt))), ' | ') AS unique_supplier_comments
 FROM 
     region r
 JOIN 

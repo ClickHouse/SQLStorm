@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(DISTINCT c.person_id) DESC) AS rn
     FROM title t
     LEFT JOIN cast_info c ON t.id = c.movie_id
@@ -25,7 +25,7 @@ TopMovies AS (
 MovieKeywords AS (
     SELECT 
         t.id AS movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM title t
     LEFT JOIN movie_keyword mk ON t.id = mk.movie_id
     LEFT JOIN keyword k ON mk.keyword_id = k.id

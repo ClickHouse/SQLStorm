@@ -51,7 +51,7 @@ FROM
 JOIN 
     customer c ON cs.c_customer_sk = c.c_customer_sk
 JOIN 
-    MonthlySales ms ON ms.d_month_seq = EXTRACT(MONTH FROM DATE '2002-10-01')
+    MonthlySales ms ON ms.d_month_seq = toMonth(toDate('2002-10-01'))
 JOIN 
     RankedSales rs ON rs.cs_item_sk IN (SELECT i.i_item_sk FROM item i WHERE i.i_current_price > 100)
 WHERE 

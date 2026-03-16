@@ -23,8 +23,8 @@ TopMovies AS (
         title,
         production_year,
         COUNT(*) AS actor_count,
-        STRING_AGG(DISTINCT actor_name, ', ') AS actors,
-        STRING_AGG(DISTINCT keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords
     FROM MovieDetails
     GROUP BY title, production_year
 )

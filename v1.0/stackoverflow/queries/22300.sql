@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users ut ON p.OwnerUserId = ut.Id
     WHERE 
-        p.CreationDate BETWEEN cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' AND cast('2024-10-01 12:34:56' as timestamp)
+        p.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND toDateTime64('2024-10-01 12:34:56', 6)
         AND p.PostTypeId = 1 
 ),
 PostStats AS (
@@ -32,7 +32,7 @@ PostStats AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(b.Id) as BadgeCount
     FROM 
         Badges b
@@ -44,14 +44,14 @@ PostHistoryDetails AS (
         ph.PostId,
         ph.UserId,
         ph.CreationDate AS HistoryDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS PostHistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS PostHistoryTypes,
         MAX(ph.CreationDate) OVER (PARTITION BY ph.PostId) AS LastHistoryDate
     FROM 
         PostHistory ph
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         ph.PostId, ph.UserId, ph.CreationDate
 )
@@ -65,7 +65,7 @@ SELECT
     COALESCE(ub.BadgeCount, 0) AS TotalBadges,
     COALESCE(ph.PostHistoryTypes, 'No History') AS RecentPostHistory,
     CASE 
-        WHEN COALESCE(ph.LastHistoryDate, cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months' 
+        WHEN COALESCE(ph.LastHistoryDate, toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH 
         THEN 'Inactive'
         ELSE 'Active'
     END AS ActivityStatus

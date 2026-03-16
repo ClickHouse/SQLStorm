@@ -3,7 +3,7 @@ SELECT
     ca.ca_city, 
     ca.ca_state, 
     COUNT(DISTINCT c.c_customer_id) AS customer_count, 
-    STRING_AGG(DISTINCT c.c_first_name || ' ' || c.c_last_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_first_name || ' ' || c.c_last_name))), ', ') AS customer_names,
     SUM(ws.ws_quantity) AS total_sales_quantity,
     AVG(ws.ws_sales_price) AS average_sales_price,
     MAX(ws.ws_net_profit) AS max_profit

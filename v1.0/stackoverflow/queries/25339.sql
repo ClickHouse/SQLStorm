@@ -56,7 +56,7 @@ SELECT
     fp.CommentCount,
     fp.AnswerCount,
     COALESCE(fp.CloseReason, 'Open') AS Status,
-    STRING_AGG(DISTINCT U.DisplayName, ', ') AS Contributors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS Contributors
 FROM 
     FilteredPosts fp
 LEFT JOIN 

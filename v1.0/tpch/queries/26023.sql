@@ -34,7 +34,7 @@ SELECT
     AVG(l.l_extendedprice) AS avg_extended_price,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     MAX(fp.comment_length) AS max_comment_length,
-    STRING_AGG(DISTINCT rs.s_name || ' (' || rs.short_comment || ')', '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rs.s_name || ' (' || rs.short_comment || ')'))), '; ') AS supplier_details
 FROM lineitem l
 JOIN orders o ON l.l_orderkey = o.o_orderkey
 JOIN customer c ON o.o_custkey = c.c_custkey

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserEngagement AS (
     SELECT 
@@ -29,7 +29,7 @@ UserEngagement AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -39,7 +39,7 @@ TopTags AS (
         COUNT(*) AS TagCount
     FROM 
         Posts p,
-        UNNEST(string_to_array(p.Tags, '>')) AS tag
+        arrayJoin(splitByString('>', p.Tags)) AS tag
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
@@ -67,7 +67,7 @@ JOIN
 JOIN 
     UserEngagement ue ON u.Id = ue.UserId
 JOIN 
-    TopTags tt ON tt.TagName = ANY(string_to_array(rp.Tags, '>'))
+    TopTags tt ON tt.TagName = ANY(splitByString('>', rp.Tags))
 WHERE 
     rp.RankByViewCount <= 5 
     AND rp.RankByUserActivity <= 3

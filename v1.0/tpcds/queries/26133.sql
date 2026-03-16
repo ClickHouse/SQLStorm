@@ -33,7 +33,7 @@ SELECT
     ci.city_lower,
     ci.state_upper,
     SUM(ci.avg_purchase_estimate) AS total_avg_purchase,
-    STRING_AGG(ci.cleaned_street_name, ', ') AS aggregated_street_names,
+    arrayStringConcat(groupArray(assumeNotNull(ci.cleaned_street_name)), ', ') AS aggregated_street_names,
     MAX(ci.street_name_length) AS max_street_name_length
 FROM CombinedInfo ci
 GROUP BY ci.city_lower, ci.state_upper

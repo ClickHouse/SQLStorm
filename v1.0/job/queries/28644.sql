@@ -4,9 +4,9 @@ WITH MovieData AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aliases,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aliases,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies,
         COUNT(DISTINCT ca.id) AS cast_count
     FROM
         aka_title t
@@ -31,7 +31,7 @@ ProductionDetails AS (
         md.keywords,
         md.companies,
         md.cast_count,
-        EXTRACT(MONTH FROM DATE '2024-10-01') AS current_month
+        toMonth(toDate('2024-10-01')) AS current_month
     FROM
         MovieData md
 )
@@ -44,8 +44,8 @@ SELECT
     pd.companies,
     pd.cast_count,
     CASE
-        WHEN pd.production_year = EXTRACT(YEAR FROM DATE '2024-10-01') THEN 'Released This Year'
-        WHEN pd.production_year = EXTRACT(YEAR FROM DATE '2024-10-01') - 1 THEN 'Released Last Year'
+        WHEN pd.production_year = toYear(toDate('2024-10-01')) THEN 'Released This Year'
+        WHEN pd.production_year = toYear(toDate('2024-10-01')) - 1 THEN 'Released Last Year'
         ELSE 'Older'
     END AS release_status,
     CASE

@@ -18,7 +18,7 @@ MovieDetails AS (
     SELECT 
         r.movie_id,
         r.title,
-        string_agg(DISTINCT r.keyword, ', ') AS keywords_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.keyword))), ', ') AS keywords_list,
         AVG(COALESCE(CAST(CASE WHEN ci.role_id IS NOT NULL AND ci.nr_order IS NOT NULL THEN 1 ELSE NULL END AS FLOAT), 0)) AS avg_cast_rank
     FROM 
         RankedMovies r

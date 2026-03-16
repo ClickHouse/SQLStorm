@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
         AND p.Body IS NOT NULL
 )
 SELECT 
@@ -30,13 +30,13 @@ SELECT
     rp.Author,
     rp.CommentCount,
     rp.UpVoteCount,
-    ARRAY_AGG(t.TagName) AS Tags
+    groupArray(assumeNotNull(t.TagName)) AS Tags
 FROM 
     RankedPosts rp
 LEFT JOIN 
     (SELECT 
          p.Id,
-         unnest(string_to_array(p.Tags, '>')) AS TagName
+         arrayJoin(splitByString('>', p.Tags)) AS TagName
      FROM 
          Posts p) t ON rp.PostId = t.Id
 WHERE 

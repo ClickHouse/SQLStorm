@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -51,7 +51,7 @@ SELECT
         WHEN tp.ViewCount BETWEEN 500 AND 1000 THEN 'Medium Traffic'
         ELSE 'Low Traffic'
     END AS TrafficClassification,
-    ARRAY_AGG(t.TagName) AS RelatedTags
+    groupArray(assumeNotNull(t.TagName)) AS RelatedTags
 FROM 
     TopPosts tp
 LEFT JOIN 
@@ -59,9 +59,9 @@ LEFT JOIN
 LEFT JOIN 
     Posts p ON tp.PostId = p.Id
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(p.Tags, ',')) AS TagName
+            arrayJoin(splitByString(',', p.Tags)) AS TagName
     ) t ON TRUE
 GROUP BY 
     tp.PostId, tp.Title, tp.CreationDate, tp.Score, tp.ViewCount, tp.CommentCount, pvs.UpVotes, pvs.DownVotes

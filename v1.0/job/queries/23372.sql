@@ -24,7 +24,7 @@ MoviesWithGenres AS (
     SELECT 
         m.id AS movie_id,
         m.title,
-        STRING_AGG(k.keyword, ', ') AS genres
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS genres
     FROM 
         aka_title m
     LEFT JOIN 

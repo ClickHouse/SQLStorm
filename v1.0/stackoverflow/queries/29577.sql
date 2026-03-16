@@ -14,12 +14,12 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
-                unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName
+                arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
         ) t ON TRUE
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR 
         AND p.ViewCount > 100
 ),
 
@@ -32,7 +32,7 @@ AggregatedPostMetrics AS (
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownvoteCount,
         MIN(rp.CreationDate) AS FirstSeen,
         MAX(rp.CreationDate) AS LastActive,
-        STRING_AGG(DISTINCT rp.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.TagName))), ', ') AS Tags
     FROM 
         RankedPosts rp
     LEFT JOIN 

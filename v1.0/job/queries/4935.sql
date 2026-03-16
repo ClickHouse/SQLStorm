@@ -5,7 +5,7 @@ WITH MovieStatistics AS (
         t.production_year,
         COUNT(DISTINCT c.person_id) AS actor_count,
         AVG(CASE WHEN rc.role IS NOT NULL THEN 1 ELSE 0 END) AS average_role_assigned,
-        STRING_AGG(DISTINCT COALESCE(cn.name, 'Unknown'), ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(cn.name, 'Unknown')))), ', ') AS company_names
     FROM 
         aka_title t
     LEFT JOIN 

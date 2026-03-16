@@ -1,6 +1,6 @@
 
 WITH MovieDetails AS (
-    SELECT t.id AS movie_id, t.title, t.production_year, c.name AS company_name, STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    SELECT t.id AS movie_id, t.title, t.production_year, c.name AS company_name, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM aka_title t
     JOIN movie_companies mc ON t.id = mc.movie_id
     JOIN company_name c ON mc.company_id = c.id

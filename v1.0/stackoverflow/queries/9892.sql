@@ -13,7 +13,7 @@ WITH TopUsers AS (
     LEFT JOIN
         Badges b ON u.Id = b.UserId
     WHERE
-        u.CreationDate < '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year' 
+        u.CreationDate < CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR 
     GROUP BY
         u.Id, u.DisplayName, u.Reputation
 ),
@@ -31,7 +31,7 @@ ActivePosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '6 months' 
+        p.CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 6 MONTH 
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId
 ),

@@ -60,4 +60,4 @@ WHERE
 ORDER BY 
     m.production_year DESC, 
     cast_member_count DESC NULLS LAST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

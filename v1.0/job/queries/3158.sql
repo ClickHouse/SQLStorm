@@ -16,7 +16,7 @@ AwardedMovies AS (
     SELECT 
         mt.title,
         mt.production_year,
-        STRING_AGG(DISTINCT c.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS company_names
     FROM 
         movie_companies mc
     JOIN 

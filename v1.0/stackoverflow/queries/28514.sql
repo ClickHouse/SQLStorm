@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Body,
         p.ViewCount,
         p.Score,
-        STRING_AGG(t.TagName, ', ') AS Tags,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         RANK() OVER (ORDER BY p.Score DESC) AS RankScore

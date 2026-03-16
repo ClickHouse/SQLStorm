@@ -72,4 +72,4 @@ WHERE
     pb.Score > 0 
 ORDER BY 
     pb.ViewCount DESC, pb.Score DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

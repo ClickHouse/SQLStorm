@@ -53,4 +53,4 @@ FinalReport AS (
 SELECT * 
 FROM FinalReport
 ORDER BY total_revenue DESC, line_item_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

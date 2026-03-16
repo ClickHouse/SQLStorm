@@ -15,7 +15,7 @@ RecentPosts AS (
     SELECT p.Id, p.Title, p.CreationDate,
            CASE WHEN p.ClosedDate IS NOT NULL THEN 'Closed' ELSE 'Open' END AS PostStatus
     FROM Posts p
-    WHERE p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 HighlyActiveUsers AS (
     SELECT u.Id, u.DisplayName, u.Reputation

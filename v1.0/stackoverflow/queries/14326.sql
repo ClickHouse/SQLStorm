@@ -1,7 +1,7 @@
 SELECT 
     pt.Name AS PostType, 
     COUNT(p.Id) AS TotalPosts, 
-    AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgTimeToActivity
+    AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgTimeToActivity
 FROM 
     Posts p
 JOIN 

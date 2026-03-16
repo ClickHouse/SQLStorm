@@ -32,7 +32,7 @@ SELECT
     c.cd_gender,
     c.cd_marital_status,
     COUNT(ws.ws_order_number) AS total_orders,
-    STRING_AGG(DISTINCT CAST(ws.ws_item_sk AS VARCHAR), ', ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws.ws_item_sk AS VARCHAR)))), ', ') AS purchased_items
 FROM 
     customer_info AS c
 LEFT JOIN 

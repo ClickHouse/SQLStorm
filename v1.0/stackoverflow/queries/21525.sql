@@ -25,7 +25,7 @@ FilteredPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= '2023-10-01 12:34:56'::timestamp - INTERVAL '1 YEAR' 
+        P.CreationDate >= CAST('2023-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR 
         AND P.ViewCount IS NOT NULL
 ),
 PostStatistics AS (
@@ -55,7 +55,7 @@ PostHistoryAnalyzed AS (
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate >= '2024-04-01 12:34:56'::timestamp - INTERVAL '6 MONTH'
+        PH.CreationDate >= CAST('2024-04-01 12:34:56' AS timestamp) - INTERVAL 6 MONTH
         AND PH.PostHistoryTypeId IN (10, 11, 12) 
     GROUP BY 
         PH.PostId, PH.UserId, PH.PostHistoryTypeId

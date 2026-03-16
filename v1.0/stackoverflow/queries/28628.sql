@@ -3,11 +3,11 @@ WITH PostTagCounts AS (
     SELECT 
         P.Id AS PostId, 
         COUNT(T.Id) AS TagCount, 
-        STRING_AGG(T.TagName, ', ') AS TagsList
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagsList
     FROM 
         Posts P
     JOIN 
-        (SELECT Id, unnest(string_to_array(trim(both '<>' FROM Tags), '><')) AS TagName FROM Posts) T ON P.Id = T.Id
+        (SELECT Id, arrayJoin(splitByString('><', trim(both '<>' FROM Tags))) AS TagName FROM Posts) T ON P.Id = T.Id
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 
@@ -36,7 +36,7 @@ PostHistoryStats AS (
     SELECT 
         PH.PostId,
         COUNT(PH.Id) AS EditCount,
-        STRING_AGG(PHT.Name, ', ') AS EditTypes
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS EditTypes
     FROM 
         PostHistory PH
     JOIN 

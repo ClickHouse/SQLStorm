@@ -44,11 +44,11 @@ SELECT
     f.movie_keyword,
     f.cast_count,
     f.company_count,
-    COALESCE((SELECT STRING_AGG(p.name, ', ' ORDER BY p.name) 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(p.name)), ', ' ORDER BY p.name) 
               FROM cast_info ci
               JOIN aka_name p ON ci.person_id = p.person_id 
               WHERE ci.movie_id = f.movie_id), 'No Cast') AS cast_names,
-    COALESCE((SELECT STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) 
+    COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) 
               FROM movie_companies mc
               JOIN company_name cn ON mc.company_id = cn.id 
               WHERE mc.movie_id = f.movie_id), 'No Companies') AS production_companies

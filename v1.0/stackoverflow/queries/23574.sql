@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
@@ -32,11 +32,11 @@ ClosedPosts AS (
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        ARRAY_AGG(T.TagName) AS Tags
+        groupArray(assumeNotNull(T.TagName)) AS Tags
     FROM 
         Posts P
     LEFT JOIN 
-        LATERAL UNNEST(STRING_TO_ARRAY(P.Tags, '>')) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('>', P.Tags)) AS T(TagName) ON TRUE
     GROUP BY 
         P.Id
 ),
@@ -44,7 +44,7 @@ UserBadges AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 

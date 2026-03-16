@@ -28,7 +28,7 @@ ActorMovies AS (
 )
 SELECT
     am.actor_name,
-    STRING_AGG(DISTINCT rm.movie_title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.movie_title))), ', ') AS movie_titles,
     AVG(am.movie_count) AS average_movies
 FROM
     ActorMovies am

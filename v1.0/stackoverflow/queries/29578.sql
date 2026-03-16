@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        ARRAY_LENGTH(string_to_array(p.Tags, '><'), 1) AS TagCount,
+        length(splitByString('><', p.Tags), 1) AS TagCount,
         COUNT(DISTINCT c.Id) AS CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RecentPostRank
     FROM 
@@ -65,7 +65,7 @@ SELECT
     SUM(au.Score) AS TotalScore,
     AVG(au.ViewCount) AS AvgViewCount,
     AVG(au.CommentCount) AS AvgCommentCount,
-    STRING_AGG(DISTINCT 'Title: ' || au.Title || ' (Score: ' || au.Score || ', Views: ' || au.ViewCount || ')', '; ') AS RecentPosts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull('Title: ' || au.Title || ' (Score: ' || au.Score || ', Views: ' || au.ViewCount || ')'))), '; ') AS RecentPosts
 FROM 
     ActiveUsers au
 GROUP BY 

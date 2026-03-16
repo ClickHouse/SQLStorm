@@ -28,7 +28,7 @@ SELECT
     h.production_year,
     h.parent_movie,
     h.level,
-    ARRAY_AGG(DISTINCT a.name) AS actors,
+    arrayDistinct(groupArray(assumeNotNull(a.name))) AS actors,
     COUNT(DISTINCT kc.keyword) AS keyword_count
 FROM 
     movie_hierarchy h

@@ -5,8 +5,8 @@ SELECT
     t.production_year,
     r.role AS role_type,
     c.note AS cast_note,
-    STRING_AGG(DISTINCT kw.keyword, ',') AS keywords,
-    STRING_AGG(DISTINCT cn.name, ',') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ',') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ',') AS company_names
 FROM 
     cast_info c
 JOIN 

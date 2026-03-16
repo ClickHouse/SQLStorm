@@ -22,7 +22,7 @@ PostHistoryAnalysis AS (
            P.Title, 
            P.Body, 
            COUNT(PH.Id) AS EditCount,
-           STRING_AGG(PH.Comment, '; ') AS EditComments
+           arrayStringConcat(groupArray(assumeNotNull(PH.Comment)), '; ') AS EditComments
     FROM PostHistory PH
     JOIN Posts P ON P.Id = PH.PostId
     WHERE PH.PostHistoryTypeId IN (4, 5, 24)  

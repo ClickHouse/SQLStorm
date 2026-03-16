@@ -47,9 +47,9 @@ title_info AS (
 SELECT 
     pt.person_id,
     COUNT(*) AS total_movies,
-    STRING_AGG(DISTINCT pt.title, ', ') AS titles,
-    STRING_AGG(DISTINCT pt.movie_kind, ', ') AS kinds,
-    STRING_AGG(DISTINCT pt.movie_keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.title))), ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.movie_kind))), ', ') AS kinds,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.movie_keyword))), ', ') AS keywords
 FROM 
     title_info pt
 GROUP BY 

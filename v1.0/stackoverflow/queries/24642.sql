@@ -44,12 +44,12 @@ WorstClosedPosts AS (
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
         PH.PostHistoryTypeId = 10  
-        AND PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        AND PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        STRING_AGG(TRIM(t.TagName), ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(TRIM(t.TagName))), ', ') AS Tags
     FROM 
         Posts P
     JOIN 

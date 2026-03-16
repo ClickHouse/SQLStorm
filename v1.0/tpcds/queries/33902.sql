@@ -55,4 +55,4 @@ FROM SalesSummary AS ss
 JOIN CustomerRanked AS cr ON ss.total_sales_quantity > cr.gender_rank
 WHERE ss.avg_inventory IS NOT NULL
 ORDER BY ss.total_sales_value DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

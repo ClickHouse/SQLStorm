@@ -13,8 +13,8 @@ where
 	c_mktsegment = 'MACHINERY'
 	and c_custkey = o_custkey
 	and l_orderkey = o_orderkey
-	and o_orderdate < date '1995-03-08'
-	and l_shipdate > date '1995-03-08'
+	and o_orderdate < toDate('1995-03-08')
+	and l_shipdate > toDate('1995-03-08')
 group by
 	l_orderkey,
 	o_orderdate,

@@ -60,7 +60,7 @@ SELECT
         WHEN ss.total_sales_web IS NULL AND ss.total_sales_store IS NOT NULL THEN 'In-Store Only'
         ELSE 'Both Channels'
     END) AS sales_channel,
-    (SELECT STRING_AGG(sm.sm_type, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(sm.sm_type)), ', ') 
      FROM ship_mode sm
      WHERE sm.sm_ship_mode_sk IN (SELECT ws_ship_mode_sk FROM web_sales WHERE ws_bill_customer_sk = tc.c_customer_sk)) AS preferred_shipping_modes
 FROM

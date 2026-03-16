@@ -42,7 +42,7 @@ TopProducts AS (
 SELECT 
     tp.p_brand,
     COUNT(tp.p_partkey) AS number_of_top_products,
-    STRING_AGG(CONCAT(tp.p_name, ' (', tp.supplier_name, ', ', tp.nation_name, ')'), ', ') AS top_product_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(tp.p_name, ' (', tp.supplier_name, ', ', tp.nation_name, ')'))), ', ') AS top_product_details
 FROM 
     TopProducts tp
 GROUP BY 

@@ -37,7 +37,7 @@ FilteredPosts AS (
 SELECT 
     FP.PostId,
     FP.Title,
-    STRING_AGG(T.TagName, ', ') AS RelatedTags,
+    arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS RelatedTags,
     FP.CommentCount,
     FP.AnswerCount,
     FP.TotalBounty,
@@ -45,7 +45,7 @@ SELECT
 FROM 
     FilteredPosts FP
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(FP.Tags, '<>')) AS Tag ON Tag IS NOT NULL
+    arrayJoin(splitByString('<>', FP.Tags)) AS Tag ON Tag IS NOT NULL
 LEFT JOIN 
     Tags T ON T.TagName = Tag
 GROUP BY 

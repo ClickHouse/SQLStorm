@@ -25,7 +25,7 @@ high_value_customers AS (
         SUM(o.o_totalprice) AS total_spend
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    WHERE o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     GROUP BY c.c_custkey, c.c_name
     HAVING SUM(o.o_totalprice) > (SELECT AVG(o_totalprice) FROM orders)
 )
@@ -45,4 +45,4 @@ LEFT JOIN high_value_customers hvc ON hvc.c_custkey IN (
 )
 WHERE rp.rank <= 5
 ORDER BY rp.p_retailprice DESC, hvc.total_spend DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

@@ -37,7 +37,7 @@ MovieGenres AS (
 SELECT 
     tm.title,
     tm.production_year,
-    STRING_AGG(DISTINCT mg.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mg.keyword))), ', ') AS keywords,
     COALESCE(MAX(pi.info), 'No info available') AS personal_info
 FROM 
     TopMovies tm

@@ -42,8 +42,8 @@ SELECT
     MAX(r.total_sales) AS max_sales,
     MIN(r.total_sales) AS min_sales,
     AVG(r.total_sales) AS avg_sales,
-    STRING_AGG(DISTINCT r.shipping_mode, ', ') AS shipping_modes,
-    STRING_AGG(DISTINCT r.customer_gender, ', ') AS customer_genders
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.shipping_mode))), ', ') AS shipping_modes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.customer_gender))), ', ') AS customer_genders
 FROM 
     RankedSales r
 WHERE 

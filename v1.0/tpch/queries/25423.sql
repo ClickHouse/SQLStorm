@@ -23,8 +23,8 @@ SELECT
     pp.p_retailprice AS part_price,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(o.o_totalprice) AS total_orders_value,
-    STRING_AGG(DISTINCT c.c_comment, ', ') AS customer_comments,
-    STRING_AGG(DISTINCT pp.p_comment, '; ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_comment))), ', ') AS customer_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pp.p_comment))), '; ') AS part_comments
 FROM 
     RankedParts pp
 JOIN 

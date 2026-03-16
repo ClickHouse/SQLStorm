@@ -23,7 +23,7 @@ WITH UserStats AS (
         COUNT(DISTINCT P.Id) AS PostCount
     FROM Tags T
     JOIN Posts P ON P.Tags LIKE CONCAT('%', T.TagName, '%')
-    WHERE P.CreationDate > DATE '2024-10-01' - INTERVAL '1 year'
+    WHERE P.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR
     GROUP BY T.TagName
     HAVING COUNT(DISTINCT P.Id) > 50
 ), ActiveUsers AS (
@@ -52,4 +52,4 @@ SELECT
 FROM ActiveUsers AU
 JOIN PopularTags PT ON AU.PostCount > PT.PostCount
 ORDER BY AU.Reputation DESC, PT.PostCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

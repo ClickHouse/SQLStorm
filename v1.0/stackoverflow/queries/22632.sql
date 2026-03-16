@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         (p.PostTypeId = 1 OR p.PostTypeId = 2) 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.ViewCount IS NOT NULL 
 ),
 UserReputation AS (
@@ -85,5 +85,4 @@ ORDER BY
     rp.ViewCount DESC, 
     pv.UpVotes DESC, 
     rp.Rank
-OFFSET 0 ROWS 
-FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

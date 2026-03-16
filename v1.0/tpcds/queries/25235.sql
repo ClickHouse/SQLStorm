@@ -15,7 +15,7 @@ WITH Address_Comparison AS (
         COUNT(DISTINCT c.c_first_name || ' ' || c.c_last_name) AS unique_customers,
         SUM(cd_dep_count) AS total_dependents,
         MAX(cd_purchase_estimate) AS max_purchase_estimate,
-        STRING_AGG(DISTINCT CONCAT(cd_gender, ': ', cd_marital_status), '; ') AS gender_marital_summary
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cd_gender, ': ', cd_marital_status)))), '; ') AS gender_marital_summary
     FROM 
         customer c
     JOIN 
@@ -28,7 +28,7 @@ WITH Address_Comparison AS (
         COUNT(d.d_date_sk) AS total_days,
         COUNT(DISTINCT d.d_week_seq) AS total_weeks,
         COUNT(DISTINCT d.d_month_seq) AS total_months,
-        STRING_AGG(DISTINCT d.d_day_name, ', ') AS unique_days
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d.d_day_name))), ', ') AS unique_days
     FROM 
         date_dim d
     GROUP BY 

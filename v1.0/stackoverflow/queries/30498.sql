@@ -20,7 +20,7 @@ UserActivity AS (
         u.DisplayName,
         COUNT(DISTINCT p.Id) AS TotalPosts,
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositivePosts,
-        SUM(CASE WHEN p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 MONTH' THEN 1 ELSE 0 END) AS RecentPosts,
+        SUM(CASE WHEN p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN 1 ELSE 0 END) AS RecentPosts,
         AVG(v.VoteTypeId) AS AvgVoteType 
     FROM 
         Users u
@@ -63,7 +63,7 @@ SELECT
     p.Title AS RecentPostTitle,
     p.CreationDate AS RecentPostDate,
     ROW_NUMBER() OVER (ORDER BY ua.TotalPosts DESC) AS UserRank,
-    STRING_AGG(DISTINCT tr.CloseReason, ', ') AS TopCloseReasons
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tr.CloseReason))), ', ') AS TopCloseReasons
 FROM 
     Users u
 JOIN 

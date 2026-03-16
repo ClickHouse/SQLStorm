@@ -26,7 +26,7 @@ final_output AS (
         rm.title,
         rm.production_year,
         rm.company_name,
-        STRING_AGG(DISTINCT rm.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.keyword))), ', ') AS keywords
     FROM 
         ranked_movies rm
     WHERE 

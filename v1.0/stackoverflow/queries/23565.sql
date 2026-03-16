@@ -30,7 +30,7 @@ WITH UserReputation AS (
         MIN(ph.CreationDate) AS FirstHistoryDate,
         MAX(ph.CreationDate) AS LastHistoryDate,
         COUNT(*) AS HistoryCount,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
     FROM PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     GROUP BY ph.PostId
@@ -70,6 +70,6 @@ WHERE ur.Reputation > (SELECT AVG(Reputation) FROM Users)
   AND pd.ViewCount > (
       SELECT AVG(ViewCount) 
       FROM Posts 
-      WHERE CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year' 
+      WHERE CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR 
   )
 ORDER BY ur.Reputation DESC, pd.ViewCount DESC;

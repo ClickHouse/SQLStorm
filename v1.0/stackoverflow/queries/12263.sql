@@ -2,7 +2,7 @@ WITH RecentPosts AS (
     SELECT p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName AS OwnerDisplayName
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostStatistics AS (
     SELECT 

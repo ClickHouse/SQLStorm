@@ -20,7 +20,7 @@ MovieDetails AS (
         m.movie_id, 
         m.movie_title, 
         m.production_year, 
-        STRING_AGG(DISTINCT c.role_id::text, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.role_id AS text)))), ', ') AS roles
     FROM 
         RankedMovies m
     JOIN 
@@ -52,7 +52,7 @@ SELECT
     t.production_year,
     t.num_awards,
     c.name AS leading_actor,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
 FROM 
     TopRatedMovies t
 JOIN 

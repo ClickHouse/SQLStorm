@@ -8,7 +8,7 @@ WITH RankedPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount
 ),
 UserStats AS (

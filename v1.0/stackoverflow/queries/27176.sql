@@ -6,7 +6,7 @@ WITH FilteredPosts AS (
         p.Body,
         p.CreationDate,
         u.DisplayName AS OwnerName,
-        LENGTH(STRING_AGG(p.Tags, '')) - LENGTH(REPLACE(STRING_AGG(p.Tags, ''), '>', '')) + 1 AS TagCount,
+        LENGTH(arrayStringConcat(groupArray(assumeNotNull(p.Tags)), '')) - LENGTH(REPLACE(arrayStringConcat(groupArray(assumeNotNull(p.Tags)), ''), '>', '')) + 1 AS TagCount,
         COUNT(c.Id) AS CommentCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVoteCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVoteCount

@@ -7,7 +7,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT C.Id) AS TotalComments,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes,
-        AVG(EXTRACT(EPOCH FROM (P.LastActivityDate - P.CreationDate)) / 3600) AS AvgPostAgeHours
+        AVG(toUnixTimestamp((P.LastActivityDate - P.CreationDate)) / 3600) AS AvgPostAgeHours
     FROM 
         Users U
     LEFT JOIN 
@@ -34,7 +34,7 @@ PostStatistics AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE
-        PH.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     UA.DisplayName,

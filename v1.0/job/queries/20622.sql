@@ -14,7 +14,7 @@ CastInfoWithRoles AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS unique_actors,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles
     FROM 
         cast_info ci
     JOIN 
@@ -37,7 +37,7 @@ CompaniesInfo AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -79,7 +79,7 @@ SELECT
 FROM 
     AggregatedInfo ag 
 WHERE 
-    (EXTRACT(YEAR FROM DATE '2024-10-01') - ag.production_year) <= 10
+    (toYear(toDate('2024-10-01')) - ag.production_year) <= 10
     AND ag.rank <= 100
 ORDER BY 
     ag.production_year DESC,

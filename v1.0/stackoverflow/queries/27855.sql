@@ -27,12 +27,12 @@ WITH FilteredPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         FilteredPosts
     GROUP BY 
-        unnest(string_to_array(Tags, '><'))
+        arrayJoin(splitByString('><', Tags))
     ORDER BY 
         TagCount DESC
     LIMIT 10
@@ -59,7 +59,7 @@ FinalResults AS (
         fp.Score,
         phs.EditCount,
         phs.LastEditDate,
-        (SELECT ARRAY_AGG(pt.TagName) FROM PopularTags pt) AS PopularTags
+        (SELECT groupArray(assumeNotNull(pt.TagName)) FROM PopularTags pt) AS PopularTags
     FROM 
         FilteredPosts fp
     LEFT JOIN 

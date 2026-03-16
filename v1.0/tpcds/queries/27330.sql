@@ -6,7 +6,7 @@ SELECT
     d.d_date AS purchase_date,
     SUM(ws.ws_sales_price) AS total_sales,
     COUNT(DISTINCT ws.ws_order_number) AS order_count,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS purchased_items
 FROM 
     customer AS c
 JOIN 

@@ -39,4 +39,4 @@ FROM
     top_customers tc
 ORDER BY 
     tc.total_net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

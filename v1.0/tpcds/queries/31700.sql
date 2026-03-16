@@ -64,4 +64,4 @@ GROUP BY
     d.d_date, w.w_warehouse_name, Ad.ca_city, Ad.ca_state
 ORDER BY 
     d.d_date DESC, total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

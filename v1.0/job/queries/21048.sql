@@ -32,7 +32,7 @@ ExtendedMovieInfo AS (
         tm.title,
         tm.production_year,
         COUNT(DISTINCT mc.company_id) AS company_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         TopMovies tm
     LEFT JOIN 

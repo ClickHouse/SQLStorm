@@ -63,4 +63,4 @@ SELECT
     COALESCE(total_quantity, 0) AS total_quantity
 FROM FinalReport
 ORDER BY total_profit DESC, total_orders DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

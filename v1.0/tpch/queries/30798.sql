@@ -37,7 +37,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(os.total_orders) AS collective_order_count,
     SUM(os.total_revenue) AS collective_revenue,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' - ', p.total_available), '; ') AS available_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' - ', p.total_available)))), '; ') AS available_parts,
     MAX(p.avg_supply_cost) AS max_avg_supply_cost,
     COUNT(DISTINCT sh.s_suppkey) AS distinct_high_balance_suppliers
 FROM region r

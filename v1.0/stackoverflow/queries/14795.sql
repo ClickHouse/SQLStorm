@@ -8,7 +8,7 @@ WITH UserPostStatistics AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(p.ViewCount) AS TotalViews,
         SUM(p.Score) AS TotalScore,
-        AVG(COALESCE(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)), 0)) AS AvgPostLifetimeInSeconds
+        AVG(COALESCE(toUnixTimestamp((p.LastActivityDate - p.CreationDate)), 0)) AS AvgPostLifetimeInSeconds
     FROM 
         Users u
     LEFT JOIN 

@@ -52,11 +52,11 @@ SELECT
     hsp.Owner,
     hsp.CommentCount,
     hsp.NetScore,
-    COALESCE((SELECT STRING_AGG(TagName, ', ') FROM Tags t 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') FROM Tags t 
                JOIN Posts p ON p.Id = t.ExcerptPostId 
                WHERE p.Id = hsp.PostId), 'No Tags') AS Tags
 FROM 
     HighScoringPosts hsp
 ORDER BY 
     hsp.NetScore DESC, hsp.CommentCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

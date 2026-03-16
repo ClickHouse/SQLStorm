@@ -22,7 +22,7 @@ OrderSummary AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' 
+        o.o_orderdate >= toDate('1997-01-01') 
         AND o.o_orderstatus = 'O'
     GROUP BY 
         o.o_custkey
@@ -46,7 +46,7 @@ SELECT
     cd.c_name, 
     COALESCE(cd.total_spent, 0) AS total_spent,
     COALESCE(cd.order_count, 0) AS order_count,
-    ARRAY_AGG(DISTINCT s.s_name) AS supplier_names,
+    arrayDistinct(groupArray(assumeNotNull(s.s_name))) AS supplier_names,
     COUNT(DISTINCT ps.ps_partkey) AS part_count
 FROM 
     CustomerDetails cd

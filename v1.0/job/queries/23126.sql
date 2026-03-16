@@ -49,7 +49,7 @@ SELECT
         ELSE 'Moderate Role'
     END AS role_category,
     COALESCE(ai.total_awards, 0) AS total_awards,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM MoviesWithRoles mw
 LEFT JOIN (
     SELECT 

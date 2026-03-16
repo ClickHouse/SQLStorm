@@ -80,4 +80,4 @@ HAVING
     SUM(l.l_extendedprice * (1 - l.l_discount)) > 1000000
 ORDER BY 
     total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

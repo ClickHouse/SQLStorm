@@ -58,7 +58,7 @@ SELECT
     fp.CommentCount,
     fp.BadgeCount,
     fp.TrafficCategory,
-    STRING_AGG(t.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS AssociatedTags
 FROM 
     FilteredPosts fp
 LEFT JOIN 

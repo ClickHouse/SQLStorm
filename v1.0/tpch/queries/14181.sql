@@ -6,7 +6,7 @@ JOIN supplier ON l_suppkey = s_suppkey
 JOIN partsupp ON l_partkey = ps_partkey AND l_suppkey = ps_suppkey
 JOIN part ON ps_partkey = p_partkey
 JOIN nation ON s_nationkey = n_nationkey
-WHERE o_orderdate >= DATE '1997-01-01' AND o_orderdate < DATE '1998-01-01'
+WHERE o_orderdate >= toDate('1997-01-01') AND o_orderdate < toDate('1998-01-01')
 GROUP BY n_name
 ORDER BY total_revenue DESC
 LIMIT 10;

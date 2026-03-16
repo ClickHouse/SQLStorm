@@ -56,7 +56,7 @@ FinalResults AS (
         cd.movie_id,
         cd.title,
         cd.production_year,
-        STRING_AGG(cd.actor_name, ', ') AS actor_list
+        arrayStringConcat(groupArray(assumeNotNull(cd.actor_name)), ', ') AS actor_list
     FROM 
         CombinedData cd
     WHERE 
@@ -67,7 +67,7 @@ FinalResults AS (
 KeywordSummary AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title m
     LEFT JOIN movie_keyword mk ON m.id = mk.movie_id

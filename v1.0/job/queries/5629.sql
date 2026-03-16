@@ -55,8 +55,8 @@ SELECT
     Movie_Title, 
     Production_Year, 
     Cast_Count, 
-    STRING_AGG(DISTINCT Production_Company, ', ') AS Production_Companies,
-    STRING_AGG(DISTINCT Company_Type, ', ') AS Company_Types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Production_Company))), ', ') AS Production_Companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Company_Type))), ', ') AS Company_Types
 FROM 
     FinalResults
 GROUP BY 

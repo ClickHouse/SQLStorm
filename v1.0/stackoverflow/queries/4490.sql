@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -27,7 +27,7 @@ UserStats AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT crt.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -57,6 +57,6 @@ LEFT JOIN
 WHERE 
     rp.ScoreRank = 1
     AND ups.TotalPosts > 5
-    AND (rp.ViewCount > (SELECT AVG(ViewCount) FROM Posts WHERE CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'))
+    AND (rp.ViewCount > (SELECT AVG(ViewCount) FROM Posts WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR))
 ORDER BY 
     rp.Score DESC, up.Reputation DESC;

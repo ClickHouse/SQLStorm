@@ -14,7 +14,7 @@ WITH RECURSIVE customer_orders AS (
     SELECT ps.ps_suppkey, SUM(ps.ps_availqty) AS total_avail_qty,
            MAX(p.p_retailprice) AS highest_price,
            AVG(p.p_retailprice) AS avg_price,
-           STRING_AGG(CASE WHEN p.p_comment IS NULL THEN 'No Comment' ELSE p.p_comment END, ', ') AS comments
+           arrayStringConcat(groupArray(assumeNotNull(CASE WHEN p.p_comment IS NULL THEN 'No Comment' ELSE p.p_comment END)), ', ') AS comments
     FROM partsupp ps
     JOIN part p ON ps.ps_partkey = p.p_partkey
     WHERE p.p_size BETWEEN 10 AND 20
@@ -57,7 +57,7 @@ LEFT JOIN supplier_part_info s ON s.ps_suppkey IN (
 )
 LEFT JOIN top_nations nt ON c.c_nationkey = nt.n_nationkey
 LEFT JOIN order_stats os ON os.o_orderstatus = 'F'
-LEFT JOIN lineitem_summary ls ON ls.l_shipdate = DATE '1998-10-01'
+LEFT JOIN lineitem_summary ls ON ls.l_shipdate = toDate('1998-10-01')
 WHERE c.c_acctbal IS NOT NULL AND c.c_acctbal BETWEEN 1000 AND 5000
 ORDER BY total_spent DESC, nt.total_balance ASC
 LIMIT 100;

@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c_customer_id) AS unique_customers,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
     SUM(ws_net_profit) AS total_net_profit,
-    STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), ', ') AS customer_names,
     COUNT(DISTINCT ws_order_number) AS total_orders
 FROM 
     customer_address AS ca

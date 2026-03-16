@@ -29,7 +29,7 @@ LineItemsSummarized AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= DATE'1998-10-01' - INTERVAL '1 month'
+        l.l_shipdate >= DATE'1998-10-01' - INTERVAL 1 MONTH
     GROUP BY 
         l.l_orderkey
 )

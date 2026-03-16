@@ -38,7 +38,7 @@ PostsWithComments AS (
         (SELECT 
             PostId, 
             COUNT(*) AS CommentCount, 
-            STRING_AGG(DISTINCT UserDisplayName, ', ') AS UserDisplayName
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(UserDisplayName))), ', ') AS UserDisplayName
          FROM 
             Comments 
          GROUP BY 

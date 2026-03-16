@@ -9,7 +9,7 @@ WITH RankedSales AS (
     FROM 
         web_sales ws
     WHERE 
-        ws.ws_sold_date_sk = (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = DATE '2002-10-01')
+        ws.ws_sold_date_sk = (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = toDate('2002-10-01'))
 ),
 CustomerSales AS (
     SELECT 

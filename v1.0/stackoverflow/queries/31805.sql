@@ -43,7 +43,7 @@ TopUsers AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -63,6 +63,6 @@ LEFT JOIN
     UserBadges ub ON tu.UserId = ub.UserId
 WHERE 
     tu.AnswerCount > 10
-    AND tu.RecentPostDate >= DATE '2024-10-01' - INTERVAL '1 year'
+    AND tu.RecentPostDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
 ORDER BY 
     tu.TotalScore DESC;

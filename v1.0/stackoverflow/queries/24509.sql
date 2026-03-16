@@ -46,7 +46,7 @@ PostDetails AS (
         tp.DownVotes,
         COALESCE(u.DisplayName, 'Anonymous') AS UserDisplayName,
         SUM(CASE WHEN c.PostId IS NOT NULL THEN 1 ELSE 0 END) AS CommentCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         TopRatedPosts tp
     LEFT JOIN 
@@ -56,7 +56,7 @@ PostDetails AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, ',')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON TRUE
     GROUP BY 
         tp.PostId, tp.Title, tp.CreationDate, tp.Score, tp.ViewCount, tp.UpVotes, tp.DownVotes, u.DisplayName
 ),

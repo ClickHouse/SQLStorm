@@ -34,9 +34,9 @@ AggregateInfo AS (
         movie_id,
         movie_title,
         COUNT(actor_name) AS actor_count,
-        STRING_AGG(DISTINCT actor_name, ', ') AS actors_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors_list,
         production_year,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
         MIN(company_name) AS production_company
     FROM 
         MovieTitleInfo

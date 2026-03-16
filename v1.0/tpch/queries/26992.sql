@@ -6,7 +6,7 @@ SELECT
     c.c_name AS customer_name,
     SUBSTRING(p.p_comment, 1, 15) AS short_comment,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_served
 FROM
     part p
 JOIN

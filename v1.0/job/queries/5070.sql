@@ -5,7 +5,7 @@ WITH MovieStats AS (
         t.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
         COUNT(DISTINCT k.keyword) AS total_keywords,
-        STRING_AGG(DISTINCT c2.kind, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c2.kind))), ', ') AS company_types
     FROM 
         aka_title t
     JOIN 

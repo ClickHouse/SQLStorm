@@ -13,7 +13,7 @@ WITH RankedMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords_list
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords_list
     FROM 
         movie_keyword mk
     JOIN 
@@ -26,7 +26,7 @@ CastInfoAgg AS (
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
         MAX(ci.nr_order) AS max_order,
-        STRING_AGG(DISTINCT a.name, ', ') FILTER (WHERE a.name IS NOT NULL) AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') FILTER (WHERE a.name IS NOT NULL) AS cast_names
     FROM 
         cast_info ci
     LEFT JOIN 
@@ -37,7 +37,7 @@ CastInfoAgg AS (
 MovieCompanies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS company_names,
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS company_names,
         COUNT(DISTINCT mc.company_type_id) AS company_type_count,
         COUNT(DISTINCT mc.company_id) AS total_companies
     FROM 

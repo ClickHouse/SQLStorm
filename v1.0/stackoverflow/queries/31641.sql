@@ -57,6 +57,6 @@ LEFT JOIN
     ClosedPostHistory cph ON u.Id = cph.EditorId AND cph.rn = 1
 WHERE 
     u.Reputation > 500
-    AND (cph.ClosedDate IS NULL OR cph.ClosedDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')
+    AND (cph.ClosedDate IS NULL OR cph.ClosedDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ORDER BY 
     u.Reputation DESC;

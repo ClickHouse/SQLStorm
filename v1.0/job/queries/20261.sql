@@ -31,7 +31,7 @@ DetailedMovies AS (
         cd.actor_name,
         cd.actor_count,
         (SELECT COUNT(*) FROM movie_keyword mk WHERE mk.movie_id = rt.title_id) AS keyword_count,
-        (SELECT STRING_AGG(k.keyword, ', ') FROM movie_keyword mk JOIN keyword k ON mk.keyword_id = k.id WHERE mk.movie_id = rt.title_id) AS keywords
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') FROM movie_keyword mk JOIN keyword k ON mk.keyword_id = k.id WHERE mk.movie_id = rt.title_id) AS keywords
     FROM 
         RankedTitles rt
     LEFT JOIN 

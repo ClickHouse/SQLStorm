@@ -1,5 +1,5 @@
 WITH RankedSuppliers AS (
-    SELECT s.s_suppkey, s.s_name, STRING_AGG(CONCAT(p.p_name, ' (', ps.ps_availqty, ')'), ', ') AS part_info
+    SELECT s.s_suppkey, s.s_name, arrayStringConcat(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', ps.ps_availqty, ')'))), ', ') AS part_info
     FROM supplier s
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     JOIN part p ON ps.ps_partkey = p.p_partkey

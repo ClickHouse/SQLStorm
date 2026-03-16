@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND 
         p.Score > 0
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
@@ -31,7 +31,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Votes v ON u.Id = v.UserId
     WHERE 
-        u.LastAccessDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation
 ),

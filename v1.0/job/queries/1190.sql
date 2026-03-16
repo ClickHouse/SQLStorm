@@ -3,7 +3,7 @@ WITH movie_summary AS (
         mt.title AS movie_title, 
         ct.kind AS company_type, 
         COUNT(DISTINCT c.person_id) AS cast_count,
-        ARRAY_AGG(DISTINCT ak.name) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names,
         AVG(COALESCE(mv.production_year, 0)) AS avg_production_year
     FROM 
         aka_title mt

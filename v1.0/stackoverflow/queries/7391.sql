@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, u.DisplayName, p.OwnerUserId
 ), 
@@ -27,7 +27,7 @@ PostBadgeCounts AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges
     FROM 
         Badges b
     GROUP BY 
@@ -51,4 +51,4 @@ WHERE
     rp.PostRank <= 5
 ORDER BY 
     rp.Score DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

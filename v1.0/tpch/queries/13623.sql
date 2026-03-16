@@ -14,8 +14,8 @@ JOIN
 JOIN 
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
-    o.o_orderdate >= DATE '2000-01-01' AND 
-    o.o_orderdate < DATE '2001-01-01'
+    o.o_orderdate >= toDate('2000-01-01') AND 
+    o.o_orderdate < toDate('2001-01-01')
 GROUP BY 
     n.n_name
 ORDER BY 

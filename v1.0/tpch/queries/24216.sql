@@ -40,7 +40,7 @@ SELECT
     p.p_name,
     COALESCE(SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) END), 0) AS return_revenue,
     COALESCE(MAX(ts.total_available_qty), 0) AS max_available_qty,
-    ARRAY_AGG(DISTINCT s.s_name) FILTER (WHERE rs.rank <= 3) AS top_suppliers,
+    arrayDistinct(groupArray(assumeNotNull(s.s_name))) FILTER (WHERE rs.rank <= 3) AS top_suppliers,
     COUNT(DISTINCT ho.o_orderkey) AS high_value_order_count
 FROM 
     part p

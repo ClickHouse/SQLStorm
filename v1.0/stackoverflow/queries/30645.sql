@@ -74,6 +74,6 @@ LEFT JOIN
     RecursivePostCTE RP ON P.AcceptedAnswerId = RP.Id
 WHERE 
     P.CreationDate > '2022-01-01' 
-    AND (P.Score > 5 OR P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days') 
+    AND (P.Score > 5 OR P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY) 
 ORDER BY 
     P.Score DESC, P.CreationDate DESC;

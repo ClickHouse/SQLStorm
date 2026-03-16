@@ -25,7 +25,7 @@ PopularCast AS (
 MovieInfo AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(i.info, '; ') AS movie_info
+        arrayStringConcat(groupArray(assumeNotNull(i.info)), '; ') AS movie_info
     FROM 
         movie_info m
     JOIN 

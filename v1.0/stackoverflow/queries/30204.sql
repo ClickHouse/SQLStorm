@@ -19,7 +19,7 @@ PostsWithVoteCount AS (
            SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+    WHERE p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     GROUP BY p.Id, p.Title, p.CreationDate
 ),
 
@@ -27,7 +27,7 @@ ClosedPosts AS (
     SELECT ph.PostId,
            ph.CreationDate,
            COUNT(*) AS CloseCount,
-           STRING_AGG(DISTINCT c.Name, ', ') AS CloseReasons
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Name))), ', ') AS CloseReasons
     FROM PostHistory ph
     INNER JOIN CloseReasonTypes c ON CAST(ph.Comment AS INTEGER) = c.Id
     WHERE ph.PostHistoryTypeId IN (10, 11) 

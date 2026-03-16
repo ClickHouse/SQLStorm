@@ -19,7 +19,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     r.r_name LIKE '%EUROPE%' 
-    AND l.l_shipdate >= DATE '1996-01-01'
+    AND l.l_shipdate >= toDate('1996-01-01')
 GROUP BY 
     p.p_name, p.p_comment
 HAVING 

@@ -26,7 +26,7 @@ order_summary AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
+        o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
     GROUP BY 
         o.o_orderkey
     HAVING 
@@ -53,7 +53,7 @@ SELECT
         ELSE 'Ranked Revenue ' || f.revenue_rank
     END AS revenue_status,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS affluent_customers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS affluent_customers
 FROM 
     region r
 LEFT JOIN 

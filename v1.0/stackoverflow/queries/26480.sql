@@ -26,10 +26,10 @@ WITH RankedPosts AS (
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        STRING_AGG(TRIM(value), ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(TRIM(value))), ', ') AS Tags
     FROM 
         Posts P,
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2), '><')) AS value
+        arrayJoin(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2))) AS value
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 

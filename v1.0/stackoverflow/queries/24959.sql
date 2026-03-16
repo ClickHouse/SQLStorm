@@ -16,7 +16,7 @@ PostScore AS (
         SUM(p.Score) AS TotalScore,
         COUNT(p.Id) AS PostCount
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.OwnerUserId
 ),
 UserBadges AS (
@@ -31,7 +31,7 @@ UserPosts AS (
         p.OwnerUserId, 
         COUNT(p.Id) AS TotalPosts
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.OwnerUserId
     HAVING COUNT(p.Id) > 10
 ),
@@ -78,12 +78,12 @@ SELECT
         WHEN f.TotalPosts BETWEEN 1 AND 10 THEN 'Few Posts'
         ELSE 'Active User' 
     END AS UserActivityStatus,
-    STRING_AGG(t.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
 FROM FilteredResults f
 LEFT JOIN Posts p ON f.UserId = p.OwnerUserId
-LEFT JOIN LATERAL (
+LEFT JOIN (
     SELECT 
-        DISTINCT TRIM(UNNEST(REGEXP_SPLIT_TO_ARRAY(p.Tags, '><'))) AS TagName 
+        DISTINCT TRIM(arrayJoin(splitByRegexp('><', p.Tags))) AS TagName 
     ) t ON true 
 WHERE f.PostScore > 100
 GROUP BY 

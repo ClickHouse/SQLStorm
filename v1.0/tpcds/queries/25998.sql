@@ -48,7 +48,7 @@ SELECT
     cad.ca_country,
     cad.demographics,
     COUNT(*) AS address_count,
-    STRING_AGG(cad.demographics, '; ') AS all_demographics
+    arrayStringConcat(groupArray(assumeNotNull(cad.demographics)), '; ') AS all_demographics
 FROM 
     CustomerAddressDemographics cad
 WHERE 

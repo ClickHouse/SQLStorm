@@ -19,7 +19,7 @@ OrderSummary AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
+        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 ),
@@ -55,4 +55,4 @@ LEFT JOIN
     TotalCost tc ON sc.part_count = (SELECT COUNT(*) FROM partsupp WHERE ps_partkey = sc.s_suppkey)
 ORDER BY 
     os.total_amount DESC, os.o_orderdate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

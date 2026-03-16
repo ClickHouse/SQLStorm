@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score > 0 
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostVotes AS (
     SELECT 
@@ -62,7 +62,7 @@ FinalResults AS (
         ph.LastEdited,
         ph.CloseReason,
         ph.EditCount,
-        ARRAY_LENGTH(string_to_array(rp.Tags, ','), 1) AS TagCount,
+        length(splitByString(',', rp.Tags), 1) AS TagCount,
         CASE 
             WHEN EXISTS (SELECT 1 FROM PostLinks pl WHERE pl.PostId = rp.PostId) 
             THEN TRUE 
@@ -95,7 +95,7 @@ FROM
 WHERE 
     (UpVotes - DownVotes) > 0 
     AND TagCount > 1 
-    AND (LastEdited IS NULL OR LastEdited >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
+    AND (LastEdited IS NULL OR LastEdited >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ORDER BY 
     Score DESC,
     CreationDate ASC

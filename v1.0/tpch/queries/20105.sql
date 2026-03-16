@@ -62,7 +62,7 @@ SELECT
     COALESCE(t.s_name, 'No Supplier') AS top_supplier,
     CASE 
         WHEN co.last_order_date IS NULL THEN 'Never Ordered'
-        WHEN co.last_order_date >= DATE '1998-10-01' - INTERVAL '30 days' THEN 'Active'
+        WHEN co.last_order_date >= toDate('1998-10-01') - INTERVAL 30 DAY THEN 'Active'
         ELSE 'Inactive'
     END AS customer_status
 FROM 

@@ -38,7 +38,7 @@ SELECT
     tn.nation_name,
     tn.total_sales,
     COALESCE((SELECT AVG(total_sales) FROM TopNations), 0) AS avg_top_sales,
-    (SELECT COUNT(*) FROM orders o WHERE o.o_orderdate >= DATE '1997-01-01') AS total_orders_1997,
+    (SELECT COUNT(*) FROM orders o WHERE o.o_orderdate >= toDate('1997-01-01')) AS total_orders_1997,
     EXISTS (
         SELECT 1
         FROM part p

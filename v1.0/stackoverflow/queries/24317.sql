@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
 ),
 UserAnalysis AS (
     SELECT 
@@ -32,19 +32,19 @@ UserAnalysis AS (
     LEFT JOIN 
         Posts p ON p.OwnerUserId = u.Id
     WHERE 
-        u.LastAccessDate > CURRENT_TIMESTAMP - INTERVAL '6 months'
+        u.LastAccessDate > now64(6) - INTERVAL 6 MONTH
     GROUP BY 
         u.Id, u.DisplayName
 ),
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT CONCAT(ph.Comment, ' (', CAST(ph.CreationDate AS date), ')'), '; ') AS HistoryComments,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ph.Comment, ' (', CAST(ph.CreationDate AS date), ')')))), '; ') AS HistoryComments,
         COUNT(*) AS HistoryCount
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '3 months'
+        ph.CreationDate >= now64(6) - INTERVAL 3 MONTH
     GROUP BY 
         ph.PostId
 ),
@@ -88,7 +88,7 @@ WHERE
         SELECT 1 
         FROM Posts p 
         WHERE p.OwnerUserId = FinalReport.UserId 
-        AND p.CreationDate < CURRENT_TIMESTAMP - INTERVAL '1 year'
+        AND p.CreationDate < now64(6) - INTERVAL 1 YEAR
     )
 ORDER BY 
     CreationDate DESC

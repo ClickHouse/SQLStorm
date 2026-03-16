@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS PostRank
     FROM 
         Posts p
@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        LATERAL (SELECT unnest(string_to_array(p.Tags, '>')) AS tagName) AS tagName ON true
+        (SELECT arrayJoin(splitByString('>', p.Tags)) AS tagName) AS tagName ON true
     LEFT JOIN 
         Tags t ON t.TagName = tagName.tagName
     WHERE 
@@ -48,8 +48,8 @@ SELECT
     tu.PostCount,
     tu.TotalScore,
     tu.TotalViews,
-    ARRAY_AGG(rp.Title) AS TopPostTitles,
-    ARRAY_AGG(rp.Score) AS TopPostScores
+    groupArray(assumeNotNull(rp.Title)) AS TopPostTitles,
+    groupArray(assumeNotNull(rp.Score)) AS TopPostScores
 FROM 
     TopUsers tu
 JOIN 

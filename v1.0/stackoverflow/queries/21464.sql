@@ -15,7 +15,7 @@ FilteredBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM Badges b
     WHERE b.Class <= 2 
     GROUP BY b.UserId
@@ -70,7 +70,7 @@ FROM Users u
 JOIN RankedPosts rp ON u.Id = rp.PostId 
 LEFT JOIN FilteredBadges fb ON u.Id = fb.UserId
 LEFT JOIN QuestionAnswerStats qa ON u.Id = qa.OwnerUserId
-LEFT JOIN PopularTags pt ON pt.TagName = ANY(STRING_TO_ARRAY(rp.PostBody, ' ')) 
+LEFT JOIN PopularTags pt ON pt.TagName = ANY(splitByString(' ', rp.PostBody)) 
 LEFT JOIN PostHistoryAnalysis ph ON rp.PostId = ph.PostId AND ph.PostHistoryTypeId = 10 
 WHERE rp.rn = 1 
 AND fb.BadgeCount IS NOT NULL 

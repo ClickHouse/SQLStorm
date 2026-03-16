@@ -24,8 +24,8 @@ AggregatedData AS (
     SELECT 
         rt.production_year,
         COUNT(*) AS total_titles,
-        STRING_AGG(DISTINCT rt.title, ', ') AS titles,
-        STRING_AGG(DISTINCT rt.actor_name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.title))), ', ') AS titles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.actor_name))), ', ') AS actors
     FROM 
         RankedTitles rt
     GROUP BY 
@@ -37,7 +37,7 @@ SELECT
     ad.total_titles,
     ad.titles,
     ad.actors,
-    ARRAY_AGG(DISTINCT CONCAT(c.role_id, ': ', c.note)) AS role_details
+    arrayDistinct(groupArray(assumeNotNull(CONCAT(c.role_id, ': ', c.note)))) AS role_details
 FROM 
     AggregatedData ad
 LEFT JOIN 

@@ -28,7 +28,7 @@ DetailedInfo AS (
         tm.movie_id,
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT CONCAT(a.name, ' (', rt.role, ')'), ', ') AS cast_details,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', rt.role, ')')))), ', ') AS cast_details,
         COUNT(DISTINCT mc.company_id) AS company_count,
         AVG(CASE WHEN mi.info IS NOT NULL THEN 1 ELSE 0 END) AS company_info_ratio
     FROM 

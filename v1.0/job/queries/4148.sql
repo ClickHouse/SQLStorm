@@ -26,8 +26,8 @@ movie_details AS (
     SELECT 
         fm.title,
         fm.production_year,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         filtered_movies fm
         LEFT JOIN movie_companies mc ON fm.title = (SELECT title FROM aka_title WHERE id = mc.movie_id LIMIT 1)

@@ -17,13 +17,13 @@ PopularPosts AS (
         p.ViewCount,
         ROW_NUMBER() OVER (ORDER BY p.ViewCount DESC) AS PopularityRank
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
       AND p.ViewCount IS NOT NULL
 ),
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(pt.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS HistoryTypes,
         COUNT(*) AS HistoryCount,
         MAX(ph.CreationDate) AS LastActionDate
     FROM PostHistory ph

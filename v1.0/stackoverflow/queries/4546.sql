@@ -42,6 +42,6 @@ SELECT
     P.VoteCount,
     P.LastHistoryDate
 FROM TopUsers T
-JOIN PostStats P ON P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+JOIN PostStats P ON P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 LEFT JOIN UserSummary U ON T.UserId = U.UserId
 ORDER BY T.Reputation DESC, P.VoteCount DESC;

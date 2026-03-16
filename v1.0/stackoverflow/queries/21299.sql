@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 UserStatistics AS (
     SELECT 
@@ -59,7 +59,7 @@ InactivityWarning AS (
     FROM 
         Posts 
     WHERE 
-        LastActivityDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '90 days'
+        LastActivityDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY
     GROUP BY 
         OwnerUserId
 )

@@ -4,8 +4,8 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(l.l_extendedprice) AS avg_line_item_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     customer c
 JOIN 
@@ -23,8 +23,8 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' 
-    AND o.o_orderdate < DATE '1998-01-01'
+    o.o_orderdate >= toDate('1997-01-01') 
+    AND o.o_orderdate < toDate('1998-01-01')
     AND l.l_returnflag = 'N'
 GROUP BY 
     c.c_name, r.r_name

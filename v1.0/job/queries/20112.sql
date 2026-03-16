@@ -20,7 +20,7 @@ ActorSummary AS (
     SELECT 
         actor_id,
         COUNT(movie_id) AS movie_count,
-        STRING_AGG(title, ', ') AS movies
+        arrayStringConcat(groupArray(assumeNotNull(title)), ', ') AS movies
     FROM 
         RecursiveMovieCTE
     GROUP BY 
@@ -84,7 +84,7 @@ SELECT
     (SELECT COUNT(*) 
      FROM complete_cast cc 
      WHERE cc.movie_id = mt.movie_id AND cc.status_id IS NOT NULL) AS complete_cast_count,
-    (SELECT STRING_AGG(n.name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(n.name)), ', ') 
      FROM name n 
      LEFT JOIN cast_info ci ON n.imdb_id = ci.person_id 
      WHERE ci.movie_id = mt.movie_id) AS notable_names

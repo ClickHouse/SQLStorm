@@ -54,4 +54,4 @@ SELECT
 FROM filtered_sales fs
 JOIN item i ON fs.ws_item_sk = i.i_item_sk
 ORDER BY fs.total_net_paid DESC
-OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

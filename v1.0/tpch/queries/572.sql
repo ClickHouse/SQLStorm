@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '2 years'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 2 YEAR
 ), 
 SupplierDetails AS (
     SELECT 

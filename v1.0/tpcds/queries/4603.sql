@@ -10,7 +10,7 @@ WITH CustomerSales AS (
     JOIN 
         web_sales AS ws ON c.c_customer_sk = ws.ws_bill_customer_sk
     WHERE 
-        c.c_birth_year < (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - 21)
+        c.c_birth_year < (toYear(cast('2002-10-01' as date)) - 21)
     GROUP BY 
         c.c_customer_sk, c.c_first_name, c.c_last_name
 ),
@@ -52,7 +52,7 @@ SELECT
 FROM 
     TopCustomers AS t
 LEFT JOIN 
-    SalesSummary AS s ON s.d_date = cast('2002-10-01' as date) - INTERVAL '1 DAY'
+    SalesSummary AS s ON s.d_date = cast('2002-10-01' as date) - INTERVAL 1 DAY
 WHERE 
     t.sales_rank <= 10
 ORDER BY 

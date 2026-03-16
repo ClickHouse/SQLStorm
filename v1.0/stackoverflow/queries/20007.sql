@@ -30,7 +30,7 @@ BadgeStats AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -46,7 +46,7 @@ RankedUsers AS (
         ups.QuestionCount,
         ups.AnswerCount,
         COALESCE(cps.ClosedPostCount, 0) AS ClosedPostCount,
-        COALESCE(cps.LastClosedPostDate, DATE '1970-01-01') AS LastClosedPostDate,
+        COALESCE(cps.LastClosedPostDate, toDate('1970-01-01')) AS LastClosedPostDate,
         bst.BadgeCount,
         bst.BadgeNames,
         ROW_NUMBER() OVER (ORDER BY ups.TotalScore DESC, ups.PostCount DESC) AS UserRank

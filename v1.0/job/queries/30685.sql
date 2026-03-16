@@ -40,7 +40,7 @@ SELECT
     mh.production_year,
     mh.company_name,
     COUNT(DISTINCT ci.person_id) AS cast_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actors_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors_names,
     CASE 
         WHEN COUNT(DISTINCT ci.person_id) > 5 THEN 'Large Cast'
         WHEN COUNT(DISTINCT ci.person_id) BETWEEN 3 AND 5 THEN 'Medium Cast'

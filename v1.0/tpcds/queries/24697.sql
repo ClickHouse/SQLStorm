@@ -72,4 +72,4 @@ WHERE
 ORDER BY 
     f.ws_net_profit DESC, 
     f.total_store_returned_amount ASC
-OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

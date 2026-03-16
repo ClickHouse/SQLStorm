@@ -8,7 +8,7 @@ SELECT
     COUNT(DISTINCT ss.ss_ticket_number) AS total_store_orders,
     COALESCE(SUM(ws.ws_ext_sales_price), 0) AS total_web_sales, 
     COALESCE(SUM(ss.ss_ext_sales_price), 0) AS total_store_sales,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promo_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promo_names
 FROM 
     customer c
 LEFT JOIN 

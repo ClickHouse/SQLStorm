@@ -57,4 +57,4 @@ LEFT JOIN SalesSummary ss ON i.i_item_sk = ss.ws_item_sk
 WHERE i.i_rec_start_date < cast('2002-10-01' as date)
   AND (i.i_current_price IS NOT NULL AND i.i_current_price > 50)
 ORDER BY total_sales_quantity DESC, i.i_item_desc ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

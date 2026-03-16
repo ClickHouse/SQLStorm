@@ -24,7 +24,7 @@ PostDetails AS (
         COALESCE(UPD.VoteCount, 0) AS VoteCount,
         COALESCE(ANS.AnswerCount, 0) AS AnswerCount,
         COALESCE(EDT.EditCount, 0) AS EditCount,
-        EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)) AS PostAgeInSeconds,
+        toUnixTimestamp((p.LastActivityDate - p.CreationDate)) AS PostAgeInSeconds,
         CASE 
             WHEN p.Score IS NULL THEN NULL 
             ELSE p.Score + (10 * COALESCE(UPD.VoteCount, 0)) 

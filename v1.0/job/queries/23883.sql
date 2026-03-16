@@ -15,7 +15,7 @@ WITH Recursive_CTE AS (
 Movie_Cast AS (
     SELECT 
         rc.movie_id,
-        STRING_AGG(rc.actor_name, ', ') AS full_cast
+        arrayStringConcat(groupArray(assumeNotNull(rc.actor_name)), ', ') AS full_cast
     FROM 
         Recursive_CTE rc
     GROUP BY 
@@ -24,7 +24,7 @@ Movie_Cast AS (
 Movie_Keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

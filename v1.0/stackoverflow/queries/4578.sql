@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 UserEngagement AS (
     SELECT 
@@ -34,7 +34,7 @@ ClosedPostStats AS (
         ph.PostId,
         MAX(ph.CreationDate) AS LastClosedDate,
         COUNT(*) AS CloseReasonCount,
-        STRING_AGG(ph.Comment, ', ') AS CloseComments
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS CloseComments
     FROM 
         PostHistory ph
     WHERE 

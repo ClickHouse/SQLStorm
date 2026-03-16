@@ -7,7 +7,7 @@ WITH CONCATENATED_INFO AS (
         d.d_date AS purchase_date,
         d.d_month_seq AS purchase_month,
         sm.sm_type AS shipping_method,
-        STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used
     FROM 
         customer c
     JOIN 

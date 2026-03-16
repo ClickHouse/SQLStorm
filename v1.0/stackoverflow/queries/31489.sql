@@ -26,7 +26,7 @@ ActiveUsers AS (
     FROM 
         Users
     WHERE 
-        LastAccessDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 PopularPosts AS (
@@ -43,7 +43,7 @@ PopularPosts AS (
         Posts P
     WHERE 
         P.PostTypeId = 1
-        AND P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 TopTags AS (
@@ -78,7 +78,7 @@ LEFT JOIN
 LEFT JOIN 
     PopularPosts PP ON PP.PostId IN (SELECT V.PostId FROM Votes V WHERE V.UserId = U.Id)
 LEFT JOIN 
-    TopTags TT ON TT.TagName IN (SELECT UNNEST(STRING_TO_ARRAY(PP.Title, ' ')))
+    TopTags TT ON TT.TagName IN (SELECT arrayJoin(splitByString(' ', PP.Title)))
 WHERE 
     U.Reputation > 100
 ORDER BY 

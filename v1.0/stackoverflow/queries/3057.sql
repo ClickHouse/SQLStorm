@@ -20,7 +20,7 @@ RecentPosts AS (
         P.Score,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
+    WHERE P.CreationDate > now64(6) - INTERVAL 1 YEAR
 ),
 PostVoteCounts AS (
     SELECT 
@@ -39,7 +39,7 @@ SELECT
     COALESCE(UBS.BronzeBadges, 0) AS BronzeBadges,
     COUNT(DISTINCT RP.PostId) AS RecentPostCount,
     AVG(COALESCE(PVC.UpVotes, 0) - COALESCE(PVC.DownVotes, 0)) AS AveragePostScore,
-    STRING_AGG(DISTINCT RP.Title, '; ') AS RecentPostTitles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(RP.Title))), '; ') AS RecentPostTitles
 FROM Users U
 LEFT JOIN UserBadgeStats UBS ON U.Id = UBS.UserId
 LEFT JOIN RecentPosts RP ON U.Id = RP.OwnerUserId AND RP.PostRank <= 5

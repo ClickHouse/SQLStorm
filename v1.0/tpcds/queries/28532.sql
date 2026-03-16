@@ -16,8 +16,8 @@ WITH string_benchmarks AS (
         ca_state,
         COUNT(DISTINCT ca_city) AS distinct_cities,
         AVG(street_name_length) AS avg_street_name_length,
-        STRING_AGG(upper_street_name, ', ') AS upper_street_names,
-        STRING_AGG(street_name_hyphenated, ', ') AS hyphenated_street_names
+        arrayStringConcat(groupArray(assumeNotNull(upper_street_name)), ', ') AS upper_street_names,
+        arrayStringConcat(groupArray(assumeNotNull(street_name_hyphenated)), ', ') AS hyphenated_street_names
     FROM 
         string_benchmarks
     GROUP BY 

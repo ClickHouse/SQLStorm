@@ -33,7 +33,7 @@ WITH RECURSIVE movie_hierarchy AS (
 cast_details AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(aka.name, ', ') AS cast_names,
+        arrayStringConcat(groupArray(assumeNotNull(aka.name)), ', ') AS cast_names,
         COUNT(DISTINCT ci.person_id) AS num_cast_members,
         COUNT(DISTINCT ci.role_id) AS unique_roles
     FROM 
@@ -47,7 +47,7 @@ cast_details AS (
 movie_info_agg AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT it.info, '; ') AS movie_info,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(it.info))), '; ') AS movie_info,
         COUNT(DISTINCT mi.info_type_id) AS info_count
     FROM 
         movie_info mi

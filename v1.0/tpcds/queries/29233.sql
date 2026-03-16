@@ -43,7 +43,7 @@ SELECT
     purchase_category,
     COUNT(*) AS customer_count,
     AVG(street_name_length) AS avg_street_name_length,
-    STRING_AGG(full_address, '; ') AS sample_addresses
+    arrayStringConcat(groupArray(assumeNotNull(full_address)), '; ') AS sample_addresses
 FROM 
     CombinedData
 GROUP BY 

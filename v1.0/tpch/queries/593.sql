@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
+        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
     GROUP BY 
         o.o_orderkey, o.o_orderdate, o.o_orderstatus
 ),
@@ -42,7 +42,7 @@ LEFT JOIN
 LEFT JOIN 
     SupplierSummary ss ON s.s_suppkey = ss.s_suppkey
 LEFT JOIN 
-    RankedOrders o ON o.o_orderkey = (SELECT MIN(o2.o_orderkey) FROM RankedOrders o2 WHERE o2.o_orderdate >= DATE '1997-06-01')
+    RankedOrders o ON o.o_orderkey = (SELECT MIN(o2.o_orderkey) FROM RankedOrders o2 WHERE o2.o_orderdate >= toDate('1997-06-01'))
 WHERE 
     r.r_name IS NOT NULL AND ss.parts_supplied IS NOT NULL
 GROUP BY 

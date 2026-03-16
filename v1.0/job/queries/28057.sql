@@ -16,7 +16,7 @@ PopularMovies AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS num_cast_members,
-        STRING_AGG(DISTINCT p.name, ', ') AS cast_members,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_members,
         MAX(t.title) AS title,
         MAX(t.production_year) AS production_year
     FROM 
@@ -33,7 +33,7 @@ PopularMovies AS (
 HighRatedMovies AS (
     SELECT 
         i.movie_id,
-        STRING_AGG( DISTINCT inf.info, ', ') AS movie_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(inf.info))), ', ') AS movie_info
     FROM 
         movie_info i
     JOIN 

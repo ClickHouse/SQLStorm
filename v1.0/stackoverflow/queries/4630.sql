@@ -39,7 +39,7 @@ SELECT
         ELSE 'Regular Contributor'
     END AS ContributorStatus,
     COALESCE((
-        SELECT STRING_AGG(DISTINCT T.TagName, ', ')
+        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ')
         FROM Posts P2 
         JOIN Tags T ON P2.Tags LIKE '%' || T.TagName || '%'
         WHERE P2.OwnerUserId = U.UserId

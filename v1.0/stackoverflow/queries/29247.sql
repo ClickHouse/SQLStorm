@@ -39,7 +39,7 @@ WITH UserStats AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     us.DisplayName AS UserName,
@@ -60,7 +60,7 @@ SELECT
 FROM 
     UserStats us
 LEFT JOIN 
-    TagStats ts ON us.UserId = (SELECT OwnerUserId FROM Posts ORDER BY RANDOM() LIMIT 1) 
+    TagStats ts ON us.UserId = (SELECT OwnerUserId FROM Posts ORDER BY rand() LIMIT 1) 
 LEFT JOIN 
     RecentActivity ra ON us.UserId = ra.UserId
 WHERE 

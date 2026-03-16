@@ -21,7 +21,7 @@ popular_parts AS (
     SELECT p.p_partkey, p.p_name, COUNT(li.l_orderkey) AS order_count
     FROM part p
     LEFT JOIN lineitem li ON p.p_partkey = li.l_partkey
-    WHERE li.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE li.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY p.p_partkey, p.p_name
     HAVING COUNT(li.l_orderkey) > 10
 ),

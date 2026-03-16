@@ -23,7 +23,7 @@ TopUserPosts AS (
         rp.ViewCount,
         rp.OwnerDisplayName,
         rp.CreationDate,
-        STRING_AGG(t.TagName, ', ') AS TagList
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagList
     FROM 
         RankedPosts rp
     LEFT JOIN 

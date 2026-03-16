@@ -30,7 +30,7 @@ RecentActiveUsers AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        p.CreationDate >= now64(6) - INTERVAL 30 DAY
     GROUP BY 
         p.OwnerUserId
 ),

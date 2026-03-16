@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, pt.Name
 ),
@@ -37,7 +37,7 @@ SELECT
     tp.CommentCount,
     tp.VoteCount,
     pt.Name AS PostType,
-    ARRAY_AGG(b.Name) AS UserBadges
+    groupArray(assumeNotNull(b.Name)) AS UserBadges
 FROM 
     TopPosts tp
 LEFT JOIN 

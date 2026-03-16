@@ -18,7 +18,7 @@ AddressSummary AS (
         ca.ca_address_sk,
         ca.ca_city,
         COUNT(DISTINCT c.c_customer_id) AS customer_count,
-        STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customer_names
     FROM 
         customer_address ca
     JOIN 
@@ -34,7 +34,7 @@ RecentPurchases AS (
     FROM 
         catalog_sales cs
     WHERE 
-        cs.cs_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = cast('2002-10-01' as date) - INTERVAL '30 days')
+        cs.cs_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = cast('2002-10-01' as date) - INTERVAL 30 DAY)
     GROUP BY 
         cs.cs_bill_customer_sk
 )

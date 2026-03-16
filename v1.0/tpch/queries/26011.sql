@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS unique_suppliers,
     SUM(ps.ps_availqty) AS total_avail_qty,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' - ', p.p_comment), '; ') AS product_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' - ', p.p_comment)))), '; ') AS product_details,
     r.r_name AS region_name
 FROM 
     part p

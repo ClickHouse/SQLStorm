@@ -43,13 +43,13 @@ PostHistoryEntry AS (
     JOIN 
         PostHistoryTypes ht ON ph.PostHistoryTypeId = ht.Id
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        ph.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 UserBadges AS (
     SELECT 
         ub.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges ub
     JOIN 

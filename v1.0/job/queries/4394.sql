@@ -15,7 +15,7 @@ MovieDetails AS (
         mv.movie_id,
         mv.title,
         COALESCE(COUNT(DISTINCT cc.id), 0) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names, 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names, 
         COALESCE(SUM(CASE WHEN mi.info_type_id IS NOT NULL THEN 1 ELSE 0 END), 0) AS info_count
     FROM 
         RankedMovies mv

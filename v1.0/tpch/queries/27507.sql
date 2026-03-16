@@ -20,8 +20,8 @@ SELECT
     sb.combined_info,
     COUNT(*) AS num_parts,
     AVG(sb.name_length) AS avg_name_length,
-    STRING_AGG(DISTINCT sb.name_upper, ', ') AS unique_upper_names,
-    STRING_AGG(DISTINCT sb.modified_comment, '; ') AS unique_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sb.name_upper))), ', ') AS unique_upper_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sb.modified_comment))), '; ') AS unique_comments
 FROM
     StringBenchmark sb
 JOIN

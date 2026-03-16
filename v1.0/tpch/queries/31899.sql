@@ -32,4 +32,4 @@ LEFT JOIN TopSuppliers th ON th.s_suppkey = c.c_nationkey
 LEFT JOIN SupplierHierarchy s ON c.c_nationkey = s.s_suppkey
 WHERE cs.TotalSpent > 1000
 ORDER BY cs.TotalSpent DESC, c.c_name
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

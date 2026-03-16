@@ -29,7 +29,7 @@ WITH RECURSIVE movie_chain AS (
 SELECT 
     a.name,
     COUNT(DISTINCT ca.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT m.title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.title))), ', ') AS movie_titles,
     MAX(CASE WHEN m.production_year IS NOT NULL THEN m.production_year ELSE 2023 END) AS recent_production_year,
     ROW_NUMBER() OVER (PARTITION BY a.id ORDER BY COUNT(DISTINCT ca.movie_id) DESC) AS rank
 FROM 

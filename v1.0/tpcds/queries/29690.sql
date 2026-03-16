@@ -23,7 +23,7 @@ RecentPurchases AS (
     JOIN 
         date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
     WHERE 
-        d.d_date >= CURRENT_DATE - INTERVAL '6 months'
+        d.d_date >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         ws.ws_bill_customer_sk
 ),

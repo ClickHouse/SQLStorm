@@ -3,8 +3,8 @@ WITH AddressStats AS (
     SELECT 
         ca_state,
         COUNT(*) AS total_addresses,
-        STRING_AGG(ca_city, ', ' ORDER BY ca_city) AS city_list,
-        STRING_AGG(DISTINCT ca_street_type, ', ') AS unique_street_types,
+        arrayStringConcat(groupArray(assumeNotNull(ca_city)), ', ' ORDER BY ca_city) AS city_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_type))), ', ') AS unique_street_types,
         AVG(ca_gmt_offset) AS avg_gmt_offset
     FROM 
         customer_address
@@ -16,7 +16,7 @@ CustomerStats AS (
         cd_gender,
         COUNT(*) AS total_customers,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_credit_rating, ', ') AS credit_rating_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_credit_rating))), ', ') AS credit_rating_list
     FROM 
         customer_demographics
     GROUP BY 
@@ -27,7 +27,7 @@ ItemStats AS (
         i_brand,
         COUNT(*) AS total_items,
         SUM(i_current_price) AS total_price,
-        STRING_AGG(i_category, ', ') AS category_list
+        arrayStringConcat(groupArray(assumeNotNull(i_category)), ', ') AS category_list
     FROM 
         item
     GROUP BY 

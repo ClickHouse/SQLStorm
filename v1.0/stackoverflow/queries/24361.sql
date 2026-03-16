@@ -11,22 +11,22 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - interval '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.PostTypeId, p.CreationDate
 ),
 RecentPostTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ',') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ',') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '><')) AS tag ON TRUE
+        arrayJoin(splitByString('><', p.Tags)) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - interval '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         p.Id
 ),

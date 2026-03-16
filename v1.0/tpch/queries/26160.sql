@@ -4,7 +4,7 @@ SELECT
     AVG(ps.ps_supplycost) AS avg_supply_cost, 
     SUM(CASE WHEN l.l_discount > 0 THEN l.l_quantity ELSE 0 END) AS total_discounted_quantity, 
     MAX(CASE WHEN o.o_orderdate > '1997-01-01' THEN o.o_totalprice ELSE NULL END) AS max_recent_order_value,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     part p
 JOIN 

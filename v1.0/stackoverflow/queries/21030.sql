@@ -19,7 +19,7 @@ WITH UserPostStatistics AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(*) AS BadgeCount
     FROM 
         Badges b
@@ -28,7 +28,7 @@ UserBadges AS (
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', p.Tags)) AS TagName,
         COUNT(*) AS UsageCount
     FROM 
         Posts p

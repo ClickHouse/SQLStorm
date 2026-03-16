@@ -26,7 +26,7 @@ PostHistoryInfo AS (
         PH.PostId,
         COUNT(*) AS HistoryCount,
         MAX(PH.CreationDate) AS LastModified,
-        STRING_AGG(PHT.Name, ', ') AS HistoryTypes
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes
     FROM PostHistory PH
     INNER JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     GROUP BY PH.PostId

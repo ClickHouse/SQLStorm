@@ -73,4 +73,4 @@ WHERE
     AND (od.net_revenue IS NOT NULL AND od.line_item_count > 0)
 ORDER BY 
     p.p_partkey, order_rank DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

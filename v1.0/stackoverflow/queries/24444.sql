@@ -16,7 +16,7 @@ UserBadges AS (
     SELECT 
         B.UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM Badges B
     GROUP BY B.UserId
 ),
@@ -25,7 +25,7 @@ PostStatistics AS (
         P.Id AS PostId,
         P.Title,
         P.CreationDate,
-        EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - P.CreationDate)) / 3600 AS AgeInHours,
+        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.CreationDate)) / 3600 AS AgeInHours,
         P.Score,
         COALESCE(H.TypeCount, 0) AS HistoryCount,
         COALESCE(VoteCounts.UpVotes, 0) AS TotalUpVotes,

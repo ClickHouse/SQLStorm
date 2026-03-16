@@ -31,13 +31,13 @@ FilteredPosts AS (
         RP.AuthorName,
         RP.CommentCount,
         RP.AnswerCount,
-        STRING_AGG(T.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM 
         RankedPosts RP
     LEFT JOIN 
         Posts P ON RP.PostId = P.Id
     LEFT JOIN 
-        LATERAL (SELECT TRIM(BOTH '<>' FROM UNNEST(STRING_TO_ARRAY(P.Tags, ','))) AS TagName) AS TagArray ON TRUE
+        (SELECT TRIM(BOTH '<>' FROM arrayJoin(splitByString(',', P.Tags))) AS TagName) AS TagArray ON TRUE
     LEFT JOIN 
         Tags T ON T.TagName = TagArray.TagName
     WHERE 

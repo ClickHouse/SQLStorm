@@ -17,7 +17,7 @@ WITH RankedMovies AS (
         rm.title,
         rm.production_year,
         COUNT(mc.movie_id) AS total_companies,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         SUM(CASE WHEN mi.info_type_id = 1 THEN 1 ELSE 0 END) AS has_tagged_info,
         MAX(CASE WHEN k.keyword IS NOT NULL THEN k.keyword ELSE 'No keyword' END) AS keyword_info
     FROM 

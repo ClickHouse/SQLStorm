@@ -5,7 +5,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS marketing_segments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS marketing_segments,
     SUBSTRING(p.p_comment, 1, 20) AS short_comment,
     CASE 
         WHEN AVG(ps.ps_supplycost) > 100 THEN 'High Cost' 

@@ -25,7 +25,7 @@ AggregateKeywordCount AS (
     SELECT 
         movie_title,
         production_year,
-        STRING_AGG(movie_keyword, ', ') AS keywords,
+        arrayStringConcat(groupArray(assumeNotNull(movie_keyword)), ', ') AS keywords,
         COUNT(movie_keyword) AS keyword_count
     FROM 
         MovieTitleInfo
@@ -39,7 +39,7 @@ DetailedMovieInfo AS (
         m.keywords,
         m.keyword_count,
         COUNT(DISTINCT c.id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS all_actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS all_actors
     FROM 
         AggregateKeywordCount m
     JOIN 

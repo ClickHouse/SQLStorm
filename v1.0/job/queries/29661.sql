@@ -3,7 +3,7 @@ WITH ranked_movies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT CONCAT(a.name, ' as ', r.role)) AS cast_list,
+        arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' as ', r.role)))) AS cast_list,
         RANK() OVER (ORDER BY t.production_year DESC) AS year_rank
     FROM 
         aka_title t

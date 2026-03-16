@@ -28,7 +28,7 @@ WITH RECURSIVE movie_series AS (
 cast_details AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(a.name, ', ') AS cast_names,
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS cast_names,
         COUNT(c.person_id) AS cast_count,
         AVG(CASE WHEN r.role IS NOT NULL THEN 1 ELSE 0 END) AS lead_actor_ratio
     FROM cast_info c
@@ -40,7 +40,7 @@ cast_details AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id

@@ -11,7 +11,7 @@ WITH Customer_Info AS (
             WHEN cd.cd_marital_status = 'S' THEN 'Single'
             ELSE 'Other' 
         END AS marital_status,
-        ARRAY_AGG(DISTINCT i.i_product_name) AS purchased_items
+        arrayDistinct(groupArray(assumeNotNull(i.i_product_name))) AS purchased_items
     FROM 
         customer c
     JOIN 

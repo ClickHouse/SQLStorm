@@ -35,7 +35,7 @@ BadgeDetails AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS TotalBadges,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 

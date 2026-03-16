@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.OwnerUserId,
         p.Score,
-        STRING_AGG(t.TagName, ', ') AS TagsList,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList,
         COUNT(DISTINCT c.Id) AS CommentCount,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS RankByDate,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankByScore

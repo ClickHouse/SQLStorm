@@ -10,7 +10,7 @@ WITH RankedOrders AS (
         orders
     WHERE 
         o_orderstatus = 'O' 
-        AND o_orderdate >= DATE '1997-01-01'
+        AND o_orderdate >= toDate('1997-01-01')
 ),
 SupplierPartStats AS (
     SELECT 
@@ -58,7 +58,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01'
+    l.l_shipdate >= toDate('1997-01-01')
     AND l.l_returnflag = 'N'
     AND (s.s_acctbal IS NULL OR s.s_acctbal > 0) 
 GROUP BY 

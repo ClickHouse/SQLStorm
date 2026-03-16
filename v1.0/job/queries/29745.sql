@@ -23,7 +23,7 @@ RoleStatistics AS (
     SELECT 
         cast_role,
         COUNT(*) AS role_count,
-        STRING_AGG(DISTINCT aka_name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aka_name))), ', ') AS actors
     FROM MovieDetails
     GROUP BY cast_role
 ),
@@ -32,7 +32,7 @@ MovieStatistics AS (
         movie_title,
         production_year,
         COUNT(DISTINCT aka_id) AS total_actors,
-        STRING_AGG(DISTINCT company_type, ', ') AS companies_involved,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS companies_involved,
         MAX(role_count) AS max_role_count
     FROM MovieDetails
     JOIN RoleStatistics ON MovieDetails.cast_role = RoleStatistics.cast_role

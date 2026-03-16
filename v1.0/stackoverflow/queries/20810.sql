@@ -18,7 +18,7 @@ UserBadges AS (
     SELECT 
         UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames
     FROM 
         Badges
     GROUP BY 
@@ -77,4 +77,4 @@ WHERE
     AND (QU.TotalViews IS NOT NULL)
 ORDER BY 
     QU.Reputation DESC, QU.DisplayName ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

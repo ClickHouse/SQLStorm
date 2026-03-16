@@ -30,8 +30,8 @@ MovieDetails AS (
         tm.title_id,
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM
         TopMovies tm
     LEFT JOIN

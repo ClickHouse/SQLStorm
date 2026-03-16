@@ -39,7 +39,7 @@ SELECT
     mc.movie_id,
     mc.title, 
     mc.production_year,
-    STRING_AGG(mc.actor_name, ', ') AS actors,
+    arrayStringConcat(groupArray(assumeNotNull(mc.actor_name)), ', ') AS actors,
     COUNT(*) FILTER (WHERE mc.cast_rank IS NOT NULL) AS total_cast,
     SUM(CASE WHEN mc.cast_rank IS NULL THEN 1 ELSE 0 END) AS missing_actors,
     MAX(mc.production_year) - MIN(mc.production_year) AS production_span

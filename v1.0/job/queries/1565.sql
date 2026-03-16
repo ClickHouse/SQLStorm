@@ -30,7 +30,7 @@ SELECT
     an.name AS actor_name,
     COUNT(DISTINCT ci.movie_id) AS total_movies,
     AVG(COALESCE(amt.avg_year, 0)) AS average_production_year,
-    STRING_AGG(DISTINCT rt.title, ', ') AS titles_in_years, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.title))), ', ') AS titles_in_years, 
     CASE 
         WHEN COUNT(DISTINCT ci.movie_id) > (SELECT AVG(movie_count) FROM ActorMovieCounts) 
         THEN 'Active Actor' 

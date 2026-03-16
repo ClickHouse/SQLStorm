@@ -28,7 +28,7 @@ SELECT
     a.name AS actor_name,
     m.title AS movie_title,
     m.production_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     COUNT(DISTINCT c.id) AS total_cast,
     AVG(CASE WHEN pi.info IS NOT NULL THEN 1 ELSE 0 END) AS presence_ratio,
     ROW_NUMBER() OVER (PARTITION BY a.id ORDER BY m.production_year DESC) AS movie_rank

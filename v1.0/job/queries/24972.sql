@@ -15,7 +15,7 @@ ActorRoleCounts AS (
         ci.person_id,
         COUNT(DISTINCT ci.movie_id) AS total_movies,
         MAX(rt.role) AS dominant_role,
-        STRING_AGG(DISTINCT rt.role, ', ') AS roles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS roles,
         COUNT(DISTINCT ci.movie_id) FILTER (WHERE rt.role IS NOT NULL) AS roles_with_movies
     FROM 
         cast_info ci
@@ -27,7 +27,7 @@ ActorRoleCounts AS (
 MovieCompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name || ' (' || ct.kind || ')', '; ') AS companies_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name || ' (' || ct.kind || ')'))), '; ') AS companies_info
     FROM 
         movie_companies mc
     JOIN 

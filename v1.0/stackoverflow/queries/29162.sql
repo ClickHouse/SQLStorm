@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         COALESCE(u.DisplayName, 'Community User') AS OwnerDisplayName,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT b.Id) AS BadgeCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     LEFT JOIN 
-        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS t(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1
     GROUP BY 

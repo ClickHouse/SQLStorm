@@ -26,8 +26,8 @@ MovieDetails AS (
         tm.movie_id,
         tm.title,
         tm.production_year,
-        ARRAY_AGG(DISTINCT co.name) AS companies,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(co.name))) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         TopMovies tm
     LEFT JOIN 

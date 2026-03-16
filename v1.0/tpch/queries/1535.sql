@@ -63,4 +63,4 @@ HAVING
     COUNT(DISTINCT li.l_orderkey) > 5
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

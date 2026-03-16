@@ -61,7 +61,7 @@ LEFT JOIN Users u ON rp.OwnerUserId = u.Id
 LEFT JOIN UserBadges ub ON u.Id = ub.UserId
 LEFT JOIN VoteCounts vc ON rp.Id = vc.PostId
 WHERE 
-    rp.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND 
+    rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND 
     (ub.TotalBadges IS NULL OR ub.TotalBadges > 5) 
 ORDER BY 
     rp.CreationDate DESC, 

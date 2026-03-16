@@ -13,7 +13,7 @@ CastRoles AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT rt.role, ', ') AS roles_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS roles_list
     FROM 
         cast_info ci
     JOIN 
@@ -41,7 +41,7 @@ TopMovies AS (
 CompanyData AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS companies,
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS companies,
         COUNT(DISTINCT cn.country_code) AS distinct_countries
     FROM 
         movie_companies mc

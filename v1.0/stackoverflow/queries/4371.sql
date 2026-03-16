@@ -22,7 +22,7 @@ ClosedPosts AS (
         p.Id AS PostId,
         p.Title,
         PH.CreationDate AS ClosedDate,
-        EXTRACT(EPOCH FROM (PH.CreationDate - p.CreationDate)) / 60 AS DurationUntilClosed
+        toUnixTimestamp((PH.CreationDate - p.CreationDate)) / 60 AS DurationUntilClosed
     FROM 
         Posts p
     JOIN 

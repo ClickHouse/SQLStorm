@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 TagAggregates AS (
     SELECT 
-        UNNEST(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         COUNT(*) AS QuestionCount,
         AVG(ViewCount) AS AvgViewCount,
         SUM(Score) AS TotalScore

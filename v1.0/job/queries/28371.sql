@@ -42,7 +42,7 @@ FinalResults AS (
         td.title,
         td.production_year,
         td.keyword_count,
-        STRING_AGG(DISTINCT td.actor_name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(td.actor_name))), ', ') AS actors,
         td.cast_count
     FROM 
         TitleDetails td

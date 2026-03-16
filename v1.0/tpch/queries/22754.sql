@@ -66,4 +66,4 @@ WHERE
     AND (p.p_name LIKE '%part%' OR p.p_comment IS NOT NULL)
 ORDER BY 
     p.p_partkey, price_rank DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

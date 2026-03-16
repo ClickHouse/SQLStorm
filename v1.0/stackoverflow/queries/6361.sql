@@ -22,11 +22,11 @@ PostStatistics AS (
         p.Score,
         p.CreationDate,
         LEAD(p.CreationDate) OVER (ORDER BY p.CreationDate) AS NextPostDate,
-        EXTRACT(EPOCH FROM (LEAD(p.CreationDate) OVER (ORDER BY p.CreationDate) - p.CreationDate)) AS TimeToNextPost
+        toUnixTimestamp((LEAD(p.CreationDate) OVER (ORDER BY p.CreationDate) - p.CreationDate)) AS TimeToNextPost
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 

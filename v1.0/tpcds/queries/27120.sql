@@ -3,7 +3,7 @@ SELECT
     SUBSTRING(c.c_first_name, 1, 1) AS first_initial, 
     COUNT(DISTINCT c.c_customer_sk) AS customer_count, 
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate, 
-    STRING_AGG(DISTINCT ca.ca_city, ', ') AS unique_cities,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_city))), ', ') AS unique_cities,
     SUM(CASE WHEN cd.cd_gender = 'M' THEN 1 ELSE 0 END) AS male_count,
     SUM(CASE WHEN cd.cd_gender = 'F' THEN 1 ELSE 0 END) AS female_count,
     SUM(sr_return_quantity) AS total_returns,

@@ -36,7 +36,7 @@ JOIN
 JOIN 
     region sr ON n.n_regionkey = sr.r_regionkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1997-12-31' 
+    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1997-12-31') 
     AND o.o_orderstatus = 'O'
     AND EXISTS ( 
         SELECT 1 

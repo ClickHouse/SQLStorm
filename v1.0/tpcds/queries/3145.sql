@@ -48,7 +48,7 @@ SELECT
     im.total_returned,
     im.total_sales,
     CASE 
-        WHEN im.total_sales > 0 THEN ROUND((im.total_returned / NULLIF(im.total_sold, 0)::FLOAT) * 100, 2) 
+        WHEN im.total_sales > 0 THEN ROUND((im.total_returned / NULLIF(im.total_sold, 0, CAST() AS FLOAT)) * 100, 2) 
         ELSE NULL 
     END AS return_percentage
 FROM item_summary im

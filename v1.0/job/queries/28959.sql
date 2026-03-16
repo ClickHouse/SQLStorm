@@ -24,9 +24,9 @@ WITH movie_details AS (
 info_summary AS (
     SELECT 
         md.movie_id,
-        STRING_AGG(md.actor_name, ', ') AS actors,
-        STRING_AGG(DISTINCT md.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT md.company_name, ', ') AS production_companies,
+        arrayStringConcat(groupArray(assumeNotNull(md.actor_name)), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.company_name))), ', ') AS production_companies,
         COUNT(DISTINCT md.role) AS unique_roles
     FROM movie_details md
     GROUP BY md.movie_id

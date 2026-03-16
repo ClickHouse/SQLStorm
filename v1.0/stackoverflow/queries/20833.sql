@@ -27,7 +27,7 @@ ClosedPostsDetails AS (
         p.Title,
         ph.CreationDate AS CloseDate,
         ph.UserDisplayName AS ClosedBy,
-        STRING_AGG(ph.Comment, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS CloseReasons
     FROM 
         Posts p
     INNER JOIN 

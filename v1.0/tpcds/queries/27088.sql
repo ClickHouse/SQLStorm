@@ -7,8 +7,8 @@ SELECT
     ca.ca_zip,
     COUNT(ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_spent,
-    AVG(EXTRACT(DAY FROM d.d_date)) AS avg_order_day,
-    STRING_AGG(DISTINCT wp.wp_url, ', ') AS visited_web_pages,
+    AVG(toDayOfMonth(d.d_date)) AS avg_order_day,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp.wp_url))), ', ') AS visited_web_pages,
     CASE
         WHEN cd.cd_gender = 'F' THEN 'Female'
         WHEN cd.cd_gender = 'M' THEN 'Male'

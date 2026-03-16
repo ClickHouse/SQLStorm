@@ -4,7 +4,7 @@ WITH ranked_movies AS (
         t.title,
         t.production_year,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(c.id) DESC) AS movie_rank,
-        COALESCE(STRING_AGG(DISTINCT ak.name, ', ') FILTER (WHERE ak.name IS NOT NULL), 'Unknown') AS actor_names
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') FILTER (WHERE ak.name IS NOT NULL), 'Unknown') AS actor_names
     FROM 
         aka_title AS t
     LEFT JOIN 
@@ -29,7 +29,7 @@ filtered_movies AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword AS mk
     JOIN 

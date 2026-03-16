@@ -4,7 +4,7 @@ WITH Supplier_Stats AS (
         s.s_name,
         COUNT(DISTINCT ps.ps_partkey) AS part_count,
         SUM(ps.ps_supplycost) AS total_supplycost,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
         AVG(s.s_acctbal) AS avg_acctbal
     FROM 
         supplier s

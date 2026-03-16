@@ -16,7 +16,7 @@ WITH RegionalSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
+        o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1996-12-31')
         AND l.l_returnflag = 'N'
     GROUP BY 
         r.r_name
@@ -45,7 +45,7 @@ QualifiedRegions AS (
 SELECT 
     q.region_name,
     q.total_sales,
-    COALESCE(q.order_count, (SELECT COUNT(*) FROM orders WHERE o_orderdate < DATE '1995-01-01')) AS fallback_order_count,
+    COALESCE(q.order_count, (SELECT COUNT(*) FROM orders WHERE o_orderdate < toDate('1995-01-01'))) AS fallback_order_count,
     CASE 
         WHEN q.total_sales IS NULL THEN 'No Sales'
         WHEN q.total_sales < 50000 THEN 'Low Sales'

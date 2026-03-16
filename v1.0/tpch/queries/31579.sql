@@ -34,7 +34,7 @@ LEFT JOIN
 WHERE 
     p.p_retailprice > 10.00
     AND n.n_nationkey IN (SELECT n_nationkey FROM nation_hierarchy)
-    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_partkey, p.p_name, n.n_name
 HAVING 

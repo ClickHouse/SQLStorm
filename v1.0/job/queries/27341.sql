@@ -5,7 +5,7 @@ WITH MovieCast AS (
         m.title AS movie_title,
         p.name AS actor_name,
         cc.kind AS cast_type,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title m
     JOIN 
@@ -49,11 +49,11 @@ MovieInfo AS (
 SELECT 
     mc.movie_id,
     mc.movie_title,
-    STRING_AGG(DISTINCT ac.actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT mc.company_name, ', ') AS production_companies,
-    STRING_AGG(DISTINCT mi.movie_additional_info, ', ') AS additional_info,
-    STRING_AGG(DISTINCT mc.company_kind, ', ') AS company_types,
-    STRING_AGG(DISTINCT ac.keywords, ', ') AS movie_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ac.actor_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.company_name))), ', ') AS production_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.movie_additional_info))), ', ') AS additional_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.company_kind))), ', ') AS company_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ac.keywords))), ', ') AS movie_keywords
 FROM 
     MovieCast ac
 JOIN 

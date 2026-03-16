@@ -38,7 +38,7 @@ RecentVotes AS (
     JOIN 
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE 
-        v.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
+        v.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 )
 SELECT 
     tu.DisplayName,

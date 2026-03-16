@@ -25,7 +25,7 @@ WITH RankedMovies AS (
 TopMovieKeywords AS (
     SELECT 
         movie_id,
-        ARRAY_AGG(DISTINCT keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(keyword))) AS keywords,
         AVG(cast_count) AS avg_cast_count
     FROM 
         RankedMovies

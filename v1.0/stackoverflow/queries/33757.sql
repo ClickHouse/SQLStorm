@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 UserActivity AS (
     SELECT 
@@ -35,7 +35,7 @@ RecentComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate >= CURRENT_DATE - INTERVAL '6 month'
+        c.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         c.UserId, c.PostId
 )

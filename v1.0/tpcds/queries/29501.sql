@@ -4,7 +4,7 @@ SELECT
     ca.ca_city || ', ' || ca.ca_state AS customer_location,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_ext_sales_price) AS total_spent,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
     MAX(d.d_date) AS last_order_date,
     MIN(d.d_date) AS first_order_date,
     CASE

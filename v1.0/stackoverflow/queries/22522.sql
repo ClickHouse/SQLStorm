@@ -14,11 +14,11 @@ PostStats AS (
         p.AnswerCount,
         p.ViewCount,
         COALESCE(SUM(CASE WHEN vote.VoteTypeId = 2 THEN 1 ELSE 0 END) - SUM(CASE WHEN vote.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS Score, 
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM Posts p
     LEFT JOIN Votes vote ON p.Id = vote.PostId
-    LEFT JOIN LATERAL (
-        SELECT unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS TagName
+    LEFT JOIN (
+        SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS TagName
     ) AS t ON TRUE
     GROUP BY p.Id, p.PostTypeId, p.AnswerCount, p.ViewCount
 ),

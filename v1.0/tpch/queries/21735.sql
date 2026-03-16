@@ -6,7 +6,7 @@ WITH RankedOrders AS (
         o.o_orderdate, 
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '12 months'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH
 ), SupplierStatistics AS (
     SELECT 
         ps.ps_suppkey,
@@ -40,10 +40,10 @@ LEFT JOIN SupplierStatistics ss ON ss.ps_suppkey = (
     FROM partsupp ps 
     WHERE ps.ps_partkey IN (SELECT p.p_partkey FROM part p WHERE p.p_size >= 30)
     ORDER BY ps.ps_supplycost DESC
-    FETCH FIRST 1 ROWS ONLY
+    LIMIT 1
 )
 WHERE (c.c_acctbal > (SELECT AVG(avg_balance) FROM NationalAverage) OR c.c_acctbal IS NULL)
-    AND (os.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1997-12-31' OR os.o_orderdate IS NULL)
+    AND (os.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1997-12-31') OR os.o_orderdate IS NULL)
 GROUP BY r.r_name, n.n_name
 HAVING COUNT(DISTINCT c.c_custkey) > 10
 ORDER BY r.r_name, n.n_name;

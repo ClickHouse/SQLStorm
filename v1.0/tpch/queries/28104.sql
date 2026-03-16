@@ -3,7 +3,7 @@ WITH SupplierDetails AS (
         s.s_name AS supplier_name,
         s.s_nationkey,
         n.n_name AS nation_name,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
         SUM(ps.ps_availqty) AS total_available_quantity,
         SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,
         COUNT(DISTINCT o.o_orderkey) AS total_orders

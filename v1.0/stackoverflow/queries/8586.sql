@@ -42,7 +42,7 @@ SELECT
     SUM(t.UpVotes) AS TotalUpVotes,
     SUM(t.DownVotes) AS TotalDownVotes,
     AVG(t.CommentCount) AS AvgCommentsPerPost,
-    STRING_AGG(t.Title, '; ') AS PostTitles
+    arrayStringConcat(groupArray(assumeNotNull(t.Title)), '; ') AS PostTitles
 FROM 
     TopPosts t
 GROUP BY 

@@ -8,7 +8,7 @@ SELECT
     MIN(s.s_acctbal) AS min_supplier_balance,
     MAX(s.s_acctbal) AS max_supplier_balance,
     AVG(l.l_quantity) AS avg_lineitem_quantity,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     part p
 JOIN 

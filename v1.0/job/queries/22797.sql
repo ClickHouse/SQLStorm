@@ -27,7 +27,7 @@ CompanyAndRoles AS (
 MovieInfoWithKeywords AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
         mi.info AS movie_info
     FROM 
         movie_info mi

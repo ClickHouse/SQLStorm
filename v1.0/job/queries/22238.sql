@@ -12,7 +12,7 @@ WITH RankedMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -23,7 +23,7 @@ MovieKeywords AS (
 DistinctCompanyGenres AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS genres
     FROM 
         movie_companies mc
     JOIN 

@@ -47,11 +47,11 @@ SELECT
         END
     END AS ClosureStatus,
     (SELECT COUNT(*) FROM Tags t WHERE t.Count > 1000) AS PopularTagCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS PopularTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS PopularTags
 FROM FilteredUsers f
 LEFT JOIN Posts p ON f.UserId = p.OwnerUserId
 LEFT JOIN Tags t ON p.Tags LIKE '%' || t.TagName || '%'
 GROUP BY f.UserId, f.DisplayName, f.NextUserDisplayName, f.QuestionCount, f.AnswerCount, f.BadgeCount, f.CloseReopenCount, f.Rank
 HAVING COUNT(DISTINCT t.Id) > 2
 ORDER BY f.Rank
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

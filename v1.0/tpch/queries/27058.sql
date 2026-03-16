@@ -3,7 +3,7 @@ SELECT
     p.p_name,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS combined_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS combined_comments
 FROM 
     customer c
 JOIN 

@@ -20,7 +20,7 @@ WITH movie_cast AS (
 movie_keyword_info AS (
     SELECT 
         mk.movie_id,
-        array_agg(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         movie_keyword mk
     JOIN 

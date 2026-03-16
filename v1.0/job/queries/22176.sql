@@ -33,7 +33,7 @@ MovieStatistics AS (
     SELECT 
         t.production_year,
         COUNT(t.title) AS total_movies,
-        ARRAY_AGG(DISTINCT t.movie_type) AS unique_movie_types,
+        arrayDistinct(groupArray(assumeNotNull(t.movie_type))) AS unique_movie_types,
         MAX(LENGTH(t.title)) AS longest_title_length
     FROM 
         TopMovies t
@@ -44,7 +44,7 @@ CompanyStats AS (
     SELECT 
         m.production_year,
         COUNT(DISTINCT mc.company_id) AS total_companies,
-        STRING_AGG(DISTINCT c.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS company_names
     FROM 
         aka_title m
     JOIN 

@@ -42,10 +42,10 @@ TopPosts AS (
 TagsAggregated AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(DISTINCT LOWER(TRIM(value)), ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(LOWER(TRIM(value))))), ', ') AS Tags
     FROM 
         Posts p,
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags)-2), '><')) AS value
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags)-2))) AS value
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 

@@ -38,7 +38,7 @@ SELECT
     tm.title AS Top_Movie_Title,
     tm.production_year,
     COUNT(DISTINCT mk.keyword) AS Total_Keywords,
-    string_agg(mk.keyword, ', ') AS Keyword_List
+    arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS Keyword_List
 FROM 
     TopMovies tm
 LEFT JOIN 

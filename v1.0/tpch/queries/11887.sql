@@ -1,7 +1,7 @@
 SELECT 
     SUM(l_extendedprice * (1 - l_discount)) AS revenue,
     n_name,
-    extract(year from o_orderdate) AS year
+    toYear(o_orderdate) AS year
 FROM 
     lineitem
 JOIN 
@@ -17,8 +17,8 @@ JOIN
 JOIN 
     nation ON s_nationkey = n_nationkey
 WHERE 
-    o_orderdate >= DATE '1995-01-01' AND 
-    o_orderdate < DATE '1996-01-01' AND 
+    o_orderdate >= toDate('1995-01-01') AND 
+    o_orderdate < toDate('1996-01-01') AND 
     n_name IN ('FRANCE', 'GERMANY', 'UNITED KINGDOM')
 GROUP BY 
     n_name, year

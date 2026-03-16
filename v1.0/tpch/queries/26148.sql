@@ -42,7 +42,7 @@ SELECT
     supplier_name,
     COUNT(*) AS top_part_count,
     AVG(p_retailprice) AS avg_retail_price,
-    STRING_AGG(CONCAT(p_name, ' (', p_retailprice, ')'), ', ') AS part_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(p_name, ' (', p_retailprice, ')'))), ', ') AS part_details
 FROM 
     TopParts
 GROUP BY 

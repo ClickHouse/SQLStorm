@@ -8,7 +8,7 @@ WITH PostStatistics AS (
         p.ViewCount,
         p.AnswerCount,
         p.CommentCount,
-        STRING_AGG(t.TagName, ', ') AS TagsList,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList,
         COUNT(DISTINCT c.Id) AS TotalComments,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVotes,  
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVotes   
@@ -21,7 +21,7 @@ WITH PostStatistics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount, p.CommentCount
 ),

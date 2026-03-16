@@ -24,7 +24,7 @@ JOIN
 WHERE 
     p.p_size > 10 AND 
     l.l_shipmode IN ('AIR', 'GROUND') AND 
-    o.o_orderdate >= DATE '1997-01-01'
+    o.o_orderdate >= toDate('1997-01-01')
 GROUP BY 
     p.p_name, s.s_name, ShortComment, r.r_name
 ORDER BY 

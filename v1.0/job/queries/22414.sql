@@ -41,7 +41,7 @@ filtered_titles AS (
         title_id,
         title,
         production_year,
-        STRING_AGG(cast_member, ', ') AS cast_list
+        arrayStringConcat(groupArray(assumeNotNull(cast_member)), ', ') AS cast_list
     FROM top_movie_titles
     GROUP BY title_id, title, production_year
     HAVING COUNT(*) > 1

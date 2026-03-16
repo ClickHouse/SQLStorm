@@ -35,7 +35,7 @@ TopQuestions AS (
         RP.ViewCount,
         RP.OwnerDisplayName,
         RP.CommentCount,
-        (SELECT STRING_AGG(T.TagName, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
          FROM Tags T 
          WHERE T.ExcerptPostId = RP.PostId) AS Tags
     FROM 

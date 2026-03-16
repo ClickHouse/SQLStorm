@@ -5,7 +5,7 @@ SELECT
     ca.ca_state,
     COUNT(ws.ws_order_number) as total_orders,
     SUM(ws.ws_net_profit) AS total_profit,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS purchased_items,
     d.d_year
 FROM 
     customer c

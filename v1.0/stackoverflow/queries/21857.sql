@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
         AND p.Score > 0
         AND p.ViewCount IS NOT NULL
 ),
@@ -27,7 +27,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     LEFT JOIN 
-        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation
 ),
@@ -51,7 +51,7 @@ ClosedPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        ph.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         p.Id
 )

@@ -18,7 +18,7 @@ PersonDetails AS (
         a.name AS actor_name,
         a.person_id,
         SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS movies_participated,
-        STRING_AGG(DISTINCT t.title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movie_titles
     FROM 
         aka_name a
     JOIN 
@@ -61,4 +61,4 @@ WHERE
 ORDER BY 
     rm.production_year DESC, 
     pd.actor_name ASC
-OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

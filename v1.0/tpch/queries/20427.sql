@@ -21,9 +21,9 @@ RecentOrders AS (
     SELECT 
         o.o_orderkey,
         o.o_orderdate,
-        EXTRACT(YEAR FROM o.o_orderdate) AS order_year
+        toYear(o.o_orderdate) AS order_year
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1998-10-01' - INTERVAL '1 year'
+    WHERE o.o_orderdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
 )
 SELECT 
     r.r_name AS region,

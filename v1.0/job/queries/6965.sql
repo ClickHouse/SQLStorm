@@ -1,10 +1,10 @@
 SELECT 
     n.name AS actor_name,
     COUNT(mi.movie_id) AS movie_count,
-    STRING_AGG(DISTINCT t.title, ', ') AS movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movies,
     AVG(CASE WHEN a.production_year IS NOT NULL THEN a.production_year ELSE NULL END) AS average_production_year,
-    STRING_AGG(DISTINCT c.kind, ', ') AS company_types,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     aka_name an
 JOIN 

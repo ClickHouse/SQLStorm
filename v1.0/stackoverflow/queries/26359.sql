@@ -24,14 +24,14 @@ WITH RecentPosts AS (
          WHERE PostTypeId = 2 
          GROUP BY ParentId) a ON p.Id = a.ParentId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
         AND p.PostTypeId IN (1, 2)  
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.CreationDate, u.DisplayName, a.AnswerCount
 ),
 TopTags AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS Tag,
+        arrayJoin(splitByString(',', Tags)) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         RecentPosts
@@ -48,11 +48,11 @@ AggStats AS (
         SUM(rp.CommentCount) AS TotalComments,
         SUM(rp.VoteCount) AS TotalVotes,
         SUM(rp.AnswerCount) AS TotalAnswers,
-        ARRAY_AGG(DISTINCT tt.Tag) AS TopTags
+        arrayDistinct(groupArray(assumeNotNull(tt.Tag))) AS TopTags
     FROM 
         RecentPosts rp
     LEFT JOIN 
-        TopTags tt ON tt.Tag = ANY(string_to_array(rp.Tags, ','))
+        TopTags tt ON tt.Tag = ANY(splitByString(',', rp.Tags))
     GROUP BY 
         rp.OwnerDisplayName
 )

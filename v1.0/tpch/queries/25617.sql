@@ -19,7 +19,7 @@ WITH RankedSuppliers AS (
 StringProcessing AS (
     SELECT 
         r.r_name AS region_name,
-        STRING_AGG(CONCAT(s.s_name, ': ', parts_supplied, ' parts, $', total_supply_cost), '; ') AS supplier_summary
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_name, ': ', parts_supplied, ' parts, $', total_supply_cost))), '; ') AS supplier_summary
     FROM 
         RankedSuppliers s
     JOIN 

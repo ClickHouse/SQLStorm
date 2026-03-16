@@ -28,7 +28,7 @@ UserStats AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges
     FROM 
         Badges b
     WHERE 
@@ -55,4 +55,4 @@ WHERE
     us.Reputation > 1000  
 ORDER BY 
     us.Reputation DESC, us.TotalQuestions DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

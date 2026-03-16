@@ -14,7 +14,7 @@ WITH RecentPostStats AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         P.Id, P.Title, P.ViewCount, P.Score, P.AcceptedAnswerId
 ),
@@ -23,7 +23,7 @@ PostHistorySummary AS (
         PH.PostId,
         COUNT(PH.Id) AS EditCount,
         MAX(PH.CreationDate) AS LastEditDate,
-        STRING_AGG(PH.Comment, '; ') AS EditComments
+        arrayStringConcat(groupArray(assumeNotNull(PH.Comment)), '; ') AS EditComments
     FROM 
         PostHistory PH
     GROUP BY 
@@ -71,12 +71,12 @@ SELECT
         WHEN PD.ViewCount IS NULL THEN 'Unobserved Views' 
         ELSE 'Observed Views'
     END AS ViewObservation,
-    ARRAY_LENGTH(STRING_TO_ARRAY(PD.EditComments, '; '), 1) AS NumberOfDistinctComments,
+    length(splitByString('; ', PD.EditComments), 1) AS NumberOfDistinctComments,
     (
         SELECT COUNT(*)
         FROM Comments C 
         WHERE C.PostId = PD.PostId
-        AND C.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '14 days'
+        AND C.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 14 DAY
     ) AS RecentCommentCount
 FROM 
     PostDetails PD

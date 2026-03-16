@@ -4,7 +4,7 @@ WITH Tag_List AS (
         COUNT(*) AS TagCount
     FROM (
         SELECT 
-            unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS tag,
+            arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS tag,
             Id
         FROM Posts
         WHERE PostTypeId = 1  
@@ -20,7 +20,7 @@ Active_Users AS (
         SUM(CASE WHEN p.Score < 0 THEN 1 ELSE 0 END) AS DownVotes
     FROM Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY u.Id, u.DisplayName
 ),
 Top_Tags AS (

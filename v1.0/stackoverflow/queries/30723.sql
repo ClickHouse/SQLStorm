@@ -18,7 +18,7 @@ UserBadgesCTE AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 
@@ -41,7 +41,7 @@ ModifiedPosts AS (
     SELECT 
         PH.PostId,
         MAX(CASE WHEN PH.PostHistoryTypeId IN (4, 5) THEN PH.CreationDate END) AS LastModifiedDate,
-        STRING_AGG(PH.UserDisplayName, ', ') AS Editors
+        arrayStringConcat(groupArray(assumeNotNull(PH.UserDisplayName)), ', ') AS Editors
     FROM 
         PostHistory PH
     GROUP BY 
@@ -71,7 +71,7 @@ LEFT JOIN
     ModifiedPosts MP ON RP.PostId = MP.PostId
 WHERE 
     RP.Score > 10
-    AND RP.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    AND RP.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ORDER BY 
     RP.Score DESC,
     RP.ViewCount DESC;

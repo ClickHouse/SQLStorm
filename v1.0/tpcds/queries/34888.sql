@@ -52,4 +52,4 @@ GROUP BY
 ORDER BY 
     customer_count DESC, 
     total_quantity_sold DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -29,7 +29,7 @@ SELECT
     m.title AS movie_title,
     m.production_year,
     COUNT(DISTINCT mc.company_id) AS company_count,
-    STRING_AGG(DISTINCT c.kind, ', ') AS company_kinds,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_kinds,
     ROW_NUMBER() OVER (PARTITION BY m.id ORDER BY m.production_year DESC) AS rank,
     SUM(CASE WHEN ci.note IS NULL THEN 1 ELSE 0 END) AS null_notes_count
 FROM 

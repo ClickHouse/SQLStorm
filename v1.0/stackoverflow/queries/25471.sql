@@ -30,12 +30,12 @@ TopPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        UNNEST(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '> <')) AS Tag
+        arrayJoin(splitByString('> <', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -68,7 +68,7 @@ SELECT
     tp.AnswerCount AS TopPostAnswerCount,
     tp.CommentCount AS TopPostCommentCount,
     tp.CreationDate AS TopPostCreationDate,
-    STRING_AGG(pt.Tag, ', ') AS AssociatedTags
+    arrayStringConcat(groupArray(assumeNotNull(pt.Tag)), ', ') AS AssociatedTags
 FROM 
     UserVoteSummary uvs
 JOIN 

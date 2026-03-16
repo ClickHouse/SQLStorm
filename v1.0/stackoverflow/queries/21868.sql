@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserScores AS (
     SELECT 
@@ -32,7 +32,7 @@ PostHistoryWithVoteCounts AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         COUNT(*) AS VoteCount,
-        STRING_AGG(DISTINCT t.Name, ', ') AS HistoryTypeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.Name))), ', ') AS HistoryTypeNames
     FROM 
         PostHistory ph
     JOIN 
@@ -80,5 +80,5 @@ FROM
 ORDER BY 
     fp.TotalReputation DESC, 
     fp.PostVoteCount DESC
-OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY
+LIMIT 20 OFFSET 0
 ;

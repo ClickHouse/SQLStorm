@@ -29,7 +29,7 @@ MovieDetails AS (
         mt.movie_id,
         mt.movie_title,
         COALESCE(SUM(CASE WHEN c.role_id IS NOT NULL THEN 1 ELSE 0 END), 0) AS total_roles,
-        COALESCE(STRING_AGG(ak.actor_name, ', '), 'No Cast') AS cast_names
+        COALESCE(arrayStringConcat(groupArray(assumeNotNull(ak.actor_name)), ', '), 'No Cast') AS cast_names
     FROM 
         RankedMovies mt
     LEFT JOIN 

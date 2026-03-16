@@ -35,7 +35,7 @@ SELECT ch.o_orderkey,
        sp.total_supply_cost, 
        ch.order_rank,
        CASE 
-           WHEN ch.o_orderdate < cast('1998-10-01' as date) - INTERVAL '1 year' THEN 'Old Order'
+           WHEN ch.o_orderdate < cast('1998-10-01' as date) - INTERVAL 1 YEAR THEN 'Old Order'
            ELSE 'Recent Order' 
        END AS order_age,
        (lp.total_lineprice - sp.total_supply_cost) AS profit_margin
@@ -44,4 +44,4 @@ JOIN CustomerStats cs ON ch.o_custkey = cs.c_custkey
 JOIN LineItemStats lp ON ch.o_orderkey = lp.l_orderkey
 LEFT JOIN SupplierParts sp ON lp.total_lineprice > sp.total_supply_cost
 ORDER BY profit_margin DESC NULLS LAST
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

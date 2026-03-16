@@ -11,7 +11,7 @@ WITH LatestPosts AS (
     JOIN 
         Users U ON p.OwnerUserId = U.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 PostVoteSummary AS (
     SELECT 

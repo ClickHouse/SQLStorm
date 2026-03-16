@@ -9,7 +9,7 @@ SELECT
     SUM(CASE WHEN b.Class = 2 THEN 1 ELSE 0 END) AS Total_Silver_Badges,
     SUM(CASE WHEN b.Class = 3 THEN 1 ELSE 0 END) AS Total_Bronze_Badges,
     MAX(p.CreationDate) AS Last_Post_Date,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Associated_Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Associated_Tags
 FROM 
     Users u
 LEFT JOIN 
@@ -17,11 +17,11 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON u.Id = b.UserId
 LEFT JOIN 
-    unnest(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag ON true
+    arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag ON true
 LEFT JOIN 
     Tags t ON tag = t.TagName
 WHERE 
-    u.CreationDate > DATE '2024-10-01' - INTERVAL '1 year'
+    u.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR
 GROUP BY 
     u.Id, u.DisplayName, u.Reputation
 HAVING 

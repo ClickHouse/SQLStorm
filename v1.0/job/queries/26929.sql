@@ -44,7 +44,7 @@ SELECT
     m.title,
     m.production_year,
     COUNT(DISTINCT a.name) AS unique_actors,
-    STRING_AGG(DISTINCT a.name, ', ') AS actor_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_list
 FROM 
     title m
 JOIN 

@@ -57,7 +57,7 @@ SELECT
     COUNT(*) AS total_orders,
     SUM(ws_sales_price * ws_quantity) AS total_revenue,
     customer_gender,
-    EXTRACT(YEAR FROM d_date) AS sale_year
+    toYear(d_date) AS sale_year
 FROM 
     SalesData
 GROUP BY 

@@ -5,7 +5,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity, 
     AVG(l.l_extendedprice) AS avg_price, 
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(CONCAT('Order:', o.o_orderkey, ' Status:', o.o_orderstatus), '; ') AS order_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT('Order:', o.o_orderkey, ' Status:', o.o_orderstatus))), '; ') AS order_details
 FROM 
     part p
 JOIN 
@@ -20,8 +20,8 @@ JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     p.p_size > 10 AND 
-    o.o_orderdate >= DATE '1997-01-01' AND 
-    o.o_orderdate < DATE '1997-12-31'
+    o.o_orderdate >= toDate('1997-01-01') AND 
+    o.o_orderdate < toDate('1997-12-31')
 GROUP BY 
     p.p_name, s.s_name, n.n_name
 ORDER BY 

@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue, 
     AVG(l.l_quantity) AS average_quantity, 
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS unique_ship_modes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS unique_ship_modes
 FROM 
     part AS p
 JOIN 

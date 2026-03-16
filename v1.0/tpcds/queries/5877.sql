@@ -64,4 +64,4 @@ FROM
     final_result fr
 ORDER BY 
     fr.total_sales DESC, fr.total_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

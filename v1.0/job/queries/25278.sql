@@ -44,8 +44,8 @@ SELECT
     tm.company_count,
     tm.keyword_count,
     tm.cast_count,
-    STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) AS companies,
-    STRING_AGG(DISTINCT kw.keyword, ', ' ORDER BY kw.keyword) AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ' ORDER BY kw.keyword) AS keywords
 FROM 
     TopMovies tm
 JOIN 

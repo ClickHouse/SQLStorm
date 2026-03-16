@@ -54,4 +54,4 @@ FROM
     PostAnalytics pa
 ORDER BY 
     pa.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -17,7 +17,7 @@ WITH UserRankings AS (
         P.OwnerUserId,
         COUNT(P.Id) AS RecentPostsCount
     FROM Posts P
-    WHERE P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY P.OwnerUserId
 ), CombinedData AS (
     SELECT 
@@ -43,19 +43,19 @@ SELECT
         WHEN CD.RecentPostsCount = 0 THEN 'No posts in the last 30 days'
         ELSE 'Active user'
     END AS ActivityStatus,
-    (SELECT STRING_AGG(T.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
      FROM Tags T 
      WHERE T.WikiPostId IS NOT NULL) AS PopularTags,
     (SELECT COUNT(*) 
      FROM Votes V 
-     WHERE V.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days' 
+     WHERE V.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY 
      AND V.VoteTypeId = 2) AS RecentUpVotes,
     (SELECT COUNT(*) 
      FROM PostHistory PH 
      WHERE PH.UserId IN (SELECT U.Id 
                          FROM Users U 
                          WHERE U.Reputation > 1000) 
-     AND PH.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '90 days') AS HistoryCommentsFromHighReputationUsers
+     AND PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY) AS HistoryCommentsFromHighReputationUsers
 FROM CombinedData CD
 GROUP BY CD.DisplayName, CD.RecentPostsCount, CD.BadgesCount, CD.ReputationRank
 ORDER BY CD.ReputationRank;

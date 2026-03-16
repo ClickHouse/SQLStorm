@@ -25,7 +25,7 @@ actor_info AS (
 movie_keyword_info AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -36,7 +36,7 @@ movie_keyword_info AS (
 company_films AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT c.name, '; ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), '; ') AS company_names,
         COUNT(mc.company_id) AS total_companies
     FROM 
         movie_companies mc
@@ -78,5 +78,4 @@ AND
     (ai.total_movies > 5 OR ai.null_notes_count > 0)
 ORDER BY 
     rt.production_year DESC, rt.title ASC
-OFFSET 
-    10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

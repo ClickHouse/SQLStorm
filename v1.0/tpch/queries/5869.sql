@@ -30,7 +30,7 @@ SELECT
     COUNT(DISTINCT n.n_nationkey) AS nation_count,
     SUM(lp.l_extendedprice) AS total_revenue,
     AVG(lp.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT rp.p_name, ', ') AS high_value_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.p_name))), ', ') AS high_value_parts
 FROM 
     region r
 JOIN 

@@ -36,7 +36,7 @@ TopActors AS (
 MovieGenres AS (
     SELECT 
         a.title,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS genres
     FROM 
         aka_title a
     JOIN 

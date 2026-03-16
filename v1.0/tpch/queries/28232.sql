@@ -4,7 +4,7 @@ SELECT
     s.s_name AS supplier_name,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     AVG(l.l_extendedprice) AS avg_price,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions,
     LEFT(p.p_comment, 10) AS short_comment,
     LENGTH(p.p_comment) AS comment_length
 FROM 

@@ -5,8 +5,8 @@ SELECT
     c.kind AS cast_type,
     ci.note AS cast_note,
     COUNT(kw.keyword) AS keyword_count,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     aka_name a
 JOIN 

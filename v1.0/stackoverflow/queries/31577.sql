@@ -17,7 +17,7 @@ WITH RecentUserActivity AS (
     LEFT JOIN 
         Posts P ON U.Id = P.OwnerUserId
     WHERE 
-        U.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        U.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation
 ),
@@ -25,7 +25,7 @@ UserBadges AS (
     SELECT 
         B.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS Badges
     FROM 
         Badges B
     GROUP BY 

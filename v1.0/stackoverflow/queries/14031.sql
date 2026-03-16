@@ -10,7 +10,7 @@ FROM
 JOIN 
     Posts P ON Ph.PostId = P.Id
 WHERE 
-    P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+    P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 GROUP BY 
     Ph.PostHistoryTypeId
 ORDER BY 

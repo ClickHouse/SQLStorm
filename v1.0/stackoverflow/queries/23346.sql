@@ -13,13 +13,13 @@ WITH RankedPosts AS (
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
         p.Score > 0 AND 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT c.UserDisplayName) AS Commenters
+        arrayDistinct(groupArray(assumeNotNull(c.UserDisplayName))) AS Commenters
     FROM 
         Comments c
     GROUP BY 

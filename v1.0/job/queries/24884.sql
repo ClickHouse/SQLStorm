@@ -62,7 +62,7 @@ SELECT
         WHEN md.starring_roles > 0 THEN 'Has Starring Roles'
         ELSE 'No Starring Roles'
     END AS starring_info,
-    ARRAY_AGG(DISTINCT kw.keyword) FILTER (WHERE kw.keyword IS NOT NULL) AS keywords
+    arrayDistinct(groupArray(assumeNotNull(kw.keyword))) FILTER (WHERE kw.keyword IS NOT NULL) AS keywords
 FROM 
     MovieDetails md
 LEFT JOIN 

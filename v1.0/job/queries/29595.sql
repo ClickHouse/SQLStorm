@@ -4,8 +4,8 @@ WITH RankedMovies AS (
         m.title AS movie_title,
         m.production_year,
         m.kind_id,
-        COALESCE(array_agg(DISTINCT k.keyword) FILTER (WHERE k.keyword IS NOT NULL), '{}') AS keywords,
-        COALESCE(array_agg(DISTINCT c.name) FILTER (WHERE c.name IS NOT NULL), '{}') AS companies,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(k.keyword))) FILTER (WHERE k.keyword IS NOT NULL), '{}') AS keywords,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(c.name))) FILTER (WHERE c.name IS NOT NULL), '{}') AS companies,
         COUNT(DISTINCT ci.person_id) AS cast_count,
         ROW_NUMBER() OVER (PARTITION BY m.kind_id ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS rank
     FROM
@@ -45,7 +45,7 @@ SELECT
     t.keywords,
     t.companies,
     t.cast_count,
-    ARRAY_AGG(DISTINCT p.info) AS additional_person_info
+    arrayDistinct(groupArray(assumeNotNull(p.info))) AS additional_person_info
 FROM
     TopRankedMovies t
 LEFT JOIN 

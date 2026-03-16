@@ -57,7 +57,7 @@ FinalReport AS (
     JOIN 
         GenderDemographics gd ON gd.cd_demo_sk = c.c_current_cdemo_sk
     JOIN 
-        DateMetrics dm ON dm.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
+        DateMetrics dm ON dm.d_year = toYear(cast('2002-10-01' as date))
     WHERE 
         aa.street_name_length_category = 'long'
 )

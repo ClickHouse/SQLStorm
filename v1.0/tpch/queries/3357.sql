@@ -64,4 +64,4 @@ WHERE
     s.total_available IS NOT NULL
 ORDER BY 
     o.total_revenue DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

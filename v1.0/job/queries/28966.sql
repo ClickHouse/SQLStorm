@@ -17,7 +17,7 @@ ActorParticipation AS (
     SELECT 
         a.person_id,
         COUNT(DISTINCT c.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT t.title, ', ') AS titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS titles
     FROM 
         cast_info c 
     JOIN 
@@ -30,7 +30,7 @@ ActorParticipation AS (
 CompanyParticipation AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies_involved,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies_involved,
         COUNT(DISTINCT mc.company_id) AS total_companies
     FROM 
         movie_companies mc

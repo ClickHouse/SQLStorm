@@ -6,7 +6,7 @@ WITH UserVoteSummary AS (
         COUNT(V.Id) AS TotalVotes,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        AVG(EXTRACT(EPOCH FROM (V.CreationDate - U.CreationDate)) / 3600) AS AvgHoursSinceJoin
+        AVG(toUnixTimestamp((V.CreationDate - U.CreationDate)) / 3600) AS AvgHoursSinceJoin
     FROM 
         Users U
     LEFT JOIN 
@@ -26,7 +26,7 @@ PostDetails AS (
     LEFT JOIN 
         UserVoteSummary UP ON P.OwnerUserId = UP.UserId
     WHERE 
-        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 

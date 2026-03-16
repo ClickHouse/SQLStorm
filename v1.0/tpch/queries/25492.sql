@@ -25,7 +25,7 @@ WITH StringAggregation AS (
     SELECT 
         r.r_name AS region_name,
         COUNT(DISTINCT sa.p_partkey) AS part_count,
-        STRING_AGG(sa.formatted_string, '; ') AS aggregated_strings
+        arrayStringConcat(groupArray(assumeNotNull(sa.formatted_string)), '; ') AS aggregated_strings
     FROM 
         StringAggregation sa
     JOIN 

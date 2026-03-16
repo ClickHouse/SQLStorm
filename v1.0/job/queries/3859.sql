@@ -39,12 +39,12 @@ SELECT
     tm.title,
     tm.production_year,
     COUNT(DISTINCT cd.company_name) AS company_count,
-    STRING_AGG(DISTINCT cd.company_name, ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.company_name))), ', ') AS company_names,
     SUM(CASE 
             WHEN ci.note IS NOT NULL THEN 1 
             ELSE 0 
         END) AS note_count,
-    STRING_AGG(DISTINCT ci.note, ', ') AS all_notes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), ', ') AS all_notes
 FROM 
     TopMovies tm
 LEFT JOIN 

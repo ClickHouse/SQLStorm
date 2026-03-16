@@ -2,7 +2,7 @@
 SELECT 
     pt.Name AS PostType,
     COUNT(p.Id) AS TotalPosts,
-    AVG(COALESCE(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)), 0)) AS AvgPostAgeInSeconds,
+    AVG(COALESCE(toUnixTimestamp((p.LastActivityDate - p.CreationDate)), 0)) AS AvgPostAgeInSeconds,
     SUM(p.ViewCount) AS TotalViews,
     AVG(p.Score) AS AvgScore,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,

@@ -31,7 +31,7 @@ SELECT
     m.movie_id,
     m.title,
     m.production_year,
-    COALESCE(STRING_AGG(DISTINCT c.name, ', '), 'No Cast') AS cast_names,
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', '), 'No Cast') AS cast_names,
     COUNT(DISTINCT k.keyword) AS keyword_count,
     CASE 
         WHEN COUNT(DISTINCT k.keyword) > 5 THEN 'Popular'

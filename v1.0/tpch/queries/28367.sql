@@ -5,7 +5,7 @@ SELECT
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     MIN(l.l_shipdate) AS first_ship_date,
     MAX(l.l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT TRIM(p.p_name), ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(TRIM(p.p_name)))), ', ') AS part_names,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
 FROM 
     part p

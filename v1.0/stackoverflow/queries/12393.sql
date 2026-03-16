@@ -57,4 +57,4 @@ LEFT JOIN
     PostHistoryStats PHS ON PS.PostId = PHS.PostId
 ORDER BY 
     PS.Score DESC, PS.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

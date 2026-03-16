@@ -40,7 +40,7 @@ ClosedPostHistories AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes ctr ON ph.Comment::int = ctr.Id
+        CloseReasonTypes ctr ON CAST(ph.Comment AS int) = ctr.Id
     JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
@@ -71,7 +71,7 @@ SELECT
     SUM(apd.ViewCount) AS TotalViews,
     SUM(apd.CommentCount) AS TotalComments,
     MAX(apd.CreationDate) AS LatestPost,
-    STRING_AGG(DISTINCT apd.CloseReason, ', ') AS CloseReasons
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(apd.CloseReason))), ', ') AS CloseReasons
 FROM 
     AggregatePostData apd
 GROUP BY 

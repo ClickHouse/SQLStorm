@@ -78,7 +78,7 @@ SELECT
     r.Score,
     u.DisplayName AS OwnerDisplayName,
     COALESCE(ub.BadgeCount, 0) AS UserBadgeCount,
-    STRING_AGG(DISTINCT ur.Source || ': ' || CAST(ur.EditCount AS TEXT), ', ') AS EditCloseSummary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ur.Source || ': ' || CAST(ur.EditCount AS TEXT)))), ', ') AS EditCloseSummary
 FROM 
     RankedPosts r
 JOIN 

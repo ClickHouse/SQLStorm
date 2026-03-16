@@ -3,7 +3,7 @@ WITH Address_City_Aggregation AS (
     SELECT 
         ca_city,
         COUNT(DISTINCT ca_address_sk) AS unique_addresses,
-        STRING_AGG(DISTINCT ca_street_name, ', ') AS street_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), ', ') AS street_names,
         COUNT(DISTINCT ca_street_number) AS unique_street_numbers
     FROM 
         customer_address
@@ -26,7 +26,7 @@ Date_Aggregation AS (
     SELECT 
         d_year,
         COUNT(DISTINCT d_date_id) AS unique_dates,
-        STRING_AGG(DISTINCT d_day_name, ', ') AS days_of_week
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d_day_name))), ', ') AS days_of_week
     FROM 
         date_dim
     GROUP BY 

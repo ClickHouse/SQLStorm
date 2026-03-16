@@ -30,7 +30,7 @@ SELECT
     a.name AS actor_name,
     COUNT(DISTINCT cc.movie_id) AS total_movies,
     AVG(m.production_year) AS average_movie_year,
-    STRING_AGG(DISTINCT mh.path, ', ') AS linked_movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mh.path))), ', ') AS linked_movies,
     MAX(CASE WHEN m.production_year IS NULL THEN 'Unknown Year' ELSE CAST(m.production_year AS VARCHAR(4)) END) AS latest_movie_year
 FROM 
     cast_info cc

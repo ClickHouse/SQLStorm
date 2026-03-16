@@ -56,7 +56,7 @@ SELECT
     md.company_name,
     md.cast_count,
     md.movie_category,
-    COALESCE(STRING_AGG(DISTINCT k.keyword, ', '), 'No Keywords') AS keywords
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'No Keywords') AS keywords
 FROM 
     movie_details AS md
 LEFT JOIN 

@@ -28,7 +28,7 @@ ActorTitles AS (
 TitleKeywords AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword m 
     JOIN 
@@ -39,7 +39,7 @@ TitleKeywords AS (
 SELECT 
     at.actor_name,
     COUNT(DISTINCT at.title_id) AS total_titles,
-    STRING_AGG(DISTINCT tk.keywords, '; ') AS all_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tk.keywords))), '; ') AS all_keywords,
     MAX(at.production_year) AS latest_year,
     AVG(NULLIF(at.title_rank, 0)) AS avg_rank
 FROM 

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 UserStats AS (
     SELECT 
@@ -75,7 +75,7 @@ SELECT
         WHEN fp.CloseCount > 0 THEN 'Closed'
         ELSE 'Open' 
     END AS Status,
-    CONCAT(CAST(fp.LastEditDate AS TEXT), ' ', COALESCE(fp.EditCount, 0)::TEXT, ' edits') AS EditInfo
+    CONCAT(CAST(fp.LastEditDate AS TEXT), ' ', COALESCE(fp.EditCount, 0, CAST() AS TEXT), ' edits') AS EditInfo
 FROM 
     FilteredPosts fp
 ORDER BY 

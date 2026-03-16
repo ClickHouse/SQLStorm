@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 /* Questions */
-        AND p.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year')
+        AND p.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR)
 ),
 FilteredPosts AS (
     SELECT 
@@ -39,10 +39,10 @@ PostInteraction AS (
         fp.Score,
         fp.ViewCount,
         fp.AverageBountyAmount,
-        (SELECT STRING_AGG(t.TagName, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
          FROM Tags t 
-         JOIN LATERAL (
-             SELECT UNNEST(string_to_array(fp.Title, ' ')) AS Tag 
+         JOIN (
+             SELECT arrayJoin(splitByString(' ', fp.Title)) AS Tag 
          ) AS split_tags ON t.TagName = split_tags.Tag) AS TagsList
     FROM 
         FilteredPosts fp

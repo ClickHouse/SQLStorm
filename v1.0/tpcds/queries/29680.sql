@@ -18,7 +18,7 @@ Customer_Aggregation AS (
         cd.cd_gender,
         cd.cd_marital_status,
         cd.cd_education_status,
-        STRING_AGG(DISTINCT CONCAT(ca.full_address, ', ', ca.ca_city, ', ', ca.ca_state, ' ', ca.ca_zip), '; ') AS complete_addresses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca.full_address, ', ', ca.ca_city, ', ', ca.ca_state, ' ', ca.ca_zip)))), '; ') AS complete_addresses
     FROM customer c
     JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
     JOIN Address_Concatenation ca ON c.c_current_addr_sk = ca.ca_address_sk

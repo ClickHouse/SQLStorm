@@ -37,7 +37,7 @@ MovieDetails AS (
     LEFT JOIN (
         SELECT 
             mk.movie_id,
-            STRING_AGG(k.keyword, ', ') AS keywords
+            arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
         FROM 
             movie_keyword mk
         JOIN 
@@ -48,7 +48,7 @@ MovieDetails AS (
     LEFT JOIN (
         SELECT 
             movie_id,
-            STRING_AGG(DISTINCT CONCAT(role, ': ', role_count), '; ') AS role_details
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(role, ': ', role_count)))), '; ') AS role_details
         FROM 
             CastRoles
         GROUP BY 

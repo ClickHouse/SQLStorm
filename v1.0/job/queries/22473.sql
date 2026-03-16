@@ -38,7 +38,7 @@ SELECT
     md.production_year,
     md.movie_category,
     COALESCE(m.keyword_count, 0) AS keyword_count,
-    COALESCE(ARRAY_AGG(DISTINCT k.keyword) FILTER (WHERE k.keyword IS NOT NULL), ARRAY['No Keywords']) AS keywords
+    COALESCE(arrayDistinct(groupArray(assumeNotNull(k.keyword))) FILTER (WHERE k.keyword IS NOT NULL), ARRAY['No Keywords']) AS keywords
 FROM 
     MovieDetails md
 LEFT JOIN (

@@ -3,7 +3,7 @@ SELECT
     CONCAT('Supplier: ', s.s_name, ', Nation: ', n.n_name, 
            ', Region: ', r.r_name, ', Average Parts Supplied: ', AVG(ps.ps_availqty),
            ', Total Supply Cost: ', SUM(ps.ps_supplycost), 
-           ', Remarks: ', STRING_AGG(DISTINCT ps.ps_comment, '; ' ORDER BY ps.ps_comment)) AS Supplier_Info
+           ', Remarks: ', arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ps.ps_comment))), '; ' ORDER BY ps.ps_comment)) AS Supplier_Info
 FROM 
     supplier s
 JOIN 

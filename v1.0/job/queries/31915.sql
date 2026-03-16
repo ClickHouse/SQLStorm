@@ -37,7 +37,7 @@ MovieInfo AS (
 CastDetails AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(CONCAT(a.name, ' as ', r.role), ', ') AS cast_list,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.name, ' as ', r.role))), ', ') AS cast_list,
         COUNT(*) AS total_cast
     FROM 
         cast_info ci

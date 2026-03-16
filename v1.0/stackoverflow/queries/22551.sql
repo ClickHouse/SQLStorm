@@ -5,7 +5,7 @@ WITH UserBadges AS (
         U.DisplayName,
         COUNT(B.Id) AS TotalBadges,
         MAX(B.Class) AS HighestBadgeClass,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM Users U
     LEFT JOIN Badges B ON U.Id = B.UserId
     GROUP BY U.Id, U.DisplayName
@@ -19,9 +19,9 @@ RecentPosts AS (
         P.ViewCount,
         P.Score,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank,
-        CARDINALITY(STRING_TO_ARRAY(P.Tags, '<>')) AS TagCount
+        CARDINALITY(splitByString('<>', P.Tags)) AS TagCount
     FROM Posts P
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostTags AS (
     SELECT 

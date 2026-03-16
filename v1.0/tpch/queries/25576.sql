@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,
     r.r_name AS region_name,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     COUNT(l.l_orderkey) AS lineitem_count
 FROM 
     customer c
@@ -25,7 +25,7 @@ JOIN
 WHERE 
     c.c_acctbal > (SELECT AVG(c2.c_acctbal) FROM customer c2)
 AND 
-    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     c.c_name, s.s_name, r.r_name
 HAVING 

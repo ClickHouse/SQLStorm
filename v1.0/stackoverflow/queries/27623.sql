@@ -15,21 +15,21 @@ WITH TagStatistics AS (
     LEFT JOIN 
         Badges b ON b.UserId = p.OwnerUserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         t.TagName
 ),
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasons,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasons,
         COUNT(*) AS CloseEventCount
     FROM 
         PostHistory ph
     JOIN 
         CloseReasonTypes ctr ON ph.PostHistoryTypeId IN (10, 11) 
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         ph.PostId
 ),

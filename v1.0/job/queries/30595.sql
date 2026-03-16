@@ -62,7 +62,7 @@ FilteredMovies AS (
 SELECT
     fm.title,
     fm.production_year,
-    STRING_AGG(DISTINCT fm.actor_name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fm.actor_name))), ', ') AS actors,
     COUNT(DISTINCT fm.movie_id) AS movie_count,
     SUM(fm.total_cast) AS total_roles
 FROM

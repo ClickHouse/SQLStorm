@@ -18,7 +18,7 @@ Customer_Sales AS (
         c.c_last_name,
         SUM(s.ws_ext_sales_price) AS total_sales,
         COUNT(DISTINCT s.ws_order_number) AS order_count,
-        STRING_AGG(DISTINCT CONCAT(i.i_item_desc, ': ', s.ws_quantity), ', ') AS items_bought
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(i.i_item_desc, ': ', s.ws_quantity)))), ', ') AS items_bought
     FROM customer c
     JOIN Sales_CTE s ON c.c_customer_sk = s.ws_item_sk
     JOIN item i ON s.ws_item_sk = i.i_item_sk

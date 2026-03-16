@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         ct.kind AS company_type,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
         COUNT(DISTINCT mc.company_id) AS company_count,
         COUNT(DISTINCT ck.keyword) AS keyword_count
     FROM 

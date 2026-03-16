@@ -28,7 +28,7 @@ MoviesWithKeywords AS (
         tm.title,
         tm.production_year,
         tm.cast_count,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         TopMovies tm
     LEFT JOIN 

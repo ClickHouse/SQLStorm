@@ -10,7 +10,7 @@ TopRegions AS (
     JOIN nation n ON r.r_regionkey = n.n_regionkey
     JOIN customer c ON n.n_nationkey = c.c_nationkey
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    WHERE o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY n.n_regionkey, r.r_name
     ORDER BY total_orders DESC
     LIMIT 5

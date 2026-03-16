@@ -12,7 +12,7 @@ WITH ranked_titles AS (
 movie_info_filtered AS (
     SELECT 
         mi.movie_id,
-        string_agg(mi.info, ', ') AS info_details
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS info_details
     FROM 
         movie_info mi
     WHERE 
@@ -25,7 +25,7 @@ cast_details AS (
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
         AVG(CASE WHEN ci.note IS NULL THEN 0 ELSE 1 END) AS note_presence,
-        STRING_AGG(a.name, ', ') AS cast_names
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS cast_names
     FROM 
         cast_info ci
     LEFT JOIN 

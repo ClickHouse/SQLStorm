@@ -6,7 +6,7 @@ SELECT
     o.o_orderstatus,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments
 FROM 
     part p
 JOIN 
@@ -20,7 +20,7 @@ JOIN
 JOIN 
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND p.p_brand LIKE 'Brand%'
     AND c.c_mktsegment = 'SEGMENT_A'
 GROUP BY 

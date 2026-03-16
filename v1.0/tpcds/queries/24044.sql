@@ -52,4 +52,4 @@ WHERE
     f.total_web_profit <> f.total_catalog_profit
 ORDER BY 
     f.total_web_profit DESC, f.total_catalog_profit DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

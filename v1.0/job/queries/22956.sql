@@ -37,7 +37,7 @@ MovieCompanyInfo AS (
 KeywordInfo AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -60,7 +60,7 @@ DetailedMovieInfo AS (
     LEFT JOIN (
         SELECT 
             movie_id,
-            STRING_AGG(company_name || ' (' || company_type || ')', '; ') AS company_names
+            arrayStringConcat(groupArray(assumeNotNull(company_name || ' (' || company_type || ')')), '; ') AS company_names
         FROM 
             MovieCompanyInfo
         GROUP BY 
@@ -69,7 +69,7 @@ DetailedMovieInfo AS (
     LEFT JOIN (
         SELECT 
             movie_id,
-            STRING_AGG(role || ' (' || role_count || ')', '; ') AS role
+            arrayStringConcat(groupArray(assumeNotNull(role || ' (' || role_count || ')')), '; ') AS role
         FROM 
             CastRoles
         GROUP BY 

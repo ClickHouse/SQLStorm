@@ -23,7 +23,7 @@ PopularPosts AS (
         Posts p
     WHERE 
         p.ViewCount IS NOT NULL
-        AND p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
+        AND p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 

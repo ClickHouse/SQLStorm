@@ -19,7 +19,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, U.Id
 ),
@@ -51,7 +51,7 @@ SELECT
     U.DisplayName,
     U.Reputation,
     COUNT(DISTINCT b.Id) AS BadgeCount,
-    ARRAY_AGG(DISTINCT b.Name) AS BadgeNames
+    arrayDistinct(groupArray(assumeNotNull(b.Name))) AS BadgeNames
 FROM 
     FilteredPosts FP
 JOIN 

@@ -1,6 +1,6 @@
 SELECT 
     p.p_name, 
-    STRING_AGG(CONCAT(s.s_name, ' (', s.s_phone, ')'), '; ') AS supplier_info,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')'))), '; ') AS supplier_info,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned,
     AVG(l.l_extendedprice) AS avg_extended_price

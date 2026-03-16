@@ -12,7 +12,7 @@ WITH PostMetrics AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 10 THEN 1 ELSE 0 END), 0) AS DeletionVotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 1 THEN 1 ELSE 0 END), 0) AS AcceptedVotes,
         pt.Name AS PostType,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -22,11 +22,11 @@ WITH PostMetrics AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tags_array ON TRUE
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tags_array ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tags_array
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year') 
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
     GROUP BY 
         p.Id, pt.Name
 ),

@@ -40,7 +40,7 @@ SELECT
     ci.c_email_address,
     COUNT(ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_sales,
-    STRING_AGG(DISTINCT ci.city_lower, ', ') AS unique_cities,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.city_lower))), ', ') AS unique_cities,
     MAX(ci.state_upper) AS max_state,
     MIN(ci.state_upper) AS min_state,
     CASE 

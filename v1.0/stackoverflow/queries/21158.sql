@@ -11,14 +11,14 @@ WITH RankedPosts AS (
         AVG(v.BountyAmount) OVER (PARTITION BY p.Id) AS AvgBounty
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
         ph.PostId,
         MIN(ph.CreationDate) AS FirstClosedDate,
         COUNT(*) AS CloseCount,
-        STRING_AGG(CASE WHEN ph.Comment IS NOT NULL THEN ph.Comment ELSE 'No comment' END, '; ') AS CloseReason
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.Comment IS NOT NULL THEN ph.Comment ELSE 'No comment' END)), '; ') AS CloseReason
     FROM PostHistory ph
     WHERE ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY ph.PostId

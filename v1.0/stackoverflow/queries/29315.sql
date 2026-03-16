@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         u.DisplayName AS Author,
         p.CreationDate,
         p.Tags,
-        ARRAY_LENGTH(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'), 1) AS TagCount,
+        length(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)), 1) AS TagCount,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS Upvotes,
         COUNT(c.Id) AS CommentCount,
         SUM(CASE 

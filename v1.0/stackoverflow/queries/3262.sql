@@ -70,4 +70,4 @@ WHERE
     OR fs.CommentCount > 5
 ORDER BY 
     fs.CreationDate DESC
-OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 20;

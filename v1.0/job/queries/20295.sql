@@ -28,7 +28,7 @@ ActorRoles AS (
 MoviesWithKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -51,7 +51,7 @@ SELECT
     (SELECT COUNT(DISTINCT ci2.person_id) 
      FROM cast_info ci2 
      WHERE ci2.movie_id = RM.movie_id) AS total_cast_count,
-    (SELECT AVG(EXTRACT(YEAR FROM TIMESTAMP '2024-10-01 12:34:56') - t.production_year) 
+    (SELECT AVG(toYear(toDateTime64('2024-10-01 12:34:56', 6)) - t.production_year) 
      FROM aka_title t 
      WHERE t.production_year IS NOT NULL) AS average_movie_age
 FROM 

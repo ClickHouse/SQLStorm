@@ -59,11 +59,11 @@ SELECT
     up.TotalScore,
     up.AvgViewCount,
     up.BadgeCount,
-    STRING_AGG(CASE 
+    arrayStringConcat(groupArray(assumeNotNull(CASE 
         WHEN up.GoldBadges > 0 THEN 'Gold'
         WHEN up.SilverBadges > 0 THEN 'Silver'
         WHEN up.BronzeBadges > 0 THEN 'Bronze'
-        ELSE NULL END, ', ') AS BadgeTypes
+        ELSE NULL END)), ', ') AS BadgeTypes
 FROM 
     UserPerformance up
 WHERE 
@@ -74,4 +74,4 @@ GROUP BY
     up.AnswerCount, up.TotalScore, up.AvgViewCount, up.BadgeCount
 ORDER BY 
     up.Reputation DESC, up.TotalScore DESC, up.PostCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

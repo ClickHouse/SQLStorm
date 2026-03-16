@@ -21,7 +21,7 @@ RecentComments AS (
            COUNT(C.Id) AS CommentCount,
            MAX(C.CreationDate) AS LastCommentDate
     FROM Comments C
-    WHERE C.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
+    WHERE C.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
     GROUP BY C.UserId
 ),
 UserDetails AS (
@@ -29,7 +29,7 @@ UserDetails AS (
            U.DisplayName, 
            U.Reputation,
            COALESCE(R.CommentCount, 0) AS RecentCommentCount,
-           COALESCE(R.LastCommentDate, DATE '1970-01-01') AS LastCommentDate
+           COALESCE(R.LastCommentDate, toDate('1970-01-01')) AS LastCommentDate
     FROM Users U
     LEFT JOIN RecentComments R ON U.Id = R.UserId
 ),

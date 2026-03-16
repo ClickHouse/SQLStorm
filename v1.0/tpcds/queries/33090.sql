@@ -45,4 +45,4 @@ FROM combined_sales cs
 JOIN customer_hierarchy ch ON cs.c_customer_sk = ch.c_customer_sk
 WHERE ch.level <= 3
 ORDER BY net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

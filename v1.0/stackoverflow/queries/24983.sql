@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
+        P.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
         AND P.Score > 0
 ),
 
@@ -21,7 +21,7 @@ CloseReasons AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(DISTINCT CRT.Name, ', ') AS CloseReason
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CRT.Name))), ', ') AS CloseReason
     FROM 
         PostHistory PH
     JOIN 

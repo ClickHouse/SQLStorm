@@ -33,10 +33,10 @@ WITH customer_data AS (
 age_distribution AS (
     SELECT 
         CASE 
-            WHEN (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c_birth_year) < 20 THEN 'Under 20'
-            WHEN (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c_birth_year) BETWEEN 20 AND 29 THEN '20-29'
-            WHEN (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c_birth_year) BETWEEN 30 AND 39 THEN '30-39'
-            WHEN (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c_birth_year) BETWEEN 40 AND 49 THEN '40-49'
+            WHEN (toYear(cast('2002-10-01' as date)) - c_birth_year) < 20 THEN 'Under 20'
+            WHEN (toYear(cast('2002-10-01' as date)) - c_birth_year) BETWEEN 20 AND 29 THEN '20-29'
+            WHEN (toYear(cast('2002-10-01' as date)) - c_birth_year) BETWEEN 30 AND 39 THEN '30-39'
+            WHEN (toYear(cast('2002-10-01' as date)) - c_birth_year) BETWEEN 40 AND 49 THEN '40-49'
             ELSE '50 and above'
         END AS age_group,
         COUNT(*) AS total_customers,

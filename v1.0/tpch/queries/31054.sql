@@ -15,7 +15,7 @@ WITH RECURSIVE regional_sales AS (
     JOIN 
         lineitem l ON p.p_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY 
         n.n_nationkey, n.n_name
     ORDER BY 
@@ -35,7 +35,7 @@ SELECT
     r.r_name AS region, 
     COUNT(DISTINCT CASE WHEN n.n_nationkey IS NULL THEN 'Unassigned' ELSE n.n_name END) AS nations_count,
     COALESCE(MAX(s.total_sales), 0) AS max_sales,
-    ARRAY_AGG(n.n_name ORDER BY s.total_sales DESC) AS nation_names,
+    groupArray(assumeNotNull(n.n_name ORDER BY s.total_sales DESC)) AS nation_names,
     r.r_comment
 FROM 
     region r

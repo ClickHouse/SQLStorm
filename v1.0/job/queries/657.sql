@@ -25,16 +25,16 @@ MovieDetails AS (
     SELECT 
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies
     FROM 
         TopMovies t
     LEFT JOIN 
-        movie_keyword mk ON t.title = mk.movie_id::text
+        movie_keyword mk ON t.title = CAST(mk.movie_id AS text)
     LEFT JOIN 
         keyword k ON mk.keyword_id = k.id
     LEFT JOIN 
-        movie_companies mc ON t.title = mc.movie_id::text
+        movie_companies mc ON t.title = CAST(mc.movie_id AS text)
     LEFT JOIN 
         company_name co ON mc.company_id = co.id
     GROUP BY 

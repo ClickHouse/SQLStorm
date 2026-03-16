@@ -33,7 +33,7 @@ SalesPerformance AS (
         FROM household_demographics AS hd 
         WHERE hd.hd_dep_count IS NOT NULL 
           AND hd.hd_income_band_sk IS NOT NULL
-        ORDER BY RANDOM()
+        ORDER BY rand()
         LIMIT 1
     )
 )

@@ -6,8 +6,8 @@ SELECT
     r.r_name AS Region_Name,
     n.n_name AS Nation_Name,
     MAX(o.o_totalprice) AS Max_Order_Total,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS Customer_Names,
-    STRING_AGG(DISTINCT o.o_orderstatus, ', ') AS Order_Statuses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS Customer_Names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(o.o_orderstatus))), ', ') AS Order_Statuses
 FROM 
     part p
 JOIN 

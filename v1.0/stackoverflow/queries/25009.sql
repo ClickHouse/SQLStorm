@@ -18,7 +18,7 @@ TitleHistory AS (
 TagExtract AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substr(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', substr(p.Tags, 2, length(p.Tags) - 2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -47,7 +47,7 @@ SELECT
     tr.Tag,
     COUNT(*) AS TagCount,
     MAX(tr.EditRank) AS LatestEditRank,
-    STRING_AGG(DISTINCT tr.Tag, ', ') AS AllTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tr.Tag))), ', ') AS AllTags
 FROM 
     TitleTagRanking tr
 GROUP BY 

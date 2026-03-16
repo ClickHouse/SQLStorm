@@ -19,7 +19,7 @@ RecentPosts AS (
         LEAD(P.CreationDate) OVER (ORDER BY P.CreationDate DESC) AS NextCreationDate,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS Rn
     FROM Posts P
-    WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ),
 ClosedPosts AS (
     SELECT 
@@ -41,13 +41,13 @@ SELECT
         WHEN UV.UpVotesCount - UV.DownVotesCount BETWEEN 50 AND 100 THEN 'Moderately Active'
         ELSE 'Less Active'
     END AS ActivityLevel,
-    STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
 FROM UserVotes UV
 JOIN Users U ON U.Id = UV.UserId
 LEFT JOIN RecentPosts RP ON RP.Rn = 1 
 LEFT JOIN ClosedPosts CP ON CP.PostId = RP.PostId
 LEFT JOIN Posts P ON P.OwnerUserId = U.Id
-LEFT JOIN UNNEST(STRING_TO_ARRAY(P.Tags, ',')) AS T(TagName) ON TRUE
+LEFT JOIN arrayJoin(splitByString(',', P.Tags)) AS T(TagName) ON TRUE
 WHERE UV.PostsCount > 5
 GROUP BY U.DisplayName, UV.UpVotesCount, UV.DownVotesCount, RP.Title, RP.Score, CP.CloseCount
 HAVING COUNT(DISTINCT P.Id) > 2

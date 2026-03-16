@@ -6,7 +6,7 @@ SELECT
     SUM(l.l_quantity * l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments
 FROM 
     lineitem l 
 JOIN 
@@ -24,8 +24,8 @@ JOIN
 JOIN 
     part p ON l.l_partkey = p.p_partkey 
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' 
-    AND o.o_orderdate < DATE '1997-10-01' 
+    o.o_orderdate >= toDate('1997-01-01') 
+    AND o.o_orderdate < toDate('1997-10-01') 
 GROUP BY 
     p.p_name, s.s_name, c.c_name, r.r_name
 ORDER BY 

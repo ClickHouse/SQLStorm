@@ -4,7 +4,7 @@ SELECT
     c.c_last_name,
     ca.ca_city,
     ca.ca_state,
-    string_agg(DISTINCT CONCAT_WS(', ', i.i_item_desc, i.i_color, i.i_size), '; ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(', ', i.i_item_desc, i.i_color, i.i_size)))), '; ') AS purchased_items,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid) AS total_spent
 FROM 

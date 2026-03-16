@@ -27,4 +27,4 @@ FROM CustomerTotal ct
 LEFT JOIN SupplierDetails sd ON ct.c_custkey = sd.s_suppkey
 WHERE sd.total_supply_cost IS NOT NULL OR COALESCE(ct.customer_revenue, 0) = 0
 ORDER BY total_customer_revenue DESC, sd.total_supply_cost ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -28,7 +28,7 @@ TopPosts AS (
         rp.CommentCount,
         rp.CreationDate,
         COUNT(h.Id) AS HistoryCount,
-        STRING_AGG(h.Comment, '; ') AS UserComments
+        arrayStringConcat(groupArray(assumeNotNull(h.Comment)), '; ') AS UserComments
     FROM 
         RankedPosts rp
     LEFT JOIN 

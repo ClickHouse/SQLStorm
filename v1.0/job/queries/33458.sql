@@ -25,7 +25,7 @@ CastDetails AS (
     SELECT
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        array_agg(DISTINCT ak.name) AS actor_names
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names
     FROM
         cast_info ci
     JOIN

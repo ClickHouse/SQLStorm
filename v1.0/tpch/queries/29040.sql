@@ -25,7 +25,7 @@ TopCustomers AS (
 )
 SELECT 
     r.r_name AS region_name, 
-    STRING_AGG(CONCAT(c.name, ' (Orders: ', c.order_count, ' | Total: $', c.total_spent), '; ') AS customer_summary
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(c.name, ' (Orders: ', c.order_count, ' | Total: $', c.total_spent))), '; ') AS customer_summary
 FROM 
     TopCustomers c
     JOIN supplier s ON c.custkey = s.s_nationkey

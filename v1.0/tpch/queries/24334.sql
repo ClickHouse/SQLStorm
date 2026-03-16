@@ -9,14 +9,14 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 ),
 SupplierDetails AS (
     SELECT 
         s.s_suppkey,
         s.s_name,
         COALESCE(NULLIF(s.s_comment, ''), 'No comment') AS safe_comment,
-        ARRAY_AGG(DISTINCT ps.ps_partkey) AS available_parts
+        arrayDistinct(groupArray(assumeNotNull(ps.ps_partkey))) AS available_parts
     FROM 
         supplier s
     LEFT JOIN 

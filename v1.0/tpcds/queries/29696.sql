@@ -6,7 +6,7 @@ SELECT
     ca.ca_state, 
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid) AS total_spent,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promo_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promo_used,
     CONCAT(COALESCE(c.c_salutation, 'Dear'), ' ', c.c_first_name, ' ', c.c_last_name) AS customer_greeting,
     UPPER(ca.ca_country) AS country_uppercase,
     LENGTH(CONCAT(ca.ca_street_name, ' ', ca.ca_city)) AS address_length,

@@ -3,7 +3,7 @@ SELECT
     p.p_name AS part_name,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ' - ', r.r_name), '; ') AS nation_region_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ' - ', r.r_name)))), '; ') AS nation_region_info
 FROM 
     supplier s
 JOIN 
@@ -21,8 +21,8 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01'
-    AND l.l_shipdate < DATE '1998-01-01'
+    l.l_shipdate >= toDate('1997-01-01')
+    AND l.l_shipdate < toDate('1998-01-01')
 GROUP BY 
     s.s_name, p.p_name
 ORDER BY 

@@ -16,11 +16,11 @@ WITH RankedPosts AS (
          FROM Comments 
          GROUP BY PostId) c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -61,7 +61,7 @@ JOIN
 LEFT JOIN 
     UserBadges b ON u.Id = b.UserId
 JOIN 
-    PopularTags t ON t.TagName = ANY(string_to_array(r.Tags, '><'))
+    PopularTags t ON t.TagName = ANY(splitByString('><', r.Tags))
 WHERE 
     r.PostRank <= 3
 ORDER BY 

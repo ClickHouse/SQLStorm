@@ -1,14 +1,14 @@
 
 WITH TagPostCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1  
     GROUP BY 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><'))
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2)))
 ),
 UserMetrics AS (
     SELECT 
@@ -49,7 +49,7 @@ UserTagIntersections AS (
 SELECT 
     ut.UserId,
     u.DisplayName,
-    STRING_AGG(DISTINCT ut.TagName, ', ') AS PopularTags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ut.TagName))), ', ') AS PopularTags,
     SUM(um.TotalBounties) AS SumOfBounties,
     SUM(um.TotalUpVotes) AS UpVoteSum,
     SUM(um.TotalDownVotes) AS DownVoteSum

@@ -34,7 +34,7 @@ SELECT
     ca_state,
     COUNT(*) AS total_customers,
     AVG(name_length) AS avg_name_length,
-    STRING_AGG(full_name, ', ') AS top_names
+    arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS top_names
 FROM 
     TopNNames
 GROUP BY 

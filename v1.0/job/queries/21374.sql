@@ -20,7 +20,7 @@ movie_info_extended AS (
         mi.movie_id,
         COALESCE(mi.info, 'No Info') AS movie_information,
         CASE 
-            WHEN COUNT(DISTINCT k.keyword) > 0 THEN STRING_AGG(DISTINCT k.keyword, ', ') 
+            WHEN COUNT(DISTINCT k.keyword) > 0 THEN arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
             ELSE 'No Keywords' 
         END AS keywords
     FROM 

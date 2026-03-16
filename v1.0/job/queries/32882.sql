@@ -29,7 +29,7 @@ ActorRoles AS (
     SELECT 
         ca.person_id,
         ka.name AS actor_name,
-        COALESCE(STRING_AGG(rt.role, ', '), 'Unknown') AS roles
+        COALESCE(arrayStringConcat(groupArray(assumeNotNull(rt.role)), ', '), 'Unknown') AS roles
     FROM 
         cast_info ca
     LEFT JOIN 

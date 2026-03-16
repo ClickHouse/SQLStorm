@@ -31,4 +31,4 @@ HAVING
     COUNT(ws.ws_order_number) > 5
 ORDER BY 
     total_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

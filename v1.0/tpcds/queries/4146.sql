@@ -63,7 +63,7 @@ LEFT JOIN
 LEFT JOIN 
     CTE_Inventory inv ON i.i_item_sk = inv.inv_item_sk
 LEFT JOIN 
-    CTE_Customer c ON c.c_customer_sk = (SELECT c_customer_sk FROM customer ORDER BY RANDOM() LIMIT 1)
+    CTE_Customer c ON c.c_customer_sk = (SELECT c_customer_sk FROM customer ORDER BY rand() LIMIT 1)
 LEFT JOIN 
     CTE_Returns r ON i.i_item_sk = r.sr_item_sk
 WHERE 
@@ -71,4 +71,4 @@ WHERE
     AND c.cd_gender IS NOT NULL
 ORDER BY 
     cs.total_sales DESC, cs.total_quantity ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

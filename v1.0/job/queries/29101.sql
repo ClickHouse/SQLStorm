@@ -2,8 +2,8 @@ WITH RankedMovies AS (
     SELECT 
         mt.title AS movie_title,
         mt.production_year,
-        STRING_AGG(DISTINCT an.name, ', ') AS actor_names,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
         COUNT(DISTINCT mc.company_id) AS company_count
     FROM 
         aka_title mt

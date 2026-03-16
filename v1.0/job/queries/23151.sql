@@ -41,7 +41,7 @@ SELECT
         WHEN rm.production_year BETWEEN 2000 AND 2010 THEN 'Modern'
         ELSE 'Recent'
     END AS era,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords 
 FROM 
     RankedMovies rm
 LEFT JOIN 

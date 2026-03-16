@@ -35,8 +35,8 @@ MovieDetails AS (
         fm.movie_id,
         fm.title,
         COALESCE(MAX(ci.note), 'No Note') AS cast_note,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
-        ARRAY_AGG(DISTINCT ct.kind) AS company_types
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(ct.kind))) AS company_types
     FROM 
         FilteredMovies AS fm
     LEFT JOIN 

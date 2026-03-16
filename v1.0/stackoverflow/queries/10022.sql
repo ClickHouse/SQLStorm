@@ -7,7 +7,7 @@ WITH PostStatistics AS (
         COUNT(v.Id) AS TotalVotes,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgTimeToActivitySeconds,
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgTimeToActivitySeconds,
         COUNT(DISTINCT bh.Id) AS TotalHistoryChanges
     FROM 
         Posts p

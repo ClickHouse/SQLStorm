@@ -33,7 +33,7 @@ CompanyTypes AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(mi.info, ', ' ORDER BY it.id) AS movie_info_details
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ' ORDER BY it.id) AS movie_info_details
     FROM 
         movie_info mi
     JOIN 

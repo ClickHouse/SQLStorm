@@ -63,4 +63,4 @@ WHERE
     AND fr.total_sales > 5
 ORDER BY 
     fr.profit_per_sale DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

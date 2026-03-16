@@ -26,7 +26,7 @@ FilteredMovies AS (
     SELECT 
         mwk.movie_id,
         mwk.title,
-        STRING_AGG(mwk.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(mwk.keyword)), ', ') AS keywords
     FROM 
         MoviesWithKeywords mwk
     GROUP BY 

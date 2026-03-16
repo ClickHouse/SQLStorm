@@ -26,7 +26,7 @@ FilteredPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
 )
 
 SELECT 
@@ -60,7 +60,7 @@ FROM
     UserVoteStats UVD
     JOIN FilteredPosts FP ON FP.PostId IN (SELECT P.Id FROM Posts P WHERE P.OwnerUserId = UVD.UserId)
     LEFT JOIN PostHistory PH ON FP.PostId = PH.PostId 
-                               AND PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+                               AND PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 WHERE 
     UVD.TotalVotes > 10 
     AND (UVD.Reputation > 100 OR UVD.TotalPosts > 5)

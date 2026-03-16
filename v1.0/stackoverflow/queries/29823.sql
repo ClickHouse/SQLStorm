@@ -17,21 +17,21 @@ WITH RankedPosts AS (
         Comments C ON P.Id = C.PostId
     WHERE 
         P.PostTypeId = 1 
-        AND P.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        AND P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
     GROUP BY 
         P.Id, P.Title, P.Tags, P.CreationDate, P.Score, U.DisplayName
 ),
 
 TagCount AS (
     SELECT 
-        TRIM(UNNEST(STRING_TO_ARRAY(P.Tags, '>'))) AS Tag,
+        TRIM(arrayJoin(splitByString('>', P.Tags))) AS Tag,
         COUNT(*) AS TagFrequency
     FROM 
         Posts P
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 
-        TRIM(UNNEST(STRING_TO_ARRAY(P.Tags, '>')))
+        TRIM(arrayJoin(splitByString('>', P.Tags)))
     ORDER BY 
         TagFrequency DESC
     LIMIT 10
@@ -73,7 +73,7 @@ SELECT
 FROM 
     RankedPosts RP
 LEFT JOIN 
-    TagCount TC ON TC.Tag = ANY(STRING_TO_ARRAY(RP.Tags, '>'))
+    TagCount TC ON TC.Tag = ANY(splitByString('>', RP.Tags))
 LEFT JOIN 
     PopularAuthors PA ON RP.AuthorName = PA.DisplayName
 WHERE 

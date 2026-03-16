@@ -21,10 +21,10 @@ LEFT JOIN
 LEFT JOIN 
     Users u ON p.OwnerUserId = u.Id
 LEFT JOIN 
-    (SELECT p2.Id, unnest(string_to_array(p2.Tags, ',')) AS TagName 
+    (SELECT p2.Id, arrayJoin(splitByString(',', p2.Tags)) AS TagName 
      FROM Posts p2) t ON p.Id = t.Id
 WHERE 
-    p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+    p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
 GROUP BY 
     p.Id, p.Title, p.PostTypeId, p.CreationDate, p.ViewCount, p.Score, 
     u.DisplayName, t.TagName

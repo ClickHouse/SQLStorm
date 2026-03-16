@@ -27,7 +27,7 @@ actor_summary AS (
     SELECT 
         ak.name,
         COUNT(DISTINCT amr.movie_id) AS total_movies,
-        STRING_AGG(DISTINCT t.title, ', ') AS titles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS titles,
         AVG(COALESCE(CAST(mi.info AS INTEGER), 0)) AS average_info_score
     FROM 
         actor_movie_recursion amr

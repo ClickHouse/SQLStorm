@@ -17,7 +17,7 @@ ActorPerformance AS (
     SELECT 
         c.movie_id,
         COUNT(*) AS actor_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors_list
     FROM 
         cast_info c
     JOIN 
@@ -29,7 +29,7 @@ ActorPerformance AS (
 CompanyMovies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM 
         movie_companies mc
     JOIN 

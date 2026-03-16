@@ -32,7 +32,7 @@ CompanyInfo AS (
     SELECT 
         m.title, 
         COUNT(mc.company_id) AS company_count,
-        STRING_AGG(DISTINCT co.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS company_names
     FROM 
         RankedMovies m
     LEFT JOIN 

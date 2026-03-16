@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND
         p.AnswerCount > 0  
 ),
 UserActivity AS (
@@ -48,7 +48,7 @@ ActiveUsers AS (
     FROM 
         UserActivity ua
     WHERE 
-        ua.LastActiveDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        ua.LastActiveDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ),
 PostHistorySummary AS (
     SELECT 

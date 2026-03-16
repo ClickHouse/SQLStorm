@@ -18,20 +18,20 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score IS NOT NULL
 ),
 PostHistoryData AS (
     SELECT 
         ph.PostId,
         ph.UserId,
-        STRING_AGG(DISTINCT CONCAT(ph.Comment, ' (', pht.Name, ')'), ', ') AS HistoryComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ph.Comment, ' (', pht.Name, ')')))), ', ') AS HistoryComments
     FROM 
         PostHistory ph
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         ph.PostId, ph.UserId
 ),

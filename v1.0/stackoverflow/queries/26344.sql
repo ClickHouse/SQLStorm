@@ -5,12 +5,12 @@ WITH TagStatistics AS (
         SUM(CASE WHEN pt.Name = 'Question' THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN pt.Name = 'Answer' THEN 1 ELSE 0 END) AS AnswerCount,
         AVG(u.Reputation) AS AverageReputation,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopUsers
     FROM Tags t
     LEFT JOIN Posts p ON p.Tags LIKE CONCAT('%<', t.TagName, '>') 
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN PostTypes pt ON p.PostTypeId = pt.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY t.TagName
 ),
 TopTags AS (

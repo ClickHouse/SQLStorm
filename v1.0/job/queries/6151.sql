@@ -6,7 +6,7 @@ SELECT
     p.info AS actor_bio,
     k.keyword AS movie_keyword,
     COUNT(t.id) AS total_movies,
-    STRING_AGG(DISTINCT c.kind, ',') AS company_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ',') AS company_types
 FROM 
     aka_name AS a
 JOIN 

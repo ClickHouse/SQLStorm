@@ -3,8 +3,8 @@ WITH AddressStats AS (
     SELECT 
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT ca_street_name, ', ') AS distinct_street_names
+        arrayStringConcat(groupArray(assumeNotNull(ca_city)), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), ', ') AS distinct_street_names
     FROM customer_address
     GROUP BY ca_state
 ),
@@ -12,7 +12,7 @@ DemographicsStats AS (
     SELECT 
         cd_gender,
         COUNT(*) AS demographic_count,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_levels
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_levels
     FROM customer_demographics
     GROUP BY cd_gender
 ),
@@ -22,7 +22,7 @@ SalesStats AS (
         COUNT(ws_order_number) AS total_web_sales,
         SUM(ws_sales_price) AS total_sales,
         SUM(ws_quantity) AS total_units_sold,
-        STRING_AGG(DISTINCT CAST(ws_web_page_sk AS TEXT), ', ') AS distinct_web_page_ids
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws_web_page_sk AS TEXT)))), ', ') AS distinct_web_page_ids
     FROM web_sales
     GROUP BY ws_sold_date_sk
 )

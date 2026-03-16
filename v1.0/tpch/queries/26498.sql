@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s_suppkey) AS supplier_count,
     SUM(ps_availqty) AS total_available_quantity,
     AVG(s_acctbal) AS average_supplier_balance,
-    STRING_AGG(DISTINCT n_name, ', ') AS associated_nations
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n_name))), ', ') AS associated_nations
 FROM
     part
 JOIN

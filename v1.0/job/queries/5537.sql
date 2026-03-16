@@ -26,7 +26,7 @@ aggregated_data AS (
     SELECT 
         production_year, 
         COUNT(title) AS total_movies, 
-        STRING_AGG(keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords
     FROM 
         movie_data
     GROUP BY 

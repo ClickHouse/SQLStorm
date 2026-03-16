@@ -36,6 +36,6 @@ LEFT JOIN SupplierPartPrices sp ON oh.o_orderkey = sp.ps_partkey
 JOIN NationSupplierCount nsc ON sp.p_brand IS NOT NULL
 LEFT JOIN TopCustomers tc ON oh.o_custkey = tc.c_custkey
 WHERE (sp.ps_supplycost IS NOT NULL OR tc.total_spent IS NULL)
-  AND (DATE_PART('year', oh.o_orderdate) = 1997 OR oh.o_orderdate IS NULL)
+  AND (datePart('year', oh.o_orderdate) = 1997 OR oh.o_orderdate IS NULL)
 ORDER BY oh.o_orderdate DESC, tc.total_spent DESC
 LIMIT 100;

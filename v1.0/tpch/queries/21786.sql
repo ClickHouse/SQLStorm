@@ -22,7 +22,7 @@ FrequentOrders AS (
            COUNT(DISTINCT l.l_linenumber) AS line_count
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY o.o_orderkey, o.o_orderstatus
     HAVING COUNT(DISTINCT l.l_linenumber) > 10
 ),

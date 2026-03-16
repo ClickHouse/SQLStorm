@@ -68,4 +68,4 @@ GROUP BY
     D.d_day_name
 ORDER BY 
     total_sales_amount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

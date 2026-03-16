@@ -56,4 +56,4 @@ WHERE
     tc.total_spent IS NOT NULL
 ORDER BY 
     tc.total_spent DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

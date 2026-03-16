@@ -3,8 +3,8 @@ SELECT
     COUNT(*) AS brand_count,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     MAX(CASE WHEN p.p_type LIKE '%rubber%' THEN p.p_retailprice END) AS max_rubber_ret_price,
-    STRING_AGG(DISTINCT s.s_name, '; ') AS supplier_names,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', o.o_orderkey, ')'), ', ') AS customer_orders
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), '; ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', o.o_orderkey, ')')))), ', ') AS customer_orders
 FROM 
     part p
 JOIN 

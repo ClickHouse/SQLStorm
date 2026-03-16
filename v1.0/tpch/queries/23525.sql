@@ -33,7 +33,7 @@ customer_order_summary AS (
         c.c_custkey,
         SUM(CASE WHEN o.o_orderstatus = 'O' THEN o.o_totalprice ELSE 0 END) AS total_open_orders,
         COUNT(DISTINCT o.o_orderkey) AS order_count,
-        STRING_AGG(DISTINCT o.o_orderpriority, ', ') AS priorities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(o.o_orderpriority))), ', ') AS priorities,
         MAX(c.c_acctbal) AS max_account_balance
     FROM 
         customer c
@@ -55,7 +55,7 @@ FROM
 LEFT JOIN (
     SELECT 
         ps_partkey,
-        STRING_AGG(DISTINCT s_name, ', ') AS joined_suppliers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s_name))), ', ') AS joined_suppliers
     FROM 
         part_supplier_stats pss
     JOIN 

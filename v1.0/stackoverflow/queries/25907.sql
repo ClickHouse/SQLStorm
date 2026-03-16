@@ -5,7 +5,7 @@ WITH TagFrequency AS (
         COUNT(*) AS Frequency
     FROM (
         SELECT 
-            UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS value
+            arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS value
         FROM Posts
         WHERE PostTypeId = 1  
     ) AS tag

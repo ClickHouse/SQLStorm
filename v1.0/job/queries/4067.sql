@@ -37,7 +37,7 @@ SELECT
     (SELECT COUNT(*) 
      FROM movie_info mi 
      WHERE mi.movie_id = tm.movie_id AND mi.note IS NOT NULL) AS info_count,
-    (SELECT STRING_AGG(kw.keyword, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') 
      FROM movie_keyword mk 
      JOIN keyword kw ON mk.keyword_id = kw.id 
      WHERE mk.movie_id = tm.movie_id) AS keywords,

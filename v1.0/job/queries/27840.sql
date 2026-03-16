@@ -3,8 +3,8 @@ WITH RankedMovies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(DISTINCT c.person_id) DESC) AS rank
     FROM 
         aka_title t
@@ -29,7 +29,7 @@ SELECT
     fm.title,
     fm.production_year,
     fm.actor_names,
-    ARRAY_LENGTH(fm.keywords, 1) AS keyword_count
+    length(fm.keywords, 1) AS keyword_count
 FROM 
     FilteredMovies fm
 ORDER BY 

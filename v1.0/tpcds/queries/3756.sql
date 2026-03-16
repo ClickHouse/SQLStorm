@@ -72,4 +72,4 @@ WHERE
         SELECT AVG(cd_purchase_estimate) FROM CustomerDemographics
     )
 ORDER BY ci.total_return_amount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -38,7 +38,7 @@ SELECT
     COUNT(DISTINCT co.o_orderkey) AS total_orders,
     SUM(co.o_totalprice) AS total_revenue,
     MAX(ads.total_spent) AS highest_spender,
-    STRING_AGG(DISTINCT CONCAT(ps.p_name, ' from ', ps.supplier_name), '; ') AS parts_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ps.p_name, ' from ', ps.supplier_name)))), '; ') AS parts_supplied
 FROM 
     region rh
 LEFT JOIN 
@@ -52,7 +52,7 @@ LEFT JOIN
 LEFT JOIN 
     AggregateSales ads ON co.c_custkey = ads.c_custkey
 WHERE 
-    (co.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1997-01-01' OR co.o_orderdate IS NULL)
+    (co.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1997-01-01') OR co.o_orderdate IS NULL)
     AND rh.r_name IS NOT NULL
 GROUP BY 
     rh.r_name

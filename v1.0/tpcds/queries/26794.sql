@@ -18,4 +18,4 @@ SELECT ed.full_address, ed.cd_gender, ed.cd_marital_status, ed.customer_count, e
 FROM enriched_data ed
 WHERE ed.customer_count > 10
 ORDER BY ed.avg_purchase_estimate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -4,8 +4,8 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     SUM(CASE WHEN o.o_orderstatus = 'O' THEN l.l_quantity ELSE 0 END) AS total_ordered_quantity,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price_after_discount,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, '(', r.r_name, ')'), '; ') AS nation_region_info,
-    STRING_AGG(DISTINCT p.p_type, ', ') AS unique_part_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, '(', r.r_name, ')')))), '; ') AS nation_region_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS unique_part_types,
     MAX(l.l_shipdate) AS last_shipment_date
 FROM
     supplier s

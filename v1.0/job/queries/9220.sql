@@ -5,7 +5,7 @@ SELECT
     at.production_year,
     cct.kind AS cast_type,
     COUNT(DISTINCT mc.company_id) AS production_companies,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     pi.info AS person_info
 FROM 
     aka_name an

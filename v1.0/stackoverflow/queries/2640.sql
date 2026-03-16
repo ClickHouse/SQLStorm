@@ -33,14 +33,14 @@ PostDetails AS (
         P.Title,
         P.Score,
         P.ViewCount,
-        COALESCE(CP.ClosedDate, TIMESTAMP '2024-10-01 12:34:56') AS ClosedDate,
+        COALESCE(CP.ClosedDate, toDateTime64('2024-10-01 12:34:56', 6)) AS ClosedDate,
         COALESCE(CP.CloseReason, 'Not Closed') AS CloseReason,
         U.Reputation,
         P.OwnerUserId
     FROM Posts P
     LEFT JOIN ClosedPosts CP ON P.Id = CP.PostId
     JOIN UserReputation U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 FinalResults AS (
     SELECT

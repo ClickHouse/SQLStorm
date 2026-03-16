@@ -34,6 +34,6 @@ TopPosts AS (
 SELECT 
     TP.PostId, TP.DisplayName AS OwnerName, TP.AnswerCount, 
     TP.CommentCount, TP.Upvotes, TP.Downvotes, 
-    EXTRACT(EPOCH FROM TP.RecentActivity) AS RecentActivityEpoch
+    toUnixTimestamp(TP.RecentActivity) AS RecentActivityEpoch
 FROM TopPosts TP
 ORDER BY TP.Upvotes DESC;

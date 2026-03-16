@@ -4,7 +4,7 @@ WITH QuestionTags AS (
         Posts.Title AS QuestionTitle,
         Posts.CreationDate AS QuestionCreationDate,
         Posts.Tags,
-        UNNEST(string_to_array(substring(Posts.Tags, 2, length(Posts.Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(Posts.Tags, 2, length(Posts.Tags)-2))) AS Tag
     FROM
         Posts
     WHERE
@@ -47,7 +47,7 @@ FROM
 JOIN
     Posts P ON U.Id = P.OwnerUserId
 JOIN
-    TopTags TT ON TT.Tag = ANY(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><'))
+    TopTags TT ON TT.Tag = ANY(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2)))
 WHERE
     P.PostTypeId = 1  
 ORDER BY

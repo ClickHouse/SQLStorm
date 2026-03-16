@@ -2,7 +2,7 @@ WITH PostTagCounts AS (
     SELECT 
         p.Id AS PostId,
         p.Title AS PostTitle,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -31,7 +31,7 @@ LatestPosts AS (
     FROM 
         Posts p
     INNER JOIN 
-        TagPopularities pt ON pt.Tag = ANY(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'))
+        TagPopularities pt ON pt.Tag = ANY(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
     WHERE 
         p.PostTypeId = 1 
     ORDER BY 

@@ -24,7 +24,7 @@ LEFT JOIN
 JOIN 
     Users u ON p.OwnerUserId = u.Id
 WHERE 
-    p.CreationDate >= DATE '2023-01-01'
+    p.CreationDate >= toDate('2023-01-01')
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.ViewCount, u.DisplayName, u.Reputation, a.AnswerCount, c.CommentCount, b.BadgeCount
 ORDER BY 

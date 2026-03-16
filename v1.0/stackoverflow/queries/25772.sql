@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
         COUNT(DISTINCT c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT b.Name) AS BadgeNames,
+        arrayDistinct(groupArray(assumeNotNull(b.Name))) AS BadgeNames,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM 
         Posts p
@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         p.Id, p.Title, p.Tags, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),
@@ -45,7 +45,7 @@ PostAnalytics AS (
 FilteredAnalytics AS (
     SELECT 
         pa.*,
-        ARRAY_LENGTH(string_to_array(pa.Tags, '>'), 1) AS TagCount
+        length(splitByString('>', pa.Tags), 1) AS TagCount
     FROM 
         PostAnalytics pa
     WHERE 
@@ -64,7 +64,7 @@ SELECT
     fa.TagCount,
     fa.BadgeNames,
     fa.PostStatus,
-    EXTRACT(EPOCH FROM (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - fa.CreationDate)) AS TimeSincePostCreation
+    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - fa.CreationDate)) AS TimeSincePostCreation
 FROM 
     FilteredAnalytics fa
 ORDER BY 

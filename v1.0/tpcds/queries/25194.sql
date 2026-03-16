@@ -10,7 +10,7 @@ WITH CustomerDetails AS (
         CA.ca_state,
         CA.ca_country,
         LEFT(c.c_email_address, 20) AS short_email,
-        STRING_AGG(DISTINCT CONCAT(UPPER(CA.ca_street_number), ' ', CA.ca_street_name, ' ', CA.ca_street_type), '; ') AS address_summary
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(UPPER(CA.ca_street_number), ' ', CA.ca_street_name, ' ', CA.ca_street_type)))), '; ') AS address_summary
     FROM 
         customer c
     JOIN 

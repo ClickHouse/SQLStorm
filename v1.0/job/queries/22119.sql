@@ -24,7 +24,7 @@ ActorMovies AS (
 CompanyTitles AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM movie_companies mc
     JOIN company_name cn ON mc.company_id = cn.id
     GROUP BY mc.movie_id
@@ -51,4 +51,4 @@ LEFT JOIN ActorMovies ac ON ac.movie_id = rt.title_id
 LEFT JOIN CompanyTitles ct ON ct.movie_id = rt.title_id
 WHERE rt.rank_per_year <= 5
 ORDER BY rt.production_year DESC, rt.rank_per_year
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

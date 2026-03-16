@@ -35,7 +35,7 @@ RecentEdits AS (
         PH.UserId,
         PH.CreationDate AS EditDate,
         PH.PostHistoryTypeId,
-        STRING_AGG(CONCAT(PH.UserDisplayName, ': ', PH.Comment), '; ') AS EditComments
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(PH.UserDisplayName, ': ', PH.Comment))), '; ') AS EditComments
     FROM 
         PostHistory PH
     JOIN 
@@ -82,4 +82,4 @@ WHERE
 ORDER BY 
     TQ.Score DESC,
     TQ.ViewCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -52,7 +52,7 @@ SELECT
     UBC.SilverBadgeCount,
     UBC.BronzeBadgeCount,
     CASE 
-        WHEN UDA.LastActivity < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Inactive'
+        WHEN UDA.LastActivity < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Inactive'
         ELSE 'Active'
     END AS ActivityStatus,
     (SELECT AVG(V.BountyAmount) 

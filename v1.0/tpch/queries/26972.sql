@@ -6,7 +6,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity_sold,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     SUBSTRING(p.p_name, 1, 10) AS short_part_name,
-    STRING_AGG(DISTINCT r.r_name, ',' ORDER BY r.r_name) AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ',' ORDER BY r.r_name) AS regions_supplied
 FROM 
     part p
 JOIN 

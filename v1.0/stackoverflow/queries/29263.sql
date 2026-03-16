@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS VoteCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '>')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('>', substring(p.Tags, 2, length(p.Tags) - 2))) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -30,7 +30,7 @@ RankedComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentsOnPost,
-        STRING_AGG(c.Text, ' | ') AS CommentTexts
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS CommentTexts
     FROM 
         Comments c
     GROUP BY 
@@ -71,4 +71,4 @@ LEFT JOIN
     UserReputation ur ON ur.UserId = u.Id
 ORDER BY 
     rp.CreationDate DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

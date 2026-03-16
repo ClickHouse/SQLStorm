@@ -33,7 +33,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available,
     MAX(s.s_acctbal) AS max_supplier_balance,
     COUNT(DISTINCT co.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM partsupp ps
 LEFT JOIN PartDetails pd ON ps.ps_partkey = pd.p_partkey
 LEFT JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
@@ -45,4 +45,4 @@ WHERE pd.rn <= 5 OR s.s_acctbal IS NULL
 GROUP BY ps.ps_partkey, pd.p_name
 HAVING SUM(ps.ps_availqty) > 1000 AND COUNT(DISTINCT r.r_regionkey) < 3
 ORDER BY total_available DESC, max_supplier_balance DESC
-OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

@@ -52,7 +52,7 @@ SELECT
          WHEN total_cast_movies = 0 THEN 'No Movies Available'
          ELSE CAST(CAST(cast_count AS FLOAT) / NULLIF(total_cast_movies, 0) * 100 AS NUMERIC(5, 2)) || '%' 
      END) AS cast_percentage,
-    (SELECT STRING_AGG(DISTINCT cn.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') 
      FROM company_name cn 
      JOIN movie_companies mc ON mc.movie_id = t.movie_id 
      WHERE mc.company_id = cn.id

@@ -49,4 +49,4 @@ SELECT
 FROM UserActivity ua
 WHERE ua.TotalPosts > 0
 ORDER BY EngagementRank
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

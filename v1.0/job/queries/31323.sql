@@ -26,7 +26,7 @@ CTE_CastInfo AS (
     SELECT
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
     FROM
         cast_info ci
     JOIN
@@ -56,7 +56,7 @@ SELECT
     mv.actor_count,
     mv.actor_names,
     COUNT(DISTINCT ml.linked_movie_id) AS linked_count,
-    ARRAY_AGG(DISTINCT ml.linked_movie_id) FILTER (WHERE ml.linked_movie_id IS NOT NULL) AS linked_movies
+    arrayDistinct(groupArray(assumeNotNull(ml.linked_movie_id))) FILTER (WHERE ml.linked_movie_id IS NOT NULL) AS linked_movies
 FROM
     CTE_MovieInfo mv
 LEFT JOIN

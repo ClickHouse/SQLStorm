@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Body,
         p.Tags,
         p.OwnerUserId,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'), 1) AS TagCount,
+        length(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
         ROW_NUMBER() OVER (ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p
@@ -31,7 +31,7 @@ UserEngagement AS (
 ),
 PopularTags AS (
     SELECT 
-        LOWER(TRIM(UNNEST(string_to_array(substring(Tags, 2, length(Tags)-2), '><')))) AS Tag,
+        LOWER(TRIM(arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))))) AS Tag,
         COUNT(*) AS UsageCount
     FROM 
         Posts
@@ -61,7 +61,7 @@ FROM
 JOIN 
     UserEngagement ue ON rp.OwnerUserId = ue.UserId
 LEFT JOIN 
-    PopularTags pt ON pt.Tag = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags)-2), '><'))
+    PopularTags pt ON pt.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
 WHERE 
     rp.Rank <= 50  
 ORDER BY 

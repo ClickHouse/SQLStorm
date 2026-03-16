@@ -61,7 +61,7 @@ SELECT
     SUM(UpVotesGiven) AS TotalUpVotes,
     SUM(DownVotesGiven) AS TotalDownVotes,
     SUM(TotalBadges) AS OverallBadges,
-    STRING_AGG(DISTINCT CONCAT('Gold: ', CAST(GoldBadges AS TEXT), ', Silver: ', CAST(SilverBadges AS TEXT), ', Bronze: ', CAST(BronzeBadges AS TEXT)), '; ') AS BadgeSummary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Gold: ', CAST(GoldBadges AS TEXT), ', Silver: ', CAST(SilverBadges AS TEXT), ', Bronze: ', CAST(BronzeBadges AS TEXT))))), '; ') AS BadgeSummary
 FROM FinalReport
 GROUP BY UserName
 HAVING AVG(TotalScore) > 0 AND SUM(CommentsMade) > 1

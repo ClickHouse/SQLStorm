@@ -33,7 +33,7 @@ cast_summary AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_actors,
-        STRING_AGG(DISTINCT n.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS actor_names
     FROM 
         cast_info ci
     JOIN 
@@ -66,7 +66,7 @@ filtered_movies AS (
     LEFT JOIN 
         movie_keywords mk ON t.id = mk.movie_id
     WHERE 
-        (EXTRACT(YEAR FROM cast('2024-10-01' as date)) - t.production_year) < 10
+        (toYear(cast('2024-10-01' as date)) - t.production_year) < 10
         OR t.title ILIKE '%(special)%'
 )
 SELECT 

@@ -6,8 +6,8 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_address, ')'), '; ') AS supplier_info,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', c.c_address, ')'), '; ') AS customer_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_address, ')')))), '; ') AS supplier_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', c.c_address, ')')))), '; ') AS customer_info
 FROM 
     part AS p 
 JOIN 

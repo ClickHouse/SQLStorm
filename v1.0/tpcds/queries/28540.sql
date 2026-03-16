@@ -48,4 +48,4 @@ LEFT JOIN
     sales_info si ON ci.c_customer_sk = si.ws_bill_customer_sk
 ORDER BY 
     total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

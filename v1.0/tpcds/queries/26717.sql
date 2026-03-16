@@ -19,7 +19,7 @@ Address_Analysis AS (
         COUNT(*) AS total_addresses,
         AVG(street_name_length) AS avg_street_name_length,
         COUNT(DISTINCT full_address) AS unique_full_addresses,
-        STRING_AGG(DISTINCT city_prefix, ', ') AS city_prefixes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(city_prefix))), ', ') AS city_prefixes
     FROM 
         String_Benchmark
 )

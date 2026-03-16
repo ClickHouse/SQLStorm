@@ -10,11 +10,11 @@ WITH PostMetrics AS (
         p.FavoriteCount,
         COALESCE(p.ClosedDate, '1900-01-01') AS ClosedDate,
         COALESCE(p.LastActivityDate, '1900-01-01') AS LastActivityDate,
-        EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) AS PostAgeInSeconds
+        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) AS PostAgeInSeconds
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), VoteMetrics AS (
     SELECT 
         v.PostId,

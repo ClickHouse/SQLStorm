@@ -28,6 +28,6 @@ LEFT JOIN
     (SELECT PostId, CreationDate AS HistoryCreationDate FROM LatestPostHistory WHERE rn = 1) LP 
     ON P.Id = LP.PostId
 WHERE 
-    P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+    P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ORDER BY 
     P.CreationDate DESC;

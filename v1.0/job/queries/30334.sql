@@ -18,7 +18,7 @@ SELECT
     a.name AS actor_name,
     t.title AS movie_title,
     t.production_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     COUNT(DISTINCT ci.person_role_id) AS num_actors,
     AVG(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS note_present_ratio,
     COUNT(DISTINCT mc.company_id) AS production_companies,

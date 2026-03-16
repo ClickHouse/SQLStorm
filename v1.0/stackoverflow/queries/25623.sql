@@ -5,8 +5,8 @@ WITH TagDetails AS (
         COUNT(p.Id) AS PostCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
-        ARRAY_AGG(DISTINCT u.DisplayName) AS TopUsers,
-        STRING_AGG(DISTINCT p.Title, '; ') AS TopPostTitles,
+        arrayDistinct(groupArray(assumeNotNull(u.DisplayName))) AS TopUsers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), '; ') AS TopPostTitles,
         MIN(p.CreationDate) AS FirstPostDate,
         MAX(p.CreationDate) AS LastPostDate
     FROM 
@@ -26,8 +26,8 @@ TagStatistics AS (
         QuestionCount,
         FirstPostDate,
         LastPostDate,
-        EXTRACT(EPOCH FROM (LastPostDate - FirstPostDate)) / 86400 AS ActiveDays,
-        (PostCount * 1.0 / NULLIF(EXTRACT(EPOCH FROM (LastPostDate - FirstPostDate)) / 86400, 0)) AS PostsPerDay
+        toUnixTimestamp((LastPostDate - FirstPostDate)) / 86400 AS ActiveDays,
+        (PostCount * 1.0 / NULLIF(toUnixTimestamp((LastPostDate - FirstPostDate)) / 86400, 0)) AS PostsPerDay
     FROM 
         TagDetails
 ),

@@ -47,7 +47,7 @@ SELECT
     cd.cd_marital_status,
     COALESCE(sum(ws.ws_sales_price), 0) AS total_sales_from_web,
     round(avg(sum(ws.ws_sales_price)) OVER (PARTITION BY c.c_customer_sk), 2) AS avg_sales_per_order,
-    STRING_AGG(DISTINCT CONCAT(p.p_promo_name, ': ', p.p_cost), ', ') AS applied_promotions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_promo_name, ': ', p.p_cost)))), ', ') AS applied_promotions
 FROM 
     customer c
 LEFT JOIN 

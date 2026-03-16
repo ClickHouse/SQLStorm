@@ -19,7 +19,7 @@ movie_info_with_keywords AS (
     SELECT 
         rm.movie_title,
         rm.production_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         ranked_movies rm
     LEFT JOIN 

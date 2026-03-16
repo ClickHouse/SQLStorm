@@ -5,19 +5,19 @@ WITH RECURSIVE random_supplier AS (
     UNION ALL
     SELECT s.s_suppkey, s.s_name, s.s_acctbal, s.s_comment
     FROM random_supplier rs
-    JOIN supplier s ON s.s_nationkey = (SELECT n.n_nationkey FROM nation n ORDER BY RANDOM() LIMIT 1) 
+    JOIN supplier s ON s.s_nationkey = (SELECT n.n_nationkey FROM nation n ORDER BY rand() LIMIT 1) 
     WHERE s.s_acctbal < rs.s_acctbal
 ),
 ranked_orders AS (
     SELECT o.o_orderkey, o.o_totalprice, 
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS price_rank
     FROM orders o
-    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year' 
+    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR 
     AND o.o_totalprice > 0
 ),
 string_aggregates AS (
     SELECT n.n_name,
-           STRING_AGG(s.s_name, ', ') AS suppliers
+           arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS suppliers
     FROM nation n
     JOIN supplier s ON n.n_nationkey = s.s_nationkey
     GROUP BY n.n_name
@@ -48,4 +48,4 @@ JOIN ranked_orders ro ON ro.o_orderkey = (
 WHERE ps.total_value IS NOT NULL
 AND (ps.unique_suppliers IS NULL OR ps.unique_suppliers < 5)
 ORDER BY ps.total_value DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

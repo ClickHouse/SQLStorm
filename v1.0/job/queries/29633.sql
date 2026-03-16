@@ -5,7 +5,7 @@ WITH movie_details AS (
         t.production_year,
         k.keyword,
         c.kind AS company_type,
-        ARRAY_AGG(DISTINCT CONCAT(a.name, ' as ', r.role)) AS cast_list
+        arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' as ', r.role)))) AS cast_list
     FROM title t
     JOIN movie_keyword mk ON t.id = mk.movie_id
     JOIN keyword k ON mk.keyword_id = k.id

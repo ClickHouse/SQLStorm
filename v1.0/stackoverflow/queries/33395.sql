@@ -13,7 +13,7 @@ RecentPosts AS (
     SELECT P.Id, P.Title, P.CreationDate, P.OwnerUserId, 
            ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RowNum
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ), 
 PostStatistics AS (
     SELECT R.OwnerUserId, COUNT(R.Id) AS PostCount, 
@@ -36,16 +36,16 @@ SELECT U.DisplayName,
        PS.UpVotes,
        PS.DownVotes,
        CASE 
-         WHEN PS.PostCount > 0 THEN (PS.UpVotes::float / NULLIF(PS.PostCount, 0)) * 100
+         WHEN PS.PostCount > 0 THEN (CAST(PS.UpVotes AS float) / NULLIF(PS.PostCount, 0)) * 100
          ELSE 0
        END AS UpvotePercentage,
        CASE 
          WHEN PS.PostCount > 0 THEN PS.DownVotes * 1.0 / PS.PostCount * 100
          ELSE 0
        END AS DownvotePercentage,
-       (SELECT STRING_AGG(DISTINCT PH.Comment, '; ') 
+       (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.Comment))), '; ') 
         FROM PostHistory PH 
-        WHERE PH.UserId = U.Id AND PH.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year') AS RecentActivity
+        WHERE PH.UserId = U.Id AND PH.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR) AS RecentActivity
 FROM Users U
 LEFT JOIN PostStatistics PS ON U.Id = PS.OwnerUserId
 LEFT JOIN UserBadges UB ON U.Id = UB.UserId

@@ -8,8 +8,8 @@ WITH RECURSIVE top_suppliers AS (
 ),
 monthly_sales AS (
     SELECT 
-        EXTRACT(YEAR FROM o.o_orderdate) AS order_year,
-        EXTRACT(MONTH FROM o.o_orderdate) AS order_month,
+        toYear(o.o_orderdate) AS order_year,
+        toMonth(o.o_orderdate) AS order_month,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey

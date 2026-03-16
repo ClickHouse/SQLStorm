@@ -47,12 +47,12 @@ SELECT
     cs.total_spent,
     cs.catalog_returns,
     cs.web_returns,
-    cast('2002-10-01' as date) - DATE '2001-01-01' AS days_since_first_purchase,
+    cast('2002-10-01' as date) - toDate('2001-01-01') AS days_since_first_purchase,
     ms.total_sales AS yearly_sales
 FROM 
     CustomerSummary cs
 LEFT JOIN 
-    MonthlySales ms ON ms.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
+    MonthlySales ms ON ms.d_year = toYear(cast('2002-10-01' as date))
 WHERE 
     cs.ranking <= 10 
 ORDER BY 

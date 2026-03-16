@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 KeywordCounts AS (
     SELECT 
@@ -25,7 +25,7 @@ KeywordCounts AS (
         COUNT(*) AS KeywordCount
     FROM 
         RankedPosts rp,
-        unnest(string_to_array(lower(rp.Body), ' ')) AS rg(value) 
+        arrayJoin(splitByString(' ', lower(rp.Body))) AS rg(value) 
     WHERE 
         rg.value NOT IN ('the', 'is', 'at', 'which', 'on', 'for', 'by', 'to', 'and', 'a', 'an') 
     GROUP BY 
@@ -46,7 +46,7 @@ SELECT
     rp.OwnerDisplayName,
     rp.ViewCount,
     rp.CreationDate,
-    STRING_AGG(kw.Keyword || ': ' || kw.KeywordCount, ', ') AS TopKeywords
+    arrayStringConcat(groupArray(assumeNotNull(kw.Keyword || ': ' || kw.KeywordCount)), ', ') AS TopKeywords
 FROM 
     RankedPosts rp
 LEFT JOIN 

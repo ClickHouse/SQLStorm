@@ -55,7 +55,7 @@ SELECT
     md.title,
     md.production_year,
     COUNT(DISTINCT md.company_name) AS total_companies,
-    STRING_AGG(DISTINCT md.actor_role, ', ') AS all_actor_roles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_role))), ', ') AS all_actor_roles
 FROM 
     MovieDetails md
 GROUP BY 

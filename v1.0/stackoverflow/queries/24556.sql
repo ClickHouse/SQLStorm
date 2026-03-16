@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 RecentActivity AS (
@@ -28,7 +28,7 @@ RecentActivity AS (
     JOIN 
         Posts P ON C.PostId = P.Id
     WHERE 
-        C.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        C.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         C.PostId
 ),
@@ -36,7 +36,7 @@ RecentActivity AS (
 PostCloseReasons AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(DISTINCT CRT.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CRT.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 
@@ -52,7 +52,7 @@ UserBadges AS (
         U.Id AS UserId,
         B.Class,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 

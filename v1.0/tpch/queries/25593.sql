@@ -1,6 +1,6 @@
 
 SELECT
-    CONCAT('Supplier: ', s.s_name, ' from Nation: ', n.n_name, ' with Products: ', STRING_AGG(DISTINCT p.p_name, ', ')) AS supplier_info,
+    CONCAT('Supplier: ', s.s_name, ' from Nation: ', n.n_name, ' with Products: ', arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ')) AS supplier_info,
     SUM(ps.ps_availqty) AS total_available_quantity,
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost
 FROM

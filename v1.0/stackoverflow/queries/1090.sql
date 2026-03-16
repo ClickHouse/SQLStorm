@@ -9,7 +9,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT C.Id) AS CommentCount,
         RANK() OVER (ORDER BY COUNT(DISTINCT P.Id) DESC) AS PostRank
     FROM Users U
-    LEFT JOIN Posts P ON U.Id = P.OwnerUserId AND P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    LEFT JOIN Posts P ON U.Id = P.OwnerUserId AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     LEFT JOIN Votes V ON P.Id = V.PostId
     LEFT JOIN Comments C ON P.Id = C.PostId
     GROUP BY U.Id, U.DisplayName

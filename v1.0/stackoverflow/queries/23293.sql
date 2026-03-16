@@ -12,7 +12,7 @@ WITH RankedUsers AS (
     FROM 
         Users u
     WHERE 
-        u.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        u.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 
 PostScoreDetails AS (
@@ -32,7 +32,7 @@ PostScoreDetails AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
         AND p.PostTypeId IN (1, 2)  
     GROUP BY 
         p.Id

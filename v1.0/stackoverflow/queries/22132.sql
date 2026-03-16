@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         LEFT JOIN Users u ON p.OwnerUserId = u.Id
         LEFT JOIN Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.PostTypeId = 1  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName
@@ -77,12 +77,12 @@ SELECT
         ELSE 'Open'
     END AS PostStatus,
     CONCAT('User: ', fs.OwnerDisplayName, ' asked: ', fs.Title) AS FullDescription,
-    ARRAY_AGG(DISTINCT t.TagName) AS TagsUsed
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsUsed
 FROM 
     FinalSelection fs
-    LEFT JOIN LATERAL (
+    LEFT JOIN (
         SELECT 
-            unnest(string_to_array(p.Tags, ',')) AS TagName
+            arrayJoin(splitByString(',', p.Tags)) AS TagName
         FROM 
             Posts p
         WHERE 

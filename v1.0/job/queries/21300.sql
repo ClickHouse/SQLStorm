@@ -25,7 +25,7 @@ CastByRole AS (
 MoviesWithKeywords AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mt
     JOIN 
@@ -54,7 +54,7 @@ SELECT
     COUNT(DISTINCT cj.person_id) AS total_actors,
     MAX(COALESCE(cj.keywords, 'No Keywords')) AS keywords,
     SUM(CASE WHEN cj.role IN ('Director', 'Producer') THEN 1 ELSE 0 END) AS key_roles_count,
-    ARRAY_AGG(DISTINCT cj.role) FILTER (WHERE cj.role IS NOT NULL) AS all_roles
+    arrayDistinct(groupArray(assumeNotNull(cj.role))) FILTER (WHERE cj.role IS NOT NULL) AS all_roles
 FROM 
     ComplexJoin cj
 GROUP BY 

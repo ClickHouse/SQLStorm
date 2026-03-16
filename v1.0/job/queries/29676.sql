@@ -40,8 +40,8 @@ TopMovies AS (
 )
 SELECT 
     TM.ProductionYear,
-    STRING_AGG(TM.MovieTitle, ', ') AS TopMovies,
-    STRING_AGG(TM.CompanyName, ', ') AS AssociatedCompanies,
+    arrayStringConcat(groupArray(assumeNotNull(TM.MovieTitle)), ', ') AS TopMovies,
+    arrayStringConcat(groupArray(assumeNotNull(TM.CompanyName)), ', ') AS AssociatedCompanies,
     SUM(TM.KeywordCount) AS TotalKeywords
 FROM 
     TopMovies TM

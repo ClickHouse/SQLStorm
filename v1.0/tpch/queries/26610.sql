@@ -4,7 +4,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     MAX(l.l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', c.c_acctbal, ')'), '; ') AS customer_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', c.c_acctbal, ')')))), '; ') AS customer_details
 FROM 
     part p
 JOIN 

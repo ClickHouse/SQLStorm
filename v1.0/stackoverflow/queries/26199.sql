@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, u.DisplayName, p.Body, p.Tags, p.CreationDate, p.LastActivityDate
 ),
@@ -33,14 +33,14 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         b.UserId
 ),
 
 TagStats AS (
     SELECT 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag,
         COUNT(p.Id) AS PostCount
     FROM 
         Posts p

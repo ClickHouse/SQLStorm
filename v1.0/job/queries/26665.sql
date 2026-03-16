@@ -50,7 +50,7 @@ SELECT
     MD.movie_keyword,
     MD.company_count,
     MD.cast_count,
-    STRING_AGG(CD.person_name || ' (' || CD.person_role || ')', ', ') AS cast_members
+    arrayStringConcat(groupArray(assumeNotNull(CD.person_name || ' (' || CD.person_role || ')')), ', ') AS cast_members
 FROM 
     movie_details MD
 LEFT JOIN 

@@ -40,7 +40,7 @@ TagCloseStats AS (
         TagStats ts
     LEFT JOIN 
         ClosedPosts cp ON ts.TagName IN (
-            SELECT unnest(string_to_array(p.Tags, '><')) 
+            SELECT arrayJoin(splitByString('><', p.Tags)) 
             FROM Posts p 
             WHERE p.PostTypeId = 1
         )

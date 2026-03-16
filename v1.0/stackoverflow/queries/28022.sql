@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 TagStatistics AS (
     SELECT 
@@ -61,7 +61,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStatistics ts ON ts.TagName IN (SELECT unnest(string_to_array(rp.Tags, '> <'))) 
+    TagStatistics ts ON ts.TagName IN (SELECT arrayJoin(splitByString('> <', rp.Tags))) 
 JOIN 
     UserReputation ur ON ur.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = rp.PostId)
 WHERE 

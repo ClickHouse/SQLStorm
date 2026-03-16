@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '30 days' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY 
         AND p.Score IS NOT NULL
 ),
 UserReputation AS (
@@ -42,7 +42,7 @@ CloseReasonCounts AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 

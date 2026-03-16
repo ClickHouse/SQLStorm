@@ -46,7 +46,7 @@ SELECT
     ad.ca_state,
     ad.ca_country,
     COUNT(*) AS customer_count,
-    STRING_AGG(ad.full_name, ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(ad.full_name)), ', ') AS customer_names
 FROM 
     AddressDetails ad
 GROUP BY 

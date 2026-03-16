@@ -35,7 +35,7 @@ PostDetails AS (
     FROM Posts p
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
     LEFT JOIN PostTypes pt ON p.PostTypeId = pt.Id
-    WHERE p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 year')
+    WHERE p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR)
 ),
 TopPosts AS (
     SELECT 

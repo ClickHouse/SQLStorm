@@ -8,7 +8,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT c.Id) AS CommentCount,
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounty,
         COALESCE(SUM(p.Score), 0) AS TotalScore,
-        DATE_PART('year', DATE '2024-10-01') - DATE_PART('year', u.CreationDate) AS AccountAge
+        datePart('year', toDate('2024-10-01')) - datePart('year', u.CreationDate) AS AccountAge
     FROM 
         Users u
     LEFT JOIN 

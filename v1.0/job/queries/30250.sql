@@ -41,7 +41,7 @@ Detailed_Cast AS (
     SELECT 
         c.movie_id, 
         COUNT(DISTINCT c.person_id) AS actor_count, 
-        STRING_AGG(a.name, ', ') AS actor_names
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actor_names
     FROM 
         cast_info c
     JOIN 
@@ -72,7 +72,7 @@ Aggregated_Report AS (
         title, 
         production_year, 
         COUNT(DISTINCT actor_names) AS unique_actor_count,
-        STRING_AGG(DISTINCT keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords
     FROM 
         Final_Report
     GROUP BY 

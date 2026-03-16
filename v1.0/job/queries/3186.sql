@@ -46,7 +46,7 @@ keyword_summary AS (
     SELECT 
         m.id AS movie_id,
         COUNT(mk.id) AS keyword_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title m
     LEFT JOIN 

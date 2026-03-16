@@ -60,10 +60,10 @@ SELECT
      FROM CustomerPurchases 
      WHERE first_purchase_date < (SELECT MAX(d.d_date) 
                                    FROM date_dim d 
-                                   WHERE d.d_year = EXTRACT(YEAR FROM '2002-10-01'::DATE)) 
+                                   WHERE d.d_year = toYear(CAST('2002-10-01' AS DATE))) 
            AND last_purchase_date >= (SELECT MIN(d.d_date) 
                                        FROM date_dim d 
-                                       WHERE d.d_year = EXTRACT(YEAR FROM '2002-10-01'::DATE) - 1)) AS special_coupon_amount
+                                       WHERE d.d_year = toYear(CAST('2002-10-01' AS DATE)) - 1)) AS special_coupon_amount
 FROM 
     CustomerPurchases cs
 JOIN 

@@ -26,7 +26,7 @@ WITH RECURSIVE movie_hierarchy AS (
 SELECT 
     t.title AS main_title,
     COUNT(DISTINCT mh.linked_movie_id) AS total_similar_movies,
-    STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
     AVG(m.production_year) AS avg_production_year,
     MAX(m.production_year) AS latest_production_year,
     MIN(m.production_year) AS earliest_production_year

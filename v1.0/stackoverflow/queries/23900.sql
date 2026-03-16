@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.ViewCount DESC) AS UserRank
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostEngagement AS (
     SELECT
@@ -49,7 +49,7 @@ SELECT
         WHEN cd.UpVoteCount < cd.DownVoteCount THEN 'Negative Engagement'
         ELSE 'Neutral Engagement'
     END AS EngagementStatus,
-    (SELECT STRING_AGG(t.TagName, ', ') FROM Tags t INNER JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%' WHERE p.Id = cd.PostId) AS RelatedTags,
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') FROM Tags t INNER JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%' WHERE p.Id = cd.PostId) AS RelatedTags,
     COALESCE(
         (SELECT COUNT(*) FROM Badges b WHERE b.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = cd.PostId)), 
         0) AS UserBadgeCount

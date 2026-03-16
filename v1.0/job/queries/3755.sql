@@ -45,8 +45,8 @@ SELECT
     pt.production_year,
     pt.actor_count,
     pt.popularity,
-    STRING_AGG(DISTINCT cn.character_name, ', ') AS character_names,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.character_name))), ', ') AS character_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
 FROM 
     popular_titles pt
 LEFT JOIN 

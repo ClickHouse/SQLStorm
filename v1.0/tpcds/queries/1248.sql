@@ -61,4 +61,4 @@ FROM
 ORDER BY 
     fr.total_net_profit DESC,
     fr.total_quantity DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

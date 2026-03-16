@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year')
+        p.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR)
         AND p.Score > 0
 ),
 UserActivity AS (
@@ -35,7 +35,7 @@ RecentClosedPosts AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

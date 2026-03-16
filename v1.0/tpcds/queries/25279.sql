@@ -17,7 +17,7 @@ DemographicStatistics AS (
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
         MAX(cd_dep_count) AS max_dependent_count,
         MIN(cd_dep_count) AS min_dependent_count,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS unique_education_statuses,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS unique_education_statuses,
         cd_demo_sk
     FROM 
         customer_demographics

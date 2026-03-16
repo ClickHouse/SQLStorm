@@ -17,7 +17,7 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1997-02-01'
+    l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1997-02-01')
 GROUP BY 
     n.n_name, l.l_extendedprice, l.l_discount, o.o_orderkey, s.s_acctbal
 HAVING 

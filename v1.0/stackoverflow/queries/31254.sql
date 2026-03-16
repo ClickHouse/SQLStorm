@@ -50,7 +50,7 @@ SELECT
     t.BadgeCount,
     COUNT(DISTINCT ph.Id) AS HistoryCount,
     MAX(ph.CreationDate) AS LastActivityDate,
-    STRING_AGG(DISTINCT CASE WHEN ph.Comment IS NOT NULL THEN ph.Comment ELSE 'No comment' END, ', ') AS HistoryComments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN ph.Comment IS NOT NULL THEN ph.Comment ELSE 'No comment' END))), ', ') AS HistoryComments
 FROM 
     TopUsers t
 LEFT JOIN 

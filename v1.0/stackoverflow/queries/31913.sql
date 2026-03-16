@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.PostTypeId, p.Score, p.ViewCount
 ),
@@ -70,4 +70,4 @@ WHERE
     rp.Rank <= 5
 ORDER BY 
     rp.PostTypeId, rp.Score DESC, te.TotalBounties DESC NULLS LAST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

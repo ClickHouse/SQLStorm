@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(CASE WHEN o.o_orderstatus = 'O' THEN 1 ELSE 0 END) AS open_orders,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_net_price,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_brand, ')'), '; ') AS products_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_brand, ')')))), '; ') AS products_supplied
 FROM 
     region r
 JOIN 

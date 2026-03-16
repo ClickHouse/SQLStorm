@@ -15,7 +15,7 @@ WITH PostStatistics AS (
     LEFT JOIN 
         Posts p2 ON p.AcceptedAnswerId = p2.Id
     WHERE 
-        p.CreationDate >= DATE '2023-01-01'
+        p.CreationDate >= toDate('2023-01-01')
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p2.Id
 ),

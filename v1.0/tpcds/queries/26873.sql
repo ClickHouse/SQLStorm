@@ -6,7 +6,7 @@ WITH StringAggregation AS (
         ca.ca_city || ', ' || ca.ca_state AS full_address,
         COUNT(ws.ws_order_number) AS order_count,
         SUM(ws.ws_net_paid) AS total_spent,
-        STRING_AGG(DISTINCT c.c_email_address, ', ') AS email_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_email_address))), ', ') AS email_list
     FROM 
         customer c
     JOIN 

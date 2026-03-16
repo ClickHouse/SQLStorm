@@ -38,7 +38,7 @@ TopPosts AS (
 TagsData AS (
     SELECT 
         pt.PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         PostLinks pt
         JOIN Tags t ON pt.RelatedPostId = t.Id

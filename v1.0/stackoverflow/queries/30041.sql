@@ -16,7 +16,7 @@ PostStatistics AS (
 ),
 UserBadges AS (
     SELECT b.UserId, 
-           STRING_AGG(b.Name, ', ') AS BadgesList,
+           arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgesList,
            COUNT(b.Id) AS TotalBadges
     FROM Badges b
     GROUP BY b.UserId
@@ -43,6 +43,6 @@ INNER JOIN PostStatistics ts ON tu.Id = ts.OwnerUserId
 LEFT JOIN UserBadges b ON tu.Id = b.UserId
 LEFT JOIN ClosedPosts cp ON ts.PostId = cp.PostId
 WHERE ts.PostTypeId = 1
-AND ts.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+AND ts.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ORDER BY ts.VoteCount DESC, tu.Reputation DESC
 LIMIT 10;

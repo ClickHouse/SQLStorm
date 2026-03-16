@@ -17,7 +17,7 @@ WITH RankedMovies AS (
 CoActors AS (
     SELECT 
         ci.movie_id, 
-        string_agg(a.name, ', ') AS coactors
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS coactors
     FROM 
         cast_info ci
     JOIN 

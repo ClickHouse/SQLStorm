@@ -30,7 +30,7 @@ SELECT
     fc.cd_gender,
     COUNT(fc.c_customer_id) AS customer_count,
     AVG(fc.cd_purchase_estimate) AS average_purchase_estimate,
-    STRING_AGG(fc.full_name, ', ') AS top_customers
+    arrayStringConcat(groupArray(assumeNotNull(fc.full_name)), ', ') AS top_customers
 FROM 
     FilteredCustomers fc
 GROUP BY 

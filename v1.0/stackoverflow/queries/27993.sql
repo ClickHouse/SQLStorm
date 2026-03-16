@@ -9,7 +9,7 @@ WITH RecentPosts AS (
         COALESCE(a.AnswerCount, 0) AS TotalAnswers,
         COALESCE(c.CommentCount, 0) AS TotalComments,
         COALESCE(f.FavoriteCount, 0) AS TotalFavorites,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS AllTags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AllTags
     FROM 
         Posts p
     JOIN 
@@ -31,7 +31,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Tags t ON p.Tags LIKE CONCAT('%<', t.TagName, '>%')
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, u.DisplayName, u.Reputation, a.AnswerCount, c.CommentCount, f.FavoriteCount
     ORDER BY 

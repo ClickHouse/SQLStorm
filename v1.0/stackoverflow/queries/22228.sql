@@ -24,7 +24,7 @@ PostHistoryAggregates AS (
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
         COUNT(DISTINCT ph.UserId) AS EditorCount,
-        ARRAY_AGG(DISTINCT ph.Comment) AS Comments,
+        arrayDistinct(groupArray(assumeNotNull(ph.Comment))) AS Comments,
         SUM(CASE 
             WHEN ph.PostHistoryTypeId IN (10, 11) THEN 1 
             ELSE 0 END) AS ClosureEvents

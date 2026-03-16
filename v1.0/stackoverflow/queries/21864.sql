@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate > (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')
+    WHERE P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 AggregatedScores AS (
     SELECT 
@@ -57,4 +57,4 @@ FROM AggregatedScores A
 LEFT JOIN PostHistoryEvents PH ON A.PostId = PH.PostId AND PH.EventRank = 1
 WHERE A.Rank <= 5  
 ORDER BY A.Visibility DESC, A.NetVote DESC, A.Score DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

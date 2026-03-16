@@ -6,7 +6,7 @@ SELECT
         WHEN c.c_mktsegment = 'BUILDING' THEN l.l_extendedprice 
         ELSE NULL 
     END) AS avg_price_building,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     supplier s
 JOIN 

@@ -24,7 +24,7 @@ MovieStats AS (
         m.title,
         COUNT(DISTINCT c.person_id) AS total_cast,
         AVG(CASE WHEN c.note IS NOT NULL THEN 1 ELSE 0 END) AS avg_with_notes,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         m.production_year
     FROM aka_title m
     LEFT JOIN cast_info c ON m.id = c.movie_id

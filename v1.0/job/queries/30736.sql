@@ -45,7 +45,7 @@ CastInfoAnalysis AS (
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS unique_cast_count,
         AVG(ci.nr_order) AS average_order,
-        STRING_AGG(DISTINCT CONCAT(an.name, ' (', rt.role, ')'), ', ') AS cast_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(an.name, ' (', rt.role, ')')))), ', ') AS cast_details
     FROM 
         cast_info ci
     JOIN 

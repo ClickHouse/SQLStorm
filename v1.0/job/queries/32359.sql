@@ -37,7 +37,7 @@ SELECT
     mh.company_count,
     (SELECT COUNT(*) FROM complete_cast cc WHERE cc.movie_id = mh.movie_id) AS cast_size,
     (SELECT 
-        STRING_AGG(DISTINCT k.keyword, ', ') 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
      FROM movie_keyword mk 
      JOIN keyword k ON mk.keyword_id = k.id 
      WHERE mk.movie_id = mh.movie_id) AS keywords

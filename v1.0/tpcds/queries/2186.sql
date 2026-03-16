@@ -51,4 +51,4 @@ WHERE
     AND (sm.sales_category = 'High Sales' OR sm.sales_category = 'Medium Sales')
 ORDER BY 
     sm.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

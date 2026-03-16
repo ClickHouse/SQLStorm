@@ -7,7 +7,7 @@ SELECT
     AVG(LENGTH(c_first_name) + LENGTH(c_last_name)) AS avg_name_length,
     MIN(ws_sales_price) AS min_sales_price,
     MAX(ws_sales_price) AS max_sales_price,
-    STRING_AGG(DISTINCT w_country, ', ') AS unique_shipping_countries
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(w_country))), ', ') AS unique_shipping_countries
 FROM 
     customer c
 JOIN 

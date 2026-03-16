@@ -7,7 +7,7 @@ SELECT
     COUNT(CASE WHEN p.PostTypeId = 2 THEN 1 END) AS TotalAnswers,
     SUM(p.Score) AS TotalScore,
     SUM(p.ViewCount) AS TotalViews,
-    AVG(COALESCE(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)), 0)) AS AvgPostActivityDuration,
+    AVG(COALESCE(toUnixTimestamp((p.LastActivityDate - p.CreationDate)), 0)) AS AvgPostActivityDuration,
     SUM(CASE WHEN b.Class = 1 THEN 1 ELSE 0 END) AS GoldBadges,
     SUM(CASE WHEN b.Class = 2 THEN 1 ELSE 0 END) AS SilverBadges,
     SUM(CASE WHEN b.Class = 3 THEN 1 ELSE 0 END) AS BronzeBadges

@@ -39,7 +39,7 @@ SELECT
             WHEN td.total_cast IS NULL THEN NULL
             ELSE td.total_cast 
         END) AS avg_cast_size,
-    STRING_AGG(DISTINCT tm.title || ' (' || tm.production_year || ')', ', ') AS related_movies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tm.title || ' (' || tm.production_year || ')'))), ', ') AS related_movies
 FROM 
     TopDirectors td
 LEFT JOIN 

@@ -17,7 +17,7 @@ movie_info_data AS (
         m.id AS movie_id,
         m.title AS movie_title,
         m.production_year,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
         COUNT(DISTINCT m_keyword.keyword_id) AS total_keywords
     FROM 
         aka_title m

@@ -49,8 +49,8 @@ Filmography AS (
 SELECT 
     f.actor_name,
     COUNT(f.movie_id) AS total_movies,
-    STRING_AGG(f.movie_title, ', ' ORDER BY f.movie_title) AS movie_titles,
-    STRING_AGG(DISTINCT f.keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(f.movie_title)), ', ' ORDER BY f.movie_title) AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.keyword))), ', ') AS keywords,
     CASE 
         WHEN COUNT(f.movie_id) > 0 THEN 'Has films' 
         ELSE 'No films' 

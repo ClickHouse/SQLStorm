@@ -8,8 +8,8 @@ WITH PartSupplierDetails AS (
         p.p_size,
         SUM(ps.ps_availqty) AS total_available,
         AVG(ps.ps_supplycost) AS average_supply_cost,
-        STRING_AGG(s.s_name, ', ') AS suppliers_names,
-        STRING_AGG(DISTINCT CONCAT(s.s_phone, ' (', s.s_name, ')'), '; ') AS supplier_contacts,
+        arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS suppliers_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_phone, ' (', s.s_name, ')')))), '; ') AS supplier_contacts,
         CONCAT('Available: ', SUM(ps.ps_availqty), ' | Avg Cost: $', ROUND(AVG(ps.ps_supplycost), 2)) AS availability_info
     FROM 
         part p

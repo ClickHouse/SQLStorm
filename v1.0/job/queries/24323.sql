@@ -17,7 +17,7 @@ movies_with_keywords AS (
         r.movie_id,
         r.title,
         r.production_year,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         ranked_movies r
     LEFT JOIN 
@@ -48,7 +48,7 @@ SELECT
     mwi.keywords,
     CASE
         WHEN NULLIF(mwi.info, '') IS NULL THEN 'Unknown'
-        WHEN mwi.keywords IS NOT NULL AND ARRAY_LENGTH(mwi.keywords, 1) > 0 THEN 'With Keywords'
+        WHEN mwi.keywords IS NOT NULL AND length(mwi.keywords, 1) > 0 THEN 'With Keywords'
         ELSE 'No Keywords'
     END AS keyword_status,
     COALESCE(mwi.keywords[1], 'No Keywords Available') AS first_keyword,

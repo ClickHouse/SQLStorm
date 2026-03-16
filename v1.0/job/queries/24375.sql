@@ -19,7 +19,7 @@ ActorMovieInfo AS (
         rat.person_id,
         rat.actor_name,
         COUNT(rat.movie_title) AS movie_count,
-        STRING_AGG(DISTINCT rat.movie_title || ' (' || rat.production_year || ')', ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rat.movie_title || ' (' || rat.production_year || ')'))), ', ') AS movie_titles
     FROM 
         RecursiveActorTitles AS rat
     GROUP BY 

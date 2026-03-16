@@ -26,7 +26,7 @@ PostSummary AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.OwnerUserId
 ),
@@ -56,7 +56,7 @@ SELECT
         ELSE 'Low Reputation'
     END AS ReputationLevel,
     COALESCE((
-        SELECT STRING_AGG(DISTINCT tag.TagName, ', ') 
+        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag.TagName))), ', ') 
         FROM Tags tag
         JOIN Posts post ON tag.WikiPostId = post.Id
         WHERE post.OwnerUserId = au.UserId

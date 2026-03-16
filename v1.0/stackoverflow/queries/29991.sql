@@ -2,7 +2,7 @@
 WITH PostTags AS (
     SELECT 
         p.Id AS PostId,
-        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -49,7 +49,7 @@ JOIN
     UserStats us ON u.Id = us.UserId
 JOIN 
     TagPopularity tp ON tp.Tag IN (
-        SELECT UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) 
+        SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) 
         FROM Posts p 
         WHERE p.OwnerUserId = u.Id AND p.PostTypeId = 1
     )

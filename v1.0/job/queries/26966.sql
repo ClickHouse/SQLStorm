@@ -41,7 +41,7 @@ SELECT
     md.movie_title,
     md.production_year,
     COUNT(*) AS actor_appearances,
-    STRING_AGG(DISTINCT md.actor_name, ', ') AS co_actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name))), ', ') AS co_actors
 FROM 
     MovieDetails md
 GROUP BY 

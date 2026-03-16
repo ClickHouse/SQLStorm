@@ -24,7 +24,7 @@ SELECT
     mh.title,
     mh.production_year,
     COUNT(DISTINCT ca.person_id) AS num_actors,
-    STRING_AGG(DISTINCT ak.name, '; ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), '; ') AS actor_names,
     AVG(mo.info_length) AS avg_info_length
 FROM MovieHierarchy mh
 LEFT JOIN complete_cast cc ON mh.movie_id = cc.movie_id

@@ -35,7 +35,7 @@ SELECT
     END AS UserRecognition,
     DENSE_RANK() OVER (ORDER BY ps.Score DESC) AS ScoreRank
 FROM PostStatistics ps
-WHERE ps.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
+WHERE ps.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
 AND ps.ViewCount >= 100
 ORDER BY ps.Score DESC, ps.ViewCount DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

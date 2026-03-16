@@ -2,7 +2,7 @@ SELECT
     n.n_name AS nation_name, 
     COUNT(DISTINCT c.c_custkey) AS customer_count, 
     SUM(o.o_totalprice) AS total_revenue, 
-    STRING_AGG(DISTINCT p.p_name, ', ') AS product_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS product_names
 FROM 
     customer c
 JOIN 

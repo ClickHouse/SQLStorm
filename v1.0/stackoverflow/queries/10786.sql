@@ -26,7 +26,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory BH ON P.Id = BH.PostId 
 WHERE 
-    P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+    P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 GROUP BY 
     P.Id, U.DisplayName, P.Title, P.CreationDate, P.ViewCount, P.Score, T.TagName, PT.Name, BH.UserDisplayName, BH.CreationDate
 ORDER BY 

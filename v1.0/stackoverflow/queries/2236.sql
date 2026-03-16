@@ -6,7 +6,7 @@ WITH PostDetails AS (
         p.Score,
         p.AnswerCount,
         COALESCE(u.DisplayName, 'Anonymous') AS Owner,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount
     FROM 
         Posts p
@@ -17,7 +17,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         Comments c ON c.PostId = p.Id
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.AnswerCount, u.DisplayName
 ),

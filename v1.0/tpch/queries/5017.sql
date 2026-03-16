@@ -13,7 +13,7 @@ WITH RankedOrders AS (
     JOIN 
         nation n ON c.c_nationkey = n.n_nationkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 ),
 TopNations AS (
     SELECT 

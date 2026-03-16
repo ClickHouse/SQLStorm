@@ -49,7 +49,7 @@ LEFT JOIN
     movie_info mi ON h.title_id = mi.movie_id 
 LEFT JOIN 
     info_type it ON mi.info_type_id = it.id 
-LEFT JOIN LATERAL (
+LEFT JOIN (
     SELECT 
         i.info 
     FROM 

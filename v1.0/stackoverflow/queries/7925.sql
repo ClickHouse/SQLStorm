@@ -65,4 +65,4 @@ FROM
     TopClosedPosts tcp
 ORDER BY 
     tcp.ClosedDate DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

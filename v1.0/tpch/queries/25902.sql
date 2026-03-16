@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     AVG(o.o_totalprice) AS average_order_value,
     SUM(l.l_quantity) AS total_quantity_ordered,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     MAX(CASE WHEN l.l_returnflag = 'R' THEN 1 ELSE 0 END) AS has_returns
 FROM 
     customer c

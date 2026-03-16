@@ -21,7 +21,7 @@ UserStats AS (
         SUM(u.Reputation) AS TotalReputation,
         AVG(u.Reputation) AS AvgReputation,
         COUNT(DISTINCT CASE WHEN u.UpVotes > 0 THEN u.Id END) AS ActiveUsers,
-        SUM(CASE WHEN u.LastAccessDate > cast('2024-10-01' as date) - INTERVAL '30 days' THEN 1 ELSE 0 END) AS RecentUsers
+        SUM(CASE WHEN u.LastAccessDate > cast('2024-10-01' as date) - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS RecentUsers
     FROM 
         Users u
 ),

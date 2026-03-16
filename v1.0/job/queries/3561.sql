@@ -44,7 +44,7 @@ combined AS (
 SELECT 
     c.actor_name,
     COUNT(DISTINCT c.title_id) AS movies_count,
-    ARRAY_AGG(DISTINCT c.title) AS lead_roles,
+    arrayDistinct(groupArray(assumeNotNull(c.title))) AS lead_roles,
     SUM(CASE WHEN c.actor_count > 1 THEN 1 ELSE 0 END) AS supporting_roles,
     CASE 
         WHEN COUNT(DISTINCT c.title_id) > 10 THEN 'Prolific Actor'

@@ -48,4 +48,4 @@ WHERE
     tc.return_ratio IS NOT NULL
 ORDER BY 
     tc.return_ratio DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

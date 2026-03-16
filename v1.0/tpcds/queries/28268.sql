@@ -3,7 +3,7 @@ WITH AddressMetrics AS (
     SELECT 
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities,
         MAX(LENGTH(ca_street_name)) AS max_street_name_length,
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length
     FROM 
@@ -15,7 +15,7 @@ Demographics AS (
     SELECT 
         cd_gender,
         COUNT(*) AS demographic_count,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_levels
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_levels
     FROM 
         customer_demographics
     GROUP BY 
@@ -26,7 +26,7 @@ SalesMetrics AS (
         ws_bill_addr_sk,
         SUM(ws_quantity) AS total_quantity_sold,
         SUM(ws_net_profit) AS total_net_profit,
-        STRING_AGG(DISTINCT CAST(ws_order_number AS VARCHAR), ', ') AS order_numbers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws_order_number AS VARCHAR)))), ', ') AS order_numbers
     FROM 
         web_sales
     GROUP BY 

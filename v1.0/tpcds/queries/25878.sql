@@ -26,8 +26,8 @@ FormattedResults AS (
         c.state,
         c.country,
         c.zip,
-        STRING_AGG(DISTINCT CAST(c.hd_income_band_sk AS TEXT), ', ') AS income_bands,
-        STRING_AGG(DISTINCT c.hd_buy_potential, ', ') AS buying_potentials
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.hd_income_band_sk AS TEXT)))), ', ') AS income_bands,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.hd_buy_potential))), ', ') AS buying_potentials
     FROM CustomerDetails c
     GROUP BY c.c_customer_id, c.full_name, c.gender, c.marital_status, c.city, c.state, c.country, c.zip
 )

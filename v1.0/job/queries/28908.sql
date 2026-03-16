@@ -31,8 +31,8 @@ movie_details AS (
         m.title,
         COUNT(DISTINCT mc.company_id) AS num_companies,
         COUNT(DISTINCT kw.id) AS num_keywords,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keyword_list,
-        STRING_AGG(DISTINCT cm.kind, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keyword_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cm.kind))), ', ') AS company_types
     FROM 
         aka_title m
     LEFT JOIN 

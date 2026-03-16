@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '5 years'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 5 YEAR
 ),
 UserActivity AS (
     SELECT 
@@ -28,7 +28,7 @@ UserActivity AS (
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
         u.Reputation > 1000 AND
-        u.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id
     HAVING 

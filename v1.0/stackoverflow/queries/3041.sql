@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 ),
 UserStats AS (
     SELECT 
@@ -31,7 +31,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS Comments
     FROM 
         Comments c
     GROUP BY 

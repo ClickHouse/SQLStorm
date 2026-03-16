@@ -4,7 +4,7 @@ SELECT
     CONCAT(c.c_name, ' (', c.c_phone, ')') AS Customer_Info, 
     SUM(l.l_quantity) AS Total_Quantity, 
     COUNT(DISTINCT o.o_orderkey) AS Total_Orders, 
-    STRING_AGG(DISTINCT r.r_name, ', ') AS Regions_Served 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS Regions_Served 
 FROM 
     part p 
 JOIN 

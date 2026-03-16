@@ -12,7 +12,7 @@ WITH RankedMovies AS (
 ActorNames AS (
     SELECT 
         an.person_id,
-        STRING_AGG(an.name, ', ') AS actor_names
+        arrayStringConcat(groupArray(assumeNotNull(an.name)), ', ') AS actor_names
     FROM aka_name an
     INNER JOIN cast_info ci ON ci.person_id = an.person_id
     GROUP BY an.person_id

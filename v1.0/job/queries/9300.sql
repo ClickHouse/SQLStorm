@@ -4,7 +4,7 @@ SELECT
     a.production_year,
     c.kind AS cast_type,
     COUNT(mc.id) AS company_count,
-    STRING_AGG(DISTINCT cn.name, ', ') AS companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
 FROM 
     aka_name n
 JOIN 

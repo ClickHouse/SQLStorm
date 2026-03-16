@@ -53,7 +53,7 @@ SELECT
     up.TotalBronzeBadges,
     up.ContributorStatus,
     COALESCE(SUM(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 1 ELSE 0 END), 0) AS TotalCloseReopenActions,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
 FROM 
     TopUsers up
 LEFT JOIN 
@@ -61,7 +61,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory ph ON p.Id = ph.PostId
 LEFT JOIN 
-    UNNEST(string_to_array(p.Tags, ',')) AS t(TagName) ON TRUE
+    arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON TRUE
 GROUP BY 
     up.UserId, up.DisplayName, up.TotalQuestions, up.TotalAnswers, up.TotalViews, up.TotalGoldBadges, up.TotalSilverBadges, up.TotalBronzeBadges, up.ContributorStatus
 HAVING 

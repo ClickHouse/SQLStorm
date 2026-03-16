@@ -4,7 +4,7 @@ WITH ranked_movies AS (
         m.title AS movie_title,
         m.production_year,
         COUNT(c.person_id) AS actor_count,
-        AVG(mi.info::float) AS avg_movie_info_length
+        AVG(CAST(mi.info AS float)) AS avg_movie_info_length
     FROM 
         title m 
     JOIN 

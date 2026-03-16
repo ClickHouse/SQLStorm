@@ -4,7 +4,7 @@ WITH TagStatistics AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswers,
         AVG(u.Reputation) AS AverageUserReputation,
-        STRING_AGG(DISTINCT p.Title, '; ') AS PostTitles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), '; ') AS PostTitles
     FROM Tags t
     JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%'
     JOIN Users u ON u.Id = p.OwnerUserId

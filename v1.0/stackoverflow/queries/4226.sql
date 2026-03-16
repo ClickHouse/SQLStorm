@@ -47,7 +47,7 @@ SELECT
     pvs.UpVotes,
     pvs.DownVotes,
     COALESCE(rp.AcceptedAnswerId, 0) AS AcceptedAnswerId,
-    STRING_AGG(c.Text, ', ') AS CommentTexts
+    arrayStringConcat(groupArray(assumeNotNull(c.Text)), ', ') AS CommentTexts
 FROM 
     RankedPosts rp
 JOIN 

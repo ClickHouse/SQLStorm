@@ -40,7 +40,7 @@ PostHistoryData AS (
         ph.CreationDate AS HistoryDate, 
         p.Title AS PostTitle,
         p.Body AS PostBody,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypeDescriptions
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypeDescriptions
     FROM 
         PostHistory ph
     JOIN 

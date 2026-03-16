@@ -43,7 +43,7 @@ info_with_keywords AS (
     SELECT 
         mi.movie_id,
         mi.info AS movie_info,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         movie_info mi
     JOIN 

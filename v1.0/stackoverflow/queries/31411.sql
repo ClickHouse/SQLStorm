@@ -34,7 +34,7 @@ SELECT
     COALESCE(p.PostCount, 0) AS TotalPosts,
     COALESCE(pc.CommentCount, 0) AS TotalComments,
     ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY u.CreationDate DESC) AS UserRank,
-    STRING_AGG(tags.TagName, ', ') AS Tags,
+    arrayStringConcat(groupArray(assumeNotNull(tags.TagName)), ', ') AS Tags,
     MAX(v.BountyAmount) AS MaxBounty
 FROM 
     Users u
@@ -54,7 +54,7 @@ LEFT JOIN (
     FROM 
         Posts
     WHERE 
-        CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
+        CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
     GROUP BY 
         OwnerUserId
 ) p ON u.Id = p.OwnerUserId
@@ -74,7 +74,7 @@ LEFT JOIN (
     FROM 
         Posts pt
     CROSS JOIN 
-        UNNEST(STRING_TO_ARRAY(pt.Tags, '><')) AS t(TagName)
+        arrayJoin(splitByString('><', pt.Tags)) AS t(TagName)
 ) tags ON tags.Id = (
     SELECT 
         p.Id
@@ -106,7 +106,7 @@ LEFT JOIN (
     LIMIT 1
 )
 WHERE 
-    (u.LastAccessDate >= DATE '2024-10-01' - INTERVAL '30 days' OR u.Reputation > 2000)
+    (u.LastAccessDate >= toDate('2024-10-01') - INTERVAL 30 DAY OR u.Reputation > 2000)
 GROUP BY 
     u.Id, u.DisplayName, b.BadgeCount, p.PostCount, pc.CommentCount
 HAVING 

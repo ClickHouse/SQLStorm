@@ -13,7 +13,7 @@ SELECT DISTINCT p.p_name,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     MAX(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS returned_quantity,
-    STRING_AGG(DISTINCT s.s_name, ', ') FILTER (WHERE s.s_acctbal IS NOT NULL) AS top_suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') FILTER (WHERE s.s_acctbal IS NOT NULL) AS top_suppliers
 FROM part p
 JOIN lineitem l ON p.p_partkey = l.l_partkey
 JOIN orders o ON l.l_orderkey = o.o_orderkey

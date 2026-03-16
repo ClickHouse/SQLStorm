@@ -42,7 +42,7 @@ SELECT
         WHEN ac.actor_count BETWEEN 5 AND 9 THEN 'Medium'
         ELSE 'Low'
     END AS actor_density,
-    STRING_AGG(k.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
 FROM 
     TopRankedMovies tr
 JOIN 

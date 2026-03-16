@@ -57,7 +57,7 @@ SELECT
         WHEN vs.UpVotes IS NULL OR vs.UpVotes <= 0 THEN 'No Votes'
         ELSE CONCAT('Positive Net Votes: ', vs.UpVotes - COALESCE(vs.DownVotes, 0))
     END AS VoteSummary,
-    STRING_AGG(t.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
 FROM 
     Posts p
 LEFT JOIN 
@@ -69,14 +69,14 @@ LEFT JOIN
 LEFT JOIN 
     VoteStatistics vs ON p.Id = vs.PostId
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(p.Tags, ',')) AS TagName
+            arrayJoin(splitByString(',', p.Tags)) AS TagName
     ) t ON true
 WHERE 
-    p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 GROUP BY 
     p.Id, p.Title, ph.Level, u.Reputation, ub.GoldBadges, ub.SilverBadges, ub.BronzeBadges, vs.UpVotes, vs.DownVotes
 ORDER BY 
     p.LastActivityDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

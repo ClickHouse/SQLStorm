@@ -1,7 +1,7 @@
 
 WITH TagFrequency AS (
     SELECT
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
         COUNT(*) AS Frequency
     FROM
         Posts
@@ -40,7 +40,7 @@ RecentActivity AS (
     LEFT JOIN
         Votes V ON P.Id = V.PostId
     WHERE
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'  
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY  
     GROUP BY
         P.Id, P.Title, P.LastActivityDate
 ),
@@ -56,7 +56,7 @@ ActivitySummary AS (
     FROM
         RecentActivity R
     JOIN
-        TagFrequency TF ON TF.Tag IN (SELECT unnest(string_to_array(substring(R.Title, 2, length(R.Title) - 2), '><')))
+        TagFrequency TF ON TF.Tag IN (SELECT arrayJoin(splitByString('><', substring(R.Title, 2, length(R.Title) - 2))))
 )
 SELECT
     TU.Rank,

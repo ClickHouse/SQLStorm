@@ -37,8 +37,8 @@ SELECT
     title_id,
     title,
     production_year,
-    STRING_AGG(DISTINCT aka_name, ', ') AS all_aka_names,
-    STRING_AGG(DISTINCT company_name, ', ') AS all_company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aka_name))), ', ') AS all_aka_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS all_company_names
 FROM 
     TitleWithNames
 WHERE 

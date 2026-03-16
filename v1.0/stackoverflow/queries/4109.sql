@@ -58,7 +58,7 @@ LEFT JOIN
 JOIN 
     UserStats US ON TU.Id = US.Id
 WHERE 
-    P.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+    P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
     AND (P.Title LIKE '%SQL%' OR P.Tags LIKE '%SQL%')
 ORDER BY 
     TU.Reputation DESC, 

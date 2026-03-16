@@ -18,7 +18,7 @@ TopPosts AS (
     JOIN PostCounts pc ON p.OwnerUserId = pc.UserId
     JOIN UserReputation uc ON p.OwnerUserId = uc.UserId
     LEFT JOIN VoteCounts vc ON p.Id = vc.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month' 
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
     ORDER BY TotalVotes DESC, p.CreationDate DESC
     LIMIT 100
 )

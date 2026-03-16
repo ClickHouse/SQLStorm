@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS unique_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS unique_comments
 FROM 
     part p
 JOIN 
@@ -19,8 +19,8 @@ JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     n.n_name LIKE 'A%' 
-    AND o.o_orderdate >= DATE '1996-01-01' 
-    AND o.o_orderdate < DATE '1997-01-01'
+    AND o.o_orderdate >= toDate('1996-01-01') 
+    AND o.o_orderdate < toDate('1997-01-01')
 GROUP BY 
     p.p_name, s.s_name, s.s_address, n.n_name
 HAVING 

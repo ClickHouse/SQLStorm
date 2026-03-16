@@ -45,8 +45,8 @@ SELECT
     md.movie_title,
     md.production_year,
     kc.unique_keywords,
-    STRING_AGG(DISTINCT md.person_name, ', ') AS cast_names,
-    STRING_AGG(DISTINCT md.company_name, ', ') AS companies_involved
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.person_name))), ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.company_name))), ', ') AS companies_involved
 FROM 
     MovieDetails md
 JOIN 

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS OwnerPostRank
     FROM Posts p
-    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 UserActivity AS (
     SELECT 
@@ -30,7 +30,7 @@ RecentComments AS (
         c.PostId,
         COUNT(*) AS CommentCount
     FROM Comments c
-    WHERE c.CreationDate >= CURRENT_DATE - INTERVAL '3 months'
+    WHERE c.CreationDate >= CURRENT_DATE - INTERVAL 3 MONTH
     GROUP BY c.PostId
 ),
 PostSummary AS (

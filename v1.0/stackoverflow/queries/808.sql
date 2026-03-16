@@ -19,7 +19,7 @@ TopQuestions AS (
         P.Title,
         P.CreationDate,
         P.Score,
-        COALESCE(PH.CreationDate, DATE '1970-01-01') AS MostRecentEdit,
+        COALESCE(PH.CreationDate, toDate('1970-01-01')) AS MostRecentEdit,
         COUNT(A.Id) AS AnswerCount,
         RANK() OVER (ORDER BY P.Score DESC) AS ScoreRank
     FROM 
@@ -59,7 +59,7 @@ SELECT
     UVS.UpvoteCount,
     UVS.DownvoteCount,
     EPS.ScoreCategory,
-    COALESCE(EPS.MostRecentEdit, TIMESTAMP '1970-01-01 00:00:00') AS MostRecentEdit
+    COALESCE(EPS.MostRecentEdit, toDateTime64('1970-01-01 00:00:00', 6)) AS MostRecentEdit
 FROM 
     EnhancedPostStats EPS
 JOIN 

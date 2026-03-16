@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.Score
 ),
@@ -73,7 +73,7 @@ SELECT
     up.VoteCount,
     up.UpVoteCount,
     up.DownVoteCount,
-    DATE_PART('year', AGE(up.CreationDate)) AS PostAgeInYears,
+    datePart('year', AGE(up.CreationDate)) AS PostAgeInYears,
     CASE 
         WHEN up.Score > 10 THEN 'High Score'
         WHEN up.Score BETWEEN 5 AND 10 THEN 'Moderate Score'

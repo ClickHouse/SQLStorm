@@ -61,13 +61,13 @@ SELECT
         WHEN UM.PostCount >= 5 THEN 'Intermediate'
         ELSE 'Novice'
     END AS UserLevel,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed
 FROM 
     UserMetrics UM
 LEFT JOIN 
     Posts p ON p.OwnerDisplayName = UM.OwnerName
 LEFT JOIN 
-    UNNEST(string_to_array(p.Tags, '><')) AS t(TagName) ON TRUE
+    arrayJoin(splitByString('><', p.Tags)) AS t(TagName) ON TRUE
 GROUP BY 
     UM.OwnerName, UM.PostCount, UM.TotalViews, UM.TotalScore, UM.BadgeCount
 ORDER BY 

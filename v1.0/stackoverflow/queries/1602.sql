@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
         AND p.PostTypeId = 1
 ),
 UserReputation AS (
@@ -57,4 +57,4 @@ WHERE
     OR ur.Reputation > 5000
 ORDER BY 
     tp.UserRank, p.Score DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

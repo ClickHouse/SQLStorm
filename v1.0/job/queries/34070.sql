@@ -41,7 +41,7 @@ SELECT
     mh.level,
     mh.path,
     COUNT(c.person_id) AS num_actors,
-    STRING_AGG(DISTINCT a.name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
     AVG(mr.info) AS avg_rating
 FROM 
     MovieHierarchy mh

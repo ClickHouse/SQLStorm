@@ -52,4 +52,4 @@ HAVING
     SUM(ci.total_sales) > 1000
 ORDER BY
     total_sales_sum DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

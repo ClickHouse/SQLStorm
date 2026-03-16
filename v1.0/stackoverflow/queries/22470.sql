@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     JOIN PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2  
     WHERE 
-        p.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '365 days') 
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 365 DAY) 
         AND p.Score > 0
 ),
 UserActivity AS (
@@ -26,7 +26,7 @@ UserActivity AS (
     LEFT JOIN Badges b ON u.Id = b.UserId
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Comments c ON p.Id = c.PostId
-    LEFT JOIN PostHistory ph ON u.Id = ph.UserId AND ph.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years')
+    LEFT JOIN PostHistory ph ON u.Id = ph.UserId AND ph.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR)
     GROUP BY u.Id, u.DisplayName
 ),
 PopularUsers AS (

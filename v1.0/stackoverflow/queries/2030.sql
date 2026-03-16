@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - interval '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -53,7 +53,7 @@ SELECT
     COALESCE(pv.DownVotes, 0) AS TotalDownVotes,
     COALESCE(pc.CommentCount, 0) AS TotalComments,
     CASE 
-        WHEN tp.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - interval '30 days' THEN 'Stale' 
+        WHEN tp.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Stale' 
         ELSE 'Fresh' 
     END AS PostStatus
 FROM 

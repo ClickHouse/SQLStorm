@@ -31,8 +31,8 @@ LocationSummary AS (
         ca_city,
         ca_state,
         COUNT(*) AS customer_count,
-        STRING_AGG(DISTINCT ca_zip, ', ') AS zip_codes,
-        STRING_AGG(DISTINCT CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), '; ') AS addresses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_zip))), ', ') AS zip_codes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type)))), '; ') AS addresses
     FROM 
         CustomerDetails
     WHERE 

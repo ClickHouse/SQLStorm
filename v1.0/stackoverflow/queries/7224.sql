@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8 
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '30 days'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
 ),

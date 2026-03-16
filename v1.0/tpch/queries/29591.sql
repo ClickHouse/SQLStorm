@@ -4,7 +4,7 @@ SELECT
     s.s_name AS supplier_name, 
     n.n_name AS nation_name, 
     COUNT(DISTINCT o.o_orderkey) AS order_count, 
-    STRING_AGG(DISTINCT CONCAT(o.o_orderstatus, ': ', o.o_orderpriority), '; ') AS order_statuses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(o.o_orderstatus, ': ', o.o_orderpriority)))), '; ') AS order_statuses
 FROM 
     part p
 JOIN 

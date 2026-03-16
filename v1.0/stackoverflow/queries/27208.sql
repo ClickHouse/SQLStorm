@@ -29,7 +29,7 @@ RecentEdits AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
+        ph.CreationDate > now64(6) - INTERVAL 30 DAY
 )
 SELECT 
     ts.TagName,

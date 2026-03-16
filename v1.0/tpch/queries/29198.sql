@@ -30,7 +30,7 @@ SELECT
     COUNT(DISTINCT sb.p_partkey) AS part_count,
     SUM(sb.name_length) AS total_length,
     AVG(sb.name_length) AS average_length,
-    STRING_AGG(DISTINCT sb.modified_name, '; ') AS combined_modified_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sb.modified_name))), '; ') AS combined_modified_names
 FROM 
     string_benchmark sb
 JOIN 

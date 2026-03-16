@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND (p.ViewCount > 100 OR u.Reputation > 50)
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, u.Reputation, p.OwnerUserId, p.Score
@@ -64,4 +64,4 @@ FROM
 ORDER BY 
     fp.ViewCount DESC, 
     fp.UpVoteCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

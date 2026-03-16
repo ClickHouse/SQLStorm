@@ -10,8 +10,8 @@ WITH StringData AS (
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpvoteCount,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownvoteCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsString
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsString
     FROM 
         Posts p
     LEFT JOIN 
@@ -25,11 +25,11 @@ WITH StringData AS (
     LEFT JOIN 
         CloseReasonTypes clr ON CAST(ph.Comment AS INTEGER) = clr.Id
     LEFT JOIN 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag ON TRUE
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, u.DisplayName, clr.Name
 )
@@ -47,7 +47,7 @@ SELECT
         WHEN CHAR_LENGTH(Body) > 500 THEN 'Long Body' 
         ELSE 'Short Body' 
     END AS BodyLengthCategory,
-    EXTRACT(EPOCH FROM (CAST('2024-10-01 12:34:56' AS timestamp) - CreationDate)) AS AgeInSeconds
+    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - CreationDate)) AS AgeInSeconds
 FROM 
     StringData
 ORDER BY 

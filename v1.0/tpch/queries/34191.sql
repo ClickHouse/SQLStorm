@@ -17,7 +17,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(s.s_acctbal) AS total_acctbal,
     AVG(CASE WHEN s.s_acctbal IS NOT NULL THEN s.s_acctbal ELSE 0 END) AS avg_acctbal,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS popular_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS popular_parts,
     ROW_NUMBER() OVER (PARTITION BY n.n_name ORDER BY SUM(s.s_acctbal) DESC) AS row_num
 FROM nation n
 LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey

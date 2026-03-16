@@ -7,7 +7,7 @@ WITH PostTagStats AS (
         p.Score, 
         p.ViewCount, 
         
-        array_length(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'), 1) AS TagCount,
+        length(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
         COUNT(b.Id) AS BadgeCount

@@ -18,7 +18,7 @@ AggregatedData AS (
         COUNT(part_name) AS total_parts,
         SUM(available_quantity) AS total_available_quantity,
         AVG(supply_cost) AS average_supply_cost,
-        STRING_AGG(description, '; ') AS supplier_descriptions
+        arrayStringConcat(groupArray(assumeNotNull(description)), '; ') AS supplier_descriptions
     FROM 
         SupplierParts
     GROUP BY 

@@ -14,7 +14,7 @@ customer_order_summary AS (
         COUNT(o.o_orderkey) AS total_orders,
         SUM(o.o_totalprice) AS total_spent,
         AVG(o.o_totalprice) AS average_order_value,
-        STRING_AGG(DISTINCT CONCAT(o.o_orderstatus, ' ', o.o_orderpriority), ', ') AS order_status_summary
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(o.o_orderstatus, ' ', o.o_orderpriority)))), ', ') AS order_status_summary
     FROM 
         customer c
     JOIN 
@@ -26,7 +26,7 @@ SELECT
     s.s_name,
     AVG(cos.total_spent) AS average_customer_spent,
     COUNT(DISTINCT cos.c_name) AS unique_customers,
-    STRING_AGG(DISTINCT cos.order_status_summary, '; ') AS order_overview,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cos.order_status_summary))), '; ') AS order_overview,
     COUNT(DISTINCT p.p_name) AS unique_parts_supplied,
     s_info.full_info
 FROM 

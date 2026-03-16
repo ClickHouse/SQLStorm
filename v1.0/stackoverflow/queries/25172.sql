@@ -12,11 +12,11 @@ WITH UserActivity AS (
     FROM 
         Users u
     LEFT JOIN 
-        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     LEFT JOIN 
-        Comments c ON u.Id = c.UserId AND c.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        Comments c ON u.Id = c.UserId AND c.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     LEFT JOIN 
-        Badges b ON u.Id = b.UserId AND b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        Badges b ON u.Id = b.UserId AND b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation
 ),

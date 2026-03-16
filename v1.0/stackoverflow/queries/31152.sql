@@ -57,4 +57,4 @@ SELECT
 FROM ClosedPosts cp
 LEFT JOIN UserActivity u ON cp.OwnerDisplayName = u.DisplayName
 ORDER BY cp.CloseVotes DESC, cp.Level ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.OwnerUserId,
         u.DisplayName AS OwnerName,
-        ARRAY_LENGTH(STRING_TO_ARRAY(p.Tags, '><'), 1) AS TagCount,
+        length(splitByString('><', p.Tags), 1) AS TagCount,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM 
         Posts p
@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 PostWithVotes AS (
     SELECT 

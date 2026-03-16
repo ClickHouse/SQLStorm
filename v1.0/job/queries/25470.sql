@@ -4,7 +4,7 @@ WITH popular_movies AS (
         t.id AS movie_id,
         t.title,
         COUNT(c.person_id) AS cast_count,
-        ARRAY_AGG(DISTINCT a.name) AS cast_names
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS cast_names
     FROM 
         aka_title t
     JOIN 
@@ -24,7 +24,7 @@ WITH popular_movies AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -35,7 +35,7 @@ movie_keywords AS (
 movie_infos AS (
     SELECT 
         mi.movie_id,
-        ARRAY_AGG(mii.info) AS infos
+        groupArray(assumeNotNull(mii.info)) AS infos
     FROM 
         movie_info mi
     JOIN 

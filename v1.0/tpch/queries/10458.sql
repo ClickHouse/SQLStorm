@@ -17,4 +17,4 @@ HAVING
     SUM(ps.ps_availqty) > 100
 ORDER BY 
     avg_supply_cost DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

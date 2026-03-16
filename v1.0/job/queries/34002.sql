@@ -39,7 +39,7 @@ PopularMovies AS (
 MovieKeywords AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword m
     JOIN 
@@ -50,7 +50,7 @@ MovieKeywords AS (
 MovieCompanyInfo AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         MAX(CASE WHEN ct.kind = 'Distributor' THEN cn.name END) AS distributor
     FROM 
         aka_title m

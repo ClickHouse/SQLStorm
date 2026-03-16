@@ -41,7 +41,7 @@ SELECT
     rp.ViewCount,
     rp.AnswerCount,
     rp.CommentCount,
-    array_agg(DISTINCT r.Title) AS RelatedPosts,
+    arrayDistinct(groupArray(assumeNotNull(r.Title))) AS RelatedPosts,
     CASE 
         WHEN re.PostId IS NOT NULL THEN 'Edited'
         ELSE 'Not Edited'

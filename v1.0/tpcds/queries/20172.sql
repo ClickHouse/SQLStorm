@@ -50,7 +50,7 @@ FROM
 LEFT JOIN 
     ranked_sales rs ON cs.c_customer_sk = rs.ws_bill_customer_sk
 LEFT JOIN 
-    annual_sales ais ON ais.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
+    annual_sales ais ON ais.d_year = toYear(cast('2002-10-01' as date))
 WHERE 
     (cs.income_band IS NULL OR cs.income_band NOT IN (SELECT ib_income_band_sk FROM income_band WHERE ib_income_band_sk < 2))
 ORDER BY 

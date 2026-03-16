@@ -33,8 +33,8 @@ SELECT
     pm.production_year,
     pm.cast_count,
     COALESCE(cn.name, 'Anonymous') AS company_name,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT pi.info, ', ') AS person_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pi.info))), ', ') AS person_info
 FROM 
     PopularMovies pm
 LEFT JOIN 

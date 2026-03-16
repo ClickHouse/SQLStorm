@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')
+        AND p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, u.DisplayName
 ),
@@ -48,17 +48,17 @@ SELECT
     f.Owner,
     f.CommentCount,
     f.AnswerCount,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
 FROM 
     FilteredPosts f
 LEFT JOIN 
     Posts p ON p.Id = f.PostId 
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
             SUBSTRING(tag FROM 2 FOR LENGTH(tag) - 2) AS TagName
         FROM 
-            unnest(string_to_array(f.Body, '<tag>')) AS tag
+            arrayJoin(splitByString('<tag>', f.Body)) AS tag
     ) AS t ON TRUE
 GROUP BY 
     f.PostId, f.Title, f.Body, f.CreationDate, f.ViewCount, f.Owner, f.CommentCount, f.AnswerCount

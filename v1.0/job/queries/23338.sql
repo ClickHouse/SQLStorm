@@ -25,7 +25,7 @@ FilteredMovies AS (
 CompanyContributions AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS companies,
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS companies,
         SUM(CASE 
             WHEN ct.kind = 'Distributor' THEN 1 
             ELSE 0 

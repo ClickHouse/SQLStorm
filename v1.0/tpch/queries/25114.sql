@@ -22,7 +22,7 @@ SupplierStats AS (
         s.s_nationkey,
         COUNT(s.s_suppkey) AS total_suppliers,
         AVG(s.s_acctbal) AS avg_acct_balance,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names 
     FROM supplier s
     GROUP BY s.s_nationkey
 ),
@@ -33,7 +33,7 @@ AggregatedInfo AS (
         SUM(l.l_extendedprice) AS total_revenue,
         MAX(p.p_retailprice) AS max_part_price,
         MIN(p.p_retailprice) AS min_part_price,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
         AVG(sd.comment_length * CAST(p.p_retailprice AS decimal)) AS adjusted_length
     FROM nation n
     JOIN supplier s ON n.n_nationkey = s.s_nationkey
@@ -55,4 +55,4 @@ SELECT
     ROUND(ai.adjusted_length, 2) AS avg_adjusted_length
 FROM AggregatedInfo ai
 ORDER BY ai.total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

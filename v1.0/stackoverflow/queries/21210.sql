@@ -29,7 +29,7 @@ RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 PostActions AS (
     SELECT 
@@ -46,7 +46,7 @@ PostActions AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '90 days'
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 90 DAY
 ),
 AggregatedActions AS (
     SELECT 

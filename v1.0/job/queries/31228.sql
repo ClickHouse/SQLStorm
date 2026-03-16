@@ -71,4 +71,4 @@ JOIN
     movie_hierarchy mh ON m.movie_title = mh.movie_title AND m.production_year = mh.production_year
 ORDER BY 
     mh.level, m.production_year DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

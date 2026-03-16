@@ -15,5 +15,5 @@ JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 JOIN partsupp ps ON l.l_partkey = ps.ps_partkey
 JOIN TopSuppliers ts ON ps.ps_suppkey = ts.s_suppkey
 WHERE ts.rnk <= 5
-AND l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+AND l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 ORDER BY ts.total_supply_cost DESC, c.c_name;

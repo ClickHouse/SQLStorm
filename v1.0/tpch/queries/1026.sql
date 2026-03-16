@@ -14,7 +14,7 @@ WITH supplier_sales AS (
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
         o.o_orderstatus = 'O' 
-        AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY 
         s.s_suppkey, s.s_name
 ),
@@ -32,7 +32,7 @@ customer_consumption AS (
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
         c.c_acctbal > 100 
-        AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY 
         c.c_custkey, c.c_name
 )

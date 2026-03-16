@@ -5,7 +5,7 @@ WITH RankedParts AS (
         p.p_brand, 
         p.p_type,
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
-        STRING_AGG(CONCAT(s.s_name, ' (', s.s_acctbal, ')'), ', ') AS suppliers,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_acctbal, ')'))), ', ') AS suppliers,
         ROW_NUMBER() OVER (PARTITION BY p.p_type ORDER BY COUNT(DISTINCT ps.ps_suppkey) DESC) AS type_rank
     FROM 
         part p

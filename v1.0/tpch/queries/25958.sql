@@ -4,8 +4,8 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(p.p_retailprice) AS avg_price,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers_list,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customers_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customers_list,
     r.r_name AS region_name
 FROM 
     part p

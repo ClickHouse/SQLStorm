@@ -3,7 +3,7 @@ WITH CustomerAddressStats AS (
     SELECT
         ca_state,
         COUNT(DISTINCT ca_address_sk) AS address_count,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities,
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length
     FROM
         customer_address
@@ -14,7 +14,7 @@ CustomerDemographics AS (
     SELECT
         cd_gender,
         cd_marital_status,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_levels,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_levels,
         SUM(cd_purchase_estimate) AS total_purchase,
         SUM(cd_dep_count) AS total_dependencies
     FROM

@@ -18,14 +18,14 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, u.DisplayName
 ),
 
 TagCounts AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', Tags)) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -58,7 +58,7 @@ SELECT
 FROM 
     PostStats ps
 JOIN 
-    (SELECT DISTINCT p.Id, UNNEST(string_to_array(p.Tags, '><')) AS TagName
+    (SELECT DISTINCT p.Id, arrayJoin(splitByString('><', p.Tags)) AS TagName
      FROM Posts p WHERE p.Tags IS NOT NULL) AS TagLinks 
 ON 
     ps.PostId = TagLinks.Id

@@ -6,7 +6,7 @@ SELECT
     c.c_name AS customer_name,
     o.o_orderkey,
     COUNT(l.l_orderkey) AS total_lineitems,
-    STRING_AGG(DISTINCT CONCAT(l.l_comment, ': ', l.l_shipmode), '; ') AS shipping_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(l.l_comment, ': ', l.l_shipmode)))), '; ') AS shipping_details,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(CASE 
         WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) 
@@ -26,7 +26,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     p.p_retailprice > 50.00 
-    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_name, p.p_brand, s.s_name, c.c_name, o.o_orderkey
 HAVING 

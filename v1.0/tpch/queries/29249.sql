@@ -25,4 +25,4 @@ GROUP BY
     p.p_name, s.s_name, n.n_name, l.l_quantity, l.l_extendedprice, l.l_comment
 ORDER BY 
     revenue DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '365 days'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 365 DAY
 ),
 ActiveUsers AS (
     SELECT 
@@ -42,7 +42,7 @@ LastActiveUserPosts AS (
     GROUP BY 
         p.Id, u.DisplayName, u.Reputation
     HAVING 
-        MAX(p.LastActivityDate) >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        MAX(p.LastActivityDate) >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 PostHistoryInfo AS (
     SELECT 

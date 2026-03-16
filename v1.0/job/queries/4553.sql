@@ -3,7 +3,7 @@ WITH RankedTitles AS (
     SELECT 
         at.title,
         at.production_year,
-        ROW_NUMBER() OVER (PARTITION BY at.production_year ORDER BY RANDOM()) as rank
+        ROW_NUMBER() OVER (PARTITION BY at.production_year ORDER BY rand()) as rank
     FROM 
         aka_title at
     WHERE 
@@ -31,7 +31,7 @@ ActorRoles AS (
 MoviesWithKeywords AS (
     SELECT 
         mt.title AS movie_title,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

@@ -27,4 +27,4 @@ WHERE
     AND k.keyword LIKE '%action%'
 ORDER BY 
     a.name, t.title
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

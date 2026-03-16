@@ -31,7 +31,7 @@ MovieDetails AS (
         tm.movie_id,
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT an.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actors,
         COALESCE(SUM(CASE WHEN mc.note LIKE '%production%' THEN 1 ELSE 0 END), 0) AS production_companies
     FROM 
         TopRankedMovies tm

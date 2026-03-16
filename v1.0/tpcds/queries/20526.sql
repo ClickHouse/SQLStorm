@@ -50,7 +50,7 @@ SELECT
         ELSE 'Equal Returns'
     END AS return_type,
     (SELECT 
-        STRING_AGG(DISTINCT ca.ca_city, ', ') 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_city))), ', ') 
      FROM 
         customer_address ca 
      WHERE 

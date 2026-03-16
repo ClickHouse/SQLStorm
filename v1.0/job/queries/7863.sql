@@ -45,7 +45,7 @@ SELECT
     cd.gender,
     co.company_name,
     co.company_type,
-    STRING_AGG(DISTINCT md.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keyword))), ', ') AS keywords
 FROM 
     MovieDetails md
 JOIN 

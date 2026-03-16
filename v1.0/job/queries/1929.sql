@@ -38,7 +38,7 @@ SELECT
     wm.movie_title,
     wm.production_year,
     COALESCE(kmc.keyword_count, 0) AS total_keywords,
-    ARRAY_AGG(DISTINCT an.name) AS actor_names,
+    arrayDistinct(groupArray(assumeNotNull(an.name))) AS actor_names,
     (SELECT COUNT(DISTINCT c.person_id)
      FROM cast_info c
      JOIN aka_title at ON at.id = c.movie_id

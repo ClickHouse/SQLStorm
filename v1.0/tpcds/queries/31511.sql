@@ -78,4 +78,4 @@ WHERE
     AND (cd.cd_gender = 'F' OR cd.cd_marital_status IS NULL)
 ORDER BY
     net_sales_value DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -19,7 +19,7 @@ WITH RankedMovies AS (
     SELECT 
         rm.title,
         rm.production_year,
-        STRING_AGG(rm.actor_name, ', ') AS actors
+        arrayStringConcat(groupArray(assumeNotNull(rm.actor_name)), ', ') AS actors
     FROM 
         RankedMovies rm
     GROUP BY 

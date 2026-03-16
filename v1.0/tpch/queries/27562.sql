@@ -14,7 +14,7 @@ WITH StringMetrics AS (
 SELECT 
     rm.r_name AS region_name,
     nm.n_name AS nation_name,
-    STRING_AGG(sm.supplier_name, ', ') AS suppliers,
+    arrayStringConcat(groupArray(assumeNotNull(sm.supplier_name)), ', ') AS suppliers,
     SUM(sm.comment_length) AS total_comment_length,
     AVG(sm.avg_part_comment_length) AS avg_part_comment_length,
     COUNT(DISTINCT sm.supplier_name) AS unique_suppliers_count,

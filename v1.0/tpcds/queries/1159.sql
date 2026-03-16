@@ -59,4 +59,4 @@ HAVING
     (SUM(sa.ws_ext_sales_price) - SUM(sa.return_amount)) > 0
 ORDER BY 
     total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

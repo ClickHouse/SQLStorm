@@ -2,7 +2,7 @@ WITH RankedMovies AS (
     SELECT 
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COUNT(ci.person_id) AS cast_count
     FROM 
         aka_title t
@@ -33,7 +33,7 @@ SELECT
     tm.keywords,
     tm.cast_count,
     COUNT(DISTINCT p.id) AS unique_persons,
-    STRING_AGG(DISTINCT c.kind, ', ') AS company_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_types
 FROM 
     TopMovies tm
 JOIN 

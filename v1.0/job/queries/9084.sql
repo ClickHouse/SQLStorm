@@ -3,8 +3,8 @@ WITH MovieData AS (
     SELECT 
         t.title, 
         t.production_year, 
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT c.name) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS companies,
         COUNT(DISTINCT ci.person_id) AS cast_count
     FROM 
         aka_title t

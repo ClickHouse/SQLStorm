@@ -1,7 +1,7 @@
 WITH PostTagCounts AS (
     SELECT 
         post.Id AS PostId, 
-        unnest(string_to_array(substring(post.Tags, 2, length(post.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(post.Tags, 2, length(post.Tags) - 2))) AS Tag
     FROM 
         Posts post
     WHERE 
@@ -40,7 +40,7 @@ ActiveUsers AS (
     JOIN 
         UserPostCounts up ON u.Id = up.OwnerUserId
     WHERE 
-        u.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - interval '1 year'
+        u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPostTags AS (
     SELECT 

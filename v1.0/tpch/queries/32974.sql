@@ -7,7 +7,7 @@ WITH RECURSIVE OrderCTE AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
 ),
 SupplierRanked AS (
     SELECT 
@@ -66,4 +66,4 @@ WHERE
     AND (s.s_acctbal IS NULL OR s.s_acctbal < 1000)
 ORDER BY 
     cs.total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

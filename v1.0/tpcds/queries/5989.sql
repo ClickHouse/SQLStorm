@@ -55,4 +55,4 @@ GROUP BY
     cd.cd_gender, cd.cd_marital_status, ib.ib_lower_bound, ib.ib_upper_bound
 ORDER BY 
     total_web_sales DESC, demographic_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

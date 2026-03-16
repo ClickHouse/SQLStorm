@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Badges b ON p.OwnerUserId = b.UserId AND b.Class = 1 
     WHERE
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), UserStats AS (
     SELECT
         u.Id AS UserId,
@@ -29,12 +29,12 @@ WITH RankedPosts AS (
 ), ClosingReasons AS (
     SELECT
         ph.PostId,
-        STRING_AGG(ct.Name, ', ') AS CloseReasons,
+        arrayStringConcat(groupArray(assumeNotNull(ct.Name)), ', ') AS CloseReasons,
         MAX(ph.CreationDate) AS LastCloseDate
     FROM
         PostHistory ph
     JOIN
-        CloseReasonTypes ct ON ph.Comment::int = ct.Id
+        CloseReasonTypes ct ON CAST(ph.Comment AS int) = ct.Id
     WHERE
         ph.PostHistoryTypeId = 10
     GROUP BY

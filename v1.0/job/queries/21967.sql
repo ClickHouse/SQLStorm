@@ -35,7 +35,7 @@ CTE_CompleteCast AS (
     SELECT 
         cc.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_actors,
-        STRING_AGG(DISTINCT cn.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS actor_names
     FROM 
         complete_cast cc
     LEFT JOIN 
@@ -49,7 +49,7 @@ SELECT
     m.title_id,
     m.title,
     m.production_year,
-    STRING_AGG(DISTINCT ec.company_name, ', ') AS external_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ec.company_name))), ', ') AS external_companies,
     ec.company_type AS company_type,
     cc.total_actors,
     cc.actor_names

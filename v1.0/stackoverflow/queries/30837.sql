@@ -9,7 +9,7 @@ WITH RecursivePostHistory AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
+        ph.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -34,7 +34,7 @@ CloseReasonStats AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -61,7 +61,7 @@ PostsWithDetails AS (
     LEFT JOIN 
         Comments cm ON p.Id = cm.PostId
     WHERE 
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL '6 months'
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL 6 MONTH
     GROUP BY 
         p.Id, p.Title, p.Body, p.OwnerUserId, p.CreationDate, 
         u.DisplayName, cr.CloseCount, cr.CloseReasons

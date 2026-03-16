@@ -21,7 +21,7 @@ AggregateAddress AS (
     SELECT 
         ca.ca_state,
         COUNT(*) AS customer_count,
-        STRING_AGG(RankedCustomers.customer_full_name, ', ') AS customers_list
+        arrayStringConcat(groupArray(assumeNotNull(RankedCustomers.customer_full_name)), ', ') AS customers_list
     FROM 
         RankedCustomers
     JOIN 

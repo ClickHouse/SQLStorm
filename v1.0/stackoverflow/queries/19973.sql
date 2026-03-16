@@ -14,4 +14,4 @@ GROUP BY
     u.Id, u.DisplayName
 ORDER BY 
     PostCount DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

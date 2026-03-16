@@ -4,7 +4,7 @@ WITH movie_details AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        ARRAY_AGG(DISTINCT a.name) AS cast_names
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS cast_names
     FROM 
         aka_title t
     LEFT JOIN 
@@ -21,7 +21,7 @@ WITH movie_details AS (
 movie_info_summary AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, ', ') AS info_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS info_list
     FROM 
         movie_info mi
     INNER JOIN 

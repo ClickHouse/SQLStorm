@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         t.production_year,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.production_year DESC) AS rank,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        AVG(COALESCE(mi.info, '0')::numeric) AS average_info_length
+        AVG(COALESCE(mi.info, '0'CAST() AS numeric)) AS average_info_length
     FROM 
         aka_title t
     LEFT JOIN 
@@ -34,8 +34,8 @@ KeyMovies AS (
 SELECT 
     km.title,
     km.production_year,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     COUNT(DISTINCT ci.person_id) AS total_actors,
     COUNT(DISTINCT ci.role_id) FILTER (WHERE ci.note IS NOT NULL) AS noted_roles
 FROM 

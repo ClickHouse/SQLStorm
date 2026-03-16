@@ -45,7 +45,7 @@ FinalBenchmark AS (
     SELECT 
         t.movie_id, 
         t.title, 
-        string_agg(DISTINCT p.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_names,
         MAX(p.movie_count) AS cast_movies
     FROM 
         TopMovies t

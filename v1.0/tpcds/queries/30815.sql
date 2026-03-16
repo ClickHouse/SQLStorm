@@ -76,10 +76,10 @@ FROM
 JOIN 
     CustomerDemographics cd ON ch.c_customer_sk = cd.cd_demo_sk
 LEFT JOIN 
-    DateStats ds ON ds.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
+    DateStats ds ON ds.d_year = toYear(toDate('2002-10-01'))
 WHERE 
     cd.cd_marital_status = 'M' 
     AND (ch.c_birth_year IS NULL OR ch.c_birth_year > 1980)
 ORDER BY 
     ds.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

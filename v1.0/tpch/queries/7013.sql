@@ -45,7 +45,7 @@ FilteredOrders AS (
 )
 SELECT 
     f.o_orderkey,
-    DATE_PART('month', f.o_orderdate) AS order_month,
+    datePart('month', f.o_orderdate) AS order_month,
     h.c_name AS customer_name,
     SUM(f.l_extendedprice * (1 - f.l_discount)) AS net_amount,
     COALESCE(r.s_name, 'Unknown Supplier') AS supplier_name,

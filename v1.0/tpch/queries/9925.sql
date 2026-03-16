@@ -7,7 +7,7 @@ WITH RankedOrders AS (
            ROW_NUMBER() OVER (PARTITION BY c.c_mktsegment ORDER BY o.o_orderdate DESC) AS rn
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
 ), TotalLineItems AS (
     SELECT l.l_orderkey, 
            COUNT(*) AS total_items

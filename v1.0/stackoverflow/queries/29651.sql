@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM
         Posts
@@ -41,7 +41,7 @@ UserBadges AS (
     SELECT
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM
         Badges b
     GROUP BY
@@ -64,7 +64,7 @@ CombinedData AS (
     LEFT JOIN
         UserBadges pb ON u.Id = pb.UserId
     JOIN
-        PopularTags pt ON pt.TagName = ANY(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'))
+        PopularTags pt ON pt.TagName = ANY(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
     WHERE
         p.PostTypeId = 1 
 )
@@ -74,7 +74,7 @@ SELECT
     COUNT(c.Title) AS NumberOfQuestions,
     AVG(c.ViewCount) AS AvgViewCount,
     AVG(c.Score) AS AvgScore,
-    STRING_AGG(DISTINCT c.BadgeNames, ', ') AS AssociatedBadges
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.BadgeNames))), ', ') AS AssociatedBadges
 FROM
     CombinedData c
 GROUP BY

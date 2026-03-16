@@ -51,12 +51,12 @@ RecentPostHistories AS (
          FROM TopUsers 
          WHERE UserRank <= 10) r ON ph.UserId = r.UserId
     WHERE 
-        ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     u.DisplayName,
     COUNT(DISTINCT rp.PostId) AS RecentPostCount,
-    AVG(DATE_PART('epoch', cast('2024-10-01 12:34:56' as timestamp) - rp.CreationDate)) AS AvgDaysSincePost,
+    AVG(datePart('epoch', toDateTime64('2024-10-01 12:34:56', 6) - rp.CreationDate)) AS AvgDaysSincePost,
     MAX(rp.Comment) AS MostRecentComment,
     SUM(rp.UserRank) AS TotalRank
 FROM 

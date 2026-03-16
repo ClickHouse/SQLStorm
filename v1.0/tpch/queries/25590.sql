@@ -6,7 +6,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     SUM(ps.ps_supplycost) AS total_supply_cost,
     AVG(p.p_retailprice) AS avg_retail_price,
-    STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments
 FROM 
     part p
 JOIN 

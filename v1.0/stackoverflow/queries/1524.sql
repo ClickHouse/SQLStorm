@@ -19,9 +19,9 @@ RecentBadgeActivity AS (
     SELECT 
         UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames
     FROM Badges
-    WHERE Date > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+    WHERE Date > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY UserId
 ),
 TopUsers AS (

@@ -16,7 +16,7 @@ RegionSummary AS (
     SELECT 
         r.r_regionkey,
         COUNT(DISTINCT n.n_nationkey) AS nation_count,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nations,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations,
         AVG(s.s_acctbal) AS avg_supplier_balance
     FROM region r
     JOIN nation n ON r.r_regionkey = n.n_regionkey

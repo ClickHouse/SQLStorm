@@ -62,7 +62,7 @@ SELECT
     t.era_category,
     t.avg_cast_count,
     t.movie_count,
-    STRING_AGG(md.title, ', ') AS movie_titles
+    arrayStringConcat(groupArray(assumeNotNull(md.title)), ', ') AS movie_titles
 FROM 
     TopMovies t
 LEFT JOIN 

@@ -26,7 +26,7 @@ high_cast_movies AS (
 company_movies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS companies
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 

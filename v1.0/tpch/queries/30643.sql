@@ -25,7 +25,7 @@ OrderStats AS (
 SELECT r.r_name, 
        COUNT(DISTINCT sh.s_suppkey) AS supplier_count,
        SUM(os.total_revenue) AS total_revenue,
-       STRING_AGG(DISTINCT tc.c_name, ', ') AS top_customers,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tc.c_name))), ', ') AS top_customers,
        AVG(tc.c_acctbal) AS avg_customer_balance
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey

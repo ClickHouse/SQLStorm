@@ -4,7 +4,7 @@ SELECT
     r.r_name AS region, 
     COUNT(DISTINCT o.o_orderkey) AS total_orders, 
     SUM(l.l_quantity) AS total_quantity,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     MAX(l.l_shipdate) AS last_ship_date
 FROM 
     part p
@@ -24,7 +24,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     p.p_comment LIKE '%special%' AND 
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_name, s.s_name, s.s_address, r.r_name
 ORDER BY 

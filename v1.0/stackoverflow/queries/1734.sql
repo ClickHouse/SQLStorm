@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -39,7 +39,7 @@ RecentPostComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
+        c.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
     GROUP BY 
         c.PostId
 )

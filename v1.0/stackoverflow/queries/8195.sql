@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS UpVoteCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.CreationDate DESC) AS Rank,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2 
     LEFT JOIN 
-        (SELECT UNNEST(string_to_array(p.Tags, '><')) AS TagName) AS t ON TRUE
+        (SELECT arrayJoin(splitByString('><', p.Tags)) AS TagName) AS t ON TRUE
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.PostTypeId
 )

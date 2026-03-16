@@ -18,13 +18,13 @@ WITH FilteredPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1   
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'   
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR   
 ),
 
 TagArray AS (
     SELECT 
         PostId,
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag
     FROM 
         FilteredPosts
 ),
@@ -51,7 +51,7 @@ SELECT
     ts.TagCount,
     ts.AvgViewCount,
     ts.AvgScore,
-    STRING_AGG(fp.Title, '; ') AS QuestionTitles  
+    arrayStringConcat(groupArray(assumeNotNull(fp.Title)), '; ') AS QuestionTitles  
 FROM 
     TagStats ts
 JOIN 

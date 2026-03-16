@@ -3,7 +3,7 @@ WITH ranked_orders AS (
     SELECT o.o_orderkey, o.o_totalprice, 
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1996-01-01' AND o.o_orderstatus IN ('O', 'F')
+    WHERE o.o_orderdate >= toDate('1996-01-01') AND o.o_orderstatus IN ('O', 'F')
 ),
 part_supplier AS (
     SELECT ps.ps_partkey, ps.ps_suppkey, 

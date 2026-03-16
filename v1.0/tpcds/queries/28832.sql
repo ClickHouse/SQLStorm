@@ -26,7 +26,7 @@ AddressStats AS (
     SELECT
         ad.ca_state,
         COUNT(ad.ca_address_sk) AS address_count,
-        STRING_AGG(DISTINCT ad.full_address, '; ') AS unique_addresses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ad.full_address))), '; ') AS unique_addresses
     FROM 
         AddressDetails ad
     GROUP BY 

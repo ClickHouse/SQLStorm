@@ -38,12 +38,12 @@ TopPosts AS (
 ),
 TagsStats AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(Tags, '>'))) AS TagName,
+        TRIM(arrayJoin(splitByString('>', Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         TopPosts
     GROUP BY 
-        TRIM(UNNEST(string_to_array(Tags, '>')))
+        TRIM(arrayJoin(splitByString('>', Tags)))
 )
 SELECT 
     tp.PostId,

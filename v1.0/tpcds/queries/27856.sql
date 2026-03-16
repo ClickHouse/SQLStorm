@@ -21,8 +21,8 @@ SalesData AS (
     SELECT 
         SUM(ws.ws_ext_sales_price) AS total_sales,
         COUNT(DISTINCT ws.ws_order_number) AS order_count,
-        EXTRACT(YEAR FROM d.d_date) AS sales_year,
-        EXTRACT(MONTH FROM d.d_date) AS sales_month
+        toYear(d.d_date) AS sales_year,
+        toMonth(d.d_date) AS sales_month
     FROM 
         web_sales ws
     JOIN 
@@ -30,7 +30,7 @@ SalesData AS (
     WHERE 
         d.d_date BETWEEN '2023-01-01' AND '2023-12-31'
     GROUP BY 
-        EXTRACT(YEAR FROM d.d_date), EXTRACT(MONTH FROM d.d_date)
+        toYear(d.d_date), toMonth(d.d_date)
 )
 SELECT 
     a.c_customer_id,

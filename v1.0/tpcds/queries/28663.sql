@@ -32,7 +32,7 @@ SELECT
     s.max_address_length,
     s.avg_address_length,
     s.total_addresses,
-    CONCAT_WS(', ', STRING_AGG(details_after_comma, '; ')) AS details_after_comma_summary
+    CONCAT_WS(', ', arrayStringConcat(groupArray(assumeNotNull(details_after_comma)), '; ')) AS details_after_comma_summary
 FROM 
     stats_summary s
 JOIN 

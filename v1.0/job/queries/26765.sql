@@ -2,7 +2,7 @@ WITH ActorRoles AS (
     SELECT 
         ak.name AS actor_name,
         COUNT(c.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT t.title, ', ') AS titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS titles
     FROM 
         aka_name ak
     JOIN 
@@ -29,7 +29,7 @@ HighRatedMovies AS (
     SELECT 
         m.title,
         m.production_year,
-        ARRAY_AGG(DISTINCT ak.name) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS cast_names,
         AVG(CASE 
             WHEN mi.info_type_id = (SELECT id FROM info_type WHERE info = 'rating') THEN CAST(mi.info AS FLOAT) 
             ELSE NULL 

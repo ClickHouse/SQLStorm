@@ -4,7 +4,7 @@ WITH RankedParts AS (
         p.p_name, 
         p.p_brand, 
         COUNT(ps.ps_partkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
         SUM(ps.ps_availqty) AS total_available_quantity,
         SUM(ps.ps_supplycost) AS total_supply_cost,
         CASE 

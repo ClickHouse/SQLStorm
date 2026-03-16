@@ -42,4 +42,4 @@ FROM AggregatedProductionYears ap
 LEFT JOIN TitleWithKeywordCounts t ON ap.movie_title = t.movie_title
 WHERE ap.actor_count > 1
 ORDER BY ap.max_production_year DESC, ap.movie_title ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

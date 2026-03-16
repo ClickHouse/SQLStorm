@@ -36,7 +36,7 @@ OrderDetails AS (
         o.o_clerk,
         o.o_shippriority,
         o.o_comment,
-        STRING_AGG(DISTINCT CONCAT('Order: ', o.o_orderkey, ', Status: ', o.o_orderstatus, ', Total Price: ', o.o_totalprice), '; ') AS order_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Order: ', o.o_orderkey, ', Status: ', o.o_orderstatus, ', Total Price: ', o.o_totalprice)))), '; ') AS order_info
     FROM orders o
     GROUP BY 
         o.o_orderkey, 

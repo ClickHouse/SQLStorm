@@ -31,8 +31,8 @@ SELECT
     at.title AS movie_title,
     at.production_year,
     COUNT(DISTINCT kc.keyword) AS keyword_count,
-    STRING_AGG(DISTINCT cn.name, ', ') FILTER (WHERE cn.name IS NOT NULL) AS company_names,
-    STRING_AGG(DISTINCT COALESCE(mo.info, 'No info'), ', ') AS movie_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') FILTER (WHERE cn.name IS NOT NULL) AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(mo.info, 'No info')))), ', ') AS movie_info,
     ROW_NUMBER() OVER (PARTITION BY ak.name ORDER BY COUNT(DISTINCT kc.keyword) DESC) AS rank
 FROM 
     aka_name ak

@@ -55,7 +55,7 @@ SELECT
 FROM 
     FilteredPosts fp
 WHERE 
-    fp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+    fp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     AND (SELECT COUNT(*) FROM Votes v WHERE v.PostId = fp.PostId AND v.VoteTypeId = 2) >= 5
 ORDER BY 
     fp.ViewCount DESC, fp.AnswerCount DESC;

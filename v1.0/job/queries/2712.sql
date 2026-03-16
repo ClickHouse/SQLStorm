@@ -37,7 +37,7 @@ FinalResults AS (
     SELECT 
         mw.title,
         mw.production_year,
-        STRING_AGG(mw.movie_keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(mw.movie_keyword)), ', ') AS keywords
     FROM 
         MoviesWithKeywords mw
     GROUP BY 

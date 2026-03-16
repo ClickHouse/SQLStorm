@@ -29,7 +29,7 @@ HighValueCustomers AS (
 )
 SELECT r.r_name, n.n_name, COUNT(DISTINCT co.c_custkey) AS high_value_customers,
        SUM(co.total_spent) AS total_revenue, AVG(co.avg_order_value) AS avg_order_value,
-       STRING_AGG(DISTINCT sh.full_name, ', ') AS supplier_hierarchy
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sh.full_name))), ', ') AS supplier_hierarchy
 FROM region r
 JOIN nation n ON r.r_regionkey = n.n_regionkey
 JOIN HighValueCustomers co ON n.n_nationkey = co.c_custkey

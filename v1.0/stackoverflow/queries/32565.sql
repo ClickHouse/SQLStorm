@@ -32,7 +32,7 @@ PostMetrics AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Badges b ON p.OwnerUserId = b.UserId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title
 ),
 ClosedPostDetails AS (
@@ -41,7 +41,7 @@ ClosedPostDetails AS (
         ph.Title,
         COUNT(CASE WHEN ph.PostTypeId = 1 THEN 1 END) AS QuestionCount,
         COUNT(CASE WHEN ph.PostTypeId = 2 THEN 1 END) AS AnswerCount,
-        MAX(CASE WHEN ph.PostTypeId = 1 AND (p.ClosedDate IS NOT NULL OR p.LastActivityDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days') 
+        MAX(CASE WHEN ph.PostTypeId = 1 AND (p.ClosedDate IS NOT NULL OR p.LastActivityDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) 
                  THEN 1 ELSE 0 END) AS IsClosed
     FROM PostHierarchy ph
     LEFT JOIN Posts p ON ph.PostId = p.Id

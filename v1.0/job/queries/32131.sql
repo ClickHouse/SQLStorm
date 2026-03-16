@@ -46,7 +46,7 @@ average_cast AS (
 movie_keywords AS (
     SELECT 
         m.id AS movie_id,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         aka_title m
     JOIN 

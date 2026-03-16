@@ -7,7 +7,7 @@ WITH RankedParts AS (
         p.p_size,
         COUNT(ps.ps_suppkey) AS supplier_count,
         AVG(ps.ps_supplycost) AS avg_supply_cost,
-        STRING_AGG(ps.ps_comment, '; ') AS aggregated_comments
+        arrayStringConcat(groupArray(assumeNotNull(ps.ps_comment)), '; ') AS aggregated_comments
     FROM 
         part p
     JOIN 

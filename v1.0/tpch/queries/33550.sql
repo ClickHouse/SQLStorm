@@ -34,7 +34,7 @@ LEFT JOIN
     SupplierHierarchy sh ON ps.ps_suppkey = sh.s_suppkey
 WHERE 
     o.o_orderstatus = 'F'
-    AND l.l_shipdate >= DATE '1997-01-01'
+    AND l.l_shipdate >= toDate('1997-01-01')
     AND sh.level IS NOT NULL
 GROUP BY 
     c.c_name
@@ -42,4 +42,4 @@ HAVING
     SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

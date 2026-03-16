@@ -4,9 +4,9 @@ WITH MovieDetails AS (
         t.title,
         t.production_year,
         k.keyword,
-        STRING_AGG(DISTINCT cn.name, ', ') AS production_companies,
-        STRING_AGG(DISTINCT ak.name, ', ') AS related_people,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS production_companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS related_people,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles
     FROM 
         aka_title AS t
     JOIN 
@@ -40,8 +40,8 @@ FilteredMovies AS (
     FROM 
         MovieDetails
     WHERE 
-        ARRAY_LENGTH(STRING_TO_ARRAY(production_companies, ', '), 1) > 2 
-        AND ARRAY_LENGTH(STRING_TO_ARRAY(related_people, ', '), 1) > 5
+        length(splitByString(', ', production_companies), 1) > 2 
+        AND length(splitByString(', ', related_people), 1) > 5
 ),
 RankedMovies AS (
     SELECT 

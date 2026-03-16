@@ -46,4 +46,4 @@ FROM AddressCounts a
 JOIN CustomerStats c ON a.ca_state = c.cd_gender
 JOIN SalesAnalysis s ON c.total_customers > 10
 ORDER BY a.address_count DESC, s.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

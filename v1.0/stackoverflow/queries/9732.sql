@@ -72,4 +72,4 @@ WHERE
     U.UserRank <= 10
 ORDER BY 
     U.Reputation DESC, P.UpVoteCount DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

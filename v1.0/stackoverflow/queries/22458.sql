@@ -4,7 +4,7 @@ WITH UserBadges AS (
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
         MAX(b.Class) AS MaxBadgeClass,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM Users u
     LEFT JOIN Badges b ON u.Id = b.UserId
     GROUP BY u.Id
@@ -31,7 +31,7 @@ RecentPostHistory AS (
         ROW_NUMBER() OVER (PARTITION BY h.PostId ORDER BY h.CreationDate DESC) AS RecentHistoryRank
     FROM PostHistory h
     JOIN PostHistoryTypes ph ON h.PostHistoryTypeId = ph.Id
-    WHERE h.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE h.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     u.DisplayName,

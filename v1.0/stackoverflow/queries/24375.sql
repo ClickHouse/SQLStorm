@@ -32,7 +32,7 @@ RecentPostHistory AS (
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        STRING_AGG(T.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM 
         Posts P
     JOIN 

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Comments c ON p.Id = c.PostId
     WHERE
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 year')
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR)
     GROUP BY
         p.Id, p.Title, p.CreationDate, p.Score, p.AcceptedAnswerId, p.OwnerUserId
 ),
@@ -59,7 +59,7 @@ SELECT
     COUNT(r.PostId) AS TotalPosts,
     SUM(COALESCE(raa.AcceptedAnswerCount, 0)) AS TotalAcceptedAnswers,
     MAX(r.RecentPostRank) AS MaxRecentPostRank,
-    STRING_AGG(DISTINCT pht.Name, ', ') AS PostHistoryTypesChanged
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS PostHistoryTypesChanged
 FROM 
     RankedPosts r
 LEFT JOIN 

@@ -51,4 +51,4 @@ LEFT JOIN (
     GROUP BY c.c_customer_sk
 ) AS cu_sales ON cu.c_customer_sk = cu_sales.c_customer_sk
 ORDER BY sales_not_null DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

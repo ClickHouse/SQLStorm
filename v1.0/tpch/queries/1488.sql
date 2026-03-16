@@ -51,4 +51,4 @@ WHERE
     (p.p_retailprice BETWEEN 100 AND 500 OR p.p_comment IS NOT NULL)
 ORDER BY 
     total_revenue DESC NULLS LAST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

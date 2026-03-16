@@ -38,9 +38,9 @@ SELECT
     movie_id,
     movie_title,
     production_year,
-    STRING_AGG(CONCAT(actor_name, ' (', actor_role, ')'), ', ' ORDER BY actor_rank) AS cast_details,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT company_name, ', ') AS production_companies
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(actor_name, ' (', actor_role, ')'))), ', ' ORDER BY actor_rank) AS cast_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS production_companies
 FROM 
     RankedMovies
 GROUP BY 

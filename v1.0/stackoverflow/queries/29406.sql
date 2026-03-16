@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank
     FROM 
         Posts p
@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '> <')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('> <', p.Tags)) AS t(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 
@@ -40,7 +40,7 @@ SELECT
     up.DisplayName,
     SUM(uc.UserCommentCount) AS TotalUserComments,
     AVG(uc.ValidCommentCount) AS AverageValidComments,
-    ARRAY_AGG(DISTINCT uc.TagsArray) AS UniqueTags
+    arrayDistinct(groupArray(assumeNotNull(uc.TagsArray))) AS UniqueTags
 FROM 
     Users up
 JOIN 

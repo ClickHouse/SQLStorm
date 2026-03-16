@@ -22,12 +22,12 @@ PostDetail AS (
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN PostVoteCounts v ON p.Id = v.PostId
-    LEFT JOIN LATERAL (
-        SELECT STRING_AGG(t.TagName, ', ') AS TagName
-        FROM UNNEST(string_to_array(p.Tags, '><')) AS tag
+    LEFT JOIN (
+        SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagName
+        FROM arrayJoin(splitByString('><', p.Tags)) AS tag
         JOIN Tags t ON t.TagName = tag
     ) AS t ON TRUE
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 )
 SELECT 
     pd.PostId,

@@ -14,7 +14,7 @@ WITH RankedSuppliers AS (
 
 SELECT 
     rs.p_type,
-    STRING_AGG(rs.s_name, ', ') AS top_suppliers,
+    arrayStringConcat(groupArray(assumeNotNull(rs.s_name)), ', ') AS top_suppliers,
     SUM(rs.s_acctbal) AS total_acctbal
 FROM 
     RankedSuppliers rs

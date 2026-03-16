@@ -21,7 +21,7 @@ SELECT
     c.c_name,
     COUNT(DISTINCT ps.ps_partkey) AS part_count,
     AVG(o.o_totalprice) AS avg_order_price,
-    STRING_AGG(sp.full_description, '; ') AS all_descriptions
+    arrayStringConcat(groupArray(assumeNotNull(sp.full_description)), '; ') AS all_descriptions
 FROM StringProcessor sp
 JOIN partsupp ps ON sp.p_partkey = ps.ps_partkey
 JOIN supplier s ON ps.ps_suppkey = s.s_suppkey

@@ -41,15 +41,15 @@ SELECT
     fp.cast_size,
     COALESCE(fp.director_name, 'Unknown Director') AS director_name,
     CASE 
-        WHEN fp.production_year = EXTRACT(YEAR FROM DATE '2024-10-01') THEN 'New Release'
-        WHEN fp.production_year = EXTRACT(YEAR FROM DATE '2024-10-01') - 1 THEN 'Last Year Release'
+        WHEN fp.production_year = toYear(toDate('2024-10-01')) THEN 'New Release'
+        WHEN fp.production_year = toYear(toDate('2024-10-01')) - 1 THEN 'Last Year Release'
         ELSE 'Older Release'
     END AS release_status
 FROM FinalProfile fp
 WHERE (fp.cast_size = 'Large Cast' AND fp.production_year = 2023)
    OR (CASE 
-            WHEN fp.production_year = EXTRACT(YEAR FROM DATE '2024-10-01') THEN 'New Release'
-            WHEN fp.production_year = EXTRACT(YEAR FROM DATE '2024-10-01') - 1 THEN 'Last Year Release'
+            WHEN fp.production_year = toYear(toDate('2024-10-01')) THEN 'New Release'
+            WHEN fp.production_year = toYear(toDate('2024-10-01')) - 1 THEN 'Last Year Release'
             ELSE 'Older Release'
         END = 'Older Release' AND fp.director_name IS NULL)
 ORDER BY fp.production_year DESC, fp.title;

@@ -36,7 +36,7 @@ SELECT
     m.production_year,
     COALESCE(kc.keyword_count, 0) AS keyword_count,
     COUNT(DISTINCT ca.person_id) AS actor_count,
-    STRING_AGG(aka.name, ', ') AS actor_names,
+    arrayStringConcat(groupArray(assumeNotNull(aka.name)), ', ') AS actor_names,
     MAX(CASE WHEN pi.info_type_id = 1 THEN pi.info END) AS birth_info,
     MAX(CASE WHEN pi.info_type_id = 2 THEN pi.info END) AS death_info
 FROM 

@@ -14,7 +14,7 @@ WITH UserStats AS (
     LEFT JOIN 
         Comments C ON U.Id = C.UserId
     WHERE 
-        U.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
+        U.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
     GROUP BY 
         U.Id, U.DisplayName
 ), 
@@ -45,9 +45,9 @@ TopUsers AS (
 )
 SELECT 
     TU.*, 
-    (SELECT STRING_AGG(DISTINCT T.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
      FROM Posts P 
-     JOIN UNNEST(string_to_array(P.Tags, ',')) AS T(TagName) ON P.OwnerUserId = TU.UserId) AS PopularTags,
+     JOIN arrayJoin(splitByString(',', P.Tags)) AS T(TagName) ON P.OwnerUserId = TU.UserId) AS PopularTags,
     COALESCE(B.BadgeCount, 0) AS BadgeCount
 FROM 
     TopUsers TU

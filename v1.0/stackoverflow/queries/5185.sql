@@ -20,7 +20,7 @@ PostMetrics AS (
     LEFT JOIN UserVoteCounts v ON p.OwnerUserId = v.UserId
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Badges b ON p.OwnerUserId = b.UserId
-    WHERE p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY p.Id, v.UpVotes, v.DownVotes
 ),
 RankedPosts AS (

@@ -28,7 +28,7 @@ UserBadges AS (
 ClosedPosts AS (
     SELECT 
         p.Id AS PostID,
-        STRING_AGG(CONCAT('Reason ', ph.Comment, ' on ', CAST(ph.CreationDate AS DATE)), '; ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT('Reason ', ph.Comment, ' on ', CAST(ph.CreationDate AS DATE)))), '; ') AS CloseReasons
     FROM 
         Posts p
     JOIN 

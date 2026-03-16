@@ -5,7 +5,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     COUNT(DISTINCT c.c_custkey) AS distinct_customers,
     MAX(p.p_retailprice) AS max_price,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions,
     SUBSTRING(p.p_comment, 1, 10) AS short_comment,
     CONCAT('Total $$ ', ROUND(SUM(l.l_extendedprice * (1 - l.l_discount)), 2)) AS total_sales
 FROM 
@@ -26,7 +26,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_size > 10 AND 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_name, s.s_name, p.p_comment
 HAVING 

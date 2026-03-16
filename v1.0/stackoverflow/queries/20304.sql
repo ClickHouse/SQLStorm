@@ -31,7 +31,7 @@ ClosedPostDetails AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseVoteCount,
-        STRING_AGG(DISTINCT CRT.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CRT.Name))), ', ') AS CloseReasons
     FROM PostHistory PH
     INNER JOIN CloseReasonTypes CRT ON CAST(PH.Comment AS INT) = CRT.Id
     WHERE PH.PostHistoryTypeId = 10 
@@ -41,7 +41,7 @@ UserBadges AS (
     SELECT 
         B.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeList
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeList
     FROM Badges B
     GROUP BY B.UserId
 ),

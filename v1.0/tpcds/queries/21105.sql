@@ -63,4 +63,4 @@ HAVING
     AVG(COALESCE(ts.total_sales, 0)) > 100
 ORDER BY 
     unique_cities DESC, avg_sales DESC
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;

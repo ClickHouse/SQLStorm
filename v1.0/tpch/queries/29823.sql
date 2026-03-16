@@ -5,8 +5,8 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS average_total_price,
-    STRING_AGG(DISTINCT s.s_address, '; ') AS supplier_addresses,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_address))), '; ') AS supplier_addresses,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments
 FROM 
     customer c
 JOIN 

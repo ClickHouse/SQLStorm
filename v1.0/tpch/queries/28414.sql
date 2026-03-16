@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT l.l_orderkey) AS total_orders,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT CONCAT(s.s_address, ' (', s.s_phone, ')'), '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_address, ' (', s.s_phone, ')')))), '; ') AS supplier_details
 FROM 
     part p
 JOIN 
@@ -22,7 +22,7 @@ JOIN
 WHERE 
     p.p_retailprice > (SELECT AVG(p_retailprice) FROM part) 
     AND s.s_acctbal < (SELECT AVG(s_acctbal) FROM supplier)
-    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey
 ORDER BY 

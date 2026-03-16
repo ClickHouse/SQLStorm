@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score > 0
 ),
 TopPosts AS (
@@ -34,7 +34,7 @@ CommentsAggregate AS (
     SELECT 
         p.Id AS PostId,
         COUNT(c.Id) AS CommentCount,
-        ARRAY_AGG(c.Text ORDER BY c.CreationDate DESC) AS LatestComments
+        groupArray(assumeNotNull(c.Text ORDER BY c.CreationDate DESC)) AS LatestComments
     FROM 
         Posts p
     LEFT JOIN 

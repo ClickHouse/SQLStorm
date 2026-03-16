@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id AND v.VoteTypeId = 8  
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score >= 10
         AND p.PostTypeId IN (1, 2)  
     GROUP BY

@@ -46,7 +46,7 @@ LEFT JOIN
 WHERE 
     p.p_retailprice > (SELECT AVG(p2.p_retailprice) 
                        FROM part p2) 
-    AND l.l_shipdate < cast('1998-10-01' as date) - INTERVAL '1 month'
+    AND l.l_shipdate < cast('1998-10-01' as date) - INTERVAL 1 MONTH
 GROUP BY 
     p.p_partkey, p.p_name, p.p_brand, s.s_name
 HAVING 

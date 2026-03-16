@@ -31,7 +31,7 @@ HighRankedTitles AS (
 SELECT 
     hrt.title AS Movie_Title,
     hrt.production_year AS Release_Year,
-    STRING_AGG(hrt.actor_name, ', ') AS Leading_Actors
+    arrayStringConcat(groupArray(assumeNotNull(hrt.actor_name)), ', ') AS Leading_Actors
 FROM 
     HighRankedTitles hrt
 GROUP BY 

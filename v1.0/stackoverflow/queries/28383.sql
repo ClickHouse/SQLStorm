@@ -4,7 +4,7 @@ WITH TagCounts AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(COALESCE(p.ViewCount, 0)) AS TotalViews,
         SUM(COALESCE(p.Score, 0)) AS TotalScore,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopContributors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopContributors
     FROM Tags t
     JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%'
     JOIN Users u ON p.OwnerUserId = u.Id

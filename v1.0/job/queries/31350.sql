@@ -36,7 +36,7 @@ SELECT
     mh.production_year AS release_year,
     mh.episode_title,
     COUNT(DISTINCT c.person_id) AS num_cast_members,
-    STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
     CASE 
         WHEN mh.season_nr IS NOT NULL AND mh.episode_nr IS NOT NULL THEN 'TV Series'
         ELSE 'Movie'

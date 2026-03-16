@@ -63,7 +63,7 @@ FROM
 LEFT JOIN (
     SELECT 
         movie_id,
-        STRING_AGG(actor_name, ', ') AS actors
+        arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS actors
     FROM 
         movies_with_cast
     WHERE 

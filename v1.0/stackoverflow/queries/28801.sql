@@ -20,15 +20,15 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year' 
+        AND p.CreationDate >= now64(6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, u.DisplayName, p.Score
 ),
 TagStatistics AS (
     SELECT 
-        UNNEST(string_to_array(p.Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', p.Tags)) AS TagName,
         COUNT(*) AS PostsCount,
-        AVG(array_length(string_to_array(p.Tags, '><'), 1)) AS AvgTagsPerPost
+        AVG(length(splitByString('><', p.Tags), 1)) AS AvgTagsPerPost
     FROM 
         Posts p
     WHERE 
@@ -40,7 +40,7 @@ PostClosureReasons AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS ClosureCount,
-        STRING_AGG(DISTINCT crt.Name, ', ') AS Reasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS Reasons
     FROM 
         PostHistory ph
     JOIN 

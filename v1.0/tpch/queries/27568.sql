@@ -36,8 +36,8 @@ SELECT
     p_type,
     COUNT(DISTINCT o_orderkey) AS order_count,
     AVG(ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT supplier_name, ', ') AS suppliers,
-    STRING_AGG(DISTINCT customer_name, ', ') AS customers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(supplier_name))), ', ') AS suppliers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(customer_name))), ', ') AS customers,
     MAX(order_status) AS max_order_status,
     MIN(order_comment_preview) AS earliest_comment_preview
 FROM 

@@ -32,7 +32,7 @@ PostStats AS (
     FROM 
         Posts P
     WHERE 
-        P.LastActivityDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        P.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 )
 SELECT 
     UPS.UserId,

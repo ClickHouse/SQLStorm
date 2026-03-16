@@ -12,7 +12,7 @@ WITH RECURSIVE ActorMovies AS (
 
 SELECT 
     ak.name AS actor_name,
-    COALESCE(string_agg(DISTINCT am.title, ', '), 'No Movies') AS movies,
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(am.title))), ', '), 'No Movies') AS movies,
     COUNT(DISTINCT am.production_year) AS total_years_active,
     MAX(am.production_year) AS last_movie_year,
     CASE 

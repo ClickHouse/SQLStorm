@@ -61,7 +61,7 @@ LEFT OUTER JOIN
 WHERE 
     r.r_name IS NOT NULL 
     AND LowSupply.supply_value IS NOT NULL
-    AND o.o_orderdate >= DATE '1998-10-01' - INTERVAL '1 year'
+    AND o.o_orderdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
 GROUP BY 
     r.r_name
 HAVING 

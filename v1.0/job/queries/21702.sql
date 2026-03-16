@@ -28,7 +28,7 @@ WITH RECURSIVE movie_chain AS (
 
 SELECT 
     t.title AS original_movie,
-    STRING_AGG(DISTINCT mc.title, ', ') AS linked_movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.title))), ', ') AS linked_movies,
     COUNT(DISTINCT CASE WHEN c.role_id IS NOT NULL THEN c.person_id END) AS total_actors,
     MIN(t.production_year) AS earliest_production_year
 FROM 

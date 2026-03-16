@@ -8,7 +8,7 @@ WITH RankedOrders AS (
         orders o
     WHERE 
         o.o_orderstatus IN ('O', 'F') 
-        AND o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL '1 year')
+        AND o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
 ),
 SupplierDetails AS (
     SELECT 

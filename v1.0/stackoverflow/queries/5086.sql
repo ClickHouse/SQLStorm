@@ -41,13 +41,13 @@ SELECT
     TU.TotalUpvotes,
     TU.TotalDownvotes,
     TU.ReputationRank,
-    STRING_AGG(DISTINCT T.TagName, ', ') AS PopularTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS PopularTags
 FROM 
     TopUsers TU
 LEFT JOIN 
     Posts P ON TU.UserId = P.OwnerUserId
 LEFT JOIN 
-    UNNEST(string_to_array(P.Tags, ',')) AS T(TagName) ON TRUE
+    arrayJoin(splitByString(',', P.Tags)) AS T(TagName) ON TRUE
 GROUP BY 
     TU.UserId, TU.Reputation, TU.TotalPosts, TU.TotalComments, TU.TotalUpvotes, TU.TotalDownvotes, TU.ReputationRank
 ORDER BY 

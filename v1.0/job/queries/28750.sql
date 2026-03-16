@@ -49,7 +49,7 @@ SELECT
     rd.production_year,
     ra.name AS actor_name,
     rd.cast_count,
-    ARRAY_AGG(DISTINCT md.keyword) AS keywords
+    arrayDistinct(groupArray(assumeNotNull(md.keyword))) AS keywords
 FROM 
     RankedTitles rd
     JOIN MostActiveActors ra ON ra.movies_count > rd.cast_count

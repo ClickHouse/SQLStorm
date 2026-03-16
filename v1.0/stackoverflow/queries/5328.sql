@@ -74,4 +74,4 @@ WHERE
     us.TotalPosts > 0
 ORDER BY 
     us.TotalPosts DESC, tp.VoteCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

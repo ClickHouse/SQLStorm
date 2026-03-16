@@ -64,4 +64,4 @@ WHERE
     AND (f.ca_state IN ('NY', 'CA') OR f.zip_code = 'UNKNOWN')
 ORDER BY 
     f.total_profit DESC, f.c_customer_id
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

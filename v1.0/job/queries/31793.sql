@@ -14,13 +14,13 @@ WITH RECURSIVE movie_hierarchy AS (
     WHERE mh.level < 5 
 ),
 keyword_summary AS (
-    SELECT mk.movie_id, STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    SELECT mk.movie_id, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id
 ),
 cast_summary AS (
-    SELECT ci.movie_id, STRING_AGG(DISTINCT an.name, ', ') AS actors
+    SELECT ci.movie_id, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actors
     FROM cast_info ci
     JOIN aka_name an ON ci.person_id = an.person_id
     GROUP BY ci.movie_id
@@ -31,7 +31,7 @@ complete_info AS (
     FROM movie_hierarchy mt
     LEFT JOIN keyword_summary k ON mt.movie_id = k.movie_id
     LEFT JOIN cast_summary c ON mt.movie_id = c.movie_id
-    LEFT JOIN LATERAL (
+    LEFT JOIN (
         SELECT COUNT(DISTINCT mk.keyword_id) AS count
         FROM movie_keyword mk
         WHERE mk.movie_id = mt.movie_id

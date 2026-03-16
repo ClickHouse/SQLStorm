@@ -15,7 +15,7 @@ AggregatedMetrics AS (
     SELECT 
         AVG(name_length) AS avg_name_length,
         AVG(comment_length) AS avg_comment_length,
-        STRING_AGG(descriptive_string, '; ') AS all_descriptive_strings
+        arrayStringConcat(groupArray(assumeNotNull(descriptive_string)), '; ') AS all_descriptive_strings
     FROM 
         StringMetrics
 )

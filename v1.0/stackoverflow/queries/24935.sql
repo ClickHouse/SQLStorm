@@ -61,7 +61,7 @@ WHERE
         SELECT 1 
         FROM Posts p 
         WHERE p.OwnerUserId = ua.UserId 
-        AND p.CreationDate < cast('2024-10-01' as date) - interval '1 year'
+        AND p.CreationDate < cast('2024-10-01' as date) - INTERVAL 1 YEAR
     )
 ORDER BY 
     ua.Reputation DESC, rp.VoteScore DESC

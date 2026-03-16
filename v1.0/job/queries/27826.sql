@@ -17,7 +17,7 @@ TitleDetails AS (
         rt.title_id,
         rt.title,
         rt.production_year,
-        STRING_AGG(rt.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(rt.keyword)), ', ') AS keywords
     FROM 
         RankedTitles rt
     GROUP BY 
@@ -27,7 +27,7 @@ CastAndRoles AS (
     SELECT 
         ti.title_id,
         COUNT(ci.id) AS cast_count,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles
     FROM 
         TitleDetails ti
     LEFT JOIN 

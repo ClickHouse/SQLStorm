@@ -62,4 +62,4 @@ JOIN
     income_band ib ON hvc.hd_income_band_sk = ib.ib_income_band_sk
 ORDER BY 
     hvc.total_sales DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

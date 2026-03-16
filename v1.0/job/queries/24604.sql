@@ -43,7 +43,7 @@ FROM
 LEFT JOIN (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -54,7 +54,7 @@ LEFT JOIN (
 LEFT JOIN (
     SELECT 
         ci.movie_id,
-        STRING_AGG(CONCAT(a.name, ' as ', r.role), ', ') AS casts
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.name, ' as ', r.role))), ', ') AS casts
     FROM 
         cast_info ci
     JOIN 

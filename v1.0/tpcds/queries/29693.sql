@@ -3,8 +3,8 @@ WITH AddressAggregation AS (
     SELECT 
         ca_state,
         COUNT(DISTINCT ca_address_id) AS address_count,
-        STRING_AGG(ca_city, ', ') AS cities,
-        STRING_AGG(ca_street_name, ', ') AS street_names
+        arrayStringConcat(groupArray(assumeNotNull(ca_city)), ', ') AS cities,
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names
     FROM customer_address
     GROUP BY ca_state
 ),
@@ -13,7 +13,7 @@ CustomerStats AS (
         cd_gender,
         MAX(cd_purchase_estimate) AS max_purchase_estimate,
         AVG(cd_dep_count) AS avg_dep_count,
-        STRING_AGG(DISTINCT cd_credit_rating, ', ') AS credit_ratings
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_credit_rating))), ', ') AS credit_ratings
     FROM customer_demographics
     GROUP BY cd_gender
 ),

@@ -40,7 +40,7 @@ SELECT
     s.s_name AS supplier_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(o.o_totalprice) AS total_revenue,
-    STRING_AGG(pd.full_description, ', ') AS part_descriptions
+    arrayStringConcat(groupArray(assumeNotNull(pd.full_description)), ', ') AS part_descriptions
 FROM 
     RankedSuppliers s
 JOIN 

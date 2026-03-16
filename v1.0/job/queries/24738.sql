@@ -60,7 +60,7 @@ SELECT
     fm.actor_count,
     COALESCE(SUM(CASE WHEN ra.actor_order = 1 THEN 1 ELSE 0 END), 0) AS solo_leads,
     cr.unique_roles AS distinct_role_types,
-    STRING_AGG(DISTINCT ra.actor_name, ', ') AS ensemble_cast
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ra.actor_name))), ', ') AS ensemble_cast
 FROM 
     Filtered_Movies fm
 LEFT JOIN 

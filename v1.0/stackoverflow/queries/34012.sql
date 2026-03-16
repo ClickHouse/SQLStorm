@@ -22,7 +22,7 @@ RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 TopUsers AS (
     SELECT 
@@ -43,7 +43,7 @@ SELECT
     rp.Title AS RecentPostTitle,
     rp.CreationDate AS RecentPostDate,
     rp.Score AS RecentPostScore,
-    COALESCE(ARRAY_AGG(c.Text ORDER BY c.CreationDate DESC), '{}') AS RecentPostComments,
+    COALESCE(groupArray(assumeNotNull(c.Text ORDER BY c.CreationDate DESC)), '{}') AS RecentPostComments,
     pt.Name AS PostType
 FROM 
     TopUsers tu

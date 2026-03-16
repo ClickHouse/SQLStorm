@@ -31,8 +31,8 @@ JOIN region r ON n.n_regionkey = r.r_regionkey
 LEFT JOIN SupplierTree st ON s.s_suppkey = st.s_suppkey
 WHERE c.c_acctbal IS NOT NULL
   AND o.o_orderstatus = 'O'
-  AND l.l_shipdate >= DATE '1997-01-01'
-  AND l.l_shipdate < DATE '1998-01-01'
+  AND l.l_shipdate >= toDate('1997-01-01')
+  AND l.l_shipdate < toDate('1998-01-01')
 GROUP BY n.n_name, r.r_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY total_spent DESC, unique_customers ASC

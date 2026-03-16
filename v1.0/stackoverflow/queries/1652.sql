@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
 )
 
 SELECT 
@@ -42,4 +42,4 @@ WHERE
     ) OR r.CommentCount > 0)
 ORDER BY 
     r.Score DESC, r.TotalViews DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

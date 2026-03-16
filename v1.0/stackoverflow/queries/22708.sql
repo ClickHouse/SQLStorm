@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId AND PH.PostHistoryTypeId IN (4, 5, 6) 
     WHERE 
-        P.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        P.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -34,7 +34,7 @@ UserStats AS (
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(Tags, '>')) AS Tag,
+        arrayJoin(splitByString('>', Tags)) AS Tag,
         COUNT(*) AS TagUsage
     FROM 
         Posts
@@ -61,7 +61,7 @@ PostMetrics AS (
             WHEN RP.Score BETWEEN 5 AND 9 THEN 'Moderately Engaging'
             ELSE 'Low Engagement'
         END AS EngagementLevel,
-        ARRAY_AGG(DISTINCT PT.Name) AS PostHistoryTypes
+        arrayDistinct(groupArray(assumeNotNull(PT.Name))) AS PostHistoryTypes
     FROM 
         RankedPosts RP
     JOIN 
@@ -94,7 +94,7 @@ SELECT
     PM.Reputation,
     PM.CommentCount,
     PM.EngagementLevel,
-    (SELECT STRING_AGG(Tag, ', ') FROM PopularTags) AS PopularTags,
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(Tag)), ', ') FROM PopularTags) AS PopularTags,
     CASE 
         WHEN PM.Reputation IS NULL THEN 'No Reputation'
         WHEN PM.Reputation >= 1000 THEN 'Veteran User'

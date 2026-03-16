@@ -21,8 +21,8 @@ DistinctRoles AS (
 MovieDetails AS (
     SELECT 
         mt.title, 
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         COUNT(DISTINCT kw.keyword) AS keyword_count,
         mt.production_year
     FROM 

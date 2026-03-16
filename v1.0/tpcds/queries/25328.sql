@@ -29,7 +29,7 @@ active_customers AS (
     SELECT 
         c.c_customer_sk AS customer_sk,
         COUNT(DISTINCT w.ws_order_number) AS order_count,
-        STRING_AGG(DISTINCT CAST(w.ws_web_page_sk AS VARCHAR), ', ') AS accessed_web_pages
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(w.ws_web_page_sk AS VARCHAR)))), ', ') AS accessed_web_pages
     FROM 
         web_sales w
     JOIN 

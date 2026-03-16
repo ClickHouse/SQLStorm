@@ -25,7 +25,7 @@ SELECT
     m.production_year,
     COUNT(DISTINCT kc.keyword) AS keyword_count,
     MAX(pi.info) AS highest_note,
-    STRING_AGG(DISTINCT cct.kind, ', ') AS company_kinds,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cct.kind))), ', ') AS company_kinds,
     SUM(COALESCE(mc.company_type_id, 0) * 10) AS total_company_weight,
     RANK() OVER (PARTITION BY m.production_year ORDER BY SUM(COALESCE(mc.company_type_id, 0)) DESC) AS year_rank,
     CASE 

@@ -8,7 +8,7 @@ WITH SupplierDetails AS (
         s.s_acctbal,
         s.s_comment,
         COUNT(ps.ps_partkey) AS part_count,
-        STRING_AGG(DISTINCT SUBSTRING(p.p_name, 1, 10), ', ') AS part_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(p.p_name, 1, 10)))), ', ') AS part_names
     FROM 
         supplier s
     JOIN 
@@ -31,7 +31,7 @@ OrderSummary AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY 
         o.o_orderkey, o.o_orderdate, o.o_orderstatus
 )

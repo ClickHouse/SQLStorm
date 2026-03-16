@@ -36,7 +36,7 @@ SELECT
     ca_state,
     COUNT(*) AS address_count,
     AVG(street_name_length) AS avg_street_name_length,
-    STRING_AGG(DISTINCT full_address, ', ') AS all_addresses,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(full_address))), ', ') AS all_addresses,
     MAX(gender_description) AS most_common_gender,
     MIN(cd_marital_status) AS marital_status
 FROM combined_data

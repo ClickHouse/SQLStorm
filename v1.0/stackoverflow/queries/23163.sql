@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.ViewCount DESC) AS PopularityRank,
         COUNT(DISTINCT v.Id) AS VoteCount,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM
         Posts AS p
     LEFT JOIN
@@ -16,9 +16,9 @@ WITH RankedPosts AS (
     LEFT JOIN
         Comments AS c ON p.Id = c.PostId
     LEFT JOIN
-        UNNEST(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '> <')) AS t (TagName) ON TRUE
+        arrayJoin(splitByString('> <', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS t (TagName) ON TRUE
     WHERE
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY
         p.Id, p.Title, p.ViewCount, p.CreationDate, p.PostTypeId
 ),
@@ -57,7 +57,7 @@ PostStats AS (
         fp.CommentCount,
         pa.FirstActivityDate,
         pa.LastActivityDate,
-        EXTRACT(EPOCH FROM (pa.LastActivityDate - pa.FirstActivityDate)) AS ActivityDuration
+        toUnixTimestamp((pa.LastActivityDate - pa.FirstActivityDate)) AS ActivityDuration
     FROM
         FilteredPosts AS fp
     LEFT JOIN
@@ -71,7 +71,7 @@ SELECT
     END AS ViewCountReport,
     CASE
         WHEN ps.CommentCount = 0 THEN 'No Comments'
-        ELSE ps.CommentCount::TEXT
+        ELSE CAST(ps.CommentCount AS TEXT)
     END AS CommentActivityReport,
     COALESCE(ps.Tags, 'No Tags') AS TagsSummary,
     CASE

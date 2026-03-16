@@ -45,7 +45,7 @@ ActorPopularMovies AS (
 SELECT 
     apm.actor_name,
     COUNT(DISTINCT apm.movie_title) AS number_of_popular_movies,
-    STRING_AGG(DISTINCT apm.movie_title, ', ') AS popular_movie_titles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(apm.movie_title))), ', ') AS popular_movie_titles
 FROM 
     ActorPopularMovies apm
 GROUP BY 

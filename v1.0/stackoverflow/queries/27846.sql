@@ -1,7 +1,7 @@
 
 WITH TagFrequencies AS (
     SELECT
-        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM
         Posts
@@ -48,7 +48,7 @@ TaggedPosts AS (
     FROM
         Posts P
     JOIN
-        FrequentTags F ON F.TagName = ANY(string_to_array(SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2), '><'))
+        FrequentTags F ON F.TagName = ANY(splitByString('><', SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2)))
     WHERE
         P.PostTypeId = 1 
 )

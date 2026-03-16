@@ -6,7 +6,7 @@ SELECT
             WHEN LENGTH(p.p_name) > 30 THEN LENGTH(p.p_name) 
             ELSE NULL 
         END) AS avg_long_part_name_length,
-    STRING_AGG(DISTINCT p.p_type, ', ') AS unique_part_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS unique_part_types
 FROM 
     supplier s
 JOIN 

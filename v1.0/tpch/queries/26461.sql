@@ -3,11 +3,11 @@ WITH StringBenchmark AS (
     SELECT 
         p.p_partkey,
         COUNT(*) AS part_count,
-        STRING_AGG(DISTINCT s.s_name, '; ' ORDER BY s.s_name) AS supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), '; ' ORDER BY s.s_name) AS supplier_names,
         MAX(LENGTH(p.p_name)) AS max_part_name_length,
         MIN(LENGTH(p.p_comment)) AS min_part_comment_length,
         AVG(LENGTH(s.s_comment)) AS avg_supplier_comment_length,
-        STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
         COUNT(DISTINCT o.o_orderkey) AS order_count,
         COUNT(DISTINCT l.l_orderkey) AS lineitem_count
     FROM 
@@ -30,7 +30,7 @@ SELECT
     MAX(max_part_name_length) AS max_length_of_part_name,
     MIN(min_part_comment_length) AS min_length_of_part_comment,
     AVG(avg_supplier_comment_length) AS average_length_of_supplier_comment,
-    STRING_AGG(DISTINCT supplier_names, '| ') AS all_supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(supplier_names))), '| ') AS all_supplier_names
 FROM 
     StringBenchmark
 WHERE 

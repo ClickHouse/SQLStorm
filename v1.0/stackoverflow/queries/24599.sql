@@ -26,7 +26,7 @@ RecentPosts AS (
     INNER JOIN
         Users U ON P.OwnerUserId = U.Id
     WHERE
-        P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 TopTags AS (
     SELECT
@@ -48,7 +48,7 @@ PostAnalytics AS (
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
         SUM(CASE WHEN PH.PostHistoryTypeId = 10 THEN 1 ELSE 0 END) AS ClosureCount,
-        STRING_AGG(DISTINCT U.DisplayName, ', ') AS UpvotedUsernames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS UpvotedUsernames
     FROM
         Posts P
     LEFT JOIN
@@ -60,7 +60,7 @@ PostAnalytics AS (
     LEFT JOIN
         Users U ON V.UserId = U.Id
     WHERE
-        P.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY
         P.Id
 )
@@ -74,7 +74,7 @@ SELECT
     RP.CreationDate AS RecentPostDate,
     RP.Score AS RecentPostScore,
     RP.ViewCount AS RecentPostViewCount,
-    (SELECT STRING_AGG(T.TagName, ', ')
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ')
      FROM TopTags T WHERE T.TagRank <= 5) AS TopTags,
     PA.CommentCount,
     PA.UpVotes,

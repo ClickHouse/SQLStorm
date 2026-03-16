@@ -8,8 +8,8 @@ WITH ranked_orders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' 
-        AND o.o_orderdate < DATE '1998-01-01'
+        o.o_orderdate >= toDate('1997-01-01') 
+        AND o.o_orderdate < toDate('1998-01-01')
 ),
 supplier_part_summary AS (
     SELECT 
@@ -56,7 +56,7 @@ LEFT JOIN
 LEFT JOIN 
     nation_supplier_counts ns ON n.n_nationkey = ns.n_nationkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND (l.l_returnflag = 'N' OR l.l_returnflag IS NULL)
 GROUP BY 
     r.r_name,

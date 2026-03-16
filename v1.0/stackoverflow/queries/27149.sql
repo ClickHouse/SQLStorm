@@ -48,7 +48,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 
 SELECT 
@@ -60,8 +60,8 @@ SELECT
     COUNT(p.PostId) AS RecentQuestions,
     SUM(p.Score) AS RecentScore,
     SUM(p.ViewCount) AS RecentViews,
-    ARRAY_AGG(DISTINCT h.HistoryType) AS RecentHistoryTypes,
-    STRING_AGG(DISTINCT h.HistoryText, '; ') AS RecentHistoryComments
+    arrayDistinct(groupArray(assumeNotNull(h.HistoryType))) AS RecentHistoryTypes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(h.HistoryText))), '; ') AS RecentHistoryComments
 FROM 
     TopUsers u
 LEFT JOIN 

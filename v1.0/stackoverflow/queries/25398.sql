@@ -4,7 +4,7 @@ WITH TagStats AS (
         COUNT(p.Id) AS PostCount,
         SUM(p.ViewCount) AS TotalViews,
         AVG(p.Score) AS AverageScore,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopContributors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopContributors,
         SUM(v.BountyAmount) AS TotalBounties
     FROM 
         Tags t

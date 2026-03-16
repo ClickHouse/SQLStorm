@@ -53,4 +53,4 @@ LEFT JOIN ReturnDetails rd ON rd.sr_item_sk = i.i_item_sk
 WHERE (COALESCE(rs.total_net_paid, 0) > 0 OR COALESCE(rd.total_returns, 0) > 0)
   AND i.i_current_price IS NOT NULL
 ORDER BY total_net_income DESC, total_sales_quantity ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

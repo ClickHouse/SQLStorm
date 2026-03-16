@@ -34,7 +34,7 @@ artificial_join AS (
     SELECT 
         c.movie_id,
         COUNT(c.person_id) AS actor_count,
-        STRING_AGG(DISTINCT CONCAT(a.name, ' (role: ', r.role, ')'), ', ') AS actors_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (role: ', r.role, ')')))), ', ') AS actors_details
     FROM 
         cast_info c
     JOIN 

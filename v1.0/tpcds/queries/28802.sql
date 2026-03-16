@@ -53,7 +53,7 @@ SELECT
     SUM(CASE WHEN gender = 'Female' THEN 1 ELSE 0 END) AS female_count,
     MIN(birth_date) AS earliest_birth_date,
     MAX(birth_date) AS latest_birth_date,
-    STRING_AGG(DISTINCT cleaned_zip, ', ') AS unique_zip_codes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cleaned_zip))), ', ') AS unique_zip_codes
 FROM 
     CombinedData
 GROUP BY 

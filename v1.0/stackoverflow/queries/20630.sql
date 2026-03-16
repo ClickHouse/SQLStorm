@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
 ),
 TaggedPosts AS (
     SELECT 
@@ -32,7 +32,7 @@ TaggedPosts AS (
     LEFT JOIN 
         (SELECT pt.PostId, t.TagName, COUNT(t.TagName) AS TagCount
          FROM 
-             (SELECT PostId, unnest(string_to_array(Tags, '><')) AS TagName FROM Posts) pt
+             (SELECT PostId, arrayJoin(splitByString('><', Tags)) AS TagName FROM Posts) pt
          JOIN 
              Tags t ON pt.TagName = t.TagName
          GROUP BY pt.PostId, t.TagName

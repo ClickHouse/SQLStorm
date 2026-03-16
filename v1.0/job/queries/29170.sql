@@ -26,8 +26,8 @@ SELECT
     tm.title,
     tm.production_year,
     COUNT(DISTINCT ci.person_id) AS total_cast,
-    STRING_AGG(DISTINCT an.name, ', ') AS actor_names,
-    STRING_AGG(DISTINCT c.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS company_names
 FROM 
     TopMovies tm
 LEFT JOIN 

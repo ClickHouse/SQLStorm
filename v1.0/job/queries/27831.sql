@@ -5,7 +5,7 @@ WITH ranked_movies AS (
         t.title,
         COUNT(DISTINCT c.person_id) AS cast_count,
         COALESCE(MAX(t.production_year), 0) AS max_production_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         ROW_NUMBER() OVER (ORDER BY COUNT(DISTINCT c.person_id) DESC, MAX(t.production_year) DESC) AS rank
     FROM 
         aka_title t

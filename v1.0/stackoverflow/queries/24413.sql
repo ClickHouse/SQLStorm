@@ -3,7 +3,7 @@ WITH CTE_UserBadges AS (
         U.Id AS UserId,
         U.Reputation,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM Users U
     LEFT JOIN Badges B ON U.Id = B.UserId
     GROUP BY U.Id, U.Reputation
@@ -56,4 +56,4 @@ FROM CTE_FullStats
 WHERE Reputation IS NOT NULL
   AND BadgeSummary IS NOT NULL
 ORDER BY Reputation DESC, UserDisplayName
-OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

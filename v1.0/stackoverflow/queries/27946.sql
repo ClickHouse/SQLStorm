@@ -28,7 +28,7 @@ WITH Tag_Posts AS (
 Tag_Split AS (
     SELECT
         PostId,
-        TRIM(UNNEST(string_to_array(Tags, '>'))) AS TagName
+        TRIM(arrayJoin(splitByString('>', Tags))) AS TagName
     FROM
         Tag_Posts
 )

@@ -59,7 +59,7 @@ SELECT
     US.AvgPostScore,
     US.PostRank,
     US.ScoreRank,
-    string_agg(DISTINCT PT.Name, ', ') AS PostTypeNames,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PT.Name))), ', ') AS PostTypeNames,
     COUNT(CM.Id) AS CommentCount
 FROM 
     UserSummary US

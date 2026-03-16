@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON c.PostId = p.Id
     WHERE 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
 ),
 UserActivity AS (
     SELECT 
@@ -43,7 +43,7 @@ PostHistoryMetrics AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '6 months'
+        ph.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 6 MONTH
     AND 
         ph.PostHistoryTypeId IN (10, 11, 12)
 ),

@@ -10,7 +10,7 @@ WITH UserStats AS (
         COUNT(DISTINCT P.Id) AS PostCount,
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
-        AVG(EXTRACT(EPOCH FROM NOW() - P.CreationDate) / 60) AS AvgPostAgeMinutes
+        AVG(toUnixTimestamp(NOW() - P.CreationDate) / 60) AS AvgPostAgeMinutes
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     WHERE U.Reputation > 1000

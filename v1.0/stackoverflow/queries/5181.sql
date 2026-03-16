@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         Badges b ON u.Id = b.UserId
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.DisplayName
 ),
@@ -49,7 +49,7 @@ SELECT
     tp.CommentCount,
     tp.BadgeCount,
     (SELECT 
-         STRING_AGG(CONCAT('(', pt.Id, ') ', pt.Name), ', ') 
+         arrayStringConcat(groupArray(assumeNotNull(CONCAT('(', pt.Id, ') ', pt.Name))), ', ') 
      FROM 
          PostTypes pt 
      JOIN 

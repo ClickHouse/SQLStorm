@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
         AND p.Score > 0
 ), 
 TopUsers AS (
@@ -25,7 +25,7 @@ TopUsers AS (
     JOIN 
         Votes v ON u.Id = v.UserId
     WHERE 
-        v.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        v.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName
 )

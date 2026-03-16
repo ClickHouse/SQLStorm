@@ -36,7 +36,7 @@ MoviesWithRoles AS (
     SELECT
         m.movie_id,
         m.movie_title,
-        STRING_AGG(CONCAT(a.actor_name, ' (', a.role_name, ')'), ', ') AS cast_with_roles
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.actor_name, ' (', a.role_name, ')'))), ', ') AS cast_with_roles
     FROM
         RankedMovies m
     JOIN

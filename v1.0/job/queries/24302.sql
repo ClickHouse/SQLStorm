@@ -36,7 +36,7 @@ SELECT
     sm.movie_title,
     sm.production_year,
     sm.num_cast,
-    STRING_AGG(mk.keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keywords,
     COALESCE(ai.name, 'Unknown') AS actor_name,
     SUM(CASE 
             WHEN ai.id IS NOT NULL THEN 1 

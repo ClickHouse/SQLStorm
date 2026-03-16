@@ -8,7 +8,7 @@ WITH UserStats AS (
         COUNT(DISTINCT B.Id) AS BadgeCount,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        SUM(CASE WHEN P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 1 ELSE 0 END) AS RecentPosts
+        SUM(CASE WHEN P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS RecentPosts
     FROM 
         Users U
     LEFT JOIN 

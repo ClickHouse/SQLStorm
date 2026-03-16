@@ -8,7 +8,7 @@ WITH ranked_orders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 supplier_part AS (
     SELECT 

@@ -26,7 +26,7 @@ SELECT
     mh.level,
     mh.title,
     COUNT(DISTINCT ci.person_id) AS actor_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
     SUM(CASE 
         WHEN mi.info_type_id IS NOT NULL THEN 1 
         ELSE 0 

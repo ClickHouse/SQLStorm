@@ -28,4 +28,4 @@ FROM
     UserStats
 ORDER BY 
     Reputation DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

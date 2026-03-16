@@ -3,7 +3,7 @@ SELECT
     p.p_brand, 
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count, 
     AVG(ps.ps_supplycost) AS avg_supply_cost, 
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
     CONCAT('Region: ', r.r_name, ' | Nation: ', n.n_name) AS location_info,
     CASE 
         WHEN p.p_size BETWEEN 1 AND 10 THEN 'Small'

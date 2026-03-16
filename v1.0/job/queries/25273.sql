@@ -29,7 +29,7 @@ HighCastMovies AS (
 MovieKeywords AS (
     SELECT 
         hm.movie_id, 
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         HighCastMovies hm
     JOIN 

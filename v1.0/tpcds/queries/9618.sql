@@ -29,4 +29,4 @@ SELECT
     total_avg_profit
 FROM state_summary
 ORDER BY unique_customers DESC, avg_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

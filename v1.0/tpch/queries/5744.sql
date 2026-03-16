@@ -17,7 +17,7 @@ WITH SalesData AS (
     JOIN 
         region r ON n.n_regionkey = r.r_regionkey
     WHERE 
-        o.o_orderdate >= DATE '1995-01-01' AND o.o_orderdate < DATE '1996-01-01'
+        o.o_orderdate >= toDate('1995-01-01') AND o.o_orderdate < toDate('1996-01-01')
     GROUP BY 
         o.o_orderkey, c.c_nationkey, n.n_name, r.r_name, o.o_orderdate
 ),

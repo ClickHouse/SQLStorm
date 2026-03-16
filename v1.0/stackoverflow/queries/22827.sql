@@ -20,7 +20,7 @@ WITH
     UserBadges AS (
         SELECT 
             b.UserId,
-            STRING_AGG(b.Name, ', ') AS BadgeNames,
+            arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
             COUNT(b.Id) AS BadgeCount,
             MAX(b.Date) AS LatestBadgeDate
         FROM 
@@ -76,5 +76,5 @@ FROM
     CombinedData cd
 ORDER BY 
     cd.TotalVotes DESC, cd.CreationDate DESC
-OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 0;
 

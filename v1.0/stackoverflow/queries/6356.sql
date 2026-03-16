@@ -56,7 +56,7 @@ SELECT
     tu.TotalScore,
     tu.TotalComments,
     tu.BadgeCount,
-    STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypeNames,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypeNames,
     COUNT(DISTINCT pl.RelatedPostId) AS RelatedPostLinks
 FROM 
     TopUsers tu

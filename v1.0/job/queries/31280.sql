@@ -31,7 +31,7 @@ company_info AS (
         c.id AS company_id,
         c.name AS company_name,
         COUNT(DISTINCT mc.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT mt.title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mt.title))), ', ') AS movie_titles
     FROM 
         company_name c
     LEFT JOIN 
@@ -64,7 +64,7 @@ SELECT
     ci.company_name,
     ci.movie_count,
     ci.movie_titles,
-    STRING_AGG(DISTINCT cr.actor_name || ' as ' || cr.role_name, ', ') AS actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.actor_name || ' as ' || cr.role_name))), ', ') AS actors
 FROM 
     movie_hierarchy mh
 JOIN 

@@ -47,7 +47,7 @@ JOIN
 JOIN 
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
-    o.o_orderdate >= DATE '1996-01-01'
+    o.o_orderdate >= toDate('1996-01-01')
 GROUP BY 
     t.region_name, t.nation_name, t.supplier_name
 ORDER BY 

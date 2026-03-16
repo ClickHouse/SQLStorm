@@ -17,7 +17,7 @@ movie_details AS (
     SELECT 
         mt.id AS movie_id,
         mt.title AS movie_title,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         aka_title mt 
     LEFT JOIN 
@@ -34,7 +34,7 @@ unique_movies AS (
         md.movie_id, 
         md.movie_title,
         COUNT(DISTINCT ah.actor_name) AS unique_actor_count,
-        COALESCE(STRING_AGG(DISTINCT ah.actor_name, ', ') FILTER (WHERE ah.actor_rank <= 3), 'No Actors') AS top_actors
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ah.actor_name))), ', ') FILTER (WHERE ah.actor_rank <= 3), 'No Actors') AS top_actors
     FROM 
         movie_details md
     LEFT JOIN 

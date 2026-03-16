@@ -12,14 +12,14 @@ WITH RankedPosts AS (
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
     WHERE p.Score > 0 
-    AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS Tag,
+        arrayJoin(splitByString(',', p.Tags)) AS Tag,
         COUNT(*) AS Popularity
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY Tag
     ORDER BY Popularity DESC
     LIMIT 10
@@ -35,6 +35,6 @@ SELECT
     pt.Tag,
     pt.Popularity
 FROM RankedPosts rp
-JOIN PopularTags pt ON pt.Tag = ANY(STRING_TO_ARRAY(rp.Title, ' '))
+JOIN PopularTags pt ON pt.Tag = ANY(splitByString(' ', rp.Title))
 WHERE rp.Rank <= 5
 ORDER BY rp.ViewCount DESC, rp.Score DESC;

@@ -49,7 +49,7 @@ UserActivities AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        ARRAY_AGG(cr.Name) AS Reasons
+        groupArray(assumeNotNull(cr.Name)) AS Reasons
     FROM PostHistory ph
     JOIN CloseReasonTypes cr ON ph.Comment = CAST(cr.Id AS VARCHAR)
     WHERE ph.PostHistoryTypeId = 10

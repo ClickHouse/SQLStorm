@@ -14,12 +14,12 @@ WITH RankedPosts AS (
     WHERE 
         p.Score >= (SELECT AVG(Score) FROM Posts)  
       AND 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'  
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 ),
 ClosedPostReasons AS (
     SELECT 
         ph.PostId,
-        ARRAY_AGG(cr.Name) AS CloseReasons
+        groupArray(assumeNotNull(cr.Name)) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -36,7 +36,7 @@ PostTagCounts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag ON true 
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS tag ON true 
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 

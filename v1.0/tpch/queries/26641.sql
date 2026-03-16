@@ -19,7 +19,7 @@ AggregatedSupply AS (
         COUNT(part_name) AS total_parts,
         SUM(available_quantity) AS total_availability,
         AVG(supply_cost) AS average_supply_cost,
-        STRING_AGG(part_name, ', ') AS part_names,
+        arrayStringConcat(groupArray(assumeNotNull(part_name)), ', ') AS part_names,
         MAX(supply_info_length) AS max_supply_info_length
     FROM 
         SupplierParts

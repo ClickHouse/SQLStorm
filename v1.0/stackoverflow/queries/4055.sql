@@ -36,7 +36,7 @@ WITH UserStatistics AS (
         PH.PostId,
         COUNT(*) AS EditCount,
         MAX(PH.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT PH.Comment, '; ') AS EditComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.Comment))), '; ') AS EditComments
     FROM 
         PostHistory PH
     WHERE 
@@ -55,7 +55,7 @@ SELECT
     PHS.EditCount,
     PHS.LastEditDate,
     PHS.EditComments,
-    (SELECT STRING_AGG(TagName, ', ') FROM TopTags) AS PopularTags
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') FROM TopTags) AS PopularTags
 FROM 
     UserStatistics US
 LEFT JOIN 

@@ -17,7 +17,7 @@ CustomerSummary AS (
         cd.cd_gender,
         cd.cd_marital_status,
         hd.hd_income_band_sk,
-        ARRAY_AGG(DISTINCT ca.ca_city) AS cities,
+        arrayDistinct(groupArray(assumeNotNull(ca.ca_city))) AS cities,
         CASE 
             WHEN cd.cd_marital_status = 'M' THEN 'Married'
             WHEN cd.cd_marital_status = 'S' THEN 'Single'

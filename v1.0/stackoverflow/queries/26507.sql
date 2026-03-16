@@ -47,14 +47,14 @@ FilteredPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS TagName,
+        arrayJoin(splitByString('>', Tags)) AS TagName,
         COUNT(*) AS PostCount,
         AVG(ViewCount) AS AverageViews,
         SUM(CASE WHEN HasAcceptedAnswer = 'Yes' THEN 1 ELSE 0 END) AS AcceptedAnswers
     FROM 
         FilteredPosts
     GROUP BY 
-        unnest(string_to_array(Tags, '>'))
+        arrayJoin(splitByString('>', Tags))
 )
 SELECT 
     ts.TagName,

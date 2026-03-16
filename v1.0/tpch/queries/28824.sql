@@ -20,8 +20,8 @@ AggregatedResults AS (
     SELECT 
         part_info,
         COUNT(*) AS supplier_count,
-        STRING_AGG(DISTINCT nation_name, ', ') AS nations_supplied,
-        STRING_AGG(DISTINCT supplier_name, ', ') AS unique_suppliers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(nation_name))), ', ') AS nations_supplied,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(supplier_name))), ', ') AS unique_suppliers,
         AVG(ps_supplycost) AS avg_supply_cost
     FROM StringProcessing
     GROUP BY part_info

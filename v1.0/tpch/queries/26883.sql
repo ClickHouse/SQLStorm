@@ -6,7 +6,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT l.l_comment, '; ') AS comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_comment))), '; ') AS comments
 FROM 
     part p
 JOIN 

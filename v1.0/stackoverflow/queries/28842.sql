@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         u.DisplayName AS Owner,
-        ARRAY_AGG(DISTINCT pt.Name) AS PostTypeNames,
+        arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypeNames,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankByScore
     FROM 
         Posts p
@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, u.DisplayName, p.CreationDate, p.ViewCount, p.Score
 ), 
@@ -37,7 +37,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS Comments
     FROM 
         Comments c
     GROUP BY 

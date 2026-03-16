@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity, 
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS average_price,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ': ', o.o_orderdate, ' - ', l.l_comment), '; ') AS order_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ': ', o.o_orderdate, ' - ', l.l_comment)))), '; ') AS order_details
 FROM 
     part p
 JOIN 

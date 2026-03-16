@@ -9,7 +9,7 @@ WITH RecentPosts AS (
         u.DisplayName AS AuthorName,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        COALESCE(MAX(b.Date), DATE '1900-01-01') AS LastBadgeDate
+        COALESCE(MAX(b.Date), toDate('1900-01-01')) AS LastBadgeDate
     FROM 
         Posts p
     LEFT JOIN 
@@ -21,7 +21,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        p.CreationDate >= now64(6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 )

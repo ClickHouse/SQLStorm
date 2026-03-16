@@ -35,7 +35,7 @@ SELECT
     rm.movie_id,
     rm.title,
     rm.production_year,
-    STRING_AGG(ma.actor_name, ', ') AS actors,
+    arrayStringConcat(groupArray(assumeNotNull(ma.actor_name)), ', ') AS actors,
     fc.company_name,
     fc.company_note
 FROM 

@@ -31,7 +31,7 @@ SELECT
     mh.title,
     mh.production_year,
     COUNT(DISTINCT ci.person_id) AS cast_count,
-    STRING_AGG(DISTINCT an.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actor_names,
     MAX(mi.info) AS notes,
     SUM(CASE WHEN mi.info_type_id = 1 THEN 1 ELSE 0 END) AS rating_count,
     AVG(CASE WHEN mi.info_type_id = 1 THEN CAST(mi.info AS FLOAT) ELSE NULL END) AS average_rating,

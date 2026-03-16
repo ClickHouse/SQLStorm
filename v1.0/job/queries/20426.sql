@@ -19,7 +19,7 @@ ActorSummary AS (
     SELECT 
         a.person_id,
         COUNT(DISTINCT c.movie_id) AS total_movies,
-        STRING_AGG(DISTINCT t.title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movie_titles
     FROM 
         cast_info AS c
     JOIN 
@@ -37,7 +37,7 @@ ActorSummary AS (
 CompanyGroup AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COUNT(DISTINCT mc.company_id) AS num_companies
     FROM 
         movie_companies AS mc

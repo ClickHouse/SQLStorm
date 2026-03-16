@@ -3,7 +3,7 @@ WITH MovieCast AS (
     SELECT 
         m.id AS movie_id,
         m.title,
-        ARRAY_AGG(DISTINCT a.name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actors,
         COUNT(DISTINCT c.person_id) AS actor_count,
         COALESCE(MAX(m_info.info), 'No Info Available') AS movie_info,
         RANK() OVER (PARTITION BY m.production_year ORDER BY COUNT(DISTINCT c.person_id) DESC) AS rank_by_actors

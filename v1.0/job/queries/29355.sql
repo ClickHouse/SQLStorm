@@ -32,8 +32,8 @@ AggregatedData AS (
     SELECT 
         md.title_id,
         COUNT(DISTINCT md.role_type) AS unique_roles,
-        STRING_AGG(DISTINCT md.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT md.company_name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.company_name))), ', ') AS companies,
         md.production_year
     FROM 
         MovieDetails md

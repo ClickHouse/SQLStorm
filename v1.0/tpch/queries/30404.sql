@@ -37,7 +37,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(l.l_extendedprice) AS total_sales,
     AVG(l.l_discount) AS avg_discount,
-    STRING_AGG(DISTINCT CONCAT(pt.p_name, ' (', COALESCE(p_avail.avail_qty, 0), ')'), ', ') AS parts_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(pt.p_name, ' (', COALESCE(p_avail.avail_qty, 0), ')')))), ', ') AS parts_info,
     sh.level AS supplier_level
 FROM 
     region r

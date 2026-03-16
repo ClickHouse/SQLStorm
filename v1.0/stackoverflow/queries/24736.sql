@@ -7,10 +7,10 @@ WITH RankedPosts AS (
            p.OwnerUserId,
            ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS ScoreRank,
            COALESCE(NULLIF(p.Body, ''), 'No content available') AS BodyContent,
-           STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
     FROM Posts p
     LEFT JOIN Tags t ON t.WikiPostId = p.Id OR t.ExcerptPostId = p.Id
-    WHERE p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+    WHERE p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
 ),
 UserPostStats AS (
@@ -50,6 +50,6 @@ JOIN RankedPosts rp ON up.UserId = rp.OwnerUserId
 LEFT JOIN ClosedPostHistory ph ON rp.PostId = ph.PostId
 WHERE up.PostCount > 5
   AND rp.ScoreRank = 1
-  AND (ph.CloseDate IS NULL OR ph.CloseDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'))
+  AND (ph.CloseDate IS NULL OR ph.CloseDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY))
 ORDER BY up.TotalScore DESC, rp.CreationDate ASC
 LIMIT 100 OFFSET 0;

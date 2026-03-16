@@ -24,7 +24,7 @@ AggregatedData AS (
         COUNT(part_name) AS part_count,
         SUM(available_quantity) AS total_available_quantity,
         AVG(supply_cost) AS average_supply_cost,
-        STRING_AGG(part_comment_snippet, '; ') AS comments
+        arrayStringConcat(groupArray(assumeNotNull(part_comment_snippet)), '; ') AS comments
     FROM 
         SupplierParts
     GROUP BY 

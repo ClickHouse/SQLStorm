@@ -4,11 +4,11 @@ WITH MovieDetails AS (
         mt.id AS movie_id,
         mt.title AS movie_title,
         mt.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ' ORDER BY ak.name) AS aka_names,
-        STRING_AGG(DISTINCT k.keyword, ', ' ORDER BY k.keyword) AS movie_keywords,
-        STRING_AGG(DISTINCT c.name, ', ' ORDER BY c.name) AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ' ORDER BY ak.name) AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ' ORDER BY k.keyword) AS movie_keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ' ORDER BY c.name) AS company_names,
         COUNT(DISTINCT ci.person_id) AS total_cast_members,
-        STRING_AGG(DISTINCT rt.role, ', ' ORDER BY rt.role) AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ' ORDER BY rt.role) AS roles
     FROM 
         aka_title mt
     JOIN 

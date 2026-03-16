@@ -26,7 +26,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(Tags, '><'))) AS Tag
+        TRIM(arrayJoin(splitByString('><', Tags))) AS Tag
     FROM 
         Posts
     WHERE 

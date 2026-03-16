@@ -9,7 +9,7 @@ SELECT
             WHEN l.l_discount > 0.1 THEN l.l_extendedprice * (1 - l.l_discount)
             ELSE l.l_extendedprice 
         END) AS total_revenue,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS combined_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS combined_comments
 FROM 
     part p
 JOIN 

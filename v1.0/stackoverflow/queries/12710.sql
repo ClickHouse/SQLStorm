@@ -6,7 +6,7 @@ WITH PostsStats AS (
         COUNT(DISTINCT p.OwnerUserId) AS TotalUsers,
         SUM(p.Score) AS TotalScore,
         SUM(p.ViewCount) AS TotalViews,
-        AVG(EXTRACT(EPOCH FROM p.CreationDate)) AS AvgCreationDate
+        AVG(toUnixTimestamp(p.CreationDate)) AS AvgCreationDate
     FROM 
         Posts p
     JOIN 

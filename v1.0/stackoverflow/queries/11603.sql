@@ -6,7 +6,7 @@ WITH UserPostStats AS (
         COUNT(DISTINCT CASE WHEN p.PostTypeId = 1 THEN p.Id END) AS TotalQuestions,
         COUNT(DISTINCT CASE WHEN p.PostTypeId = 2 THEN p.Id END) AS TotalAnswers,
         SUM(p.Score) AS TotalScore,
-        SUM(ROUND(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)) / 3600)) AS TotalActiveHours
+        SUM(ROUND(toUnixTimestamp((p.LastActivityDate - p.CreationDate)) / 3600)) AS TotalActiveHours
     FROM 
         Users u
     LEFT JOIN 
@@ -19,7 +19,7 @@ PostTags AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        ARRAY_LENGTH(STRING_TO_ARRAY(p.Tags, '<>'), 1) AS TagCount
+        length(splitByString('<>', p.Tags), 1) AS TagCount
     FROM 
         Posts p
 )

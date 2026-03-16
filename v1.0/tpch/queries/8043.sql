@@ -59,7 +59,7 @@ JOIN
 JOIN 
     supplier_parts sp ON lp.l_orderkey = sp.s_suppkey
 WHERE 
-    cp.o_orderdate >= DATE '1997-01-01' AND 
+    cp.o_orderdate >= toDate('1997-01-01') AND 
     lp.total_revenue > 100.00
 ORDER BY 
     cp.o_orderdate DESC, 

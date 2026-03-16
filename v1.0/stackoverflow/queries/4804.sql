@@ -22,7 +22,7 @@ CloseReasonSummary AS (
     SELECT 
         ph.UserId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(CASE WHEN ph.Comment IS NOT NULL THEN ph.Comment ELSE 'No comment' END, ', ') AS CloseComments
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.Comment IS NOT NULL THEN ph.Comment ELSE 'No comment' END)), ', ') AS CloseComments
     FROM 
         PostHistory ph
     WHERE 

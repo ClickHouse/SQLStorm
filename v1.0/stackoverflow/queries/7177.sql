@@ -19,7 +19,7 @@ WITH UserStats AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        U.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation
 ),
@@ -48,7 +48,7 @@ PostSummary AS (
         Posts P
     LEFT JOIN 
         (SELECT 
-             PostId, STRING_AGG(Comment, '; ') AS Summary 
+             PostId, arrayStringConcat(groupArray(assumeNotNull(Comment)), '; ') AS Summary 
          FROM 
              PostHistory 
          WHERE 
@@ -56,7 +56,7 @@ PostSummary AS (
          GROUP BY 
              PostId) H ON P.Id = H.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 )
 SELECT 
     US.UserId,

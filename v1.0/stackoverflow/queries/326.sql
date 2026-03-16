@@ -8,7 +8,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         SUM(COALESCE(UpVotes, 0)) AS TotalUpVotes,
         SUM(COALESCE(DownVotes, 0)) AS TotalDownVotes,
-        AVG(EXTRACT(EPOCH FROM (p.CreationDate - c.CreationDate))) AS AvgTimeToComment
+        AVG(toUnixTimestamp((p.CreationDate - c.CreationDate))) AS AvgTimeToComment
     FROM 
         Users u 
     LEFT JOIN 

@@ -3,8 +3,8 @@ WITH AddressStats AS (
     SELECT 
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT ca_street_name, ', ') AS street_names
+        arrayStringConcat(groupArray(assumeNotNull(ca_city)), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), ', ') AS street_names
     FROM 
         customer_address
     GROUP BY 
@@ -14,7 +14,7 @@ CustomerStats AS (
     SELECT 
         cd_gender,
         COUNT(*) AS customer_count,
-        STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), ', ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), ', ') AS customer_names
     FROM 
         customer
     JOIN 
@@ -26,7 +26,7 @@ SalesStats AS (
     SELECT 
         ws_ship_date_sk,
         SUM(ws_quantity) AS total_sales,
-        STRING_AGG(DISTINCT CAST(ws_order_number AS VARCHAR), ', ') AS order_numbers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws_order_number AS VARCHAR)))), ', ') AS order_numbers
     FROM 
         web_sales
     GROUP BY 

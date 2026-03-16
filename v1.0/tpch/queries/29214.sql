@@ -18,7 +18,7 @@ AggregatedSupply AS (
         p_partkey,
         COUNT(*) AS supplier_count,
         SUM(ps_supplycost) AS total_supply_cost,
-        STRING_AGG(details, '; ') AS supplier_details
+        arrayStringConcat(groupArray(assumeNotNull(details)), '; ') AS supplier_details
     FROM 
         PartSupplierDetails
     GROUP BY 

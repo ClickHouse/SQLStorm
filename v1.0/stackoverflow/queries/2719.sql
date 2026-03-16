@@ -22,7 +22,7 @@ WITH RankedPosts AS (
             UserId
     ) badgeCount ON p.OwnerUserId = badgeCount.UserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ), 
 FilteredPosts AS (
     SELECT 

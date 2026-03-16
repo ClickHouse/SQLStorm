@@ -36,7 +36,7 @@ SELECT
     bm.production_year,
     bm.company_name,
     bm.cast_count,
-    ARRAY_AGG(DISTINCT ak.name) AS aka_names
+    arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aka_names
 FROM 
     BestMovies bm
 JOIN 

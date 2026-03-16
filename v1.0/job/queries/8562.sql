@@ -4,8 +4,8 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(ki.keyword) AS keyword_count,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
-        ARRAY_AGG(DISTINCT ak.name) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(ki.keyword) DESC) AS rank
     FROM 
         aka_title t

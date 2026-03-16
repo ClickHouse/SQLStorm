@@ -32,7 +32,7 @@ SELECT
         ELSE 'Level ' || mh.level
     END AS linkage_level,
     COALESCE(SUM(CASE WHEN c.role_id IS NOT NULL THEN 1 END), 0) AS cast_count,
-    STRING_AGG(DISTINCT CONCAT(a.name, ' (', a.imdb_index, ')'), ', ') AS cast_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', a.imdb_index, ')')))), ', ') AS cast_details
 FROM 
     MovieHierarchy mh
 LEFT JOIN 

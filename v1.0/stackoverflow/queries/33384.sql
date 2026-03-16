@@ -18,7 +18,7 @@ RecentVotes AS (
     FROM 
         Votes
     WHERE 
-        CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         PostId
 ),
@@ -26,14 +26,14 @@ ClosedPosts AS (
     SELECT 
         PostId,
         CreationDate,
-        (SELECT STRING_AGG(Name, ', ')
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(Name)), ', ')
          FROM CloseReasonTypes crt 
          WHERE crt.Id = CAST(SUBSTRING(comment, 1, 2) AS smallint)) AS CloseReasons
     FROM 
         PostHistory 
     WHERE 
         PostHistoryTypeId = 10
-        AND CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        AND CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ),
 TopUsers AS (
     SELECT 

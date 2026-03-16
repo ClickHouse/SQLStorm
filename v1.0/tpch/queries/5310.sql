@@ -19,8 +19,8 @@ WITH RegionalSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
-        AND l.l_shipdate >= DATE '1996-01-01' AND l.l_shipdate < DATE '1997-01-01'
+        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
+        AND l.l_shipdate >= toDate('1996-01-01') AND l.l_shipdate < toDate('1997-01-01')
     GROUP BY 
         r.r_name
 ),
@@ -32,7 +32,7 @@ SalesStatistics AS (
         AVG(total_sales) OVER () AS average_sales,
         MIN(total_sales) OVER () AS min_sales,
         MAX(total_sales) OVER () AS max_sales,
-        STDDEV(total_sales) OVER () AS stddev_sales
+        stddevPop(total_sales) OVER () AS stddev_sales
     FROM 
         RegionalSales
 )

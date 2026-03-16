@@ -24,7 +24,7 @@ PostStats AS (
         P.CommentCount,
         P.FavoriteCount,
         P.PostTypeId,
-        EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - P.CreationDate)) AS AgeInSeconds,
+        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.CreationDate)) AS AgeInSeconds,
         P.OwnerUserId
     FROM Posts P
 )

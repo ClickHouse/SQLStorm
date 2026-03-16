@@ -22,7 +22,7 @@ WITH regional_summary AS (
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
         o.o_orderstatus = 'O' 
-        AND l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        AND l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY 
         r.r_name
 )

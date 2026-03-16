@@ -51,7 +51,7 @@ movie_details AS (
         mh.movie_id,
         mh.title,
         mh.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COUNT(DISTINCT cr.person_name) AS cast_count
     FROM
         movie_hierarchy mh
@@ -70,7 +70,7 @@ SELECT
         WHEN md.cast_count > 10 THEN 'Popular'
         ELSE 'Less Popular'
     END AS popularity,
-    COALESCE(md.keywords::text, 'No Keywords') AS keywords
+    COALESCE(CAST(md.keywords AS text), 'No Keywords') AS keywords
 FROM
     movie_details md
 WHERE

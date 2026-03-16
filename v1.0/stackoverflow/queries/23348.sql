@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 RecentComments AS (
     SELECT 
@@ -19,7 +19,7 @@ RecentComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
+        c.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
     GROUP BY 
         c.PostId
 ),

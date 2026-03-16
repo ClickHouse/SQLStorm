@@ -48,7 +48,7 @@ SELECT
             WHEN li.l_returnflag = 'R' THEN li.l_extendedprice * (1 - li.l_discount) 
             ELSE NULL 
         END) AS average_returned_price,
-    STRING_AGG(COALESCE(CONCAT(cp.p_name, ': ', cp.availability_status), 'Unknown Part: No Availability'), '; ') AS part_availability
+    arrayStringConcat(groupArray(assumeNotNull(COALESCE(CONCAT(cp.p_name, ': ', cp.availability_status), 'Unknown Part: No Availability'))), '; ') AS part_availability
 FROM 
     nation n
 JOIN 

@@ -58,7 +58,7 @@ SELECT
     AVG(rd.total_net_profit) AS avg_profit_per_customer,
     MAX(ps.promo_net_profit) AS max_promo_profit,
     MIN(sd.total_store_profit) AS min_store_profit,
-    STRING_AGG(DISTINCT CAST(cp.category_profit AS TEXT), ', ') AS category_profits
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(cp.category_profit AS TEXT)))), ', ') AS category_profits
 FROM 
     customer c
 JOIN 
@@ -77,4 +77,4 @@ HAVING
     COUNT(DISTINCT rd.ws_item_sk) > 10
 ORDER BY 
     unique_customers DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

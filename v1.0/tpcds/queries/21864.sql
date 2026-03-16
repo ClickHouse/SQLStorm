@@ -75,5 +75,5 @@ GROUP BY
 HAVING 
     SUM(cr.customer_total_return_amount) > (SELECT AVG(customer_total_return_amount) FROM CustomerReturns)
 ORDER BY 
-    RANDOM()  
+    rand()  
 LIMIT 100;

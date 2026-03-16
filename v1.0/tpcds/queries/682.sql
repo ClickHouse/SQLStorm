@@ -64,7 +64,7 @@ SELECT
     COUNT(*) AS count_customers,
     AVG(fr.total_return_amount) AS avg_return_amount,
     SUM(fr.total_return_amount) AS total_return_amount,
-    STRING_AGG(fr.cc_name, ', ') AS call_centers
+    arrayStringConcat(groupArray(assumeNotNull(fr.cc_name)), ', ') AS call_centers
 FROM 
     FilterResults fr
 GROUP BY 

@@ -44,7 +44,7 @@ actors_with_movies AS (
 )
 SELECT
     am.actor_name,
-    STRING_AGG(am.movie_title, '; ') AS movies_featured,
+    arrayStringConcat(groupArray(assumeNotNull(am.movie_title)), '; ') AS movies_featured,
     COUNT(DISTINCT am.movie_id) AS total_movies
 FROM
     actors_with_movies am

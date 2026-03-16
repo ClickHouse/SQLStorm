@@ -5,7 +5,7 @@ WITH MovieTitleInfo AS (
         t.title,
         t.production_year,
         t.imdb_index,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         ct.kind AS company_type,
         c.name AS company_name
     FROM 
@@ -26,7 +26,7 @@ WITH MovieTitleInfo AS (
 CastInfo AS (
     SELECT 
         ca.movie_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
         COUNT(*) AS num_cast
     FROM 
         cast_info ca

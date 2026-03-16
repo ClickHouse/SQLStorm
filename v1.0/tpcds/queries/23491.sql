@@ -65,4 +65,4 @@ WHERE
     AND (EXISTS (SELECT 1 FROM store s1 WHERE s1.s_country IS NULL) OR s.return_count > 5)
 ORDER BY 
     s.total_paid DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

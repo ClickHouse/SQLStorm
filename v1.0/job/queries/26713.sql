@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         at.title AS movie_title,
         at.production_year,
         COUNT(ci.id) AS actor_count,
-        ARRAY_AGG(DISTINCT ak.name) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names,
         ROW_NUMBER() OVER (PARTITION BY at.production_year ORDER BY COUNT(ci.id) DESC) AS rank
     FROM 
         aka_title at
@@ -19,7 +19,7 @@ WITH RankedMovies AS (
 ), MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -29,7 +29,7 @@ WITH RankedMovies AS (
 ), TopActors AS (
     SELECT 
         ai.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS top_actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS top_actors
     FROM 
         complete_cast ai
     JOIN 

@@ -73,8 +73,8 @@ SELECT
     ca_city,
     AVG(CASE WHEN total_returns > 0 THEN total_returns ELSE NULL END) AS avg_returns_per_city,
     PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY total_item_revenue) AS median_revenue,
-    ARRAY_AGG(DISTINCT total_item_sales) AS distinct_sales_counts,
-    STRING_AGG(DISTINCT CONCAT('City:', ca_city, ' Revenue:', total_item_revenue), '; ') AS city_revenue_summary
+    arrayDistinct(groupArray(assumeNotNull(total_item_sales))) AS distinct_sales_counts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('City:', ca_city, ' Revenue:', total_item_revenue)))), '; ') AS city_revenue_summary
 FROM 
     FinalOutput
 WHERE 

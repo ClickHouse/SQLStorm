@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
         AND P.Score IS NOT NULL
 )
 , HighScoringPosts AS (
@@ -63,4 +63,4 @@ LEFT JOIN
 ORDER BY 
     HSP.Score DESC,
     U.TotalUpvotes - U.TotalDownvotes DESC
-OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 0;

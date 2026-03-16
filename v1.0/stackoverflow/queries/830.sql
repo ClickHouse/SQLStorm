@@ -79,4 +79,4 @@ WHERE
 ORDER BY 
     up.Reputation DESC, 
     rp.CreationDate ASC
-OFFSET 5 ROWS;
+OFFSET 5;

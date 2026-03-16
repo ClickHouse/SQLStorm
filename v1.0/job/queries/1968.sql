@@ -4,7 +4,7 @@ WITH movie_details AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COUNT(DISTINCT c.person_id) AS cast_count,
         AVG(c.nr_order) AS average_order
     FROM 
@@ -37,9 +37,7 @@ high_cast_movies AS (
 ),
 top_keywords AS (
     SELECT 
-        movie_id,
-        UNNEST(keywords) AS keyword
-    FROM 
+        movie_id ARRAY JOIN keywords AS keywordFROM 
         high_cast_movies
     WHERE 
         keywords IS NOT NULL

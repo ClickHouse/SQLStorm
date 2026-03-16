@@ -8,15 +8,15 @@ WITH RankedPosts AS (
         p.LastActivityDate,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.CreationDate ASC) AS Rank,
         CASE 
-            WHEN p.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Old Post'
+            WHEN p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Old Post'
             ELSE 'Recent Post'
         END AS PostAgeCategory,
-        array_agg(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     JOIN 
-        LATERAL (
-            SELECT DISTINCT unnest(string_to_array(p.Tags, '<>')) AS TagName
+        (
+            SELECT DISTINCT arrayJoin(splitByString('<>', p.Tags)) AS TagName
         ) t ON true
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, p.LastActivityDate, p.PostTypeId
@@ -41,14 +41,14 @@ RecentBadges AS (
     JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         u.Id, b.Name
 ),
 PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LastActionDate,
         COUNT(CASE WHEN ph.PostHistoryTypeId = 10 THEN 1 END) AS ClosedCount
     FROM 

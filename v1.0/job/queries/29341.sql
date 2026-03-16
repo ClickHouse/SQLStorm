@@ -20,7 +20,7 @@ ActorInfo AS (
         a.id AS actor_id,
         a.name,
         COUNT(DISTINCT ci.movie_id) AS movies_count,
-        STRING_AGG(DISTINCT tt.title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tt.title))), ', ') AS movie_titles
     FROM 
         aka_name a
     LEFT JOIN 

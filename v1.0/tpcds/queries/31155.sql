@@ -41,7 +41,7 @@ SELECT
     SUM(COALESCE(ws.ws_net_profit, 0)) AS total_web_sales,
     AVG(d.d_year) AS avg_order_year,
     SUM(COALESCE(sr.sr_return_amt, 0) + COALESCE(sr.sr_return_tax, 0)) AS total_store_returns,
-    STRING_AGG(DISTINCT CONCAT(wp.wp_url, ' (', wp.wp_type, ')'), '; ') AS visited_web_pages
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(wp.wp_url, ' (', wp.wp_type, ')')))), '; ') AS visited_web_pages
 FROM 
     CustomerHierarchy ch
 LEFT JOIN 

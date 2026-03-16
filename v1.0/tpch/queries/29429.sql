@@ -38,7 +38,7 @@ SELECT
     fc.c_name,
     fc.TotalSpent,
     COUNT(o.o_orderkey) AS OrderCount,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS ProductsSupplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS ProductsSupplied
 FROM 
     RankedSuppliers rs
 JOIN 

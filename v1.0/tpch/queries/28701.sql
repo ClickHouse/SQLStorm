@@ -4,7 +4,7 @@ WITH SupplierAggregates AS (
         s.s_name,
         SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,
         COUNT(DISTINCT p.p_partkey) AS total_parts,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
     FROM 
         supplier s
     JOIN 
@@ -33,7 +33,7 @@ SELECT
     COUNT(*) AS total_suppliers,
     SUM(total_supply_cost) AS aggregate_supply_cost,
     AVG(total_parts) AS avg_parts_per_supplier,
-    STRING_AGG(part_names, '; ') AS all_part_names
+    arrayStringConcat(groupArray(assumeNotNull(part_names)), '; ') AS all_part_names
 FROM 
     NationSupplier n
 GROUP BY 

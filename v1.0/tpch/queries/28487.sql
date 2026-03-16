@@ -3,7 +3,7 @@ SELECT
     CONCAT_WS(' ', s.s_name, 'supplies', p.p_size, 'units of', p.p_type) AS supply_statement, 
     (SELECT COUNT(*) FROM partsupp ps WHERE ps.ps_partkey = p.p_partkey) AS supplier_count,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     part p
 JOIN 

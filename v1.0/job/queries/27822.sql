@@ -6,8 +6,8 @@ SELECT
     c.name AS company_name,
     k.keyword AS movie_keyword,
     COUNT(DISTINCT mi.info) AS info_count,
-    STRING_AGG(DISTINCT mi.info, ', ') AS additional_info,
-    ARRAY_AGG(DISTINCT t.production_year) AS production_years
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS additional_info,
+    arrayDistinct(groupArray(assumeNotNull(t.production_year))) AS production_years
 FROM 
     aka_title t
 JOIN 

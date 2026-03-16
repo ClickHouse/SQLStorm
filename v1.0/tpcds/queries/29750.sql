@@ -3,7 +3,7 @@ WITH AddressDetails AS (
         ca_city,
         ca_state,
         COUNT(*) AS AddressCount,
-        STRING_AGG(DISTINCT ca_street_name || ' ' || ca_street_type, ', ') AS StreetNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_type))), ', ') AS StreetNames
     FROM 
         customer_address
     WHERE 
@@ -14,9 +14,9 @@ WITH AddressDetails AS (
 CustomerAgeGroup AS (
     SELECT 
         CASE 
-            WHEN (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c_birth_year) < 18 THEN 'Under 18'
-            WHEN (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c_birth_year) BETWEEN 18 AND 35 THEN '18-35'
-            WHEN (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c_birth_year) BETWEEN 36 AND 55 THEN '36-55'
+            WHEN (toYear(cast('2002-10-01' as date)) - c_birth_year) < 18 THEN 'Under 18'
+            WHEN (toYear(cast('2002-10-01' as date)) - c_birth_year) BETWEEN 18 AND 35 THEN '18-35'
+            WHEN (toYear(cast('2002-10-01' as date)) - c_birth_year) BETWEEN 36 AND 55 THEN '36-55'
             ELSE '56 and above'
         END AS AgeGroup,
         COUNT(DISTINCT c_customer_sk) AS CustomerCount

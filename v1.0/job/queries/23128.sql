@@ -37,7 +37,7 @@ movie_summary AS (
         t.id AS title_id,
         t.title,
         COUNT(DISTINCT ci.person_id) AS distinct_cast_count,
-        STRING_AGG(DISTINCT n.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS cast_names,
         SUM(CASE WHEN mc.company_type_id IS NOT NULL THEN 1 ELSE 0 END) AS production_companies
     FROM 
         title t

@@ -23,7 +23,7 @@ SELECT
     COUNT(pd.p_partkey) AS total_parts,
     AVG(pd.p_retailprice) AS avg_price,
     SUM(pd.p_retailprice) AS total_retail_value,
-    STRING_AGG(pd.p_name || ' (Brand: ' || pd.p_brand || ', Type: ' || pd.p_type || ')', ', ') AS part_names
+    arrayStringConcat(groupArray(assumeNotNull(pd.p_name || ' (Brand: ' || pd.p_brand || ', Type: ' || pd.p_type || ')')), ', ') AS part_names
 FROM PartDetails pd
 WHERE pd.rank <= 5
 GROUP BY pd.nation_name, pd.region_name

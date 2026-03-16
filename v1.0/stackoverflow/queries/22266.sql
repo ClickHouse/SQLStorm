@@ -19,10 +19,10 @@ ClosedPosts AS (
     SELECT
         PH.PostId,
         COUNT(PH.Id) AS CloseCount,
-        STRING_AGG(CASE 
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
             WHEN C.Name IS NOT NULL THEN C.Name 
             ELSE 'Undefined' 
-        END, ', ') AS CloseReasons
+        END)), ', ') AS CloseReasons
     FROM
         PostHistory PH
     LEFT JOIN
@@ -36,7 +36,7 @@ UserWithBadges AS (
     SELECT
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM
         Users U
     LEFT JOIN
@@ -96,6 +96,6 @@ LEFT JOIN
     PostEngagements PE ON RP.PostId = PE.PostId
 WHERE
     RP.ScoreRank = 1 
-    AND RP.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+    AND RP.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ORDER BY
     RP.CreationDate DESC;

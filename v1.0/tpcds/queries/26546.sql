@@ -18,7 +18,7 @@ DateRange AS (
         d.d_date_sk,
         d.d_date
     FROM date_dim d
-    WHERE d.d_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31'
+    WHERE d.d_date BETWEEN toDate('2022-01-01') AND toDate('2022-12-31')
 ),
 TopPurchasers AS (
     SELECT 

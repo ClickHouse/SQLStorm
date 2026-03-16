@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     MAX(p.p_retailprice) AS max_price,
     AVG(p.p_retailprice) AS avg_price,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_phone, ')'), ', ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')')))), ', ') AS supplier_details
 FROM 
     part p
 JOIN 
@@ -15,7 +15,7 @@ JOIN
 WHERE 
     p.p_name LIKE '%widget%'
     AND s.s_acctbal > 1000
-    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_mfgr
 HAVING 

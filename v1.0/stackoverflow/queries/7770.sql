@@ -36,7 +36,7 @@ SELECT
     tu.TotalViews,
     tu.AverageReputation,
     (SELECT COUNT(*) FROM Badges b WHERE b.UserId = tu.UserId) AS BadgeCount,
-    (SELECT STRING_AGG(pt.Name, ', ') FROM PostTypes pt JOIN Posts p ON p.PostTypeId = pt.Id WHERE p.OwnerUserId = tu.UserId) AS PostTypeSummary
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') FROM PostTypes pt JOIN Posts p ON p.PostTypeId = pt.Id WHERE p.OwnerUserId = tu.UserId) AS PostTypeSummary
 FROM 
     TopUsers tu
 WHERE 

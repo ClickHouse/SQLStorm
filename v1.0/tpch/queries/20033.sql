@@ -41,4 +41,4 @@ LEFT JOIN order_stats os ON os.o_orderkey = (SELECT MIN(o.o_orderkey)
 WHERE sd.rank <= 5
 AND (sd.n_regionkey IS NULL OR sd.n_regionkey IN (1, 2, 3)) 
 ORDER BY sd.s_name, fp.p_name DESC, os.avg_discount ASC
-OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

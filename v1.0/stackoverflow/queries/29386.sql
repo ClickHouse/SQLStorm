@@ -15,7 +15,7 @@ WITH PopularPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND P.PostTypeId = 1 
 ),
 TaggedPosts AS (
@@ -26,7 +26,7 @@ TaggedPosts AS (
         PP.ViewCount,
         PP.AnswerCount,
         PP.CommentCount,
-        unnest(string_to_array(PP.Tags, '>')) AS Tag,
+        arrayJoin(splitByString('>', PP.Tags)) AS Tag,
         PP.Author
     FROM 
         PopularPosts PP

@@ -11,7 +11,7 @@ WITH CustomerDetails AS (
 RegionSummary AS (
     SELECT r.r_regionkey, r.r_name,
            COUNT(DISTINCT n.n_nationkey) AS nation_count,
-           STRING_AGG(DISTINCT n.n_name, ', ') AS nation_names
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nation_names
     FROM region r
     JOIN nation n ON r.r_regionkey = n.n_regionkey
     GROUP BY r.r_regionkey, r.r_name

@@ -58,4 +58,4 @@ JOIN BadgeSummary bs ON us.UserId = bs.UserId
 LEFT JOIN PostHistoryAggregated pha ON us.UserId = pha.UserId
 WHERE us.Reputation > 1000
 ORDER BY us.Reputation DESC, us.PostCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

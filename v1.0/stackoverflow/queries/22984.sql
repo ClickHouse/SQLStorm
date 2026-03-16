@@ -18,7 +18,7 @@ RecentActivity AS (
         COUNT(*) AS RecentActions,
         MAX(CreationDate) AS LastActionDate
     FROM PostHistory
-    WHERE CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY UserId
 ),
 QualifiedUsers AS (
@@ -43,10 +43,10 @@ SELECT
     q.AvgPostScore,
     CASE 
         WHEN q.LastActionDate IS NULL THEN 'No Recent Activity'
-        WHEN q.LastActionDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '14 days' THEN 'Inactive'
+        WHEN q.LastActionDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 14 DAY THEN 'Inactive'
         ELSE 'Active'
     END AS ActivityStatus,
-    STRING_AGG(DISTINCT p.Tags, ', ') AS TagsUsed
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Tags))), ', ') AS TagsUsed
 FROM QualifiedUsers q
 LEFT JOIN Posts p ON q.UserId = p.OwnerUserId
 GROUP BY q.UserId, q.DisplayName, q.TotalPosts, q.AvgPostScore, q.LastActionDate

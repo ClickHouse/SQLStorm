@@ -6,7 +6,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT P.Id) AS TotalPosts,
         SUM(CASE WHEN P.Score > 0 THEN 1 ELSE 0 END) AS TotalPositivePosts,
         SUM(CASE WHEN P.Score < 0 THEN 1 ELSE 0 END) AS TotalNegativePosts,
-        COUNT(CASE WHEN P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN P.Id END) AS RecentPosts
+        COUNT(CASE WHEN P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN P.Id END) AS RecentPosts
     FROM 
         Users U
     LEFT JOIN 
@@ -32,7 +32,7 @@ RecentBadges AS (
     FROM 
         Badges B
     WHERE 
-        B.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '90 days'
+        B.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY
     GROUP BY 
         B.UserId
 ),

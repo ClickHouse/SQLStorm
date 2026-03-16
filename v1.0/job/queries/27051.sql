@@ -27,7 +27,7 @@ MovieDetails AS (
         t.production_year,
         c.name AS actor_name,
         rc.role AS role_description,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         TopRankedMovies t
     JOIN 

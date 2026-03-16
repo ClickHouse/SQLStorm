@@ -2,7 +2,7 @@ WITH StringAggregation AS (
     SELECT 
         p.p_partkey,
         p.p_name,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
         COUNT(DISTINCT c.c_custkey) AS customer_count,
         SUM(l.l_quantity) AS total_quantity
     FROM 

@@ -61,4 +61,4 @@ WHERE
     QuestionCount > 0
 ORDER BY 
     Reputation DESC, TotalViews DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

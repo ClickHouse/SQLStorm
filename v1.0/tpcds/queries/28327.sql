@@ -7,7 +7,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_ext_sales_price) AS total_sales,
     AVG(ws.ws_net_profit) AS average_profit,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
     LPAD(CAST(cd.cd_purchase_estimate AS varchar), 10, '0') AS padded_purchase_estimate,
     (CASE 
         WHEN cd.cd_marital_status = 'M' THEN 'Married'

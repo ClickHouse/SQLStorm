@@ -10,7 +10,7 @@ SELECT
             ELSE NULL 
         END) AS avg_price_for_long_comments,
     COUNT(DISTINCT s.s_name) AS unique_suppliers,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' - ', p.p_name), '; ') AS supplier_part_relationships
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' - ', p.p_name)))), '; ') AS supplier_part_relationships
 FROM 
     part p
 JOIN 

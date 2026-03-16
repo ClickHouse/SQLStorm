@@ -42,7 +42,7 @@ ActorName AS (
 TopActors AS (
     SELECT 
         cn.movie_id,
-        STRING_AGG(DISTINCT an.actor_name, ', ') AS top_actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.actor_name))), ', ') AS top_actors
     FROM 
         CharacterRoles cn
     JOIN 

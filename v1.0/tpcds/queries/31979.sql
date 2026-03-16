@@ -57,7 +57,7 @@ SELECT
     t.total_returned_amount,
     CASE 
         WHEN t.total_sales_price > 0 THEN 
-            ROUND((t.total_returns::decimal / t.total_sales_price) * 100, 2) 
+            ROUND((CAST(t.total_returns AS decimal) / t.total_sales_price) * 100, 2) 
         ELSE 0 
     END AS return_percentage
 FROM TopSales t

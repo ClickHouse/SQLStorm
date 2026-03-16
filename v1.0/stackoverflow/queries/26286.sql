@@ -18,7 +18,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
         AND p.PostTypeId = 1 
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.ViewCount, p.CreationDate, u.DisplayName, p.OwnerUserId, p.AcceptedAnswerId
@@ -36,13 +36,13 @@ TaggedPosts AS (
         rp.OwnerUserId,
         rp.AcceptedAnswerId,
         rp.CommentCount,
-        STRING_AGG(t.TagName, ', ') AS FormattedTags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS FormattedTags
     FROM 
         RecentPosts rp
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
-                TRIM(UNNEST(STRING_TO_ARRAY(rp.Tags, '><'))) AS TagName
+                TRIM(arrayJoin(splitByString('><', rp.Tags))) AS TagName
         ) t ON TRUE
     GROUP BY 
         rp.PostId, rp.Title, rp.Body, rp.Tags, rp.ViewCount, rp.CreationDate, rp.OwnerDisplayName, rp.OwnerUserId, rp.AcceptedAnswerId, rp.CommentCount
@@ -51,14 +51,14 @@ TaggedPosts AS (
 PostHistoryAggregated AS (
     SELECT
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         COUNT(DISTINCT ph.Id) AS RevisionCount
     FROM 
         PostHistory ph
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         ph.PostId
 )

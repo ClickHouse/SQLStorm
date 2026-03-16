@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c.c_customer_sk) AS unique_customers,
     COUNT(ws.ws_order_number) AS total_web_sales,
     AVG(ws.ws_sales_price) AS average_sales_price,
-    STRING_AGG(DISTINCT cd.cd_gender, ', ' ORDER BY cd.cd_gender) AS unique_genders,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_gender))), ', ' ORDER BY cd.cd_gender) AS unique_genders,
     AVG(LENGTH(c.c_first_name)) AS average_first_name_length,
     AVG(LENGTH(c.c_last_name)) AS average_last_name_length
 FROM 

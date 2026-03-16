@@ -15,7 +15,7 @@ UserActivity AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(p.Id) AS PostsCount,
-        SUM(CASE WHEN p.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days') THEN 1 ELSE 0 END) AS RecentPostsCount,
+        SUM(CASE WHEN p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) THEN 1 ELSE 0 END) AS RecentPostsCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotesCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotesCount
     FROM Users u

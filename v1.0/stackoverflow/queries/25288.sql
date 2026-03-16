@@ -6,7 +6,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(p.Score) AS TotalScore,
-        AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) / 3600) AS AvgPostAgeInHours
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 3600) AS AvgPostAgeInHours
     FROM 
         Users u
     LEFT JOIN 

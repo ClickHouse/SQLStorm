@@ -21,8 +21,8 @@ WITH ranked_movies AS (
 movie_cast AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(na.name, ', ') AS cast_names,
-        STRING_AGG(na.name_pcode_cf, ', ') AS name_pcodes
+        arrayStringConcat(groupArray(assumeNotNull(na.name)), ', ') AS cast_names,
+        arrayStringConcat(groupArray(assumeNotNull(na.name_pcode_cf)), ', ') AS name_pcodes
     FROM 
         cast_info c
     JOIN 

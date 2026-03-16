@@ -35,7 +35,7 @@ WITH RECURSIVE CustomerSegments AS (
     FROM NationalSummary n
 )
 SELECT c.c_name, c.c_acctbal, r.n_name AS top_nation, 
-       COALESCE(o.o_orderkey::text, 'No Orders') AS order_ref,
+       COALESCE(CAST(o.o_orderkey AS text), 'No Orders') AS order_ref,
        (SELECT COUNT(*) FROM lineitem l WHERE l.l_orderkey = o.o_orderkey AND l.l_discount BETWEEN 0.05 AND 0.15) AS discount_items_count,
        CASE 
            WHEN c.c_acctbal IS NULL THEN 'Unknown'

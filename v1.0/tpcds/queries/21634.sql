@@ -62,4 +62,4 @@ WHERE
 ORDER BY 
     fr.net_gain_loss DESC,
     fr.ws_item_sk
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

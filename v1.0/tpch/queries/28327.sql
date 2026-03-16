@@ -6,7 +6,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     MIN(l.l_shipdate) AS earliest_ship_date,
     MAX(l.l_shipdate) AS latest_ship_date,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS product_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS product_list
 FROM 
     supplier s
 JOIN 

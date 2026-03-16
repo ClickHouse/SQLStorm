@@ -20,12 +20,12 @@ WITH UserActivity AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS tag,
+        arrayJoin(splitByString('>', Tags)) AS tag,
         COUNT(*) AS tag_count
     FROM 
         Posts
     WHERE 
-        CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         tag
     HAVING 
@@ -40,7 +40,7 @@ RecentActivity AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     ua.UserId,

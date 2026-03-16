@@ -30,9 +30,9 @@ WITH MovieDetails AS (
 AggregateDetails AS (
     SELECT 
         movie_title,
-        STRING_AGG(DISTINCT actor_name, ', ') AS actors,
-        STRING_AGG(DISTINCT company_name, ', ') AS companies,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
         MAX(production_year) AS latest_year
     FROM 
         MovieDetails

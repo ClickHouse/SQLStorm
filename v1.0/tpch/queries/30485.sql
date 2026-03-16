@@ -34,4 +34,4 @@ LEFT JOIN top_suppliers ts ON ph.p_partkey = ts.s_suppkey
 WHERE ph.p_retailprice > (SELECT AVG(p_retailprice) FROM part) 
   AND (ph.p_type LIKE 'TYPE%' OR ph.p_container IS NULL)
 ORDER BY ph.level, ph.p_name
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         p.LastActivityDate,
         p.Score,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS RankByScore,
-        ARRAY_LENGTH(string_to_array(SUBSTR(p.Tags, 2, LENGTH(p.Tags) - 2), '><'), 1) AS TagCount,
+        length(splitByString('><', SUBSTR(p.Tags, 2, LENGTH(p.Tags) - 2)), 1) AS TagCount,
         COALESCE(COUNT(c.Id) FILTER (WHERE c.PostId = p.Id), 0) AS CommentCount
     FROM 
         Posts p

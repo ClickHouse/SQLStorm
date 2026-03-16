@@ -7,7 +7,7 @@ WITH PartDetails AS (
         p.p_type,
         p.p_brand,
         SUBSTRING(p.p_comment, 1, 10) AS short_comment,
-        STRING_AGG(DISTINCT CONCAT('Available in: ', s.s_name), ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Available in: ', s.s_name)))), ', ') AS supplier_names
     FROM 
         part p
     JOIN 

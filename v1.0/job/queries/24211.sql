@@ -56,7 +56,7 @@ SELECT
         WHEN fm.actor_count BETWEEN 2 AND 5 THEN 'A Solid Cast'
         ELSE 'Solo Show'
     END AS cast_description,
-    STRING_AGG(DISTINCT fm.actor_name, ', ') AS actors_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fm.actor_name))), ', ') AS actors_list
 FROM 
     FilteredMovies fm
 GROUP BY 

@@ -5,7 +5,7 @@ WITH ranked_orders AS (
         o.o_orderdate,
         c.c_name,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
+        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
     FROM 
         orders o
     JOIN 

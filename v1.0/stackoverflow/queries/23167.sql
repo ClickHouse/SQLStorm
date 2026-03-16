@@ -34,7 +34,7 @@ ActiveUserStats AS (
         ROW_NUMBER() OVER (ORDER BY ud.Reputation DESC) AS UserRank
     FROM UserDetails ud
     LEFT JOIN PostStats ps ON ud.UserId = ps.OwnerUserId
-    WHERE ud.LastAccessDate > (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')
+    WHERE ud.LastAccessDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 PostDetails AS (
     SELECT 
@@ -47,7 +47,7 @@ PostDetails AS (
         COUNT(c.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.Tags, p.CreationDate, p.ViewCount, p.OwnerUserId
 ),
 FinalStats AS (

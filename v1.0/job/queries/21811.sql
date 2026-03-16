@@ -13,7 +13,7 @@ CastSummary AS (
         m.movie_id,
         COUNT(DISTINCT c.person_id) AS total_cast,
         SUM(CASE WHEN c.note IS NOT NULL THEN 1 ELSE 0 END) AS note_count,
-        STRING_AGG(DISTINCT CASE WHEN n.gender IS NOT NULL THEN n.gender ELSE 'Unknown' END, ', ') AS genders
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN n.gender IS NOT NULL THEN n.gender ELSE 'Unknown' END))), ', ') AS genders
     FROM cast_info c
     JOIN RankedMovies m ON c.movie_id = m.movie_id
     LEFT JOIN name n ON c.person_id = n.imdb_id
@@ -22,7 +22,7 @@ CastSummary AS (
 CompanyInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT c.name || ' (' || ct.kind || ')', ', ') AS companies_involved
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name || ' (' || ct.kind || ')'))), ', ') AS companies_involved
     FROM movie_companies mc
     JOIN company_name c ON mc.company_id = c.id
     JOIN company_type ct ON mc.company_type_id = ct.id

@@ -19,11 +19,11 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '2 years')
+        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR)
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(LOWER(rp.Tags), '>,<')) AS Tag,
+        arrayJoin(splitByString('>,<', LOWER(rp.Tags))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts rp
@@ -73,7 +73,7 @@ JOIN
 JOIN 
     UserReputation ur ON ur.UserId = u.Id
 LEFT JOIN 
-    PopularTags pt ON LOWER(pt.Tag) IN (SELECT UNNEST(STRING_TO_ARRAY(LOWER(rp.Tags), '>,<')))
+    PopularTags pt ON LOWER(pt.Tag) IN (SELECT arrayJoin(splitByString('>,<', LOWER(rp.Tags))))
 WHERE 
     rp.PostRank = 1
     AND (ur.Reputation > 100 OR ur.GoldBadges > 0)

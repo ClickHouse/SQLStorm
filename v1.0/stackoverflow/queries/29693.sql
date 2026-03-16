@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR'  
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 ),
 TopQuestions AS (
     SELECT 
@@ -36,7 +36,7 @@ SELECT
     COUNT(tq.PostId) AS TotalQuestions,
     AVG(tq.ViewCount) AS AverageViews,
     SUM(tq.Score) AS TotalScore,
-    STRING_AGG(tq.Title, '; ') AS QuestionTitles
+    arrayStringConcat(groupArray(assumeNotNull(tq.Title)), '; ') AS QuestionTitles
 FROM 
     TopQuestions tq
 GROUP BY 

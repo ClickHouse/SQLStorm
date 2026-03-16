@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         t.title,
         t.production_year,
         a.name AS director_name,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM title t
     LEFT JOIN movie_companies mc ON t.id = mc.movie_id
     LEFT JOIN company_name c ON mc.company_id = c.id AND mc.company_type_id = (SELECT id FROM company_type WHERE kind = 'Director')
@@ -29,9 +29,9 @@ SELECT
     tm.title AS "Movie Title",
     tm.production_year AS "Year",
     tm.director_name AS "Director",
-    STRING_AGG(kw.keyword, ', ') AS "Keywords"
+    arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') AS "Keywords"
 FROM TopMovies tm
-JOIN UNNEST(tm.keywords) AS kw(keyword) ON true
+JOIN arrayJoin(tm.keywords) AS kw(keyword) ON true
 WHERE tm.rank <= 10
 GROUP BY tm.movie_id, tm.title, tm.production_year, tm.director_name
 ORDER BY tm.production_year DESC;

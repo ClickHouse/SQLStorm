@@ -52,7 +52,7 @@ SELECT
     mh.movie_id,
     mh.title,
     mh.production_year,
-    STRING_AGG(DISTINCT kd.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kd.keyword))), ', ') AS keywords,
     cd.company_name,
     cd.company_count,
     mh.depth

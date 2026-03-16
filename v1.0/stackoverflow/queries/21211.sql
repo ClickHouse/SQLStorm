@@ -13,7 +13,7 @@ WITH RankedUsers AS (
     SELECT 
         B.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Badges B
     GROUP BY 
@@ -30,7 +30,7 @@ WITH RankedUsers AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '30 days'
+        P.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY
 ), PostHistoryAnalysis AS (
     SELECT 
         PH.PostId,
@@ -47,8 +47,8 @@ WITH RankedUsers AS (
         U.DisplayName,
         P.Title,
         P.CreationDate,
-        COALESCE(PH.LastClosedDate, DATE '2099-12-31') AS LastClosedDate,
-        COALESCE(PH.LastDeletedDate, DATE '2099-12-31') AS LastDeletedDate,
+        COALESCE(PH.LastClosedDate, toDate('2099-12-31')) AS LastClosedDate,
+        COALESCE(PH.LastDeletedDate, toDate('2099-12-31')) AS LastDeletedDate,
         PH.VoteRatio,
         COUNT(COALESCE(CM.Id, NULL)) AS CommentCount,
         COALESCE(UB.BadgeCount, 0) AS BadgeCount,

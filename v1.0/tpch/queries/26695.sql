@@ -2,7 +2,7 @@ SELECT
     p.p_name,
     COUNT(ps.ps_suppkey) AS supplier_count,
     AVG(s.s_acctbal) AS average_supplier_balance,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     r.r_name AS region_name,
     n.n_name AS nation_name
 FROM 

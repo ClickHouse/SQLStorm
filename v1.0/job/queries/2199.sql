@@ -4,7 +4,7 @@ WITH movie_details AS (
         t.title,
         t.production_year,
         COUNT(cc.id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         MAX(CASE WHEN it.info = 'Budget' THEN mi.info END) AS budget_info
     FROM 
         aka_title t

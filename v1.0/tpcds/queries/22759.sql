@@ -30,7 +30,7 @@ ItemDetails AS (
     FROM 
         item
     WHERE 
-        i_rec_end_date IS NULL OR i_rec_end_date > DATE '2002-10-01'
+        i_rec_end_date IS NULL OR i_rec_end_date > toDate('2002-10-01')
 ),
 DateFiltered AS (
     SELECT 
@@ -39,8 +39,8 @@ DateFiltered AS (
     FROM 
         date_dim
     WHERE 
-        d_date >= (DATE '2002-10-01' - INTERVAL '1 year') 
-        AND d_date <= DATE '2002-10-01'
+        d_date >= (toDate('2002-10-01') - INTERVAL 1 YEAR) 
+        AND d_date <= toDate('2002-10-01')
     GROUP BY 
         d_year
 ),
@@ -78,7 +78,7 @@ LEFT JOIN
 JOIN 
     ItemDetails id ON ar.return_item_sk = id.i_item_sk
 JOIN 
-    DateFiltered df ON df.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
+    DateFiltered df ON df.d_year = toYear(toDate('2002-10-01'))
 WHERE 
     (cd.purchase_rank = 1 AND cd.cd_gender = 'F')
     OR (cd.purchase_rank > 2 AND id.i_current_price < 50)

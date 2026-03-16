@@ -55,4 +55,4 @@ LEFT JOIN nation n ON n.n_nationkey = fr.s_nationkey
 WHERE fr.num_parts IS NOT NULL
   AND (n.n_comment IS NULL OR n.n_comment NOT LIKE '%test%')
 ORDER BY fr.total_supply_cost DESC NULLS LAST
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

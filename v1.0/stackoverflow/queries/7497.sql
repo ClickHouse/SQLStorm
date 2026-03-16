@@ -41,7 +41,7 @@ SELECT
     trp.TotalUpVotes,
     trp.TotalDownVotes,
     (trp.TotalUpVotes - trp.TotalDownVotes) AS NetVotes,
-    EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - trp.LastActivityDate)) AS SecondsSinceLastActivity
+    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - trp.LastActivityDate)) AS SecondsSinceLastActivity
 FROM 
     TopRankedPosts trp
 ORDER BY 

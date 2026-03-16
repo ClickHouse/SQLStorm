@@ -37,7 +37,7 @@ SELECT
     kt.kind AS movie_kind,
     fm.cast_count,
     fm.total_movies_linked,
-    STRING_AGG(ak.name, ', ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(ak.name)), ', ') AS actors
 FROM 
     FilteredMovies fm
 JOIN 

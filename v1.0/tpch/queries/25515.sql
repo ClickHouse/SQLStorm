@@ -3,7 +3,7 @@ WITH SupplierPartCounts AS (
         s.s_suppkey,
         s.s_name,
         COUNT(ps.ps_partkey) AS part_count,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
     FROM 
         supplier s
     JOIN 
@@ -38,7 +38,7 @@ FROM
 JOIN 
     CustomerOrderStats co ON sp.s_suppkey = (SELECT ps.ps_suppkey 
                                                FROM partsupp ps 
-                                               ORDER BY RANDOM() LIMIT 1)
+                                               ORDER BY rand() LIMIT 1)
 ORDER BY 
     co.total_spent DESC, sp.part_count DESC
 LIMIT 10;

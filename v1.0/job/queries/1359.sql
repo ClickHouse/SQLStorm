@@ -37,7 +37,7 @@ ActorsInRecentMovies AS (
 SELECT 
     a.actor_name,
     COALESCE(SUM(ac.movie_count), 0) AS total_movies,
-    STRING_AGG(DISTINCT m.title, ', ') AS movie_titles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.title))), ', ') AS movie_titles
 FROM 
     ActorsInRecentMovies a
 LEFT JOIN 

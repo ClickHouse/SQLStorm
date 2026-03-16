@@ -12,7 +12,7 @@ WITH MovieKeywordCounts AS (
 MovieInfoText AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(mi.info, ', ') AS info_text
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS info_text
     FROM 
         movie_info mi
     GROUP BY 

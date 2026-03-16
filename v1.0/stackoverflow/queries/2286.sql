@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     u.Id AS UserId,
@@ -25,7 +25,7 @@ SELECT
             WHEN bp.ViewCount > 1000 THEN 1 
             ELSE 0 
         END) AS HighViewCountPosts,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed
 FROM 
     Users u
 LEFT JOIN 
@@ -35,7 +35,7 @@ LEFT JOIN
 LEFT JOIN 
     RankedPosts bp ON u.Id = bp.OwnerUserId AND bp.ScoreRank <= 5
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(SUBSTRING(bp.Tags, 2, LENGTH(bp.Tags) - 2), '><')) AS t(TagName) ON true
+    arrayJoin(splitByString('><', SUBSTRING(bp.Tags, 2, LENGTH(bp.Tags) - 2))) AS t(TagName) ON true
 WHERE 
     u.Reputation > 1000
 GROUP BY 

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         (SELECT COUNT(DISTINCT bl.RelatedPostId) 
          FROM PostLinks bl 
          WHERE bl.PostId = p.Id) AS RelatedPostsCount,
-        (SELECT STRING_AGG(DISTINCT pt.Name, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') 
          FROM PostHistory ph 
          JOIN PostHistoryTypes pt ON pt.Id = ph.PostHistoryTypeId 
          WHERE ph.PostId = p.Id) AS HistoryTypes

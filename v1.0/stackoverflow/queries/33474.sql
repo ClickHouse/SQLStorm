@@ -13,7 +13,7 @@ RecentPostCTE AS (
     SELECT p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId,
            DENSE_RANK() OVER (PARTITION BY p.ParentId ORDER BY p.CreationDate DESC) AS LatestPostRank
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 weeks'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 WEEK
 ),
 PostHistoryCount AS (
     SELECT PostId, COUNT(*) AS HistoryCount

@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(o.o_totalprice) AS average_order_price,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customers,
     CONCAT('Total:', SUM(l.l_extendedprice) * (1 - AVG(l.l_discount))) AS total_revenue
 FROM 
     part p

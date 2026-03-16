@@ -43,7 +43,7 @@ date_analysis AS (
         SUM(ws_net_profit) AS total_profit
     FROM date_dim d
     LEFT JOIN web_sales ws ON d.d_date_sk = ws.ws_sold_date_sk
-    WHERE d.d_date >= cast('2002-10-01' as date) - INTERVAL '1 year'
+    WHERE d.d_date >= cast('2002-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY d.d_date
 )
 SELECT 

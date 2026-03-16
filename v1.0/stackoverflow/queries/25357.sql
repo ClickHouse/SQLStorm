@@ -17,11 +17,11 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 TagAnalysis AS (
     SELECT 
-        unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag,
         COUNT(*) AS PostCount,
         AVG(p.ViewCount) AS AverageViewCount,
         AVG(p.Score) AS AverageScore
@@ -30,7 +30,7 @@ TagAnalysis AS (
     WHERE 
         p.Tags IS NOT NULL
     GROUP BY 
-        unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'))
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
 )
 SELECT 
     ra.OwnerDisplayName,

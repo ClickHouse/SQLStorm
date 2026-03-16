@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName, p.OwnerUserId
 ), FilteredPosts AS (
@@ -58,7 +58,7 @@ SELECT
     fp.DownVotes,
     fp.ScoreCategory,
     COALESCE(fp.UserBadgeCount, 0) AS BadgeCount,
-    (SELECT STRING_AGG(pt.Name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') 
      FROM PostHistory ph 
      JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id 
      WHERE ph.PostId = fp.PostId) AS PostHistoryTypes,
@@ -84,4 +84,4 @@ ORDER BY
     CASE WHEN fp.Score > 100 THEN 1 ELSE 2 END,
     fp.ViewCount DESC,
     fp.CreationDate ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

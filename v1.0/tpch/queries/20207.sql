@@ -32,7 +32,7 @@ FilteredOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2 WHERE o2.o_orderdate < cast('1998-10-01' as date) - INTERVAL '1 year')
+        o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2 WHERE o2.o_orderdate < cast('1998-10-01' as date) - INTERVAL 1 YEAR)
 )
 SELECT 
     c.c_name, 

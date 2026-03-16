@@ -28,7 +28,7 @@ WITH RankedPosts AS (
     JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR' 
+        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         u.Id, u.DisplayName
 ), PostHistoryStats AS (
@@ -39,7 +39,7 @@ WITH RankedPosts AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 MONTHS' 
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH 
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId
 )

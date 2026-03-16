@@ -33,7 +33,7 @@ top_movies AS (
 company_movies AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(c.name, ', ') AS company_names
+        arrayStringConcat(groupArray(assumeNotNull(c.name)), ', ') AS company_names
     FROM 
         movie_companies AS m
     JOIN 

@@ -29,7 +29,7 @@ PartDetails AS (
         p.p_type,
         p.p_size,
         COUNT(DISTINCT ts.supplier_name) AS supplier_count,
-        STRING_AGG(DISTINCT ts.supplier_name, ', ') AS suppliers_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ts.supplier_name))), ', ') AS suppliers_list
     FROM 
         part p
     LEFT JOIN 

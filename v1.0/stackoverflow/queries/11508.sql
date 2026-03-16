@@ -7,7 +7,7 @@ SELECT
     COUNT(c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-    STRING_AGG(t.TagName, ',') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ',') AS Tags
 FROM 
     Users u
 JOIN 

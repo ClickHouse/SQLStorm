@@ -39,7 +39,7 @@ top_cast_movies AS (
 movies_with_keywords AS (
     SELECT 
         mt.movie_id,
-        ARRAY_AGG(mk.keyword) AS keywords
+        groupArray(assumeNotNull(mk.keyword)) AS keywords
     FROM 
         movie_keyword mt
     JOIN 

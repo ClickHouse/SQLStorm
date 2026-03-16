@@ -24,7 +24,7 @@ WITH RECURSIVE ActorHierarchy AS (
 MovieGenres AS (
     SELECT 
         mt.movie_id,
-        string_agg(DISTINCT kt.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS genres
     FROM 
         movie_keyword mk
     JOIN 

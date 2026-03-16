@@ -53,4 +53,4 @@ WHERE
     TotalPosts > 10
 ORDER BY 
     ReputationRank
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

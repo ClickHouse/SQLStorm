@@ -64,4 +64,4 @@ WHERE
     ci.rn <= 5
 ORDER BY 
     ii.total_revenue DESC, ci.c_last_name ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

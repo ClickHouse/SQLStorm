@@ -34,7 +34,7 @@ SELECT
     tm.title,
     tm.production_year,
     COUNT(CS.person_id) AS total_cast,
-    STRING_AGG(DISTINCT p.name, ', ') AS cast_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_names
 FROM 
     TopMovies tm
 LEFT JOIN 

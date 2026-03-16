@@ -3,7 +3,7 @@ WITH Address_City AS (
     SELECT 
         ca_city, 
         COUNT(*) AS address_count,
-        STRING_AGG(ca_street_name, ', ') AS street_names
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names
     FROM 
         customer_address
     GROUP BY 
@@ -13,7 +13,7 @@ Customer_Gender AS (
     SELECT 
         cd_gender, 
         COUNT(*) AS customer_count,
-        STRING_AGG(DISTINCT c_first_name || ' ' || c_last_name, ', ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c_first_name || ' ' || c_last_name))), ', ') AS customer_names
     FROM 
         customer_demographics cd
     JOIN 

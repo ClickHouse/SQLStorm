@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
 ),
 UserStatistics AS (
     SELECT 
@@ -40,7 +40,7 @@ RecentCloseVotes AS (
     JOIN Posts p ON ph.PostId = p.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
-        AND ph.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '3 months'
+        AND ph.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 3 MONTH
     GROUP BY 
         ph.UserId, ph.PostId, p.Title, ph.CreationDate
 ),

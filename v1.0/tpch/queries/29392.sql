@@ -21,7 +21,7 @@ JOIN
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
     c.c_mktsegment = 'BUILDING' 
-    AND l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     c.c_name, s.s_name, p.p_name, p.p_comment
 ORDER BY 

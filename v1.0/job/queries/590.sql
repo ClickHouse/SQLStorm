@@ -14,7 +14,7 @@ MovieDetails AS (
         r.movie_id,
         r.title,
         r.production_year,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
         COUNT(DISTINCT ci.person_id) AS cast_count
     FROM
         RankedMovies r

@@ -5,9 +5,9 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(l.l_quantity) AS average_quantity,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
-    STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS customer_segments,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS unique_ship_modes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS customer_segments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS unique_ship_modes
 FROM 
     supplier s
 JOIN 
@@ -26,7 +26,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_retailprice > 50 AND 
-    o.o_orderdate >= DATE '1997-01-01'
+    o.o_orderdate >= toDate('1997-01-01')
 GROUP BY 
     s.s_name, p.p_name
 HAVING 

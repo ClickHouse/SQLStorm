@@ -8,7 +8,7 @@ SELECT
     o.o_totalprice,
     SUM(l.l_quantity) AS total_quantity,
     COUNT(DISTINCT l.l_linenumber) AS lineitem_count,
-    STRING_AGG(DISTINCT l.l_comment, '; ') AS aggregated_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_comment))), '; ') AS aggregated_comments
 FROM 
     part p
 JOIN 

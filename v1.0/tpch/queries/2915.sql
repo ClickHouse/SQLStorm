@@ -26,7 +26,7 @@ CustomerSales AS (
     SELECT 
         c.c_custkey,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_spent,
-        STRING_AGG(DISTINCT l.l_shipmode, ', ') AS ship_modes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS ship_modes
     FROM 
         customer c
     JOIN 

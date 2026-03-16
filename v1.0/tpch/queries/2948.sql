@@ -51,4 +51,4 @@ FULL OUTER JOIN TopCustomers tc ON ss.total_parts > 1
 JOIN LineItemDetails lcd ON lcd.l_orderkey = (SELECT MAX(l_orderkey) FROM lineitem)
 WHERE ss.avg_supply_cost > 500.00
 ORDER BY ss.total_available DESC, tc.total_spent DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -10,7 +10,7 @@ WITH SupplierSales AS (
     JOIN orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
         s.s_acctbal > (SELECT AVG(s_acctbal) FROM supplier) 
-        AND l.l_shipdate >= DATE '1997-01-01'
+        AND l.l_shipdate >= toDate('1997-01-01')
     GROUP BY s.s_name
     HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000
 ),

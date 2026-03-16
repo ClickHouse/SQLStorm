@@ -32,7 +32,7 @@ SELECT
     a.actor_name,
     COUNT(*) AS total_movies,
     AVG(m.production_year) AS avg_year,
-    STRING_AGG(DISTINCT ti.title, ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ti.title))), ', ') AS titles,
     MAX(m.production_year) AS latest_movie_year
 FROM
     ActorHierarchy a

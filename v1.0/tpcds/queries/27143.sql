@@ -6,8 +6,8 @@ SELECT
     SUM(ss_net_profit) AS total_net_profit,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
     MAX(CASE WHEN cd_gender = 'F' THEN cd_dep_count END) AS max_female_dependents,
-    STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), '; ') AS customer_names,
-    STRING_AGG(DISTINCT ca_street_name, ', ') AS unique_street_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), '; ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), ', ') AS unique_street_names
 FROM 
     customer c
 JOIN 

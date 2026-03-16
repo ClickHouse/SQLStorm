@@ -44,7 +44,7 @@ ActorInfo AS (
 SELECT 
     ai.actor_name,
     COUNT(ft.title) AS num_titles,
-    ARRAY_AGG(ft.title) AS titles,
+    groupArray(assumeNotNull(ft.title)) AS titles,
     MIN(ft.production_year) AS first_year,
     MAX(ft.production_year) AS last_year
 FROM 

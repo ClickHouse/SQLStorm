@@ -47,4 +47,4 @@ FROM final_summary fs
 LEFT JOIN supplier s ON fs.p_partkey = s.s_suppkey
 WHERE fs.total_orders > 0
 ORDER BY fs.total_spent DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

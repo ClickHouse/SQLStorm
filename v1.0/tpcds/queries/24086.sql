@@ -58,7 +58,7 @@ SELECT
         WHEN cs.max_web_returns > 0 THEN 'High Return Rate'
         ELSE 'Normal Return Rate'
     END AS return_rate_description,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customer_names
 FROM customer_summary cs
 LEFT JOIN high_value_customers c ON cs.number_of_customers > 0
 GROUP BY cs.ca_address_id, cs.ca_city, cs.number_of_customers, cs.total_sales, cs.avg_returns, cs.max_web_returns

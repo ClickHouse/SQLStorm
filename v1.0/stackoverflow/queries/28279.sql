@@ -7,11 +7,11 @@ WITH RankedPosts AS (
         p.Tags,
         u.DisplayName AS OwnerDisplayName,
         p.CreationDate,
-        EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - p.CreationDate)) / 60 AS AgeInMinutes,
+        toUnixTimestamp((now64(6) - p.CreationDate)) / 60 AS AgeInMinutes,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
         COUNT(c.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY p.Tags ORDER BY EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - p.CreationDate)) / 60 DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY p.Tags ORDER BY toUnixTimestamp((now64(6) - p.CreationDate)) / 60 DESC) AS Rank
     FROM 
         Posts p
     LEFT JOIN 
@@ -22,7 +22,7 @@ WITH RankedPosts AS (
         Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL '30 DAYS' 
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY 
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, u.DisplayName, p.CreationDate
 ),
@@ -51,7 +51,7 @@ SELECT
     fp.AgeInMinutes,
     fp.UpVotes - fp.DownVotes AS NetVotes,
     fp.CommentCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
 FROM 
     FilteredPosts fp
 LEFT JOIN 
@@ -61,4 +61,4 @@ GROUP BY
     fp.AgeInMinutes, fp.UpVotes, fp.DownVotes, fp.CommentCount
 ORDER BY 
     NetVotes DESC, fp.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

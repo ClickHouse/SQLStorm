@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT(s.s_suppkey)) AS supplier_count,
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,
     AVG(p.p_retailprice) AS avg_retail_price,
-    STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS market_segments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS market_segments,
     RANK() OVER (PARTITION BY p_type ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
 FROM 
     part p

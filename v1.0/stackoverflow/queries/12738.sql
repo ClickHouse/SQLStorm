@@ -8,7 +8,7 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     COUNT(c.Id) AS CommentCount,
     COUNT(v.Id) AS VoteCount,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
     ph.CreationDate AS LastEditDate
 FROM 
     Posts p
@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory ph ON p.Id = ph.PostId
 LEFT JOIN 
-    unnest(string_to_array(p.Tags, '><')) AS tag_name ON TRUE
+    arrayJoin(splitByString('><', p.Tags)) AS tag_name ON TRUE
 LEFT JOIN 
     Tags t ON tag_name = t.TagName
 WHERE 

@@ -26,7 +26,7 @@ ClosedPostDetails AS (
         ph.PostId,
         COUNT(*) AS CloseVoteCount,
         MAX(ph.CreationDate) AS LastCloseDate,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons
     FROM PostHistory ph
     JOIN CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
     WHERE ph.PostHistoryTypeId = 10 

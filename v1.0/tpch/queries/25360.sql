@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     SUBSTRING(p.p_comment FROM 1 FOR 20) || '...' AS short_comment,
     REPLACE(p.p_mfgr, 'INC', 'INCORPORATED') AS modified_manufacturer
 FROM 

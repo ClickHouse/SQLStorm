@@ -31,9 +31,9 @@ SELECT
     T.DisplayName,
     T.Score,
     T.Rank,
-    (SELECT STRING_AGG(TT.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(TT.TagName)), ', ') 
      FROM Tags TT 
-     WHERE TT.Id IN (SELECT DISTINCT CAST(UNNEST(string_to_array(P.Tags, '<>')) AS INTEGER))
+     WHERE TT.Id IN (SELECT DISTINCT CAST(arrayJoin(splitByString('<>', P.Tags)) AS INTEGER))
                     AND P.OwnerUserId IS NOT NULL
                     AND P.AnswerCount > 0) AS Tags
 FROM 
@@ -46,8 +46,7 @@ AND
     EXISTS (SELECT 1 FROM PostHistory PH 
             WHERE PH.PostId = P.Id 
             AND PH.PostHistoryTypeId IN (10, 12) 
-            AND PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
+            AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ORDER BY 
     T.Score DESC
-OFFSET 5 ROWS
-FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 5;

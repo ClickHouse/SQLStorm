@@ -25,7 +25,7 @@ TopMovies AS (
 MovieCast AS (
     SELECT 
         cm.movie_id,
-        STRING_AGG(CONCAT(a.name, ' as ', rt.role), ', ') AS cast_roles
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.name, ' as ', rt.role))), ', ') AS cast_roles
     FROM 
         cast_info cm
     JOIN 
@@ -38,7 +38,7 @@ MovieCast AS (
 MovieCompanies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 

@@ -44,7 +44,7 @@ SELECT
     f.production_year,
     COALESCE(f.company_count, 0) AS company_count,
     f.main_company_type,
-    (SELECT STRING_AGG(DISTINCT k.keyword, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
      FROM movie_keyword mk 
      JOIN keyword k ON mk.keyword_id = k.id 
      WHERE mk.movie_id = f.movie_id) AS keywords

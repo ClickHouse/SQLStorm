@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c_customer_id) AS unique_customers,
     SUM(ss_net_paid) AS total_sales,
     AVG(i_current_price) AS average_item_price,
-    STRING_AGG(DISTINCT CONCAT(i_item_desc, ' (', i_item_id, ')'), '; ') AS items_sold
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(i_item_desc, ' (', i_item_id, ')')))), '; ') AS items_sold
 FROM 
     customer_address AS ca
 JOIN 

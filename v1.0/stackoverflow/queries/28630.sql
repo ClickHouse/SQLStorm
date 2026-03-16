@@ -16,19 +16,19 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 
 TagStatistics AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2))) AS Tag,
         COUNT(*) AS PostCount,
         SUM(CASE WHEN Score > 0 THEN 1 ELSE 0 END) AS PositiveScorePosts,
         AVG(Score) AS AverageScore
     FROM 
         RecentPosts
     GROUP BY 
-        unnest(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><'))
+        arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2)))
 ),
 
 TopTags AS (

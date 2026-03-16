@@ -3,11 +3,11 @@ WITH RankedOrders AS (
         o.o_orderkey,
         o.o_orderdate,
         o.o_totalprice,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS rank_order
+        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS rank_order
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
 ),
 SupplierCosts AS (
     SELECT 

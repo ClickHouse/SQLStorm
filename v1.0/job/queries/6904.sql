@@ -24,7 +24,7 @@ TopRankedMovies AS (
 SELECT 
     trm.production_year, 
     AVG(trm.cast_count) AS average_cast_count, 
-    STRING_AGG(trm.title, ', ') AS top_titles
+    arrayStringConcat(groupArray(assumeNotNull(trm.title)), ', ') AS top_titles
 FROM 
     TopRankedMovies trm
 GROUP BY 

@@ -4,8 +4,8 @@ WITH movie_data AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT ak.name, ',') AS aliases,
-        STRING_AGG(DISTINCT k.keyword, ',') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ',') AS aliases,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',') AS keywords,
         COUNT(DISTINCT mc.company_id) AS company_count,
         COUNT(DISTINCT c.person_id) AS cast_count
     FROM

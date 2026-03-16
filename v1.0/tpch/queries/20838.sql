@@ -7,8 +7,8 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' 
-        AND o.o_orderdate < DATE '1997-01-01'
+        o.o_orderdate >= toDate('1996-01-01') 
+        AND o.o_orderdate < toDate('1997-01-01')
 ),
 SupplierWithHighAverage AS (
     SELECT 
@@ -34,7 +34,7 @@ FilteredLineItems AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN cast('1998-10-01' as date) - INTERVAL '90 days' AND cast('1998-10-01' as date)
+        l.l_shipdate BETWEEN cast('1998-10-01' as date) - INTERVAL 90 DAY AND cast('1998-10-01' as date)
         AND l.l_returnflag = 'N'
     GROUP BY 
         l.l_orderkey, l.l_partkey
@@ -77,4 +77,4 @@ HAVING
     )
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

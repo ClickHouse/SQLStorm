@@ -2,8 +2,8 @@ WITH StringAggregation AS (
     SELECT 
         p.p_name,
         COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
-        STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', c.c_acctbal, ')'), '; ') AS customer_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', c.c_acctbal, ')')))), '; ') AS customer_info
     FROM 
         part p
     JOIN 
@@ -23,7 +23,7 @@ RegionSummary AS (
     SELECT 
         r.r_name,
         COUNT(DISTINCT n.n_nationkey) AS nation_count,
-        STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS market_segments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS market_segments
     FROM 
         region r
     JOIN 

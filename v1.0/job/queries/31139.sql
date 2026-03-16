@@ -26,7 +26,7 @@ WITH RECURSIVE cast_hierarchy AS (
 )
 SELECT
     m.title AS movie_title,
-    ARRAY_AGG(DISTINCT ak.name) AS actor_names,
+    arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names,
     COUNT(DISTINCT ci.person_id) AS actor_count,
     AVG(experience.years_of_experience) AS average_experience_years,
     COUNT(DISTINCT mc.company_id) AS company_count,

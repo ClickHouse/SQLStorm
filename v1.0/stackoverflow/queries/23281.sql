@@ -25,7 +25,7 @@ RecentPosts AS (
     FROM Posts P
     LEFT JOIN Comments C ON C.PostId = P.Id
     LEFT JOIN Votes V ON V.PostId = P.Id
-    WHERE P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days' 
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
     GROUP BY P.Id, P.Title, P.CreationDate, P.OwnerUserId
 ),
 PostHistoryInfo AS (
@@ -33,7 +33,7 @@ PostHistoryInfo AS (
         PH.PostId,
         MIN(PH.CreationDate) AS FirstEditDate,
         COUNT(PH.Id) AS EditCount,
-        STRING_AGG(DISTINCT PT.Name, ', ') AS EditTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PT.Name))), ', ') AS EditTypes
     FROM PostHistory PH
     JOIN PostHistoryTypes PT ON PH.PostHistoryTypeId = PT.Id
     GROUP BY PH.PostId

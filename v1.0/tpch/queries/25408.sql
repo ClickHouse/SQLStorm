@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     MAX(o.o_totalprice) AS max_order_value,
     AVG(o.o_totalprice) AS avg_order_value,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
 FROM 
     supplier s

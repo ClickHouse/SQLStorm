@@ -24,14 +24,14 @@ ClosedPostReasons AS (
     SELECT
         PH.UserId,
         COUNT(*) AS TotalClosedPosts,
-        STRING_AGG(CASE
+        arrayStringConcat(groupArray(assumeNotNull(CASE
             WHEN PHT.Name = 'Post Closed' THEN 'Closed' 
             WHEN PHT.Name = 'Post Reopened' THEN 'Reopened' 
             ELSE 'Other'
-        END, ', ') AS ClosureDetails
+        END)), ', ') AS ClosureDetails
     FROM PostHistory PH
     JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
-    WHERE PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY PH.UserId
 ),
 ActiveUsers AS (

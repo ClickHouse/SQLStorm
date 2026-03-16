@@ -17,7 +17,7 @@ WITH RankedMovies AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) AS company_names,
         COUNT(DISTINCT ct.kind) AS company_types_count
     FROM 
         movie_companies mc

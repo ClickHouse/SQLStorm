@@ -49,7 +49,7 @@ SELECT
     movie_title, 
     production_year, 
     nr_order, 
-    STRING_AGG(keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords
 FROM 
     final_benchmark
 GROUP BY 

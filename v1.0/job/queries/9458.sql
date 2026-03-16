@@ -29,9 +29,9 @@ WITH MovieInfo AS (
 SELECT 
     movie_title,
     production_year,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT company_name, ', ') AS production_companies,
-    STRING_AGG(DISTINCT actor_name, ', ') AS cast
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS production_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS cast
 FROM 
     MovieInfo
 GROUP BY 

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 
 ActiveUsers AS (
@@ -29,7 +29,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate < cast('2024-10-01' as date) - INTERVAL '1 year'
+        u.CreationDate < cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id
 ),
@@ -38,13 +38,13 @@ UserComments AS (
     SELECT 
         c.UserId,
         COUNT(*) AS CommentCount,
-        STRING_AGG(c.Text, ', ') AS CommentTexts
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ', ') AS CommentTexts
     FROM 
         Comments c
     JOIN 
         Posts p ON c.PostId = p.Id
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '6 months'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 6 MONTH
     GROUP BY 
         c.UserId
 )

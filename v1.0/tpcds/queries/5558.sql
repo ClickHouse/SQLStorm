@@ -61,4 +61,4 @@ JOIN
 ORDER BY 
     cs.total_spent DESC, 
     ss.total_net_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

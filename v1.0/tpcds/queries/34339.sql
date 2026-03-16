@@ -35,7 +35,7 @@ CustomerInfo AS (
         c.c_last_name,
         cd.cd_gender,
         cd.cd_marital_status,
-        ARRAY_AGG(DISTINCT ib.ib_income_band_sk) AS income_bands
+        arrayDistinct(groupArray(assumeNotNull(ib.ib_income_band_sk))) AS income_bands
     FROM customer c
     LEFT JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
     LEFT JOIN household_demographics hd ON c.c_customer_sk = hd.hd_demo_sk

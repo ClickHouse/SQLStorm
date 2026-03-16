@@ -29,7 +29,7 @@ FilteredPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(STRING_AGG(DISTINCT f.Tags, ','), ',')) AS TagName
+        arrayJoin(splitByString(',', arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.Tags))), ','))) AS TagName
     FROM 
         FilteredPosts f
 ),
@@ -55,7 +55,7 @@ SELECT
 FROM 
     TagFrequency tf
 JOIN 
-    FilteredPosts fp ON tf.TagName = ANY(string_to_array(fp.Tags, ','))
+    FilteredPosts fp ON tf.TagName = ANY(splitByString(',', fp.Tags))
 ORDER BY 
     tf.PostCount DESC, 
     fp.Score DESC;

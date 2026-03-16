@@ -28,7 +28,7 @@ TopNationSuppliers AS (
 SELECT r.r_regionkey, r.r_name,
        COALESCE(SUM(hvo.total_amount), 0) AS regional_total,
        COALESCE(SUM(tns.total_acctbal), 0) AS supplier_total,
-       STRING_AGG(DISTINCT tns.n_name, ', ') AS supplier_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tns.n_name))), ', ') AS supplier_names
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN TopNationSuppliers tns ON n.n_nationkey = tns.n_nationkey

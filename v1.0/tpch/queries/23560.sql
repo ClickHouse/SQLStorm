@@ -21,7 +21,7 @@ WITH RegionalSales AS (
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
         o.o_orderstatus IN ('O', 'P')
-        AND l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
+        AND l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1996-12-31')
     GROUP BY 
         r.r_name
 ),
@@ -62,7 +62,7 @@ SELECT
         WHEN f.orders_count = 0 THEN NULL
         ELSE ROUND(f.total_sales / f.orders_count, 2) 
     END AS avg_sales_per_order,
-    STRING_AGG(s.s_name, ',') AS suppliers_list
+    arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ',') AS suppliers_list
 FROM 
     FinalStats f
 LEFT JOIN 

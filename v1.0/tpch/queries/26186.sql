@@ -4,7 +4,7 @@ SELECT
     CONCAT(s.s_name, ' supplies ', p.p_name) AS supply_info, 
     COUNT(o.o_orderkey) AS order_count, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS market_segments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS market_segments
 FROM 
     part p
 JOIN 

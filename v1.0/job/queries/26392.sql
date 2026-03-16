@@ -18,7 +18,7 @@ WITH PopularGenres AS (
         kt.kind AS genre,
         COUNT(DISTINCT ci.person_id) AS cast_count,
         COUNT(DISTINCT mc.company_id) AS company_count,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM
         aka_title mt
     JOIN

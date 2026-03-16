@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
+        o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
 ), CustomerOrders AS (
     SELECT 
         c.c_custkey,
@@ -45,7 +45,7 @@ WITH RankedOrders AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 DAY'
+        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
 ), DefaultRegion AS (
     SELECT 
         r.r_regionkey,

@@ -28,7 +28,7 @@ MovieStats AS (
         m.title,
         COUNT(DISTINCT c.person_id) AS actor_count,
         AVG(CASE WHEN c.nr_order IS NOT NULL THEN c.nr_order ELSE 0 END) AS avg_order,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title m
     LEFT JOIN 
@@ -46,7 +46,7 @@ MovieStats AS (
 InfoCTE AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT it.info, ', ') AS all_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(it.info))), ', ') AS all_info
     FROM 
         movie_info mi
     INNER JOIN 

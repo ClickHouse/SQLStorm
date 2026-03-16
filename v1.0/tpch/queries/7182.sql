@@ -9,8 +9,8 @@ WITH RankedOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' AND 
-        o.o_orderdate < DATE '1996-12-31'
+        o.o_orderdate >= toDate('1996-01-01') AND 
+        o.o_orderdate < toDate('1996-12-31')
     GROUP BY 
         o.o_orderkey, o.o_orderstatus
 ),
@@ -48,4 +48,4 @@ GROUP BY
     c.c_custkey, c.c_name, c.c_acctbal
 ORDER BY 
     total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

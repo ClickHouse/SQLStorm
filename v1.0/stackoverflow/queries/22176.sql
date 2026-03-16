@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostVoteCounts AS (
     SELECT 
@@ -27,7 +27,7 @@ PostVoteCounts AS (
 CloseReasonVotes AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(CT.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CT.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     INNER JOIN 
@@ -40,7 +40,7 @@ CloseReasonVotes AS (
 UserBadges AS (
     SELECT 
         U.Id AS UserId,
-        STRING_AGG(B.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames,
         COUNT(B.Id) AS BadgeCount
     FROM 
         Users U

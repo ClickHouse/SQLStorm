@@ -3,9 +3,9 @@ WITH movie_details AS (
         t.id AS movie_id,
         t.title AS movie_title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-        COALESCE(ARRAY_AGG(DISTINCT c.name), ARRAY['No Cast']) AS cast_names,
-        COALESCE(ARRAY_AGG(DISTINCT cp.kind), ARRAY['No Company']) AS companies
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(c.name))), ARRAY['No Cast']) AS cast_names,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(cp.kind))), ARRAY['No Company']) AS companies
     FROM 
         aka_title t
     LEFT JOIN 
@@ -35,7 +35,7 @@ popular_movies AS (
         keywords,
         cast_names,
         companies,
-        ROW_NUMBER() OVER (ORDER BY ARRAY_LENGTH(keywords, 1) DESC) AS popularity_rank
+        ROW_NUMBER() OVER (ORDER BY length(keywords, 1) DESC) AS popularity_rank
     FROM 
         movie_details
 )

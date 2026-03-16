@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.PostTypeId
 ),
@@ -43,7 +43,7 @@ AggPostData AS (
         f.Title,
         SUM(f.Score) AS TotalScore,
         AVG(f.UpVotes - f.DownVotes) AS AvgVoteDifference,
-        STRING_AGG(f.Sentiment, ', ') AS SentimentList
+        arrayStringConcat(groupArray(assumeNotNull(f.Sentiment)), ', ') AS SentimentList
     FROM 
         FilteredPosts f
     GROUP BY 
@@ -69,7 +69,7 @@ WHERE
         SELECT 1
         FROM Posts p
         WHERE p.Title LIKE '%' || a.Title || '%'
-        AND p.CreationDate BETWEEN cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' AND cast('2024-10-01 12:34:56' as timestamp)
+        AND p.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY AND toDateTime64('2024-10-01 12:34:56', 6)
     )
 ORDER BY 
     a.TotalScore DESC NULLS LAST;

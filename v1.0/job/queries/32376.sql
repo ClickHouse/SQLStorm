@@ -35,7 +35,7 @@ SELECT
     at.title AS movie_title,
     at.production_year AS year,
     COUNT(DISTINCT c.person_id) AS total_actors,
-    STRING_AGG(DISTINCT ak.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.keyword))), ', ') AS keywords,
     RANK() OVER (PARTITION BY at.production_year ORDER BY COUNT(DISTINCT c.person_id) DESC) AS rank_per_year
 FROM 
     movie_hierarchy mh

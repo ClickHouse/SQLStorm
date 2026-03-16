@@ -29,7 +29,7 @@ TopMovies AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(COALESCE(cn.name, 'Unknown Company'), ', ' ORDER BY cn.name) AS companies,
+        arrayStringConcat(groupArray(assumeNotNull(COALESCE(cn.name, 'Unknown Company'))), ', ' ORDER BY cn.name) AS companies,
         ct.kind AS company_type
     FROM 
         movie_companies mc

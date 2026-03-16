@@ -51,4 +51,4 @@ JOIN
     DateSales ds ON ds.daily_net_profit > 1000
 ORDER BY 
     hvc.total_net_profit DESC, ds.d_date ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -28,7 +28,7 @@ SELECT
     AVG(ws_net_profit) AS avg_profit_per_order,
     MAX(ws_net_profit) AS max_profit,
     MIN(ws_net_profit) AS min_profit,
-    STRING_AGG(DISTINCT CAST(ws_item_sk AS TEXT), ', ') AS items_sold,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws_item_sk AS TEXT)))), ', ') AS items_sold,
     CASE 
         WHEN AVG(ws_net_profit) IS NULL THEN 'No Profit Data'
         ELSE 'Profit Data Available'

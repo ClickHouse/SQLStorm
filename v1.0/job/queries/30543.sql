@@ -40,7 +40,7 @@ movie_cast AS (
 movie_info_filtered AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(mi.info, ', ') AS info_details
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS info_details
     FROM 
         movie_info mi
     WHERE 

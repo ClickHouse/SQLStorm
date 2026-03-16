@@ -5,7 +5,7 @@ WITH demographic_analysis AS (
         cd_marital_status,
         COUNT(DISTINCT c_customer_sk) AS customer_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_statuses
     FROM 
         customer_demographics
     JOIN 
@@ -17,7 +17,7 @@ address_summary AS (
     SELECT 
         ca_state,
         COUNT(DISTINCT ca_address_sk) AS address_count,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities
     FROM 
         customer_address
     GROUP BY 

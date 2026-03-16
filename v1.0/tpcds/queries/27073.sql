@@ -55,4 +55,4 @@ WHERE
     sd.total_sales IS NOT NULL
 ORDER BY 
     sd.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

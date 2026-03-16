@@ -30,7 +30,7 @@ TopSuppliers AS (
 SELECT 
     region_name,
     nation_name,
-    STRING_AGG(s_name || ' (Cost: ' || total_cost || ')', ', ' ORDER BY total_cost DESC) AS top_suppliers
+    arrayStringConcat(groupArray(assumeNotNull(s_name || ' (Cost: ' || total_cost || ')')), ', ' ORDER BY total_cost DESC) AS top_suppliers
 FROM 
     TopSuppliers
 GROUP BY 

@@ -6,7 +6,7 @@ WITH RankedMovies AS (
         a.production_year,
         kt.kind AS movie_kind,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         ROW_NUMBER() OVER (PARTITION BY a.production_year ORDER BY COUNT(DISTINCT c.person_id) DESC) AS year_rank
     FROM 
         aka_title a
@@ -41,7 +41,7 @@ SELECT
     mv.movie_kind,
     mv.cast_count,
     mv.actor_names,
-    STRING_AGG(DISTINCT mc.note, ', ') AS company_notes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.note))), ', ') AS company_notes
 FROM 
     TopMovies mv
 LEFT JOIN 

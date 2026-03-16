@@ -14,7 +14,7 @@ WITH SupplierSales AS (
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
         o.o_orderstatus = 'O'
-        AND l.l_shipdate >= DATE '1997-01-01'
+        AND l.l_shipdate >= toDate('1997-01-01')
     GROUP BY 
         s.s_suppkey, s.s_name
 ),

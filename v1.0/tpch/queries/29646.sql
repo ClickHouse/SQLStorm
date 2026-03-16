@@ -5,7 +5,7 @@ SELECT
     o.o_orderkey AS order_number,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT CONCAT_WS(' | ', l.l_returnflag, l.l_linestatus, l.l_shipmode), ', ') AS flags_status_modes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' | ', l.l_returnflag, l.l_linestatus, l.l_shipmode)))), ', ') AS flags_status_modes,
     CASE 
         WHEN SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000 THEN 'High Value'
         WHEN SUM(l.l_extendedprice * (1 - l.l_discount)) BETWEEN 5000 AND 10000 THEN 'Medium Value'

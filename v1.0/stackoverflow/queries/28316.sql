@@ -44,13 +44,13 @@ SELECT
     tp.UserDisplayName,
     tp.CommentCount,
     tp.UpVoteCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
     Posts p ON p.Id = tp.PostId
 LEFT JOIN 
-    Tags t ON t.TagName = ANY(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'))
+    Tags t ON t.TagName = ANY(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
 GROUP BY 
     tp.PostId, tp.Title, tp.UserDisplayName, tp.CommentCount, tp.UpVoteCount
 ORDER BY 

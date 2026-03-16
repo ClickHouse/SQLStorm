@@ -3,7 +3,7 @@ WITH address_summary AS (
         ca_state,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
         COUNT(*) AS total_addresses,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities_list,
         AVG(length(ca_street_name)) AS avg_street_name_length
     FROM 
         customer_address

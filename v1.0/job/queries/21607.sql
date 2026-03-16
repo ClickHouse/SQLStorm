@@ -46,7 +46,7 @@ SELECT
     a.top_movie_count,
     aa.latest_year,
     aa.earliest_year,
-    (SELECT STRING_AGG(title, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(title)), ', ') 
      FROM aka_title 
      WHERE production_year = aa.latest_year) AS latest_movie_titles,
     CASE 

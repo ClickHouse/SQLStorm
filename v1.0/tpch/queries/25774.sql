@@ -32,9 +32,9 @@ SELECT
     SUM(extended_price) AS total_extended_price,
     AVG(discount) AS average_discount,
     SUM(tax) AS total_tax,
-    STRING_AGG(DISTINCT short_supplier_comment, '; ') AS supplier_comments,
-    STRING_AGG(DISTINCT customer_info, '; ') AS customer_details,
-    STRING_AGG(DISTINCT order_details, '; ') AS order_information
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(short_supplier_comment))), '; ') AS supplier_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(customer_info))), '; ') AS customer_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(order_details))), '; ') AS order_information
 FROM 
     CombinedData
 GROUP BY 

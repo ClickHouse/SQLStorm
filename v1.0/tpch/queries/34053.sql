@@ -63,5 +63,4 @@ AND
     od.net_price IS NOT NULL
 ORDER BY 
     co.total_spent DESC, od.o_orderdate DESC
-OFFSET 10 ROWS
-FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

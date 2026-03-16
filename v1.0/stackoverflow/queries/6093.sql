@@ -22,13 +22,13 @@ PostAnalysis AS (
         p.PostTypeId,
         COUNT(c.Id) AS CommentCount,
         MAX(p.Score) AS MaxScore,
-        AVG(COALESCE(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)), 0)) AS AvgResolutionTime
+        AVG(COALESCE(toUnixTimestamp((p.LastActivityDate - p.CreationDate)), 0)) AS AvgResolutionTime
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         p.OwnerUserId, p.PostTypeId
 )

@@ -19,7 +19,7 @@ aggregated_data AS (
         pp.name_length,
         COUNT(*) AS part_count,
         AVG(pp.p_retailprice) AS avg_price,
-        STRING_AGG(pp.comment_prefix, ', ') AS prefixes
+        arrayStringConcat(groupArray(assumeNotNull(pp.comment_prefix)), ', ') AS prefixes
     FROM 
         processed_parts pp
     GROUP BY 

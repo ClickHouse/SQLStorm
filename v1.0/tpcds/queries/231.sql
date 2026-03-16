@@ -52,4 +52,4 @@ WHERE
     hvc.profit_rank <= 100
 ORDER BY 
     hvc.total_net_profit DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

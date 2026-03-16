@@ -30,14 +30,14 @@ WITH PostStats AS (
 PostHistorySummary AS (
     SELECT
         PH.PostId,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryTypes,
         COUNT(*) AS EditCount
     FROM
         PostHistory PH
     JOIN
         PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     WHERE
-        PH.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY
         PH.PostId
 ),
@@ -45,7 +45,7 @@ BadgedUsers AS (
     SELECT
         U.Id AS UserId,
         COUNT(DISTINCT B.Id) AS BadgeCount,
-        STRING_AGG(DISTINCT B.Name, ', ') AS BadgeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(B.Name))), ', ') AS BadgeNames
     FROM
         Users U
     LEFT JOIN

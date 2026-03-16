@@ -25,7 +25,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
+        v.CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
     GROUP BY 
         v.PostId, 
         v.VoteTypeId
@@ -33,11 +33,11 @@ RecentVotes AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        UNNEST(STRING_TO_ARRAY(p.Tags, '><')) AS tag ON TRUE
+        arrayJoin(splitByString('><', p.Tags)) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
     GROUP BY 

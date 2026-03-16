@@ -34,8 +34,8 @@ SELECT
     tc.total_sales,
     tc.total_transactions,
     d.d_year,
-    ARRAY_AGG(DISTINCT p.p_promo_name) AS used_promotions,
-    ARRAY_AGG(DISTINCT sm.sm_type) AS used_ship_modes
+    arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))) AS used_promotions,
+    arrayDistinct(groupArray(assumeNotNull(sm.sm_type))) AS used_ship_modes
 FROM 
     TopCustomers tc
 JOIN 

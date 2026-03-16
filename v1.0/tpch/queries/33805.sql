@@ -15,8 +15,8 @@ ranked_orders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice,
            RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS price_rank
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1996-01-01' 
-      AND o.o_orderdate < DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1996-01-01') 
+      AND o.o_orderdate < toDate('1997-01-01')
 ),
 filtered_lineitems AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales

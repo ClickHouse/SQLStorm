@@ -22,7 +22,7 @@ SELECT
         ELSE c.c_acctbal
     END) AS avg_acctbal,
     MAX(l.l_shipdate) AS last_shipdate,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS popular_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS popular_parts
 FROM 
     customer c
 LEFT JOIN 
@@ -36,7 +36,7 @@ LEFT JOIN
 LEFT JOIN 
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
-    o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year'
+    o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
     AND (l.l_returnflag IS NULL OR l.l_returnflag <> 'R')
 GROUP BY 
     n.n_name

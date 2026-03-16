@@ -49,7 +49,7 @@ UserPostStats AS (
 RecentResponses AS (
     SELECT 
         p.Id AS PostId,
-        COALESCE(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)), 0) AS TimeToResponse,
+        COALESCE(toUnixTimestamp((p.LastActivityDate - p.CreationDate)), 0) AS TimeToResponse,
         u.DisplayName AS Responder
     FROM 
         Posts p
@@ -57,7 +57,7 @@ RecentResponses AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE
         p.PostTypeId = 2 
-        AND p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month') 
+        AND p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH) 
 )
 SELECT 
     t.UserId,

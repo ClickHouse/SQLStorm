@@ -49,8 +49,8 @@ LEFT JOIN SupplierAggr SA ON p.p_partkey = SA.ps_partkey
 LEFT JOIN RankedOrders R ON R.o_orderkey IN (
     SELECT o_orderkey 
     FROM orders 
-    WHERE o_orderstatus = 'F' AND o_orderdate > (cast('1998-10-01' as date) - INTERVAL '365 days')
-    FETCH FIRST 1 ROWS ONLY
+    WHERE o_orderstatus = 'F' AND o_orderdate > (cast('1998-10-01' as date) - INTERVAL 365 DAY)
+    LIMIT 1
 )
 LEFT JOIN CustomerOrderStats CUS ON CUS.total_orders > 5
 WHERE 
@@ -59,4 +59,4 @@ WHERE
 ORDER BY 
     available_quantity DESC,
     adjusted_spending ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

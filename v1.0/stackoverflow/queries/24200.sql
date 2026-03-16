@@ -14,14 +14,14 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
+        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
     GROUP BY 
         p.Id, u.Id 
 ),
 TaggedPosts AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(p.Tags, '>')) AS TagName
+        arrayJoin(splitByString('>', p.Tags)) AS TagName
     FROM 
         Posts p
     WHERE 
@@ -31,11 +31,11 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         ph.CreationDate AS CloseDate,
-        STRING_AGG(cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON ph.Comment::int = cr.Id
+        CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY 

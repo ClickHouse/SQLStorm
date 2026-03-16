@@ -3,7 +3,7 @@ WITH MovieDetails AS (
         mt.id AS movie_id,
         mt.title AS movie_title,
         mt.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         COUNT(DISTINCT mc.company_id) AS company_count,
         SUM(CASE WHEN mi.info_type_id = it.id AND it.info = 'Box Office' THEN CAST(mi.info AS INTEGER) ELSE 0 END) AS box_office
     FROM 

@@ -21,7 +21,7 @@ WITH PostMetrics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= DATE '2022-01-01'  
+        p.CreationDate >= toDate('2022-01-01')  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.AnswerCount, 
         p.CommentCount, p.FavoriteCount, u.Reputation
@@ -37,7 +37,7 @@ TagMetrics AS (
     JOIN 
         Posts p ON pm.PostId = p.Id
     JOIN 
-        LATERAL (SELECT TRIM(tagname) AS TagName FROM UNNEST(string_to_array(p.Tags, ',')) AS tag(tagname)) AS tag ON TRUE
+        (SELECT TRIM(tagname) AS TagName FROM arrayJoin(splitByString(',', p.Tags)) AS tag(tagname)) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag.TagName
     GROUP BY 

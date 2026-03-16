@@ -38,7 +38,7 @@ WITH SupplierSummary AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= DATE '1997-01-01'
+        l.l_shipdate >= toDate('1997-01-01')
     GROUP BY 
         l.l_partkey
 )
@@ -60,4 +60,4 @@ JOIN
 ORDER BY 
     ss.total_inventory_value DESC, 
     cs.total_spent DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -48,7 +48,7 @@ final_benchmark AS (
     JOIN 
         customer_stats cs ON pd.ca_address_sk = cs.cd_demo_sk
     JOIN 
-        date_stats ds ON EXTRACT(YEAR FROM CURRENT_DATE) = ds.d_year
+        date_stats ds ON toYear(CURRENT_DATE) = ds.d_year
 )
 SELECT 
     full_address,

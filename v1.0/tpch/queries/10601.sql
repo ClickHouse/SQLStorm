@@ -4,6 +4,6 @@ JOIN supplier s ON n.n_nationkey = s.s_nationkey
 JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
 JOIN part p ON ps.ps_partkey = p.p_partkey
 JOIN lineitem l ON p.p_partkey = l.l_partkey
-WHERE l.l_shipdate >= DATE '1995-01-01' AND l.l_shipdate < DATE '1996-01-01'
+WHERE l.l_shipdate >= toDate('1995-01-01') AND l.l_shipdate < toDate('1996-01-01')
 GROUP BY n.n_name
 ORDER BY revenue DESC;

@@ -25,7 +25,7 @@ FilteredCasts AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS movie_notes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS movie_notes
     FROM 
         movie_info mi
     GROUP BY 

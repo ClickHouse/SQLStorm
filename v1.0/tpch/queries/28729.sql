@@ -22,7 +22,7 @@ PartStatistics AS (
         p.p_brand,
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
         AVG(ps.ps_supplycost) AS avg_supply_cost,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM 
         part p
     JOIN 

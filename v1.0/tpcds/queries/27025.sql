@@ -31,7 +31,7 @@ AddressSummary AS (
         ca.ca_city,
         ca.ca_state,
         COUNT(*) AS total_customers,
-        STRING_AGG(DISTINCT tc.full_name, ', ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tc.full_name))), ', ') AS customer_names
     FROM 
         customer_address ca
     JOIN 
@@ -44,7 +44,7 @@ AddressSummary AS (
 SELECT 
     ca_state,
     SUM(total_customers) AS total_customers_per_state,
-    STRING_AGG(ca_city || ' (' || total_customers || '): ' || customer_names, '; ') AS city_summary
+    arrayStringConcat(groupArray(assumeNotNull(ca_city || ' (' || total_customers || '): ' || customer_names)), '; ') AS city_summary
 FROM 
     AddressSummary
 GROUP BY 

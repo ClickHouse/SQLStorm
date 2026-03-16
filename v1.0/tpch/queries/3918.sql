@@ -59,5 +59,4 @@ WHERE
     cos.total_spent > (SELECT AVG(total_spent) FROM CustomerOrderSummary)
 ORDER BY 
     cos.total_spent DESC
-OFFSET 5 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

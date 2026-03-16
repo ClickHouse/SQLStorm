@@ -4,7 +4,7 @@ WITH AddressData AS (
         ca_city,
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), ', ') AS full_address
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type))), ', ') AS full_address
     FROM 
         customer_address
     GROUP BY 
@@ -15,7 +15,7 @@ DemoData AS (
         cd_gender,
         cd_marital_status,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_education_status, '; ') AS education_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), '; ') AS education_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -26,7 +26,7 @@ SalesData AS (
         d_year,
         SUM(ws_ext_sales_price) AS total_sales,
         COUNT(DISTINCT ws_order_number) AS total_orders,
-        STRING_AGG(DISTINCT wp_type, ', ') AS web_page_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp_type))), ', ') AS web_page_types
     FROM 
         web_sales 
     JOIN 

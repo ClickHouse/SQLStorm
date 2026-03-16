@@ -44,7 +44,7 @@ cast_role_counts AS (
 movie_info_summary AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, ', ') AS info_summary
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS info_summary
     FROM 
         movie_info mi
     GROUP BY 
@@ -53,7 +53,7 @@ movie_info_summary AS (
 title_keyword AS (
     SELECT 
         mt.id AS movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title mt 
     LEFT JOIN 

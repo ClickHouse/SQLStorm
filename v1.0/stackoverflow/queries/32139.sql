@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserReputation AS (
     SELECT 
@@ -50,7 +50,7 @@ ClosedPosts AS (
     FROM 
         PostHistory PH
     INNER JOIN 
-        CloseReasonTypes CT ON PH.Comment::int = CT.Id
+        CloseReasonTypes CT ON CAST(PH.Comment AS int) = CT.Id
     WHERE 
         PH.PostHistoryTypeId IN (10, 11)  
 ),

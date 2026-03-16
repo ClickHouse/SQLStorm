@@ -4,8 +4,8 @@ WITH MovieDetails AS (
         t.title AS movie_title,
         t.production_year,
         k.keyword AS movie_keyword,
-        ARRAY_AGG(DISTINCT c.name) AS cast_names,
-        ARRAY_AGG(DISTINCT cn.name) AS companies_involved,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies_involved,
         COUNT(DISTINCT ci.id) AS total_cast
     FROM 
         aka_title t

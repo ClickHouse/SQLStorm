@@ -21,7 +21,7 @@ WITH RankedPosts AS (
             PostId
     ) v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
 ),
 UserMetrics AS (
     SELECT 
@@ -29,7 +29,7 @@ UserMetrics AS (
         u.DisplayName,
         COUNT(b.Id) AS BadgeCount,
         SUM(COALESCE(v.TotalUpVotes, 0) - COALESCE(v.TotalDownVotes, 0)) AS VoteScore,
-        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - u.CreationDate)) / 3600) AS AvgHoursSinceCreation
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.CreationDate)) / 3600) AS AvgHoursSinceCreation
     FROM 
         Users u
     LEFT JOIN Badges b ON u.Id = b.UserId

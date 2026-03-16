@@ -29,7 +29,7 @@ RankedTags AS (
         AVG(ViewCount) AS AvgViewCount
     FROM (
         SELECT 
-            UNNEST(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag,
+            arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
             ViewCount
         FROM 
             Posts
@@ -52,7 +52,7 @@ TopPostsByTag AS (
     FROM 
         RankedPosts rp
     JOIN 
-        RankedTags rt ON rt.Tag = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags)-2), '><'))
+        RankedTags rt ON rt.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
     WHERE 
         rp.RankWithinTag <= 5 
 )

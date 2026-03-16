@@ -21,7 +21,7 @@ WITH FilteredPosts AS (
     WHERE 
         p.PostTypeId = 1 AND  
         p.Tags IS NOT NULL AND 
-        p.CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 YEAR'  
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.CreationDate, p.LastActivityDate, u.DisplayName
 ),
@@ -45,7 +45,7 @@ SELECT
     rp.CommentCount,
     rp.AnswerCount,
     rp.Rank,
-    STRING_AGG(b.Name, ', ') AS Badges 
+    arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges 
 FROM 
     RankedPosts rp
 LEFT JOIN 

@@ -69,8 +69,8 @@ SELECT
         WHEN fs.BadgeClass = 3 THEN 'Bronze' 
         ELSE 'No Badge' 
     END AS UserBadgeStatus,
-    (SELECT COUNT(*) FROM Comments WHERE UserId = fs.UserId AND CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days') AS RecentCommentsCount,
-    (SELECT STRING_AGG(DISTINCT p.Tags, ', ') 
+    (SELECT COUNT(*) FROM Comments WHERE UserId = fs.UserId AND CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY) AS RecentCommentsCount,
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Tags))), ', ') 
      FROM Posts p 
      WHERE p.OwnerUserId = fs.UserId 
        AND p.PostTypeId = 1 

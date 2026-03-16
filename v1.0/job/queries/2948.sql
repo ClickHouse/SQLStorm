@@ -27,7 +27,7 @@ MovieDetails AS (
     SELECT 
         tm.title, 
         tm.production_year, 
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
         MIN(p.info) AS person_note
     FROM 
         TopMovies tm

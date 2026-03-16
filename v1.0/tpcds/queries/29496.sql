@@ -4,7 +4,7 @@ WITH address_summary AS (
         ca_city,
         ca_state,
         COUNT(*) AS total_addresses,
-        STRING_AGG(ca_street_name || ' ' || ca_street_number || ' ' || ca_street_type, ', ') AS all_streets
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_number || ' ' || ca_street_type)), ', ') AS all_streets
     FROM 
         customer_address
     GROUP BY 
@@ -24,7 +24,7 @@ date_summary AS (
     SELECT 
         d_year,
         COUNT(DISTINCT d_date_id) AS total_days,
-        STRING_AGG(DISTINCT d_day_name, ', ') AS unique_days
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d_day_name))), ', ') AS unique_days
     FROM 
         date_dim
     GROUP BY 

@@ -6,7 +6,7 @@ WITH RecursiveMovieCTE AS (
         mt.production_year, 
         COALESCE(AVG(CASE WHEN ci.role_id IS NOT NULL THEN 1 END), 0) AS avg_starring_roles,
         COUNT(DISTINCT ci.person_id) AS full_cast_count,
-        STRING_AGG(DISTINCT an.name, ', ') AS actors_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actors_list
     FROM 
         aka_title mt
     LEFT JOIN 
@@ -32,7 +32,7 @@ WITH RecursiveMovieCTE AS (
 ), MovieKeywordCTE AS (
     SELECT 
         km.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword km
     JOIN 

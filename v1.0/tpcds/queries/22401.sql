@@ -48,7 +48,7 @@ best_customers AS (
 SELECT 
     ca.ca_city,
     COUNT(bc.c_customer_sk) AS top_customer_count,
-    STRING_AGG(CONCAT(bc.cd_gender, ' - ', bc.hd_buy_potential), '; ') AS customer_summary
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(bc.cd_gender, ' - ', bc.hd_buy_potential))), '; ') AS customer_summary
 FROM best_customers bc
 JOIN customer_address ca ON bc.c_customer_sk = ca.ca_address_sk
 LEFT JOIN warehouse w ON w.w_warehouse_sk = (

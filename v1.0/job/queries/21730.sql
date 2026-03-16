@@ -28,7 +28,7 @@ MoviesWithInfo AS (
         m.production_year,
         COALESCE(a.actor_count, 0) AS actor_count,
         a.leading_role,
-        STRING_AGG(DISTINCT k.keyword, ', ') FILTER (WHERE k.keyword IS NOT NULL) AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') FILTER (WHERE k.keyword IS NOT NULL) AS keywords
     FROM 
         RankedMovies m
     LEFT JOIN 

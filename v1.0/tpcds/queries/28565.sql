@@ -10,7 +10,7 @@ CustomerGenderStats AS (
     SELECT 
         cd_gender,
         COUNT(c_customer_sk) AS total_customers,
-        STRING_AGG(CAST(ca_address_sk AS TEXT), ', ') AS address_ids
+        arrayStringConcat(groupArray(assumeNotNull(CAST(ca_address_sk AS TEXT))), ', ') AS address_ids
     FROM customer 
     JOIN customer_demographics ON c_current_cdemo_sk = cd_demo_sk
     JOIN AddressDetails ON c_current_addr_sk = ca_address_sk
@@ -20,7 +20,7 @@ SalesPerformance AS (
     SELECT 
         d_year,
         SUM(ws_ext_sales_price) AS total_sales,
-        STRING_AGG(DISTINCT CAST(ws_web_page_sk AS TEXT), ', ') AS page_ids
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws_web_page_sk AS TEXT)))), ', ') AS page_ids
     FROM web_sales 
     JOIN date_dim ON ws_sold_date_sk = d_date_sk
     GROUP BY d_year

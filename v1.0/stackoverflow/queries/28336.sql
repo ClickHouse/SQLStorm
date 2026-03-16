@@ -8,12 +8,12 @@ WITH UserPostStats AS (
         COUNT(DISTINCT CASE WHEN p.PostTypeId = 2 THEN p.Id END) AS AnswerCount,
         SUM(COALESCE(p.ViewCount, 0)) AS TotalViews,
         SUM(COALESCE(p.Score, 0)) AS TotalScore,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN (
         SELECT 
-            UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS TagName,
+            arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS TagName,
             Id AS PostId
         FROM Posts
         WHERE Tags IS NOT NULL

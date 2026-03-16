@@ -47,7 +47,7 @@ supplier_performance AS (
     JOIN 
         lineitem l ON ps.ps_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY 
         s.s_suppkey, s.s_name, s.s_nationkey
 )

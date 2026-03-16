@@ -31,7 +31,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supplycost,
     AVG(l.l_quantity) AS avg_line_quantity,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_mfgr, ')'), ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_mfgr, ')')))), ', ') AS part_names
 FROM 
     customer c
 JOIN 
@@ -47,8 +47,8 @@ JOIN
 LEFT JOIN 
     SupplierHierarchy sh ON n.n_nationkey = sh.s_nationkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' AND 
-    o.o_orderdate < DATE '1998-01-01' AND 
+    o.o_orderdate >= toDate('1997-01-01') AND 
+    o.o_orderdate < toDate('1998-01-01') AND 
     (l.l_returnflag = 'R' OR l.l_returnflag IS NULL)
 GROUP BY 
     n.n_name

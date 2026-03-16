@@ -7,7 +7,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS Total_Revenue,
     SUM(l.l_tax) AS Total_Tax,
     AVG(CASE WHEN l.l_returnflag = 'Y' THEN l.l_quantity ELSE NULL END) AS Avg_Returned_Quantity,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ': ', l.l_comment), '; ') AS Supplier_Comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ': ', l.l_comment)))), '; ') AS Supplier_Comments
 FROM 
     part p
 JOIN 

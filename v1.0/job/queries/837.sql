@@ -5,7 +5,7 @@ WITH MovieStats AS (
         t.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
         AVG(mi.info_type_id) AS avg_info_type_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS associated_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS associated_keywords
     FROM 
         aka_title t
     LEFT JOIN 

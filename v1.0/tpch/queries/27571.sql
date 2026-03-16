@@ -22,7 +22,7 @@ PartDetails AS (
         p.p_container,
         p.p_retailprice,
         p.p_comment,
-        STRING_AGG(DISTINCT CONCAT(ps.ps_suppkey, ' (', SUPPLIERS.supplier_nation, ')'), ', ') AS supplier_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ps.ps_suppkey, ' (', SUPPLIERS.supplier_nation, ')')))), ', ') AS supplier_list
     FROM part p
     LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
     LEFT JOIN SupplierInfo SUPPLIERS ON ps.ps_suppkey = SUPPLIERS.s_suppkey

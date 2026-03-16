@@ -19,7 +19,7 @@ QuestionStatistics AS (
         p.OwnerUserId,
         COUNT(p.Id) AS TotalQuestions,
         COUNT(CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 END) AS AcceptedAnswers,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)) / 3600) AS AvgTimeToAnswer
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate)) / 3600) AS AvgTimeToAnswer
     FROM 
         Posts p
     WHERE 

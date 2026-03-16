@@ -57,5 +57,5 @@ LEFT JOIN AnswerCounts ac ON rp.PostId = ac.PostId
 LEFT JOIN ClosedPosts cp ON rp.PostId = cp.PostId
 WHERE 
     r.Reputation > 100
-    AND (rp.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' OR cp.FirstClosedDate IS NOT NULL)
+    AND (rp.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY OR cp.FirstClosedDate IS NOT NULL)
 ORDER BY r.Reputation DESC, rp.CreationDate DESC;

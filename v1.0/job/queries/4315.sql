@@ -6,7 +6,7 @@ WITH movie_details AS (
         t.production_year,
         COALESCE(COUNT(DISTINCT ci.id), 0) AS cast_count,
         COALESCE(SUM(CASE WHEN ci.nr_order IS NOT NULL THEN 1 ELSE 0 END), 0) AS named_roles,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors
     FROM
         aka_title t
     LEFT JOIN
@@ -21,8 +21,8 @@ WITH movie_details AS (
 movie_info_aggregated AS (
     SELECT
         mi.movie_id,
-        STRING_AGG(CASE WHEN it.info = 'Plot' THEN mi.info ELSE NULL END, '; ') AS plot,
-        STRING_AGG(CASE WHEN it.info = 'Genre' THEN mi.info ELSE NULL END, ', ') AS genres
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN it.info = 'Plot' THEN mi.info ELSE NULL END)), '; ') AS plot,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN it.info = 'Genre' THEN mi.info ELSE NULL END)), ', ') AS genres
     FROM
         movie_info mi
     JOIN

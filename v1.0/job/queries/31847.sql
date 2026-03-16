@@ -3,7 +3,7 @@ WITH RECURSIVE movie_hierarchy AS (
         mt.id AS movie_id,
         mt.title,
         mt.production_year,
-        NULL::INTEGER AS parent_id,
+        CAST(NULL AS INTEGER) AS parent_id,
         0 AS level
     FROM 
         aka_title AS mt
@@ -48,7 +48,7 @@ movie_keyword_counts AS (
 movie_info_details AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(mi.info, '; ') FILTER (WHERE mi.info IS NOT NULL) AS info_details
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') FILTER (WHERE mi.info IS NOT NULL) AS info_details
     FROM 
         movie_info AS mi
     GROUP BY 
@@ -60,7 +60,7 @@ SELECT
     mh.production_year,
     COALESCE(mk.keyword_count, 0) AS keyword_count,
     COALESCE(mid.info_details, 'No details available') AS info_details,
-    ARRAY_AGG(cwr.actor_name ORDER BY cwr.actor_rank) AS actors
+    groupArray(assumeNotNull(cwr.actor_name ORDER BY cwr.actor_rank)) AS actors
 FROM 
     movie_hierarchy AS mh
 LEFT JOIN 

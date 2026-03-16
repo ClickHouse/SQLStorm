@@ -5,7 +5,7 @@ SELECT
     o.o_orderkey AS order_id,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT CONCAT('OrderID:', o.o_orderkey, ', Product:', p.p_name), '; ') AS order_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('OrderID:', o.o_orderkey, ', Product:', p.p_name)))), '; ') AS order_details
 FROM 
     lineitem l
 JOIN 

@@ -55,11 +55,11 @@ SELECT
         WHEN pa.UpvoteCount > pa.DownvoteCount THEN 'Positive Sentiment'
         ELSE 'Needs Attention' 
     END AS PostStatus,
-    STRING_AGG(CASE 
+    arrayStringConcat(groupArray(assumeNotNull(CASE 
         WHEN b.Class = 1 THEN 'Gold: ' || b.Name 
         WHEN b.Class = 2 THEN 'Silver: ' || b.Name 
         WHEN b.Class = 3 THEN 'Bronze: ' || b.Name 
-        ELSE NULL END, ', ') AS UserBadges
+        ELSE NULL END)), ', ') AS UserBadges
 FROM PostAggregate pa
 LEFT JOIN Badges b ON pa.OwnerUserId = b.UserId
 GROUP BY pa.PostId, pa.Title, pa.ViewCount, pa.TotalEdits, pa.TotalCloses, 

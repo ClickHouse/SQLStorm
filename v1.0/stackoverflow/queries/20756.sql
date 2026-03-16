@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score > 0
 ),
 TopUsers AS (
@@ -58,7 +58,7 @@ SELECT
     COALESCE(SUM(CASE WHEN pc.CloseReason IS NOT NULL THEN 1 ELSE 0 END), 0) AS TotalClosures,
     COALESCE(SUM(DISTINCT upl.LinkCount), 0) AS TotalLinks,
     SUM(TotalBadgeClass) AS UserBadges,
-    STRING_AGG(DISTINCT pc.CloseReason, ', ') AS CloseReasons
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pc.CloseReason))), ', ') AS CloseReasons
 FROM 
     TopUsers up
 JOIN 

@@ -69,7 +69,7 @@ JOIN
 WHERE 
     rp.PostRank = 1 
   AND 
-    rp.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
+    rp.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
 ORDER BY 
     rp.VoteCount DESC, 
     rp.CommentCount DESC;

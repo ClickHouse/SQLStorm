@@ -69,4 +69,4 @@ WHERE
     )
 ORDER BY 
     up.Reputation DESC, rp.Score DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

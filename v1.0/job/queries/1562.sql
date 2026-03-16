@@ -12,7 +12,7 @@ FilteredMovies AS (
     SELECT 
         t.title,
         c.name AS company_name,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COUNT(DISTINCT ci.person_id) AS actor_count,
         MAX(t.production_year) AS last_production_year
     FROM 

@@ -4,9 +4,9 @@ WITH MovieDetails AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT ak.name, ',') AS aka_names,
-        STRING_AGG(DISTINCT c.name, ',') AS company_names,
-        STRING_AGG(DISTINCT kw.keyword, ',') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ',') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ',') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ',') AS keywords,
         ROW_NUMBER() OVER (PARTITION BY t.id ORDER BY t.production_year DESC) AS rn
     FROM 
         aka_title t

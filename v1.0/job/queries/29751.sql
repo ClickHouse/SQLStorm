@@ -33,7 +33,7 @@ company_details AS (
 movie_info_details AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, ', ') AS movie_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS movie_info
     FROM movie_info mi
     WHERE mi.note IS NOT NULL
     GROUP BY mi.movie_id
@@ -42,9 +42,9 @@ SELECT
     rm.movie_id,
     rm.title,
     rm.production_year,
-    STRING_AGG(DISTINCT ar.actor_name || ' (' || ar.role_name || ')', ', ') AS actor_roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ar.actor_name || ' (' || ar.role_name || ')'))), ', ') AS actor_roles,
     COUNT(DISTINCT cd.company_name) AS num_companies,
-    STRING_AGG(DISTINCT cd.company_type, ', ') AS company_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.company_type))), ', ') AS company_types,
     mid.movie_info
 FROM ranked_movies rm
 LEFT JOIN actor_roles ar ON rm.movie_id = ar.movie_id

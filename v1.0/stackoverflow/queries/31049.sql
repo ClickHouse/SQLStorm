@@ -32,7 +32,7 @@ SELECT
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
     MAX(COALESCE(b.Class, 0)) AS HighestBadgeClass,
     ph.Level AS QuestionLevel,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     PostHierarchy ph
 JOIN 
@@ -46,7 +46,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON b.UserId = u.Id
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag ON tag IS NOT NULL
+    arrayJoin(splitByString(',', p.Tags)) AS tag ON tag IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = TRIM(tag) 
 WHERE 

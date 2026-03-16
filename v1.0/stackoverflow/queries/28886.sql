@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -68,7 +68,7 @@ SELECT
     pwvcs.TotalDownvotes,
     pwvcs.TotalComments,
     (pwvcs.TotalUpvotes - pwvcs.TotalDownvotes) AS NetScore,
-    (EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - pwvcs.CreationDate)) / 86400) AS AgeInDays
+    (toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - pwvcs.CreationDate)) / 86400) AS AgeInDays
 FROM 
     PostWithVoteAndCommentStats pwvcs
 WHERE 

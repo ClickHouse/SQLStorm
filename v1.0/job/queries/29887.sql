@@ -27,7 +27,7 @@ TopMovies AS (
 MovieCast AS (
     SELECT
         tc.movie_id,
-        ARRAY_AGG(DISTINCT ak.name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actors,
         COUNT(DISTINCT ac.person_id) AS cast_count
     FROM
         complete_cast tc

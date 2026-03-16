@@ -11,7 +11,7 @@ WITH UserActivity AS (
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     LEFT JOIN Comments C ON U.Id = C.UserId
     LEFT JOIN Votes V ON V.UserId = U.Id
-    WHERE U.CreationDate >= cast('2024-10-01' as date) - INTERVAL '2 years'
+    WHERE U.CreationDate >= cast('2024-10-01' as date) - INTERVAL 2 YEAR
     GROUP BY U.Id, U.DisplayName, U.Reputation
 ),
 TopUsers AS (

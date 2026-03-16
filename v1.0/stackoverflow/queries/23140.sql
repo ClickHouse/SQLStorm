@@ -23,7 +23,7 @@ TopPosts AS (
     LEFT JOIN 
         Votes V ON V.PostId = P.Id
     WHERE 
-        P.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year')
+        P.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR)
     GROUP BY 
         P.Id, P.PostTypeId, P.AcceptedAnswerId
 ),
@@ -42,7 +42,7 @@ BadgeSummary AS (
 PostHistoryAggregated AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(PHT.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes,
         COUNT(*) AS HistoryCount
     FROM 
         PostHistory PH

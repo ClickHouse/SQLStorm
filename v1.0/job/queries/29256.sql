@@ -37,7 +37,7 @@ SELECT
     COUNT(DISTINCT keyword) AS total_keywords,
     COUNT(DISTINCT company_name) AS total_companies,
     MAX(production_year) AS last_movie_year,
-    STRING_AGG(DISTINCT role, ', ') AS roles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(role))), ', ') AS roles
 FROM FullBenchmarkInfo
 GROUP BY actor_name
 ORDER BY total_movies DESC, actor_name;

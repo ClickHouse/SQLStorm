@@ -28,7 +28,7 @@ TaggedPosts AS (
     FROM 
         RankedPosts rp
     CROSS JOIN 
-        (SELECT DISTINCT UNNEST(string_to_array(rp.Tags, '><')) AS TagName FROM RankedPosts) t 
+        (SELECT DISTINCT arrayJoin(splitByString('><', rp.Tags)) AS TagName FROM RankedPosts) t 
     WHERE 
         rp.RankInLocation <= 5 
 ),
@@ -41,7 +41,7 @@ BadgeCounts AS (
     JOIN 
         Users u ON b.UserId = u.Id
     WHERE 
-        b.Date > DATE '2024-10-01' - INTERVAL '1 year' 
+        b.Date > toDate('2024-10-01') - INTERVAL 1 YEAR 
     GROUP BY 
         u.Id
 )

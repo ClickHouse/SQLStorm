@@ -35,7 +35,7 @@ SELECT
     rm.title,
     rm.production_year,
     COALESCE(ac.actor_count, 0) AS number_of_actors,
-    STRING_AGG(DISTINCT CONCAT(mc.company_name, ' (', mc.company_type, ')'), '; ') AS companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(mc.company_name, ' (', mc.company_type, ')')))), '; ') AS companies
 FROM 
     RankedMovies rm
 LEFT JOIN 

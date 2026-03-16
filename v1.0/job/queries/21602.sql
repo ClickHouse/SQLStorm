@@ -15,7 +15,7 @@ actors AS (
         ak.person_id AS person_id,
         ak.name AS actor_name,
         COUNT(c.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT m.title, ', ') AS movies_starred
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.title))), ', ') AS movies_starred
     FROM 
         aka_name ak
     JOIN 

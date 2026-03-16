@@ -69,7 +69,7 @@ SELECT
     tp.AnswerCount,
     tp.CommentCount,
     tp.PopularityRank,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
     AVG(v.BountyAmount) AS AverageBounty
 FROM 
     TopPosts tp

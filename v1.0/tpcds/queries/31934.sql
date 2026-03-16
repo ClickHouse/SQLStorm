@@ -77,4 +77,4 @@ JOIN best_selling_items b ON b.total_quantity_sold = (SELECT MAX(total_quantity_
 JOIN sales_summary ss ON ss.total_orders = (SELECT MAX(total_orders) FROM sales_summary)
 WHERE a.level = 1
 ORDER BY c.total_spent DESC, a.c_last_name ASC
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;

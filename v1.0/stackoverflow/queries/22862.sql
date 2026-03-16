@@ -25,7 +25,7 @@ RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     GROUP BY 
         p.Id, p.Title, p.CreationDate, pt.Name, u.DisplayName
 ),
@@ -43,7 +43,7 @@ VoteSummary AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CONCAT(pt.Name, ' by ', ph.UserDisplayName), ', ') AS History,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(pt.Name, ' by ', ph.UserDisplayName))), ', ') AS History,
         MAX(ph.CreationDate) AS LastModified
     FROM 
         PostHistory ph
@@ -81,6 +81,6 @@ FROM
     FinalData
 WHERE 
     (UpVotes - DownVotes) > 10
-    OR (CommentCount > 5 AND LastModified > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days'))
+    OR (CommentCount > 5 AND LastModified > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY))
 ORDER BY 
     CreationDate DESC;

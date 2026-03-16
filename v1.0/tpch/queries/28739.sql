@@ -5,8 +5,8 @@ SELECT
     AVG(l.l_extendedprice) AS avg_price,
     COUNT(DISTINCT o.o_orderkey) AS unique_orders,
     MAX(l.l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
-    STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS market_segments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS market_segments
 FROM 
     customer c
 JOIN 

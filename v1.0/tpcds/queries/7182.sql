@@ -10,7 +10,7 @@ WITH recent_sales AS (
     JOIN 
         date_dim dd ON ws.ws_sold_date_sk = dd.d_date_sk
     WHERE 
-        dd.d_date >= CAST('2002-10-01' AS DATE) - INTERVAL '1 year'
+        dd.d_date >= CAST('2002-10-01' AS DATE) - INTERVAL 1 YEAR
     GROUP BY 
         ws_item_sk, CAST(d_date AS DATE)
 ),

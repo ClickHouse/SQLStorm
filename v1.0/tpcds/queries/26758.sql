@@ -44,4 +44,4 @@ FROM
     AggregatedData
 ORDER BY 
     customer_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

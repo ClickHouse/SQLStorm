@@ -34,7 +34,7 @@ PostCommentAggregates AS (
     SELECT 
         p.Id AS PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, ' | ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS Comments
     FROM 
         Posts p
     LEFT JOIN 
@@ -46,7 +46,7 @@ ClosedPostDetails AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastClosedDate,
-        STRING_AGG(pr.Name, ', ') AS ClosureReasons
+        arrayStringConcat(groupArray(assumeNotNull(pr.Name)), ', ') AS ClosureReasons
     FROM 
         PostHistory ph
     JOIN 

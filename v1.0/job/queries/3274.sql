@@ -50,7 +50,7 @@ SELECT
     md.production_year,
     COALESCE(md.company_name, 'Independent') AS production_company,
     COUNT(DISTINCT ci.person_id) AS total_actors,
-    ARRAY_AGG(DISTINCT k.keyword) AS movie_keywords
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS movie_keywords
 FROM 
     MovieDetails md
 LEFT JOIN 

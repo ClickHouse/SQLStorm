@@ -44,4 +44,4 @@ JOIN
 ORDER BY 
     sd.total_profit DESC, 
     ci.customer_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

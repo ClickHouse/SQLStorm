@@ -21,7 +21,7 @@ MovieDetails AS (
         m.production_year,
         COALESCE(c.name, 'Unknown') AS company_name,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ci.note, ', ') AS role_notes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), ', ') AS role_notes
     FROM 
         RankedMovies m
     LEFT JOIN 

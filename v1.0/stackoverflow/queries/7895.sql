@@ -48,7 +48,7 @@ SELECT
     t.DownVotes,
     t.AvgReputation,
     t.BadgeCount,
-    (SELECT STRING_AGG(DISTINCT CASE WHEN p.Tags IS NOT NULL THEN p.Tags END, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN p.Tags IS NOT NULL THEN p.Tags END))), ', ') 
      FROM Posts p 
      WHERE p.OwnerUserId = t.UserId) AS Tags 
 FROM 

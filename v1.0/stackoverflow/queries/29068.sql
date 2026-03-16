@@ -48,7 +48,7 @@ TagCount AS (
         COUNT(*) AS PostCount
     FROM (
         SELECT 
-            unnest(string_to_array(Tags, ',')) AS tag
+            arrayJoin(splitByString(',', Tags)) AS tag
         FROM 
             FilteredPosts
     ) AS TagsTable
@@ -76,7 +76,7 @@ SELECT
 FROM 
     FilteredPosts fp
 JOIN 
-    TopTags tt ON tt.Tag IN (SELECT TRIM(tag) FROM unnest(string_to_array(fp.Tags, ',')) AS tag)
+    TopTags tt ON tt.Tag IN (SELECT TRIM(tag) FROM arrayJoin(splitByString(',', fp.Tags)) AS tag)
 WHERE 
     tt.Rank <= 5  
 ORDER BY 

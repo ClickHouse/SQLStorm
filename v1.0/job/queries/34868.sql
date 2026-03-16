@@ -26,7 +26,7 @@ movie_details AS (
         mt.id,
         mt.title,
         mt.production_year,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
         NULLIF(COUNT(DISTINCT mw.keyword_id), 0) AS keyword_count
     FROM aka_title mt
     LEFT JOIN movie_keyword mw ON mt.id = mw.movie_id

@@ -30,7 +30,7 @@ TopUsers AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(*) AS BadgeCount
     FROM 
         Badges b
@@ -49,7 +49,7 @@ RecentVotes AS (
     JOIN 
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE 
-        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 )
 SELECT 
     u.DisplayName,

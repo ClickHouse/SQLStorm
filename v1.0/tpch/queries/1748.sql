@@ -27,7 +27,7 @@ OrderDetails AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate >= DATE '1997-01-01'
+        l.l_shipdate >= toDate('1997-01-01')
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 )
@@ -35,7 +35,7 @@ SELECT
     r.r_name,
     COALESCE(SUM(od.total_revenue), 0) AS total_revenue,
     COUNT(DISTINCT c.c_custkey) AS high_value_customer_count,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS top_suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS top_suppliers
 FROM 
     region r
 LEFT JOIN 

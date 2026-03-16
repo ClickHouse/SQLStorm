@@ -28,7 +28,7 @@ AggregatedData AS (
         a.ca_city, 
         a.ca_state, 
         COUNT(DISTINCT c.c_customer_sk) AS customer_count, 
-        STRING_AGG(DISTINCT c.full_name, ', ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.full_name))), ', ') AS customer_names
     FROM 
         AddressDetails a
     LEFT JOIN 

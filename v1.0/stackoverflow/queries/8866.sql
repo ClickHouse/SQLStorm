@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '6 MONTH'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, u.DisplayName
 ),

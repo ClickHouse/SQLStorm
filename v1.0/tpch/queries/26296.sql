@@ -27,7 +27,7 @@ AggregatedResults AS (
         CONCAT(UPPER(p.p_brand), ' - ', p.p_type) AS BrandType,
         COUNT(*) AS TotalParts,
         AVG(CommentLength) AS AvgCommentLength,
-        STRING_AGG(DISTINCT SupplierProduct, '; ') AS SupplierList,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SupplierProduct))), '; ') AS SupplierList,
         MAX(UpdatedComment) AS LongestUpdatedComment
     FROM 
         StringProcessing p

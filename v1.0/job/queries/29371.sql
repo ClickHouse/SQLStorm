@@ -2,7 +2,7 @@
 WITH movie_cast AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(a.name, ', ') AS actor_names,
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actor_names,
         COUNT(DISTINCT c.person_id) AS actor_count
     FROM 
         cast_info c
@@ -25,7 +25,7 @@ movie_genre AS (
 movie_info_data AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(mi.info, ', ') AS info_details
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS info_details
     FROM 
         movie_info mi
     GROUP BY 
@@ -51,7 +51,7 @@ SELECT
     movie_title,
     actor_names,
     actor_count,
-    STRING_AGG(DISTINCT genre, ', ') AS genres,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(genre))), ', ') AS genres,
     info_details
 FROM 
     summary

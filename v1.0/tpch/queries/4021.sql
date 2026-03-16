@@ -16,8 +16,8 @@ SupplierOrders AS (
         AVG(l.l_discount) AS avg_discount
     FROM lineitem l
     JOIN orders o ON l.l_orderkey = o.o_orderkey
-    WHERE o.o_orderdate >= DATE '1997-01-01' 
-      AND o.o_orderdate < DATE '1997-12-31'
+    WHERE o.o_orderdate >= toDate('1997-01-01') 
+      AND o.o_orderdate < toDate('1997-12-31')
     GROUP BY l.l_orderkey, l.l_partkey, l.l_suppkey
 ),
 AggregatedSuppliers AS (

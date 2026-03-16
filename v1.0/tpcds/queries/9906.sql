@@ -62,4 +62,4 @@ JOIN
 ORDER BY 
     ts.total_profit DESC, 
     ts.total_net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

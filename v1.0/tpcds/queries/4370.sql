@@ -50,5 +50,5 @@ WHERE
     (sr.total_returned > 0 OR sr.ss_net_profit > 1000)
 ORDER BY 
     adjusted_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;
 

@@ -1,6 +1,6 @@
 SELECT 
     t.title AS movie_title,
-    array_agg(DISTINCT a.name) AS actors,
+    arrayDistinct(groupArray(assumeNotNull(a.name))) AS actors,
     co.name AS company_name,
     k.keyword AS movie_keyword,
     info.info AS additional_info

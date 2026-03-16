@@ -17,7 +17,7 @@ WITH SupplierPartDetails AS (
 )
 SELECT 
     supplier_name,
-    STRING_AGG(details, '; ') AS detailed_info
+    arrayStringConcat(groupArray(assumeNotNull(details)), '; ') AS detailed_info
 FROM 
     SupplierPartDetails
 WHERE 

@@ -39,7 +39,7 @@ SELECT
     tm.production_year,
     tm.num_cast_members,
     (SELECT COUNT(*) FROM movie_link ml WHERE ml.movie_id = tm.movie_id) AS num_links,
-    (SELECT STRING_AGG(DISTINCT cn.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') 
      FROM movie_companies mc 
      JOIN company_name cn ON mc.company_id = cn.id 
      WHERE mc.movie_id = tm.movie_id) AS company_names,

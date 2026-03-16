@@ -18,7 +18,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Badges bh ON bh.UserId = p.OwnerUserId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
 ),
@@ -35,7 +35,7 @@ UserStats AS (
     LEFT JOIN 
         Posts p ON p.OwnerUserId = u.Id
     WHERE 
-        u.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
+        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
     GROUP BY 
         u.Id, u.DisplayName
 )

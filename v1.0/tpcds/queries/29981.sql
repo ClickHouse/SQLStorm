@@ -20,7 +20,7 @@ customer_string_summary AS (
         rc.ca_city,
         rc.ca_state,
         COUNT(*) AS customer_count,
-        STRING_AGG(rc.c_first_name || ' ' || rc.c_last_name, ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(rc.c_first_name || ' ' || rc.c_last_name)), ', ') AS customer_names
     FROM 
         ranked_customers rc
     WHERE 

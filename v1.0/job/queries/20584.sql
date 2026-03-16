@@ -38,7 +38,7 @@ complex_movies AS (
         m.title,
         m.production_year,
         COUNT(DISTINCT mc.company_id) AS company_count,
-        STRING_AGG(DISTINCT c.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS company_names
     FROM 
         aka_title m
     LEFT JOIN 

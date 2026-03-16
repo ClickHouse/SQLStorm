@@ -4,7 +4,7 @@ WITH movie_details AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COUNT(DISTINCT mi.info) AS info_count,
         AVG(CASE WHEN t.kind_id = 1 THEN 1 ELSE NULL END) OVER (PARTITION BY t.production_year) AS avg_feature_length
     FROM 

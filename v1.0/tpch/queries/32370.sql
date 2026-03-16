@@ -24,7 +24,7 @@ PartSupplierCount AS (
 AvgLineitemPrice AS (
     SELECT l_partkey, AVG(l_extendedprice * (1 - l_discount)) AS avg_price
     FROM lineitem
-    WHERE l_shipdate >= DATE '1996-01-01' 
+    WHERE l_shipdate >= toDate('1996-01-01') 
     GROUP BY l_partkey
 )
 SELECT 

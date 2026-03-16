@@ -33,7 +33,7 @@ SELECT
     COALESCE(cn.name, 'Unknown Company') AS Company_Name,
     COUNT(DISTINCT ci.person_id) AS Total_Cast_Members,
     SUM(CASE WHEN ci.role_id IS NULL THEN 1 ELSE 0 END) AS NULL_Role_Count,
-    STRING_AGG(CONCAT(a.name, ' (', COALESCE(ki.keyword, 'No Keyword'), ')'), ', ') AS Cast_With_Keywords,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.name, ' (', COALESCE(ki.keyword, 'No Keyword'), ')'))), ', ') AS Cast_With_Keywords,
     ROW_NUMBER() OVER (PARTITION BY m.id ORDER BY m.production_year DESC) AS Movie_Rank
 FROM
     movie_companies AS mc

@@ -33,7 +33,7 @@ SELECT cs.c_name,
        ps.ps_suppkey,
        CASE 
            WHEN ps.total_cost IS NULL THEN 'No Suppliers'
-           ELSE ps.total_cost::text
+           ELSE CAST(ps.total_cost AS text)
        END AS supplier_cost,
        sr.nation,
        sr.region

@@ -41,7 +41,7 @@ SELECT
     us.Answers,
     us.AcceptedAnswers,
     us.AvgVotes,
-    STRING_AGG(tt.TagName, ', ') AS PopularTags
+    arrayStringConcat(groupArray(assumeNotNull(tt.TagName)), ', ') AS PopularTags
 FROM UserStats us
 LEFT JOIN TopTags tt ON us.Questions > 0
 GROUP BY us.UserId, us.DisplayName, us.Reputation, us.TotalPosts, us.Questions, us.Answers, us.AcceptedAnswers, us.AvgVotes

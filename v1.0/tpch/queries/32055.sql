@@ -26,7 +26,7 @@ SELECT n.n_name AS nation_name,
        COUNT(DISTINCT o.o_orderkey) AS order_count,
        SUM(ps.ps_availqty) AS total_available_qty,
        AVG(sp.level) AS avg_supplier_level,
-       STRING_AGG(DISTINCT CONCAT('Part: ', rp.p_name, ' (Price: ', rp.p_retailprice, ')'), ', ') AS parts_info
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Part: ', rp.p_name, ' (Price: ', rp.p_retailprice, ')')))), ', ') AS parts_info
 FROM nation n
 LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey
 LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey

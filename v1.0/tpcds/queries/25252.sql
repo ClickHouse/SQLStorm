@@ -2,8 +2,8 @@ WITH AddressStats AS (
     SELECT 
         ca_state, 
         COUNT(ca_address_sk) AS address_count,
-        STRING_AGG(ca_street_name, ',') AS street_names,
-        STRING_AGG(DISTINCT ca_city, ',') AS distinct_cities
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ',') AS street_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ',') AS distinct_cities
     FROM 
         customer_address
     GROUP BY 

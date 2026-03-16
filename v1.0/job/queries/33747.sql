@@ -15,7 +15,7 @@ MovieStats AS (
         rm.movie_id,
         COUNT(c.id) AS cast_count,
         AVG(COALESCE(CAST(pi.info AS FLOAT), 0)) AS avg_salary,
-        STRING_AGG(DISTINCT g.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(g.keyword))), ', ') AS genres
     FROM 
         RankedMovies rm
     JOIN 

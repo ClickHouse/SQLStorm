@@ -41,7 +41,7 @@ SELECT
     tr.movie_id,
     tr.title,
     tr.production_year,
-    STRING_AGG(ri.role || ' (' || ci.number_of_cast || ')', ', ' ORDER BY ci.number_of_cast DESC) AS cast_info
+    arrayStringConcat(groupArray(assumeNotNull(ri.role || ' (' || ci.number_of_cast || ')')), ', ' ORDER BY ci.number_of_cast DESC) AS cast_info
 FROM 
     TopRankedMovies tr
 JOIN 

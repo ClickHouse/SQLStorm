@@ -51,7 +51,7 @@ SELECT
     md.role_count,
     COUNT(DISTINCT mc.company_id) AS num_companies,
     COUNT(DISTINCT mk.keyword_id) AS num_keywords,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     MovieDetails md
 LEFT JOIN 

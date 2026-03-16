@@ -48,7 +48,7 @@ SELECT
         THEN 'High Revenue'
         ELSE 'Low Revenue'
     END AS revenue_status,
-    ARRAY_AGG(DISTINCT rd.r_name) AS regions
+    arrayDistinct(groupArray(assumeNotNull(rd.r_name))) AS regions
 FROM 
     part p
 LEFT JOIN 

@@ -3,7 +3,7 @@ SELECT
     a.name AS actor_name,
     t.title AS movie_title,
     t.production_year,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
     ct.kind AS company_type,
     pi.info AS person_info
 FROM

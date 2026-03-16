@@ -51,6 +51,6 @@ FROM UserReputation ur
 JOIN Posts p ON ur.Id = p.OwnerUserId
 JOIN PostStatistics ps ON p.Id = ps.PostId
 LEFT JOIN BadgeSummary bs ON ur.Id = bs.UserId
-WHERE ur.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+WHERE ur.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ORDER BY ur.Reputation DESC, ps.ViewCount DESC
 LIMIT 50;

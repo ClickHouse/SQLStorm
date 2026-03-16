@@ -39,7 +39,7 @@ FilteredMovies AS (
     SELECT 
         mt.title, 
         mt.production_year,
-        CAST(STRING_AGG(DISTINCT cm.company_name || ' (' || cm.company_kind || ')', ', ') AS VARCHAR) AS company_info,
+        CAST(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cm.company_name || ' (' || cm.company_kind || ')'))), ', ') AS VARCHAR) AS company_info,
         COUNT(DISTINCT cr.person_id) AS unique_cast_count,
         SUM(cr.total_roles) FILTER (WHERE cr.role <> 'Unknown Role') AS known_role_count
     FROM 

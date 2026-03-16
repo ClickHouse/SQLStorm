@@ -55,8 +55,8 @@ SELECT
         WHEN fp.UpvoteCount < fp.DownvoteCount THEN 'Negative'
         ELSE 'Neutral'
     END AS Sentiment,
-    ARRAY_AGG(v.UserId) FILTER (WHERE v.VoteTypeId = 2) AS UpvotedBy,
-    ARRAY_AGG(v.UserId) FILTER (WHERE v.VoteTypeId = 3) AS DownvotedBy
+    groupArray(assumeNotNull(v.UserId)) FILTER (WHERE v.VoteTypeId = 2) AS UpvotedBy,
+    groupArray(assumeNotNull(v.UserId)) FILTER (WHERE v.VoteTypeId = 3) AS DownvotedBy
 FROM 
     FilteredPosts fp
 LEFT JOIN 

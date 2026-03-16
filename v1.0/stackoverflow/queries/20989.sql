@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 UserStats AS (
@@ -82,7 +82,7 @@ FinalResults AS (
             WHEN Reputation BETWEEN 500 AND 999 THEN 'Intermediate'
             ELSE 'Novice'
         END AS UserTier,
-        ROUND(COALESCE(ViewCount / NULLIF(PostCount, 0), 0)::NUMERIC, 2) AS AvgViewsPerPost
+        ROUND(COALESCE(ViewCount / NULLIF(PostCount, 0), 0, CAST() AS NUMERIC), 2) AS AvgViewsPerPost
     FROM 
         CombinedStats
 )
@@ -101,7 +101,7 @@ SELECT
     fr.RelatedPostCount,
     fr.DuplicateLinks,
     fr.AvgViewsPerPost,
-    'Link Types: ' || STRING_AGG(DISTINCT lt.Name, ', ' ORDER BY lt.Name) AS LinkTypesInfo
+    'Link Types: ' || arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lt.Name))), ', ' ORDER BY lt.Name) AS LinkTypesInfo
 FROM 
     FinalResults fr
 LEFT JOIN 

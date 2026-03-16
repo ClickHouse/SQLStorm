@@ -49,7 +49,7 @@ SELECT
     cs.total_return_amount,
     CASE 
         WHEN cs.total_sales = 0 THEN 'No Sales'
-        ELSE ROUND((cs.total_returns::decimal / NULLIF(cs.total_sales, 0)) * 100, 2) || '%'
+        ELSE ROUND((CAST(cs.total_returns AS decimal) / NULLIF(cs.total_sales, 0)) * 100, 2) || '%'
     END AS return_rate
 FROM CombinedSales cs
 JOIN item i ON cs.cs_item_sk = i.i_item_sk

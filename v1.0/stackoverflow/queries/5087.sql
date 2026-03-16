@@ -33,7 +33,7 @@ RecentActivity AS (
     JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
+        ph.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
 )
 SELECT 
     rp.PostId,

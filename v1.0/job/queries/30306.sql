@@ -30,7 +30,7 @@ SELECT
             WHEN mp.info IS NULL THEN 0 
             ELSE LENGTH(mp.info) 
         END) AS average_info_length,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     MAX(mh.level) AS movie_depth
 FROM 
     cast_info ci

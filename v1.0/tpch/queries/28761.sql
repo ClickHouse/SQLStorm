@@ -28,7 +28,7 @@ WITH RankedSuppliers AS (
 )
 SELECT 
     F.NationName, 
-    STRING_AGG(CONCAT(F.s_name, ' (Parts: ', F.PartCount, ', Cost: ', F.TotalSupplyCost, ')'), '; ') AS SupplierDetails
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(F.s_name, ' (Parts: ', F.PartCount, ', Cost: ', F.TotalSupplyCost, ')'))), '; ') AS SupplierDetails
 FROM 
     FilteredSuppliers F
 GROUP BY 

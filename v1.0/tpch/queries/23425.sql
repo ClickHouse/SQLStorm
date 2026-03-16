@@ -44,7 +44,7 @@ LEFT JOIN SupplierOrders so ON n.n_nationkey = (
     SELECT s.s_nationkey
     FROM supplier s
     WHERE s.s_name LIKE CONCAT('%', n.n_name, '%')
-    FETCH FIRST 1 ROW ONLY
+    LIMIT 1
 )
 GROUP BY n.n_name
 HAVING COALESCE(SUM(so.supplier_sales), 0) > (SELECT AVG(total_sales_from_suppliers) FROM (
@@ -54,9 +54,9 @@ HAVING COALESCE(SUM(so.supplier_sales), 0) > (SELECT AVG(total_sales_from_suppli
         SELECT s.s_nationkey
         FROM supplier s
         WHERE s.s_name LIKE CONCAT('%', n2.n_name, '%')
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
     GROUP BY n2.n_name
 ) AS avg_sales)
 ORDER BY total_sales_from_suppliers DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

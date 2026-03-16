@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity, 
     AVG(p.p_retailprice) AS avg_retail_price,
     MAX(l.l_discount) AS max_discount,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS comments_summary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS comments_summary
 FROM 
     part p
 JOIN 

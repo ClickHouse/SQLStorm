@@ -8,7 +8,7 @@ SELECT
     COUNT(ss.ss_ticket_number) AS total_purchases,
     SUM(ss.ss_net_paid) AS total_spent,
     AVG(i.i_current_price) AS avg_item_price,
-    STRING_AGG(DISTINCT w.w_warehouse_name, ', ') AS warehouse_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(w.w_warehouse_name))), ', ') AS warehouse_names
 FROM 
     customer c
 JOIN 

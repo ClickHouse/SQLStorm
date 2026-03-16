@@ -15,7 +15,7 @@ FilteredTitles AS (
     WHERE keyword_rank <= 3
 )
 SELECT ft.title, ft.production_year, ft.company_name, COUNT(cc.subject_id) AS cast_count, 
-       ARRAY_AGG(DISTINCT ak.name) AS aka_names
+       arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aka_names
 FROM FilteredTitles ft
 LEFT JOIN complete_cast cc ON ft.title_id = cc.movie_id
 LEFT JOIN cast_info ci ON cc.subject_id = ci.person_id

@@ -39,7 +39,7 @@ MovieDetails AS (
     SELECT 
         t.title,
         COALESCE(MAX(ci.note), 'N/A') AS cast_notes,
-        STRING_AGG(DISTINCT mk.keyword_display, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.keyword_display))), ', ') AS keywords
     FROM 
         aka_title t
     LEFT JOIN 

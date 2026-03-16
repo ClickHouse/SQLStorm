@@ -32,7 +32,7 @@ AggregateData AS (
         COUNT(ft.title_id) AS title_count,
         MIN(ft.production_year) AS first_year,
         MAX(ft.production_year) AS last_year,
-        STRING_AGG(DISTINCT ft.title, ', ') AS titles_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ft.title))), ', ') AS titles_list,
         SUM(CASE WHEN ft.era = 'Modern' THEN 1 ELSE 0 END) AS modern_count
     FROM 
         FilteredTitles ft

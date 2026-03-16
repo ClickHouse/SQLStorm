@@ -47,7 +47,7 @@ SELECT
         WHEN TP.AnswerCount > 0 THEN 'Has Answers' 
         ELSE 'No Answers' 
     END AS AnswerStatus,
-    STRING_AGG(PT.Name, ', ') AS PostTypeNames
+    arrayStringConcat(groupArray(assumeNotNull(PT.Name)), ', ') AS PostTypeNames
 FROM 
     TopPosts TP
 LEFT JOIN 

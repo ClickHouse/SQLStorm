@@ -17,7 +17,7 @@ RecentVotes AS (
         SUM(CASE WHEN VT.Name IS NULL THEN 1 ELSE 0 END) AS NullVotes
     FROM Votes V
     JOIN VoteTypes VT ON V.VoteTypeId = VT.Id
-    WHERE V.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE V.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY V.UserId
 ),
 CombinedData AS (

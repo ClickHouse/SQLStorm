@@ -5,7 +5,7 @@ WITH PostTagCounts AS (
     FROM 
         Posts P
     JOIN 
-        UNNEST(string_to_array(SUBSTRING(P.Tags, 2, LENGTH(P.Tags)-2), '><')) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags)-2))) AS T(TagName) ON TRUE
     GROUP BY 
         P.Id
 ),

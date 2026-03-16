@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.PostTypeId
 ),
@@ -29,7 +29,7 @@ TopPosts AS (
 SELECT 
     u.Id AS UserId,
     u.DisplayName,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
     COALESCE(b.Class, 0) AS BadgeClass,
     tp.Title,
     tp.Score,

@@ -48,7 +48,7 @@ LEFT JOIN
 JOIN 
     HighValueParts hpp ON hpp.p_partkey = (SELECT l.l_partkey FROM lineitem l WHERE l.l_orderkey = o.o_orderkey LIMIT 1)
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' 
+    o.o_orderdate >= toDate('1997-01-01') 
     AND o.o_totalprice > (SELECT AVG(o_totalprice) FROM orders) 
 ORDER BY 
     o.o_orderdate DESC, total_revenue ASC;

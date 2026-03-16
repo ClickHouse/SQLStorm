@@ -18,7 +18,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -37,7 +37,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     rp.Title,
@@ -52,7 +52,7 @@ SELECT
         WHEN phd.PostId IS NOT NULL THEN 'Yes' 
         ELSE 'No' 
     END AS RecentlyEdited,
-    ARRAY_AGG(phd.Comment) AS RecentComments
+    groupArray(assumeNotNull(phd.Comment)) AS RecentComments
 FROM 
     RankedPosts rp
 JOIN 

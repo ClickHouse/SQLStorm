@@ -25,7 +25,7 @@ RecentUsers AS (
         u.Id, 
         u.DisplayName,
         CASE 
-            WHEN u.LastAccessDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days') THEN 'Active'
+            WHEN u.LastAccessDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) THEN 'Active'
             ELSE 'Inactive'
         END AS UserStatus
     FROM 

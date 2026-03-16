@@ -9,14 +9,14 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
         AND P.Score IS NOT NULL
 ),
 ClosedPosts AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(CAST(PH.Comment AS VARCHAR), '; ') AS CloseComments
+        arrayStringConcat(groupArray(assumeNotNull(CAST(PH.Comment AS VARCHAR))), '; ') AS CloseComments
     FROM 
         PostHistory PH
     WHERE 
@@ -72,4 +72,4 @@ WHERE
     AND (RP.ViewCount > 100 OR US.TotalUpvotes > 10)
 ORDER BY 
     RP.PostRank, RP.Title DESC NULLS LAST
-OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

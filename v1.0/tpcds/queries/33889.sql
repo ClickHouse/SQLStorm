@@ -50,4 +50,4 @@ WHERE
     AND address.ca_state IN ('CA', 'NY')
 ORDER BY 
     sales.total_sales DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

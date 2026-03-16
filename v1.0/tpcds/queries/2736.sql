@@ -54,4 +54,4 @@ WHERE
     ci.cd_purchase_estimate IS NOT NULL
 ORDER BY 
     total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

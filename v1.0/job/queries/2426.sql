@@ -24,7 +24,7 @@ FilteredMovies AS (
 MovieDetails AS (
     SELECT 
         m.production_year,
-        STRING_AGG(DISTINCT m.title, ', ') AS top_movies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.title))), ', ') AS top_movies,
         AVG(k.keyword_length) AS avg_keyword_length
     FROM 
         FilteredMovies m

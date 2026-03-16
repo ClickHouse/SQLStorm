@@ -21,11 +21,11 @@ WITH RECURSIVE SupplierHierarchy AS (
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE o.o_orderstatus = 'F'
 ), MonthlySales AS (
-    SELECT EXTRACT(MONTH FROM o.o_orderdate) AS month,
+    SELECT toMonth(o.o_orderdate) AS month,
            SUM(od.discounted_price) AS total_monthly_sales
     FROM OrderDetails od
     JOIN orders o ON od.o_orderkey = o.o_orderkey
-    GROUP BY EXTRACT(MONTH FROM o.o_orderdate)
+    GROUP BY toMonth(o.o_orderdate)
 ), CustomerDetails AS (
     SELECT c.c_custkey, c.c_name, c.c_nationkey, SUM(o.o_totalprice) AS total_spent
     FROM customer c
@@ -42,7 +42,7 @@ FROM part p
 LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 LEFT JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
 LEFT JOIN region rh ON s.s_nationkey = rh.r_regionkey
-LEFT JOIN MonthlySales d ON d.month = EXTRACT(MONTH FROM DATE '1998-10-01')
+LEFT JOIN MonthlySales d ON d.month = toMonth(toDate('1998-10-01'))
 LEFT JOIN CustomerDetails c ON c.total_spent > 100
 WHERE p.p_retailprice < 500 AND s.s_comment NOT LIKE '%damaged%'
 GROUP BY p.p_name, rh.r_name

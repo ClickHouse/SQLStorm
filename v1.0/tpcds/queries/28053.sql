@@ -14,7 +14,7 @@ SELECT
         WHEN sr.sr_return_amt > 0 THEN sr.sr_return_amt 
         ELSE 0 
     END) AS total_store_return_amount,
-    STRING_AGG(DISTINCT CONCAT(wp.wp_url, ' - ', wr.wr_order_number), '; ') AS web_page_urls_returned
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(wp.wp_url, ' - ', wr.wr_order_number)))), '; ') AS web_page_urls_returned
 FROM 
     customer c
 LEFT JOIN 

@@ -5,7 +5,7 @@ SELECT
     c.c_name,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     CONCAT('Total Orders: ', COUNT(DISTINCT o.o_orderkey)) AS order_summary,
     LEFT(s.s_comment, 50) || '...' AS supplier_comment_snippet
 FROM 
@@ -26,7 +26,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_name LIKE '%steel%'
-    AND o.o_orderdate >= DATE '1997-01-01'
+    AND o.o_orderdate >= toDate('1997-01-01')
 GROUP BY 
     p.p_name, s.s_name, c.c_name, s.s_comment
 ORDER BY 

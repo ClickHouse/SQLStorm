@@ -62,4 +62,4 @@ FROM customer c
 LEFT JOIN AverageSales a ON c.c_customer_sk = a.ss_store_sk 
 WHERE c.c_birth_year < 1980
 ORDER BY average_net_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

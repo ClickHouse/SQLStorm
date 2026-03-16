@@ -21,7 +21,7 @@ WITH UserStats AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(BOTH '{}' FROM unnest(string_to_array(Tags, '><'))) AS TagName,
+        TRIM(BOTH '{}' FROM arrayJoin(splitByString('><', Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts 

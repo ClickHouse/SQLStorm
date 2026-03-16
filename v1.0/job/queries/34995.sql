@@ -32,8 +32,8 @@ SELECT
     mh.path,
     COUNT(DISTINCT mc.company_id) AS company_count,
     SUM(CASE WHEN ci.role_id IS NOT NULL THEN 1 ELSE 0 END) AS cast_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-    ARRAY_AGG(DISTINCT mv.info) FILTER (WHERE mv.info IS NOT NULL) AS movie_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+    arrayDistinct(groupArray(assumeNotNull(mv.info))) FILTER (WHERE mv.info IS NOT NULL) AS movie_info
 FROM 
     MovieHierarchy mh
 LEFT JOIN 

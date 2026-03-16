@@ -1,7 +1,7 @@
 
 WITH TagFrequency AS (
     SELECT 
-        unnest(string_to_array(trim(both '<>' from Tags), '>')) AS TagName,
+        arrayJoin(splitByString('>', trim(both '<>' from Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -45,7 +45,7 @@ PostInsights AS (
         SELECT 
             C.PostId, 
             COUNT(*) AS CommentCount,
-            ARRAY_AGG(DISTINCT trim(both '<>' from Tags)) AS TagList
+            arrayDistinct(groupArray(assumeNotNull(trim(both '<>' from Tags)))) AS TagList
         FROM 
             Comments C
         JOIN 

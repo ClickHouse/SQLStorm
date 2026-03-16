@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.PostTypeId IN (1, 2)  
 ),
 TopPosts AS (
@@ -43,11 +43,11 @@ PostComments AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        LATERAL (SELECT UNNEST(string_to_array(p.Tags, ',')) AS TagName) AS t ON TRUE
+        (SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName) AS t ON TRUE
     GROUP BY 
         p.Id
 )

@@ -71,4 +71,4 @@ WHERE
 ORDER BY 
     cs.total_store_spent DESC, 
     cs.total_web_spent DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

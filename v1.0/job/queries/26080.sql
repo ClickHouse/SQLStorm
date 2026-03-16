@@ -4,9 +4,9 @@ WITH movie_details AS (
         m.id AS movie_id,
         m.title AS movie_title,
         m.production_year,
-        STRING_AGG(DISTINCT a.name, ', ' ORDER BY a.name) AS actors,
-        STRING_AGG(DISTINCT k.keyword, ', ' ORDER BY k.keyword) AS keywords,
-        COALESCE(STRING_AGG(DISTINCT c.name, ', ' ORDER BY c.name), 'No company') AS production_companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ' ORDER BY a.name) AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ' ORDER BY k.keyword) AS keywords,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ' ORDER BY c.name), 'No company') AS production_companies
     FROM 
         aka_title m
     LEFT JOIN 

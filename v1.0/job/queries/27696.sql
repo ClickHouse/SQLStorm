@@ -62,7 +62,7 @@ SELECT
     title,
     production_year,
     COUNT(DISTINCT actor_name) AS total_actors,
-    STRING_AGG(DISTINCT company_name || ' (' || company_type || ')', ', ') AS companies_involved,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name || ' (' || company_type || ')'))), ', ') AS companies_involved,
     MIN(rank_within_year) AS min_rank_within_year,
     MAX(actor_rank) AS max_actor_rank
 FROM 

@@ -17,8 +17,8 @@ JOIN
 WHERE 
     LENGTH(s.s_name) > 10 
     AND p.p_retailprice BETWEEN 10.00 AND 100.00 
-    AND o.o_orderdate >= DATE '1997-01-01' 
-    AND o.o_orderdate < DATE '1997-10-01' 
+    AND o.o_orderdate >= toDate('1997-01-01') 
+    AND o.o_orderdate < toDate('1997-10-01') 
 GROUP BY 
     p.p_name, s.s_name
 HAVING 

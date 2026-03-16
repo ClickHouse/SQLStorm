@@ -19,8 +19,8 @@ MovieDetails AS (
         rm.movie_id,
         rm.title,
         rm.production_year,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies,
         COUNT(DISTINCT ci.person_id) AS cast_count
     FROM 
         RankedMovies rm

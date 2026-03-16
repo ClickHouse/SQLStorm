@@ -42,7 +42,7 @@ SELECT
     tp.CommentCount,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = tp.PostId AND v.VoteTypeId = 2) AS UpVotes,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = tp.PostId AND v.VoteTypeId = 3) AS DownVotes,
-    (SELECT STRING_AGG(t.TagName, ', ') FROM Posts p JOIN Tags t ON p.Tags LIKE CONCAT('%', t.TagName, '%') WHERE p.Id = tp.PostId) AS TagsUsed
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') FROM Posts p JOIN Tags t ON p.Tags LIKE CONCAT('%', t.TagName, '%') WHERE p.Id = tp.PostId) AS TagsUsed
 FROM 
     TopPosts tp
 ORDER BY 

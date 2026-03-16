@@ -9,11 +9,11 @@ WITH RankedPosts AS (
         p.Tags,
         p.Score,
         p.ViewCount,
-        ROW_NUMBER() OVER (PARTITION BY STRING_AGG(t.TagName, ',') ORDER BY p.Score DESC) AS TagRank
+        ROW_NUMBER() OVER (PARTITION BY arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ',') ORDER BY p.Score DESC) AS TagRank
     FROM
         Posts p
     JOIN
-        UNNEST(string_to_array(p.Tags, '<>')) AS tag ON TRUE
+        arrayJoin(splitByString('<>', p.Tags)) AS tag ON TRUE
     JOIN
         Tags t ON t.TagName = tag
     WHERE

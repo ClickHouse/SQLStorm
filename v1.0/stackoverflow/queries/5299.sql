@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     FROM Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.ViewCount, p.Score, u.DisplayName, p.PostTypeId
 ),
 TopPosts AS (
@@ -39,7 +39,7 @@ SELECT
     tp.UpVoteCount,
     tp.DownVoteCount,
     pt.Name AS PostTypeName,
-    ARRAY_AGG(t.TagName) AS Tags
+    groupArray(assumeNotNull(t.TagName)) AS Tags
 FROM TopPosts tp
 JOIN PostTypes pt ON pt.Id = (SELECT PostTypeId FROM Posts WHERE Id = tp.PostId)
 LEFT JOIN Tags t ON t.ExcerptPostId = tp.PostId

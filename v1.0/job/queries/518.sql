@@ -24,7 +24,7 @@ CastInfoWithRoles AS (
 ActorNames AS (
     SELECT 
         an.person_id,
-        STRING_AGG(an.name, ', ') AS actor_names
+        arrayStringConcat(groupArray(assumeNotNull(an.name)), ', ') AS actor_names
     FROM 
         aka_name an
     GROUP BY 

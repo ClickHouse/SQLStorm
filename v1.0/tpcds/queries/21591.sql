@@ -52,7 +52,7 @@ SELECT
     tc.c_customer_sk,
     tc.order_count,
     tc.total_spent,
-    STRING_AGG(CONCAT('Item: ', fs.ws_item_sk, ', Price: ', fs.ws_sales_price), '; ') AS item_sales_detail
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT('Item: ', fs.ws_item_sk, ', Price: ', fs.ws_sales_price))), '; ') AS item_sales_detail
 FROM 
     TopCustomers tc
 JOIN 

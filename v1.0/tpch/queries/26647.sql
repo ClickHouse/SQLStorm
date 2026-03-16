@@ -29,7 +29,7 @@ SELECT
     a.AvgCommentLength, 
     a.UniqueDescriptions, 
     a.TotalParts,
-    STRING_AGG(SHORTNAME, ', ') AS ShortNames
+    arrayStringConcat(groupArray(assumeNotNull(SHORTNAME)), ', ') AS ShortNames
 FROM 
     AggregatedResults a,
     StringBenchmark b

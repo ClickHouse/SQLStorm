@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         p.Tags,
-        ROW_NUMBER() OVER (PARTITION BY unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) ORDER BY p.CreationDate DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) ORDER BY p.CreationDate DESC) AS Rank
     FROM 
         Posts p
     WHERE 

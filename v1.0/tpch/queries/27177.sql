@@ -5,7 +5,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_quantity,
     MIN(CASE WHEN l.l_returnflag = 'N' THEN l.l_shipdate END) AS first_shipped_date,
     MAX(l.l_shipdate) AS last_shipped_date,
-    STRING_AGG(DISTINCT CONCAT_WS(' | ', c.c_name, c.c_acctbal), ', ') AS customers_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' | ', c.c_name, c.c_acctbal)))), ', ') AS customers_info
 FROM 
     part p
 JOIN 

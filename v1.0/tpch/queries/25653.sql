@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     AVG(o.o_totalprice) AS average_order_price,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     MAX(length(s.s_comment)) AS max_supplier_comment_length,
     MIN(length(p.p_comment)) AS min_part_comment_length,
     CONCAT('Supplier: ', s.s_name, ' | Part: ', p.p_name) AS supplier_part_summary

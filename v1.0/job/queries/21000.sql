@@ -26,7 +26,7 @@ CTE_Cast AS (
 MovieGenres AS (
     SELECT 
         t.id AS title_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS genres
     FROM 
         aka_title t 
     JOIN 
@@ -40,7 +40,7 @@ MovieCompanies AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT c.id) AS company_count,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies_list
     FROM 
         movie_companies mc
     JOIN 
@@ -61,7 +61,7 @@ SELECT
             ELSE 'Known' 
         END AS VARCHAR(10)
     ) AS company_status,
-    STRING_AGG(DISTINCT c.person_name || ' as ' || c.role_kind, '; ') AS cast_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.person_name || ' as ' || c.role_kind))), '; ') AS cast_details
 FROM 
     RecursiveTitles rt
 LEFT JOIN 

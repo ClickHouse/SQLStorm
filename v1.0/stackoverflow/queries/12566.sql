@@ -20,7 +20,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
     GROUP BY 
         P.Id, P.Title, P.CreationDate, U.DisplayName, P.ViewCount, P.Score
 )
@@ -36,7 +36,7 @@ SELECT
     PS.VoteCount,
     PS.UpVoteCount,
     PS.DownVoteCount,
-    (EXTRACT(EPOCH FROM TIMESTAMP '2024-10-01 12:34:56' - PS.CreationDate) / 3600) AS HoursSinceCreation  
+    (toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - PS.CreationDate) / 3600) AS HoursSinceCreation  
 FROM 
     PostStats PS
 ORDER BY 

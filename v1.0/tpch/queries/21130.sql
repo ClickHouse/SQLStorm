@@ -12,7 +12,7 @@ WITH RegionalSales AS (
     JOIN 
         nation n ON c.c_nationkey = n.n_nationkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
+        o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
     GROUP BY 
         n.n_name
 ), 

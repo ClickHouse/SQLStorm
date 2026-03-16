@@ -46,8 +46,8 @@ TopActors AS (
 SELECT 
     ta.actor_name,
     ta.total_movies,
-    ARRAY_AGG(DISTINCT ari.title) AS movie_titles,
-    ARRAY_AGG(DISTINCT ari.movie_keyword) AS keywords
+    arrayDistinct(groupArray(assumeNotNull(ari.title))) AS movie_titles,
+    arrayDistinct(groupArray(assumeNotNull(ari.movie_keyword))) AS keywords
 FROM 
     TopActors ta
 JOIN 

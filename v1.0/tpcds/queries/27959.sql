@@ -44,4 +44,4 @@ INNER JOIN
 ORDER BY 
     a.address_count DESC, 
     cd.customer_count DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

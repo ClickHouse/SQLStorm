@@ -43,7 +43,7 @@ movies_with_keyword AS (
     SELECT 
         mt.id AS movie_id,
         mt.title,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         aka_title mt
     LEFT JOIN 
@@ -58,7 +58,7 @@ cast_summary AS (
     SELECT 
         d.movie_id,
         COUNT(d.actor_name) AS actor_count,
-        STRING_AGG(d.actor_name, ', ') AS actor_list
+        arrayStringConcat(groupArray(assumeNotNull(d.actor_name)), ', ') AS actor_list
     FROM 
         detailed_cast d
     GROUP BY 

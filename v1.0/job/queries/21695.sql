@@ -15,7 +15,7 @@ company_summary AS (
         co.name AS company_name,
         ct.kind AS company_type,
         COUNT(mc.id) AS total_companies,
-        STRING_AGG(DISTINCT co.country_code, ', ') AS country_codes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.country_code))), ', ') AS country_codes
     FROM 
         movie_companies mc
     JOIN 
@@ -29,7 +29,7 @@ cast_summary AS (
     SELECT 
         ci.movie_id, 
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT CONCAT(a.name, ' (', rt.role, ')'), ', ') AS cast_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', rt.role, ')')))), ', ') AS cast_details
     FROM 
         cast_info ci
     JOIN 

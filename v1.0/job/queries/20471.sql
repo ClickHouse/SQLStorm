@@ -41,7 +41,7 @@ company_summary AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT c.name) AS total_companies,
-        STRING_AGG(DISTINCT c.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS company_names
     FROM 
         movie_companies mc
     JOIN 
@@ -53,14 +53,14 @@ company_summary AS (
 movie_info_summary AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(CASE 
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
             WHEN it.info = 'plot' THEN mi.info
             ELSE NULL
-        END, '; ') AS plots,
-        STRING_AGG(CASE 
+        END)), '; ') AS plots,
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
             WHEN it.info = 'rating' THEN mi.info
             ELSE NULL
-        END, '; ') AS ratings
+        END)), '; ') AS ratings
     FROM 
         movie_info mi
     JOIN 
@@ -73,7 +73,7 @@ SELECT
     mh.movie_id,
     mh.title,
     mh.production_year,
-    ARRAY_AGG(DISTINCT rc.actor_name) AS actor_names,
+    arrayDistinct(groupArray(assumeNotNull(rc.actor_name))) AS actor_names,
     cs.total_companies,
     cs.company_names,
     mis.plots,

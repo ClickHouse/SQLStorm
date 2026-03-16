@@ -27,7 +27,7 @@ SELECT
     at.title AS movie_title,
     at.production_year,
     COUNT(DISTINCT cc.id) AS co_actors_count,
-    STRING_AGG(DISTINCT ak2.name, ', ') AS co_actors_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak2.name))), ', ') AS co_actors_list,
     ROW_NUMBER() OVER (PARTITION BY at.id ORDER BY COUNT(cc.id) DESC) AS ranking,
     CASE 
         WHEN at.production_year < 2010 THEN 'Classic'

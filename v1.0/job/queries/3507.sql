@@ -22,7 +22,7 @@ TopMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -43,7 +43,7 @@ MovieDetails AS (
         MovieKeywords mk ON tm.movie_id = mk.movie_id
     LEFT JOIN 
         (SELECT 
-            movie_id, STRING_AGG(DISTINCT CONCAT(a.name, ' (', r.role, ')'), ', ') AS note
+            movie_id, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', r.role, ')')))), ', ') AS note
          FROM 
             cast_info c
          JOIN 

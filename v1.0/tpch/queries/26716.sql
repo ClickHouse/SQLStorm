@@ -3,7 +3,7 @@ SELECT
     p.p_name AS part_name,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     SUM(L.l_quantity * L.l_extendedprice) AS total_revenue,
-    STRING_AGG(DISTINCT CONCAT(p.p_mfgr, ' - ', p.p_type), '; ') AS part_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_mfgr, ' - ', p.p_type)))), '; ') AS part_details
 FROM 
     supplier s
 JOIN 

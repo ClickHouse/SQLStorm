@@ -3,9 +3,9 @@ SELECT
     m.title AS movie_title,
     m.production_year,
     COUNT(c.id) AS total_roles,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT ct.kind, ', ') AS company_types,
-    ARRAY_AGG(DISTINCT cn.name) AS companies_involved
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types,
+    arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies_involved
 FROM 
     aka_name a
 JOIN 

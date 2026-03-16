@@ -31,6 +31,6 @@ JOIN
     region R ON N.n_regionkey = R.r_regionkey
 WHERE 
     P.p_name LIKE '%Widget%'
-    AND O.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year'
+    AND O.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
 ORDER BY 
     P.p_name, S.s_name;

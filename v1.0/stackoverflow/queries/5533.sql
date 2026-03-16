@@ -48,4 +48,4 @@ WHERE
 ORDER BY 
     t.PostCount DESC, 
     t.UpVotes DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

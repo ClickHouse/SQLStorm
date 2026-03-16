@@ -46,7 +46,7 @@ SELECT
     tc.city,
     cc.total_customers, 
     cc.avg_purchase_estimate,
-    STRING_AGG(tc.full_name, '; ') AS top_customers_list
+    arrayStringConcat(groupArray(assumeNotNull(tc.full_name)), '; ') AS top_customers_list
 FROM 
     customer_counts cc
 JOIN 

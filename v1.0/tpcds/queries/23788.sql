@@ -66,5 +66,5 @@ WHERE
     id.sales_category IN ('High Value', 'Low Value')
 ORDER BY 
     id.i_item_sk
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;
 

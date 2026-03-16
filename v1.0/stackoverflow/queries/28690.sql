@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, u.DisplayName
 ),
@@ -31,7 +31,7 @@ TagStatistics AS (
     FROM 
         Posts p
     CROSS JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag(tagname)
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag(tagname)
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
@@ -64,7 +64,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TopTags tt ON tt.CleanedTag = ANY(string_to_array(SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags) - 2), '><'))
+    TopTags tt ON tt.CleanedTag = ANY(splitByString('><', SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags) - 2)))
 WHERE 
     rp.Rank <= 3 
 ORDER BY 

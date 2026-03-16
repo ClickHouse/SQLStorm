@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankScore
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
       AND p.Score > 0
 ),
 MostCommentedPosts AS (
@@ -27,7 +27,7 @@ PostWithBadges AS (
         MAX(b.Class) AS MaxBadgeClass
     FROM Posts p
     LEFT JOIN Badges b ON p.OwnerUserId = b.UserId
-    WHERE b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id
 ),
 PostHistoryStats AS (

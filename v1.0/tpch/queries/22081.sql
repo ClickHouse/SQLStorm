@@ -37,7 +37,7 @@ CombinedInfo AS (
             WHEN tr.total_orders = 0 THEN 'No Orders Placed'
             ELSE 'Active Sales'
         END AS sales_status,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS popular_parts
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS popular_parts
     FROM 
         TopRegions tr
         LEFT JOIN part p ON p.p_partkey IN (

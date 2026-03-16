@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'  
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR  
 ),
 ClosedPosts AS (
     SELECT 
@@ -52,7 +52,7 @@ SELECT
     rp.DownVotes,
     cp.FirstClosedDate,
     cp.CloseCount,
-    STRING_AGG(td.TagName, ', ') AS Tags,
+    arrayStringConcat(groupArray(assumeNotNull(td.TagName)), ', ') AS Tags,
     CASE 
         WHEN cp.CloseCount > 0 THEN 'Closed' 
         ELSE 'Active' 

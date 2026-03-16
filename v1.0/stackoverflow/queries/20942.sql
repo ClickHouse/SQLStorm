@@ -70,7 +70,7 @@ SELECT
     cs.GoldBadges,
     cs.SilverBadges,
     cs.BronzeBadges,
-    ARRAY_AGG(DISTINCT cs.Title) AS UserPosts,
+    arrayDistinct(groupArray(assumeNotNull(cs.Title))) AS UserPosts,
     SUM(cs.UpVotes) AS TotalUpVotes,
     SUM(cs.DownVotes) AS TotalDownVotes,
     SUM(cs.CommentCount) AS TotalComments,

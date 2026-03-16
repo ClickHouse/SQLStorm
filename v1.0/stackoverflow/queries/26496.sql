@@ -8,7 +8,7 @@ WITH PostStatistics AS (
         p.AnswerCount,
         p.CommentCount,
         U.DisplayName AS OwnerDisplayName,
-        EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) / 3600 AS AgeInHours,
+        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 3600 AS AgeInHours,
         COUNT(t.TagName) AS TagCount,
         CASE 
             WHEN p.Score > 10 THEN 'Highly Rated'
@@ -17,8 +17,8 @@ WITH PostStatistics AS (
         END AS RatingCategory
     FROM Posts p
     JOIN Users U ON p.OwnerUserId = U.Id
-    LEFT JOIN LATERAL (
-        SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '>')) AS TagName
+    LEFT JOIN (
+        SELECT arrayJoin(splitByString('>', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName
     ) AS t ON TRUE
     WHERE p.PostTypeId = 1  
     GROUP BY p.Id, p.Title, p.ViewCount, p.Score, p.AnswerCount, p.CommentCount, U.DisplayName

@@ -3,7 +3,7 @@ WITH RankedMovies AS (
     SELECT 
         mt.title AS movie_title, 
         COUNT(DISTINCT ci.person_id) AS cast_count, 
-        ARRAY_AGG(DISTINCT akn.name) AS aka_names, 
+        arrayDistinct(groupArray(assumeNotNull(akn.name))) AS aka_names, 
         mt.production_year 
     FROM 
         aka_title at 
@@ -19,7 +19,7 @@ WITH RankedMovies AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id, 
-        STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) AS companies, 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) AS companies, 
         ct.kind AS company_type 
     FROM 
         movie_companies mc 

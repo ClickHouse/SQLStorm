@@ -24,7 +24,7 @@ SELECT mh.movie_id, mh.title, mh.production_year, mh.movie_kind, mh.level, mh.pa
        (SELECT COUNT(DISTINCT c.id)
         FROM cast_info c
         WHERE c.movie_id = mh.movie_id) AS total_cast,
-       (SELECT STRING_AGG(DISTINCT a.name, ', ')
+       (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ')
         FROM aka_name a
         INNER JOIN cast_info ci ON a.person_id = ci.person_id
         WHERE ci.movie_id = mh.movie_id) AS cast_names,

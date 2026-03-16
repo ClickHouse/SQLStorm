@@ -48,7 +48,7 @@ SELECT
     COALESCE(cs.cust_count, 0) AS customer_count,
     cs.avg_acct_balance,
     COUNT(DISTINCT t.l_orderkey) FILTER (WHERE t.total_price > 100) AS high_value_orders,
-    (SELECT COUNT(*) FROM orders WHERE o_orderdate >= cast('1998-10-01' as date) - INTERVAL '30 days' AND o_orderdate < cast('1998-10-01' as date)) AS recent_orders
+    (SELECT COUNT(*) FROM orders WHERE o_orderdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY AND o_orderdate < cast('1998-10-01' as date)) AS recent_orders
 FROM 
     RegionalActivity r
 LEFT JOIN 

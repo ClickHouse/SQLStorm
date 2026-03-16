@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1   
-        AND p.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
+        AND p.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, u.DisplayName, p.OwnerUserId
 ),

@@ -30,7 +30,7 @@ SELECT
     COALESCE(cn.name, 'Unknown') AS company_name,
     COUNT(DISTINCT ci.person_id) AS total_cast,
     SUM(DISTINCT CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS has_notes,
-    STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
     ROW_NUMBER() OVER (PARTITION BY m.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS ranking
 FROM
     MovieHierarchy m

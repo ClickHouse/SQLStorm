@@ -49,7 +49,7 @@ SELECT
     ) AS GoldBadgeCount,
     COALESCE((
         SELECT 
-            STRING_AGG(T.TagName, ', ') 
+            arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
         FROM 
             Posts P
         JOIN 

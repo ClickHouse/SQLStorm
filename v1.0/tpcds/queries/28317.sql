@@ -37,7 +37,7 @@ SELECT
     f.ca_city, 
     f.ca_state,
     COUNT(f.customer_id) AS customer_count,
-    STRING_AGG(f.full_name, ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(f.full_name)), ', ') AS customer_names
 FROM 
     FilteredCustomers f
 GROUP BY 

@@ -25,7 +25,7 @@ PostStats AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate > CURRENT_DATE - INTERVAL '1 year'
+        P.CreationDate > CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         P.OwnerUserId
 ),
@@ -46,7 +46,7 @@ ActiveUsers AS (
     JOIN 
         PostStats PS ON U.Id = PS.OwnerUserId
     WHERE 
-        U.LastAccessDate > CURRENT_DATE - INTERVAL '6 months'
+        U.LastAccessDate > CURRENT_DATE - INTERVAL 6 MONTH
 )
 SELECT 
     UserId, 

@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM
         aka_title t
     JOIN
@@ -35,7 +35,7 @@ FinalBenchmark AS (
         rm.title,
         rm.production_year,
         rm.cast_count,
-        STRING_AGG(DISTINCT mg.genre, ', ') AS genres,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mg.genre))), ', ') AS genres,
         ROW_NUMBER() OVER (ORDER BY rm.cast_count DESC, rm.production_year DESC) AS ranking
     FROM
         RankedMovies rm

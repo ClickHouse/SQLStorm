@@ -63,7 +63,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     COUNT(DISTINCT CASE WHEN li.rnk = 1 THEN l.l_orderkey END) AS one_time_orders,
     MAX(CASE WHEN r.r_regionkey IS NULL THEN 'No Region' ELSE r.r_name END) AS region_name,
-    ARRAY_AGG(DISTINCT sh.s_name) AS supplier_names
+    arrayDistinct(groupArray(assumeNotNull(sh.s_name))) AS supplier_names
 FROM 
     part p
 LEFT JOIN 

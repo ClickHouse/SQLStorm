@@ -33,7 +33,7 @@ SELECT
     tu.AvgPostScore,
     tu.CommentCount,
     tu.TotalBadges,
-    COALESCE((SELECT STRING_AGG(t.TagName, ', ') 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
                FROM Tags t 
                JOIN Posts p ON t.ExcerptPostId = p.Id
                WHERE p.OwnerUserId = tu.UserId), 'No Tags') AS PopulatedTags

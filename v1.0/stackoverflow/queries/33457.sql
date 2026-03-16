@@ -60,7 +60,7 @@ SELECT
         WHEN pv.PostHistoryTypeId = 10 THEN 1 
         ELSE 0 
     END) AS TotalClosureActions,
-    STRING_AGG(DISTINCT CASE WHEN pv.PostHistoryTypeId = 10 THEN 'Closed' ELSE NULL END, ', ') AS ClosureRemarks
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN pv.PostHistoryTypeId = 10 THEN 'Closed' ELSE NULL END))), ', ') AS ClosureRemarks
 FROM 
     RecursiveCTE r
 LEFT JOIN 

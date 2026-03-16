@@ -3,8 +3,8 @@ WITH StringAggregation AS (
     SELECT 
         p.p_partkey,
         CONCAT(p.p_name, ' - ', p.p_brand, ' [', p.p_type, ']') AS part_info,
-        STRING_AGG(s.s_name, ', ') AS supplier_names,
-        STRING_AGG(SUBSTRING(s.s_comment, 1, 20), ' | ') AS supplier_comments,
+        arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS supplier_names,
+        arrayStringConcat(groupArray(assumeNotNull(SUBSTRING(s.s_comment, 1, 20))), ' | ') AS supplier_comments,
         COUNT(DISTINCT c.c_custkey) AS customer_count,
         SUM(COALESCE(l.l_quantity, 0)) AS total_quantity
     FROM 
@@ -37,4 +37,4 @@ FROM
     StringAggregation
 ORDER BY 
     total_quantity DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

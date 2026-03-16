@@ -37,4 +37,4 @@ AND sa.total_available_qty < 1000
 AND cr.account_rank = 1
 GROUP BY n.n_name
 ORDER BY total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

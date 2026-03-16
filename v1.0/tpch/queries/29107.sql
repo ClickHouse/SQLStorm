@@ -5,7 +5,7 @@ SELECT
         WHEN LENGTH(p.p_comment) > 0 THEN LENGTH(p.p_comment) 
         ELSE 0 
     END) AS total_comment_length,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     AVG(s.s_acctbal) AS average_supplier_balance,
     SUBSTRING(p.p_name, 1, 10) AS short_part_name,
     REGEXP_REPLACE(p.p_comment, '[^a-zA-Z0-9 ]', '') AS cleaned_comment,

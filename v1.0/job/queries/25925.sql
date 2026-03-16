@@ -21,8 +21,8 @@ WITH MovieDetails AS (
 AggregatedData AS (
     SELECT 
         movie_title, 
-        STRING_AGG(DISTINCT actor_name, ', ') AS actors,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
         AVG(production_year) AS avg_production_year
     FROM MovieDetails
     GROUP BY movie_title

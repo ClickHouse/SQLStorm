@@ -30,7 +30,7 @@ SELECT
     rm.title,
     rm.production_year,
     COUNT(ar.actor_name) AS total_actors,
-    STRING_AGG(DISTINCT ar.actor_name, ', ') AS actor_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ar.actor_name))), ', ') AS actor_list,
     MAX(rm.rank) AS highest_rank,
     SUM(CASE WHEN ar.role_name = 'lead' THEN 1 ELSE 0 END) AS lead_roles_count,
     SUM(CASE WHEN ar.additional_info != 'N/A' THEN 1 ELSE 0 END) AS movies_with_info

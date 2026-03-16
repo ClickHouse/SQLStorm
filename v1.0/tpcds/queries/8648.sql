@@ -46,7 +46,7 @@ SELECT
     COALESCE(rsc.return_count, 0) AS return_count,
     COALESCE(rsc.total_return_amount, 0) AS total_return_amount,
     COALESCE(rsc.total_return_tax, 0) AS total_return_tax,
-    (COALESCE(rsc.total_returns, 0)::NUMERIC / NULLIF(COALESCE(rsc.total_sales, 0), 0)::NUMERIC) * 100 AS return_rate
+    (COALESCE(rsc.total_returns, 0, CAST() AS NUMERIC) / NULLIF(COALESCE(rsc.total_sales, 0), 0, CAST() AS NUMERIC)) * 100 AS return_rate
 FROM 
     Returns_Sales_Comparison rsc
 ORDER BY 

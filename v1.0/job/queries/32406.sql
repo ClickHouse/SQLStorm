@@ -28,7 +28,7 @@ SELECT
     mh.level AS hierarchy_level,
     COUNT(DISTINCT c.role_id) AS total_roles,
     COALESCE(SUM(CASE WHEN mi.info IS NOT NULL THEN 1 ELSE 0 END), 0) AS info_count,
-    STRING_AGG(DISTINCT c.note, ', ') AS role_notes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.note))), ', ') AS role_notes
 FROM 
     movie_hierarchy mh
 JOIN 

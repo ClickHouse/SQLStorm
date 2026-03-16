@@ -21,11 +21,11 @@ PostInfo AS (
         p.CreationDate,
         p.Score,
         COUNT(DISTINCT c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         ROW_NUMBER() OVER(PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    LEFT JOIN LATERAL unnest(string_to_array(p.Tags, '><')) AS tag ON TRUE
+    LEFT JOIN arrayJoin(splitByString('><', p.Tags)) AS tag ON TRUE
     LEFT JOIN Tags t ON tag = t.TagName
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
 ),
@@ -34,7 +34,7 @@ RecentActivity AS (
         OwnerUserId AS UserId, 
         COUNT(*) AS RecentPostCount 
     FROM Posts 
-    WHERE CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+    WHERE CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     GROUP BY OwnerUserId
 )
 SELECT 

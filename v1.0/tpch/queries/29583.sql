@@ -6,7 +6,7 @@ WITH PartStats AS (
         p.p_retailprice,
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
         AVG(ps.ps_supplycost) AS avg_supply_cost,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM 
         part p
     JOIN 
@@ -22,7 +22,7 @@ NationStats AS (
         n.n_name,
         r.r_name AS region_name,
         COUNT(DISTINCT s.s_suppkey) AS total_suppliers,
-        STRING_AGG(DISTINCT s.s_name, '; ') AS supplier_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), '; ') AS supplier_list
     FROM 
         nation n
     JOIN 

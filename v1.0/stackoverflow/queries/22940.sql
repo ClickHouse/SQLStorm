@@ -19,7 +19,7 @@ QuestionActivity AS (
         p.OwnerUserId,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) / 3600) AS AvgHoursToFirstVote
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 3600) AS AvgHoursToFirstVote
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2  

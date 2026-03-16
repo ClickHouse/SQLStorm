@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
         COUNT(*) AS PostCount
     FROM
         Posts
@@ -68,7 +68,7 @@ JOIN
             P.OwnerUserId IS NOT NULL AND P.PostTypeId = 1 
             AND T.Tag IN (
                 SELECT
-                    unnest(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) 
+                    arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) 
                 FROM
                     Posts P
                 WHERE

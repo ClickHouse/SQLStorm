@@ -32,13 +32,13 @@ WITH RankedMovies AS (
 SELECT 
     hm.title,
     hm.production_year,
-    STRING_AGG(DISTINCT hm.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(hm.keyword))), ', ') AS keywords,
     (SELECT COUNT(*) FROM complete_cast cc WHERE cc.movie_id = hm.production_year) AS complete_cast_count
 FROM 
     HighRatingMovies hm
 GROUP BY 
     hm.title, hm.production_year
 HAVING 
-    STRING_AGG(DISTINCT hm.keyword, ', ') IS NOT NULL 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(hm.keyword))), ', ') IS NOT NULL 
 ORDER BY 
     hm.production_year, complete_cast_count DESC;

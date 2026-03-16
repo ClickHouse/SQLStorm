@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PopularTags AS (
     SELECT 
@@ -62,7 +62,7 @@ FinalResults AS (
             WHEN phs.CloseCount > 0 THEN 'Closed'
             ELSE 'Active'
         END AS PostStatus,
-        (SELECT STRING_AGG(pt.TagName, ', ') FROM PopularTags pt 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(pt.TagName)), ', ') FROM PopularTags pt 
          WHERE pt.PostCount = (SELECT MAX(PostCount) FROM PopularTags)) AS MostPopularTags,
         DENSE_RANK() OVER (ORDER BY rp.Score DESC) AS RankByScore
     FROM 

@@ -58,7 +58,7 @@ SELECT
     AVG(ss.ws_sales_price) AS avg_price,
     SUM(ss.total_returned) AS total_returns,
     MAX(cs.total_orders) AS most_orders_by_customer,
-    STRING_AGG(CONCAT(cs.c_customer_sk, ': ', cs.total_spent), ', ') AS customer_spending_stats
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(cs.c_customer_sk, ': ', cs.total_spent))), ', ') AS customer_spending_stats
 FROM 
     SalesWithReturns ss
 JOIN 

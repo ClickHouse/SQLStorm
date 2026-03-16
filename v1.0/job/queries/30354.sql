@@ -62,7 +62,7 @@ movie_details AS (
 SELECT 
     a.actor_name,
     COUNT(DISTINCT md.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT md.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keyword))), ', ') AS keywords,
     MIN(md.production_year) AS first_movie_year,
     MAX(md.production_year) AS last_movie_year,
     MAX(md.actor_count) AS max_actors_in_a_movie

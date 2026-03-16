@@ -15,7 +15,7 @@ WITH movie_rankings AS (
 cast_details AS (
     SELECT 
         c.movie_id,
-        ARRAY_AGG(DISTINCT n.name) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(n.name))) AS cast_names,
         COUNT(DISTINCT n.id) AS num_cast
     FROM 
         cast_info c

@@ -42,7 +42,7 @@ MovieKeywords AS (
     SELECT 
         f.movie_title,
         f.production_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         FilteredMovies f
     JOIN 

@@ -24,8 +24,8 @@ SELECT
     AVG(RP.Score) AS AvgScore,
     MAX(RP.ViewCount) AS MaxViews,
     MIN(RP.CreationDate) AS FirstQuestionDate,
-    STRING_AGG(DISTINCT RP.Author, ', ') AS Authors,
-    STRING_AGG(DISTINCT RP.Title, '; ') AS QuestionTitles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(RP.Author))), ', ') AS Authors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(RP.Title))), '; ') AS QuestionTitles
 FROM 
     RankedPosts RP
 WHERE 

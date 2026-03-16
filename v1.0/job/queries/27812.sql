@@ -38,7 +38,7 @@ top_rated_movies AS (
 SELECT 
     ROUND(AVG(CAST(top_rated_movies.cast_count AS DECIMAL)), 2) AS avg_cast_count,
     ROUND(AVG(CAST(top_rated_movies.keyword_count AS DECIMAL)), 2) AS avg_keyword_count,
-    STRING_AGG(DISTINCT CONCAT(top_rated_movies.movie_title, ' (', top_rated_movies.production_year, ')'), ', ') AS movies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(top_rated_movies.movie_title, ' (', top_rated_movies.production_year, ')')))), ', ') AS movies
 FROM 
     top_rated_movies
 GROUP BY 

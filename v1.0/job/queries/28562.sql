@@ -42,8 +42,8 @@ SELECT
     md.cast_count,
     md.keyword_count,
     md.era,
-    STRING_AGG(DISTINCT an.name, ', ') AS actor_names,
-    STRING_AGG(DISTINCT kc.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kc.keyword))), ', ') AS keywords
 FROM 
     movie_details md
 LEFT JOIN 

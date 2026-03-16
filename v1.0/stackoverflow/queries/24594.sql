@@ -39,7 +39,7 @@ SELECT
      FROM Badges b 
      WHERE b.UserId IN (SELECT DISTINCT p.OwnerUserId FROM Posts p WHERE p.Id = rp.PostId)
     ) AS UniqueBadgeCount,
-    (SELECT STRING_AGG(DISTINCT lt.Name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lt.Name))), ', ') 
      FROM LinkTypes lt 
      JOIN PostLinks pl ON pl.LinkTypeId = lt.Id 
      WHERE pl.PostId = rp.PostId

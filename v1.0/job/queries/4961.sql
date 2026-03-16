@@ -26,7 +26,7 @@ HighCastMovies AS (
 MovieInfo AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(mi.info, ', ') AS movie_notes
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS movie_notes
     FROM 
         HighCastMovies AS m
     LEFT JOIN 

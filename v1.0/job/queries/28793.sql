@@ -19,7 +19,7 @@ MovieDetails AS (
         rm.movie_id,
         rm.title,
         rm.production_year,
-        STRING_AGG(rm.keyword, ', ') AS keyword_list
+        arrayStringConcat(groupArray(assumeNotNull(rm.keyword)), ', ') AS keyword_list
     FROM 
         RankedMovies rm
     WHERE 
@@ -30,7 +30,7 @@ MovieDetails AS (
 CastDetails AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
         COUNT(DISTINCT c.person_id) AS cast_count
     FROM 
         cast_info c

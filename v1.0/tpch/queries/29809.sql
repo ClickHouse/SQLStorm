@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_partkey) AS Unique_Parts_Supplied,
     SUM(l.l_quantity) AS Total_Quantity_Supplied,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS Average_Price_After_Discount,
-    STRING_AGG(DISTINCT SUBSTRING(p.p_name, 1, 10), ', ') AS Sample_Part_Names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(p.p_name, 1, 10)))), ', ') AS Sample_Part_Names
 FROM 
     supplier s
 JOIN 

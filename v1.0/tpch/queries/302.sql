@@ -30,7 +30,7 @@ SELECT
     COUNT(DISTINCT co.c_name) AS customer_count,
     SUM(co.total_spent) AS total_revenue,
     COUNT(DISTINCT hvs.s_suppkey) AS high_value_supplier_count,
-    STRING_AGG(DISTINCT vrp.p_name, ', ') AS top_products
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(vrp.p_name))), ', ') AS top_products
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN customerorders co ON n.n_nationkey = co.c_nationkey

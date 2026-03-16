@@ -7,13 +7,13 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.ViewCount DESC) AS RankScore,
-        ARRAY_AGG(t.TagName) AS Tags
+        groupArray(assumeNotNull(t.TagName)) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Tags t ON t.WikiPostId = p.Id OR t.ExcerptPostId = p.Id
     WHERE 
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId
 ),
@@ -31,7 +31,7 @@ UserActivity AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        u.CreationDate < DATE('2024-10-01') - INTERVAL '6 months'
+        u.CreationDate < DATE('2024-10-01') - INTERVAL 6 MONTH
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -46,7 +46,7 @@ PostHistorySummary AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= DATE('2024-10-01') - INTERVAL '3 months'
+        ph.CreationDate >= DATE('2024-10-01') - INTERVAL 3 MONTH
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId
 ),

@@ -26,15 +26,14 @@ DetailedPostHistory AS (
         PHT.Name AS PostHistoryTypeName
     FROM PostHistory ph
     JOIN PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
-    WHERE ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 DistinctTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
     FROM Posts p
-    LEFT JOIN LATERAL 
-        (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName) AS t ON TRUE
+    LEFT JOIN (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName) AS t ON TRUE
     WHERE p.PostTypeId = 1
     GROUP BY p.Id
 )

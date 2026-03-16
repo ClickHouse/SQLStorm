@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.OwnerUserId,
         COUNT(c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY COUNT(v.Id) DESC) AS VoteRank
     FROM
         Posts p
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2  
     LEFT JOIN 
-        LATERAL unnest(string_to_array(p.Tags, '><')) AS tag(tag) ON true
+        arrayJoin(splitByString('><', p.Tags)) AS tag(tag) ON true
     LEFT JOIN 
         Tags t ON t.TagName = tag.tag
     WHERE
@@ -41,7 +41,7 @@ RecentActivePosts AS (
     JOIN 
         Posts p ON rp.PostId = p.Id
     WHERE
-        p.LastActivityDate >= CURRENT_DATE - INTERVAL '30 days'  
+        p.LastActivityDate >= CURRENT_DATE - INTERVAL 30 DAY  
 )
 
 SELECT

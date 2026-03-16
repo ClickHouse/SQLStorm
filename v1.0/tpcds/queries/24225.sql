@@ -74,4 +74,4 @@ WHERE
     AND qc.rank_by_spent < 5
 ORDER BY
     qc.total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -34,7 +34,7 @@ Aggregated_Data AS (
         COUNT(DISTINCT ci.c_customer_sk) AS total_customers,
         COUNT(DISTINCT CASE WHEN ci.cd_gender = 'M' THEN ci.c_customer_sk END) AS male_customers,
         COUNT(DISTINCT CASE WHEN ci.cd_gender = 'F' THEN ci.c_customer_sk END) AS female_customers,
-        ARRAY_AGG(DISTINCT ci.full_address) AS unique_addresses
+        arrayDistinct(groupArray(assumeNotNull(ci.full_address))) AS unique_addresses
     FROM Customer_Info ci
     GROUP BY ci.ca_state
 )

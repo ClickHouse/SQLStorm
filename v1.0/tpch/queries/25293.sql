@@ -3,8 +3,8 @@ WITH String_Aggregation AS (
     SELECT
         p.p_partkey,
         p.p_name,
-        STRING_AGG(s.s_name, ', ') AS supplier_names,
-        STRING_AGG(DISTINCT CONCAT(n.n_name, ' (', n.n_nationkey, ')'), '; ') AS nations
+        arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ' (', n.n_nationkey, ')')))), '; ') AS nations
     FROM
         part p
     JOIN

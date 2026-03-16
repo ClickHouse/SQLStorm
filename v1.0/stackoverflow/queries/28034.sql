@@ -21,7 +21,7 @@ PostHistoryAggregation AS (
         PH.PostId,
         PH.PostHistoryTypeId,
         COUNT(*) AS RevisionCount,
-        STRING_AGG(DISTINCT PH.Comment, '; ') AS Comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.Comment))), '; ') AS Comments
     FROM 
         PostHistory PH
     WHERE 

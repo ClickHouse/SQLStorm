@@ -19,7 +19,7 @@ WITH RankedPosts AS (
         Votes V ON P.Id = V.PostId
     WHERE 
         P.PostTypeId = 1 
-        AND P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        AND P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
     GROUP BY 
         P.Id, U.DisplayName
 ),
@@ -33,7 +33,7 @@ TagStats AS (
     FROM 
         RankedPosts RP
     JOIN 
-        UNNEST(string_to_array(RP.Tags, '><')) AS T(TagName) ON T.TagName IS NOT NULL
+        arrayJoin(splitByString('><', RP.Tags)) AS T(TagName) ON T.TagName IS NOT NULL
     GROUP BY 
         T.TagName
 )

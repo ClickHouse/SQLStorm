@@ -30,7 +30,7 @@ popular_movies AS (
 ),
 
 movies_with_keywords AS (
-    SELECT m.id AS movie_id, ARRAY_AGG(k.keyword) AS keywords
+    SELECT m.id AS movie_id, groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM aka_title m
     JOIN movie_keyword mk ON m.id = mk.movie_id
     JOIN keyword k ON mk.keyword_id = k.id
@@ -45,7 +45,7 @@ final_results AS (
 
 SELECT fr.title,
        fr.actor_count,
-       COALESCE(STRING_AGG(DISTINCT fr.keywords::text, ', '), 'No keywords') AS keywords,
+       COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(fr.keywords AS text)))), ', '), 'No keywords') AS keywords,
        CASE WHEN fr.actor_count > 10 THEN 'Highly Popular' ELSE 'Moderately Popular' END AS popularity_level
 FROM final_results fr
 GROUP BY fr.movie_id, fr.title, fr.actor_count

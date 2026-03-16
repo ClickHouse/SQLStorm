@@ -2,7 +2,7 @@ SELECT
     p.p_name, 
     SUM(l.l_quantity) AS total_quantity, 
     AVG(l.l_extendedprice) AS avg_price,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     SUBSTRING(p.p_comment, 1, 10) AS short_comment,
     COUNT(DISTINCT c.c_custkey) AS unique_customers
 FROM 

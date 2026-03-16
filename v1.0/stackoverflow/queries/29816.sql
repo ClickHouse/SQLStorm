@@ -4,7 +4,7 @@ WITH RankedPosts AS (
         p.Id AS PostId,
         p.Title,
         p.Body,
-        ARRAY_LENGTH(STRING_TO_ARRAY(p.Tags, '><'), 1) AS TagCount,
+        length(splitByString('><', p.Tags), 1) AS TagCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) - SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS Score,
         COUNT(c.Id) AS CommentCount,
         p.CreationDate
@@ -48,7 +48,7 @@ TaggedPosts AS (
     JOIN 
         Posts p ON pd.PostId = p.Id
     CROSS JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS tag_arr
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS tag_arr
     JOIN 
         Tags t ON t.TagName = tag_arr
 )
@@ -60,7 +60,7 @@ SELECT
     tp.Score,
     tp.CommentCount,
     tp.Rank,
-    STRING_AGG(DISTINCT tp.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.TagName))), ', ') AS Tags
 FROM 
     TaggedPosts tp
 GROUP BY 

@@ -16,7 +16,7 @@ WITH RankedMovies AS (
 ), MovieKeywords AS (
     SELECT 
         mk.movie_id, 
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     LEFT JOIN 
@@ -40,7 +40,7 @@ WITH RankedMovies AS (
         rm.title,
         rm.production_year,
         COALESCE(mk.keywords, 'No keywords') AS keywords,
-        COALESCE(STRING_AGG(DISTINCT ci.note, ', '), 'No roles') AS cast_notes,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), ', '), 'No roles') AS cast_notes,
         COALESCE(cmp.company_name, 'Unknown Company') AS production_company,
         COALESCE(cmp.company_type, 'Unknown Type') AS company_type
     FROM 

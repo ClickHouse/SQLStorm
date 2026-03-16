@@ -11,9 +11,9 @@ WITH RecentPosts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        Comments c ON p.Id = c.PostId AND c.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        Comments c ON p.Id = c.PostId AND c.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '90 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY
     GROUP BY 
         p.Id, p.Title, p.PostTypeId, p.CreationDate, p.ViewCount, p.Score, p.OwnerUserId
 ),
@@ -45,7 +45,7 @@ PostHistoryDetails AS (
         PostHistory ph 
     WHERE 
         ph.PostHistoryTypeId IN (10, 11, 12) 
-        AND ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        AND ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostWithLinks AS (
     SELECT 

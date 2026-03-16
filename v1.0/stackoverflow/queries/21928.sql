@@ -9,7 +9,7 @@ WITH PostStats AS (
         COUNT(c.Id) AS CommentCount,
         MAX(b.Class) AS HighestBadgeClass,
         DENSE_RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank,
-        ARRAY_AGG(DISTINCT t.TagName) AS PostTags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS PostTags
     FROM 
         Posts p
     LEFT JOIN 
@@ -17,7 +17,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId AND b.Date <= p.CreationDate
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT tag.TagName FROM Tags tag 
             WHERE tag.WikiPostId = p.Id OR tag.ExcerptPostId = p.Id
         ) AS t ON TRUE
@@ -46,7 +46,7 @@ RecentActivity AS (
     SELECT 
         post.OwnerUserId,
         COUNT(DISTINCT post.Id) AS TotalPosts,
-        COUNT(CASE WHEN post.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days' THEN 1 END) AS RecentPosts,
+        COUNT(CASE WHEN post.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 END) AS RecentPosts,
         AVG(v.BountyAmount) AS AvgBountyAmount
     FROM 
         Posts post

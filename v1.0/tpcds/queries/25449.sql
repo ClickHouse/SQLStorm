@@ -6,7 +6,7 @@ WITH CustomerItems AS (
         ca.ca_city,
         ca.ca_state,
         ca.ca_country,
-        ARRAY_AGG(DISTINCT CONCAT(i.i_item_desc, ' (', i.i_current_price, ')')) AS purchased_items
+        arrayDistinct(groupArray(assumeNotNull(CONCAT(i.i_item_desc, ' (', i.i_current_price, ')')))) AS purchased_items
     FROM 
         customer c
     JOIN 

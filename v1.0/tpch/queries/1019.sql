@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
+        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
 ), 
 CustomerOrderDetails AS (
     SELECT 
@@ -41,7 +41,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     COALESCE(SUM(spd.total_supply_cost), 0) AS total_supplier_cost,
     AVG(cod.total_spent) AS avg_customer_spending,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     region r
 LEFT JOIN 

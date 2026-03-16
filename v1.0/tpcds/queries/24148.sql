@@ -36,7 +36,7 @@ SELECT
     COUNT(DISTINCT cs.cs_item_sk) AS item_count,
     SUM(cs.total_profit - cs.total_profit) AS profit_loss,
     MAX(cc.cd_purchase_estimate) AS max_purchase_estimate,
-    STRING_AGG(DISTINCT CONCAT(cc.cd_gender, '-', cc.cd_marital_status), ', ') AS demographic_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cc.cd_gender, '-', cc.cd_marital_status)))), ', ') AS demographic_details
 FROM RecursiveCustomerCTE cc
 JOIN CombinedSales cs ON cc.c_customer_sk = cs.cs_item_sk
 WHERE cc.ranking <= 10 
@@ -44,4 +44,4 @@ WHERE cc.ranking <= 10
 GROUP BY cc.c_customer_id, cc.cd_gender, cc.cd_marital_status, cc.cd_purchase_estimate
 HAVING SUM(cs.total_quantity) > 0
 ORDER BY profit_loss DESC, item_count DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

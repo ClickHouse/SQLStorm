@@ -10,7 +10,7 @@ WITH ranked_movies AS (
 company_movie_info AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         MAX(CASE WHEN cty.kind = 'Distributor' THEN cn.name END) AS distributor,
         MAX(CASE WHEN cty.kind = 'Production' THEN cn.name END) AS production_company
     FROM movie_companies mc
@@ -21,8 +21,8 @@ company_movie_info AS (
 person_roles AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
-        STRING_AGG(DISTINCT rt.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS roles
     FROM cast_info ci
     JOIN aka_name ak ON ci.person_id = ak.person_id
     JOIN role_type rt ON ci.role_id = rt.id

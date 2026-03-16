@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_ext_sales_price) AS total_spent,
     AVG(ws.ws_net_profit) AS avg_profit,
-    STRING_AGG(DISTINCT i.i_product_name, ', ') AS purchased_products,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), ', ') AS purchased_products,
     DENSE_RANK() OVER (PARTITION BY ca.ca_city ORDER BY SUM(ws.ws_ext_sales_price) DESC) AS city_rank
 FROM 
     customer c

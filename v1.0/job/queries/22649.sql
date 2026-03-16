@@ -19,7 +19,7 @@ CastAggregate AS (
     SELECT
         ci.movie_id,
         COUNT(ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
         SUM(CASE WHEN ci.nr_order IS NULL THEN 0 ELSE 1 END) AS ordered_cast_count,
         AVG(CASE WHEN ci.nr_order IS NULL THEN NULL ELSE ci.nr_order END) AS avg_order_position
     FROM

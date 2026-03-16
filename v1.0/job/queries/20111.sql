@@ -14,7 +14,7 @@ actor_movies AS (
     SELECT 
         ma.movie_id,
         COUNT(ma.actor_name) AS num_actors,
-        STRING_AGG(ma.actor_name, ', ') AS actors_list
+        arrayStringConcat(groupArray(assumeNotNull(ma.actor_name)), ', ') AS actors_list
     FROM 
         movie_actors ma
     GROUP BY 

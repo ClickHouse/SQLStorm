@@ -11,15 +11,15 @@ WITH RankedPosts AS (
         (SELECT COUNT(DISTINCT pl.RelatedPostId)
          FROM PostLinks pl
          WHERE pl.PostId = p.Id) AS RelatedPostCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM
         Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
-    LEFT JOIN LATERAL (
+    LEFT JOIN (
         SELECT 
-            UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS TagName
+            arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS TagName
     ) AS t ON TRUE
     WHERE p.PostTypeId = 1 
     GROUP BY p.Id, u.DisplayName

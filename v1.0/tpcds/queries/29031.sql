@@ -26,7 +26,7 @@ AggregateStats AS (
         SUM(CASE WHEN cd.cd_marital_status = 'M' THEN 1 ELSE 0 END) AS married_count,
         SUM(CASE WHEN cd.cd_marital_status = 'S' THEN 1 ELSE 0 END) AS single_count,
         COUNT(*) AS total_customers,
-        AVG(EXTRACT(YEAR FROM DATE '2002-10-01') - cd.c_birth_year) AS average_age
+        AVG(toYear(toDate('2002-10-01')) - cd.c_birth_year) AS average_age
     FROM 
         CustomerDetails cd
     GROUP BY 
@@ -38,8 +38,8 @@ SELECT
     a.single_count,
     a.total_customers,
     a.average_age,
-    COALESCE(ROUND((a.married_count::FLOAT / a.total_customers) * 100, 2), 0) AS married_percentage,
-    COALESCE(ROUND((a.single_count::FLOAT / a.total_customers) * 100, 2), 0) AS single_percentage
+    COALESCE(ROUND((CAST(a.married_count AS FLOAT) / a.total_customers) * 100, 2), 0) AS married_percentage,
+    COALESCE(ROUND((CAST(a.single_count AS FLOAT) / a.total_customers) * 100, 2), 0) AS single_percentage
 FROM 
     AggregateStats a
 ORDER BY 

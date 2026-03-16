@@ -42,7 +42,7 @@ SELECT
     COUNT(DISTINCT cs.c_custkey) AS customer_count,
     AVG(cs.total_spent) AS avg_spent,
     MAX(lt.l_discount) AS max_discount,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers
 FROM 
     part p
 LEFT JOIN 
@@ -59,7 +59,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_retailprice < 100
-    AND lt.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND lt.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_name, r.r_name
 ORDER BY 

@@ -2,7 +2,7 @@ SELECT
     CONCAT('Supplier: ', s_name, ', Part: ', p_name) AS Supplier_Part_Info,
     COUNT(DISTINCT o_orderkey) AS Total_Orders,
     SUM(l_extendedprice * (1 - l_discount)) AS Total_Sales,
-    STRING_AGG(DISTINCT r_name, ', ') AS Regions_Served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r_name))), ', ') AS Regions_Served
 FROM 
     supplier s
 JOIN 

@@ -25,7 +25,7 @@ SELECT
     a.name AS actor_name,
     COUNT(DISTINCT m.id) AS movie_count,
     MAX(m.production_year) AS latest_movie_year,
-    STRING_AGG(DISTINCT t.title, ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS titles,
     AVG(CASE WHEN m.production_year IS NOT NULL THEN m.production_year ELSE NULL END) AS avg_production_year,
     CASE 
         WHEN COUNT(DISTINCT m.id) = 0 THEN 'No films'

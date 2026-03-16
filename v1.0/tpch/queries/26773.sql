@@ -2,7 +2,7 @@ SELECT
     CONCAT(c.c_name, ' (', n.n_name, ')') AS customer_info,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' [', ps.ps_supplycost, ']'), ', ') AS supplied_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' [', ps.ps_supplycost, ']')))), ', ') AS supplied_parts,
     MAX(o.o_orderdate) AS last_order_date
 FROM 
     customer c

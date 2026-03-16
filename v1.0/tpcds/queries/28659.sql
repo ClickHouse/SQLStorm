@@ -4,7 +4,7 @@ WITH AddressStats AS (
         ca_state,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
         COUNT(ca_city) AS total_cities,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities,
         AVG(ca_gmt_offset) AS avg_gmt_offset
     FROM 
         customer_address
@@ -16,7 +16,7 @@ DemographicStats AS (
         cd_gender,
         COUNT(c_customer_sk) AS total_customers,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses
     FROM 
         customer c
     JOIN 

@@ -37,4 +37,4 @@ FROM
     UserStats U
 ORDER BY 
     U.Reputation DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

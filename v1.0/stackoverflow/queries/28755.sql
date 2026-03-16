@@ -6,7 +6,7 @@ WITH ProcessedPosts AS (
         p.CreationDate,
         p.LastActivityDate,
         u.DisplayName AS OwnerDisplayName,
-        ARRAY_AGG(DISTINCT SUBSTRING(t.TagName FROM 1 FOR 25)) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(SUBSTRING(t.TagName FROM 1 FOR 25)))) AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT ph.Id) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11, 12)) AS ClosedOrReopenedCount
     FROM 
@@ -18,7 +18,7 @@ WITH ProcessedPosts AS (
     LEFT JOIN 
         PostHistory ph ON ph.PostId = p.Id
     LEFT JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag_name ON TRUE
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 

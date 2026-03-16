@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT
-        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS Tag,
         COUNT(*) AS PostCount
     FROM
         Posts
@@ -48,7 +48,7 @@ UserTagRelationships AS (
     JOIN
         Posts P ON U.Id = P.OwnerUserId
     JOIN
-        TagCounts T ON T.Tag = ANY(string_to_array(SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2), '><'))
+        TagCounts T ON T.Tag = ANY(splitByString('><', SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2)))
     WHERE
         P.PostTypeId = 1 
     GROUP BY

@@ -32,7 +32,7 @@ SELECT
     AVG(ws.ws_ext_sales_price) AS avg_web_sale,
     MAX(ws.ws_ext_sales_price) AS max_web_sale,
     SUM(NULLIF(cs.cs_ext_sales_price * 0.9, 0)) AS adjusted_catalog_sales,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customer_names
 FROM 
     sales_path sp
 JOIN 

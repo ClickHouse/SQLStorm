@@ -32,7 +32,7 @@ CloseReasonStats AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseReasonCount,
-        STRING_AGG(CASE WHEN PH.Comment IS NOT NULL THEN PH.Comment ELSE 'Unspecified' END, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PH.Comment IS NOT NULL THEN PH.Comment ELSE 'Unspecified' END)), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     WHERE 

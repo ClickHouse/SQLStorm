@@ -49,4 +49,4 @@ WHERE
     UPS.TotalPosts > 0
 ORDER BY 
     UPS.TotalPosts DESC, PIS.UpVotes DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

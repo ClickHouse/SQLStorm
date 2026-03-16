@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c.c_customer_id) AS unique_customers,
     SUM(ws.ws_quantity) AS total_quantity_sold,
     AVG(ws.ws_net_paid) AS average_net_paid,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customer_names
 FROM 
     customer_address ca
 JOIN 

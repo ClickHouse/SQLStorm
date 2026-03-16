@@ -5,7 +5,7 @@ WITH RankedParts AS (
         p.p_name,
         p.p_mfgr,
         CONCAT(p.p_name, ' by ', p.p_mfgr) AS full_description,
-        STRING_AGG(DISTINCT CAST(ps.ps_supplycost AS VARCHAR), ', ') AS supplier_costs,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ps.ps_supplycost AS VARCHAR)))), ', ') AS supplier_costs,
         ROW_NUMBER() OVER (PARTITION BY p.p_mfgr ORDER BY AVG(ps.ps_supplycost) DESC) AS rn
     FROM 
         part p
@@ -40,4 +40,4 @@ GROUP BY
     fp.full_description, fp.supplier_costs
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

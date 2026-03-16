@@ -30,7 +30,7 @@ KeywordedMovies AS (
         pm.movie_id,
         pm.title,
         pm.production_year,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         PopularMovies pm
     LEFT JOIN 

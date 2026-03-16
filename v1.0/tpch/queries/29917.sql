@@ -8,8 +8,8 @@ SELECT
     AVG(l.l_discount) AS avg_discount,
     MIN(l.l_extendedprice) AS min_price,
     MAX(l.l_extendedprice) AS max_price,
-    STRING_AGG(DISTINCT CONCAT('Status: ', o.o_orderstatus), '; ') AS order_statuses,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Status: ', o.o_orderstatus)))), '; ') AS order_statuses,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments
 FROM 
     supplier s
 JOIN 
@@ -21,7 +21,7 @@ JOIN
 JOIN 
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
+    o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
 GROUP BY 
     s.s_suppkey, p.p_partkey, s.s_name, p.p_name, s.s_nationkey
 HAVING 

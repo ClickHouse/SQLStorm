@@ -26,7 +26,7 @@ WITH RECURSIVE movie_hierarchy AS (
 cast_agg AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
         COUNT(DISTINCT ci.person_id) AS cast_count
     FROM 
         cast_info ci
@@ -38,7 +38,7 @@ cast_agg AS (
 keyword_agg AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     INNER JOIN 

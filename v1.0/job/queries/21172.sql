@@ -24,7 +24,7 @@ movie_titles AS (
 person_keywords AS (
     SELECT 
         pi.person_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM person_info pi
     LEFT JOIN movie_keyword mk ON pi.id = mk.movie_id
     LEFT JOIN keyword k ON mk.keyword_id = k.id

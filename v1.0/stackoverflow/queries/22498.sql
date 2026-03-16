@@ -44,12 +44,12 @@ HighReputationUsers AS (
 ClosedPostReasons AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(CAST(CR.Name AS VARCHAR), ', ') AS Reasons,
+        arrayStringConcat(groupArray(assumeNotNull(CAST(CR.Name AS VARCHAR))), ', ') AS Reasons,
         COUNT(PH.Id) AS CloseCount
     FROM 
         PostHistory PH
     INNER JOIN 
-        CloseReasonTypes CR ON PH.Comment::int = CR.Id
+        CloseReasonTypes CR ON CAST(PH.Comment AS int) = CR.Id
     WHERE 
         PH.PostHistoryTypeId = 10
     GROUP BY 

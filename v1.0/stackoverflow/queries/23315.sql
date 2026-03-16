@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 ActiveBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
@@ -35,7 +35,7 @@ LatestVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        v.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
 ),
 RecentComments AS (
     SELECT 
@@ -44,7 +44,7 @@ RecentComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '15 days' 
+        c.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 15 DAY 
     GROUP BY 
         c.PostId
 )

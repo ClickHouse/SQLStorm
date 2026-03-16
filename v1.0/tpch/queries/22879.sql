@@ -43,7 +43,7 @@ combined_details AS (
     LEFT JOIN supplier_summary ss ON n.n_nationkey = ss.s_suppkey
     JOIN ranked_orders o ON o.o_orderkey IN (SELECT l.l_orderkey 
                                                 FROM lineitem l 
-                                                WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year')
+                                                WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR)
     LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey
     GROUP BY r.r_name, n.n_name, ss.total_supply_cost
 )
@@ -52,7 +52,7 @@ SELECT cd.region_name,
        cd.total_supply_cost,
        cd.orders_open,
        cd.total_lineitems,
-       STRING_AGG(DISTINCT CONCAT_WS(' - ', fp.p_name, fp.container_type), '; ') AS parts_info
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' - ', fp.p_name, fp.container_type)))), '; ') AS parts_info
 FROM combined_details cd
 LEFT JOIN filtered_parts fp ON fp.p_partkey IN (SELECT ps.ps_partkey 
                                                  FROM partsupp ps 

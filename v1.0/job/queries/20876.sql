@@ -68,7 +68,7 @@ SELECT
     END AS company_info,
     COALESCE(SUM(CASE WHEN mi.info IS NOT NULL AND LENGTH(mi.info) > 20 THEN 1 ELSE 0 END), 0) AS long_info_count,
     CASE 
-        WHEN COUNT(DISTINCT ki.keyword) > 0 THEN ARRAY_AGG(ki.keyword)
+        WHEN COUNT(DISTINCT ki.keyword) > 0 THEN groupArray(assumeNotNull(ki.keyword))
         ELSE ARRAY['No keywords available'] 
     END AS movie_keywords
 FROM 

@@ -31,7 +31,7 @@ WITH RankedTitles AS (
         year.production_year,
         COUNT(DISTINCT year.title) AS unique_titles,
         SUM(role_count) AS total_roles,
-        STRING_AGG(DISTINCT actor_name, ', ') AS all_actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS all_actors
     FROM 
         RankedTitles year
     JOIN 

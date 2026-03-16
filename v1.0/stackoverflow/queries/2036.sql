@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         COALESCE(u.DisplayName, 'Deleted User') AS OwnerDisplayName
     FROM Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' AND p.PostTypeId = 1
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND p.PostTypeId = 1
 ),
 PostVotes AS (
     SELECT 

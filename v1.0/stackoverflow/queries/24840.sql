@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     AND 
         p.ViewCount IS NOT NULL
 ),
@@ -19,7 +19,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         COUNT(CASE WHEN ph.PostHistoryTypeId = 10 THEN 1 END) AS TotalCloseVotes,
-        ARRAY_AGG(DISTINCT ph.Comment) AS CloseReasons
+        arrayDistinct(groupArray(assumeNotNull(ph.Comment))) AS CloseReasons
     FROM 
         PostHistory ph
     WHERE 
@@ -30,7 +30,7 @@ ClosedPosts AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(*) AS BadgeCount
     FROM 
         Badges b

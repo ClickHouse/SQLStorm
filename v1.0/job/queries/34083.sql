@@ -32,7 +32,7 @@ SELECT
     p.name AS actor_name,
     COUNT(DISTINCT c.movie_id) AS movie_count,
     MAX(mh.path) AS movie_path,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     AVG(years.produced_years) AS average_produced_years
 FROM 
     cast_info c
@@ -47,7 +47,7 @@ LEFT JOIN
 LEFT JOIN (
     SELECT 
         movie_id,
-        EXTRACT(YEAR FROM cast('2024-10-01' as date)) - production_year AS produced_years
+        toYear(cast('2024-10-01' as date)) - production_year AS produced_years
     FROM 
         aka_title
 ) years ON years.movie_id = c.movie_id

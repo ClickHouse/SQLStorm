@@ -36,7 +36,7 @@ WITH RankedMovies AS (
 )
 SELECT 
     md.movie_title,
-    STRING_AGG(md.actor_name, ', ' ORDER BY md.actor_rank) AS actor_names,
+    arrayStringConcat(groupArray(assumeNotNull(md.actor_name)), ', ' ORDER BY md.actor_rank) AS actor_names,
     md.award_status,
     COUNT(DISTINCT ci.person_id) FILTER (WHERE ci.note IS NOT NULL) AS non_null_notes
 FROM MovieDetails md

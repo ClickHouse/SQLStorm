@@ -32,13 +32,13 @@ SELECT
     tu.TotalPosts,
     tu.TotalQuestions,
     tu.TotalAnswers,
-    EXTRACT(YEAR FROM age(tu.LastPostDate)) AS YearsSinceLastPost,
+    toYear(age(tu.LastPostDate)) AS YearsSinceLastPost,
     CASE 
         WHEN tu.TotalQuestions > tu.TotalAnswers THEN 'Questions Dominant'
         WHEN tu.TotalAnswers > tu.TotalQuestions THEN 'Answers Dominant'
         ELSE 'Balanced'
     END AS PostTypeBalance,
-    COALESCE((SELECT STRING_AGG(DISTINCT pt.Name, ', ') 
+    COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') 
               FROM PostHistory ph
               JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
               WHERE ph.UserId = tu.UserId), 'No Activity') AS RecentActivity

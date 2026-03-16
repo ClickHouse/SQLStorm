@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(p.p_retailprice) AS avg_part_price,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     SUM(CASE 
         WHEN l.l_returnflag = 'R' THEN 1 
         ELSE 0 

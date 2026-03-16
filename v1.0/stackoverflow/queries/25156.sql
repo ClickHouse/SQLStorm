@@ -8,7 +8,7 @@ WITH PostDetails AS (
         p.Score,
         p.Body,
         u.DisplayName AS AuthorDisplayName,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         COUNT(DISTINCT c.Id) AS CommentCount
     FROM 
@@ -20,7 +20,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        unnest(string_to_array(p.Tags, ',')) AS tag_list ON TRUE
+        arrayJoin(splitByString(',', p.Tags)) AS tag_list ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_list
     WHERE 

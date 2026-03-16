@@ -31,7 +31,7 @@ ActiveUsers AS (
     FROM Users U
     LEFT JOIN UserBadgeCounts UB ON U.Id = UB.UserId
     LEFT JOIN PostSummary PS ON U.Id = PS.OwnerUserId
-    WHERE U.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE U.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 RankedUsers AS (
     SELECT 

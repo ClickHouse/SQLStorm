@@ -24,7 +24,7 @@ PostAggregates AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId AND V.VoteTypeId = 8 
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.OwnerUserId
 ),

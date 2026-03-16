@@ -2,7 +2,7 @@ SELECT
     p.p_name,
     CONCAT('Supplier: ', s.s_name, ', Location: ', s.s_address) AS supplier_info,
     SUM(l.l_quantity) AS total_quantity,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_served,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_served,
     CASE 
         WHEN COUNT(DISTINCT o.o_orderkey) > 5 THEN 'High Volume' 
         ELSE 'Low Volume' 
@@ -26,7 +26,7 @@ JOIN
 WHERE 
     p.p_size > 10 AND 
     s.s_acctbal > 5000.00 AND 
-    o.o_orderdate >= DATE '1995-01-01'
+    o.o_orderdate >= toDate('1995-01-01')
 GROUP BY 
     p.p_name, s.s_name, s.s_address 
 ORDER BY 

@@ -17,7 +17,7 @@ PostTagCounts AS (
         p.Id AS PostId,
         COUNT(DISTINCT t.TagName) AS TagCount
     FROM Posts p
-    JOIN LATERAL (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag) AS tag ON TRUE
+    JOIN (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tag) AS tag ON TRUE
     JOIN Tags t ON t.TagName = tag
     GROUP BY p.Id
 ),
@@ -54,4 +54,4 @@ LEFT JOIN PostHistorySummary phs ON rp.PostId = phs.PostId
 LEFT JOIN UserReputation ur ON rp.OwnerUserId = ur.UserId
 WHERE rp.Rank = 1
 ORDER BY rp.ViewCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

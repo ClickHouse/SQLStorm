@@ -15,18 +15,18 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE
         p.PostTypeId = 1 
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag, 
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag, 
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><'))
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2)))
 ),
 TopTags AS (
     SELECT 
@@ -43,7 +43,7 @@ PostHistories AS (
         ph.PostId,
         COUNT(*) AS EditCount,
         MAX(ph.CreationDate) AS LastEditedDate,
-        STRING_AGG(pt.Name, ', ') AS EditHistory
+        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS EditHistory
     FROM 
         PostHistory ph
     JOIN 
@@ -69,7 +69,7 @@ FinalResults AS (
     LEFT JOIN 
         PostHistories e ON r.PostId = e.PostId
     JOIN 
-        TopTags t ON t.Tag = ANY (string_to_array(substring(r.Tags, 2, length(r.Tags) - 2), '><'))
+        TopTags t ON t.Tag = ANY (splitByString('><', substring(r.Tags, 2, length(r.Tags) - 2)))
     WHERE 
         r.Rank <= 5 
 )

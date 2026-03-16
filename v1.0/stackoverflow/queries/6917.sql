@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopRankedPosts AS (
     SELECT 
@@ -63,7 +63,7 @@ LEFT JOIN
 LEFT JOIN 
     Users u ON trp.OwnerDisplayName = u.DisplayName
 LEFT JOIN 
-    Badges b ON u.Id = b.UserId AND b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    Badges b ON u.Id = b.UserId AND b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 LEFT JOIN 
     Comments c ON trp.PostId = c.PostId
 GROUP BY 

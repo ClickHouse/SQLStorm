@@ -7,7 +7,7 @@ SELECT
             WHEN c.c_mktsegment LIKE 'HOUSEHOLD%' THEN l.l_extendedprice * (1 - l.l_discount)
             ELSE 0 
         END) AS avg_household_revenue,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS supplier_nations,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS supplier_nations,
     MAX(o.o_orderpriority) AS highest_order_priority
 FROM
     part p

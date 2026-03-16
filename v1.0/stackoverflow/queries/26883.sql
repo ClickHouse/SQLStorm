@@ -6,8 +6,8 @@ WITH TagStatistics AS (
         COUNT(DISTINCT CASE WHEN p.PostTypeId = 2 THEN p.Id END) AS AnswerCount,
         SUM(p.ViewCount) AS TotalViews,
         SUM(p.Score) AS TotalScore,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS ActiveUsers,
-        STRING_AGG(DISTINCT u.Location, ', ') AS UserLocations
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS ActiveUsers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.Location))), ', ') AS UserLocations
     FROM
         Tags t
     JOIN

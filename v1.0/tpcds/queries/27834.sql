@@ -16,7 +16,7 @@ CityStateDetails AS (
         ca_city,
         COUNT(*) AS total_addresses,
         AVG(street_name_length) AS avg_street_length,
-        STRING_AGG(DISTINCT suite_info, ', ') AS suites_available
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(suite_info))), ', ') AS suites_available
     FROM 
         RankedAddresses
     WHERE

@@ -37,7 +37,7 @@ PostDetails AS (
         tp.Score,
         tp.CommentCount,
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounty,
-        ARRAY_AGG(DISTINCT tag.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(tag.TagName))) AS Tags
     FROM 
         TopPosts tp
     LEFT JOIN 
@@ -45,7 +45,7 @@ PostDetails AS (
     LEFT JOIN 
         (SELECT 
             p.Id AS PostId, 
-            unnest(string_to_array(p.Tags, '><')) AS TagName
+            arrayJoin(splitByString('><', p.Tags)) AS TagName
           FROM 
             Posts p) tag ON tp.PostId = tag.PostId
     GROUP BY 
@@ -65,26 +65,25 @@ RecentPostHistory AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     pd.Title, 
     pd.Score, 
     pd.CommentCount,
     pd.TotalBounty,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
     COUNT(rph.EventType) FILTER (WHERE rph.EventType = 'Close/Reopen Event') AS CloseReopenCount,
     CASE 
         WHEN MAX(rph.MostRecentEventDate) IS NULL THEN 'No recent activity'
-        WHEN MAX(rph.MostRecentEventDate) < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days' THEN 'Inactive'
+        WHEN MAX(rph.MostRecentEventDate) < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY THEN 'Inactive'
         ELSE 'Active'
     END AS PostStatus
 FROM 
     PostDetails pd
 LEFT JOIN 
     RecentPostHistory rph ON pd.PostId = rph.PostId
-LEFT JOIN 
-    LATERAL (SELECT unnest(pd.Tags) AS TagName) t ON TRUE
+LEFT ARRAY JOIN pd.Tags AS TagName
 GROUP BY 
     pd.Title, pd.Score, pd.CommentCount, pd.TotalBounty
 ORDER BY 

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 
 RecentEdits AS (
@@ -56,7 +56,7 @@ SELECT
     CASE 
         WHEN ps.EditCount IS NOT NULL THEN 
             CASE 
-                WHEN DATE_PART('day', CURRENT_DATE - ps.LatestEditDate) <= 30 THEN 'Recently Edited'
+                WHEN datePart('day', CURRENT_DATE - ps.LatestEditDate) <= 30 THEN 'Recently Edited'
                 ELSE 'Edited More Than 30 Days Ago'
             END
         ELSE 'Never Edited'

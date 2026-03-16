@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'), 1) AS TagCount,
+        length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         CASE 
             WHEN p.PostTypeId = 1 THEN 'Question'
@@ -23,7 +23,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -52,8 +52,8 @@ SELECT
     tp.OwnerDisplayName,
     tp.PostType,
     COUNT(c.Id) AS CommentCount,
-    STRING_AGG(b.Name, ', ') AS BadgeNames,
-    ARRAY_AGG(DISTINCT linked.LinkTypeId) AS LinkTypeIds
+    arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
+    arrayDistinct(groupArray(assumeNotNull(linked.LinkTypeId))) AS LinkTypeIds
 FROM 
     TopPosts tp
 LEFT JOIN 

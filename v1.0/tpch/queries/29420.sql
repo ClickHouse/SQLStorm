@@ -28,7 +28,7 @@ TopSuppliers AS (
 )
 SELECT 
     r_name,
-    STRING_AGG(s_name, ', ') AS top_suppliers,
+    arrayStringConcat(groupArray(assumeNotNull(s_name)), ', ') AS top_suppliers,
     SUM(total_supply_value) AS combined_supply_value
 FROM 
     TopSuppliers

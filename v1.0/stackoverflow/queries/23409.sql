@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
         COALESCE(NULLIF(UPPER(p.Title), ''), 'Untitled') AS SafeTitle
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserPostStats AS (
     SELECT 
@@ -30,7 +30,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(DISTINCT CONCAT(cr.Name, ': ', ph.Comment), '; ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cr.Name, ': ', ph.Comment)))), '; ') AS CloseReasons
     FROM PostHistory ph
     JOIN CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
     WHERE ph.PostHistoryTypeId = 10 
@@ -53,4 +53,4 @@ JOIN UserPostStats us ON u.Id = us.UserId
 LEFT JOIN ClosedPosts c ON r.PostId = c.PostId
 WHERE r.Rank <= 5
 ORDER BY r.ViewCount DESC, CloseCount DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

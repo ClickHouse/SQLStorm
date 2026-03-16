@@ -25,8 +25,8 @@ FilteredMovies AS (
         rm.movie_id,
         rm.title,
         rm.production_year,
-        STRING_AGG(DISTINCT rm.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT rm.role || ' (' || rm.nr_order || ')', ', ') AS cast,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.role || ' (' || rm.nr_order || ')'))), ', ') AS cast,
         MAX(rm.actor_rank) AS cast_size
     FROM 
         RankedMovies rm

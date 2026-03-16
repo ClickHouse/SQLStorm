@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), UserReputation AS (
     SELECT 
         u.Id AS UserId, 
@@ -26,14 +26,14 @@ WITH RankedPosts AS (
         u.Id, u.Reputation
 ), PopularTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(Tags, ',')) AS TagName, 
+        arrayJoin(splitByString(',', Tags)) AS TagName, 
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         Tags IS NOT NULL
     GROUP BY 
-        UNNEST(STRING_TO_ARRAY(Tags, ',')) 
+        arrayJoin(splitByString(',', Tags)) 
     ORDER BY 
         TagCount DESC
     LIMIT 10

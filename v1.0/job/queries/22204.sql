@@ -12,7 +12,7 @@ WITH recursive ranked_titles AS (
 cast_details AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
         COUNT(DISTINCT a.id) AS cast_count
     FROM 
         cast_info ci
@@ -24,7 +24,7 @@ cast_details AS (
 company_details AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COUNT(DISTINCT mc.company_id) AS company_count
     FROM 
         movie_companies mc
@@ -36,7 +36,7 @@ company_details AS (
 movie_info_with_keywords AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_info mi
     JOIN 

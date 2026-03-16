@@ -55,7 +55,7 @@ SELECT
     p.p_name,
     COUNT(*) AS supplier_count,
     SUM(s.s_acctbal) AS total_acctbal,
-    STRING_AGG(s.s_comment, '; ') AS joined_comments
+    arrayStringConcat(groupArray(assumeNotNull(s.s_comment)), '; ') AS joined_comments
 FROM 
     FinalResults p
 JOIN 

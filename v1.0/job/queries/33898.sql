@@ -31,7 +31,7 @@ SELECT
     mh.title AS movie_title,
     mh.production_year,
     COUNT(ci.person_role_id) AS role_count,
-    array_agg(DISTINCT it.info) AS additional_info
+    arrayDistinct(groupArray(assumeNotNull(it.info))) AS additional_info
 FROM 
     movie_hierarchy mh
 JOIN 

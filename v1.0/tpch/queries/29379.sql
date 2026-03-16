@@ -2,7 +2,7 @@ SELECT
     CONCAT('Supplier Name: ', s.s_name, ' | Nation: ', n.n_name) AS SupplierInfo,
     SUM(ps.ps_availqty) AS TotalAvailableQuantity,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS AverageRevenue,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS PartsSupplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS PartsSupplied,
     COUNT(DISTINCT o.o_orderkey) AS TotalOrders
 FROM 
     supplier s

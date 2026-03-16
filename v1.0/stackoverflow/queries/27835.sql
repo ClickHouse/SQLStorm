@@ -12,11 +12,11 @@ WITH RankedPosts AS (
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
     WHERE p.PostTypeId = 1 
-    AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName
     FROM RankedPosts
 ),
 TagFrequency AS (
@@ -42,7 +42,7 @@ SELECT
     tt.TagName,
     tt.TagUsage
 FROM RankedPosts rp
-JOIN TopTags tt ON tt.TagName = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags)-2), '><'))
+JOIN TopTags tt ON tt.TagName = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
 WHERE rp.PostRank <= 5 
 AND tt.TagRank <= 10 
 ORDER BY rp.OwnerDisplayName, tt.TagUsage DESC;

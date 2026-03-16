@@ -2,7 +2,7 @@ WITH RankedOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, o.o_orderpriority, 
            RANK() OVER (PARTITION BY o.o_orderpriority ORDER BY o.o_totalprice DESC) AS rnk
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
+    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
 ),
 HighValueOrders AS (
     SELECT r.o_orderkey, r.o_orderdate, r.o_totalprice, r.o_orderpriority

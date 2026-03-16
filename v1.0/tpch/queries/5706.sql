@@ -21,8 +21,8 @@ WITH SupplyChain AS (
     JOIN
         lineitem l ON p.p_partkey = l.l_partkey
     WHERE
-        l.l_shipdate >= DATE '1997-01-01'
-        AND l.l_shipdate < DATE '1997-10-01'
+        l.l_shipdate >= toDate('1997-01-01')
+        AND l.l_shipdate < toDate('1997-10-01')
     GROUP BY
         p.p_partkey, p.p_name, s.s_name, ps.ps_supplycost, ps.ps_availqty, n.n_name, r.r_name
 ),

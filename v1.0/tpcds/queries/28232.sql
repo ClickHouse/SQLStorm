@@ -18,15 +18,15 @@ WITH customer_info AS (
 ),
 monthly_purchase AS (
     SELECT 
-        EXTRACT(YEAR FROM d.d_date) AS purchase_year,
-        EXTRACT(MONTH FROM d.d_date) AS purchase_month,
+        toYear(d.d_date) AS purchase_year,
+        toMonth(d.d_date) AS purchase_month,
         SUM(ws.ws_sales_price) AS total_sales
     FROM 
         date_dim d
     JOIN 
         web_sales ws ON d.d_date_sk = ws.ws_sold_date_sk
     GROUP BY 
-        EXTRACT(YEAR FROM d.d_date), EXTRACT(MONTH FROM d.d_date)
+        toYear(d.d_date), toMonth(d.d_date)
 ),
 income_distribution AS (
     SELECT 
@@ -59,7 +59,7 @@ SELECT
 FROM 
     customer_info ci
 JOIN 
-    monthly_purchase mp ON EXTRACT(YEAR FROM cast('2002-10-01' as date)) = mp.purchase_year AND EXTRACT(MONTH FROM cast('2002-10-01' as date)) = mp.purchase_month
+    monthly_purchase mp ON toYear(cast('2002-10-01' as date)) = mp.purchase_year AND toMonth(cast('2002-10-01' as date)) = mp.purchase_month
 JOIN 
     income_distribution id ON (
         (ci.cd_purchase_estimate < 10000 AND id.income_band = 'Low') OR

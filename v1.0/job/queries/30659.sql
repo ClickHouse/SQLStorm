@@ -32,7 +32,7 @@ SELECT
     mt.title AS movie_title,
     mt.production_year,
     COUNT(ci.movie_id) AS num_movies,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     AVG(wm.avg_role_order) AS avg_role_order,
     COALESCE(MAX(ci.note), 'No Note') AS cast_note
 FROM 

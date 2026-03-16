@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s.s_name) AS supplier_count,
     SUM(CASE WHEN l.l_discount > 0 THEN l.l_extendedprice * (1 - l.l_discount) ELSE l.l_extendedprice END) AS total_revenue,
     MAX(o.o_totalprice) AS max_order_value,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_address, ')'), '; ') AS suppliers_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_address, ')')))), '; ') AS suppliers_list
 FROM 
     part p
 JOIN 

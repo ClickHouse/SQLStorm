@@ -43,9 +43,9 @@ PostDetails AS (
         ups.TotalUpvotes,
         ups.TotalDownvotes,
         ups.TotalFavorites,
-        ARRAY_AGG(DISTINCT rp.Tags) AS UniqueTags,
+        arrayDistinct(groupArray(assumeNotNull(rp.Tags))) AS UniqueTags,
         COUNT(DISTINCT c.Id) AS CommentCount,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgResponseTime
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgResponseTime
     FROM 
         UserPostStats ups
     JOIN 

@@ -56,7 +56,7 @@ SELECT
     fa.Upvotes,
     fa.Downvotes,
     COUNT(rph.PostId) AS RecentEdits,
-    AVG(EXTRACT(EPOCH FROM (rph.CreationDate - rph.PreviousEditDate))) AS AvgEditInterval
+    AVG(toUnixTimestamp((rph.CreationDate - rph.PreviousEditDate))) AS AvgEditInterval
 FROM 
     FilteredActivity fa
 LEFT JOIN 

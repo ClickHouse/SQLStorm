@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        UNNEST(string_to_array(P.Tags, '>')) AS TagName,
+        arrayJoin(splitByString('>', P.Tags)) AS TagName,
         COUNT(*) AS PostCount,
         AVG(P.Score) AS AverageScore
     FROM 
@@ -39,7 +39,7 @@ TopPosts AS (
     FROM 
         RankedPosts RP
     JOIN 
-        TagStatistics T ON T.TagName = ANY(string_to_array(RP.Tags, '>'))
+        TagStatistics T ON T.TagName = ANY(splitByString('>', RP.Tags))
     WHERE 
         RP.RankScore <= 5 
 )
@@ -51,7 +51,7 @@ SELECT
     TP.PostCount,
     TP.AverageScore,
     RP.CreationDate,
-    STRING_AGG(C.Text, '; ') AS Comments
+    arrayStringConcat(groupArray(assumeNotNull(C.Text)), '; ') AS Comments
 FROM 
     TopPosts TP
 LEFT JOIN 

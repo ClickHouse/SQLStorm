@@ -4,7 +4,7 @@ WITH AddressSummary AS (
         ca_state,
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities_list
     FROM 
         customer_address
     GROUP BY 

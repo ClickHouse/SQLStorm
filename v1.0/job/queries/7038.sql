@@ -3,8 +3,8 @@ SELECT
     t.title AS movie_title, 
     t.production_year, 
     c.kind AS cast_type, 
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords, 
-    ARRAY_AGG(DISTINCT co.name) AS companies 
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords, 
+    arrayDistinct(groupArray(assumeNotNull(co.name))) AS companies 
 FROM 
     aka_name a
 JOIN 

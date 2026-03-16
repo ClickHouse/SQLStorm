@@ -30,7 +30,7 @@ SELECT
     ah.actor_name,
     COUNT(DISTINCT ah.parent_id) AS co_stars_count,
     COUNT(DISTINCT ci.movie_id) AS movies_count,
-    STRING_AGG(DISTINCT kt.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS keywords,
     CASE 
         WHEN COUNT(DISTINCT ci.movie_id) > 5 THEN 'Prolific Actor'
         ELSE 'Emerging Actor'

@@ -35,7 +35,7 @@ RecentActors AS (
 MoviesWithKeywords AS (
     SELECT 
         t.title AS movie_title,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title t
     JOIN 

@@ -42,7 +42,7 @@ ActorsInTopMovies AS (
 )
 SELECT 
     production_year, 
-    STRING_AGG(DISTINCT actor_name, ', ') AS actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors
 FROM 
     ActorsInTopMovies
 GROUP BY 

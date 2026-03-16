@@ -34,11 +34,11 @@ UserActivity AS (
 ActiveBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges
     FROM 
         Badges b
     WHERE 
-        b.Date > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        b.Date > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 )

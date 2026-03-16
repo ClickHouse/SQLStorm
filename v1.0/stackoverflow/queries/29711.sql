@@ -59,14 +59,14 @@ SELECT
     tu.Upvotes AS TotalUpvotes,
     tu.Downvotes AS TotalDownvotes,
     tu.AverageViews AS AvgPostViews,
-    STRING_AGG(DISTINCT p.Title, ', ') AS PostTitles,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), ', ') AS PostTitles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
 FROM 
     TopUsers tu
 LEFT JOIN 
     Posts p ON tu.UserId = p.OwnerUserId
 LEFT JOIN 
-    UNNEST(REGEXP_SPLIT_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '>, *')) AS tag_list ON TRUE
+    arrayJoin(splitByRegexp('>, *', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_list ON TRUE
 LEFT JOIN 
     Tags t ON tag_list = t.TagName
 GROUP BY 

@@ -22,7 +22,7 @@ SalesData AS (
         ws.ws_item_sk,
         ws.ws_quantity,
         ws.ws_net_paid,
-        EXTRACT(YEAR FROM d.d_date) AS sale_year
+        toYear(d.d_date) AS sale_year
     FROM 
         web_sales ws
     JOIN 
@@ -56,4 +56,4 @@ WHERE
     AND ci.cd_purchase_estimate > 1000
 ORDER BY 
     ys.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

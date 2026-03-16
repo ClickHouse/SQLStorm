@@ -42,7 +42,7 @@ SELECT
     TP.CommentCount,
     (SELECT COUNT(*) FROM Votes V WHERE V.PostId = TP.PostId AND V.VoteTypeId = 2) AS UpVotes,
     (SELECT COUNT(*) FROM Votes V WHERE V.PostId = TP.PostId AND V.VoteTypeId = 3) AS DownVotes,
-    (SELECT STRING_AGG(PH.Comment, '; ') FROM PostHistory PH WHERE PH.PostId = TP.PostId) AS PostHistoryComments
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(PH.Comment)), '; ') FROM PostHistory PH WHERE PH.PostId = TP.PostId) AS PostHistoryComments
 FROM 
     TopPosts TP
 ORDER BY 

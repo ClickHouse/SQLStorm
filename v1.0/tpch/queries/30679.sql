@@ -15,7 +15,7 @@ WITH RECURSIVE OrderHierarchy AS (
 SELECT c.c_name, r.r_name, SUM(li.l_extendedprice * (1 - li.l_discount)) AS total_revenue,
        AVG(s.s_acctbal) AS avg_supplier_balance,
        COUNT(DISTINCT o.o_orderkey) AS total_orders,
-       STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM customer c
 LEFT JOIN nation n ON c.c_nationkey = n.n_nationkey
 LEFT JOIN region r ON n.n_regionkey = r.r_regionkey

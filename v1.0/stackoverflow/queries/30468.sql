@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
 ),
 RecentVotes AS (
     SELECT 
@@ -25,7 +25,7 @@ RecentVotes AS (
     JOIN 
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE 
-        v.CreationDate >= CURRENT_DATE - INTERVAL '6 months' 
+        v.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH 
     GROUP BY 
         v.PostId
 ),
@@ -37,7 +37,7 @@ UserBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= CURRENT_DATE - INTERVAL '1 year' 
+        b.Date >= CURRENT_DATE - INTERVAL 1 YEAR 
     GROUP BY 
         b.UserId
 ),

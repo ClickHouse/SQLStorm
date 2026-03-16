@@ -23,7 +23,7 @@ SELECT
     AVG(info_length) AS avg_info_length,
     COUNT(DISTINCT combined_info) AS unique_combinations,
     COUNT(*) AS total_count,
-    STRING_AGG(DISTINCT short_comment, ', ') AS short_comments_aggregated,
-    STRING_AGG(DISTINCT modified_comment, '; ') AS modified_comments_aggregated
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(short_comment))), ', ') AS short_comments_aggregated,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(modified_comment))), '; ') AS modified_comments_aggregated
 FROM 
     String_Processing;

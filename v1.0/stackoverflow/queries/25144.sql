@@ -22,7 +22,7 @@ WITH FilteredPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.CreationDate, u.DisplayName, u.Reputation, pt.Name
 )
@@ -42,13 +42,13 @@ SELECT
         WHEN fp.Reputation BETWEEN 500 AND 1000 THEN 'Medium Reputation'
         ELSE 'Low Reputation'
     END AS ReputationCategory,
-    STRING_AGG(DISTINCT fp.PostTypeName, ', ') AS PostTypeNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fp.PostTypeName))), ', ') AS PostTypeNames
 FROM 
     FilteredPosts fp
 JOIN 
     PostHistory ph ON ph.PostId = fp.PostId
 WHERE 
-    ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     AND ph.PostHistoryTypeId IN (10, 11)  
 GROUP BY 
     fp.PostId, fp.Title, fp.Body, fp.Tags, fp.CreationDate, fp.OwnerName, fp.Reputation, fp.CommentCount, fp.AnswerCount

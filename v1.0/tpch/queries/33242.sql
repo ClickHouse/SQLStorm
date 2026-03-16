@@ -14,7 +14,7 @@ WITH RECURSIVE RegionalSales AS (
     JOIN 
         lineitem l ON p.p_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1998-01-01'
+        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1998-01-01')
     GROUP BY 
         n.n_name, n.n_nationkey
 ),
@@ -31,7 +31,7 @@ RegionComments AS (
     SELECT 
         r.r_name,
         COUNT(*) AS nation_count,
-        STRING_AGG(n.n_comment, '; ') AS comments
+        arrayStringConcat(groupArray(assumeNotNull(n.n_comment)), '; ') AS comments
     FROM 
         region r
     LEFT JOIN 

@@ -32,7 +32,7 @@ CommonCast AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        STRING_AGG(ak.name, ', ') AS actors
+        arrayStringConcat(groupArray(assumeNotNull(ak.name)), ', ') AS actors
     FROM 
         cast_info ci
     JOIN 

@@ -24,12 +24,12 @@ WITH RankedPosts AS (
 RecentBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(*) AS BadgeCount
     FROM 
         Badges b
     WHERE 
-        b.Date >= (cast('2024-10-01' as date) - INTERVAL '30 days') 
+        b.Date >= (cast('2024-10-01' as date) - INTERVAL 30 DAY) 
     GROUP BY 
         b.UserId
 ),

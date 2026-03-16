@@ -51,7 +51,7 @@ OrderDetails AS (
     FROM 
         lineitem li
     WHERE 
-        li.l_shipdate >= DATE '1997-01-01' AND li.l_shipdate < DATE '1998-01-01'
+        li.l_shipdate >= toDate('1997-01-01') AND li.l_shipdate < toDate('1998-01-01')
 ),
 FinalReport AS (
     SELECT 

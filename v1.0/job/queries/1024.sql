@@ -24,7 +24,7 @@ TopCast AS (
 MovieInfoAggregated AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT mi.info, ', ') AS info_text
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS info_text
     FROM 
         movie_info mi
     JOIN 

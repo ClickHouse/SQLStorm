@@ -43,7 +43,7 @@ PersonNames AS (
 MovieKeywords AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keyword_list
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keyword_list
     FROM 
         movie_keyword m
     JOIN 

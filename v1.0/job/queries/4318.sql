@@ -24,7 +24,7 @@ WITH ranked_movies AS (
 ), movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     LEFT JOIN 
@@ -34,7 +34,7 @@ WITH ranked_movies AS (
 ), movie_companies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(c.name, ', ') AS companies
+        arrayStringConcat(groupArray(assumeNotNull(c.name)), ', ') AS companies
     FROM 
         movie_companies mc
     LEFT JOIN 

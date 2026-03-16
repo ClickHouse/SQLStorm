@@ -37,8 +37,8 @@ SELECT
     ci.ca_zip,
     COUNT(DISTINCT ws.ws_order_number) AS order_count,
     AVG(ws.ws_sales_price) AS average_order_value,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promo_names,
-    STRING_AGG(DISTINCT CONCAT(CAST(ws.ws_sold_date_sk AS TEXT), '->', CAST(ws.ws_net_paid AS TEXT)), ', ') AS order_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promo_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(CAST(ws.ws_sold_date_sk AS TEXT), '->', CAST(ws.ws_net_paid AS TEXT))))), ', ') AS order_details
 FROM 
     customer_info ci
 LEFT JOIN 

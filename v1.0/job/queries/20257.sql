@@ -41,8 +41,8 @@ actor_movie_info AS (
 )
 SELECT
     actor_name,
-    STRING_AGG(movie_title, ', ') AS movies,
-    STRING_AGG(movie_info, '; ') AS movie_details,
+    arrayStringConcat(groupArray(assumeNotNull(movie_title)), ', ') AS movies,
+    arrayStringConcat(groupArray(assumeNotNull(movie_info)), '; ') AS movie_details,
     COUNT(DISTINCT movie_title) AS total_movies,
     MAX(CHAR_LENGTH(movie_info)) AS max_info_length
 FROM

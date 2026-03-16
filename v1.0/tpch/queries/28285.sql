@@ -2,10 +2,10 @@ SELECT
     p.p_name,
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     ROUND(AVG(ps.ps_supplycost), 2) AS average_supply_cost,
-    STRING_AGG(DISTINCT s.s_name || ' (' || s.s_phone || ')', ', ') AS suppliers_contact_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name || ' (' || s.s_phone || ')'))), ', ') AS suppliers_contact_info,
     SUM(l.l_quantity) AS total_quantity_sold,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT o.o_orderpriority, ', ') AS distinct_order_priorities
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(o.o_orderpriority))), ', ') AS distinct_order_priorities
 FROM 
     part p
 JOIN 

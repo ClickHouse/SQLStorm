@@ -43,4 +43,4 @@ WHERE
     (COALESCE(SD.total_net_profit, 0) > 100 OR COALESCE(CR.total_return_amount, 0) > 100)
 ORDER BY 
     net_profit_per_unit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

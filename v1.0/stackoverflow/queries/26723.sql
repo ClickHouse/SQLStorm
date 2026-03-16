@@ -6,7 +6,7 @@ WITH TagStatistics AS (
         COUNT(DISTINCT P.Id) AS PostCount,
         COALESCE(SUM(V.BountyAmount), 0) AS TotalBounty,
         COALESCE(AVG(U.Reputation), 0) AS AvgUserReputation,
-        STRING_AGG(DISTINCT U.DisplayName, ', ') AS ActiveUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS ActiveUsers
     FROM 
         Tags T
         LEFT JOIN Posts P ON P.Tags LIKE '%' || '<' || T.TagName || '>'
@@ -32,7 +32,7 @@ ActivePosts AS (
 RecentEdits AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(DISTINCT PH.UserDisplayName || ' (' || PH.CreationDate || ')', '; ') AS EditsDetails
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.UserDisplayName || ' (' || PH.CreationDate || ')'))), '; ') AS EditsDetails
     FROM 
         PostHistory PH
     WHERE 

@@ -13,7 +13,7 @@ WITH RankedMovies AS (
 ActorRoles AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT r.role, ',' ORDER BY r.role) AS roles_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ',' ORDER BY r.role) AS roles_list,
         COUNT(DISTINCT c.person_id) AS actor_count
     FROM 
         cast_info c
@@ -44,4 +44,4 @@ GROUP BY
     ar.roles_list
 ORDER BY 
     rm.production_year DESC, rm.title ASC
-OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

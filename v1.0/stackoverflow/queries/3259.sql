@@ -13,13 +13,13 @@ RecentPostStats AS (
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         AVG(P.Score) AS AverageScore,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS TagsUsed
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagsUsed
     FROM Posts P
-    JOIN LATERAL (
+    JOIN (
         SELECT 
-            unnest(string_to_array(P.Tags, '><')) AS TagName
+            arrayJoin(splitByString('><', P.Tags)) AS TagName
     ) T ON TRUE
-    WHERE P.LastActivityDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE P.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY P.OwnerUserId
 ),
 UserBadges AS (

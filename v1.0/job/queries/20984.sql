@@ -4,7 +4,7 @@ WITH movie_data AS (
         t.id AS title_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COUNT(DISTINCT c.person_id) AS actor_count,
         SUM(CASE WHEN c.note IS NOT NULL THEN 1 ELSE 0 END) AS non_null_notes
     FROM 
@@ -23,8 +23,8 @@ WITH movie_data AS (
 company_info AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS companies,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_types
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types
     FROM 
         movie_companies mc
     INNER JOIN 

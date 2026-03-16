@@ -31,7 +31,7 @@ SELECT
     (SELECT COUNT(DISTINCT mc.company_id) 
      FROM movie_companies mc 
      WHERE mc.movie_id = rm.movie_id) AS total_companies,
-    COALESCE((SELECT STRING_AGG(DISTINCT k.keyword, ', ') 
+    COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
               FROM movie_keyword mk 
               JOIN keyword k ON mk.keyword_id = k.id 
               WHERE mk.movie_id = rm.movie_id), 'No Keywords') AS keywords

@@ -32,7 +32,7 @@ OrderDetails AS (
         o.o_orderkey,
         o.o_orderdate,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-        STRING_AGG(CONCAT(s.s_name, ': ', l.l_quantity), '; ') AS supplier_info
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_name, ': ', l.l_quantity))), '; ') AS supplier_info
     FROM 
         orders o
     JOIN 

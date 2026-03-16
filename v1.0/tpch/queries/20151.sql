@@ -75,4 +75,4 @@ WHERE
     AND (ss.total_supply_cost IS NULL OR ss.total_supply_cost < 500)
 ORDER BY 
     rp.p_retailprice DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

@@ -46,4 +46,4 @@ LEFT JOIN RankedSales rs ON p.p_partkey = rs.sales_rank
 WHERE p.p_retailprice BETWEEN 10.00 AND 100.00
   AND (sh.level IS NULL OR sh.level >= 3)
 ORDER BY p.p_partkey DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

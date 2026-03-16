@@ -4,8 +4,8 @@ SELECT
     ca.ca_city,
     COUNT(DISTINCT c.c_customer_sk) AS total_customers,
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names,
-    STRING_AGG(DISTINCT cd.cd_gender, ', ') AS distinct_genders
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_gender))), ', ') AS distinct_genders
 FROM 
     customer_address ca
 JOIN 

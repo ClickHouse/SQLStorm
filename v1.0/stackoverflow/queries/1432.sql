@@ -30,7 +30,7 @@ WITH UserPostStats AS (
     FROM 
         (
             SELECT 
-                UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS TagName
+                arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS TagName
             FROM 
                 Posts
             WHERE 
@@ -59,4 +59,4 @@ WHERE
     ups.TotalPosts > 10
 ORDER BY 
     ups.AverageScore DESC, pt.TagCount DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

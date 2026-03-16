@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 UserReputation AS (
     SELECT 
@@ -48,16 +48,16 @@ RecentPosts AS (
 PostHistoryWithReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     LEFT JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     LEFT JOIN 
-        CloseReasonTypes cr ON ph.Comment = cr.Id::text
+        CloseReasonTypes cr ON ph.Comment = CAST(cr.Id AS text)
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        ph.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         ph.PostId
 )

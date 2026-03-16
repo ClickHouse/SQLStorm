@@ -5,7 +5,7 @@ SELECT
     t.production_year,
     c.kind AS company_type,
     COUNT(DISTINCT k.keyword) AS keyword_count,
-    STRING_AGG(DISTINCT ci.note, ', ') AS cast_notes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), ', ') AS cast_notes
 FROM 
     aka_name a
 JOIN 

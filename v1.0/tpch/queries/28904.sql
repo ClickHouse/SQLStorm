@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count, 
     SUM(l.l_quantity) AS total_quantity, 
     AVG(s.s_acctbal) AS average_supplier_balance, 
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     SUBSTRING(p.p_comment FROM 1 FOR 20) AS short_comment,
     CASE 
         WHEN SUM(l.l_quantity) > 1000 THEN 'High Volume'

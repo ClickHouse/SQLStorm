@@ -48,4 +48,4 @@ SELECT
 FROM ranked_parts rp
 WHERE rp.part_rank <= 10
 ORDER BY rp.part_rank, rp.total_avail_qty DESC
-OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 5;

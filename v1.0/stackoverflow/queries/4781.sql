@@ -25,7 +25,7 @@ ClosedPostInfo AS (
     SELECT 
         PH.PostId,
         MAX(PH.CreationDate) AS LastClosedDate,
-        STRING_AGG(DISTINCT CTR.Name, ', ') AS CloseReasonNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CTR.Name))), ', ') AS CloseReasonNames
     FROM PostHistory PH
     INNER JOIN CloseReasonTypes CTR ON PH.Comment = CAST(CTR.Id AS VARCHAR)
     WHERE PH.PostHistoryTypeId = 10
@@ -50,6 +50,6 @@ LEFT JOIN Posts P ON U.Id = P.OwnerUserId
 LEFT JOIN PostVoteCounts PVC ON P.Id = PVC.PostId
 LEFT JOIN ClosedPostInfo CPI ON P.Id = CPI.PostId
 WHERE (UPS.QuestionCount > 0 OR UPS.AnswerCount > 0)
-AND (CPI.LastClosedDate IS NULL OR CPI.LastClosedDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+AND (CPI.LastClosedDate IS NULL OR CPI.LastClosedDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ORDER BY UPS.TotalPosts DESC, PVC.UpVotes DESC
 LIMIT 100;

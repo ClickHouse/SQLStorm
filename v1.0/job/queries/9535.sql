@@ -4,8 +4,8 @@ WITH movie_details AS (
         t.title AS movie_title,
         t.production_year,
         c.name AS company_name,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors
     FROM 
         aka_title t
     JOIN 
@@ -48,4 +48,4 @@ JOIN
     actor_counts ac ON md.movie_title = ac.movie_title
 ORDER BY 
     md.production_year DESC, ac.actor_count DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -37,7 +37,7 @@ PostStats AS (
         WHERE PostTypeId = 2
         GROUP BY ParentId
     ) ans ON p.Id = ans.PostId
-    WHERE p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
 )
 SELECT 
     us.DisplayName,

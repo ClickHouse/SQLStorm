@@ -12,7 +12,7 @@ Ranking AS (
     JOIN lineitem l ON ps.ps_partkey = l.l_partkey
     JOIN nation n ON s.s_nationkey = n.n_nationkey
     JOIN region r ON n.n_regionkey = r.r_regionkey
-    WHERE l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
+    WHERE l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1996-12-31')
     GROUP BY s.s_suppkey, s.s_name, r.r_regionkey
 )
 SELECT r.s_suppkey, r.s_name, r.rank_within_region,

@@ -21,14 +21,14 @@ RecentPosts AS (
         p.Body,
         p.CreationDate,
         p.ViewCount,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        (SELECT DISTINCT unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName 
+        (SELECT DISTINCT arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName 
          FROM Posts) t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount
 ),
@@ -68,7 +68,7 @@ FROM
 JOIN 
     UserPostStats ups ON ub.UserId = ups.UserId
 LEFT JOIN 
-    RecentPosts rp ON rp.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days' 
+    RecentPosts rp ON rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY 
 ORDER BY 
     ub.BadgeCount DESC, 
     ups.UpvotesReceived DESC

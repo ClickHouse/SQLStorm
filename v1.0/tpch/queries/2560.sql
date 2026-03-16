@@ -58,4 +58,4 @@ AND
     (p.p_size IS NULL OR p.p_size IN (1, 2, 3))
 ORDER BY
     p.p_name, supplier_acctbal DESC, total_spent DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

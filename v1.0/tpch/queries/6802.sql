@@ -45,7 +45,7 @@ SELECT
     tp.p_type,
     tp.total_available_quantity,
     tp.total_supply_cost,
-    ARRAY_AGG(rs.s_name) AS top_suppliers
+    groupArray(assumeNotNull(rs.s_name)) AS top_suppliers
 FROM 
     TopParts tp
 JOIN 

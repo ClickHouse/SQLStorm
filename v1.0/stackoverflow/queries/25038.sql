@@ -38,7 +38,7 @@ FilteredPosts AS (
 
 TagStats AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(LOWER(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)), '><'))) AS TagName,
+        TRIM(arrayJoin(splitByString('><', LOWER(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         FilteredPosts

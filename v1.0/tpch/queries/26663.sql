@@ -38,7 +38,7 @@ SELECT
     SUM(pd.ps_availqty) AS total_avail_qty,
     AVG(pd.p_retailprice) AS avg_retail_price,
     COUNT(DISTINCT pd.supplier_name) AS distinct_suppliers,
-    STRING_AGG(CONCAT(pd.p_name, ' (', pd.p_container, ')'), ', ') AS part_info
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(pd.p_name, ' (', pd.p_container, ')'))), ', ') AS part_info
 FROM 
     RankedCustomers rc
 JOIN 

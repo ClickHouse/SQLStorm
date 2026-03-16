@@ -3,7 +3,7 @@ SELECT
     t.title AS movie_title, 
     p.name AS actor_name, 
     COUNT(ka.id) AS alias_count, 
-    STRING_AGG(k.keyword, ',') AS keywords, 
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ',') AS keywords, 
     c.kind AS company_type
 FROM 
     title t
@@ -29,4 +29,4 @@ GROUP BY
     t.title, p.name, c.kind
 ORDER BY 
     alias_count DESC, movie_title ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

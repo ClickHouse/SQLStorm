@@ -42,8 +42,8 @@ SELECT
            AND cd_gender = 'M')) AS married_male_count,
     (SELECT COUNT(*) 
      FROM item 
-     WHERE i_rec_start_date < DATE '2002-10-01' 
-       AND (i_rec_end_date IS NULL OR i_rec_end_date > DATE '2002-10-01')) AS active_items,
+     WHERE i_rec_start_date < toDate('2002-10-01') 
+       AND (i_rec_end_date IS NULL OR i_rec_end_date > toDate('2002-10-01'))) AS active_items,
     (SELECT 
         MAX(d_year)
      FROM date_dim 

@@ -31,7 +31,7 @@ KeyRoleCount AS (
     SELECT 
         ar.movie_id,
         SUM(ar.role_count) AS total_roles,
-        STRING_AGG(DISTINCT ar.role, ', ') AS role_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ar.role))), ', ') AS role_list
     FROM 
         ActorRoles ar
     GROUP BY 
@@ -41,7 +41,7 @@ CompanyTypes AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT co.name) AS company_count,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 

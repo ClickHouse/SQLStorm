@@ -36,7 +36,7 @@ SELECT
     fm.keyword,
     fm.cast_count,
     COUNT(DISTINCT ci.person_id) AS unique_actors,
-    STRING_AGG(DISTINCT aka.name, ', ') AS actor_names  -- Replaced GROUP_CONCAT with STRING_AGG
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aka.name))), ', ') AS actor_names  -- Replaced GROUP_CONCAT with STRING_AGG
 FROM 
     FilteredMovies fm
 JOIN 

@@ -64,7 +64,7 @@ SELECT
     cd.production_year,
     cd.movie_info_count,
     MAX(cd.company_type_count) AS max_company_type_count,
-    STRING_AGG(DISTINCT cd.company_name, ', ') AS associated_companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.company_name))), ', ') AS associated_companies
 FROM 
     CombinedData cd
 GROUP BY 

@@ -50,8 +50,8 @@ PostHistoryDetails AS (
 AggregatedHistories AS (
     SELECT 
         PostId,
-        STRING_AGG(DISTINCT Comment, '; ') AS CommentsMade,
-        STRING_AGG(CONCAT(EditorName, ' edited at ', CAST(HistoryDate AS CHAR)), '; ') AS EditTimeline
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Comment))), '; ') AS CommentsMade,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(EditorName, ' edited at ', CAST(HistoryDate AS CHAR)))), '; ') AS EditTimeline
     FROM 
         PostHistoryDetails
     GROUP BY 

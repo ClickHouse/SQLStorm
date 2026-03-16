@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -74,7 +74,7 @@ LEFT JOIN
 LEFT JOIN 
     RecentPostHistory rph ON p.Id = rph.PostId AND rph.rn = 1
 WHERE 
-    p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ORDER BY 
     p.Score DESC, 
     p.ViewCount DESC;

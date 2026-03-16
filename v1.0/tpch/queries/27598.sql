@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS average_price,
-    STRING_AGG(DISTINCT SUBSTRING(p.p_comment, 1, 20), ', ') AS partial_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(p.p_comment, 1, 20)))), ', ') AS partial_comments
 FROM 
     part p
 JOIN 

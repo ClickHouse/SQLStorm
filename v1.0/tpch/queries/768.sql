@@ -66,4 +66,4 @@ WHERE
     ) OR nd.total_customers > 100
 ORDER BY 
     total_order_value DESC NULLS LAST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

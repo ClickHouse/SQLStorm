@@ -39,7 +39,7 @@ RecentBigSpenders AS (
     JOIN 
         region r ON n.n_regionkey = r.r_regionkey
     WHERE 
-        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         c.c_custkey, c.c_name, r.r_name
     HAVING 

@@ -14,15 +14,15 @@ WITH RankedPosts AS (
     JOIN Users u ON p.OwnerUserId = u.Id
     WHERE p.PostTypeId = 1 AND 
           p.Score > 0 AND 
-          p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+          p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TagSummary AS (
     SELECT 
-        LOWER(TRIM(regexp_split_to_table(p.Tags, '>'))) AS TagName,
+        LOWER(TRIM(splitByRegexp('>', p.Tags))) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts p
     WHERE p.PostTypeId = 1
-    GROUP BY LOWER(TRIM(regexp_split_to_table(p.Tags, '>')))
+    GROUP BY LOWER(TRIM(splitByRegexp('>', p.Tags)))
 ),
 PopularTags AS (
     SELECT 
@@ -57,6 +57,6 @@ SELECT
     pt.TagName AS RelatedTag
 FROM RankedPosts rp
 JOIN PostInteraction pi ON rp.PostId = pi.PostId
-LEFT JOIN PopularTags pt ON pt.TagName = ANY(STRING_TO_ARRAY(rp.Tags, '>'))
+LEFT JOIN PopularTags pt ON pt.TagName = ANY(splitByString('>', rp.Tags))
 WHERE rp.Rank <= 5
 ORDER BY rp.Score DESC, pi.UpVoteCount DESC;

@@ -86,4 +86,4 @@ WHERE
 ORDER BY
     ai.order_count DESC,
     ai.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

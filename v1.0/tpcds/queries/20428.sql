@@ -42,4 +42,4 @@ LEFT JOIN RecursiveCustomerSales rs ON r.ca_city = rs.c_first_name
 WHERE r.cd_gender != 'M' OR r.cd_gender IS NULL
 GROUP BY r.city_sales, r.ca_city, r.cd_gender
 ORDER BY r.city_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

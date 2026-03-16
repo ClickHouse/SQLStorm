@@ -12,9 +12,9 @@ WITH RankedPosts AS (
            ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.CreationDate DESC) AS Rank
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), PopularTags AS (
-    SELECT unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName,
+    SELECT arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
            COUNT(*) AS TagCount
     FROM Posts
     WHERE Tags IS NOT NULL
@@ -39,7 +39,7 @@ WITH RankedPosts AS (
     LEFT JOIN Comments c ON u.Id = c.UserId
     LEFT JOIN Badges b ON u.Id = b.UserId
     LEFT JOIN PostHistory ph ON u.Id = ph.UserId
-    WHERE u.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+    WHERE u.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY u.DisplayName
 ), CombinedResults AS (
     SELECT rp.PostId,

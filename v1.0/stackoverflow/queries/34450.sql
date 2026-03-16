@@ -64,7 +64,7 @@ SELECT
     us.AverageViewCount,
     COALESCE(cvc.CloseVotes, 0) AS CloseVotes,
     COUNT(DISTINCT ph.PostId) AS SubquestionCount,
-    STRING_AGG(DISTINCT p.Tags, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Tags))), ', ') AS Tags
 FROM 
     Users u
 JOIN 

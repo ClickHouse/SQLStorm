@@ -14,14 +14,14 @@ WITH RankedPosts AS (
         LEFT JOIN Comments c ON p.Id = c.PostId
         LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '30 days')
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 30 DAY)
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ),
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(CASE WHEN b.Class = 1 THEN 1 END) AS GoldCount,
         COUNT(CASE WHEN b.Class = 2 THEN 1 END) AS SilverCount,
         COUNT(CASE WHEN b.Class = 3 THEN 1 END) AS BronzeCount
@@ -62,4 +62,4 @@ WHERE
 ORDER BY 
     f.VoteRank,
     f.NetVotes DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -27,7 +27,7 @@ TopCustomers AS (
 SELECT p.p_partkey, p.p_name, 
        COALESCE(SUM(ps.ps_availqty), 0) AS total_available_qty, 
        MAX(ss.total_revenue) AS max_order_revenue,
-       STRING_AGG(DISTINCT c.c_name, ', ') AS top_customers_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS top_customers_names
 FROM part p
 LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 LEFT JOIN SupplierHierarchy sh ON ps.ps_suppkey = sh.s_suppkey

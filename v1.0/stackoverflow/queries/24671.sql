@@ -9,7 +9,7 @@ WITH UserVotes AS (
     JOIN 
         Posts p ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         v.UserId
 ),

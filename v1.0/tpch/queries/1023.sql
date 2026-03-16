@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
 ),
 SupplierPart AS (
     SELECT 
@@ -44,7 +44,7 @@ LEFT JOIN
     SupplierPart sp ON lo.l_partkey = sp.ps_partkey
 WHERE 
     (o.o_orderstatus = 'F' OR o.o_orderstatus = 'O') 
-    AND lo.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1997-01-01'
+    AND lo.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1997-01-01')
     AND (n.n_name IS NOT NULL OR sp.total_availability IS NULL)
 GROUP BY 
     n.n_name, sp.total_availability, sp.avg_supply_cost

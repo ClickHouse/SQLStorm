@@ -23,7 +23,7 @@ WITH RankedPosts AS (
             UserId
     ) b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate BETWEEN DATE '2023-01-01' AND DATE '2023-12-31' 
+        p.CreationDate BETWEEN toDate('2023-01-01') AND toDate('2023-12-31') 
         AND p.PostTypeId = 1   
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, b.BadgeCount

@@ -47,7 +47,7 @@ SELECT
     (SELECT AVG(price_rank) 
      FROM RankedSales r 
      WHERE r.ws_item_sk = id.i_item_sk) AS avg_price_rank,
-    (SELECT STRING_AGG(CAST(wp.wp_url AS VARCHAR), '; ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(CAST(wp.wp_url AS VARCHAR))), '; ') 
      FROM web_page wp 
      WHERE wp.wp_creation_date_sk > 2023) AS recent_web_paths
 FROM ItemDetails id

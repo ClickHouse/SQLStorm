@@ -33,7 +33,7 @@ PopularMovies AS (
 SELECT 
     pm.title,
     pm.actor_count,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
     MAX(mr.note) AS production_note
 FROM 
     PopularMovies pm

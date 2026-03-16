@@ -53,4 +53,4 @@ WHERE
     cs.rn = 1
 ORDER BY 
     cs.total_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

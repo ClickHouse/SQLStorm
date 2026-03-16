@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserEngagement AS (
     SELECT 
@@ -30,12 +30,12 @@ UserEngagement AS (
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '>')) AS TagName,
+        arrayJoin(splitByString('>', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     GROUP BY 
-        UNNEST(string_to_array(Tags, '>'))
+        arrayJoin(splitByString('>', Tags))
     HAVING 
         COUNT(*) > 5
 ),
@@ -83,11 +83,11 @@ FROM
 LEFT JOIN 
     UserEngagement ue ON ue.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = rp.PostId)
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(STRING_TO_ARRAY(rp.Tags, '>'))
+    PopularTags pt ON pt.TagName = ANY(splitByString('>', rp.Tags))
 LEFT JOIN 
     PostComments pc ON pc.PostId = rp.PostId
 WHERE 
     rp.Rank <= 5
 ORDER BY 
     rp.Score DESC, ue.Reputation DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

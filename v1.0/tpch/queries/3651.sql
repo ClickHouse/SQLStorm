@@ -45,7 +45,7 @@ SELECT
         WHEN si.s_acctbal IS NULL THEN 0 
         ELSE si.s_acctbal 
     END) AS total_acctbal,
-    STRING_AGG(si.region_name, ', ') AS regions_supplied
+    arrayStringConcat(groupArray(assumeNotNull(si.region_name)), ', ') AS regions_supplied
 FROM 
     TopSellingParts tsp
 LEFT JOIN 

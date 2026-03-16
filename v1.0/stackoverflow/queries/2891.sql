@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -32,7 +32,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS CommentTexts
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS CommentTexts
     FROM 
         Comments c
     GROUP BY 

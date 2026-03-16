@@ -6,7 +6,7 @@ SELECT
     AVG(l.l_extendedprice) AS avg_extended_price,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     COUNT(DISTINCT c.c_custkey) AS total_customers,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS served_regions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS served_regions,
     LEFT(s.s_comment, 25) AS short_supplier_comment
 FROM
     part p

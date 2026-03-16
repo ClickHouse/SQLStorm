@@ -60,4 +60,4 @@ WHERE
     cs.total_orders IS NOT NULL OR cs.customer_segment = 'No Purchases'
 ORDER BY 
     cs.total_spent DESC NULLS LAST
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

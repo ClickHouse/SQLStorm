@@ -27,7 +27,7 @@ FilteredMovies AS (
     SELECT 
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COUNT(mk.keyword_id) AS keyword_count
     FROM 
         TopMovies tm

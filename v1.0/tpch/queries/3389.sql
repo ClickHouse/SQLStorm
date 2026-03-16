@@ -7,7 +7,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 ),
 SupplierParts AS (
     SELECT 
@@ -60,4 +60,4 @@ GROUP BY
     r.r_name, cp.total_customers, cp.avg_acct_balance
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

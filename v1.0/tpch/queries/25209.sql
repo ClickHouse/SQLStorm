@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     MAX(l.l_shipdate) AS latest_shipdate,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ': ', s.s_address, ' (', s.s_phone, ')'), '; ') AS suppliers_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ': ', s.s_address, ' (', s.s_phone, ')')))), '; ') AS suppliers_info
 FROM 
     supplier s
 JOIN 

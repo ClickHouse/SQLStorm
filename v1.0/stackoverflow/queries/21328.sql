@@ -8,7 +8,7 @@ WITH RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 ),
 UserReputation AS (
     SELECT 
@@ -33,7 +33,7 @@ ActiveUsers AS (
     JOIN 
         UserReputation r ON u.Id = r.UserId
     WHERE 
-        u.LastAccessDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 week'
+        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 WEEK
 ),
 PostHistoryAggregates AS (
     SELECT 

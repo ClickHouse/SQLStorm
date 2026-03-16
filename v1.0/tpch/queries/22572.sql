@@ -41,7 +41,7 @@ SELECT
     co.TotalRevenue,
     COUNT(DISTINCT ss.s_suppkey) AS ActiveSuppliers,
     SUM(CASE WHEN sn.n_name = 'FRANCE' THEN sn.UniquePartsSupplied ELSE 0 END) AS FrenchPartSupplies,
-    STRING_AGG(DISTINCT sn.n_name, ', ') FILTER (WHERE sn.UniquePartsSupplied > 0) AS ActiveSupplierNations
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sn.n_name))), ', ') FILTER (WHERE sn.UniquePartsSupplied > 0) AS ActiveSupplierNations
 FROM CustomerOrders co
 LEFT JOIN HighSupplySuppliers ss ON co.TotalRevenue > (SELECT AVG(TotalRevenue) FROM CustomerOrders)
 LEFT JOIN SupplierNation sn ON ss.s_suppkey = sn.s_suppkey

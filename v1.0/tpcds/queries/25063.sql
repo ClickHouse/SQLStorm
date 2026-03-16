@@ -26,8 +26,8 @@ AggregatedData AS (
         ci.cd_gender,
         ci.cd_marital_status,
         COUNT(pa.ca_address_sk) AS address_count,
-        STRING_AGG(DISTINCT pa.processed_street_name, ', ') AS unique_street_names,
-        STRING_AGG(DISTINCT pa.full_address, '; ') AS unique_full_addresses,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pa.processed_street_name))), ', ') AS unique_street_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pa.full_address))), '; ') AS unique_full_addresses,
         pa.ca_city,
         pa.ca_state
     FROM 

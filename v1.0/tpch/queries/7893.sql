@@ -16,10 +16,10 @@ JOIN
 JOIN 
     nation AS n ON c.c_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate >= DATE '1995-01-01' 
-    AND o.o_orderdate < DATE '1996-01-01'
-    AND l.l_shipdate >= DATE '1995-01-01'
-    AND l.l_shipdate < DATE '1996-01-01'
+    o.o_orderdate >= toDate('1995-01-01') 
+    AND o.o_orderdate < toDate('1996-01-01')
+    AND l.l_shipdate >= toDate('1995-01-01')
+    AND l.l_shipdate < toDate('1996-01-01')
 GROUP BY 
     n.n_name
 HAVING 
@@ -31,8 +31,8 @@ HAVING
         JOIN 
             lineitem AS l ON o.o_orderkey = l.l_orderkey
         WHERE 
-            o.o_orderdate >= DATE '1995-01-01' 
-            AND o.o_orderdate < DATE '1996-01-01'
+            o.o_orderdate >= toDate('1995-01-01') 
+            AND o.o_orderdate < toDate('1996-01-01')
         GROUP BY 
             o.o_orderkey
     ) AS avg_revenue)

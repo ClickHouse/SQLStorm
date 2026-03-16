@@ -3,7 +3,7 @@ WITH AddressCounts AS (
     SELECT 
         ca_city, 
         COUNT(ca_address_sk) AS address_count,
-        STRING_AGG(DISTINCT CONCAT(ca_street_name, ' ', ca_street_type, ' ', ca_street_number), ', ') AS unique_addresses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_name, ' ', ca_street_type, ' ', ca_street_number)))), ', ') AS unique_addresses
     FROM 
         customer_address
     GROUP BY 
@@ -13,7 +13,7 @@ WITH AddressCounts AS (
         cd_gender,
         COUNT(cd_demo_sk) AS demographic_count,
         AVG(cd_purchase_estimate) AS avg_purchase,
-        STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -23,7 +23,7 @@ WITH AddressCounts AS (
         ws_item_sk,
         SUM(ws_quantity) AS total_sales,
         AVG(ws_net_profit) AS avg_net_profit,
-        STRING_AGG(DISTINCT CAST(ws_order_number AS TEXT), ', ') AS order_numbers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws_order_number AS TEXT)))), ', ') AS order_numbers
     FROM 
         web_sales
     GROUP BY 

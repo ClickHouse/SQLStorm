@@ -9,8 +9,8 @@ WITH PostAnalytics AS (
         COUNT(c.Id) AS CommentCount,
         COALESCE(SUM(CASE WHEN vt.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
         COALESCE(SUM(CASE WHEN vt.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
-        ARRAY_AGG(DISTINCT pt.Name) AS PostTypeNames,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypeNames,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     JOIN 
@@ -22,7 +22,7 @@ WITH PostAnalytics AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS t(TagName) ON t.TagName IS NOT NULL
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS t(TagName) ON t.TagName IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, u.DisplayName
 ),
@@ -47,8 +47,8 @@ PostPerformance AS (
         pa.DownVotes,
         pa.CreationDate,
         re.LastEditDate,
-        EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - pa.CreationDate)) / 86400 AS DaysSinceCreation,
-        EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - re.LastEditDate)) / 86400 AS DaysSinceLastEdit
+        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - pa.CreationDate)) / 86400 AS DaysSinceCreation,
+        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - re.LastEditDate)) / 86400 AS DaysSinceLastEdit
     FROM 
         PostAnalytics pa
     LEFT JOIN 

@@ -4,7 +4,7 @@ WITH RECURSIVE movie_hierarchy AS (
         mt.title,
         mt.production_year,
         1 AS level,
-        NULL::integer AS parent_id
+        CAST(NULL AS integer) AS parent_id
     FROM 
         aka_title mt
     WHERE 
@@ -64,7 +64,7 @@ SELECT
     mo.production_year,
     mo.total_keywords,
     mo.total_cast,
-    STRING_AGG(DISTINCT cn.name, ', ') AS character_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS character_names,
     COUNT(DISTINCT mc.company_id) AS production_companies
 FROM 
     movie_overview mo

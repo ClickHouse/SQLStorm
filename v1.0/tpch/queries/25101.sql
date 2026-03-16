@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS unique_suppliers,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    ARRAY_AGG(DISTINCT r.r_name) AS regions_supplied,
+    arrayDistinct(groupArray(assumeNotNull(r.r_name))) AS regions_supplied,
     CONCAT('Brand: ', p.p_brand, ', Manufacturer: ', p.p_mfgr, ', Total Qty: ', SUM(ps.ps_availqty)) AS summary
 FROM
     part p

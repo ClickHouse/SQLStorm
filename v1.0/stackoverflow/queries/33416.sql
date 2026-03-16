@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 RecentUserActivity AS (
     SELECT 
@@ -27,9 +27,9 @@ RecentUserActivity AS (
     LEFT JOIN 
         Badges b ON b.UserId = u.Id
     LEFT JOIN 
-        Votes v ON v.UserId = u.Id AND v.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        Votes v ON v.UserId = u.Id AND v.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     WHERE 
-        u.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        u.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -43,7 +43,7 @@ PostHistorySummary AS (
     JOIN 
         PostHistory ph ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        ph.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         p.Id, ph.PostHistoryTypeId
 )
@@ -59,7 +59,7 @@ SELECT
     ua.TotalUpvotes,
     ua.TotalDownvotes,
     phs.ChangeCount,
-    STRING_AGG(DISTINCT pht.Name, ', ') AS Changes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS Changes
 FROM 
     RankedPosts ra
 JOIN 

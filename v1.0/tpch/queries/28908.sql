@@ -2,7 +2,7 @@ SELECT
     CONCAT('Supplier: ', s.s_name, '; Nation: ', n.n_name, '; Region: ', r.r_name) AS supplier_info,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     MAX(o.o_totalprice) AS max_order_value
 FROM 
     supplier s

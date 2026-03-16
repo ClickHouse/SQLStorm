@@ -15,7 +15,7 @@ SELECT
     SUM(ws.ws_net_paid_inc_tax) AS total_sales,
     AVG(ws.ws_list_price) AS avg_list_price,
     MAX(ws.ws_net_profit) AS max_net_profit,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS item_descriptions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS item_descriptions,
     CASE 
         WHEN SUM(ws.ws_ship_date_sk) IS NULL THEN 'No Shipments'
         ELSE 'Has Shipments'

@@ -59,7 +59,7 @@ SELECT
     ps.total_suppliers,
     ps.avg_acctbal,
     COALESCE(MAX(co.total_spent), 0) AS max_spent,
-    STRING_AGG(DISTINCT rp.p_name, ',') AS popular_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.p_name))), ',') AS popular_parts
 FROM 
     region r
 LEFT JOIN 

@@ -68,4 +68,4 @@ GROUP BY
     hvc.order_count
 ORDER BY 
     hvc.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

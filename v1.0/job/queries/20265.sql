@@ -27,7 +27,7 @@ AggregateRoleCount AS (
 MovieCompanyInfo AS (
     SELECT mc.movie_id,
            COUNT(DISTINCT mc.company_id) AS num_companies,
-           STRING_AGG(DISTINCT cn.name, ', ') AS companies
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM movie_companies mc
     JOIN company_name cn ON mc.company_id = cn.id
     WHERE cn.country_code IS NOT NULL
@@ -51,8 +51,8 @@ SELECT
 FROM RecursiveMovieInfo m
 LEFT JOIN AggregateRoleCount r ON m.movie_id = r.movie_id
 LEFT JOIN MovieCompanyInfo c ON m.movie_id = c.movie_id
-LEFT JOIN LATERAL (
-    SELECT STRING_AGG(DISTINCT k.keyword, ', ') AS keyword
+LEFT JOIN (
+    SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keyword
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     WHERE mk.movie_id = m.movie_id

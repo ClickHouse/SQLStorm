@@ -2,7 +2,7 @@ WITH PostTagCounts AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -29,7 +29,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         v.PostId
 ), 

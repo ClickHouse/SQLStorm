@@ -59,4 +59,4 @@ WHERE
     id.i_item_desc IS NOT NULL
 ORDER BY 
     ts.overall_sales DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

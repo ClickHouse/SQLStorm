@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days'
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL 30 DAY
 ),
 TopPosts AS (
     SELECT 

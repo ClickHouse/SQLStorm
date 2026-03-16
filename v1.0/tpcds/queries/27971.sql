@@ -19,7 +19,7 @@ SELECT
     MIN(email_length) AS min_email_length,
     AVG(email_length) AS avg_email_length,
     COUNT(DISTINCT c_customer_id) AS unique_customers,
-    STRING_AGG(full_name, '; ') AS all_full_names
+    arrayStringConcat(groupArray(assumeNotNull(full_name)), '; ') AS all_full_names
 FROM 
     String_Processing
 WHERE 

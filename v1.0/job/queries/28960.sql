@@ -6,8 +6,8 @@ WITH MovieDetails AS (
         t.production_year,
         t.kind_id,
         t.imdb_index,
-        STRING_AGG(DISTINCT k.keyword, ',') AS keywords,
-        STRING_AGG(DISTINCT c.name, ',') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ',') AS companies
     FROM 
         aka_title t
     LEFT JOIN 

@@ -4,7 +4,7 @@ WITH string_aggregates AS (
         s.s_name AS supplier_name,
         CONCAT(s.s_name, ' from ', s.s_address) AS full_info,
         TRIM(REPLACE(UPPER(s.s_comment), 'SUPPLIER', '')) AS sanitized_comment,
-        STRING_AGG(p.p_name, ', ' ORDER BY p.p_name) AS part_names
+        arrayStringConcat(groupArray(assumeNotNull(p.p_name)), ', ' ORDER BY p.p_name) AS part_names
     FROM 
         supplier s
     JOIN 

@@ -57,7 +57,7 @@ SELECT
         WHEN md.num_cast BETWEEN 5 AND 10 THEN 'Moderately Casted'
         ELSE 'Less Casted'
     END AS cast_category,
-    STRING_AGG(c.name, ', ') AS cast_names
+    arrayStringConcat(groupArray(assumeNotNull(c.name)), ', ') AS cast_names
 FROM 
     MovieDetails md
 LEFT JOIN 

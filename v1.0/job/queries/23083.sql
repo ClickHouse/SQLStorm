@@ -54,7 +54,7 @@ NullRoleMovies AS (
 SELECT 
     tm.title,
     tm.production_year,
-    STRING_AGG(DISTINCT ci.company_name, ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.company_name))), ', ') AS companies,
     COUNT(DISTINCT cd.actor_name) AS total_actors,
     SUM(CASE WHEN cd.actor_count > 1 THEN 1 ELSE 0 END) AS movies_with_multiple_actors,
     (SELECT COUNT(*) FROM CastDetails WHERE movie_id = tm.title_id AND actor_number = 1) AS first_actor_id

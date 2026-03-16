@@ -1,7 +1,7 @@
 WITH StringAgg AS (
     SELECT 
         n.n_name AS nation_name,
-        STRING_AGG(CONCAT(p.p_name, ' (', s.s_name, ')'), ', ') AS part_supplier_list,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', s.s_name, ')'))), ', ') AS part_supplier_list,
         COUNT(DISTINCT p.p_partkey) AS part_count
     FROM 
         nation n 

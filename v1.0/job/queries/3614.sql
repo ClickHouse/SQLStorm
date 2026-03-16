@@ -43,7 +43,7 @@ SELECT
         WHEN md.actor_count > 3 THEN 'Popular'
         ELSE 'Less Popular'
     END AS popularity,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     movie_details md
 LEFT JOIN 

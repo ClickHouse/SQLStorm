@@ -36,7 +36,7 @@ RecentOrders AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 days'
+        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
 )
 
 SELECT 
@@ -56,7 +56,7 @@ LEFT JOIN
 LEFT JOIN 
     RecentOrders ro ON lo.l_orderkey = ro.l_orderkey
 LEFT JOIN 
-    RankedCustomers rc ON rc.c_custkey = (SELECT c.c_custkey FROM customer c WHERE c.c_custkey IS NOT NULL ORDER BY RANDOM() LIMIT 1)
+    RankedCustomers rc ON rc.c_custkey = (SELECT c.c_custkey FROM customer c WHERE c.c_custkey IS NOT NULL ORDER BY rand() LIMIT 1)
 LEFT JOIN 
     HighValueSuppliers hvs ON lo.l_suppkey = hvs.s_suppkey 
 GROUP BY 

@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1996-12-31'
+        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1996-12-31')
     GROUP BY 
         o.o_orderkey, o.o_orderstatus
 ),
@@ -41,7 +41,7 @@ SELECT
     r.r_name,
     COUNT(DISTINCT o.o_orderkey) AS num_orders,
     COALESCE(SUM(ro.total_revenue), 0) AS total_revenue,
-    STRING_AGG(ts.s_name, ', ') AS top_suppliers
+    arrayStringConcat(groupArray(assumeNotNull(ts.s_name)), ', ') AS top_suppliers
 FROM 
     region r
 LEFT JOIN 

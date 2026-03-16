@@ -54,4 +54,4 @@ WHERE
     AND cs.s_suppkey IS NOT NULL
 ORDER BY 
     profit DESC, sales_rank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

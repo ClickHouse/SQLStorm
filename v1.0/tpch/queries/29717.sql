@@ -33,7 +33,7 @@ ConcatenatedDetails AS (
     SELECT 
         sp.s_suppkey,
         sp.s_name,
-        STRING_AGG(CONCAT(sp.p_name, ' (', sp.p_brand, ')'), ', ') AS part_details
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(sp.p_name, ' (', sp.p_brand, ')'))), ', ') AS part_details
     FROM 
         SupplierParts sp
     JOIN 

@@ -25,13 +25,13 @@ RecentPosts AS (
         p.Tags,
         ROW_NUMBER() OVER (ORDER BY p.CreationDate DESC) AS RecentRank
     FROM Posts p
-    WHERE p.CreationDate > CURRENT_DATE - INTERVAL '30 days'
+    WHERE p.CreationDate > CURRENT_DATE - INTERVAL 30 DAY
 ),
 UserBadges AS (
     SELECT
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM Badges b
     GROUP BY b.UserId
 )

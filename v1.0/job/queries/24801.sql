@@ -27,7 +27,7 @@ MovieDetails AS (
         TM.title,
         TM.production_year,
         COUNT(DISTINCT CI.person_id) AS actor_count,
-        STRING_AGG(DISTINCT AN.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(AN.name))), ', ') AS actor_names,
         COUNT(DISTINCT MI.info) FILTER (WHERE I.info = 'Box Office') AS box_office_count
     FROM 
         TopMovies TM
@@ -46,7 +46,7 @@ CompanyMovies AS (
     SELECT 
         MC.movie_id,
         COUNT(DISTINCT CN.name) AS company_count,
-        STRING_AGG(DISTINCT CN.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CN.name))), ', ') AS company_names
     FROM 
         movie_companies MC
     JOIN 

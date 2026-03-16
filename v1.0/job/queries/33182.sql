@@ -32,7 +32,7 @@ SELECT
     title.title AS movie_title,
     title.production_year,
     COUNT(DISTINCT mc.company_id) AS production_companies,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     RANK() OVER (PARTITION BY title.production_year ORDER BY COUNT(DISTINCT mc.company_id) DESC) AS production_rank
 FROM 
     MovieHierarchy mh

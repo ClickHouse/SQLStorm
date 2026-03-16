@@ -27,11 +27,11 @@ SELECT
     AVG(CASE WHEN sales_rank <= 10 THEN total_sales ELSE NULL END) AS avg_top_10_sales,
     SUM(CASE WHEN sales_rank BETWEEN 11 AND 20 THEN total_sales ELSE 0 END) AS sum_rank_11_to_20,
     (SELECT SUM(total_sales) FROM SalesRank WHERE sales_rank % 2 = 0) AS even_ranked_customers_sales,
-    STRING_AGG(DISTINCT CASE 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE 
         WHEN total_sales IS NULL THEN 'NULL Sales'
         WHEN total_sales = 0 THEN 'No Sales'
         ELSE CAST(total_sales AS VARCHAR)
-    END, ', ') AS sales_description,
+    END))), ', ') AS sales_description,
     COUNT(DISTINCT CASE 
         WHEN total_sales IS NULL THEN c_customer_sk 
         ELSE NULL 

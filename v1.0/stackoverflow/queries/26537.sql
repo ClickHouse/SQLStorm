@@ -32,7 +32,7 @@ RecentEdits AS (
         ph.PostHistoryTypeId,
         ph.UserDisplayName,
         ph.CreationDate,
-        STRING_AGG(DISTINCT p.Title, ', ') AS RelatedPosts
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), ', ') AS RelatedPosts
     FROM 
         PostHistory ph
     JOIN 

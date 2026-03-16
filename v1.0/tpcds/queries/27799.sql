@@ -65,4 +65,4 @@ FROM
     AggregateResults
 ORDER BY 
     total_customers DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

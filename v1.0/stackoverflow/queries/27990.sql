@@ -55,7 +55,7 @@ SELECT
     ps.DownVotes,
     ps.DiscussionLevel,
     ps.VoteLevel,
-    STRING_AGG(DISTINCT b.Name, ', ') AS BadgesEarned
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgesEarned
 FROM 
     PostStatistics ps
 LEFT JOIN 

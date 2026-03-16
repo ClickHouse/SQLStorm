@@ -44,7 +44,7 @@ CustomerDetails AS (
 SELECT 
     COUNT(*) AS TotalCustomers,
     cd.ca_state,
-    STRING_AGG(CONCAT(cd.c_first_name, ' ', cd.c_last_name, ' (', cd.ca_street_name, ')'), ', ') AS CustomerList
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(cd.c_first_name, ' ', cd.c_last_name, ' (', cd.ca_street_name, ')'))), ', ') AS CustomerList
 FROM 
     CustomerDetails cd
 JOIN 

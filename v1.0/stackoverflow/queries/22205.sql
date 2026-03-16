@@ -38,7 +38,7 @@ PostHistoryDetails AS (
         ph.PostHistoryTypeId,
         ph.CreationDate,
         COUNT(DISTINCT ph.UserId) AS EditorCount,
-        STRING_AGG(DISTINCT ph.Comment, '; ') AS HistoryComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS HistoryComments
     FROM 
         PostHistory ph
     WHERE 
@@ -76,4 +76,4 @@ WHERE
     AND rp.RecentRank <= 10
 ORDER BY 
     rp.Score DESC, rp.ViewCount DESC
-OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 5;

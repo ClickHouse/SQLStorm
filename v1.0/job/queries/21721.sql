@@ -40,7 +40,7 @@ SELECT
     SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS non_null_notes_count,
     MIN(CASE WHEN mc.company_type = 'Distributor' THEN mc.company_name END) AS distributor_name,
     MAX(mc.company_count) AS max_company_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     COUNT(DISTINCT ci.person_id) FILTER (WHERE ci.role_id IS NOT NULL) AS distinct_roles
 FROM
     RankedMovies rm

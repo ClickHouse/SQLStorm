@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     ROUND(AVG(l.l_quantity), 2) AS average_quantity,
     COUNT(DISTINCT o.o_orderkey) AS num_orders,
-    STRING_AGG(DISTINCT s.s_name, ', ' ORDER BY s.s_name) AS top_suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ' ORDER BY s.s_name) AS top_suppliers
 FROM 
     part p
 JOIN 

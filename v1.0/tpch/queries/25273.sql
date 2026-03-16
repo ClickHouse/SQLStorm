@@ -3,7 +3,7 @@ SELECT
     CONCAT('Supplier: ', s.s_name, ' - Region: ', r.r_name) AS supplier_region,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT c.c_name, '; ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), '; ') AS customer_names
 FROM 
     part p 
 JOIN 
@@ -22,8 +22,8 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey 
 WHERE 
     p.p_name LIKE '%widget%' 
-    AND o.o_orderdate >= DATE '1997-01-01' 
-    AND o.o_orderdate < DATE '1997-10-01'
+    AND o.o_orderdate >= toDate('1997-01-01') 
+    AND o.o_orderdate < toDate('1997-10-01')
 GROUP BY 
     p.p_name, supplier_region
 HAVING 

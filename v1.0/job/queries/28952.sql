@@ -13,8 +13,8 @@ WITH MovieKeywordCounts AS (
 CompanyMovieInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types,
         COUNT(DISTINCT mc.company_id) AS total_companies
     FROM 
         movie_companies mc
@@ -29,7 +29,7 @@ CompleteMovieCast AS (
     SELECT 
         cc.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names
     FROM 
         complete_cast cc
     JOIN 

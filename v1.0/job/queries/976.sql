@@ -41,7 +41,7 @@ MovieCompanies AS (
 )
 SELECT 
     tt.aka_name,
-    STRING_AGG(tt.title || ' (' || tt.production_year || ')', ', ') AS title_list,
+    arrayStringConcat(groupArray(assumeNotNull(tt.title || ' (' || tt.production_year || ')')), ', ') AS title_list,
     COUNT(DISTINCT mc.company_name) AS company_count,
     MAX(CASE WHEN mc.company_type = 'Distributor' THEN mc.company_name ELSE NULL END) AS distributor_name,
     COUNT(DISTINCT t.keyword) AS keyword_count

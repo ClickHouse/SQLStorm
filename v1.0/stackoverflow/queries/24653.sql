@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         COUNT(a.Id) AS AnswerCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS OwnerPostRank,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) - COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS NetVotes,
-        STRING_AGG(t.TagName, ', ') AS TagsList
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
     FROM 
         Posts p
     LEFT JOIN 
@@ -17,9 +17,8 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (2, 3) 
     LEFT JOIN 
-        LATERAL (SELECT STRING_TO_ARRAY(p.Tags, '>') AS TagArray) AS ta ON TRUE
-    LEFT JOIN 
-        UNNEST(ta.TagArray) AS t(TagName) ON TRUE
+        (SELECT splitByString('>', p.Tags) AS TagArray) AS ta ON TRUE
+    LEFT ARRAY JOIN ta.TagArray AS TagName
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 
@@ -30,7 +29,7 @@ UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, '; ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), '; ') AS Badges
     FROM 
         Users u
     LEFT JOIN 

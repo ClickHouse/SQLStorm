@@ -5,7 +5,7 @@ WITH RankedSuppliers AS (
 ),
 HighValueParts AS (
     SELECT p.p_partkey, p.p_name, p.p_retailprice,
-           STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
     JOIN RankedSuppliers s ON ps.ps_suppkey = s.s_suppkey
@@ -33,4 +33,4 @@ FROM HighValueParts p
 LEFT JOIN FinalReport s ON p.p_partkey = s.p_partkey
 GROUP BY p.p_partkey, p.p_name, p.p_retailprice
 ORDER BY p.p_retailprice DESC, total_sales DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

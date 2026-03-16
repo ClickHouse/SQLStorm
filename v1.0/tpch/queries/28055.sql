@@ -6,7 +6,7 @@ SELECT
     ROUND(AVG(l.l_discount), 2) AS average_discount,
     MAX(l.l_shipdate) AS latest_ship_date,
     MIN(l.l_shipdate) AS earliest_ship_date,
-    STRING_AGG(DISTINCT s.s_name, '; ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), '; ') AS supplier_names,
     SUBSTRING(p.p_comment, 1, 23) AS short_comment
 FROM 
     part p

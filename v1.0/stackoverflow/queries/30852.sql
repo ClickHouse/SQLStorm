@@ -15,14 +15,14 @@ WITH RECURSIVE UserActivity AS (
 ), 
 PopularTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(A.Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', A.Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts A
     WHERE 
         A.PostTypeId = 1  
     GROUP BY 
-        UNNEST(STRING_TO_ARRAY(A.Tags, '><'))
+        arrayJoin(splitByString('><', A.Tags))
     HAVING 
         COUNT(*) > 5  
 ), 

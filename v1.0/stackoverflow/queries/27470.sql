@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         P.CreationDate, 
         P.Score, 
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS TagsList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagsList
     FROM 
         Posts P
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(P.Tags, '<>')) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('<>', P.Tags)) AS T(TagName) ON TRUE
     WHERE 
         P.PostTypeId = 1  
     GROUP BY 
@@ -25,8 +25,8 @@ WITH RankedPosts AS (
 PostHistoryContent AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(PH.CreationDate::TEXT, ', ') AS RevisionDates,
-        STRING_AGG(PHT.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(groupArray(assumeNotNull(CAST(PH.CreationDate AS TEXT))), ', ') AS RevisionDates,
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes,
         MAX(PH.CreationDate) AS LastModifiedDate
     FROM 
         PostHistory PH
@@ -65,7 +65,7 @@ SELECT
 FROM 
     EnhancedPosts EP
 WHERE 
-    EP.LastModifiedDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'  
+    EP.LastModifiedDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY  
 ORDER BY 
     EP.Score DESC, 
     EP.CommentCount DESC;

@@ -39,6 +39,6 @@ SELECT
      WHERE s.s_store_sk IN (SELECT sr_store_sk FROM store_returns WHERE sr_customer_sk = ch.c_customer_sk)) AS return_count
 FROM CustomerHierarchy ch
 LEFT JOIN customer_address ca ON ch.c_current_addr_sk = ca.ca_address_sk
-JOIN HighProfitSales hps ON hps.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
+JOIN HighProfitSales hps ON hps.d_year = toYear(cast('2002-10-01' as date))
 WHERE ch.Level = 0
 ORDER BY hps.total_profit DESC, ch.c_last_name;

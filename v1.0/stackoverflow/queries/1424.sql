@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1' YEAR
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL '1' YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -24,7 +24,7 @@ TopUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.LastAccessDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6' MONTH
+        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL '6' MONTH
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation
     HAVING 
@@ -40,7 +40,7 @@ PostViews AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2  
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2' MONTH
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL '2' MONTH
     GROUP BY 
         p.Id
 )

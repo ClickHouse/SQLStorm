@@ -46,4 +46,4 @@ JOIN
     FrequentItemsSold fi ON tc.sales_rank <= 10
 ORDER BY 
     tc.total_sales DESC, fi.order_count DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

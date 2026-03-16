@@ -31,7 +31,7 @@ SELECT
     rm.movie_id,
     rm.title,
     rm.production_year,
-    ARRAY_AGG(DISTINCT awr.actor_name) AS actors,
+    arrayDistinct(groupArray(assumeNotNull(awr.actor_name))) AS actors,
     COUNT(DISTINCT awr.actor_name) AS total_actors,
     CASE 
         WHEN COUNT(DISTINCT awr.actor_name) > 5 THEN 'Ensemble Cast'

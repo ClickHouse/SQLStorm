@@ -7,7 +7,7 @@ WITH UserEngagement AS (
         COUNT(p.Id) AS PostCount,
         SUM(COALESCE(v.VoteCount, 0)) AS UpVotes,
         SUM(COALESCE(v.DownVoteCount, 0)) AS DownVotes,
-        SUM(CASE WHEN p.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' THEN 1 ELSE 0 END) AS OldPostsCount
+        SUM(CASE WHEN p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 1 ELSE 0 END) AS OldPostsCount
     FROM Users u
     LEFT JOIN (
         SELECT 
@@ -29,7 +29,7 @@ WITH UserEngagement AS (
 UserBadges AS (
     SELECT 
         UserId,
-        STRING_AGG(Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames,
         COUNT(*) AS BadgeCount
     FROM Badges
     GROUP BY UserId
@@ -40,7 +40,7 @@ RecentPostHistory AS (
         COUNT(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 1 END) AS CloseStatusChanges,
         MAX(ph.CreationDate) AS LastHistoryDate
     FROM PostHistory ph
-    WHERE ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY ph.PostId
 ),
 PostStatistics AS (

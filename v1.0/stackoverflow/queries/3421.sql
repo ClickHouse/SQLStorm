@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (8, 9)  
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.OwnerUserId
 ),
@@ -61,7 +61,7 @@ SELECT
         ELSE 'Bronze'
     END AS ReputationTier,
     (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = us.UserId) AS PostCount,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Posts p 
      JOIN Tags t ON p.Tags LIKE CONCAT('%', t.TagName, '%')
      WHERE p.OwnerUserId = us.UserId) AS UsedTags

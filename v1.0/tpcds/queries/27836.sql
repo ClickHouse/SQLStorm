@@ -9,7 +9,7 @@ SELECT
     cd.cd_education_status,
     COUNT(ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_spent,
-    STRING_AGG(DISTINCT COALESCE(p.p_promo_name, 'No Promo'), ', ') AS promo_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(p.p_promo_name, 'No Promo')))), ', ') AS promo_names
 FROM 
     customer c
 JOIN 

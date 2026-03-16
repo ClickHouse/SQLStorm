@@ -40,7 +40,7 @@ TagStats AS (
         COUNT(*) AS TagCount
     FROM (
         SELECT 
-            UNNEST(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName
+            arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName
         FROM 
             Posts
         WHERE 
@@ -67,7 +67,7 @@ CombinedStats AS (
     JOIN 
         PostActivity pa ON rp.PostId = pa.PostId
     LEFT JOIN 
-        TagStats ts ON ts.TagName = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags) - 2), '><'))
+        TagStats ts ON ts.TagName = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2)))
     WHERE 
         rp.PostRank = 1 
 )
@@ -81,7 +81,7 @@ SELECT
     CommentsCount,
     HistoryCount,
     OwnerDisplayName,
-    STRING_AGG(DISTINCT TagName || ' (Count: ' || TagCount || ' )', ', ') AS TagSummary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(TagName || ' (Count: ' || TagCount || ' )'))), ', ') AS TagSummary
 FROM 
     CombinedStats
 GROUP BY 

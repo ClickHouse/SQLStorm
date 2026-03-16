@@ -44,4 +44,4 @@ LEFT JOIN FilteredSummary f ON ps.ps_partkey = f.o_orderkey
 GROUP BY rh.r_name
 HAVING COUNT(f.total_sales) > (SELECT COUNT(*) / 2 FROM FilteredSummary)
 ORDER BY median_sales DESC, rh.r_name
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

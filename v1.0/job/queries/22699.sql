@@ -26,7 +26,7 @@ PersonMovieStats AS (
 MoviesWithKeywords AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(k.keyword, ', ' ORDER BY k.keyword) AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ' ORDER BY k.keyword) AS keywords
     FROM 
         aka_title m
     LEFT JOIN 
@@ -39,7 +39,7 @@ MoviesWithKeywords AS (
 MoviesWithCompanies AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(c.name, '; ') AS companies
+        arrayStringConcat(groupArray(assumeNotNull(c.name)), '; ') AS companies
     FROM 
         aka_title m
     LEFT JOIN 

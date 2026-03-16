@@ -41,7 +41,7 @@ SELECT
         ELSE CAST(F.production_year AS text) 
     END AS production_year_text,
     COUNT(DISTINCT ci.person_id) AS distinct_actors,
-    STRING_AGG(DISTINCT C.name, ', ') AS co_stars
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(C.name))), ', ') AS co_stars
 FROM 
     FilteredMovies F
 LEFT JOIN 

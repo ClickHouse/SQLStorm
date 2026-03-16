@@ -41,7 +41,7 @@ SELECT
     f.total_cast,
     f.cast_size,
     (SELECT COUNT(*) FROM movie_keyword mk WHERE mk.movie_id IN (SELECT id FROM aka_title WHERE production_year = f.production_year)) AS keyword_count,
-    (SELECT STRING_AGG(DISTINCT k.keyword, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
      FROM movie_keyword mk 
      JOIN keyword k ON mk.keyword_id = k.id 
      WHERE mk.movie_id IN (SELECT id FROM aka_title WHERE production_year = f.production_year)

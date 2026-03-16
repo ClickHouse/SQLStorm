@@ -61,10 +61,10 @@ SELECT
     (SELECT COUNT(*) 
      FROM Votes V 
      WHERE V.UserId = U.Id 
-     AND V.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') AS RecentVoteCount
+     AND V.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AS RecentVoteCount
 FROM Users U
 JOIN MetricCalculations M ON U.Id = M.UserId
 WHERE (M.QuestionRatio > 0.5 OR M.AnswerRatio > 0.5)
   AND (M.GoldBadges + M.SilverBadges + M.BronzeBadges > 0)
 ORDER BY M.Reputation DESC, U.DisplayName
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

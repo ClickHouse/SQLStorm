@@ -46,7 +46,7 @@ MovieDetails AS (
         company_name c ON mc.company_id = c.id
     LEFT JOIN 
         company_type ct ON mc.company_type_id = ct.id
-    LEFT JOIN LATERAL (
+    LEFT JOIN (
         SELECT 
             i.info_type_id,
             CAST(i.info AS FLOAT) AS ratings

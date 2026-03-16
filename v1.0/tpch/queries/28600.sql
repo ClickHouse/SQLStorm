@@ -4,7 +4,7 @@ WITH StringAggregation AS (
         p.p_partkey, 
         MIN(s.s_name) AS min_supplier_name, 
         MAX(s.s_name) AS max_supplier_name, 
-        STRING_AGG(DISTINCT s.s_name, ', ') AS all_supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS all_supplier_names,
         COUNT(DISTINCT s.s_suppkey) AS supplier_count
     FROM 
         part p

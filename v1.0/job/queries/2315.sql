@@ -19,7 +19,7 @@ rich_cast_movies AS (
         rm.title,
         rm.production_year,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
     FROM 
         ranked_movies rm
     LEFT JOIN 
@@ -51,7 +51,7 @@ SELECT
     m.production_year,
     COALESCE(m.cast_count, 0) AS total_cast,
     COALESCE(m.actor_names, 'No actors') AS actors,
-    COALESCE(string_agg(DISTINCT k.keyword, ', '), 'No keywords') AS keywords
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'No keywords') AS keywords
 FROM 
     rich_cast_movies m
 LEFT JOIN 

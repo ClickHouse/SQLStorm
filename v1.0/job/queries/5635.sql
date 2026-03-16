@@ -32,9 +32,9 @@ DetailedMovieInfo AS (
         hcm.title,
         hcm.production_year,
         hcm.cast_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT pi.info, ', ') AS person_infos
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pi.info))), ', ') AS person_infos
     FROM
         HighCastMovies hcm
     LEFT JOIN

@@ -5,7 +5,7 @@ WITH RankedTitles AS (
         t.title,
         t.production_year,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.production_year DESC) AS rn,
-        STRING_AGG(k.keyword, ', ') AS keywords,
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
         COUNT(DISTINCT m.company_id) FILTER (WHERE m.note IS NOT NULL) AS num_production_companies
     FROM 
         aka_title t

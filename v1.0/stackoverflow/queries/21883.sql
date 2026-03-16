@@ -40,7 +40,7 @@ RecentPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     TU.DisplayName,
@@ -53,7 +53,7 @@ SELECT
         WHEN TU.UpVotes < TU.DownVotes THEN 'Negatively Engaged'
         ELSE 'Neutral Engagement'
     END AS EngagementProfile,
-    STRING_AGG(DISTINCT PT.Name, ', ') AS PostTypeNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PT.Name))), ', ') AS PostTypeNames
 FROM 
     TopUsers TU
 LEFT JOIN 

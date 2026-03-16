@@ -65,8 +65,8 @@ SELECT
     movie_id,
     title,
     production_year,
-    STRING_AGG(DISTINCT actor_name || ' as ' || role_name, ', ') AS actors,
-    STRING_AGG(DISTINCT company_name || ' (' || company_type || ')', '; ') AS movie_companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name || ' as ' || role_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name || ' (' || company_type || ')'))), '; ') AS movie_companies
 FROM 
     FinalOutput
 GROUP BY 

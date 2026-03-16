@@ -19,7 +19,7 @@ AddressStats AS (
         ca_city,
         ca_state,
         COUNT(*) AS customer_count,
-        STRING_AGG(CONCAT(c_first_name, ' ', c_last_name), ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name))), ', ') AS customer_names
     FROM CustomerDetails
     GROUP BY ca_city, ca_state
 ),

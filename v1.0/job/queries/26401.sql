@@ -5,7 +5,7 @@ WITH RankedTitles AS (
         title.production_year,
         COUNT(DISTINCT aka_name.person_id) AS actor_count,
         AVG(CASE WHEN company_type.kind = 'Distributor' THEN 1 ELSE 0 END) AS distributor_ratio,
-        STRING_AGG(DISTINCT aka_name.name, ', ') AS actors_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aka_name.name))), ', ') AS actors_list
     FROM 
         title
     LEFT JOIN 

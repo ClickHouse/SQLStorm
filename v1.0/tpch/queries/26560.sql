@@ -19,7 +19,7 @@ WITH StringProcessing AS (
 )
 SELECT 
     r.r_name,
-    STRING_AGG(sp.description, '; ') AS all_descriptions,
+    arrayStringConcat(groupArray(assumeNotNull(sp.description)), '; ') AS all_descriptions,
     AVG(sp.name_length) AS avg_name_length,
     COUNT(DISTINCT sp.manufacturer_upper) AS unique_manufacturers,
     COUNT(DISTINCT sp.cleaned_comment) AS unique_comments

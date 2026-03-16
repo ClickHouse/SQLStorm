@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT p.p_partkey) AS distinct_parts_supplied,
     MAX(p.p_retailprice) AS max_retail_price,
     MIN(p.p_retailprice) AS min_retail_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS supplied_parts_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS supplied_parts_names
 FROM 
     supplier s
 JOIN 

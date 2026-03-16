@@ -5,8 +5,8 @@ WITH MovieDetails AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
-        ARRAY_AGG(DISTINCT kw.keyword) AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords,
         COALESCE(MIN(CASE WHEN ci.nr_order = 1 THEN ak.name END), 'Unknown') AS lead_actor
     FROM 
         aka_title t

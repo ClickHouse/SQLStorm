@@ -52,11 +52,11 @@ SELECT
     END AS customer_order_status
 FROM RankedParts rp
 LEFT JOIN SupplierCounts sc ON rp.p_partkey = sc.ps_partkey
-LEFT JOIN CustomerOrderSummary cus ON sc.uniq_suppliers > 1 AND cus.c_custkey = (SELECT c.c_custkey FROM customer c WHERE RANDOM() < 0.1 ORDER BY RANDOM() LIMIT 1)
+LEFT JOIN CustomerOrderSummary cus ON sc.uniq_suppliers > 1 AND cus.c_custkey = (SELECT c.c_custkey FROM customer c WHERE rand() < 0.1 ORDER BY rand() LIMIT 1)
 LEFT JOIN OrderItemDetails ois ON ois.o_orderkey = (SELECT o.o_orderkey 
                                                      FROM orders o 
                                                      WHERE o.o_orderstatus = 'O' 
-                                                     ORDER BY RANDOM() 
+                                                     ORDER BY rand() 
                                                      LIMIT 1)
 WHERE 
     rp.p_retailprice IS NOT NULL 

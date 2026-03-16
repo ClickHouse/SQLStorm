@@ -34,7 +34,7 @@ PostDetails AS (
         P.Title,
         P.CreationDate AS PostCreationDate,
         P.Score AS PostScore,
-        ARRAY_AGG(T.TagName) AS PostTags
+        groupArray(assumeNotNull(T.TagName)) AS PostTags
     FROM 
         Posts P
     LEFT JOIN 
@@ -55,7 +55,7 @@ RecentPostHistory AS (
     JOIN 
         Posts P ON PH.PostId = P.Id
     WHERE 
-        PH.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '30 days')
+        PH.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 30 DAY)
 )
 SELECT 
     U.DisplayName AS TopUser,

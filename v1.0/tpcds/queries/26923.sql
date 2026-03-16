@@ -7,7 +7,7 @@ SELECT
     ca.ca_state,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_profit) AS total_net_profit,
-    STRING_AGG(DISTINCT CONCAT(ws.ws_order_number, ' (', ws.ws_sold_date_sk, ')'), ', ') AS order_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ws.ws_order_number, ' (', ws.ws_sold_date_sk, ')')))), ', ') AS order_details,
     TRIM(CONCAT(c.c_first_name, ' ', c.c_last_name)) AS full_name,
     LOWER(CONCAT(ca.ca_city, '_', ca.ca_state)) AS location_tag
 FROM 

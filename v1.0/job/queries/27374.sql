@@ -22,7 +22,7 @@ WITH RankedMovies AS (
 ActorMovies AS (
     SELECT 
         actor_name,
-        STRING_AGG(movie_title, ', ') AS movie_titles,
+        arrayStringConcat(groupArray(assumeNotNull(movie_title)), ', ') AS movie_titles,
         COUNT(movie_id) AS total_movies
     FROM 
         RankedMovies
@@ -38,7 +38,7 @@ ActorMovies AS (
 KeywordMovies AS (
     SELECT 
         movie_id,
-        STRING_AGG(keyword.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(keyword.keyword)), ', ') AS keywords
     FROM 
         movie_keyword
     JOIN 

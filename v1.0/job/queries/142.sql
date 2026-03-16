@@ -4,7 +4,7 @@ WITH movie_details AS (
         mt.title AS movie_title,
         mt.production_year,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors
     FROM aka_title mt
     LEFT JOIN cast_info ci ON mt.id = ci.movie_id
     LEFT JOIN aka_name ak ON ci.person_id = ak.person_id
@@ -24,7 +24,7 @@ filtered_movies AS (
 company_movies AS (
     SELECT 
         m.title AS movie_title,
-        ARRAY_AGG(cn.name ORDER BY cn.name) AS companies
+        groupArray(assumeNotNull(cn.name ORDER BY cn.name)) AS companies
     FROM aka_title m
     JOIN movie_companies mc ON m.id = mc.movie_id
     JOIN company_name cn ON mc.company_id = cn.id

@@ -45,7 +45,7 @@ PostHistoryDetail AS (
         PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND ph.Comment IS NOT NULL
 ),
 FilteredPosts AS (
@@ -58,7 +58,7 @@ FilteredPosts AS (
         rp.BadgeCount,
         rp.Rank,
         COUNT(pd.PostId) AS RecentHistoryCount,
-        STRING_AGG(DISTINCT pd.HistoryType, ', ') AS RecentHistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pd.HistoryType))), ', ') AS RecentHistoryTypes
     FROM
         RankedPosts rp
     LEFT JOIN PostHistoryDetail pd ON rp.PostId = pd.PostId

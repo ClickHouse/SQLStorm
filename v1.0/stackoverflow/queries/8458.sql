@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year' 
+        p.CreationDate >= now64(6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount, u.Reputation
 ),

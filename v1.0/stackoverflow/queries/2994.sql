@@ -32,7 +32,7 @@ RecentPostStats AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         P.Id, P.Title, P.CreationDate, PH.RevisionGUID
 ),

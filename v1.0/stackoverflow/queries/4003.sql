@@ -39,7 +39,7 @@ PostDetails AS (
         FROM Votes
         GROUP BY PostId
     ) v ON p.Id = v.PostId
-    WHERE p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year' 
+    WHERE p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR 
           AND p.PostTypeId = 1
 ),
 TopPosts AS (

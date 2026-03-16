@@ -24,7 +24,7 @@ WITH RECURSIVE MovieHierarchy AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mk
     INNER JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id
@@ -45,8 +45,8 @@ SELECT
     tm.production_year,
     COALESCE(tm.keywords, 'No Keywords') AS keywords,
     COUNT(DISTINCT ci.person_id) AS starring_count,
-    ARRAY_AGG(DISTINCT an.name) AS actor_names,
-    STRING_AGG(DISTINCT cn.name, ', ') AS companies
+    arrayDistinct(groupArray(assumeNotNull(an.name))) AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
 FROM TopMovies tm
 LEFT JOIN cast_info ci ON tm.movie_id = ci.movie_id
 LEFT JOIN aka_name an ON ci.person_id = an.person_id

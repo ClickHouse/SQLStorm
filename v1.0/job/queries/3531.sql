@@ -30,7 +30,7 @@ SELECT
          WHERE mk.movie_id = fm.movie_id),
         0) AS keyword_count,
     COALESCE(
-        (SELECT STRING_AGG(kn.keyword, ', ')
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(kn.keyword)), ', ')
          FROM movie_keyword mk
          JOIN keyword kn ON mk.keyword_id = kn.id
          WHERE mk.movie_id = fm.movie_id),

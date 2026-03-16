@@ -18,7 +18,7 @@ PostStats AS (
         MIN(P.CreationDate) OVER (PARTITION BY P.OwnerUserId) AS FirstPostDate,
         P.OwnerUserId
     FROM Posts P
-    WHERE P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+    WHERE P.CreationDate >= now64(6) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
@@ -33,7 +33,7 @@ UserBadges AS (
     SELECT
         B.UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ',') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ',') AS BadgeNames
     FROM Badges B
     GROUP BY B.UserId
 ),

@@ -4,7 +4,7 @@ WITH MovieStats AS (
         a.title AS movie_title,
         COUNT(DISTINCT ci.person_id) AS actor_count,
         AVG(CAST(mi.info AS numeric)) AS avg_rating,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
         ROW_NUMBER() OVER (PARTITION BY a.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS rank
     FROM
         aka_title a

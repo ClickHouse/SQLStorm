@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate <= DATE '1997-12-31'
+        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate <= toDate('1997-12-31')
 ), SupplierAvgCost AS (
     SELECT 
         ps.ps_suppkey,
@@ -45,7 +45,7 @@ WITH RankedOrders AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= DATE '1997-07-01'
+        l.l_shipdate >= toDate('1997-07-01')
 )
 
 SELECT 

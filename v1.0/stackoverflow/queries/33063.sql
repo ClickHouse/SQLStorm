@@ -26,7 +26,7 @@ PopularTags AS (
         Posts P ON P.Tags ILIKE CONCAT('%', T.TagName, '%')
     WHERE 
         P.PostTypeId = 1  
-        AND P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         T.TagName
     ORDER BY 
@@ -68,7 +68,7 @@ FinalResults AS (
         PA.CloseCount,
         PA.CommentCount,
         RANK() OVER (ORDER BY PA.UpVotes DESC, PA.CommentCount DESC) AS PopularityRank,
-        (SELECT STRING_AGG(TagName, ', ') FROM PopularTags) AS TopTags
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') FROM PopularTags) AS TopTags
     FROM 
         RankedPosts RP
     LEFT JOIN 

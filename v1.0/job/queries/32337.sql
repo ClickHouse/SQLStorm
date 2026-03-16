@@ -4,8 +4,8 @@ WITH RECURSIVE FullMovieInfo AS (
         t.id AS title_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT c.name) AS cast_members,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_members,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         aka_title t
     LEFT JOIN 
@@ -22,8 +22,8 @@ WITH RECURSIVE FullMovieInfo AS (
 MovieCompanyDetails AS (
     SELECT 
         m.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS companies,
-        ARRAY_AGG(DISTINCT ct.kind) AS company_types
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(ct.kind))) AS company_types
     FROM 
         movie_companies m
     JOIN 

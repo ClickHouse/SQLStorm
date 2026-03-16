@@ -3,7 +3,7 @@ SELECT
     t.title AS movie_title,
     y.production_year,
     COUNT(DISTINCT mc.company_id) AS production_companies,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     cast_info ci
 JOIN 

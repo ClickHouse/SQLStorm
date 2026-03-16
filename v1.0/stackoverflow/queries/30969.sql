@@ -27,7 +27,7 @@ PostStatistics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId
 ),
@@ -46,7 +46,7 @@ RecentActivity AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        u.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL '60 days'
+        u.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL 60 DAY
     GROUP BY 
         u.Id, u.DisplayName
 ),

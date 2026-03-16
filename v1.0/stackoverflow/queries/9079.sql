@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     INNER JOIN 
         Users U ON p.OwnerUserId = U.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -65,7 +65,7 @@ SELECT
         WHEN pm.LastAction = 11 THEN 'Reopened'
         ELSE 'Active'
     END AS PostStatus,
-    EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - pm.LastActionDate)) / 3600 AS HoursSinceLastAction
+    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - pm.LastActionDate)) / 3600 AS HoursSinceLastAction
 FROM 
     PostMetrics pm
 ORDER BY 

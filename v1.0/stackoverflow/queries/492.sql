@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 UserStats AS (
     SELECT 
@@ -57,4 +57,4 @@ WHERE
 ORDER BY 
     us.TotalScore DESC,
     rp.Score DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

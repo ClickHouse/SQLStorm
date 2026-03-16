@@ -62,7 +62,7 @@ SELECT
     p.name AS actor_name,
     p.gender,
     COUNT(DISTINCT f.movie_id) AS movies_participated,
-    STRING_AGG(DISTINCT f.title, ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.title))), ', ') AS titles,
     f.keyword
 FROM 
     AllPeople p

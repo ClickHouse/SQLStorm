@@ -29,7 +29,7 @@ PostStatistics AS (
 PostHistoryAggregated AS (
     SELECT 
         PH.PostId,
-        ARRAY_AGG(DISTINCT PH.Comment) AS CloseComments,
+        arrayDistinct(groupArray(assumeNotNull(PH.Comment))) AS CloseComments,
         COUNT(CASE WHEN PH.PostHistoryTypeId IN (10, 11) AND PH.Comment IS NOT NULL THEN 1 END) AS CloseOrReopenCount
     FROM PostHistory PH
     GROUP BY PH.PostId

@@ -11,7 +11,7 @@ from
 	part
 where
 	l_partkey = p_partkey
-	and l_shipdate >= date '1994-09-01'
-	and l_shipdate < date '1994-09-01' + interval '1' month
+	and l_shipdate >= toDate('1994-09-01')
+	and l_shipdate < toDate('1994-09-01') + interval '1' month
 
 ;

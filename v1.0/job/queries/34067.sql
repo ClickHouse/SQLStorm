@@ -32,7 +32,7 @@ SELECT
     mh.level,
     mh.path,
     COUNT(DISTINCT c.person_id) AS total_cast,
-    STRING_AGG(DISTINCT COALESCE(a.name, 'Unknown'), ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(a.name, 'Unknown')))), ', ') AS cast_names,
     MAX(CASE WHEN r.role IS NOT NULL THEN r.role ELSE 'No Role' END) AS notable_role,
     SUM(CASE WHEN mk.id IS NOT NULL THEN 1 ELSE 0 END) AS keyword_count,
     CASE WHEN SUM(CASE WHEN mk.id IS NOT NULL THEN 1 ELSE 0 END) > 10 THEN 'Popular' ELSE 'Less Popular' END AS popularity

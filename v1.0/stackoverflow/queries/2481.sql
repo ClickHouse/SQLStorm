@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.Score DESC) AS PostRank,
         U.DisplayName AS OwnerDisplayName,
         U.Reputation,
-        COALESCE(PH.CreationDate, DATE '2000-01-01') AS LastHistoryDate
+        COALESCE(PH.CreationDate, toDate('2000-01-01')) AS LastHistoryDate
     FROM 
         Posts P
     JOIN 
@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId AND PH.PostHistoryTypeId IN (10, 11)
     WHERE 
-        P.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
+        P.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
 ),
 
 FilteredPosts AS (

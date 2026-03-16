@@ -25,7 +25,7 @@ SELECT
     c.c_first_name,
     c.c_last_name,
     tc.total_sales,
-    CAST('2002-10-01 12:34:56' AS TIMESTAMP) AS query_timestamp
+    toDateTime64('2002-10-01 12:34:56', 6) AS query_timestamp
 FROM 
     top_customers tc
 JOIN 

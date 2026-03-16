@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY
         p.Id, p.Title, p.Tags, pt.Name
 )
@@ -32,7 +32,7 @@ SELECT
     rp.CommentCount,
     rp.UpvoteCount,
     rp.DownvoteCount,
-    ARRAY_LENGTH(string_to_array(rp.Tags, '><'), 1) AS TagCount,
+    length(splitByString('><', rp.Tags), 1) AS TagCount,
     CASE 
         WHEN rp.Rank <= 5 THEN 'Top Posts'
         ELSE 'Other Posts'

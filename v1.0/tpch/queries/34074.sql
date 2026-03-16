@@ -33,7 +33,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     COALESCE(r.n_name, 'Unknown') AS nation_name,
-    string_agg(s.s_name, ', ') AS suppliers
+    arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS suppliers
 FROM part p
 JOIN lineitem l ON p.p_partkey = l.l_partkey
 JOIN orders o ON l.l_orderkey = o.o_orderkey

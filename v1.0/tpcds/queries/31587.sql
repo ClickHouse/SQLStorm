@@ -57,7 +57,7 @@ FROM
 JOIN 
     sales_cte ON ci.c_customer_sk = sales_cte.ws_bill_customer_sk
 JOIN 
-    date_sales ds ON ds.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
+    date_sales ds ON ds.d_year = toYear(toDate('2002-10-01'))
 WHERE 
     ci.cd_marital_status = 'S'
     AND ci.cd_purchase_estimate > (SELECT AVG(cd_purchase_estimate) FROM customer_demographics)

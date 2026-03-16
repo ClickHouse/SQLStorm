@@ -68,7 +68,7 @@ SELECT
 FROM 
     TopSellingItems tsi
 LEFT JOIN 
-    CustomerCount cc ON cc.c_customer_id = (SELECT c.c_customer_id FROM customer c WHERE c.c_current_cdemo_sk IS NOT NULL ORDER BY RANDOM() LIMIT 1)
+    CustomerCount cc ON cc.c_customer_id = (SELECT c.c_customer_id FROM customer c WHERE c.c_current_cdemo_sk IS NOT NULL ORDER BY rand() LIMIT 1)
 LEFT JOIN 
     InventoryDetails id ON tsi.ws_item_sk = id.inv_item_sk
 WHERE 

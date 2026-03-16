@@ -4,7 +4,7 @@ WITH RankedTitles AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
         MAX(t.production_year) OVER(PARTITION BY t.production_year) AS max_year
     FROM 
         aka_title t

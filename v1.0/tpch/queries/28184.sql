@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT s.s_nationkey) AS unique_nations,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT c.c_name, '; ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), '; ') AS customer_names,
     MAX(o.o_totalprice) AS max_order_price,
     SUBSTRING(p.p_comment, 1, 10) AS short_comment,
     CONCAT('Total:', CAST(SUM(l.l_quantity) AS VARCHAR), ' - Avg Price:', CAST(AVG(l.l_discount) AS VARCHAR)) AS summary

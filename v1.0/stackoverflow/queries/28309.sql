@@ -29,17 +29,17 @@ WITH RecentPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
         AND p.PostTypeId = 1  
 ),
 FilteredPosts AS (
     SELECT 
         rp.*,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS AllTags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AllTags
     FROM 
         RecentPosts rp
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(rp.Tags, '<>')) AS tag ON 
+        arrayJoin(splitByString('<>', rp.Tags)) AS tag ON 
         tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = tag

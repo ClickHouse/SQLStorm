@@ -63,7 +63,7 @@ selected_movies AS (
 SELECT 
     sm.movie_title,
     sm.average_rating,
-    STRING_AGG(cm.actor_name, ', ') AS actors,
+    arrayStringConcat(groupArray(assumeNotNull(cm.actor_name)), ', ') AS actors,
     CASE 
         WHEN sm.average_rating >= 8 THEN 'Excellent'
         WHEN sm.average_rating BETWEEN 5 AND 7 THEN 'Average'

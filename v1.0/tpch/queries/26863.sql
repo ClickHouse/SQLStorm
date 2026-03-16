@@ -1,7 +1,7 @@
 SELECT 
     p.p_name,
     s.s_name,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', c.c_phone, ')'), '; ') AS customers_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', c.c_phone, ')')))), '; ') AS customers_info,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price

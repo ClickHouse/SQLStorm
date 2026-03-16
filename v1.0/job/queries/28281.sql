@@ -5,7 +5,7 @@ WITH relevant_movies AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles
     FROM 
         title t
     JOIN 
@@ -25,7 +25,7 @@ WITH relevant_movies AS (
 keyword_aggregate AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords_list
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords_list
     FROM 
         movie_keyword mk
     JOIN 

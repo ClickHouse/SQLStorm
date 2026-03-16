@@ -4,8 +4,8 @@ SELECT
     p.p_mfgr,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     SUM(o.o_totalprice) AS total_order_value,
     AVG(l.l_discount) AS average_discount
 FROM 

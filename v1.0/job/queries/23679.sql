@@ -27,7 +27,7 @@ HighCastMovies AS (
 MovieKeywords AS (
     SELECT 
         m.id AS movie_id,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         aka_title m
     LEFT JOIN 
@@ -40,8 +40,8 @@ MovieKeywords AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS companies,
-        STRING_AGG(ct.kind, ', ') AS company_types
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies,
+        arrayStringConcat(groupArray(assumeNotNull(ct.kind)), ', ') AS company_types
     FROM 
         movie_companies mc
     JOIN 

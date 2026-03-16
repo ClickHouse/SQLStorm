@@ -22,7 +22,7 @@ CustomerPayments AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1995-01-01' AND o.o_orderdate < DATE '1998-10-01'
+        o.o_orderdate >= toDate('1995-01-01') AND o.o_orderdate < toDate('1998-10-01')
     GROUP BY 
         c.c_custkey
 ),
@@ -45,7 +45,7 @@ SELECT
     SUM(COALESCE(cp.total_payment, 0)) AS total_customer_payments,
     SUM(COALESCE(p.p_retailprice, 0)) AS total_part_retail_price,
     AVG(sa.available_parts) AS average_available_parts,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS top_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS top_parts
 FROM 
     region r
 JOIN 

@@ -4,7 +4,7 @@ WITH UserBadges AS (
         U.Id AS UserId,
         U.DisplayName,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 
@@ -40,7 +40,7 @@ RecentPostActivities AS (
     INNER JOIN 
         PostHistoryTypes PT ON PH.PostHistoryTypeId = PT.Id
     WHERE 
-        PH.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     U.Id AS UserId,

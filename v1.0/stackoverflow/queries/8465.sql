@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 AggregatedVotes AS (
     SELECT 
@@ -30,11 +30,11 @@ AggregatedVotes AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        UNNEST(STRING_TO_ARRAY(p.Tags, '><')) AS tag ON TRUE
+        arrayJoin(splitByString('><', p.Tags)) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

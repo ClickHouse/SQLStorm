@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND P.Score > 0
 ),
 
@@ -59,7 +59,7 @@ FROM
 LEFT JOIN 
     PostHistoryWithCounts PHT ON RP.PostId = PHT.PostId
 LEFT JOIN 
-    PopularTags PT ON PT.TagName IN (SELECT UNNEST(STRING_TO_ARRAY(RP.Title, ' '))) 
+    PopularTags PT ON PT.TagName IN (SELECT arrayJoin(splitByString(' ', RP.Title))) 
 WHERE 
     COALESCE(PHT.PostHistoryTypeId, 0) IN (1, 4, 10) 
 ORDER BY 

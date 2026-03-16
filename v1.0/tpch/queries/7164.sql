@@ -30,7 +30,7 @@ JOIN
     RankedSuppliers rs ON ps.ps_suppkey = rs.s_suppkey 
 WHERE 
     rs.rank = 1 
-    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31' 
+    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31') 
 GROUP BY 
     p.p_partkey, p.p_name, p.p_brand, ps.ps_availqty, ps.ps_supplycost, rs.s_name, rs.nation_name 
 ORDER BY 

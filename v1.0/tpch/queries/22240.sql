@@ -45,7 +45,7 @@ SELECT
     COUNT(DISTINCT hvc.c_custkey) AS high_value_customer_count,
     COALESCE(SUM(ps.total_available), 0) AS total_available_parts,
     COUNT(DISTINCT rp.p_partkey) AS unique_parts_ranking,
-    STRING_AGG(DISTINCT rp.p_name, ', ') AS ranked_part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.p_name))), ', ') AS ranked_part_names
 FROM 
     high_value_customers hvc
 JOIN customer c ON hvc.c_custkey = c.c_custkey

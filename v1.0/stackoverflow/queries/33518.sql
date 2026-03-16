@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         COALESCE(p.AcceptedAnswerId, -1) AS AcceptedAnswer,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn,
         p.OwnerUserId,
-        ARRAY_LENGTH(string_to_array(p.Tags, '<>'), 1) AS TagCount
+        length(splitByString('<>', p.Tags), 1) AS TagCount
     FROM 
         Posts p
     WHERE 

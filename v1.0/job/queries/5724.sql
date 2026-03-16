@@ -32,7 +32,7 @@ MoviesWithGenres AS (
         tm.movie_title, 
         tm.production_year, 
         tm.cast_count, 
-        STRING_AGG(DISTINCT kt.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS genres
     FROM 
         TopMovies tm
     LEFT JOIN 

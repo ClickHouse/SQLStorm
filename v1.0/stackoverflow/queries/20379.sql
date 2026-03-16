@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC, p.CreationDate DESC) AS Rank,
         COUNT(v.Id) AS VoteCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON p.Tags LIKE CONCAT('%', t.TagName, '%')
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.OwnerUserId, p.Title, p.CreationDate, p.Score, p.ViewCount
 ),

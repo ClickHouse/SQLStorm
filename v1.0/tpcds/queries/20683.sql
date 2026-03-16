@@ -44,4 +44,4 @@ WHERE (i.i_current_price - COALESCE(ep.total_cost, 0)) > 5
 AND (i.i_rec_start_date IS NULL OR i.i_rec_end_date IS NULL OR i.i_rec_start_date <= cast('2002-10-01' as date))
 ORDER BY total_sales DESC, return_customers_count DESC
 LIMIT 50
-OFFSET (SELECT COUNT(*) FROM item) * RANDOM() / 1.0;
+OFFSET (SELECT COUNT(*) FROM item) * rand() / 1.0;

@@ -47,7 +47,7 @@ OrderDetails AS (
     FROM 
         lineitem lo
     WHERE 
-        lo.l_shipdate >= DATE '1997-01-01' AND lo.l_shipdate < DATE '1997-12-31'
+        lo.l_shipdate >= toDate('1997-01-01') AND lo.l_shipdate < toDate('1997-12-31')
     GROUP BY 
         lo.l_orderkey, lo.l_partkey, lo.l_suppkey
 )

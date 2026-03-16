@@ -8,7 +8,7 @@ WITH UserPostStatistics AS (
         SUM(CASE WHEN P.Score IS NOT NULL THEN P.Score ELSE 0 END) AS TotalScore,
         AVG(P.ViewCount) AS AvgViewCount,
         SUM(B.Class) AS TotalBadges,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS AssociatedTags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS AssociatedTags
     FROM 
         Users U
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH UserPostStatistics AS (
     LEFT JOIN 
         Badges B ON U.Id = B.UserId
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(P.Tags, '><')) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('><', P.Tags)) AS T(TagName) ON TRUE
     GROUP BY 
         U.Id, U.DisplayName
 ),

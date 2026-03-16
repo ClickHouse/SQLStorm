@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount
 ),
@@ -44,14 +44,14 @@ SELECT
     tp.CommentCount,
     tp.UpVoteCount,
     tp.DownVoteCount,
-    ROUND((tp.UpVoteCount::decimal / NULLIF(tp.UpVoteCount + tp.DownVoteCount, 0)) * 100, 2) AS UpVotePercentage,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags
+    ROUND((CAST(tp.UpVoteCount AS decimal) / NULLIF(tp.UpVoteCount + tp.DownVoteCount, 0)) * 100, 2) AS UpVotePercentage,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS TagName
+            arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS TagName
         FROM 
             Posts p 
         WHERE 

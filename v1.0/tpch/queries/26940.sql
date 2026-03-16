@@ -5,7 +5,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_availqty,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(o.o_totalprice) AS avg_order_value,
-    STRING_AGG(DISTINCT CONCAT('Customer: ', c.c_name, ', Segment: ', c.c_mktsegment), '; ') AS customer_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Customer: ', c.c_name, ', Segment: ', c.c_mktsegment)))), '; ') AS customer_details
 FROM 
     part p
 JOIN 

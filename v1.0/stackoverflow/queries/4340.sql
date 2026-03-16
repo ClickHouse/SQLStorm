@@ -19,7 +19,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, u.DisplayName
 ),
@@ -41,7 +41,7 @@ SELECT
     tp.Score,
     tp.CommentCount,
     COALESCE(tp.UpVotes - tp.DownVotes, 0) AS NetVotes,
-    EXTRACT(YEAR FROM tp.CreationDate) AS PostYear,
+    toYear(tp.CreationDate) AS PostYear,
     CASE 
         WHEN tp.Score > 100 THEN 'Hot'
         WHEN tp.Score BETWEEN 50 AND 100 THEN 'Trending'

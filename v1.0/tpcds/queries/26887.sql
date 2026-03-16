@@ -37,7 +37,7 @@ CityStateSummary AS (
         ca_city,
         ca_state,
         COUNT(*) AS customer_count,
-        ARRAY_AGG(full_name) AS customer_names
+        groupArray(assumeNotNull(full_name)) AS customer_names
     FROM 
         CustomerData
     GROUP BY 

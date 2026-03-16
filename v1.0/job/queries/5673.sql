@@ -5,7 +5,7 @@ SELECT
     c.nr_order AS cast_order,
     ct.kind AS cast_type,
     COALESCE(mi.info, 'No Info Available') AS movie_info,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     title t
 JOIN 

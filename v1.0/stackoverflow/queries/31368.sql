@@ -7,13 +7,13 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
-        ARRAY_AGG(t.TagName) AS Tags
+        groupArray(assumeNotNull(t.TagName)) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Tags t ON t.WikiPostId = p.Id OR t.ExcerptPostId = p.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 years' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR 
         AND p.Score > 0
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId
@@ -41,7 +41,7 @@ RecentPostHistory AS (
     JOIN 
         PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 )
 SELECT 
     rp.PostId,
@@ -49,7 +49,7 @@ SELECT
     rp.CreationDate,
     COALESCE(rp.Rank, 0) AS PostRank,
     COALESCE(up.UpvoteCount, 0) AS UpvoteCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
     COUNT(rph.UserId) AS HistoryChanges
 FROM 
     RankedPosts rp
@@ -57,8 +57,7 @@ LEFT JOIN
     PostUpvotes up ON rp.PostId = up.PostId
 LEFT JOIN 
     RecentPostHistory rph ON rp.PostId = rph.PostId
-LEFT JOIN 
-    UNNEST(rp.Tags) AS t(TagName) ON TRUE
+LEFT ARRAY JOIN rp.Tags AS TagName
 WHERE 
     (rp.Rank <= 10 OR rp.Score >= 100) 
 GROUP BY 

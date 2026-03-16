@@ -21,7 +21,7 @@ WITH RECURSIVE movie_hierarchy AS (
 cast_summary AS (
     SELECT ci.movie_id,
            COUNT(ci.person_id) AS total_cast,
-           STRING_AGG(DISTINCT ak.name, ', ') AS cast_names
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names
     FROM cast_info ci
     JOIN aka_name ak ON ci.person_id = ak.person_id
     GROUP BY ci.movie_id

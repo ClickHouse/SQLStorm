@@ -3,7 +3,7 @@ WITH RECURSIVE order_summary AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice,
            ROW_NUMBER() OVER (PARTITION BY o.o_orderkey ORDER BY o.o_orderdate DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
 ), supplier_summary AS (
     SELECT s.s_suppkey, s.s_name, SUM(ps.ps_supplycost * ps.ps_availqty) AS total_cost
     FROM supplier s
@@ -12,7 +12,7 @@ WITH RECURSIVE order_summary AS (
 ), lineitem_summary AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_line_price
     FROM lineitem l
-    WHERE l.l_shipdate >= DATE '1997-01-01'
+    WHERE l.l_shipdate >= toDate('1997-01-01')
     GROUP BY l.l_orderkey
 ), nation_region AS (
     SELECT n.n_nationkey, n.n_name, r.r_name

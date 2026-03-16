@@ -16,7 +16,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(CASE WHEN o.o_orderstatus = 'F' THEN o.o_totalprice ELSE NULL END) AS avg_filled_order_price,
-    STRING_AGG(DISTINCT CONCAT('Supplier: ', sh.s_name, ' (Level: ', sh.level, ')'), '; ') AS supplier_hierarchy
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Supplier: ', sh.s_name, ' (Level: ', sh.level, ')')))), '; ') AS supplier_hierarchy
 FROM 
     nation n
 LEFT JOIN 

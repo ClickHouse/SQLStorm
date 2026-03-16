@@ -42,4 +42,4 @@ FROM
     FinalBenchmark
 WHERE 
     string_length > 50
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

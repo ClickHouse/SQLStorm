@@ -19,7 +19,7 @@ WITH TaggedPosts AS (
 ),
 TagStats AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         TaggedPosts
@@ -47,7 +47,7 @@ TopTaggedPosts AS (
     FROM 
         TaggedPosts TP
     JOIN 
-        TopTags TT ON TT.Tag IN (SELECT unnest(string_to_array(substring(TP.Tags, 2, length(TP.Tags)-2), '><')))
+        TopTags TT ON TT.Tag IN (SELECT arrayJoin(splitByString('><', substring(TP.Tags, 2, length(TP.Tags)-2))))
     WHERE 
         TT.Rank <= 10 
 )

@@ -5,7 +5,7 @@ SELECT
     COUNT(O.o_orderkey) AS order_count,
     SUM(L.l_extendedprice) AS total_revenue,
     AVG(L.l_quantity) AS avg_quantity_per_order,
-    STRING_AGG(DISTINCT CASE WHEN L.l_returnflag = 'R' THEN 'Returned' ELSE 'Not Returned' END, ', ') AS return_status,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN L.l_returnflag = 'R' THEN 'Returned' ELSE 'Not Returned' END))), ', ') AS return_status,
     MAX(L.l_shipdate) AS last_ship_date,
     MIN(O.o_orderdate) AS first_order_date,
     CONCAT('Region: ', R.r_name, ', Nation: ', N.n_name) AS geographical_info

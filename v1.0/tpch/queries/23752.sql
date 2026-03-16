@@ -18,7 +18,7 @@ SELECT
     COUNT(DISTINCT cust.c_custkey) AS unique_customers,
     SUM(CASE WHEN o.o_orderstatus = 'O' THEN 1 ELSE 0 END) AS open_orders,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_revenue,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     MAX(s_chain.s_acctbal) AS max_acctbal
 FROM nation n
 LEFT JOIN customer cust ON cust.c_nationkey = n.n_nationkey
@@ -35,4 +35,4 @@ AND (o.o_orderdate BETWEEN '1996-01-01' AND '1996-12-31' OR o.o_orderdate IS NUL
 GROUP BY n.n_name
 HAVING COUNT(DISTINCT cust.c_custkey) > 0
 ORDER BY unique_customers DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

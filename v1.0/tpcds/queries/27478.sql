@@ -8,7 +8,7 @@ SELECT
     AVG(ws.ws_ext_sales_price) AS average_order_value,
     MAX(ws.ws_ext_sales_price) AS max_order_value,
     MIN(ws.ws_ext_sales_price) AS min_order_value,
-    STRING_AGG(DISTINCT wp.wp_url, '; ') AS visited_websites
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp.wp_url))), '; ') AS visited_websites
 FROM 
     customer c
 JOIN 

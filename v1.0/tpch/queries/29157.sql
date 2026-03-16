@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     SUM(ps.ps_supplycost) AS total_supply_cost,
     AVG(p.p_retailprice) AS average_retail_price,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     CONCAT('Product: ', p.p_name, ', Average Price: ', ROUND(AVG(p.p_retailprice), 2)) AS product_info
 FROM 
     part p

@@ -6,7 +6,7 @@ WITH RankedOrders AS (
         o.o_orderpriority,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderpriority ORDER BY o.o_totalprice DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
 ),
 SupplierPartInfo AS (
     SELECT 

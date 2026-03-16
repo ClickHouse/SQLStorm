@@ -6,7 +6,7 @@ WITH Recursive_Cast AS (
 ),
 Movie_Info_CTE AS (
     SELECT mi.movie_id, 
-           STRING_AGG(DISTINCT mi.info, ', ') AS info_details,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS info_details,
            COUNT(DISTINCT mi.id) AS total_info
     FROM movie_info mi
     GROUP BY mi.movie_id

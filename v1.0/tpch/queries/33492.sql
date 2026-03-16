@@ -13,9 +13,9 @@ WITH RECURSIVE SupplierHierarchy AS (
             SELECT l_partkey 
             FROM lineitem 
             WHERE l_suppkey = sh.s_suppkey 
-            FETCH FIRST 1 ROW ONLY
+            LIMIT 1
         ) 
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
     WHERE sh.level < 5
 ), OrderDetails AS (

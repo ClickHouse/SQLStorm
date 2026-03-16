@@ -26,7 +26,7 @@ ActorMovies AS (
 CompanyMovies AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS companies
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies
     FROM 
         movie_companies mc
     JOIN 
@@ -53,7 +53,7 @@ FilteredMovies AS (
     WHERE 
         rm.rn = 1
         AND (am.actor_count IS NULL OR am.actor_count > 3)
-        AND (cm.companies IS NOT NULL AND array_length(cm.companies, 1) > 0)
+        AND (cm.companies IS NOT NULL AND length(cm.companies, 1) > 0)
 )
 
 SELECT 

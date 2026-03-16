@@ -6,7 +6,7 @@ WITH MovieDetails AS (
         t.production_year,
         COUNT(DISTINCT ci.person_id) AS total_cast,
         MAX(t.production_year) OVER (PARTITION BY t.kind_id) AS max_year_per_type,
-        STRING_AGG(DISTINCT ak.name, ', ') FILTER (WHERE ak.name IS NOT NULL) AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') FILTER (WHERE ak.name IS NOT NULL) AS actors
     FROM 
         aka_title t
     LEFT JOIN 

@@ -21,7 +21,7 @@ store_sales_info AS (
         SUM(ss.ss_net_paid) AS total_sales_revenue
     FROM store_sales ss
     WHERE ss.ss_sold_date_sk = (
-        SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL '1 day'
+        SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL 1 DAY
     )
     GROUP BY ss.ss_store_sk
 ),

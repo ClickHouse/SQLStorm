@@ -4,7 +4,7 @@ SELECT
     AVG(p.Score) AS AvgScore,
     AVG(p.ViewCount) AS AvgViewCount,
     AVG(u.Reputation) AS AvgUserReputation,
-    STRING_AGG(DISTINCT u.DisplayName, ', ') AS UserNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS UserNames
 FROM 
     Posts p
 JOIN 
@@ -12,7 +12,7 @@ JOIN
 LEFT JOIN 
     Users u ON p.OwnerUserId = u.Id
 WHERE 
-    p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
 GROUP BY 
     pt.Name
 ORDER BY 

@@ -1,7 +1,7 @@
 SELECT s.s_name AS supplier_name, 
        p.p_name AS part_name, 
        COUNT(l.l_orderkey) AS order_count, 
-       STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied, 
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied, 
        SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue 
 FROM supplier s 
 JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey 

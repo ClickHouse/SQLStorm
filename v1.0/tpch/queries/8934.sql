@@ -3,7 +3,7 @@ WITH RecentOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, c.c_nationkey
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 SupplierCosts AS (
     SELECT ps.ps_partkey, SUM(ps.ps_supplycost * l.l_quantity) AS total_cost

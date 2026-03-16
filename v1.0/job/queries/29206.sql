@@ -35,7 +35,7 @@ TopActors AS (
 )
 SELECT
     ma.actor_name,
-    STRING_AGG(ma.movie_title, '; ') AS movies_list,
+    arrayStringConcat(groupArray(assumeNotNull(ma.movie_title)), '; ') AS movies_list,
     COUNT(DISTINCT ma.movie_id) AS unique_movies_count,
     ma.production_year AS last_movie_year
 FROM

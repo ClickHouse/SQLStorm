@@ -6,8 +6,8 @@ WITH SupplierStats AS (
         SUM(ps.ps_availqty) AS total_available_qty,
         SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_value,
         AVG(ps.ps_supplycost) AS avg_supply_cost,
-        STRING_AGG(DISTINCT p.p_type, ', ') AS supplied_part_types,
-        STRING_AGG(DISTINCT s_n.n_name, ', ') AS associated_nations
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS supplied_part_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s_n.n_name))), ', ') AS associated_nations
     FROM 
         supplier s
     JOIN 
@@ -25,7 +25,7 @@ OrderStats AS (
         o.o_orderdate,
         o.o_totalprice,
         SUM(l.l_quantity) AS total_items_ordered,
-        STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS customer_segments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS customer_segments
     FROM 
         orders o
     JOIN 

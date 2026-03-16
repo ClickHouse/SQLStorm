@@ -16,7 +16,7 @@ movie_details AS (
         m.title,
         m.production_year,
         COALESCE(k.keyword, 'No Keywords') AS keyword,
-        (SELECT STRING_AGG(DISTINCT c.name, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') 
          FROM company_name c 
          JOIN movie_companies mc ON c.id = mc.company_id 
          WHERE mc.movie_id = m.id) AS companies

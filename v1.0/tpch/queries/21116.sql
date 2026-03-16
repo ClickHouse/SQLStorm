@@ -28,7 +28,7 @@ PartDetails AS (
         COUNT(DISTINCT ps.ps_suppkey) AS suppliers_count,
         SUM(ps.ps_availqty * ps.ps_supplycost) AS total_cost,
         MAX(p.p_retailprice) AS max_price,
-        COALESCE(STRING_AGG(DISTINCT p.p_name, ', '), 'No Parts') AS part_names
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', '), 'No Parts') AS part_names
     FROM 
         part p
     LEFT JOIN 

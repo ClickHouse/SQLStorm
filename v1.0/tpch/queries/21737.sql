@@ -27,7 +27,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - COALESCE(l.l_discount, 0))) AS TotalRevenue,
     MAX(l.l_shipdate) AS LastShipDate,
     AVG(CASE WHEN o.o_orderstatus = 'O' THEN l.l_quantity END) AS AvgOpenOrderQty,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', l.l_returnflag, ')'), ', ') AS Suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', l.l_returnflag, ')')))), ', ') AS Suppliers
 FROM part p
 LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
 LEFT JOIN orders o ON l.l_orderkey = o.o_orderkey

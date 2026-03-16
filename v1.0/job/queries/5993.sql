@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        ARRAY_AGG(DISTINCT ak.name) AS actor_names
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names
     FROM title t
     JOIN complete_cast cc ON t.id = cc.movie_id
     JOIN cast_info ci ON cc.subject_id = ci.id
@@ -16,7 +16,7 @@ WITH RankedMovies AS (
 MovieInfos AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(mi.info, '; ') AS movie_details
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS movie_details
     FROM movie_info mi
     JOIN RankedMovies rm ON mi.movie_id = rm.movie_id
     GROUP BY mi.movie_id

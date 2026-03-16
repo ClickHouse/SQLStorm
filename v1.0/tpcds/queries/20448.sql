@@ -53,4 +53,4 @@ WHERE
     rs.rnk = 1
 ORDER BY 
     net_profit_after_returns DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

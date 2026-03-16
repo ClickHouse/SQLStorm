@@ -17,7 +17,7 @@ MaxRegionSuppliers AS (
     SELECT 
         r.r_regionkey,
         r.r_name,
-        ARRAY_AGG(s.s_name) AS top_suppliers
+        groupArray(assumeNotNull(s.s_name)) AS top_suppliers
     FROM 
         region r
     JOIN 

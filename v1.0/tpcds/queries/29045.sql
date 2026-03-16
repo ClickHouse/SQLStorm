@@ -6,7 +6,7 @@ SELECT
     SUM(CASE WHEN cd_gender = 'F' THEN 1 ELSE 0 END) AS female_customers,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
     MAX(CAST(cd_credit_rating AS VARCHAR)) AS highest_credit_rating,
-    STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), ', ') AS customer_names
 FROM 
     customer_address AS ca
 JOIN 

@@ -6,7 +6,7 @@ WITH Address_Analysis AS (
         AVG(LENGTH(ca_street_name)) AS avg_street_length,
         MAX(LENGTH(ca_street_name)) AS max_street_length,
         MIN(LENGTH(ca_street_name)) AS min_street_length,
-        STRING_AGG(DISTINCT ca_city, ', ') AS unique_cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS unique_cities
     FROM 
         customer_address
     GROUP BY 
@@ -17,7 +17,7 @@ Demographics_Analysis AS (
         cd_gender,
         COUNT(*) AS demographic_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_marital_status, ', ') AS distinct_marital_status
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS distinct_marital_status
     FROM 
         customer_demographics
     GROUP BY 

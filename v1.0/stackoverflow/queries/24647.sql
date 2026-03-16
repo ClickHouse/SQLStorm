@@ -31,7 +31,7 @@ PopularPosts AS (
         RANK() OVER (ORDER BY P.ViewCount DESC) AS PopularityRank
     FROM Posts P
     LEFT JOIN PostHistory PH ON P.Id = PH.PostId AND PH.PostHistoryTypeId IN (4, 5, 10)
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 MostCommentedPosts AS (
     SELECT 

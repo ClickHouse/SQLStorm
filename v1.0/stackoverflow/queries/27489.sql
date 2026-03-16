@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         p.Tags,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '>'), 1) AS TagCount,
+        length(splitByString('>', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank,
         u.Reputation AS UserReputation,
         u.DisplayName AS UserDisplayName
@@ -17,17 +17,17 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
 ),
 TopTags AS (
     SELECT 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '>')) AS TagName,
+        arrayJoin(splitByString('>', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName,
         COUNT(*) AS TagUsage
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         TagName
     ORDER BY 
@@ -38,7 +38,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(DISTINCT c.UserDisplayName, ', ') AS CommentAuthors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.UserDisplayName))), ', ') AS CommentAuthors
     FROM 
         Comments c
     GROUP BY 
@@ -63,7 +63,7 @@ FROM
 LEFT JOIN 
     PostComments pc ON r.PostId = pc.PostId
 LEFT JOIN 
-    TopTags tt ON tt.TagName = ANY(string_to_array(substring(r.Tags, 2, length(r.Tags)-2), '>'))
+    TopTags tt ON tt.TagName = ANY(splitByString('>', substring(r.Tags, 2, length(r.Tags)-2)))
 WHERE 
     r.PostRank = 1 
 ORDER BY 

@@ -26,7 +26,7 @@ SELECT
     mt.title AS movie_title,
     mt.production_year,
     COUNT(CASE WHEN c.nr_order IS NOT NULL THEN 1 END) AS cast_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     AVG(CAST(mi.info AS NUMERIC)) AS average_info 
 FROM aka_name a
 JOIN cast_info c ON a.person_id = c.person_id

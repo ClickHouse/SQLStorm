@@ -11,9 +11,9 @@ WITH RankedPosts AS (
     INNER JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     AND 
-        p.ViewCount > (SELECT AVG(ViewCount) FROM Posts WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year')
+        p.ViewCount > (SELECT AVG(ViewCount) FROM Posts WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR)
 ),
 TopPosts AS (
     SELECT 

@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
 ),
 SupplierPartInfo AS (
     SELECT 
@@ -47,7 +47,7 @@ CustomerOrderSummary AS (
 SELECT 
     co.c_name,
     co.total_spent,
-    ARRAY_AGG(DISTINCT sp.p_name) AS purchased_parts,
+    arrayDistinct(groupArray(assumeNotNull(sp.p_name))) AS purchased_parts,
     COUNT(DISTINCT so.o_orderkey) AS distinct_orders,
     COALESCE(SUM(r.l_extendedprice * (1 - r.l_discount)), 0) AS total_revenue,
     AVG(sp.ps_supplycost) AS avg_supply_cost

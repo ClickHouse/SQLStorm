@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate > (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') 
+        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
         AND p.PostTypeId = 1 
     GROUP BY 
         p.Id
@@ -74,7 +74,7 @@ SELECT
         WHEN CloseReopenedCount > 0 THEN 'Reopened Post'
         ELSE 'Post Status Normal'
     END AS PostStatus,
-    ARRAY_TO_STRING(STRING_TO_ARRAY(Tags, ','), ', ') AS FormattedTags
+    ARRAY_TO_STRING(splitByString(',', Tags), ', ') AS FormattedTags
 FROM 
     QuestionsWithAnswerDetails
 LEFT JOIN (
@@ -83,7 +83,7 @@ LEFT JOIN (
         p.Tags
     FROM 
         Posts p
-) sub ON QuestionsWithAnswerDetails.Title = sub.PostId::varchar
+) sub ON QuestionsWithAnswerDetails.Title = CAST(sub.PostId AS varchar)
 ORDER BY 
     CloseReopenedCount DESC, 
     UpVotes DESC 

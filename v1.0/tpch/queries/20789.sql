@@ -42,7 +42,7 @@ SELECT rh.r_name, COALESCE(SUM(o.o_totalprice), 0) AS TotalOrderValue,
        COUNT(DISTINCT o.o_orderkey) AS TotalOrders,
        AVG(o.o_totalprice / NULLIF(c.c_acctbal, 0)) AS AvgPricePerAccount
 FROM TopRegions rh
-LEFT JOIN RecentOrders o ON rh.r_name LIKE '%' || o.o_orderdate::text || '%'
+LEFT JOIN RecentOrders o ON rh.r_name LIKE '%' || CAST(o.o_orderdate AS text) || '%'
 LEFT JOIN customer c ON o.c_name = c.c_name
 GROUP BY rh.r_name
 HAVING SUM(o.o_totalprice) > (SELECT MAX(TotalSupplyCost) FROM TopRegions)

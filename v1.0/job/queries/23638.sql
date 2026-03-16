@@ -36,7 +36,7 @@ SELECT
     tt.title,
     tt.production_year,
     COUNT(DISTINCT ciw.actor_name) AS actor_count,
-    STRING_AGG(DISTINCT ciw.actor_name, ', ') AS actor_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ciw.actor_name))), ', ') AS actor_list,
     MAX(CASE WHEN ciw.role_name LIKE '%lead%' THEN ciw.actor_name END) AS lead_actor,
     SUM(CASE WHEN ciw.role_name IS NOT NULL THEN 1 ELSE 0 END) AS roles_assigned
 FROM 

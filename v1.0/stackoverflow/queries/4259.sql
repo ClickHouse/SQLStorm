@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -35,7 +35,7 @@ PostHistories AS (
         PH.PostId,
         COUNT(*) AS EditCount,
         MAX(PH.CreationDate) AS LastEditDate,
-        STRING_AGG(PHT.Name, ', ') AS EditTypes
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS EditTypes
     FROM 
         PostHistory PH
     JOIN 

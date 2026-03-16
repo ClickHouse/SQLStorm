@@ -18,7 +18,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_quantity,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_sales_price,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT sh.hierarchy_path, ', ') AS supplier_hierarchy
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sh.hierarchy_path))), ', ') AS supplier_hierarchy
 FROM 
     part p
 LEFT OUTER JOIN lineitem l ON p.p_partkey = l.l_partkey

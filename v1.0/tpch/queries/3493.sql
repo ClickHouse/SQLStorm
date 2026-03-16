@@ -40,7 +40,7 @@ SELECT
     p.p_retailprice,
     COALESCE(sc.supplier_count, 0) AS suppliers,
     MIN(ro.o_totalprice) AS min_order_total,
-    STRING_AGG(DISTINCT CAST(cs.c_custkey AS VARCHAR), ', ') AS high_spenders
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(cs.c_custkey AS VARCHAR)))), ', ') AS high_spenders
 FROM 
     part p
 LEFT JOIN 
@@ -54,7 +54,7 @@ LEFT JOIN
 LEFT JOIN 
     CustomerSpending cs ON o.o_custkey = cs.c_custkey
 WHERE 
-    (l.l_shipdate IS NOT NULL AND l.l_shipdate < DATE '1998-10-01')
+    (l.l_shipdate IS NOT NULL AND l.l_shipdate < toDate('1998-10-01'))
     OR (l.l_shipdate IS NULL AND l.l_returnflag = 'R')
 GROUP BY 
     p.p_partkey,

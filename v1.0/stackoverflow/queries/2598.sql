@@ -62,4 +62,4 @@ FROM
 LEFT JOIN ClosedPosts cp ON tu.UserId = cp.ClosedByUserId
 ORDER BY 
     tu.UserRank, cp.CloseDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -42,13 +42,13 @@ SELECT
     tp.Score,
     tp.CommentCount,
     tp.VoteCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
     Posts p ON tp.PostId = p.Id
 LEFT JOIN 
-    UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag ON tag IS NOT NULL
+    arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag ON tag IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag
 GROUP BY 

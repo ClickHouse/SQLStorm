@@ -28,7 +28,7 @@ MoviesWithKeywords AS (
     SELECT 
         tm.title,
         tm.production_year,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         TopMovies tm
     LEFT JOIN 

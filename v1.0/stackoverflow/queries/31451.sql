@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ), RecentActivity AS (
     SELECT 
         p.Id AS PostId,
@@ -52,12 +52,12 @@ WITH RankedPosts AS (
         PostHistory ph
     WHERE 
         ph.PostHistoryTypeId = 10 
-        AND ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 MONTH'
+        AND ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
 ), UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS TotalBadges,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 

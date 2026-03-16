@@ -55,6 +55,6 @@ JOIN CustomerInfo ci ON ci.c_customer_sk IN (
     WHERE sr_returned_date_sk = (
         SELECT MAX(sr_returned_date_sk) FROM store_returns)
 )
-JOIN DailySalesSummary ds ON ds.sale_date > DATE '2023-01-01'
+JOIN DailySalesSummary ds ON ds.sale_date > toDate('2023-01-01')
 ORDER BY ad.address_count DESC, ds.daily_total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

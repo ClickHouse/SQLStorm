@@ -28,4 +28,4 @@ GROUP BY
     cd.cd_marital_status, cd.cd_purchase_estimate, c.c_email_address
 ORDER BY 
     total_net_profit DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -13,7 +13,7 @@ WITH ranked_movies AS (
 cast_summary AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
         COUNT(DISTINCT a.id) AS number_of_actors,
         SUM(CASE WHEN a.id IS NOT NULL THEN 1 ELSE 0 END) AS actor_count
     FROM 
@@ -26,7 +26,7 @@ cast_summary AS (
 genre_summary AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS genres
     FROM 
         movie_keyword mk
     JOIN 

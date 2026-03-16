@@ -75,7 +75,7 @@ SELECT
     (SELECT COUNT(DISTINCT p.Id)
      FROM Posts p
      WHERE p.OwnerUserId = us.UserId AND p.ClosedDate IS NULL) AS ActivePostCount,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Posts p
      JOIN Tags t ON t.WikiPostId = p.Id
      WHERE p.OwnerUserId = us.UserId) AS AssociatedTags,

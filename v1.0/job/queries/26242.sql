@@ -23,7 +23,7 @@ HighRatedMovies AS (
         rt.movie_title,
         rt.production_year,
         COUNT(DISTINCT mc.movie_id) AS company_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         RankedTitles rt
     JOIN 

@@ -5,7 +5,7 @@ WITH TagStatistics AS (
         COUNT(DISTINCT C.Id) AS CommentCount,
         SUM(P.ViewCount) AS TotalViews,
         SUM(P.Score) AS TotalScore,
-        STRING_AGG(DISTINCT U.DisplayName, ', ') AS TopContributors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS TopContributors
     FROM
         Tags T
     LEFT JOIN
@@ -15,7 +15,7 @@ WITH TagStatistics AS (
     LEFT JOIN
         Users U ON U.Id = P.OwnerUserId
     WHERE
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY
         T.TagName
 ),

@@ -22,7 +22,7 @@ MovieDetails AS (
     SELECT 
         t.id AS movie_id,
         t.title,
-        string_agg(DISTINCT ak.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
         COALESCE(m.info, 'No Info') AS movie_info
     FROM 
         aka_title AS t

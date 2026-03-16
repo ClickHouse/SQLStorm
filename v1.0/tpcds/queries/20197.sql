@@ -69,4 +69,4 @@ WHERE
     (ss.order_count > 5 OR ss.customer_value = 'High Value')
 ORDER BY 
     ss.total_profit DESC NULLS LAST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

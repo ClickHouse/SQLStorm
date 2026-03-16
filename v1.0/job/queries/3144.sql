@@ -3,7 +3,7 @@ WITH movie_details AS (
         a.title,
         a.production_year,
         c.name AS company_name,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COUNT(DISTINCT ca.person_id) AS actor_count,
         SUM(CASE WHEN ca.role_id IS NOT NULL THEN 1 ELSE 0 END) AS cast_roles,
         ROW_NUMBER() OVER (PARTITION BY a.production_year ORDER BY COUNT(DISTINCT ca.person_id) DESC) AS rank

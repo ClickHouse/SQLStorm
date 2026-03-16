@@ -68,4 +68,4 @@ WHERE
     AND (cs.total_catalog_orders_returned + cs.total_store_orders_returned) > 0
 ORDER BY 
     net_sales_after_returns DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

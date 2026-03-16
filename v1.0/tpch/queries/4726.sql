@@ -43,7 +43,7 @@ SELECT
     SUM(cos.customer_total_orders) AS total_order_value_by_region,
     AVG(cos.number_of_orders) AS avg_orders_per_customer,
     COUNT(DISTINCT st.s_suppkey) AS supplier_count,
-    STRING_AGG(DISTINCT st.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(st.s_name))), ', ') AS supplier_names
 FROM 
     region cr
 JOIN 

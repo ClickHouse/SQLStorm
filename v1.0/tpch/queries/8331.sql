@@ -15,8 +15,8 @@ JOIN
 JOIN 
     lineitem l ON o.o_orderkey = l.l_orderkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' 
-    AND l.l_shipdate < DATE '1998-01-01'
+    l.l_shipdate >= toDate('1997-01-01') 
+    AND l.l_shipdate < toDate('1998-01-01')
     AND n.n_name IN (SELECT n.n_name FROM nation n WHERE n.n_comment LIKE '%special%')
 GROUP BY 
     n.n_name, r.r_name

@@ -57,4 +57,4 @@ JOIN AddressSummary asum ON ci.c_customer_sk IN (
 )
 WHERE ci.total_net_profit = (SELECT max_profit FROM MaxSales)
 ORDER BY ci.total_net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

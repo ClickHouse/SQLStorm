@@ -26,7 +26,7 @@ WITH RECURSIVE movie_hierarchy AS (
 SELECT
     ak.name AS actor_name,
     COUNT(DISTINCT mh.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT mh.title, '; ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mh.title))), '; ') AS movie_titles,
     AVG(mh.production_year) AS avg_production_year,
     ROW_NUMBER() OVER (PARTITION BY ak.person_id ORDER BY COUNT(DISTINCT mh.movie_id) DESC) AS actor_rank
 FROM

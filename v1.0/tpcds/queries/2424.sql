@@ -63,4 +63,4 @@ WHERE
     pi.total_returned > 0
 ORDER BY 
     pi.total_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

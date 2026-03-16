@@ -66,4 +66,4 @@ WHERE
     f.transaction_count IS NOT NULL
 ORDER BY 
     f.total_net_paid DESC, rank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -3,7 +3,7 @@ WITH UserBadges AS (
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
         MAX(B.Class) AS HighestBadgeClass,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 

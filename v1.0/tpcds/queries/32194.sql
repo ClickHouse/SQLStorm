@@ -12,12 +12,12 @@ WITH RECURSIVE SalesHierarchy AS (
 MonthlySales AS (
     SELECT 
         d_year,
-        EXTRACT(MONTH FROM d_date) AS month,
+        toMonth(d_date) AS month,
         SUM(ws_net_paid) AS monthly_sales
     FROM web_sales 
     JOIN date_dim ON ws_sold_date_sk = d_date_sk
     WHERE d_year >= 2022
-    GROUP BY d_year, EXTRACT(MONTH FROM d_date)
+    GROUP BY d_year, toMonth(d_date)
 ),
 
 CustomerReturns AS (

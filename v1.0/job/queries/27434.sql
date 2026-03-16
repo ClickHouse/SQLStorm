@@ -3,8 +3,8 @@ WITH ranked_movies AS (
         mt.title AS movie_title,
         mt.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
         COALESCE(SUM(CASE WHEN c.nr_order < 4 THEN 1 ELSE 0 END), 0) AS lead_cast_count
     FROM 
         aka_title mt

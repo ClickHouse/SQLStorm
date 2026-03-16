@@ -4,7 +4,7 @@ SELECT
     s.s_name, 
     c.c_name, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT l.l_comment, '; ') AS comments_summary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_comment))), '; ') AS comments_summary
 FROM 
     part p
 JOIN 

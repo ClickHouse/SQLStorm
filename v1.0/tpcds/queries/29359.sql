@@ -3,7 +3,7 @@ WITH AddressCount AS (
     SELECT 
         ca_state,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities
     FROM 
         customer_address
     GROUP BY 
@@ -13,7 +13,7 @@ WITH AddressCount AS (
         cd_gender,
         COUNT(DISTINCT c_customer_id) AS customer_count,
         AVG(cd_dep_count) AS avg_dependents,
-        STRING_AGG(DISTINCT cd_credit_rating, ', ') AS credit_ratings
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_credit_rating))), ', ') AS credit_ratings
     FROM 
         customer_demographics cd
     JOIN 
@@ -25,7 +25,7 @@ WITH AddressCount AS (
         i_category,
         SUM(ws_quantity) AS total_quantity_sold,
         AVG(ws_sales_price) AS avg_sales_price,
-        STRING_AGG(DISTINCT CAST(ws_web_site_sk AS TEXT), ', ') AS selling_websites
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws_web_site_sk AS TEXT)))), ', ') AS selling_websites
     FROM 
         web_sales ws
     JOIN 

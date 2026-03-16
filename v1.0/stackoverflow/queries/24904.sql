@@ -15,19 +15,19 @@ WITH UserActivity AS (
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8  
     WHERE 
         u.Reputation > 1000 
-        AND u.CreationDate < cast('2024-10-01' as date) - INTERVAL '2 years'
+        AND u.CreationDate < cast('2024-10-01' as date) - INTERVAL 2 YEAR
     GROUP BY 
         u.Id, u.Reputation, u.CreationDate, u.DisplayName, u.LastAccessDate
 ),
 ActiveBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(*) AS BadgeCount
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        b.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 ),

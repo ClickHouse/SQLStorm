@@ -12,7 +12,7 @@ SELECT
     MAX(p.LastActivityDate) AS LastActivity,
     SUM(CASE WHEN ph.PostHistoryTypeId = 10 THEN 1 ELSE 0 END) AS CloseCount, 
     SUM(CASE WHEN ph.PostHistoryTypeId = 11 THEN 1 ELSE 0 END) AS ReopenCount,
-    AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgResponseTimeInSeconds
+    AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgResponseTimeInSeconds
 FROM 
     Posts p
 LEFT JOIN 

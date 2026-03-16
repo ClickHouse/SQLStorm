@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score IS NOT NULL
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserScores AS (
     SELECT 
@@ -36,7 +36,7 @@ RecentPostHistory AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
         AND ph.PostHistoryTypeId IN (4, 5, 10)  
 ),
 MergedPosts AS (
@@ -70,7 +70,7 @@ SELECT
     mp.LastEditComment,
     CASE 
         WHEN mp.PrevEditDate IS NULL THEN 'No previous edits'
-        WHEN cast('2024-10-01 12:34:56' as timestamp) - mp.PrevEditDate <= INTERVAL '7 days' THEN 'Edited recently'
+        WHEN toDateTime64('2024-10-01 12:34:56', 6) - mp.PrevEditDate <= INTERVAL 7 DAY THEN 'Edited recently'
         ELSE 'Not edited recently'
     END AS EditStatus
 FROM 

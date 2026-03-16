@@ -5,7 +5,7 @@ SELECT
     SUM(ps.ps_supplycost) AS total_supply_cost,
     MAX(p.p_retailprice) AS highest_price,
     MIN(p.p_retailprice) AS lowest_price,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS related_nations,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS related_nations,
     AVG(COALESCE(NULLIF(l.l_discount, 0), 1)) AS avg_discount_used
 FROM 
     part p

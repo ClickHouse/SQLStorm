@@ -43,7 +43,7 @@ PostInfo AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 PostStats AS (
     SELECT 

@@ -29,7 +29,7 @@ WITH RankedOrders AS (
 SELECT 
     region_name,
     nation_name,
-    STRING_AGG(CONCAT(customer_name, ': ', o_totalprice), '; ') AS top_customers
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(customer_name, ': ', o_totalprice))), '; ') AS top_customers
 FROM 
     TopCustomers
 GROUP BY 

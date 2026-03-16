@@ -34,7 +34,7 @@ company_info AS (
 SELECT 
     rm.title,
     rm.production_year,
-    STRING_AGG(am.actor_name, ', ') AS actors,
+    arrayStringConcat(groupArray(assumeNotNull(am.actor_name)), ', ') AS actors,
     COALESCE(COUNT(DISTINCT ci.company_name), 0) AS company_count,
     SUM(CASE 
         WHEN am.actor_rank = 1 THEN 1 

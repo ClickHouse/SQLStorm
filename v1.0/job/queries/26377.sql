@@ -3,7 +3,7 @@ WITH MovieRoleCounts AS (
         t.id AS movie_id,
         t.title AS movie_title,
         COUNT(DISTINCT ci.person_id) AS role_count,
-        STRING_AGG(DISTINCT CONCAT(a.name, ' (', rt.role, ')'), ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', rt.role, ')')))), ', ') AS cast_names
     FROM
         aka_title t
     JOIN
@@ -20,7 +20,7 @@ WITH MovieRoleCounts AS (
 PopularKeywords AS (
     SELECT
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM
         movie_keyword mk
     JOIN

@@ -31,11 +31,11 @@ UserBadges AS (
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        STRING_AGG(T.TagName, ', ') AS TagsList
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagsList
     FROM 
         Posts P
     CROSS JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2), '> <')) AS T(TagName)
+        arrayJoin(splitByString('> <', SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2))) AS T(TagName)
     GROUP BY 
         P.Id
 )

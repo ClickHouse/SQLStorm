@@ -16,7 +16,7 @@ AggregateData AS (
     JOIN orders o ON l.l_orderkey = o.o_orderkey
     JOIN partsupp ps ON l.l_partkey = ps.ps_partkey
     JOIN part p ON p.p_partkey = ps.ps_partkey
-    WHERE o.o_orderstatus = 'O' AND l.l_shipdate >= DATE '1996-01-01'
+    WHERE o.o_orderstatus = 'O' AND l.l_shipdate >= toDate('1996-01-01')
     GROUP BY p.p_partkey, p.p_name
 ),
 RankedData AS (

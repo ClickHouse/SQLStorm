@@ -4,4 +4,4 @@ FROM customer_address ca
 JOIN customer c ON ca.ca_address_sk = c.c_current_addr_sk
 GROUP BY ca.ca_city
 ORDER BY customer_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -26,7 +26,7 @@ WITH RankedPosts AS (
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
         p.PostTypeId = 1
-        AND p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        AND p.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Tags, p.OwnerUserId
 )
@@ -38,13 +38,13 @@ SELECT
     rp.VoteScore,
     rp.CommentCount,
     rp.BadgeCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS RelatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS RelatedTags
 FROM 
     RankedPosts rp
 LEFT JOIN 
     Posts p ON rp.PostID = p.Id
 LEFT JOIN 
-    Tags t ON t.TagName IN (SELECT UNNEST(string_to_array(rp.Tags, ',')))
+    Tags t ON t.TagName IN (SELECT arrayJoin(splitByString(',', rp.Tags)))
 WHERE 
     rp.Rank <= 10
 GROUP BY 

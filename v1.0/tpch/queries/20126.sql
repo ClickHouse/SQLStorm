@@ -39,7 +39,7 @@ SELECT
     r.r_name AS region_name,
     COUNT(DISTINCT np.n_nationkey) AS nations_count,
     SUM(COALESCE(hp.total_cost, 0)) AS total_high_cost_parts,
-    STRING_AGG(DISTINCT hp.p_name, ', ') FILTER (WHERE hp.cost_category = 'High Cost') AS high_cost_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(hp.p_name))), ', ') FILTER (WHERE hp.cost_category = 'High Cost') AS high_cost_parts
 FROM 
     region r
 JOIN 
@@ -53,7 +53,7 @@ LEFT JOIN
         JOIN 
             orders o ON c.c_custkey = o.o_custkey
         WHERE 
-            o.o_totalprice > (SELECT AVG(o1.o_totalprice) FROM orders o1 WHERE o1.o_orderdate < DATE '1998-10-01' - INTERVAL '1 year')
+            o.o_totalprice > (SELECT AVG(o1.o_totalprice) FROM orders o1 WHERE o1.o_orderdate < toDate('1998-10-01') - INTERVAL 1 YEAR)
     )
 GROUP BY 
     r.r_name 

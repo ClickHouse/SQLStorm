@@ -6,7 +6,7 @@ WITH CustomerDetails AS (
         n.n_name AS nation,
         COUNT(o.o_orderkey) AS total_orders,
         SUM(o.o_totalprice) AS total_spent,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS purchased_products
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS purchased_products
     FROM 
         customer c
     JOIN 
@@ -31,7 +31,7 @@ SELECT
     COUNT(DISTINCT c_name) AS num_customers,
     SUM(total_orders) AS total_orders,
     SUM(total_spent) AS total_revenue,
-    STRING_AGG(DISTINCT purchased_products, '; ') AS all_products_purchased
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(purchased_products))), '; ') AS all_products_purchased
 FROM 
     CustomerDetails
 GROUP BY 

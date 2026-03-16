@@ -26,10 +26,10 @@ JOIN part p ON ps.ps_partkey = p.p_partkey
 JOIN lineitem l ON ps.ps_partkey = l.l_partkey 
 JOIN orders o ON l.l_orderkey = o.o_orderkey 
 WHERE 
-    l.l_shipdate > DATE '1996-01-01' 
+    l.l_shipdate > toDate('1996-01-01') 
     AND l.l_returnflag = 'N' 
     AND (o.o_orderstatus = 'F' OR o.o_orderstatus = 'O')
 GROUP BY r.r_name, n.n_name, p.p_name, n.n_nationkey
 HAVING SUM(ps.ps_supplycost * l.l_quantity) > 5000
 ORDER BY r.r_name, total_supply_cost DESC
-OFFSET (SELECT COUNT(*) FROM supplier_hierarchy) ROWS FETCH NEXT 10 ROWS ONLY;
+OFFSET (SELECT COUNT(*) FROM supplier_hierarchy) ROWS LIMIT 10;

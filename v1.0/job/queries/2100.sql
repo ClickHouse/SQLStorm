@@ -41,7 +41,7 @@ SELECT
     m.production_year,
     COALESCE(mc.company_name, 'Independent') AS company_name,
     COALESCE(mc.company_type, 'N/A') AS company_type,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     TopMovies m
 LEFT JOIN 

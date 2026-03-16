@@ -29,7 +29,7 @@ SupplierDetails AS (
     SELECT 
         t.s_suppkey,
         t.s_name,
-        STRING_AGG(t.p_name, ', ') AS top_parts,
+        arrayStringConcat(groupArray(assumeNotNull(t.p_name)), ', ') AS top_parts,
         AVG(t.ps_supplycost) AS avg_supplycost
     FROM 
         TopSuppliers t

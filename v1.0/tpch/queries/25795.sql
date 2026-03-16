@@ -6,7 +6,7 @@ SELECT
             ELSE 0 
         END) AS returned_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ': ', s.s_address), '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ': ', s.s_address)))), '; ') AS supplier_details
 FROM 
     part p
 JOIN 

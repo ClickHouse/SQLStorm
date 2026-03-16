@@ -36,7 +36,7 @@ EnhancedStats AS (
             WHEN PS.TotalPosts > 100 THEN 'Veteran'
             ELSE 'Newcomer' 
         END AS UserCategory,
-        (SELECT STRING_AGG(B.Name, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') 
          FROM Badges B 
          WHERE B.UserId = UR.UserId) AS BadgeNames
     FROM UserReputation UR

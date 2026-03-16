@@ -7,7 +7,7 @@ SELECT
             WHEN l.l_discount > 0.1 THEN l.l_extendedprice * (1 - l.l_discount) 
             ELSE l.l_extendedprice 
         END) AS avg_price_after_discount,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     part p
 JOIN 

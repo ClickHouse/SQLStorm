@@ -48,7 +48,7 @@ aggregated_movies AS (
         m.movie_id,
         m.title,
         m.production_year,
-        STRING_AGG(m.actor_name, ', ') AS actors,
+        arrayStringConcat(groupArray(assumeNotNull(m.actor_name)), ', ') AS actors,
         COUNT(m.actor_name) AS actor_count
     FROM 
         movies_with_cast m

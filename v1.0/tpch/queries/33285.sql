@@ -6,7 +6,7 @@ WITH RECURSIVE TopSuppliers AS (
     GROUP BY s.s_suppkey, s.s_name
     HAVING SUM(ps.ps_supplycost * ps.ps_availqty) > 10000
     ORDER BY total_cost DESC
-    FETCH FIRST 5 ROWS ONLY
+    LIMIT 5
 ), 
 CustomerOrders AS (
     SELECT c.c_custkey, c.c_name, COUNT(o.o_orderkey) AS total_orders, 
@@ -29,7 +29,7 @@ AggregatedData AS (
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate > DATE '1997-01-01' AND l.l_returnflag = 'N'
+    WHERE l.l_shipdate > toDate('1997-01-01') AND l.l_returnflag = 'N'
     GROUP BY c.c_nationkey
 )
 SELECT r.r_name,
@@ -44,6 +44,6 @@ LEFT JOIN TopSuppliers ts ON ts.s_suppkey = (
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     WHERE ps.ps_availqty > 0
     ORDER BY ps.ps_supplycost DESC
-    FETCH FIRST 1 ROWS ONLY
+    LIMIT 1
 )
 ORDER BY total_orders DESC, total_revenue DESC;

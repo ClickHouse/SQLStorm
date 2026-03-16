@@ -5,7 +5,7 @@ SELECT
     kt.kind AS cast_type,
     co.name AS company_name,
     t.production_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     cast_info ci
 JOIN 

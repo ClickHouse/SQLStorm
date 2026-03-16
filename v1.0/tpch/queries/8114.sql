@@ -11,7 +11,7 @@ WITH SupplierDetails AS (
     SELECT o.o_orderkey, o.o_totalprice, SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
     GROUP BY o.o_orderkey, o.o_totalprice
 ), FinalStats AS (
     SELECT sd.s_name, sd.nation_name, os.revenue, os.o_totalprice

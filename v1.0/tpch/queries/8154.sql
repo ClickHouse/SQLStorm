@@ -54,7 +54,7 @@ FinalBenchmark AS (
     CROSS JOIN 
         CustomerOrders co
     JOIN 
-        PartStatistics ps ON ps.p_partkey = (SELECT ps_partkey FROM partsupp ORDER BY RANDOM() LIMIT 1)
+        PartStatistics ps ON ps.p_partkey = (SELECT ps_partkey FROM partsupp ORDER BY rand() LIMIT 1)
 )
 SELECT 
     *

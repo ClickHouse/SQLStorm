@@ -3,8 +3,8 @@ SELECT
     t.title AS movie_title,
     t.production_year AS release_year,
     cd.kind AS genre,
-    STRING_AGG(CONCAT_WS('; ', p.info), '; ') AS actor_info,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS movie_keywords
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT_WS('; ', p.info))), '; ') AS actor_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS movie_keywords
 FROM 
     aka_name a
 JOIN 

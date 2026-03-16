@@ -11,8 +11,8 @@ WITH PostDetails AS (
         u.DisplayName AS OwnerName,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpVotes,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3) AS DownVotes,
-        ARRAY_AGG(DISTINCT ph.Comment) AS HistoryComments,
-        ARRAY_AGG(DISTINCT b.Name) AS BadgesEarned
+        arrayDistinct(groupArray(assumeNotNull(ph.Comment))) AS HistoryComments,
+        arrayDistinct(groupArray(assumeNotNull(b.Name))) AS BadgesEarned
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN PostHistory ph ON ph.PostId = p.Id
@@ -22,11 +22,11 @@ WITH PostDetails AS (
 ),
 TagStatistics AS (
     SELECT 
-        unnest(string_to_array(Tags, '>,<')) AS TagName,
+        arrayJoin(splitByString('>,<', Tags)) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts
     WHERE Tags IS NOT NULL
-    GROUP BY unnest(string_to_array(Tags, '>,<'))
+    GROUP BY arrayJoin(splitByString('>,<', Tags))
 ),
 TopTags AS (
     SELECT TagName, PostCount

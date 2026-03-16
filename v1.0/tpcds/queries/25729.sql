@@ -3,7 +3,7 @@ WITH AddressCityData AS (
     SELECT 
         ca_city,
         COUNT(DISTINCT c_customer_sk) AS customer_count,
-        STRING_AGG(DISTINCT c_first_name || ' ' || c_last_name, ', ') AS customer_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c_first_name || ' ' || c_last_name))), ', ') AS customer_names,
         SUM(CASE WHEN cd_gender = 'M' THEN 1 ELSE 0 END) AS male_count,
         SUM(CASE WHEN cd_gender = 'F' THEN 1 ELSE 0 END) AS female_count
     FROM 

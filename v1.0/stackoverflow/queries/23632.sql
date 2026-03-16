@@ -55,7 +55,7 @@ SELECT
         WHEN tu.TotalPosts > 100 THEN 'Super Contributor'
         ELSE 'Regular Contributor'
     END AS ContributorType,
-    STRING_AGG(p.Title, ', ') AS PopularPostTitles
+    arrayStringConcat(groupArray(assumeNotNull(p.Title)), ', ') AS PopularPostTitles
 FROM 
     TopUsers tu
 LEFT JOIN 

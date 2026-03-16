@@ -30,7 +30,7 @@ SELECT
     a.name AS actor_name,
     t.title AS movie_title,
     t.production_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     COUNT(DISTINCT c.id) AS num_casts,
     COUNT(DISTINCT e.id) AS num_episodes,
     MAX(mh.level) AS level_in_hierarchy,

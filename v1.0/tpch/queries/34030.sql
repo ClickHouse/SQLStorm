@@ -19,8 +19,8 @@ WITH RECURSIVE regional_sales AS (
     JOIN 
         orders o ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' 
-        AND o.o_orderdate <= DATE '1996-12-31'
+        o.o_orderdate >= toDate('1996-01-01') 
+        AND o.o_orderdate <= toDate('1996-12-31')
     GROUP BY 
         n.n_nationkey, r.r_regionkey
 ),

@@ -18,7 +18,7 @@ SELECT
     r.r_name,
     n.n_name,
     COUNT(DISTINCT rs.s_name) AS SupplierCount,
-    STRING_AGG(DISTINCT rs.p_name, '; ') AS Products,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rs.p_name))), '; ') AS Products,
     AVG(rs.s_acctbal) AS AvgAccountBalance
 FROM 
     RankedSuppliers rs

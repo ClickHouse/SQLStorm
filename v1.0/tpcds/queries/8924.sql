@@ -58,4 +58,4 @@ WHERE
     AND rs.total_returned_amount > 100
 ORDER BY 
     rs.total_returned_amount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -53,7 +53,7 @@ SELECT
     AU.Rank, 
     AU.EngagementType,
     COUNT(PH.Id) AS PostHistoryCount,
-    STRING_AGG(T.TagName, ',') AS TagsUsed
+    arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ',') AS TagsUsed
 FROM 
     ActiveUsers AU
 LEFT JOIN 

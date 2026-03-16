@@ -56,4 +56,4 @@ WHERE
 ORDER BY 
     ur.Ranking ASC,
     ua.TotalComments DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

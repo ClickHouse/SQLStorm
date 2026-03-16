@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(p.p_retailprice) AS average_part_price,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS region_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS region_names
 FROM 
     part p 
 JOIN 

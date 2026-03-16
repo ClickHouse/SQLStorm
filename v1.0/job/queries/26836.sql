@@ -3,8 +3,8 @@ WITH movie_details AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         COUNT(DISTINCT c.id) AS num_cast_members
     FROM 
         aka_title t
@@ -29,7 +29,7 @@ averages AS (
     SELECT 
         production_year,
         AVG(num_cast_members) AS avg_cast_members,
-        STRING_AGG(DISTINCT keywords, ', ') AS keyword_summary
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keywords))), ', ') AS keyword_summary
     FROM 
         movie_details
     GROUP BY 

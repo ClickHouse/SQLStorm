@@ -51,8 +51,8 @@ SELECT
     ht.production_year,
     COUNT(DISTINCT at.actor_name) AS actor_count,
     COUNT(DISTINCT cmt.company_name) AS company_count,
-    STRING_AGG(DISTINCT at.movie_title, '; ') AS movie_titles,
-    STRING_AGG(DISTINCT cmt.movie_title, '; ') AS produced_movies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(at.movie_title))), '; ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cmt.movie_title))), '; ') AS produced_movies
 FROM 
     HighCastMovies ht
 LEFT JOIN 

@@ -7,7 +7,7 @@ SELECT
     AVG(l.l_extendedprice) AS avg_extendedprice,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     COUNT(CASE WHEN l.l_returnflag = 'R' THEN 1 END) AS total_returns,
-    STRING_AGG(DISTINCT CONCAT_WS(', ', l.l_shipmode, l.l_comment), '; ') AS ship_modes_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(', ', l.l_shipmode, l.l_comment)))), '; ') AS ship_modes_comments
 FROM 
     part p
 JOIN 

@@ -27,7 +27,7 @@ WITH RECURSIVE movie_hierarchy AS (
 )
 SELECT 
     ak.name AS actor_name,
-    STRING_AGG(DISTINCT mh.title, ', ') AS linked_movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mh.title))), ', ') AS linked_movies,
     COUNT(DISTINCT cn.id) AS production_company_count,
     ROW_NUMBER() OVER (PARTITION BY ak.id ORDER BY COUNT(DISTINCT mh.movie_id) DESC) AS rank
 FROM 

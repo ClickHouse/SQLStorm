@@ -18,7 +18,7 @@ ClosedPosts AS (
         p.Id AS PostId,
         p.Title,
         ph.CreationDate AS ClosedDate,
-        STRING_AGG(DISTINCT ct.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.Name))), ', ') AS CloseReasons
     FROM 
         Posts p
     JOIN 
@@ -26,7 +26,7 @@ ClosedPosts AS (
     LEFT JOIN 
         CloseReasonTypes ct ON CAST(ph.Comment AS INTEGER) = ct.Id
     WHERE 
-        p.PostTypeId = 1 AND ph.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.PostTypeId = 1 AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, ph.CreationDate
 ),
@@ -68,7 +68,7 @@ LEFT JOIN
 LEFT JOIN 
     ClosedPosts cp ON p.Id = cp.PostId
 WHERE 
-    p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months'
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ORDER BY 
     p.ViewCount DESC, pe.PopularityRank
 LIMIT 50;

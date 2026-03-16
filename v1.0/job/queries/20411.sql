@@ -21,7 +21,7 @@ ComplicatedData AS (
         (SELECT COUNT(*) FROM movie_companies mc WHERE mc.movie_id = rn.movie_id) AS company_count,
         (SELECT COUNT(*) FROM movie_info mi WHERE mi.movie_id = rn.movie_id AND mi.info_type_id = 1) AS info_count,
         COALESCE(MAX(k.id), -1) AS keyword_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM
         RankedMovies rn
     LEFT JOIN

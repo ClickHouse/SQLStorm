@@ -22,7 +22,7 @@ ActivePosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.OwnerUserId, P.Title, P.ViewCount, P.CreationDate
 ),
@@ -58,7 +58,7 @@ RecentUpdates AS (
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         PH.PostId
 )

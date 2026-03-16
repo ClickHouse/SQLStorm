@@ -23,11 +23,11 @@ WITH RankedPosts AS (
 ), RecentBadges AS (
     SELECT 
         B.UserId,
-        ARRAY_AGG(B.Name ORDER BY B.Date DESC) AS RecentBadgeNames
+        groupArray(assumeNotNull(B.Name ORDER BY B.Date DESC)) AS RecentBadgeNames
     FROM 
         Badges B
     WHERE 
-        B.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        B.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         B.UserId
 ), TopPosts AS (
@@ -56,7 +56,7 @@ SELECT
     tp.UpVoteCount,
     tp.DownVoteCount,
     CASE 
-        WHEN array_length(tp.RecentBadges, 1) > 0 THEN 
+        WHEN length(tp.RecentBadges, 1) > 0 THEN 
             'Recent badges: ' || array_to_string(tp.RecentBadges, ', ')
         ELSE 
             'No recent badges for the owner'

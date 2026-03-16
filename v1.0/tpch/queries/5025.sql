@@ -56,4 +56,4 @@ JOIN
     HighValueSuppliers hvs ON cu.total_order_value > 5000
 ORDER BY 
     cu.total_order_value DESC, hvs.total_supply_value DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

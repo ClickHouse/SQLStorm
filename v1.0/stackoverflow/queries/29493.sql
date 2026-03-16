@@ -4,7 +4,7 @@ WITH PostTagStats AS (
         p.Title,
         p.CreationDate,
         p.OwnerUserId,
-        STRING_AGG(DISTINCT substring(tag.TagName from 1 for 20), ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(substring(tag.TagName from 1 for 20)))), ', ') AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT co.Id) AS ClosedPostCount
     FROM 

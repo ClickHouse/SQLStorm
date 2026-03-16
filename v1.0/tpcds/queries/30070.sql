@@ -31,7 +31,7 @@ SELECT
     c.c_last_name,
     SUM(COALESCE(ws.ws_net_profit, 0)) AS net_profit,
     COUNT(DISTINCT ws.ws_order_number) AS order_count,
-    STRING_AGG(i.i_product_name, ', ' ORDER BY i.i_product_name ASC) AS products_ordered
+    arrayStringConcat(groupArray(assumeNotNull(i.i_product_name)), ', ' ORDER BY i.i_product_name ASC) AS products_ordered
 FROM 
     customer c
 LEFT JOIN 

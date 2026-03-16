@@ -4,7 +4,7 @@ WITH RankedOrders AS (
            RANK() OVER (PARTITION BY c.c_mktsegment ORDER BY o.o_totalprice DESC) AS price_rank
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
 ),
 TopSegmentOrders AS (
     SELECT r.o_orderkey, r.o_totalprice, r.c_mktsegment

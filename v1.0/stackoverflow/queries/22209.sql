@@ -49,7 +49,7 @@ SELECT
     us.BadgeCount,
     us.UpVoteCount,
     us.DownVoteCount,
-    STRING_AGG(DISTINCT CASE WHEN rp.PostRank <= 5 THEN rp.Title END, '; ') AS TopQuestions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN rp.PostRank <= 5 THEN rp.Title END))), '; ') AS TopQuestions
 FROM 
     RankedPosts rp
 JOIN 

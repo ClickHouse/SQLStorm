@@ -24,7 +24,7 @@ SELECT
     SUM(COALESCE(oi.total_price, 0)) AS total_order_value,
     COUNT(DISTINCT l.l_orderkey) AS unique_orders,
     AVG(ap.avg_cost) AS average_part_supply_cost,
-    STRING_AGG(DISTINCT pr.sanitized_comment, '; ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pr.sanitized_comment))), '; ') AS part_comments
 FROM region rh
 LEFT JOIN nation n ON n.n_regionkey = rh.r_regionkey
 LEFT JOIN supplier s ON s.s_nationkey = n.n_nationkey

@@ -2,7 +2,7 @@ WITH MovieRankings AS (
     SELECT 
         t.id AS movie_id,
         t.title,
-        ARRAY_AGG(DISTINCT a.name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actors,
         COUNT(DISTINCT c.person_role_id) AS actor_count,
         t.production_year,
         k.keyword AS genre,
@@ -39,8 +39,8 @@ SELECT
     tm.title,
     tm.production_year,
     tm.actor_count,
-    STRING_AGG(DISTINCT tm.actors::text, ', ') AS all_actors,
-    STRING_AGG(DISTINCT tm.genre, ', ') AS all_genres
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(tm.actors AS text)))), ', ') AS all_actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tm.genre))), ', ') AS all_genres
 FROM 
     TopMovies tm
 GROUP BY 

@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     JOIN 
         customer AS c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 ), AggregateData AS (
     SELECT 
         n.n_name AS nation_name,

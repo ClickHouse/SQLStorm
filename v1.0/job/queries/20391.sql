@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         t.title,
         t.production_year,
         COALESCE(
-            (SELECT STRING_AGG(a.name, ', ' ORDER BY c.nr_order) 
+            (SELECT arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ' ORDER BY c.nr_order) 
              FROM cast_info c 
              JOIN aka_name a ON c.person_id = a.person_id 
              WHERE c.movie_id = t.id),
@@ -54,7 +54,7 @@ SELECT
         ELSE CAST(rm.production_year AS VARCHAR) || ' was an interesting year!'
     END AS year_comment,
     COALESCE(
-        (SELECT STRING_AGG(DISTINCT k.keyword, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
          FROM movie_keyword mk 
          JOIN keyword k ON mk.keyword_id = k.id 
          WHERE mk.movie_id = rm.movie_id),

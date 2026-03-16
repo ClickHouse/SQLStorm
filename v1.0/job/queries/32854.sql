@@ -33,7 +33,7 @@ SELECT
     
     COUNT(DISTINCT c.id) AS total_roles,
     MAX(t.production_year) AS latest_movie_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     aka_name a
 JOIN 

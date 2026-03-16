@@ -27,7 +27,7 @@ RecentPosts AS (
     JOIN 
         Tags t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
     ORDER BY 
         p.CreationDate DESC
 ),
@@ -51,7 +51,7 @@ PostHistoryStats AS (
         ph.PostId, 
         COUNT(*) AS EditCount,
         MAX(ph.CreationDate) AS LastEdited,
-        STRING_AGG(DISTINCT ph.Comment, '; ') AS Comments 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS Comments 
     FROM 
         PostHistory ph
     GROUP BY 

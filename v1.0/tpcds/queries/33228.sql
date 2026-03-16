@@ -8,7 +8,7 @@ WITH RECURSIVE item_hierarchy AS (
         WHERE ss_sold_date_sk = (
             SELECT MAX(d_date_sk) 
             FROM date_dim 
-            WHERE d_date = DATE '2002-10-01'
+            WHERE d_date = toDate('2002-10-01')
         )
     )
     UNION ALL
@@ -28,7 +28,7 @@ SELECT
         WHEN SUM(ws.ws_net_profit) > 1000 THEN 'High Profit'
         ELSE 'Low Profit'
     END AS profit_category,
-    STRING_AGG(DISTINCT i_product_name || ' (' || i_current_price || ')', ', ') AS products_sold,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i_product_name || ' (' || i_current_price || ')'))), ', ') AS products_sold,
     COALESCE(hd.hd_buy_potential, 'Unknown') AS buy_potential
 FROM customer c
 LEFT JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk
@@ -40,7 +40,7 @@ AND ca.ca_state IN ('NY', 'CA')
 AND ws.ws_sold_date_sk >= (
     SELECT MAX(d_date_sk) 
     FROM date_dim 
-    WHERE d_date < DATE '2002-10-01' - INTERVAL '1 YEAR'
+    WHERE d_date < toDate('2002-10-01') - INTERVAL 1 YEAR
 )
 GROUP BY 
     c.c_customer_id, 

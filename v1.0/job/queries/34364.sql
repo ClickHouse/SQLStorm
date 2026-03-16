@@ -36,7 +36,7 @@ SELECT
     mh.parent_title,
     mh.level,
     COALESCE(COUNT(DISTINCT ci.person_id), 0) AS cast_count,
-    STRING_AGG(DISTINCT CONCAT(a.name, ' (', rt.role, ')'), ', ') AS cast_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', rt.role, ')')))), ', ') AS cast_details,
     AVG(CASE WHEN mi.info_type_id = (SELECT id FROM info_type WHERE info = 'duration') THEN CAST(mi.info AS INTEGER) END) AS avg_duration
 FROM 
     MovieHierarchy mh

@@ -7,7 +7,7 @@ WITH RECURSIVE movie_chain AS (
          FROM cast_info ci
          WHERE ci.movie_id = m.id
          AND ci.role_id IS NOT NULL) AS actor_count,
-        COALESCE((SELECT STRING_AGG(DISTINCT c.name, ', ' ORDER BY c.name)
+        COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ' ORDER BY c.name)
                    FROM company_name c
                    JOIN movie_companies mc ON mc.company_id = c.id
                    WHERE mc.movie_id = m.id), 'No Companies') AS associated_companies,
@@ -26,7 +26,7 @@ WITH RECURSIVE movie_chain AS (
          FROM cast_info ci
          WHERE ci.movie_id = ml.linked_movie_id
          AND ci.role_id IS NOT NULL) AS actor_count,
-        COALESCE((SELECT STRING_AGG(DISTINCT c.name, ', ' ORDER BY c.name)
+        COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ' ORDER BY c.name)
                    FROM company_name c
                    JOIN movie_companies mc ON mc.company_id = c.id
                    WHERE mc.movie_id = ml.linked_movie_id), 'No Companies') AS associated_companies,

@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         pt.Name AS PostType,
         COUNT(c.Id) AS CommentCount,
         AVG(vote.VoteTypeId) AS AverageVoteType,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes vote ON p.Id = vote.PostId
     LEFT JOIN 
-        LATERAL (SELECT UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS TagName) AS tag_ids ON TRUE
+        (SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS TagName) AS tag_ids ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_ids.TagName
     GROUP BY 
@@ -30,7 +30,7 @@ WITH RankedPosts AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CONCAT(ph.CreationDate, ': ', pht.Name), '; ' ORDER BY ph.CreationDate) AS HistoryDetails,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.CreationDate, ': ', pht.Name))), '; ' ORDER BY ph.CreationDate) AS HistoryDetails,
         COUNT(*) AS EditCount
     FROM 
         PostHistory ph

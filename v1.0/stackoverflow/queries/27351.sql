@@ -33,7 +33,7 @@ UserActivity AS (
     SELECT 
         u.Id AS UserId,
         u.DisplayName,
-        STRING_AGG(DISTINCT tt.TagName, ', ') AS PopularTags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tt.TagName))), ', ') AS PopularTags,
         COUNT(ph.Id) AS EditCount
     FROM 
         Users u

@@ -16,11 +16,11 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 TagStatistics AS (
     SELECT
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '> <')) AS Tag,
+        arrayJoin(splitByString('> <', substring(Tags, 2, length(Tags) - 2))) AS Tag,
         COUNT(*) AS PostCount,
         SUM(p.Score) AS TotalScore
     FROM 
@@ -28,7 +28,7 @@ TagStatistics AS (
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '> <'))
+        arrayJoin(splitByString('> <', substring(Tags, 2, length(Tags) - 2)))
 ),
 TopTags AS (
     SELECT 
@@ -50,7 +50,7 @@ SELECT
 FROM 
     TopTags tp
 JOIN 
-    RankedPosts rp ON tp.Tag = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags) - 2), '> <'))
+    RankedPosts rp ON tp.Tag = ANY(splitByString('> <', substring(rp.Tags, 2, length(rp.Tags) - 2)))
 WHERE 
     tp.ScoreRank <= 5 
     AND rp.Rank = 1 

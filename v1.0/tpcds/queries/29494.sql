@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c.c_customer_id) AS unique_customers,
     SUM(ws.ws_quantity) AS total_quantity,
     AVG(i.i_current_price) AS average_item_price,
-    STRING_AGG(DISTINCT cd.cd_marital_status, ', ') AS marital_statuses,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_marital_status))), ', ') AS marital_statuses,
     CONCAT('Average Price: ', ROUND(AVG(i.i_current_price), 2)) AS formatted_average_price
 FROM 
     customer_address ca

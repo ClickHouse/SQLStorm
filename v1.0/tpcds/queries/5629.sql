@@ -52,4 +52,4 @@ JOIN
     PromotionStats ps ON cs.total_orders > 0
 ORDER BY 
     cs.total_profit DESC, cs.total_orders DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

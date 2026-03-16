@@ -8,13 +8,13 @@ WITH UserActivity AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS Downvotes,
         COUNT(DISTINCT ph.PostId) AS PostHistoryCount,
         SUM(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 1 ELSE 0 END) AS PostClosedCount,
-        STRING_AGG(DISTINCT t.TagName, ',') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ',') AS Tags
     FROM 
         Users u
     LEFT JOIN Votes v ON u.Id = v.UserId
     LEFT JOIN PostHistory ph ON ph.UserId = u.Id
     LEFT JOIN Posts p ON ph.PostId = p.Id
-    LEFT JOIN LATERAL UNNEST(string_to_array(p.Tags, ',')) AS t(TagName) ON TRUE
+    LEFT JOIN arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON TRUE
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -33,7 +33,7 @@ PostStatistics AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 QualifiedUsers AS (

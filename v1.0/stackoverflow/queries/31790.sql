@@ -21,7 +21,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         PostLinks pl ON p.Id = pl.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.PostTypeId, u.DisplayName
 ),
@@ -32,7 +32,7 @@ PostHistoryResult AS (
         MAX(ph.CreationDate) AS LastEditDate, 
         MAX(CASE WHEN ph.PostHistoryTypeId = 4 THEN ph.CreationDate END) AS LastTitleEditDate,
         MAX(CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.CreationDate END) AS LastClosedDate,
-        STRING_AGG(ph.Comment, '; ') AS EditComments
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS EditComments
     FROM 
         PostHistory ph
     GROUP BY 

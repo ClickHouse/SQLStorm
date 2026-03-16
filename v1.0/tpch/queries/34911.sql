@@ -33,6 +33,6 @@ SELECT
 FROM OrderHierarchy o
 LEFT JOIN PartSupplierInfo psi ON o.o_orderkey = psi.ps_partkey
 LEFT JOIN RegionSupplier rsi ON psi.ps_suppkey = rsi.s_suppkey
-WHERE o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2 WHERE o2.o_orderdate < cast('1998-10-01' as date) - INTERVAL '1 year')
+WHERE o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2 WHERE o2.o_orderdate < cast('1998-10-01' as date) - INTERVAL 1 YEAR)
 OR psi.total_available IS NULL
 ORDER BY o.o_orderdate DESC, supplier_region;

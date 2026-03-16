@@ -27,7 +27,7 @@ JOIN orders o ON l.l_orderkey = o.o_orderkey
 JOIN customer c ON o.o_custkey = c.c_custkey
 JOIN nation n ON c.c_nationkey = n.n_nationkey
 LEFT JOIN partsupp ps ON l.l_partkey = ps.ps_partkey AND l.l_suppkey = ps.ps_suppkey
-WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
   AND l.l_quantity > (SELECT AVG(l2.l_quantity) FROM lineitem l2 WHERE l2.l_orderkey = o.o_orderkey)
 GROUP BY n.n_name
 HAVING SUM(CASE WHEN l.l_discount > 0.1 THEN 1 ELSE 0 END) > 5

@@ -66,7 +66,7 @@ SELECT
     movie_category,
     COUNT(*) AS total_movies,
     AVG(keyword_count) AS avg_keywords,
-    STRING_AGG(DISTINCT actor_name, ', ') AS actors_in_movies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors_in_movies
 FROM 
     final_benchmark
 GROUP BY 

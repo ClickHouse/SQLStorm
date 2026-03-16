@@ -17,7 +17,7 @@ RecentPostActivity AS (
         p.OwnerUserId,
         COALESCE(SUM(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 1 ELSE 0 END), 0) AS CloseVotes,
         COALESCE(SUM(CASE WHEN ph.PostHistoryTypeId IN (24, 25) THEN 1 ELSE 0 END), 0) AS SuggestedEdits,
-        COUNT(CASE WHEN p.LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 1 END) AS RecentActivityCount 
+        COUNT(CASE WHEN p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 END) AS RecentActivityCount 
     FROM 
         Posts p
     LEFT JOIN 
@@ -72,6 +72,6 @@ SELECT
 FROM 
     CombinedUserData u
 WHERE 
-    u.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 years'
+    u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
 ORDER BY 
     UserLevel, AdjustedReputation DESC;

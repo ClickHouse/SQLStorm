@@ -37,7 +37,7 @@ TopPosts AS (
         RP.rn = 1
     ORDER BY 
         RP.CreationDate DESC
-    OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
+    LIMIT 10 OFFSET 0
 ),
 RecentVotes AS (
     SELECT 
@@ -46,7 +46,7 @@ RecentVotes AS (
     FROM 
         Votes V
     WHERE 
-        V.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        V.CreationDate >= now64(6) - INTERVAL 30 DAY
     GROUP BY 
         V.PostId
 ),

@@ -10,7 +10,7 @@ WITH RankedUsers AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM Badges b
     GROUP BY b.UserId
 ), PostStats AS (
@@ -20,7 +20,7 @@ WITH RankedUsers AS (
         COUNT(CASE WHEN p.PostTypeId = 2 THEN 1 END) AS AnswerCount,
         SUM(p.Score) AS TotalScore
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.OwnerUserId
 ), UserDetails AS (
     SELECT 

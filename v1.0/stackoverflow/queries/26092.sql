@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
         COUNT(*) AS TagCount,
         AVG(ViewCount) AS AvgViewCount,
         AVG(Score) AS AvgScore
@@ -49,7 +49,7 @@ HighScorePosts AS (
     FROM 
         RankedPosts rp
     JOIN 
-        TopTags t ON t.TagName = ANY(STRING_TO_ARRAY(SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2), '><'))
+        TopTags t ON t.TagName = ANY(splitByString('><', SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2)))
     WHERE 
         t.TagRank <= 5 AND rp.Rank = 1 
 )

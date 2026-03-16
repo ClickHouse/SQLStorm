@@ -28,7 +28,7 @@ PopularPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title
     HAVING 
@@ -54,4 +54,4 @@ JOIN
     PopularPosts pp ON pp.PostId = p.Id
 ORDER BY 
     ub.TotalBadges DESC, pp.UpVoteCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

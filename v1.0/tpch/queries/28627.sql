@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS distinct_customers,
     AVG(o.o_totalprice) AS avg_order_price,
     MAX(o.o_orderdate) AS last_order_date,
-    STRING_AGG(DISTINCT CONCAT('Order Key: ', o.o_orderkey, ' - Priority: ', o.o_orderpriority), '; ') AS order_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Order Key: ', o.o_orderkey, ' - Priority: ', o.o_orderpriority)))), '; ') AS order_details
 FROM 
     part p
 JOIN 

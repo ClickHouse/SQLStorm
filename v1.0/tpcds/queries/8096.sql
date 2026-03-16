@@ -52,9 +52,9 @@ JOIN
         FROM
             warehouse w
         ORDER BY
-            RANDOM()
+            rand()
         LIMIT 1
     )
 ORDER BY
     ss.total_sales_amount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

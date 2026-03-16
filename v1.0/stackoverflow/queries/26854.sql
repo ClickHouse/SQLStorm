@@ -37,7 +37,7 @@ UserActivity AS (
 
 PopularTags AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -58,7 +58,7 @@ SELECT
     u.AnswersGiven,
     u.TotalAnswerScore,
     u.TotalBounties,
-    (SELECT STRING_AGG(tag.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ') 
      FROM PopularTags tag) AS TopTags
 FROM 
     RankedPosts p

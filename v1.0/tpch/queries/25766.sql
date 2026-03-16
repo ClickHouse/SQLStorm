@@ -27,7 +27,7 @@ TopSuppliers AS (
 )
 SELECT 
     region_name, 
-    STRING_AGG(s_name, ', ') AS top_suppliers, 
+    arrayStringConcat(groupArray(assumeNotNull(s_name)), ', ') AS top_suppliers, 
     SUM(total_supply_cost) AS total_cost
 FROM 
     TopSuppliers

@@ -58,7 +58,7 @@ SELECT
     COALESCE(hd.hd_income_band_sk, -1) AS income_band,
     SUM(cs.total_spent) AS lifetime_value,
     (SELECT COUNT(DISTINCT ws_order_number) FROM web_sales WHERE ws_bill_customer_sk = cs.c_customer_sk) AS order_count,
-    ARRAY_AGG(pi.i_product_name) AS favorite_products
+    groupArray(assumeNotNull(pi.i_product_name)) AS favorite_products
 FROM
     customer_summary cs
 LEFT JOIN

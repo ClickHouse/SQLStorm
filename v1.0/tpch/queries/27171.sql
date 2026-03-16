@@ -5,7 +5,7 @@ SELECT
             WHEN l.l_discount > 0.1 THEN l.l_extendedprice * (1 - l.l_discount) 
             ELSE l.l_extendedprice 
         END) AS total_revenue,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions
 FROM 
     part p
 JOIN 

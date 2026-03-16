@@ -3,7 +3,7 @@ WITH movies_with_keywords AS (
     SELECT 
         m.id AS movie_id,
         m.title,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title m
     JOIN 
@@ -18,7 +18,7 @@ movies_with_cast AS (
         m.id AS movie_id,
         m.title,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names
     FROM 
         aka_title m
     JOIN 

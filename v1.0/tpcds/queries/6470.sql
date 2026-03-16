@@ -49,4 +49,4 @@ JOIN
     customer_details cd ON cd.num_customers > 0
 ORDER BY 
     ds.d_date
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

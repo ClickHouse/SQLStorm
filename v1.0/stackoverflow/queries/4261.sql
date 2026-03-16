@@ -33,7 +33,7 @@ SELECT
     tu.AvgBountyAmount,
     COALESCE((
         SELECT 
-            STRING_AGG(p.Title, ', ')
+            arrayStringConcat(groupArray(assumeNotNull(p.Title)), ', ')
         FROM 
             Posts p
         WHERE 
@@ -47,7 +47,7 @@ SELECT
     ), 'No Popular Posts') AS PopularPostTitles,
     COALESCE((
         SELECT 
-            STRING_AGG(DISTINCT c.Text, '; ')
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Text))), '; ')
         FROM 
             Comments c
         WHERE 

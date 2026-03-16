@@ -14,7 +14,7 @@ ActorMovies AS (
         c.person_id,
         cm.movie_id,
         COUNT(*) AS total_roles,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM 
         cast_info c
     JOIN 
@@ -44,8 +44,8 @@ MovieDetails AS (
         fm.production_year,
         fm.total_roles,
         COALESCE(SUM(CASE WHEN mc.company_type_id IS NOT NULL THEN 1 ELSE 0 END), 0) AS production_companies,
-        COALESCE(NULLIF(STRING_AGG(DISTINCT cn.name, ', '), ''), 'Unknown') AS company_names,
-        COALESCE(NULLIF(STRING_AGG(DISTINCT kw.keyword, ', '), ''), 'No Keywords') AS keywords
+        COALESCE(NULLIF(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', '), ''), 'Unknown') AS company_names,
+        COALESCE(NULLIF(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', '), ''), 'No Keywords') AS keywords
     FROM 
         FilteredMovies fm
     LEFT JOIN 

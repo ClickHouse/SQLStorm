@@ -50,7 +50,7 @@ movies_with_info AS (
         mh.movie_id,
         mh.title,
         mh.production_year,
-        string_agg(DISTINCT mk.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.keyword))), ', ') AS keywords,
         COUNT(cd.actor_name) AS actor_count
     FROM
         movie_hierarchy mh

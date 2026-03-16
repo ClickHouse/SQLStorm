@@ -52,4 +52,4 @@ WHERE
 ORDER BY 
     COALESCE(ss.avg_profit, 0) DESC, 
     COALESCE(se.expected_revenue, 0) ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

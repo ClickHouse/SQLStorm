@@ -31,14 +31,14 @@ UserScores AS (
 ),
 PostTagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag,
         COUNT(p.Id) AS PostCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'))
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
 ),
 TopTags AS (
     SELECT 
@@ -68,7 +68,7 @@ JOIN
 JOIN 
     UserScores us ON us.UserId = rp.OwnerUserId
 JOIN 
-    TopTags tt ON tt.Tag = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags) - 2), '><'))
+    TopTags tt ON tt.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2)))
 WHERE 
     rp.Rank = 1 
 ORDER BY 

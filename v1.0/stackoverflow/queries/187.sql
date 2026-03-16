@@ -15,7 +15,7 @@ TopPosts AS (
         SUM(CASE WHEN p.Score < 0 THEN 1 ELSE 0 END) AS NegativePosts,
         SUM(p.ViewCount) AS TotalViews
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.OwnerUserId
 ),
 PostVoteStatistics AS (
@@ -46,7 +46,7 @@ SELECT
 FROM UserReputation ur
 LEFT JOIN TopPosts tp ON ur.UserId = tp.OwnerUserId
 LEFT JOIN PostVoteStatistics pvs ON ur.UserId = pvs.OwnerUserId
-WHERE ur.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '3 months' 
+WHERE ur.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH 
     OR ur.Reputation IS NULL
 ORDER BY ur.Reputation DESC, ur.DisplayName
 LIMIT 20;

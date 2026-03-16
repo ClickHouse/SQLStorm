@@ -30,7 +30,7 @@ SELECT
     r.movie_title,
     r.production_year,
     c.company_name,
-    STRING_AGG(DISTINCT c.movie_keyword, ', ') AS keywords  
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.movie_keyword))), ', ') AS keywords  
 FROM ranked_titles AS r
 JOIN company_with_keywords AS c ON r.aka_id = c.movie_id  
 WHERE r.rank <= 3  

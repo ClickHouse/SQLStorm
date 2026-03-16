@@ -35,7 +35,7 @@ SELECT
     f.production_year,
     f.keyword,
     CONCAT('Total Cast Members: ', f.cast_count) AS cast_info,
-    STRING_AGG(DISTINCT c.name, ', ') AS cast_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS cast_names
 FROM 
     filtered_movies f
 JOIN 

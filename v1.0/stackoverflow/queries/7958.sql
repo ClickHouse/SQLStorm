@@ -7,7 +7,7 @@ WITH UserBadges AS (
 PostScoreStats AS (
     SELECT OwnerUserId, AVG(Score) AS AvgScore, SUM(ViewCount) AS TotalViews
     FROM Posts
-    WHERE CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY OwnerUserId
 ),
 ActiveUsers AS (
@@ -16,12 +16,12 @@ ActiveUsers AS (
     FROM Users U
     LEFT JOIN UserBadges UB ON U.Id = UB.UserId
     LEFT JOIN PostScoreStats PSS ON U.Id = PSS.OwnerUserId
-    WHERE U.Reputation > 1000 AND U.LastAccessDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+    WHERE U.Reputation > 1000 AND U.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ),
 TopPosts AS (
     SELECT P.Id, P.Title, P.OwnerUserId, P.Score
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' AND P.Score > 0
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND P.Score > 0
     ORDER BY P.Score DESC
     LIMIT 10
 )

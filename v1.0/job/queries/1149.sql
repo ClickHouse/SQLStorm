@@ -43,7 +43,7 @@ SELECT
     COALESCE(d.company_name, 'Unknown') AS company_name,
     d.actor_count,
     d.awards_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     DetailedMovieInfo d
 LEFT JOIN 

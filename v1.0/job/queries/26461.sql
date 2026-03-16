@@ -59,11 +59,11 @@ full_info AS (
 SELECT 
     title,
     production_year,
-    STRING_AGG(DISTINCT actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT role_name, ', ') AS roles,
-    STRING_AGG(DISTINCT company_name, ', ') AS production_companies,
-    STRING_AGG(DISTINCT company_type, ', ') AS production_types,
-    STRING_AGG(DISTINCT keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(role_name))), ', ') AS roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS production_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS production_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords
 FROM 
     full_info
 GROUP BY 

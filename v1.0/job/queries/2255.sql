@@ -36,7 +36,7 @@ SELECT
     f.title,
     f.production_year,
     f.company_name,
-    STRING_AGG(f.actor_name, ', ') AS top_actors,
+    arrayStringConcat(groupArray(assumeNotNull(f.actor_name)), ', ') AS top_actors,
     f.total_cast
 FROM
     FilteredMovies f

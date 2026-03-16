@@ -15,11 +15,11 @@ WITH RecentPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(REPLACE(REPLACE(Tags, '<', ''), '>', ''), ' ')) AS Tag
+        arrayJoin(splitByString(' ', REPLACE(REPLACE(Tags, '<', ''), '>', ''))) AS Tag
     FROM 
         RecentPosts
 ),
@@ -53,11 +53,11 @@ PostWithTopTags AS (
         rp.Score, 
         rp.CommentCount,
         rp.AnswerCount,
-        STRING_AGG(tt.Tag, ', ') AS TopTags
+        arrayStringConcat(groupArray(assumeNotNull(tt.Tag)), ', ') AS TopTags
     FROM 
         RecentPosts rp
     JOIN 
-        TopTags tt ON tt.Tag = ANY(string_to_array(REPLACE(REPLACE(rp.Tags, '<', ''), '>', ''), ' '))
+        TopTags tt ON tt.Tag = ANY(splitByString(' ', REPLACE(REPLACE(rp.Tags, '<', ''), '>', '')))
     GROUP BY 
         rp.PostId, rp.Title, rp.OwnerDisplayName, rp.CreationDate, rp.ViewCount, rp.Score, rp.CommentCount, rp.AnswerCount
 )

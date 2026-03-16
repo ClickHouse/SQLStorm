@@ -15,7 +15,7 @@ SELECT
     AVG(ss.ss_net_paid) AS avg_net_paid,
     MAX(ss.ss_net_paid) AS max_net_paid,
     MIN(ss.ss_net_paid) AS min_net_paid,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS purchased_items,
     ROW_NUMBER() OVER (PARTITION BY c.c_customer_id ORDER BY SUM(ss.ss_net_profit) DESC) AS rank
 FROM customer AS c
 LEFT JOIN store_sales AS ss ON c.c_customer_sk = ss.ss_customer_sk

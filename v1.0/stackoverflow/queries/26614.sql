@@ -26,14 +26,14 @@ WITH RankedPosts AS (
 
 AggregatedByTags AS (
     SELECT 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'))
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
 ),
 
 PostWithTopTags AS (
@@ -60,7 +60,7 @@ SELECT
     p.CommentCount,
     p.UpVotes,
     p.DownVotes,
-    STRING_AGG(p.Tag, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(p.Tag)), ', ') AS Tags
 FROM 
     PostWithTopTags p
 GROUP BY 

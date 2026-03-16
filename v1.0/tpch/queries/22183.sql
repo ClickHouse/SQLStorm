@@ -35,7 +35,7 @@ OrderDetails AS (
 SELECT rs.r_name,
        COALESCE(ROUND(AVG(odi.total_revenue), 2), 0) AS avg_revenue,
        COALESCE(SUM(CASE WHEN odi.o_orderstatus = 'F' THEN 1 ELSE 0 END), 0) AS fulfilled_orders,
-       STRING_AGG(DISTINCT hcp.p_name, '; ') AS high_cost_parts
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(hcp.p_name))), '; ') AS high_cost_parts
 FROM RegionSummary rs
 LEFT JOIN OrderDetails odi ON rs.nation_count > (SELECT AVG(nation_count) FROM RegionSummary)
 LEFT JOIN HighCostParts hcp ON rs.r_regionkey IN (

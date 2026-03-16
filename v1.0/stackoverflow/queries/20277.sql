@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '365 days')
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 365 DAY)
 ),
 TopPosts AS (
     SELECT 

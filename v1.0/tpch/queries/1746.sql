@@ -3,7 +3,7 @@ WITH RankedOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice,
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_orderdate DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 SupplierParts AS (
     SELECT ps.ps_partkey, ps.ps_suppkey, SUM(ps.ps_availqty) AS total_availqty
@@ -17,7 +17,7 @@ OrderDetails AS (
            COUNT(DISTINCT li.l_linenumber) AS line_items_count
     FROM lineitem li
     JOIN RankedOrders ro ON li.l_orderkey = ro.o_orderkey
-    WHERE li.l_shipdate BETWEEN CURRENT_DATE - INTERVAL '1 year' AND CURRENT_DATE
+    WHERE li.l_shipdate BETWEEN CURRENT_DATE - INTERVAL 1 YEAR AND CURRENT_DATE
     GROUP BY li.l_orderkey
 )
 SELECT r.r_name, p.p_name, COALESCE(ROUND(SUM(od.total_sales), 2), 0) AS total_sales,

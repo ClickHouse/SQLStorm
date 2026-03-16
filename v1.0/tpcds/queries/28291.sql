@@ -5,8 +5,8 @@ WITH aggregated_data AS (
         ca.ca_state AS state,
         COUNT(DISTINCT c.c_customer_sk) AS total_customers,
         SUM(COALESCE(c.c_birth_day, 0) + COALESCE(c.c_birth_month, 0) + COALESCE(c.c_birth_year, 0)) AS total_birth_info,
-        STRING_AGG(DISTINCT cd.cd_gender, ', ') AS gender_distribution,
-        STRING_AGG(DISTINCT cd.cd_marital_status, ', ') AS marital_status_distribution
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_gender))), ', ') AS gender_distribution,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_marital_status))), ', ') AS marital_status_distribution
     FROM 
         customer_address ca
     JOIN 

@@ -10,8 +10,8 @@ JOIN
 JOIN 
     nation ON c_nationkey = n_nationkey 
 WHERE 
-    l_shipdate >= DATE '1998-01-01' 
-    AND l_shipdate < DATE '1998-04-01' 
+    l_shipdate >= toDate('1998-01-01') 
+    AND l_shipdate < toDate('1998-04-01') 
     AND n_name = 'GERMANY' 
 GROUP BY 
     n_name 

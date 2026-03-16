@@ -15,7 +15,7 @@ WITH RankedMovies AS (
 ActorRoles AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(DISTINCT coalesce(rt.role, 'Unknown Role'), ', ') AS roles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(coalesce(rt.role, 'Unknown Role')))), ', ') AS roles,
         COUNT(DISTINCT ci.person_id) AS actor_count
     FROM 
         cast_info ci

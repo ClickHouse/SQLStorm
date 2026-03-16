@@ -59,4 +59,4 @@ WHERE
     AND rp.AnswerCount > 0 
 ORDER BY 
     rp.CreationDate DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

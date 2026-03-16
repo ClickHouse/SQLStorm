@@ -19,7 +19,7 @@ CloseReasonAggregates AS (
         PH.UserId,
         PH.PostHistoryTypeId,
         COUNT(*) AS CloseReasonCount,
-        STRING_AGG(DISTINCT CR.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CR.Name))), ', ') AS CloseReasons
     FROM PostHistory PH
     JOIN CloseReasonTypes CR ON CAST(PH.Comment AS INT) = CR.Id
     WHERE PH.PostHistoryTypeId = 10 
@@ -44,7 +44,7 @@ SELECT
     COALESCE(CRA.CloseReasons, 'None') AS CloseReasons,
     COALESCE(PLS.LinkCount, 0) AS TotalLinks,
     PLS.LastLinkDate,
-    EXTRACT(YEAR FROM AGE(UA.LastPostDate)) AS YearsSinceLastPost,
+    toYear(AGE(UA.LastPostDate)) AS YearsSinceLastPost,
     CASE 
         WHEN UA.Reputation > 2000 THEN 'High Reputation'
         WHEN UA.Reputation > 1000 THEN 'Medium Reputation'

@@ -40,7 +40,7 @@ TopMovies AS (
 SELECT 
     T.movie_title,
     T.production_year,
-    STRING_AGG(T.actor_name, ', ') AS actor_list
+    arrayStringConcat(groupArray(assumeNotNull(T.actor_name)), ', ') AS actor_list
 FROM 
     TopMovies T
 GROUP BY 

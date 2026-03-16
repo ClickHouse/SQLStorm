@@ -29,9 +29,9 @@ WITH MovieDetails AS (
 SELECT 
     movie_title,
     production_year,
-    STRING_AGG(DISTINCT company_name, ', ') AS companies,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT person_name || ' (' || person_role || ')', ', ') AS cast
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(person_name || ' (' || person_role || ')'))), ', ') AS cast
 FROM 
     MovieDetails
 GROUP BY 

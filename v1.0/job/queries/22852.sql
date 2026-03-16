@@ -58,7 +58,7 @@ ComplicatedJoin AS (
 )
 SELECT 
     cj.movie_title,
-    STRING_AGG(DISTINCT cj.aka_name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cj.aka_name))), ', ') AS actors,
     cj.actor_count,
     cj.total_budget,
     cj.budget_status,

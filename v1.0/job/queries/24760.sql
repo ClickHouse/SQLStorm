@@ -65,7 +65,7 @@ SELECT
     mw.production_year,
     COALESCE(mw.role_count, 0) AS role_count,
     COALESCE(mw.most_common_role, 'No Roles') AS most_common_role,
-    (SELECT STRING_AGG(DISTINCT cn.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') 
      FROM name cn 
      WHERE cn.imdb_id IN (SELECT DISTINCT person_id FROM FilteredCast WHERE movie_id = mw.movie_id)
      ) AS cast_names,

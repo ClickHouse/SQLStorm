@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND P.PostTypeId = 1  
 ),
 TopPosts AS (
@@ -35,11 +35,11 @@ PostTagStats AS (
     SELECT 
         P.Id AS PostId,
         COUNT(DISTINCT T.TagName) AS TagCount,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
     FROM 
         Posts P
     JOIN 
-        LATERAL (SELECT TRIM(tag) AS tag FROM UNNEST(string_to_array(P.Tags, '>')) AS tag) AS tag ON tag IS NOT NULL
+        (SELECT TRIM(tag) AS tag FROM arrayJoin(splitByString('>', P.Tags)) AS tag) AS tag ON tag IS NOT NULL
     JOIN 
         Tags T ON T.TagName = tag.tag
     GROUP BY 

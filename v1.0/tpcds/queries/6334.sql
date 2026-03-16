@@ -6,7 +6,7 @@ WITH CustomerStatistics AS (
         c.c_last_name,
         cd.cd_gender,
         cd.cd_marital_status,
-        ARRAY_AGG(DISTINCT CONCAT(ca.ca_city, ', ', ca.ca_state)) AS address_list,
+        arrayDistinct(groupArray(assumeNotNull(CONCAT(ca.ca_city, ', ', ca.ca_state)))) AS address_list,
         COUNT(DISTINCT fs.ws_order_number) AS total_orders,
         SUM(fs.ws_sales_price) AS total_spent,
         AVG(fs.ws_sales_price) AS avg_order_value

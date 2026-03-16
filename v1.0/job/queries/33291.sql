@@ -25,7 +25,7 @@ aggregated_cast AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(n.name, ', ') AS cast_names
+        arrayStringConcat(groupArray(assumeNotNull(n.name)), ', ') AS cast_names
     FROM cast_info ci
     JOIN aka_name n ON ci.person_id = n.person_id
     GROUP BY ci.movie_id
@@ -48,7 +48,7 @@ SELECT
     COALESCE(ac.total_cast, 0) AS total_cast,
     ac.cast_names,
     COALESCE(mc_info.company_count, 0) AS total_companies,
-    STRING_AGG(DISTINCT mc_info.company_name || ' (' || mc_info.company_type || ')', '; ') AS company_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc_info.company_name || ' (' || mc_info.company_type || ')'))), '; ') AS company_details
 FROM movie_hierarchy mh
 LEFT JOIN aggregated_cast ac ON mh.movie_id = ac.movie_id
 LEFT JOIN movie_company_info mc_info ON mh.movie_id = mc_info.movie_id

@@ -28,7 +28,7 @@ SELECT
     r.r_name AS region_name,
     n.n_name AS nation_name,
     COUNT(DISTINCT hsp.s_suppkey) AS total_suppliers,
-    STRING_AGG(DISTINCT hsp.supply_details, '; ') AS supplier_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(hsp.supply_details))), '; ') AS supplier_info
 FROM 
     HighSupplyParts hsp
 JOIN 

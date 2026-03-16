@@ -40,7 +40,7 @@ SELECT
     f.company_count,
     f.total_cast_count,
     f.adjusted_cast_count,
-    STRING_AGG(DISTINCT CONCAT_WS(' ', c.note, p.info), '; ') AS additional_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' ', c.note, p.info)))), '; ') AS additional_info
 FROM 
     FinalOutput f
 LEFT JOIN 

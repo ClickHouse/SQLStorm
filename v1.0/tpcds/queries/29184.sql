@@ -59,7 +59,7 @@ JOIN
         WHERE ca_address_sk = (SELECT MIN(c_current_addr_sk) FROM customer WHERE c_current_cdemo_sk IN (SELECT cd_demo_sk FROM customer_demographics WHERE cd_gender = d.cd_gender))
     )
 JOIN 
-    DateDimensionStats y ON y.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
+    DateDimensionStats y ON y.d_year = toYear(cast('2002-10-01' as date))
 JOIN 
     WarehouseInfo w ON w.w_state = a.ca_state
 WHERE 

@@ -1,6 +1,6 @@
 WITH TagFilter AS (
     SELECT DISTINCT
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
         p.Id AS PostId
     FROM Posts p
     WHERE PostTypeId = 1 
@@ -19,7 +19,7 @@ PostMetrics AS (
     LEFT JOIN Posts a ON p.Id = a.ParentId 
         AND a.PostTypeId = 2 
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.Id, p.Title, p.ViewCount
 ),
 RankedPosts AS (

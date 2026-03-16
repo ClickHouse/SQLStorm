@@ -33,8 +33,8 @@ PostHistorySummary AS (
     SELECT
         PH.UserDisplayName,
         COUNT(PH.Id) AS EditCount,
-        STRING_AGG(DISTINCT P.Title, ', ') AS EditedPostTitles,
-        STRING_AGG(DISTINCT PH.Comment, ', ') AS EditComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(P.Title))), ', ') AS EditedPostTitles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.Comment))), ', ') AS EditComments
     FROM
         PostHistory PH
     JOIN

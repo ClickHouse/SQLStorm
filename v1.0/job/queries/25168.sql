@@ -57,8 +57,8 @@ complete_details AS (
 SELECT 
     title,
     production_year,
-    STRING_AGG(DISTINCT actor_name || ' (' || role_name || ')', ', ') AS actors,
-    STRING_AGG(DISTINCT company_name || ' (' || company_type || ')', ', ') AS companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name || ' (' || role_name || ')'))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name || ' (' || company_type || ')'))), ', ') AS companies
 FROM 
     complete_details
 GROUP BY 

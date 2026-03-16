@@ -8,11 +8,11 @@ SELECT
     AVG(ps.ps_supplycost) AS average_supply_cost,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     MAX(o.o_totalprice) AS max_order_price,
-    STRING_AGG(DISTINCT CASE 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE 
                             WHEN c.c_mktsegment = 'BUILDING' THEN 'Building Customer'
                             WHEN c.c_mktsegment = 'FURNITURE' THEN 'Furniture Customer'
                             ELSE 'Other Customer' 
-                        END, ', ') AS customer_segments
+                        END))), ', ') AS customer_segments
 FROM 
     supplier s
 JOIN 

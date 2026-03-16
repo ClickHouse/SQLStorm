@@ -36,7 +36,7 @@ SELECT
     ca_state,
     COUNT(*) AS total_customers,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(full_name, '; ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(full_name)), '; ') AS customer_names
 FROM 
     top_customers
 GROUP BY 

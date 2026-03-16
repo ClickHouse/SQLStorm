@@ -58,4 +58,4 @@ INNER JOIN
     AggregateSales asls ON hvc.total_web_sales > 1000 
 ORDER BY 
     hvc.total_web_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(CASE WHEN o.o_orderstatus = 'O' THEN o.o_totalprice ELSE NULL END) AS avg_total_price_open,
     AVG(CASE WHEN o.o_orderstatus = 'F' THEN o.o_totalprice ELSE NULL END) AS avg_total_price_filled,
-    STRING_AGG(p.p_name, ', ') AS part_names_concatenated
+    arrayStringConcat(groupArray(assumeNotNull(p.p_name)), ', ') AS part_names_concatenated
 FROM 
     supplier s
 JOIN 

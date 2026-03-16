@@ -7,7 +7,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.Score > 0 THEN p.Score ELSE 0 END) AS PositiveScore,
         SUM(CASE WHEN p.Score < 0 THEN p.Score ELSE 0 END) AS NegativeScore,
-        AVG(COALESCE(CAST(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)) AS FLOAT), 0)) AS AvgTimeToActivity
+        AVG(COALESCE(CAST(toUnixTimestamp((p.LastActivityDate - p.CreationDate)) AS FLOAT), 0)) AS AvgTimeToActivity
     FROM 
         Users u
     LEFT JOIN 

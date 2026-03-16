@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
         AND p.Score > 10
 ), 
 PostAnswers AS (
@@ -33,7 +33,7 @@ PostHistoryCTE AS (
         ph.PostId,
         COUNT(ph.Id) AS EditCount,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT CONCAT('Type: ', pht.Name, ' by ', ph.UserDisplayName), '; ') AS EditDetails
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Type: ', pht.Name, ' by ', ph.UserDisplayName)))), '; ') AS EditDetails
     FROM 
         PostHistory ph
     JOIN 

@@ -4,8 +4,8 @@ WITH RankedTitles AS (
         a.title AS movie_title,
         a.production_year,
         a.kind_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         ROW_NUMBER() OVER (PARTITION BY a.production_year ORDER BY a.id) AS year_rank
     FROM 
         aka_title a

@@ -30,7 +30,7 @@ RecentUserActivity AS (
         AVG(P.Score) AS AverageScore
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
-    WHERE U.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
+    WHERE U.CreationDate > now64(6) - INTERVAL 1 YEAR
     GROUP BY U.Id, U.DisplayName
 ),
 CombinedStats AS (

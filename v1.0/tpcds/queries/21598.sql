@@ -14,7 +14,7 @@ WITH ranked_sales AS (
             FROM 
                 date_dim 
             WHERE 
-                d_date = DATE '2002-10-01'
+                d_date = toDate('2002-10-01')
         )
     GROUP BY 
         ws_item_sk
@@ -39,7 +39,7 @@ low_sales AS (
                     FROM 
                         date_dim 
                     WHERE 
-                        d_date = DATE '2002-10-01'
+                        d_date = toDate('2002-10-01')
                 )
         )
     GROUP BY 
@@ -75,9 +75,9 @@ FROM
 LEFT JOIN 
     combined_sales cs ON cs.ws_item_sk = c.c_customer_sk
 WHERE 
-    c.c_birth_year < EXTRACT(YEAR FROM DATE '2002-10-01') - 21
+    c.c_birth_year < toYear(toDate('2002-10-01')) - 21
     AND (c.c_preferred_cust_flag = 'Y' OR c.c_email_address IS NOT NULL)
 ORDER BY 
     cs.total_sales DESC,
     first_name ASC NULLS LAST
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

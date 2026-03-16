@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     WHERE 
         p.PostTypeId = 1 
     AND 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 
 UserStats AS (
@@ -35,7 +35,7 @@ UserStats AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 

@@ -34,7 +34,7 @@ SELECT
     at.production_year,
     cc.kind AS cast_type,
     COUNT(DISTINCT mc.company_id) AS total_companies,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     SUM(CASE 
             WHEN mi.info_type_id = (SELECT id FROM info_type WHERE info = 'Budget') 
                 THEN CAST(mi.info AS INTEGER) 

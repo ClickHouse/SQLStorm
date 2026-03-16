@@ -6,8 +6,8 @@ WITH RankedOrders AS (
         o.o_orderstatus,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01' 
-      AND o.o_orderdate < DATE '1997-12-31'
+    WHERE o.o_orderdate >= toDate('1997-01-01') 
+      AND o.o_orderdate < toDate('1997-12-31')
 ),
 CustomerOrders AS (
     SELECT 

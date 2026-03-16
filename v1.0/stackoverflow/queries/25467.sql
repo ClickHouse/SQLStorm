@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Users U ON P.OwnerUserId = U.Id
     WHERE 
         P.PostTypeId = 1 
-        AND P.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        AND P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND P.ViewCount > 100
 ),
 TagDetails AS (
@@ -31,7 +31,7 @@ TagDetails AS (
     FROM 
         RankedPosts RP
     JOIN 
-        UNNEST(string_to_array(RP.Tags, '><')) AS T(TagName) ON true
+        arrayJoin(splitByString('><', RP.Tags)) AS T(TagName) ON true
     GROUP BY 
         T.TagName
 )

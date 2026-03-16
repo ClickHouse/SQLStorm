@@ -41,7 +41,7 @@ SELECT
     tu.Answers,
     tu.AverageScore,
     COALESCE(CAST(tu.Rank AS VARCHAR), 'N/A') AS PostRank,
-    STRING_AGG(pt.Name, ', ') AS PostTypes
+    arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostTypes
 FROM TopUsers tu
 JOIN Users u ON tu.UserId = u.Id
 LEFT JOIN Posts p ON p.OwnerUserId = u.Id

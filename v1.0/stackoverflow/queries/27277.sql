@@ -40,15 +40,15 @@ PostDetails AS (
         P.ViewCount,
         U.DisplayName AS OwnerDisplayName,
         P.CreationDate,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
     FROM 
         Posts P
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
-                unnest(string_to_array(P.Tags, '><')) AS TagName
+                arrayJoin(splitByString('><', P.Tags)) AS TagName
         ) AS T ON TRUE
     WHERE 
         P.PostTypeId IN (1, 2) 

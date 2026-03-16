@@ -23,7 +23,7 @@ TopMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id, 
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -38,7 +38,7 @@ SELECT
     (SELECT COUNT(DISTINCT ci.person_id) 
      FROM cast_info ci 
      WHERE ci.movie_id = tm.movie_id) AS unique_cast_count,
-    (SELECT STRING_AGG(DISTINCT ak.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') 
      FROM aka_name ak 
      WHERE ak.person_id IN (SELECT ci.person_id FROM cast_info ci WHERE ci.movie_id = tm.movie_id)) AS cast_names
 FROM 

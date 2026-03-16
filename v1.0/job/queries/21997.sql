@@ -24,7 +24,7 @@ CastDetails AS (
         ci.person_id,
         ci.movie_id,
         ci.nr_order,
-        ARRAY_AGG(aka.name) AS actor_names
+        groupArray(assumeNotNull(aka.name)) AS actor_names
     FROM 
         cast_info ci
     JOIN 

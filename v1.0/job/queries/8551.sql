@@ -43,10 +43,10 @@ RankedMovies AS (
 SELECT 
     ProductionYear,
     COUNT(*) AS TotalMovies,
-    STRING_AGG(DISTINCT MovieTitle, '; ') AS MovieTitles,
-    STRING_AGG(DISTINCT ActorName, '; ') AS Actors,
-    STRING_AGG(DISTINCT CompanyName, '; ') AS ProductionCompanies,
-    STRING_AGG(DISTINCT Keyword, '; ') AS Keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(MovieTitle))), '; ') AS MovieTitles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ActorName))), '; ') AS Actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CompanyName))), '; ') AS ProductionCompanies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Keyword))), '; ') AS Keywords
 FROM 
     RankedMovies
 GROUP BY 

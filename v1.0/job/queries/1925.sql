@@ -16,7 +16,7 @@ movies_with_keywords AS (
     SELECT 
         m.id AS movie_id,
         m.title,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         title m
     LEFT JOIN 
@@ -30,7 +30,7 @@ movies_with_info AS (
     SELECT 
         mw.title,
         COALESCE(mw.keywords, 'No Keywords') AS keywords,
-        COALESCE(STRING_AGG(DISTINCT mi.info, '; '), 'No Info') AS additional_info
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; '), 'No Info') AS additional_info
     FROM 
         movies_with_keywords mw
     LEFT JOIN 

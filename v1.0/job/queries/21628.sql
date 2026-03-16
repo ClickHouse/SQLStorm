@@ -43,7 +43,7 @@ SELECT
     md.production_year,
     md.company_name,
     md.release_status,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     MovieDetails md
 LEFT JOIN 

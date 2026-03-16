@@ -17,4 +17,4 @@ GROUP BY
     c.c_last_name 
 ORDER BY 
     total_sales DESC 
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

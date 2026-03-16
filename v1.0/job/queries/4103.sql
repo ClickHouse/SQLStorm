@@ -44,7 +44,7 @@ MovieDetails AS (
         rm.title,
         rm.production_year,
         COUNT(DISTINCT mk.keyword_id) AS keyword_count,
-        ARRAY_AGG(DISTINCT mc.company_name) AS production_companies,
+        arrayDistinct(groupArray(assumeNotNull(mc.company_name))) AS production_companies,
         AVG(fs.role_count) AS avg_roles
     FROM 
         RankedMovies rm

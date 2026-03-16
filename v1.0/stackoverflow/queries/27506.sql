@@ -6,7 +6,7 @@ WITH PostMetrics AS (
         p.Score,
         p.ViewCount,
         p.AnswerCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
         u.DisplayName AS OwnerDisplayName,
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id) AS CommentCount,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpVoteCount,
@@ -24,8 +24,8 @@ WITH PostMetrics AS (
 ), HistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CASE WHEN pht.Name = 'Edit Body' THEN ph.Comment END, '; ') AS EditBodyComments,
-        STRING_AGG(CASE WHEN pht.Name IN ('Post Closed', 'Post Reopened') THEN ph.Comment END, '; ') AS ClosureComments,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN pht.Name = 'Edit Body' THEN ph.Comment END)), '; ') AS EditBodyComments,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN pht.Name IN ('Post Closed', 'Post Reopened') THEN ph.Comment END)), '; ') AS ClosureComments,
         MAX(ph.CreationDate) AS LastHistoryDate
     FROM 
         PostHistory ph

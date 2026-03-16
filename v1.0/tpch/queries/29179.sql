@@ -5,7 +5,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue,
     MAX(l.l_shipdate) AS last_ship_date,
     MIN(l.l_shipdate) AS first_ship_date,
-    STRING_AGG(DISTINCT CONCAT(l.l_shipmode, ' (', l.l_returnflag, ')'), '; ') AS shipping_methods
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(l.l_shipmode, ' (', l.l_returnflag, ')')))), '; ') AS shipping_methods
 FROM 
     part p 
 JOIN 
@@ -19,7 +19,7 @@ JOIN
 WHERE 
     s.s_acctbal > 5000 
     AND p.p_retailprice BETWEEN 10.00 AND 100.00 
-    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_name, s.s_name 
 ORDER BY 

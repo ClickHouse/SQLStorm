@@ -2,8 +2,8 @@
 WITH StringAggregates AS (
     SELECT 
         ca_state,
-        STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), ', ') AS CustomerNames,
-        STRING_AGG(DISTINCT ca_city, '; ') AS UniqueCities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), ', ') AS CustomerNames,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), '; ') AS UniqueCities,
         COUNT(DISTINCT c_customer_sk) AS TotalCustomers
     FROM 
         customer_address ca

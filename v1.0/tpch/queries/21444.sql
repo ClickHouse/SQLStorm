@@ -15,7 +15,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS CustomerCount,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS TotalRevenue,
     AVG(s.s_acctbal) AS AverageSupplierBalance,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS ProductsOffered
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS ProductsOffered
 FROM 
     customer c
 JOIN 
@@ -40,4 +40,4 @@ HAVING
     COUNT(DISTINCT o.o_orderkey) > 10
 ORDER BY 
     TotalRevenue DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

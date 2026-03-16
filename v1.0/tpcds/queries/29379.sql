@@ -6,7 +6,7 @@ WITH AddressMetrics AS (
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length,
         MIN(LENGTH(ca_street_name)) AS min_street_name_length,
         MAX(LENGTH(ca_street_name)) AS max_street_name_length,
-        STRING_AGG(DISTINCT ca_city, ', ') AS city_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS city_list
     FROM 
         customer_address
     GROUP BY 
@@ -30,7 +30,7 @@ SalesMetrics AS (
         SUM(ws_sales_price) AS total_sales,
         COUNT(ws_order_number) AS total_orders,
         AVG(ws_quantity) AS avg_items_per_order,
-        STRING_AGG(DISTINCT CAST(ws_ship_mode_sk AS TEXT), ', ') AS ship_modes_used
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws_ship_mode_sk AS TEXT)))), ', ') AS ship_modes_used
     FROM 
         web_sales
     GROUP BY 

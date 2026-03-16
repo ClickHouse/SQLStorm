@@ -2,7 +2,7 @@ SELECT
     supplier.s_name,
     COUNT(DISTINCT partsupp.ps_partkey) AS total_parts,
     SUM(partsupp.ps_supplycost * partsupp.ps_availqty) AS total_supply_cost,
-    STRING_AGG(DISTINCT part.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(part.p_name))), ', ') AS part_names,
     MAX(part.p_retailprice) AS max_retail_price,
     MIN(part.p_retailprice) AS min_retail_price
 FROM 

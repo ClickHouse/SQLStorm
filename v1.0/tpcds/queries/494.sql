@@ -37,7 +37,7 @@ SELECT
     (SELECT COUNT(DISTINCT cc.cc_call_center_sk) 
      FROM call_center cc 
      WHERE cc.cc_open_date_sk <= (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = cast('2002-10-01' as date))) AS active_call_centers,
-    (SELECT STRING_AGG(DISTINCT ca.ca_state, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_state))), ', ') 
      FROM customer_address ca 
      JOIN customer c ON ca.ca_address_sk = c.c_current_addr_sk 
      WHERE c.c_birth_country = 'USA') AS usa_states

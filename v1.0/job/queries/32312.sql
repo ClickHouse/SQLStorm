@@ -42,7 +42,7 @@ movie_info_summary AS (
         m.id AS movie_id,
         m.title,
         COUNT(mi.id) AS info_count, 
-        STRING_AGG(DISTINCT mi.info, ', ') AS info_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS info_details
     FROM 
         aka_title m
     LEFT JOIN 

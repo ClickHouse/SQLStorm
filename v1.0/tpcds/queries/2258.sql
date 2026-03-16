@@ -32,7 +32,7 @@ SELECT
     COUNT(DISTINCT hvc.c_customer_sk) AS high_value_customer_count,
     SUM(rv.total_quantity) AS total_sales_quantity,
     AVG(rv.total_net_paid) AS avg_net_paid,
-    STRING_AGG(DISTINCT CAST(rv.ws_item_sk AS VARCHAR), ', ') AS top_items_sold
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(rv.ws_item_sk AS VARCHAR)))), ', ') AS top_items_sold
 FROM 
     customer_address ca
 LEFT JOIN 

@@ -58,7 +58,7 @@ SELECT
         WHERE 
             ws_bill_customer_sk = hvc.c_customer_sk
         AND 
-            ws_sold_date_sk IN (SELECT d_date_sk FROM date_dim WHERE d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) - 1)
+            ws_sold_date_sk IN (SELECT d_date_sk FROM date_dim WHERE d_year = toYear(cast('2002-10-01' as date)) - 1)
     ), 0) AS avg_sales_last_year,
     (
         SELECT 

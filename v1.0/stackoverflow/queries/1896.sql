@@ -41,13 +41,13 @@ RecentPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 )
 SELECT 
     TU.DisplayName AS TopUser,
     TU.Reputation,
     COALESCE(RP.Title, 'No recent posts') AS RecentPostTitle,
-    COALESCE(RP.CreationDate::text, 'N/A') AS RecentPostDate,
+    COALESCE(CAST(RP.CreationDate AS text), 'N/A') AS RecentPostDate,
     TU.PostCount,
     TU.CommentCount,
     TU.TotalBounties

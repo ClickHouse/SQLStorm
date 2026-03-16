@@ -54,4 +54,4 @@ FROM
     aggregated_sales
 ORDER BY 
     total_net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

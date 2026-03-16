@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
     GROUP BY 
         p.Id, u.DisplayName
 ),
@@ -50,7 +50,7 @@ SELECT
     tp.UpVotes,
     tp.DownVotes,
     CASE 
-        WHEN tp.UpVotes + tp.DownVotes > 0 THEN ROUND((tp.UpVotes::numeric / (tp.UpVotes + tp.DownVotes)) * 100, 2)
+        WHEN tp.UpVotes + tp.DownVotes > 0 THEN ROUND((CAST(tp.UpVotes AS numeric) / (tp.UpVotes + tp.DownVotes)) * 100, 2)
         ELSE 0 
     END AS UpVotePercentage
 FROM 

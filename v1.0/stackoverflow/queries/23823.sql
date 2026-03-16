@@ -33,7 +33,7 @@ PostStatistics AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        P.CreationDate >= now64(6) - INTERVAL 1 YEAR
         AND P.Score IS NOT NULL
 ),
 ClosedPosts AS (
@@ -46,7 +46,7 @@ ClosedPosts AS (
     JOIN 
         CloseReasonTypes CTR ON PH.Comment IS NOT NULL AND PH.PostHistoryTypeId = 10
     WHERE 
-        PH.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        PH.CreationDate >= now64(6) - INTERVAL 1 YEAR
 )
 SELECT 
     UA.UserId,

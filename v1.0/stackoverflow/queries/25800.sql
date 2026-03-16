@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'), 1) AS TagCount,
+        length(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         u.Reputation AS OwnerReputation,
         RANK() OVER (ORDER BY p.Score DESC, p.ViewCount DESC) AS RankScore
@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 TopRankedPosts AS (
     SELECT 
@@ -64,7 +64,7 @@ SELECT
     pwv.UpVotes,
     pwv.DownVotes,
     (pwv.UpVotes - pwv.DownVotes) AS NetVotes,
-    (EXTRACT(EPOCH FROM cast('2024-10-01 12:34:56' as timestamp) - pwv.CreationDate) / 3600) AS HoursSinceCreation
+    (toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - pwv.CreationDate) / 3600) AS HoursSinceCreation
 FROM 
     PostWithVotes pwv
 WHERE 

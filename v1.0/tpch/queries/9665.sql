@@ -27,7 +27,7 @@ OrderStats AS (
         SUM(o.o_totalprice) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    WHERE l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 )
 SELECT 
     ts.region_name,

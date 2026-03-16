@@ -2,7 +2,7 @@ WITH RecentOrders AS (
     SELECT o_orderkey, o_orderdate, o_totalprice, c_nationkey
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o_orderdate >= DATE '1997-01-01'
+    WHERE o_orderdate >= toDate('1997-01-01')
 ),
 SupplierDetails AS (
     SELECT ps.ps_partkey, ps.ps_suppkey, s.s_name, s.s_acctbal

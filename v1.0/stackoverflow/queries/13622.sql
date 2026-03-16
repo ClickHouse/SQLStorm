@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     Users u ON p.OwnerUserId = u.Id
 WHERE 
-    p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+    p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 GROUP BY 
     pt.Name
 ORDER BY 

@@ -15,7 +15,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     RANK() OVER (PARTITION BY n.n_name ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank,
-    STRING_AGG(DISTINCT p.p_name, ', ') FILTER (WHERE p.p_size > 10) AS large_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') FILTER (WHERE p.p_size > 10) AS large_parts,
     NULLIF(SUM(s.s_acctbal), 0) AS total_supplier_balance,
     CASE 
         WHEN COUNT(DISTINCT o.o_orderkey) > 0 THEN 'Orders Present' 

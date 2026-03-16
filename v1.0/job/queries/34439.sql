@@ -35,9 +35,9 @@ actor_rankings AS (
 company_movie_info AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(CASE 
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
             WHEN ct.kind IS NOT NULL THEN cn.name 
-            ELSE 'Unknown Company' END, ', ') AS companies_involved
+            ELSE 'Unknown Company' END)), ', ') AS companies_involved
     FROM 
         movie_companies mc
     LEFT JOIN company_name cn ON mc.company_id = cn.id

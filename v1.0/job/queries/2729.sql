@@ -49,7 +49,7 @@ SELECT
     ) AS keyword_count,
     (
         SELECT 
-            string_agg(DISTINCT ak.name, ', ') 
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') 
         FROM 
             aka_name ak
         JOIN 

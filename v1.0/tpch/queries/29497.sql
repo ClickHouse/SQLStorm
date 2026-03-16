@@ -20,8 +20,8 @@ Aggregated_Supplier_Products AS (
         COUNT(*) AS total_products,
         SUM(available_quantity) AS total_available_quantity,
         AVG(supply_cost) AS average_supply_cost,
-        STRING_AGG(DISTINCT product_brand, ', ') AS brands_offered,
-        STRING_AGG(DISTINCT product_container, ', ') AS container_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(product_brand))), ', ') AS brands_offered,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(product_container))), ', ') AS container_types
     FROM 
         Supplier_Products
     GROUP BY 

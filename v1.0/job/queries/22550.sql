@@ -32,7 +32,7 @@ SELECT
     mh.production_year,
     mh.depth,
     COALESCE(c.name, 'Unknown') AS cast_name,
-    COALESCE(string_agg(DISTINCT kw.keyword, ', ' ORDER BY kw.keyword), 'No Keywords') AS keywords,
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ' ORDER BY kw.keyword), 'No Keywords') AS keywords,
     COUNT(DISTINCT mc.company_id) AS company_count,
     SUM(CASE WHEN (mi.info_type_id = (SELECT id FROM info_type WHERE info = 'BoxOffice')) THEN CAST(mi.info AS DECIMAL) ELSE 0 END) AS total_box_office
 FROM 

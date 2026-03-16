@@ -45,7 +45,7 @@ SELECT
     COUNT(DISTINCT n.n_nationkey) AS nation_count,
     AVG(order_summaries.total_order_value) AS avg_order_value,
     COUNT(DISTINCT f.s_suppkey) AS active_supplier_count,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     region r
 LEFT JOIN 

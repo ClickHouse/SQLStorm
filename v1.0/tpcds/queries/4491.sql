@@ -72,7 +72,7 @@ LEFT JOIN
                 WHERE 
                     ws.ws_bill_customer_sk = tc.c_customer_sk
             )
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
 WHERE 
     w.w_warehouse_sk IS NOT NULL

@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(s.s_acctbal) AS average_supplier_account_balance,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     LEFT(p.p_comment, 20) AS short_comment,
     CONCAT('Total Suppliers: ', COUNT(DISTINCT ps.ps_suppkey), ' | Total Qty: ', SUM(ps.ps_availqty)) AS summary_info
 FROM 

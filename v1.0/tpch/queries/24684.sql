@@ -48,7 +48,7 @@ FilteredOrders AS (
     LEFT JOIN 
         lineitem li ON o.o_orderkey = li.l_orderkey
     WHERE 
-        o.o_orderdate < DATE '1998-10-01' - INTERVAL '30 days'
+        o.o_orderdate < toDate('1998-10-01') - INTERVAL 30 DAY
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 )

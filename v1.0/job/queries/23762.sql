@@ -63,7 +63,7 @@ SELECT
     fm.title,
     fm.production_year,
     fm.keyword_count,
-    STRING_AGG(fm.actor_name, ', ' ORDER BY fm.role_order) AS actor_names,
+    arrayStringConcat(groupArray(assumeNotNull(fm.actor_name)), ', ' ORDER BY fm.role_order) AS actor_names,
     SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS noted_actors,
     CASE 
         WHEN COUNT(DISTINCT fm.actor_name) > 5 THEN 'Many Actors'

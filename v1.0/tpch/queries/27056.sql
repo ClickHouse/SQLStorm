@@ -10,7 +10,7 @@ WITH PartDetails AS (
            p.p_retailprice, 
            p.p_comment,
            COUNT(DISTINCT ps.ps_suppkey) AS supply_count,
-           STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
@@ -22,7 +22,7 @@ CustomerOrders AS (
            c.c_name, 
            COUNT(o.o_orderkey) AS order_count, 
            SUM(o.o_totalprice) AS total_spent,
-           STRING_AGG(DISTINCT o.o_orderstatus, ', ') AS order_statuses
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(o.o_orderstatus))), ', ') AS order_statuses
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
     WHERE c.c_acctbal > 500

@@ -1,9 +1,9 @@
 WITH StringAggregation AS (
     SELECT 
         p.p_partkey,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nations,
-        STRING_AGG(DISTINCT c.c_name, ', ') AS customers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customers
     FROM part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey

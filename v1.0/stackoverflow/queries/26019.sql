@@ -4,7 +4,7 @@ WITH TagStats AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(p.ViewCount) AS TotalViews,
         SUM(COALESCE(p.Score, 0)) AS TotalScore,
-        STRING_AGG(DISTINCT CASE WHEN p.OwnerUserId IS NOT NULL THEN u.DisplayName END, ', ') AS TopUsers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN p.OwnerUserId IS NOT NULL THEN u.DisplayName END))), ', ') AS TopUsers,
         COUNT(DISTINCT CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN p.AcceptedAnswerId END) AS AcceptedAnswers
     FROM 
         Tags t

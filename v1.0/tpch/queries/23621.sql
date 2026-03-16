@@ -32,7 +32,7 @@ RecentOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1998-10-01' - INTERVAL '30 days'
+        o.o_orderdate >= toDate('1998-10-01') - INTERVAL 30 DAY
 )
 SELECT  
     r.r_name AS RegionName,

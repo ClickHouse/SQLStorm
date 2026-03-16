@@ -53,4 +53,4 @@ LEFT JOIN
 ORDER BY 
     hs.total_spent DESC, 
     recent_return_count ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

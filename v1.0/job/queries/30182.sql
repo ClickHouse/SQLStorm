@@ -27,10 +27,10 @@ WITH RECURSIVE ActorHierarchy AS (
 SELECT 
     an.name AS Actor_Name,
     COUNT(DISTINCT ah.movie_id) AS Total_Movies,
-    ARRAY_AGG(DISTINCT t.title) AS Movie_Titles,
+    arrayDistinct(groupArray(assumeNotNull(t.title))) AS Movie_Titles,
     SUM(CASE WHEN t.production_year IS NOT NULL THEN 1 ELSE 0 END) AS Movies_Released,
     AVG(t.production_year) AS Avg_Production_Year,
-    STRING_AGG(DISTINCT cn.name, ', ') AS Companies_Produced,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS Companies_Produced,
     ROW_NUMBER() OVER (PARTITION BY an.name ORDER BY COUNT(DISTINCT ah.movie_id) DESC) AS Actor_Rank
 FROM 
     ActorHierarchy ah

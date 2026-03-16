@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
@@ -54,7 +54,7 @@ SELECT
     COALESCE(vs.DownVotes, 0) AS DownVotes,
     COALESCE(bk.BadgeCount, 0) AS UserBadgeCount,
     COALESCE(bk.MaxBadgeClass, 0) AS UserMaxBadgeClass,
-    ARRAY_AGG(cpi.Comment) AS CloseReasonComments
+    groupArray(assumeNotNull(cpi.Comment)) AS CloseReasonComments
 FROM 
     RankedPosts rp
 LEFT JOIN 

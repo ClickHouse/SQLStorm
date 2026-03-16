@@ -4,7 +4,7 @@ WITH RecursiveTags AS (
         P.Id AS PostId,
         P.Title,
         P.Tags,
-        unnest(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) AS TagName,
         P.CreationDate
     FROM 
         Posts P

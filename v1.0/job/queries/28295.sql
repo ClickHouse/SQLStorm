@@ -22,7 +22,7 @@ WITH ranked_movies AS (
 SELECT 
     rm.movie_id,
     rm.title,
-    STRING_AGG(rm.actor_name, ', ' ORDER BY rm.role_rank) AS actor_list,
+    arrayStringConcat(groupArray(assumeNotNull(rm.actor_name)), ', ' ORDER BY rm.role_rank) AS actor_list,
     COUNT(rm.actor_name) AS total_actors,
     MIN(rm.production_year) AS earliest_year
 FROM 

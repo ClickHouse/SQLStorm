@@ -3,7 +3,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(p.p_retailprice) AS average_retail_price,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     r.r_name AS region_name
 FROM 
     supplier s
@@ -23,7 +23,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_name LIKE 'rubber%' 
-    AND o.o_orderdate >= DATE '1997-01-01'
+    AND o.o_orderdate >= toDate('1997-01-01')
 GROUP BY 
     s.s_name, p.p_name, r.r_name
 HAVING 

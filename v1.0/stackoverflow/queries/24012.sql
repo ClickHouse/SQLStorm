@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -33,7 +33,7 @@ TopUsers AS (
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 years' AND TIMESTAMP '2024-10-01 12:34:56'
+        u.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR AND toDateTime64('2024-10-01 12:34:56', 6)
     GROUP BY 
         u.Id, u.DisplayName
 )
@@ -52,7 +52,7 @@ SELECT
         ELSE 'Neutral'
     END AS UserReputationStatus,
     COUNT(DISTINCT ph.Id) AS PostHistoryCount,
-    STRING_AGG(DISTINCT CONCAT(pt.Name, ': ', pt.Id), ', ') AS PostHistoryTypes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(pt.Name, ': ', pt.Id)))), ', ') AS PostHistoryTypes
 FROM 
     RankedPosts rp
 JOIN 

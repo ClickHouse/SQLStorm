@@ -29,7 +29,7 @@ WITH RECURSIVE movie_hierarchy AS (
 
 SELECT 
     a.name AS actor_name,
-    STRING_AGG(DISTINCT mh.movie_title, ', ') AS movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mh.movie_title))), ', ') AS movies,
     AVG(COALESCE(ci.nr_order, 0)) AS avg_order,
     COUNT(DISTINCT mi.id) AS movie_info_count
 FROM 

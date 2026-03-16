@@ -2,9 +2,9 @@ WITH RankedMovies AS (
     SELECT 
         a.title AS movie_title,
         a.production_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COALESCE(cn.name, 'Unknown') AS company_name,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
         COUNT(DISTINCT ci.person_id) AS cast_count
     FROM 
         aka_title a

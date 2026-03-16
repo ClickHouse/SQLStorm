@@ -32,7 +32,7 @@ PopularPosts AS (
     FROM Posts P
     LEFT JOIN PostLinks PL ON P.Id = PL.PostId
     LEFT JOIN LinkTypes LT ON PL.LinkTypeId = LT.Id
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
       AND P.ViewCount > 1000
 )
 SELECT 

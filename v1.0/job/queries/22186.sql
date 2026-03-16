@@ -48,7 +48,7 @@ CompleteMovieInfo AS (
         sm.production_year,
         sm.cast_count,
         sm.fraction_with_roles,
-        STRING_AGG(ci.company_name, ', ' ORDER BY ci.company_rank) AS companies
+        arrayStringConcat(groupArray(assumeNotNull(ci.company_name)), ', ' ORDER BY ci.company_rank) AS companies
     FROM
         SelectedMovies sm
     LEFT JOIN

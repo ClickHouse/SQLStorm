@@ -47,7 +47,7 @@ SELECT
     mh.title,
     mh.production_year,
     COALESCE(c.total_cast_members, 0) AS total_cast,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     COUNT(mch.linked_movie_id) AS related_movies_count
 FROM 
     movie_hierarchy mh

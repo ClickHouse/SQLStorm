@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '5 years')
+        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 5 YEAR)
     AND 
         p.ViewCount > 100
 ),
@@ -38,7 +38,7 @@ UserStats AS (
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(SPLIT_PART(Tags, '><', NULL)::TEXT[]) AS Tag
+        arrayJoin(SPLIT_PART(Tags, '><', NULLCAST() AS TEXT)[]) AS Tag
     FROM 
         Posts
     WHERE 

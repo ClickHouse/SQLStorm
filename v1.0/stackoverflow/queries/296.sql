@@ -49,7 +49,7 @@ SELECT
     END AS ContributorType,
     COALESCE(
         (SELECT 
-             STRING_AGG(b.Name, ', ') 
+             arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
          FROM 
              Badges b 
          WHERE 

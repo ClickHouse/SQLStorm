@@ -39,8 +39,8 @@ TopActors AS (
 SELECT
     ta.actor_name,
     ta.movie_count,
-    ARRAY_AGG(DISTINCT rm.title) AS recent_movies,
-    ARRAY_AGG(DISTINCT rm.production_year) AS movie_years
+    arrayDistinct(groupArray(assumeNotNull(rm.title))) AS recent_movies,
+    arrayDistinct(groupArray(assumeNotNull(rm.production_year))) AS movie_years
 FROM
     TopActors ta
 JOIN

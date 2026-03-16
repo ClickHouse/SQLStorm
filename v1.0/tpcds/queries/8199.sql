@@ -30,7 +30,7 @@ TopItems AS (
     FROM SalesSummary ss
     JOIN date_dim dd ON ss.total_orders > 10
     ORDER BY ss.total_sales DESC
-    FETCH FIRST 10 ROWS ONLY
+    LIMIT 10
 )
 SELECT 
     ti.cs_item_sk,

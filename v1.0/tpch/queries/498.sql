@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        EXTRACT(YEAR FROM o.o_orderdate) = 1997
+        toYear(o.o_orderdate) = 1997
 ),
 SupplierCosts AS (
     SELECT 

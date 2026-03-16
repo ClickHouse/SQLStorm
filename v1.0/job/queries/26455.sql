@@ -32,7 +32,7 @@ Actors AS (
 MovieCompanyDetails AS (
     SELECT 
         mc.movie_id,
-        string_agg(DISTINCT co.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies,
         ct.kind AS company_type
     FROM 
         movie_companies mc

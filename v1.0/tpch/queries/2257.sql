@@ -8,7 +8,7 @@ WITH SupplierSales AS (
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     JOIN lineitem l ON ps.ps_partkey = l.l_partkey
     JOIN orders o ON l.l_orderkey = o.o_orderkey
-    WHERE o.o_orderdate >= DATE '1996-01-01'
+    WHERE o.o_orderdate >= toDate('1996-01-01')
     GROUP BY s.s_suppkey, s.s_name
 ), RankedSales AS (
     SELECT 

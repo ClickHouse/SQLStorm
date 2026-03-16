@@ -38,7 +38,7 @@ HighestScoredPosts AS (
 PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS PostHistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS PostHistoryTypes,
         COUNT(DISTINCT ph.Id) AS EditCount
     FROM 
         PostHistory ph
@@ -71,4 +71,4 @@ WHERE
     AND HSP.ViewCount IS NOT NULL
 ORDER BY 
     HSP.Score DESC, HSP.ViewCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

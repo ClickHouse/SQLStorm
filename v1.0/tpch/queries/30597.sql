@@ -14,7 +14,7 @@ total_sales AS (
     SELECT o.o_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales_amount
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderstatus = 'F' AND l.l_shipdate >= DATE '1997-01-01'
+    WHERE o.o_orderstatus = 'F' AND l.l_shipdate >= toDate('1997-01-01')
     GROUP BY o.o_orderkey
 ),
 region_sales AS (

@@ -19,14 +19,14 @@ WITH RankedPosts AS (
 ), 
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        unnest(string_to_array(Tags, ',')) 
+        arrayJoin(splitByString(',', Tags)) 
     ORDER BY 
         TagCount DESC
     LIMIT 5
@@ -55,7 +55,7 @@ SELECT
     pht.TagOrBodyEdits,
     (
         SELECT 
-            STRING_AGG(pt.TagName, ', ') 
+            arrayStringConcat(groupArray(assumeNotNull(pt.TagName)), ', ') 
         FROM 
             PopularTags pt 
         WHERE 

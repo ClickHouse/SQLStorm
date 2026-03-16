@@ -31,7 +31,7 @@ SELECT
     mt.title AS movie_title,
     mt.production_year,
     COUNT(DISTINCT mc.company_id) AS company_count,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
     SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS cast_note_count,
     RANK() OVER (PARTITION BY mt.production_year ORDER BY COUNT(DISTINCT mc.company_id) DESC) AS rank_by_companies
 FROM 

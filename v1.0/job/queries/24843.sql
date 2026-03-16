@@ -56,8 +56,8 @@ SELECT
     tm.movie_title,
     tm.production_year,
     COUNT(DISTINCT pr.person_id) AS unique_actors,
-    STRING_AGG(DISTINCT mk.keyword, ', ') AS keywords_used,
-    STRING_AGG(DISTINCT mc.company_name || ' (' || mc.company_type || ')', '; ') AS companies_involved
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.keyword))), ', ') AS keywords_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.company_name || ' (' || mc.company_type || ')'))), '; ') AS companies_involved
 FROM 
     TopMovies tm
 LEFT OUTER JOIN 

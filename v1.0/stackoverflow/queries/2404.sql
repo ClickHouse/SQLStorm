@@ -50,7 +50,7 @@ AggregatedPostInfo AS (
         PD.OwnerUserId,
         PD.Score,
         PD.AnswerCount,
-        STRING_AGG(PD.CommentText, ' | ') AS AllComments
+        arrayStringConcat(groupArray(assumeNotNull(PD.CommentText)), ' | ') AS AllComments
     FROM 
         PostDetails PD
     GROUP BY 

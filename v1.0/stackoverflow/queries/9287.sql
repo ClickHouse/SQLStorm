@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR' AND 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND 
         p.ViewCount > 100
 ),
 RecentActivity AS (
@@ -22,7 +22,7 @@ RecentActivity AS (
         ph.PostId, 
         COUNT(*) AS HistoryCount,
         MAX(ph.CreationDate) AS LastActivityDate,
-        STRING_AGG(DISTINCT ph.Comment, ', ') AS RecentComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), ', ') AS RecentComments
     FROM 
         PostHistory ph
     GROUP BY 

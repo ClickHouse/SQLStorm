@@ -5,8 +5,8 @@ SELECT
     ca.ca_state,
     COUNT(DISTINCT ws.ws_order_number) AS total_web_orders,
     SUM(ws.ws_sales_price) AS total_spent,
-    STRING_AGG(DISTINCT CONCAT(p.p_promo_name, ' (', p.p_channel_details, ')'), ', ') AS promotions_used,
-    STRING_AGG(DISTINCT CONCAT(i.i_product_name, ' (', i.i_item_desc, ')'), '; ') AS items_ordered
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_promo_name, ' (', p.p_channel_details, ')')))), ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(i.i_product_name, ' (', i.i_item_desc, ')')))), '; ') AS items_ordered
 FROM 
     customer c
 JOIN 

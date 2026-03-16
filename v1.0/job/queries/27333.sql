@@ -3,9 +3,9 @@ WITH MovieDetails AS (
     SELECT 
         t.title AS movie_title,
         t.production_year,
-        STRING_AGG(a.name, ', ') AS actors,
-        STRING_AGG(c.kind, ', ') AS company_types,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actors,
+        arrayStringConcat(groupArray(assumeNotNull(c.kind)), ', ') AS company_types,
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title t
     JOIN 

@@ -4,7 +4,7 @@ WITH UserBadges AS (
         u.DisplayName,
         COUNT(b.Id) AS BadgeCount,
         AVG(b.Class) AS AvgBadgeClass,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -24,7 +24,7 @@ RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 TopUsers AS (
     SELECT 
@@ -46,7 +46,7 @@ SELECT
     ub.BadgeCount,
     ub.AvgBadgeClass,
     ub.BadgeNames,
-    STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypes
 FROM 
     TopUsers tu
 LEFT JOIN 

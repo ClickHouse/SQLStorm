@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     WHERE o.o_totalprice > (
         SELECT AVG(o2.o_totalprice) 
         FROM orders o2 
-        WHERE o2.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
+        WHERE o2.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
     )
 ),
 CustomerSummary AS (
@@ -45,7 +45,7 @@ JOIN CustomerSummary cs ON cs.order_count > 1
 JOIN supplier s ON s.s_suppkey = li.l_suppkey
 JOIN nation ns ON ns.n_nationkey = s.s_nationkey
 LEFT JOIN MaxSupplierCost msc ON msc.ps_suppkey = s.s_suppkey
-WHERE li.l_shipdate >= DATE '1998-10-01' - INTERVAL '90 days'
+WHERE li.l_shipdate >= toDate('1998-10-01') - INTERVAL 90 DAY
 AND ns.n_name IS NOT NULL
 GROUP BY ns.n_name
 ORDER BY total_revenue DESC

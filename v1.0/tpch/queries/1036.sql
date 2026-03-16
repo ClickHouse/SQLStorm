@@ -45,7 +45,7 @@ SELECT
     rc.c_acctbal,
     HO.o_orderkey,
     HO.total_value,
-    STRING_AGG(DISTINCT CONCAT(sp.p_name, ': ', sp.ps_supplycost), ', ') AS part_supplier_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(sp.p_name, ': ', sp.ps_supplycost)))), ', ') AS part_supplier_info
 FROM 
     ranked_customers rc
 LEFT JOIN 

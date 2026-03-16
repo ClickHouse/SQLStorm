@@ -41,11 +41,11 @@ PostCommentStats AS (
 PostClosureReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     LEFT JOIN 
-        CloseReasonTypes cr ON ph.Comment = cr.Id::text
+        CloseReasonTypes cr ON ph.Comment = CAST(cr.Id AS text)
     WHERE 
         ph.PostHistoryTypeId = 10
     GROUP BY 

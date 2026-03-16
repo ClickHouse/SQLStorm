@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1997-12-31'
+        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1997-12-31')
 ),
 CustomerSums AS (
     SELECT 
@@ -76,7 +76,7 @@ JOIN
 LEFT JOIN 
     orders o ON li.l_orderkey = o.o_orderkey
 WHERE 
-    li.l_shipdate <= DATE '1998-10-01' AND li.l_discount < 0.10
+    li.l_shipdate <= toDate('1998-10-01') AND li.l_discount < 0.10
 GROUP BY 
     p.p_name, p.p_brand
 HAVING 
@@ -84,4 +84,4 @@ HAVING
     AND SUM(li.l_extendedprice) IS NOT NULL
 ORDER BY 
     total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

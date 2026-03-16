@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(o.o_totalprice) AS total_sales,
     AVG(l.l_extendedprice) AS average_price,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' - ', s.s_name), '; ') AS part_supplier_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' - ', s.s_name)))), '; ') AS part_supplier_list
 FROM 
     part p
 JOIN 

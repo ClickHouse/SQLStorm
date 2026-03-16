@@ -8,7 +8,7 @@ WITH PostMetrics AS (
         SUM(p.AnswerCount) AS TotalAnswers,
         AVG(p.CommentCount) AS AvgComments,
         AVG(p.FavoriteCount) AS AvgFavorites,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgTimeToActivitySeconds
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgTimeToActivitySeconds
     FROM 
         Posts p 
     INNER JOIN 

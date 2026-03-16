@@ -52,7 +52,7 @@ SELECT
     COUNT(s.ss_item_sk) AS total_items_sold,
     MAX(s.ss_ext_discount_amt) AS max_discount,
     SUM(CASE WHEN s.ss_sales_price IS NULL THEN 0 ELSE s.ss_sales_price END) AS total_sales_value,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS sold_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS sold_items
 FROM 
     warehouse w
 LEFT JOIN 
@@ -60,7 +60,7 @@ LEFT JOIN
 FULL OUTER JOIN 
     top_customers ts ON s.ss_customer_sk = ts.c_customer_sk
 LEFT JOIN 
-    sales_summary ss ON ss.d_year = EXTRACT(YEAR FROM '2002-10-01'::date)
+    sales_summary ss ON ss.d_year = toYear(CAST('2002-10-01' AS date))
 LEFT JOIN 
     item i ON s.ss_item_sk = i.i_item_sk
 WHERE 

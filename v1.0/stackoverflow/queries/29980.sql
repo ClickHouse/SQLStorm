@@ -43,7 +43,7 @@ SELECT
     rp.PostId,
     rp.Title,
     rp.Body,
-    STRING_AGG(DISTINCT rp.Tags, ', ') AS Tags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.Tags))), ', ') AS Tags,
     rp.CreationDate,
     rp.LastActivityDate,
     rp.Score,

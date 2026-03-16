@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId
 ),
@@ -60,7 +60,7 @@ PostsWithBadges AS (
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
         b.Class = 1 AND 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 
 FinalResult AS (

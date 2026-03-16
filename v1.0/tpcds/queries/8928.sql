@@ -67,9 +67,9 @@ JOIN
                     customer c
                 WHERE 
                     c.c_customer_sk IN (SELECT DISTINCT c_customer_sk FROM web_sales WHERE ws_item_sk = tsi.ws_item_sk)
-                FETCH FIRST 1 ROWS ONLY
+                LIMIT 1
             )
-        FETCH FIRST 1 ROWS ONLY
+        LIMIT 1
     )
 ORDER BY
     tsi.total_sales DESC, da.avg_spent DESC;

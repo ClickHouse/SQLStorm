@@ -35,7 +35,7 @@ PartSupplierDetails AS (
     SELECT 
         pp.p_partkey,
         COUNT(ps.ps_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers
     FROM RankedParts pp
     JOIN partsupp ps ON pp.p_partkey = ps.ps_partkey
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey

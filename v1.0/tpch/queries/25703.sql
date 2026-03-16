@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS unique_suppliers,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(l.l_extendedprice) AS average_extended_price,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_served
 FROM 
     part p
 JOIN 

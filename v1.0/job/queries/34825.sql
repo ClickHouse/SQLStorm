@@ -33,7 +33,7 @@ movies_with_keywords AS (
     SELECT 
         mt.id,
         mt.title,
-        ARRAY_AGG(DISTINCT kw.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords
     FROM aka_title mt
     JOIN movie_keyword mk ON mt.id = mk.movie_id
     JOIN keyword kw ON mk.keyword_id = kw.id

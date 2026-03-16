@@ -35,7 +35,7 @@ SELECT
         ELSE 'No Role Assigned'
     END AS role,
     COUNT(DISTINCT mh.movie_id) AS linked_movies_count,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
 FROM 
     cast_info c
 JOIN 

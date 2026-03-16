@@ -2,7 +2,7 @@ SELECT
     n.n_name AS nation_name,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     MAX(p.p_retailprice) AS max_part_price,
     MIN(p.p_retailprice) AS min_part_price,
     SUM(l.l_quantity) AS total_quantity_sold,

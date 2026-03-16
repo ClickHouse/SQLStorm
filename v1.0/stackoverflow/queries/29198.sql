@@ -1,14 +1,14 @@
 
 WITH TagFrequency AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><'))
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2)))
 ),
 PopularTags AS (
     SELECT 
@@ -48,7 +48,7 @@ FROM
 JOIN 
     PopularTags T ON T.TagName IN (
         SELECT 
-            unnest(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><'))
+            arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2)))
         FROM 
             Posts P
         WHERE 

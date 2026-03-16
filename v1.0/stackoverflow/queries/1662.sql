@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostHistoryCount AS (
     SELECT
@@ -36,7 +36,7 @@ ActiveUsers AS (
     FROM 
         Users u
     WHERE 
-        u.LastAccessDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         u.Id, u.DisplayName
 )

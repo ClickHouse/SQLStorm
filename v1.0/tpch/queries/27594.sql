@@ -8,7 +8,7 @@ SELECT
     AVG(ps.ps_supplycost) AS average_supply_cost,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     SUM(o.o_totalprice) AS total_order_value,
-    STRING_AGG(DISTINCT s.s_name, '; ' ORDER BY s.s_name) AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), '; ' ORDER BY s.s_name) AS supplier_names
 FROM 
     part p
 JOIN 

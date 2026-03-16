@@ -3,7 +3,7 @@ WITH AddressCounts AS (
     SELECT 
         ca_country,
         COUNT(ca_address_sk) AS address_count,
-        STRING_AGG(ca_city, ', ') AS cities
+        arrayStringConcat(groupArray(assumeNotNull(ca_city)), ', ') AS cities
     FROM 
         customer_address
     GROUP BY 

@@ -12,7 +12,7 @@ WITH RECURSIVE RecentPostsCTE AS (
             ELSE 0
         END AS HasAcceptedAnswer
     FROM Posts p
-    WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days'
+    WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL 30 DAY
     
     UNION ALL
     
@@ -39,7 +39,7 @@ SELECT
     SUM(v.BountyAmount) AS TotalBounty,
     COUNT(DISTINCT b.Id) AS BadgeCount,
     ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY p.CreationDate DESC) AS PostRank,
-    EXTRACT(YEAR FROM AGE(p.CreationDate)) AS PostAge,
+    toYear(AGE(p.CreationDate)) AS PostAge,
     CASE 
         WHEN SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) > SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) THEN 'More Upvotes'
         WHEN SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) < SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) THEN 'More Downvotes'

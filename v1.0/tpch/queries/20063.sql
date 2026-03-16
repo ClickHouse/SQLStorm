@@ -10,7 +10,7 @@ WITH RECURSIVE CustomerOrders AS (
     JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate < (cast('1998-10-01' as date) - INTERVAL '1 year')
+        o.o_orderdate < (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
 ),
 HighValueSuppliers AS (
     SELECT 
@@ -34,7 +34,7 @@ LastYearOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate BETWEEN (cast('1998-10-01' as date) - INTERVAL '1 year') AND cast('1998-10-01' as date)
+        o.o_orderdate BETWEEN (cast('1998-10-01' as date) - INTERVAL 1 YEAR) AND cast('1998-10-01' as date)
     GROUP BY 
         o.o_orderkey
 ),

@@ -5,7 +5,7 @@ WITH TagStatistics AS (
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositiveScoreCount,
         SUM(CASE WHEN p.Score < 0 THEN 1 ELSE 0 END) AS NegativeScoreCount,
         AVG(p.Score) AS AverageScore,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopContributors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopContributors
     FROM 
         Tags t
     JOIN 

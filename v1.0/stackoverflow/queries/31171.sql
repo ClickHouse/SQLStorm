@@ -55,7 +55,7 @@ SELECT
     COALESCE(pl.RelatedPostCount, 0) AS RelatedPostCount,
     rp.LastBadgeDate,
     CASE 
-        WHEN rp.LastBadgeDate IS NOT NULL AND rp.LastBadgeDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' THEN 'Active'
+        WHEN rp.LastBadgeDate IS NOT NULL AND rp.LastBadgeDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Active'
         ELSE 'InActive'
     END AS UserActivityStatus
 FROM 

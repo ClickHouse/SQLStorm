@@ -31,7 +31,7 @@ concatenated_addresses AS (
 )
 SELECT 
     a.ca_state,
-    STRING_AGG(CONCAT(a.full_address, ' ', a.ca_city, ', ', a.ca_state, ' ', a.ca_zip), '; ' ORDER BY a.address_rank) AS all_addresses,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.full_address, ' ', a.ca_city, ', ', a.ca_state, ' ', a.ca_zip))), '; ' ORDER BY a.address_rank) AS all_addresses,
     c.address_count
 FROM concatenated_addresses a
 JOIN address_count c ON a.ca_state = c.ca_state

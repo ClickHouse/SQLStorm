@@ -31,7 +31,7 @@ SELECT
     COALESCE(cs.total_spent, 0) AS total_spent_by_customer,
     SUM(ss.total_avail_qty) AS sum_supply,
     AVG(ss.avg_supply_cost) AS avg_cost_supply,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     part p
 JOIN 

@@ -5,7 +5,7 @@ SELECT
     AVG(o.o_totalprice) AS average_order_value, 
     MAX(o.o_orderdate) AS last_order_date,
     SUM(l.l_quantity) AS total_quantity_sold,
-    string_agg(DISTINCT CONCAT(s.s_name, ' (', s.s_phone, ')'), '; ') AS supplier_contacts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')')))), '; ') AS supplier_contacts
 FROM 
     part p
 JOIN 

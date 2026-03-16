@@ -57,4 +57,4 @@ WHERE
 ORDER BY 
     hvi.total_net_profit DESC, 
     fc.order_count DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

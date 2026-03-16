@@ -42,7 +42,7 @@ MovieDetails AS (
         tm.title,
         tm.production_year,
         MAX(CASE WHEN mi.info_type_id = (SELECT id FROM info_type WHERE info = 'budget') THEN mi.info END) AS budget,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM 
         TopMovies tm
     LEFT JOIN 

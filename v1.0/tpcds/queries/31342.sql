@@ -6,7 +6,7 @@ WITH RECURSIVE item_tree AS (
         i_current_price, 
         0 AS level
     FROM item
-    WHERE i_rec_start_date <= DATE '2002-10-01' AND (i_rec_end_date IS NULL OR i_rec_end_date >= DATE '2002-10-01')
+    WHERE i_rec_start_date <= toDate('2002-10-01') AND (i_rec_end_date IS NULL OR i_rec_end_date >= toDate('2002-10-01'))
     
     UNION ALL
     
@@ -17,7 +17,7 @@ WITH RECURSIVE item_tree AS (
         it.level + 1
     FROM item_tree it
     JOIN item i ON it.i_item_sk = i.i_item_sk 
-    WHERE i_rec_start_date <= DATE '2002-10-01' AND (i_rec_end_date IS NULL OR i_rec_end_date >= DATE '2002-10-01')
+    WHERE i_rec_start_date <= toDate('2002-10-01') AND (i_rec_end_date IS NULL OR i_rec_end_date >= toDate('2002-10-01'))
     AND it.level < 3
 ),
 sales_summary AS (

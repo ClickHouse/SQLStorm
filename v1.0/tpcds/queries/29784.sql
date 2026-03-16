@@ -22,8 +22,8 @@ AggregateDemographics AS (
         cd_gender,
         COUNT(*) AS customer_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(cd_marital_status, ', ') AS marital_statuses,
-        STRING_AGG(cd_education_status, ', ') AS education_statuses
+        arrayStringConcat(groupArray(assumeNotNull(cd_marital_status)), ', ') AS marital_statuses,
+        arrayStringConcat(groupArray(assumeNotNull(cd_education_status)), ', ') AS education_statuses
     FROM 
         AddressDetails
     GROUP BY 

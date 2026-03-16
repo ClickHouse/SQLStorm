@@ -26,7 +26,7 @@ TopProducts AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= DATE '1995-01-01' AND l.l_shipdate <= DATE '1996-12-31'
+        l.l_shipdate >= toDate('1995-01-01') AND l.l_shipdate <= toDate('1996-12-31')
     GROUP BY 
         l.l_partkey
     ORDER BY 

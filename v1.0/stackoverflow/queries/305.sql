@@ -31,7 +31,7 @@ PostMetrics AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '6 months' 
+        P.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH 
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount, P.AnswerCount
 ),
@@ -64,7 +64,7 @@ SELECT
         WHEN CM.AnswerCount > 0 AND CM.Score < 0 THEN 'Unpopular'
         ELSE 'Popular'
     END AS PostPopularity,
-    (EXTRACT(EPOCH FROM CM.LastUpdateDate) - EXTRACT(EPOCH FROM CM.CreationDate)) / 60 AS MinutesSinceLastUpdate
+    (toUnixTimestamp(CM.LastUpdateDate) - toUnixTimestamp(CM.CreationDate)) / 60 AS MinutesSinceLastUpdate
 FROM 
     CombinedMetrics CM
 ORDER BY 

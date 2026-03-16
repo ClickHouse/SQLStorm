@@ -9,7 +9,7 @@ select
 from
 	(
 		select
-			extract(year from o_orderdate) as o_year,
+			toYear(o_orderdate) as o_year,
 			l_extendedprice * (1 - l_discount) as volume,
 			n2.n_name as nation
 		from
@@ -30,7 +30,7 @@ from
 			and n1.n_regionkey = r_regionkey
 			and r_name = 'ASIA'
 			and s_nationkey = n2.n_nationkey
-			and o_orderdate between date '1995-01-01' and date '1996-12-31'
+			and o_orderdate between toDate('1995-01-01') and toDate('1996-12-31')
 			and p_type = 'ECONOMY BURNISHED COPPER'
 	) as all_nations
 group by

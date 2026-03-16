@@ -30,8 +30,8 @@ AggregatedData AS (
         ca_city,
         COUNT(*) AS num_customers,
         AVG(email_length) AS avg_email_length,
-        STRING_AGG(full_name, '; ') AS customer_names,
-        STRING_AGG(full_address, '; ') AS addresses
+        arrayStringConcat(groupArray(assumeNotNull(full_name)), '; ') AS customer_names,
+        arrayStringConcat(groupArray(assumeNotNull(full_address)), '; ') AS addresses
     FROM 
         BaseData
     GROUP BY 

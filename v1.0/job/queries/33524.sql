@@ -28,7 +28,7 @@ movies_with_keywords AS (
         r.movie_title,
         r.total_actors,
         RANK() OVER (ORDER BY r.total_actors DESC) AS actor_rank,
-        string_agg(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         ranked_movies r
     LEFT JOIN 

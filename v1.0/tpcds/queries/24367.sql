@@ -56,4 +56,4 @@ OR EXISTS (
     AND ss_ext_tax IS NULL
 )
 ORDER BY a.total_profit DESC, a.total_orders DESC
-OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

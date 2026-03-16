@@ -30,7 +30,7 @@ SELECT
      FROM cast_info cti 
      WHERE cti.movie_id = m.id) AS total_cast_count,
     ROW_NUMBER() OVER (PARTITION BY m.production_year ORDER BY m.title) AS rn,
-    string_agg(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     AVG(CASE WHEN pi.info IS NOT NULL THEN CAST(pi.info AS DECIMAL) ELSE NULL END) AS average_rating
 FROM 
     aka_title m

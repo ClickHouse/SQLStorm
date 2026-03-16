@@ -27,7 +27,7 @@ RecentActivities AS (
     JOIN 
         Posts P ON Ph.PostId = P.Id
     WHERE 
-        Ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 DAYS'
+        Ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 CombinedResults AS (
     SELECT 

@@ -29,7 +29,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_quantity) AS total_items_ordered,
     AVG(i.i_current_price) AS avg_item_price,
-    STRING_AGG(DISTINCT i.item_description, ', ') AS item_descriptions,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.item_description))), ', ') AS item_descriptions,
     CASE 
         WHEN ci.cd_gender = 'M' THEN 'Male'
         WHEN ci.cd_gender = 'F' THEN 'Female'

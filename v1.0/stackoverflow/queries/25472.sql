@@ -22,18 +22,18 @@ WITH PostDetails AS (
                                                 FROM PostHistory ph2 
                                                 WHERE ph2.PostId = P.Id) 
     WHERE 
-        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND P.PostTypeId = 1 
 ),
 
 TagUsage AS (
     SELECT 
-        unnest(string_to_array(P.Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', P.Tags)) AS TagName,
         COUNT(*) AS UsageCount
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND P.PostTypeId = 1
     GROUP BY 
         TagName
@@ -66,7 +66,7 @@ SELECT
 FROM 
     PostDetails PD
 JOIN 
-    TagStatistics TS ON TS.TagName = ANY(string_to_array(PD.Tags, ','))
+    TagStatistics TS ON TS.TagName = ANY(splitByString(',', PD.Tags))
 ORDER BY 
     PD.Score DESC, 
     PD.ViewCount DESC;

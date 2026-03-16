@@ -7,7 +7,7 @@ SELECT
         WHEN o.o_orderstatus = 'F' THEN l.l_extendedprice * (1 - l.l_discount) 
         ELSE 0 
     END) AS avg_filled_order_value,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied
 FROM 
     part p
 JOIN 

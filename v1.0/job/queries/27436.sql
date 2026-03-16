@@ -5,8 +5,8 @@ WITH popular_movies AS (
         a.title,
         a.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title a
     LEFT JOIN 
@@ -27,8 +27,8 @@ movie_details AS (
         pm.movie_id,
         pm.title,
         pm.production_year,
-        STRING_AGG(DISTINCT CONCAT(cn.name, ' (', ct.kind, ')'), ', ') AS companies,
-        STRING_AGG(DISTINCT it.info, ', ') AS additional_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cn.name, ' (', ct.kind, ')')))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(it.info))), ', ') AS additional_info
     FROM 
         popular_movies pm
     JOIN 

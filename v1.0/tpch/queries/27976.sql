@@ -5,7 +5,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price_after_discount,
     COUNT(CASE WHEN l.l_returnflag = 'R' THEN 1 END) AS return_count,
-    STRING_AGG(DISTINCT r.r_name, '; ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), '; ') AS regions_supplied,
     MAX(o.o_orderdate) AS last_order_date
 FROM 
     supplier s
@@ -24,7 +24,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     s.s_name, p.p_name
 HAVING 

@@ -5,7 +5,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
     MAX(l.l_discount) AS max_discount,
-    STRING_AGG(CONCAT(l.l_comment, ' (Order: ', o.o_orderkey, ')'), '; ') AS detailed_comments
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(l.l_comment, ' (Order: ', o.o_orderkey, ')'))), '; ') AS detailed_comments
 FROM 
     part p
 JOIN 

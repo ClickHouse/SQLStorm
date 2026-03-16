@@ -50,7 +50,7 @@ SELECT
     ups.QuestionAnswers,
     COUNT(DISTINCT p.Id) AS TotalPosts,
     COUNT(DISTINCT CASE WHEN ph.PostId IS NOT NULL THEN p.Id END) AS EditedPosts,
-    STRING_AGG(DISTINCT ub.BadgeName, ', ') AS Badges,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ub.BadgeName))), ', ') AS Badges,
     MAX(CASE WHEN ub.Class = 1 THEN 'Gold' 
              WHEN ub.Class = 2 THEN 'Silver' 
              WHEN ub.Class = 3 THEN 'Bronze' 

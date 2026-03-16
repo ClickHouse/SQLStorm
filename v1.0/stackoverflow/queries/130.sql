@@ -19,7 +19,7 @@ PostAggregation AS (
         AVG(P.Score) AS AverageScore,
         MAX(P.CreationDate) AS LatestPostDate
     FROM Posts P
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY P.OwnerUserId
 ),
 RecentComments AS (
@@ -27,7 +27,7 @@ RecentComments AS (
         C.UserId,
         COUNT(C.Id) AS CommentCount
     FROM Comments C
-    WHERE C.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE C.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY C.UserId
 ),
 UserPostBadge AS (
@@ -58,12 +58,12 @@ SELECT
         WHEN UPB.PostCount > 0 THEN 'Occasional Contributor'
         ELSE 'Non-Contributor'
     END AS ContributionLevel,
-    STRING_AGG(DISTINCT tags.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tags.TagName))), ', ') AS AssociatedTags
 FROM UserPostBadge UPB
 JOIN Users U ON UPB.UserId = U.Id
 LEFT JOIN Posts P ON UPB.UserId = P.OwnerUserId
-LEFT JOIN LATERAL (
-    SELECT DISTINCT UNNEST(STRING_TO_ARRAY(P.Tags, '><')) AS TagName
+LEFT JOIN (
+    SELECT DISTINCT arrayJoin(splitByString('><', P.Tags)) AS TagName
 ) AS tags ON TRUE
 GROUP BY UPB.UserId, U.DisplayName, UPB.PostCount, UPB.RecentCommentCount, UPB.BadgeCount, UPB.GoldBadgeCount, UPB.SilverBadgeCount, UPB.BronzeBadgeCount
 ORDER BY UPB.BadgeCount DESC, UPB.PostCount DESC

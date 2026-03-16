@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 PostHistoryDetails AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(PHT.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes,
         COUNT(PH.Id) AS TotalHistoryChanges
     FROM 
         PostHistory PH

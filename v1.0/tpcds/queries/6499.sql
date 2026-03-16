@@ -53,6 +53,6 @@ SELECT
 FROM 
     TopCustomers tc
 JOIN 
-    SalesByMonth sbm ON EXTRACT(MONTH FROM DATE '2002-10-01') = sbm.d_month_seq
+    SalesByMonth sbm ON toMonth(toDate('2002-10-01')) = sbm.d_month_seq
 ORDER BY 
     tc.total_sales DESC;

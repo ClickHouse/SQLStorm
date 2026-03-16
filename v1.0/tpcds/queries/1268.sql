@@ -51,5 +51,5 @@ WHERE
     sd.sales_rank = 1
 ORDER BY
     net_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;
 

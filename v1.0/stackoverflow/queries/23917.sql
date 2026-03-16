@@ -9,13 +9,13 @@ WITH RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     JOIN 
@@ -53,7 +53,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS Comments
     FROM 
         Comments c
     GROUP BY 
@@ -97,4 +97,4 @@ WHERE
     rp.PostRank = 1
 ORDER BY 
     rp.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

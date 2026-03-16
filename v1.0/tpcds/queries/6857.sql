@@ -7,7 +7,7 @@ WITH SalesData AS (
         AVG(ws.ws_net_profit) AS avg_net_profit,
         cd.cd_gender,
         cd.cd_marital_status,
-        date_part('year', d.d_date) AS sales_year
+        datePart('year', d.d_date) AS sales_year
     FROM 
         web_sales ws
     JOIN 

@@ -1,7 +1,7 @@
 
 SELECT 
     CONCAT('Supplier: ', s.s_name, ' (', s.s_acctbal, ') - Products: ', 
-           STRING_AGG(CONCAT(p.p_name, ' [', ps.ps_availqty, ']'), ', ' ORDER BY p.p_name) 
+           arrayStringConcat(groupArray(assumeNotNull(CONCAT(p.p_name, ' [', ps.ps_availqty, ']'))), ', ' ORDER BY p.p_name) 
            ) AS supplier_products 
 FROM 
     supplier s 

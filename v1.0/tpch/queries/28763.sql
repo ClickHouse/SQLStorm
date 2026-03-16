@@ -8,7 +8,7 @@ SELECT
     AVG(l.l_quantity) AS average_quantity,
     MAX(l.l_shipdate) AS latest_shipdate,
     MIN(l.l_receiptdate) AS earliest_receiptdate,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ' (', r.r_name, ')'), ', ') AS nations_regions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ' (', r.r_name, ')')))), ', ') AS nations_regions
 FROM 
     part p
 JOIN 

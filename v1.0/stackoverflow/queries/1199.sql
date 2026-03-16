@@ -26,7 +26,7 @@ WITH RankedPosts AS (
         FROM Users
     ) up ON p.OwnerUserId = up.UserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 FilterPosts AS (
     SELECT 

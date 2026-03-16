@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS PostRank,
         COALESCE(p.AcceptedAnswerId, 0) AS AcceptedAnswer,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray
     FROM 
         Posts p
     LEFT JOIN 

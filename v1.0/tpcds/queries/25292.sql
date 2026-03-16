@@ -52,7 +52,7 @@ FROM
 LEFT JOIN 
     ItemSales i ON ci.c_customer_sk = i.ws_item_sk
 LEFT JOIN 
-    Promotions p ON p.p_promo_sk = (SELECT p.p_promo_sk FROM promotion p ORDER BY RANDOM() LIMIT 1)
+    Promotions p ON p.p_promo_sk = (SELECT p.p_promo_sk FROM promotion p ORDER BY rand() LIMIT 1)
 WHERE 
     ci.cd_gender = 'F' AND 
     ci.cd_marital_status = 'M'

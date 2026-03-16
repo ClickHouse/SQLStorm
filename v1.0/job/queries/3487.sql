@@ -44,7 +44,7 @@ SELECT
     hc.production_year, 
     hc.actor_count, 
     hc.average_rating, 
-    STRING_AGG(at.alternative_name, ', ') AS alternative_names
+    arrayStringConcat(groupArray(assumeNotNull(at.alternative_name)), ', ') AS alternative_names
 FROM 
     HighActorCount hc
 LEFT JOIN 

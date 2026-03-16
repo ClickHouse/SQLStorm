@@ -19,7 +19,7 @@ title_info AS (
         rt.title_id,
         rt.title,
         rt.production_year,
-        STRING_AGG(rt.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(rt.keyword)), ', ') AS keywords
     FROM 
         ranked_titles rt
     GROUP BY 
@@ -43,7 +43,7 @@ full_cast_info AS (
         ti.title_id,
         ti.title,
         ti.production_year,
-        STRING_AGG(DISTINCT pr.person_name || ' as ' || pr.role, '; ') AS full_cast
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pr.person_name || ' as ' || pr.role))), '; ') AS full_cast
     FROM 
         title_info ti
     JOIN 

@@ -32,7 +32,7 @@ SELECT
     COALESCE(c.name, 'Unknown') AS cast_member,
     COUNT(DISTINCT k.keyword) AS keyword_count,
     ROW_NUMBER() OVER (PARTITION BY mt.id ORDER BY COUNT(DISTINCT k.keyword) DESC) AS rank,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords_list
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords_list
 FROM
     MovieHierarchy mh
 JOIN

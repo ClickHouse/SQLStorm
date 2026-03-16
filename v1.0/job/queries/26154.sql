@@ -19,7 +19,7 @@ MoviesWithKeywords AS (
         rm.title,
         rm.production_year,
         rm.cast_count,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         RankedMovies rm
     LEFT JOIN 
@@ -36,7 +36,7 @@ EnrichedMovies AS (
         mwk.production_year,
         mwk.cast_count,
         mwk.keywords,
-        ARRAY_AGG(DISTINCT ci.note) AS cast_notes
+        arrayDistinct(groupArray(assumeNotNull(ci.note))) AS cast_notes
     FROM 
         MoviesWithKeywords mwk
     LEFT JOIN 

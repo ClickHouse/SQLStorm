@@ -49,7 +49,7 @@ FrequentTaggers AS (
 SELECT 
     ft.DisplayName AS TaggerName,
     ft.PostsTagged AS TotalTagsUsed,
-    ARRAY_AGG(DISTINCT tp.TagName) AS PopularTags,
+    arrayDistinct(groupArray(assumeNotNull(tp.TagName))) AS PopularTags,
     COUNT(*) AS TotalPosts
 FROM 
     FrequentTaggers ft

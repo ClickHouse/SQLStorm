@@ -61,7 +61,7 @@ SELECT
     SUM(od.l_quantity) AS total_quantity,
     SUM(od.l_extendedprice) AS total_revenue,
     AVG(s.s_acctbal) AS avg_supplier_account_balance,
-    STRING_AGG(DISTINCT s.short_comment, '; ') AS supplier_comments_summary,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.short_comment))), '; ') AS supplier_comments_summary,
     MAX(s.comment_length) AS max_supplier_comment_length
 FROM 
     PartSupplierDetails pd

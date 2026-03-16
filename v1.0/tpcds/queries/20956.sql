@@ -57,11 +57,11 @@ FROM
 JOIN 
     customer_income ci ON ci.cd_demo_sk = cl.c_customer_sk
 JOIN 
-    date_summary ds ON ds.d_year = EXTRACT(YEAR FROM CAST('2002-10-01' AS DATE))
+    date_summary ds ON ds.d_year = toYear(CAST('2002-10-01' AS DATE))
 WHERE 
     ds.sales_rank <= 5 AND
     (ci.income_range IS NOT NULL OR ci.cd_marital_status = 'S')
 ORDER BY 
     ds.total_sales DESC,
     cl.c_customer_id
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

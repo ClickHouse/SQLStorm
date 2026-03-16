@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -53,7 +53,7 @@ SELECT
         WHEN phs.ClosureStatus = 1 THEN 'Closed' 
         ELSE 'Open' 
     END AS PostStatus,
-    DATE_PART('day', CURRENT_DATE - rp.CreationDate) AS DaysSinceCreation
+    datePart('day', CURRENT_DATE - rp.CreationDate) AS DaysSinceCreation
 FROM 
     RankedPosts rp
 JOIN 

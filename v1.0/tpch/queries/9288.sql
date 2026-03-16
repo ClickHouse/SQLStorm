@@ -19,7 +19,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
+    o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1996-12-31')
     AND l.l_shipmode = 'AIR'
 GROUP BY 
     n.n_name, r.r_name

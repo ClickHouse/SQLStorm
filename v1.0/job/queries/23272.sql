@@ -6,7 +6,7 @@ WITH RecursiveActorRoles AS (
 ),
 
 MovieKeywordMapping AS (
-    SELECT mk.movie_id, ARRAY_AGG(k.keyword) AS keywords
+    SELECT mk.movie_id, groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id
@@ -16,7 +16,7 @@ DetailedMovieInfo AS (
     SELECT m.id AS movie_id, m.title, 
            COALESCE(a.name, 'Unknown') AS actor_name,
            COALESCE(k.keywords, '{}') AS keywords,
-           EXTRACT(YEAR FROM cast('2024-10-01' as date)) - m.production_year AS movie_age,
+           toYear(cast('2024-10-01' as date)) - m.production_year AS movie_age,
            DENSE_RANK() OVER (PARTITION BY m.kind_id ORDER BY m.production_year DESC) AS recent_rank
     FROM aka_title m
     LEFT JOIN aka_name a ON a.id = (

@@ -9,7 +9,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_sales,
     AVG(LENGTH(c.c_email_address)) AS avg_email_length,
-    STRING_AGG(DISTINCT CONCAT(i.i_product_name, ' (', i.i_item_desc, ')'), ', ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(i.i_product_name, ' (', i.i_item_desc, ')')))), ', ') AS purchased_items
 FROM 
     customer c
 JOIN 

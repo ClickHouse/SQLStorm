@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     INNER JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
 ),
 TopPosts AS (
     SELECT 
@@ -41,13 +41,13 @@ PostHistorySummary AS (
     SELECT 
         p.Id AS PostId,
         ph.PostHistoryTypeId,
-        STRING_AGG(DISTINCT ph.Comment, ', ') AS HistoryComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), ', ') AS HistoryComments
     FROM 
         PostHistory ph
     INNER JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
     GROUP BY 
         p.Id, ph.PostHistoryTypeId
 )

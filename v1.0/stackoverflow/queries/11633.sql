@@ -44,7 +44,7 @@ FROM
 JOIN 
     UserStats us ON ps.PostTypeId = 1 
 WHERE 
-    ps.LastActive BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' AND TIMESTAMP '2024-10-01 12:34:56'
+    ps.LastActive BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY AND toDateTime64('2024-10-01 12:34:56', 6)
 ORDER BY 
     ps.VoteCount DESC
 LIMIT 100;

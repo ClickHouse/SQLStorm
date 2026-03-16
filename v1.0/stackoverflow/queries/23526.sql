@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title, P.Score, P.ViewCount, P.CreationDate, P.ClosedDate
 ),
@@ -22,7 +22,7 @@ PostComments AS (
     SELECT 
         C.PostId,
         COUNT(C.Id) AS CommentCount,
-        STRING_AGG(C.Text, ' | ') AS CommentTexts
+        arrayStringConcat(groupArray(assumeNotNull(C.Text)), ' | ') AS CommentTexts
     FROM 
         Comments C
     GROUP BY 
@@ -54,7 +54,7 @@ SELECT
     COALESCE(PC.CommentTexts, 'No comments') AS CommentTexts,
     COALESCE(PH.EditCount, 0) AS TotalEdits,
     CASE 
-        WHEN RP.EffectiveCloseDate < cast('2024-10-01 12:34:56' as timestamp) THEN 'Closed'
+        WHEN RP.EffectiveCloseDate < toDateTime64('2024-10-01 12:34:56', 6) THEN 'Closed'
         ELSE 'Open'
     END AS PostStatus,
     CASE 

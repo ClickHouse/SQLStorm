@@ -40,7 +40,7 @@ CompanyInfo AS (
 MovieCast AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(a.name, ', ') AS cast_names
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS cast_names
     FROM 
         cast_info ci
     JOIN 

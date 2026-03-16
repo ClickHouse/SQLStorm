@@ -30,7 +30,7 @@ FilteredMovies AS (
 MovieInfo AS (
     SELECT 
         fm.movie_id,
-        STRING_AGG(mi.info, ', ') AS movie_info,
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS movie_info,
         MAX(mi.note) AS last_note
     FROM 
         FilteredMovies fm

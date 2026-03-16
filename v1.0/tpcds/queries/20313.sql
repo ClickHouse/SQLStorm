@@ -55,4 +55,4 @@ WHERE
     AND cs.total_spent IS NOT NULL
 ORDER BY 
     cs.total_spent DESC
-OFFSET 5 ROWS FETCH NEXT 30 ROWS ONLY;
+LIMIT 30 OFFSET 5;

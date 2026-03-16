@@ -10,7 +10,7 @@ WITH RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
         AND p.ViewCount > 50
 ),
 PostDetails AS (
@@ -20,7 +20,7 @@ PostDetails AS (
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = rp.PostId) AS CommentCount,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rp.PostId AND v.VoteTypeId = 2) AS UpVotes,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rp.PostId AND v.VoteTypeId = 3) AS DownVotes,
-        (SELECT STRING_AGG(b.Name, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
          FROM Badges b 
          JOIN Users u ON b.UserId = u.Id 
          WHERE u.Id = (SELECT OwnerUserId FROM Posts WHERE Id = rp.PostId)) AS OwnerBadges,

@@ -42,7 +42,7 @@ SELECT
     ta.total_roles,
     ta.distinct_years,
     ta.avg_roles_per_year,
-    (SELECT STRING_AGG(DISTINCT movie_title, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_title))), ', ') 
      FROM ActorMovieList 
      WHERE actor_name = ta.actor_name
     ) AS movies_worked_on,

@@ -10,8 +10,8 @@ WITH RecentPosts AS (
         p.AnswerCount, 
         p.CommentCount, 
         p.FavoriteCount,
-        ARRAY_AGG(DISTINCT pt.Name) AS PostTypes,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypes,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     JOIN 
@@ -19,11 +19,11 @@ WITH RecentPosts AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '>')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('>', p.Tags)) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, u.DisplayName, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount, p.CommentCount, p.FavoriteCount
 ), 

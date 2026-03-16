@@ -33,7 +33,7 @@ AggregatedData AS (
         COUNT(DISTINCT o_orderkey) AS num_orders,
         SUM(l_quantity) AS total_quantity,
         AVG(ps_supplycost) AS avg_supply_cost,
-        STRING_AGG(short_comment, ', ') AS comments_summary
+        arrayStringConcat(groupArray(assumeNotNull(short_comment)), ', ') AS comments_summary
     FROM 
         OrderedParts
     GROUP BY 

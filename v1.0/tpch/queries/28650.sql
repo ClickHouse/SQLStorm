@@ -1,8 +1,8 @@
 WITH String_Aggregation AS (
     SELECT 
         n.n_name AS nation_name,
-        STRING_AGG(DISTINCT s.s_name, '; ') AS supplier_names,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), '; ') AS supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
         COUNT(DISTINCT o.o_orderkey) AS total_orders
     FROM nation n
     JOIN supplier s ON n.n_nationkey = s.s_nationkey

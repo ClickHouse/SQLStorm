@@ -7,7 +7,7 @@ SELECT
     SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
     SUM(CASE WHEN P.Score > 0 THEN 1 ELSE 0 END) AS TotalUpvotedPosts,
     AVG(P.ViewCount) AS AverageViewCount,
-    STRING_AGG(DISTINCT T.TagName, ', ') AS AssociatedTags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS AssociatedTags,
     COUNT(B.Id) AS TotalBadges
 FROM 
     Users U

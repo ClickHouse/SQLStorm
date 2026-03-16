@@ -35,7 +35,7 @@ SELECT
     ci.cd_education_status,
     COUNT(ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_spent,
-    STRING_AGG(DISTINCT ci.full_address || ' ' || ci.ca_city || ', ' || ci.ca_state, '; ') AS addresses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.full_address || ' ' || ci.ca_city || ', ' || ci.ca_state))), '; ') AS addresses
 FROM 
     CustomerInfo ci
 LEFT JOIN 

@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     JOIN 
         PostHistory PHT ON p.Id = PHT.PostId AND PHT.PostHistoryTypeId IN (4, 5, 6) 
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, U.DisplayName, PHT.CreationDate, p.PostTypeId
 ),
@@ -38,11 +38,11 @@ SELECT
     tp.CommentCount, 
     tp.VoteCount, 
     tp.LastEditDate, 
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
-    (SELECT UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS TagName, p.Id 
+    (SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName, p.Id 
      FROM Posts p) AS tag_arr ON tp.PostId = tag_arr.Id
 LEFT JOIN 
     Tags t ON t.TagName = tag_arr.TagName

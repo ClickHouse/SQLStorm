@@ -20,7 +20,7 @@ address_summary AS (
     SELECT 
         ca_state,
         COUNT(*) AS number_of_customers,
-        STRING_AGG(full_name, ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names
     FROM 
         customer_info
     GROUP BY 

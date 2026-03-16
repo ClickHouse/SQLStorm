@@ -28,7 +28,7 @@ PostsWithHistory AS (
         PostHistory PH ON P.Id = PH.PostId 
         AND PH.PostHistoryTypeId IN (10, 11) 
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 YEAR'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 PostStatistics AS (
     SELECT 
@@ -36,13 +36,13 @@ PostStatistics AS (
         P.Title,
         P.ViewCount,
         COALESCE(CAST(ROUND(AVG(CASE WHEN C.Text IS NOT NULL THEN C.Score END), 2) AS NUMERIC), 0) AS AvgCommentScore,
-        STRING_AGG(DISTINCT Tags.TagName, ', ') AS TagList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Tags.TagName))), ', ') AS TagList
     FROM 
         Posts P
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
-        LATERAL (SELECT unnest(string_to_array(P.Tags, ','::text)) AS TagName) Tags ON TRUE
+        (SELECT arrayJoin(splitByString(CAST(',' AS text), P.Tags)) AS TagName) Tags ON TRUE
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 

@@ -4,8 +4,8 @@ WITH TagStats AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(p.ViewCount) AS TotalViews,
         SUM(p.Score) AS TotalScore,
-        ARRAY_AGG(DISTINCT u.DisplayName) AS UsersContributing,
-        STRING_AGG(DISTINCT p.Title, '; ') AS PostTitles
+        arrayDistinct(groupArray(assumeNotNull(u.DisplayName))) AS UsersContributing,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), '; ') AS PostTitles
     FROM 
         Tags t
     JOIN 
@@ -13,7 +13,7 @@ WITH TagStats AS (
     JOIN 
         Users u ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
     GROUP BY 
         t.TagName
 ),

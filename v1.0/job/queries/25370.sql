@@ -4,8 +4,8 @@ WITH RECURSIVE MovieHierarchy AS (
         m.title,
         m.production_year,
         COALESCE(c.kind, 'Unknown') AS movie_kind,
-        COALESCE(STRING_AGG(DISTINCT cn.name, ', '), 'No Companies') AS companies_involved,
-        COALESCE(STRING_AGG(DISTINCT ak.name, ', '), 'No Actors') AS cast_members
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', '), 'No Companies') AS companies_involved,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', '), 'No Actors') AS cast_members
     FROM 
         aka_title m
     LEFT JOIN 

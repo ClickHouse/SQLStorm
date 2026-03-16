@@ -50,4 +50,4 @@ WHERE
     tp.total_profit IS NOT NULL
 ORDER BY 
     tp.total_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

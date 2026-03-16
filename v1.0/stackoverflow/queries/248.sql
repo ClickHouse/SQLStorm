@@ -42,7 +42,7 @@ RecentPosts AS (
     JOIN 
         UserStatistics us ON pa.PostId IN (SELECT Id FROM Posts WHERE OwnerUserId = us.UserId)
     WHERE 
-        pa.LastActivityDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        pa.LastActivityDate >= now64(6) - INTERVAL 30 DAY
 ),
 AggregatedData AS (
     SELECT 

@@ -23,7 +23,7 @@ CastDetails AS (
     SELECT
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors
     FROM
         cast_info ci
     JOIN
@@ -65,4 +65,4 @@ LEFT JOIN
     MoviesWithInfo mi ON mh.movie_id = mi.movie_id
 ORDER BY
     mh.production_year DESC, actor_rank
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -38,7 +38,7 @@ SELECT
         WHEN h.total_sales BETWEEN 500 AND 1000 THEN 'Medium'
         ELSE 'Low'
     END AS sales_category,
-    ARRAY_AGG(DISTINCT it.i_item_desc) AS purchased_items
+    arrayDistinct(groupArray(assumeNotNull(it.i_item_desc))) AS purchased_items
 FROM 
     high_value_customers h
 LEFT JOIN 

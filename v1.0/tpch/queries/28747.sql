@@ -5,7 +5,7 @@ SELECT
     CONCAT('Part: ', p.p_name, ' | Comment: ', SUBSTRING(p.p_comment, 1, 20)) AS detailed_info,
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_phone, ')'), '; ') AS suppliers_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')')))), '; ') AS suppliers_info
 FROM 
     part p
 JOIN 

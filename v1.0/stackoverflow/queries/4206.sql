@@ -24,7 +24,7 @@ PostClosure AS (
         P.Id AS PostId,
         P.Title,
         COUNT(PH.Id) AS CloseCount,
-        ARRAY_AGG(DISTINCT CT.Name) AS CloseReasons
+        arrayDistinct(groupArray(assumeNotNull(CT.Name))) AS CloseReasons
     FROM Posts P
     LEFT JOIN PostHistory PH ON P.Id = PH.PostId AND PH.PostHistoryTypeId = 10
     LEFT JOIN CloseReasonTypes CT ON CAST(PH.Comment AS integer) = CT.Id

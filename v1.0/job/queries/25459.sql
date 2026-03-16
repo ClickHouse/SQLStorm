@@ -6,7 +6,7 @@ WITH movie_details AS (
         t.production_year,
         a.name AS actor_name,
         p.gender,
-        STRING_AGG(k.keyword, ',') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ',') AS keywords
     FROM title t
     JOIN movie_info mi ON t.id = mi.movie_id
     JOIN movie_keyword mk ON t.id = mk.movie_id
@@ -20,8 +20,8 @@ WITH movie_details AS (
 company_details AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(c.name, ',') AS companies,
-        STRING_AGG(ct.kind, ',') AS company_types
+        arrayStringConcat(groupArray(assumeNotNull(c.name)), ',') AS companies,
+        arrayStringConcat(groupArray(assumeNotNull(ct.kind)), ',') AS company_types
     FROM movie_companies mc
     JOIN company_name c ON mc.company_id = c.id
     JOIN company_type ct ON mc.company_type_id = ct.id

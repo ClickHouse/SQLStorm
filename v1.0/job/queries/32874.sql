@@ -33,7 +33,7 @@ SELECT
     mh.production_year,
     COUNT(DISTINCT mc.company_id) AS production_companies,
     SUM(CASE WHEN mi.info_type_id = 1 THEN 1 ELSE 0 END) AS runtime_infos,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ak.name ORDER BY mh.production_year DESC) as row_num
 FROM
     MovieHierarchy mh

@@ -11,7 +11,7 @@ WITH RankedMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id
@@ -30,7 +30,7 @@ MovieCast AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names
     FROM cast_info ci
     JOIN aka_name a ON ci.person_id = a.person_id
     GROUP BY ci.movie_id
@@ -49,4 +49,4 @@ LEFT JOIN CompanyInfo ci ON rm.movie_id = ci.movie_id
 LEFT JOIN MovieCast mcast ON rm.movie_id = mcast.movie_id
 WHERE rm.rn <= 5
 ORDER BY rm.production_year DESC, rm.title ASC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

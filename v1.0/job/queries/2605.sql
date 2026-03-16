@@ -24,7 +24,7 @@ ActorRoles AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.role_id) AS role_count,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles
     FROM 
         cast_info ci
     JOIN 
@@ -66,4 +66,4 @@ WHERE
     AND (md.company_count IS NOT NULL OR md.role_count IS NOT NULL)
 ORDER BY 
     md.production_year DESC, md.title ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

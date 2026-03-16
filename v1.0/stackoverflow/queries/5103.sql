@@ -45,7 +45,7 @@ ActiveUsers AS (
     FROM 
         UserActivity
     WHERE 
-        LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
+        LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     au.DisplayName,

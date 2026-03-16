@@ -27,7 +27,7 @@ CustomerStats AS (
     SELECT 
         ca_state,
         COUNT(*) AS total_customers,
-        STRING_AGG(full_name, ', ') AS customer_names,
+        arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names,
         COUNT(CASE WHEN cd_gender = 'F' THEN 1 END) AS female_count,
         COUNT(CASE WHEN cd_marital_status = 'M' THEN 1 END) AS married_count
     FROM FilteredCustomers

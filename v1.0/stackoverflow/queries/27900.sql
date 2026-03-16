@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag,
         COUNT(*) AS PostCount,
         AVG(p.ViewCount) AS AvgViewCount,
         AVG(p.Score) AS AvgScore

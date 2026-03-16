@@ -15,7 +15,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days'
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName, p.Score, p.ViewCount
 ),
@@ -29,7 +29,7 @@ TopUsers AS (
     INNER JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName
     ORDER BY 

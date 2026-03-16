@@ -6,7 +6,7 @@ SELECT
     o.o_orderdate,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT l.l_comment, '; ') AS lineitem_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_comment))), '; ') AS lineitem_comments
 FROM 
     part p
 JOIN 

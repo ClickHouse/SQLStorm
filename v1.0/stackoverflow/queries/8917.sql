@@ -25,11 +25,11 @@ WITH RecentPosts AS (
             ParentId
     ) a ON p.Id = a.ParentId
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
 ),
 TopTags AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(Tags, ','))) AS TagName
+        TRIM(arrayJoin(splitByString(',', Tags))) AS TagName
     FROM 
         RecentPosts
 ),

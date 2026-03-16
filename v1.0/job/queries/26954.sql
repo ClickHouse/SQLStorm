@@ -42,7 +42,7 @@ SELECT
     rm.production_year,
     rm.recommendation,
     COUNT(DISTINCT ci.person_id) AS total_cast,
-    string_agg(DISTINCT a.name, ', ') AS main_cast_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS main_cast_names
 FROM
     RecommendedMovies rm
 LEFT JOIN

@@ -27,7 +27,7 @@ SELECT
     COUNT(DISTINCT ca.person_id) AS total_cast,
     SUM(CASE WHEN ca.role_id = (SELECT id FROM role_type WHERE role = 'Lead') THEN 1 ELSE 0 END) AS lead_roles,
     COUNT(DISTINCT CASE WHEN ca.person_id IS NOT NULL THEN ca.person_id END) AS distinct_actors,
-    STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
     AVG(CASE WHEN mi.info_type_id = (SELECT id FROM info_type WHERE info = 'Box Office') THEN CAST(mi.info AS NUMERIC) ELSE NULL END) AS avg_box_office
 FROM aka_title at
 LEFT JOIN cast_info ca ON at.id = ca.movie_id

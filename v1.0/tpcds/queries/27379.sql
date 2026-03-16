@@ -4,8 +4,8 @@ WITH Address_Analysis AS (
         ca_city,
         ca_state,
         COUNT(DISTINCT ca_address_sk) AS unique_addresses,
-        ARRAY_AGG(DISTINCT ca_street_name) AS street_names,
-        ARRAY_AGG(DISTINCT ca_street_type) AS street_types
+        arrayDistinct(groupArray(assumeNotNull(ca_street_name))) AS street_names,
+        arrayDistinct(groupArray(assumeNotNull(ca_street_type))) AS street_types
     FROM 
         customer_address
     WHERE 

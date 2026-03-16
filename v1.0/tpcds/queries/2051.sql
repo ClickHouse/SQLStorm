@@ -61,4 +61,4 @@ LEFT JOIN
 ORDER BY 
     hvc.total_profit DESC, 
     rcp.recent_orders DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -25,7 +25,7 @@ PopularMovies AS (
 MovieKeywords AS (
     SELECT
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM
         movie_keyword mk
     JOIN
@@ -55,7 +55,7 @@ SELECT
     md.keywords,
     COALESCE((
         SELECT
-            STRING_AGG(c.name, ', ')
+            arrayStringConcat(groupArray(assumeNotNull(c.name)), ', ')
         FROM
             complete_cast cc
         JOIN

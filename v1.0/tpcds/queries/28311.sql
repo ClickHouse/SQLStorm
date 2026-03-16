@@ -3,7 +3,7 @@ WITH AddressAnalysis AS (
         ca_city,
         ca_state,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
-        STRING_AGG(DISTINCT ca_street_name || ' ' || ca_street_type, ', ') AS street_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_type))), ', ') AS street_names,
         SUM(CASE WHEN ca_country = 'USA' THEN 1 ELSE 0 END) AS usa_addresses
     FROM 
         customer_address
@@ -15,7 +15,7 @@ DemographicsAnalysis AS (
         cd_gender,
         cd_marital_status,
         COUNT(*) AS demographic_count,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_list,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate
     FROM 
         customer_demographics

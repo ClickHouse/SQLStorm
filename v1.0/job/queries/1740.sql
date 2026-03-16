@@ -15,7 +15,7 @@ MovieDetails AS (
         m.title,
         m.production_year,
         COUNT(c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
         MAX(CASE WHEN i.info_type_id = 1 THEN i.info END) AS genre,
         MAX(CASE WHEN i.info_type_id = 2 THEN i.info END) AS language
     FROM 

@@ -41,7 +41,7 @@ SalesByDate AS (
 ),
 WeeklySales AS (
     SELECT 
-        EXTRACT(WEEK FROM d_date) AS week_number,
+        toWeek(d_date) AS week_number,
         SUM(daily_sales) AS weekly_sales
     FROM 
         SalesByDate
@@ -57,7 +57,7 @@ SELECT
 FROM 
     TopCustomers tc
 JOIN 
-    WeeklySales ws ON ws.week_number = EXTRACT(WEEK FROM DATE '2002-10-01')
+    WeeklySales ws ON ws.week_number = toWeek(toDate('2002-10-01'))
 WHERE 
     tc.sales_rank <= 50
 ORDER BY 

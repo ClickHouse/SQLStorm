@@ -8,7 +8,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(CASE WHEN p.PostTypeId = 3 THEN 1 ELSE 0 END) AS TotalWikis,
         SUM(CASE WHEN p.PostTypeId = 1 AND p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswers,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)) / 60) AS AvgActiveDuration
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate)) / 60) AS AvgActiveDuration
     FROM 
         Users u
     LEFT JOIN 

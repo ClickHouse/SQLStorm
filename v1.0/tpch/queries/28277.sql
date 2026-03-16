@@ -5,7 +5,7 @@ SELECT
             WHEN LENGTH(s.s_comment) > 50 THEN LENGTH(s.s_comment) 
             ELSE 0 
         END) AS avg_long_comment_length,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     SUM(l.l_discount * l.l_extendedprice) AS total_discounted_price
 FROM 
     supplier s

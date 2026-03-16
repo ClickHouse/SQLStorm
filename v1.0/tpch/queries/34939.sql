@@ -21,7 +21,7 @@ RankedSuppliers AS (
 CustomerStats AS (
     SELECT c.c_custkey, c.c_name, COUNT(o.o_orderkey) AS order_count,
            SUM(o.o_totalprice) AS total_spent, 
-           STRING_AGG(DISTINCT n.n_name, ', ') AS nation_names
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nation_names
     FROM customer c
     LEFT JOIN orders o ON c.c_custkey = o.o_custkey
     LEFT JOIN nation n ON c.c_nationkey = n.n_nationkey

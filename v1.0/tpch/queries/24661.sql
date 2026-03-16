@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 SupplierParts AS (
     SELECT 
@@ -27,7 +27,7 @@ RecentPurchases AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= CURRENT_DATE - INTERVAL '1 year'
+        l.l_shipdate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         l.l_orderkey
 )

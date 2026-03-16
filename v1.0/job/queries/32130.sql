@@ -32,8 +32,8 @@ SELECT
     a.name AS actor_name,
     COUNT(DISTINCT rt.movie_title) AS total_movies, 
     MAX(rt.production_year) AS last_movie_year,
-    STRING_AGG(DISTINCT rt.movie_title, ', ') FILTER (WHERE rt.rank <= 3) AS top_movies,
-    STRING_AGG(DISTINCT kt.keyword, ', ') AS associated_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.movie_title))), ', ') FILTER (WHERE rt.rank <= 3) AS top_movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS associated_keywords
 FROM ActorHierarchy ah
 JOIN aka_name a ON ah.person_id = a.person_id
 LEFT JOIN RankedTitles rt ON a.person_id = rt.actor_id

@@ -19,7 +19,7 @@ TopPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
+        P.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title, P.Score, P.ViewCount
 ), 

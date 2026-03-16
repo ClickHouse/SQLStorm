@@ -17,7 +17,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 YEAR'  
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount
 )

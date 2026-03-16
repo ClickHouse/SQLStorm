@@ -29,8 +29,8 @@ aggregated_data AS (
     SELECT
         movie_title,
         production_year,
-        STRING_AGG(DISTINCT actor_name, ', ') AS cast_names,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
         COUNT(DISTINCT actor_name) AS actor_count,
         COUNT(DISTINCT company_type) AS company_types
     FROM

@@ -12,9 +12,9 @@ TopSuppliers AS (
     FROM SupplierDetails 
     WHERE rank <= 5
 )
-SELECT nation_name, STRING_AGG(part_name, ', ') AS part_names, 
-       STRING_AGG(CAST(ps_supplycost AS VARCHAR), ', ') AS supply_costs, 
-       STRING_AGG(ps_comment, '; ') AS comments
+SELECT nation_name, arrayStringConcat(groupArray(assumeNotNull(part_name)), ', ') AS part_names, 
+       arrayStringConcat(groupArray(assumeNotNull(CAST(ps_supplycost AS VARCHAR))), ', ') AS supply_costs, 
+       arrayStringConcat(groupArray(assumeNotNull(ps_comment)), '; ') AS comments
 FROM TopSuppliers
 GROUP BY nation_name
 ORDER BY nation_name;

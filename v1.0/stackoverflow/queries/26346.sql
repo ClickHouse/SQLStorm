@@ -96,4 +96,4 @@ SELECT
     CloseReasonCount
 FROM
     FinalBenchmark
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

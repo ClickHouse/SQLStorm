@@ -61,4 +61,4 @@ WHERE
 ORDER BY 
     ti.total_sales DESC,
     stock_on_hand ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

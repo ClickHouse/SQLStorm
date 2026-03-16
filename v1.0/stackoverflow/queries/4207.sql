@@ -28,7 +28,7 @@ SELECT
 FROM Users u
 LEFT JOIN TopUsers up ON u.Id = up.UserId
 LEFT JOIN Comments c ON c.UserId = u.Id
-WHERE u.CreationDate < (DATE '2024-10-01' - INTERVAL '1 year')
+WHERE u.CreationDate < (toDate('2024-10-01') - INTERVAL 1 YEAR)
 GROUP BY u.Id, u.DisplayName, u.Reputation, up.QuestionCount, up.AnswerCount
 HAVING COALESCE(up.QuestionCount, 0) + COALESCE(up.AnswerCount, 0) > 10
 ORDER BY ReputationRank, NumberOfQuestions DESC

@@ -4,7 +4,7 @@ WITH SupplierPerformance AS (
         s.s_name,
         SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,
         AVG(ps.ps_availqty) AS avg_avail_qty,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
     FROM 
         supplier s
     JOIN 

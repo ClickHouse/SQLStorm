@@ -4,7 +4,7 @@ WITH TagStats AS (
         COUNT(DISTINCT P.Id) AS PostCount,
         SUM(P.ViewCount) AS TotalViews,
         AVG(P.Score) AS AvgScore,
-        STRING_AGG(DISTINCT U.DisplayName, ', ') AS TopContributors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS TopContributors
     FROM 
         Tags T
     LEFT JOIN 
@@ -18,7 +18,7 @@ TopBadges AS (
     SELECT 
         U.DisplayName,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 

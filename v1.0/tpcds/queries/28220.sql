@@ -60,7 +60,7 @@ FROM
 LEFT JOIN 
     Item_Stats it ON ci.c_customer_id = it.i_item_id
 LEFT JOIN 
-    Sales_Stats ss ON ss.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
+    Sales_Stats ss ON ss.d_year = toYear(toDate('2002-10-01'))
 WHERE 
     ci.cd_gender = 'M' AND ci.cd_marital_status = 'S'
 ORDER BY 

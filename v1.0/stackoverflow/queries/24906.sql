@@ -22,7 +22,7 @@ RecentCloseReasons AS (
     SELECT 
         PH.UserId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(DISTINCT CRT.Name || ' (' || PH.CreationDate || ')', ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CRT.Name || ' (' || PH.CreationDate || ')'))), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 

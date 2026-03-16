@@ -17,7 +17,7 @@ FilteredReturns AS (
         cr_item_sk,
         COUNT(*) AS total_returns,
         SUM(cr_return_amt_inc_tax) AS total_return_value,
-        STRING_AGG(DISTINCT CAST(cr_reason_sk AS TEXT), ', ') AS return_reasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(cr_reason_sk AS TEXT)))), ', ') AS return_reasons
     FROM 
         catalog_returns
     GROUP BY 

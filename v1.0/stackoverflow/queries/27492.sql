@@ -1,6 +1,6 @@
 WITH TagCounts AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><'))) AS Tag,
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS Tag,
         COUNT(*) AS PostCount
     FROM Posts
     WHERE PostTypeId = 1 

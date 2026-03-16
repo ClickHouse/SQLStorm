@@ -50,7 +50,7 @@ SELECT
     SUM(up.TotalPosts) AS TotalPosts,
     SUM(up.PositivePosts) AS TotalPositivePosts,
     SUM(up.NegativePosts) AS TotalNegativePosts,
-    STRING_AGG(CONCAT(pd.Title, ' (', pd.PostType, ')'), '; ') AS PostTitles,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(pd.Title, ' (', pd.PostType, ')'))), '; ') AS PostTitles,
     AVG(COALESCE(pd.CommentCount, 0)) AS AverageCommentsPerPost,
     COUNT(DISTINCT pd.PostId) AS UniquePostCount
 FROM 

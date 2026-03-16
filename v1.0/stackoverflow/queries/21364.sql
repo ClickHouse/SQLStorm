@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
         AND P.Score IS NOT NULL 
         AND P.PostTypeId IN (1, 2)  
 ),
@@ -32,11 +32,11 @@ PostHistoryDetails AS (
     SELECT 
         PH.PostId,
         COUNT(CASE WHEN PH.PostHistoryTypeId IN (10, 12) THEN 1 END) AS Changes,
-        STRING_AGG(PH.Comment, '; ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(PH.Comment)), '; ') AS Comments
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        PH.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         PH.PostId
 )

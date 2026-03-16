@@ -1,7 +1,7 @@
 
 WITH TagStats AS (
     SELECT
-        UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS Tag,
         COUNT(*) AS PostCount
     FROM
         Posts
@@ -34,7 +34,7 @@ RecentPosts AS (
     JOIN
         Users u ON p.OwnerUserId = u.Id
     WHERE
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'  
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY  
         AND p.PostTypeId = 1  
 ),
 TagPostMapping AS (
@@ -56,7 +56,7 @@ FinalResults AS (
     SELECT
         tpm.PopularTag,
         COUNT(tpm.PostId) AS RelatedPostCount,
-        STRING_AGG(rp.Title, '; ') AS RelatedPostTitles,
+        arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS RelatedPostTitles,
         MAX(rp.CreationDate) AS LatestPostDate
     FROM
         TagPostMapping tpm

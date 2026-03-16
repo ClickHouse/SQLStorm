@@ -27,7 +27,7 @@ CastRoleCounts AS (
 AggregateCompanyData AS (
     SELECT 
         mc.movie_id, 
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
         COUNT(DISTINCT mc.company_id) AS num_of_companies
     FROM movie_companies mc
     LEFT JOIN company_name cn ON mc.company_id = cn.id

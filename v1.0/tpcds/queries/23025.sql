@@ -37,9 +37,9 @@ LEFT JOIN customer_demographics cd ON f.c_customer_sk = cd.cd_demo_sk
 WHERE f.c_customer_sk IN (
     SELECT DISTINCT c.c_customer_sk
     FROM customer c
-    WHERE c.c_birth_month = EXTRACT(MONTH FROM cast('2002-10-01' as date)) 
-    AND c.c_birth_day = EXTRACT(DAY FROM cast('2002-10-01' as date))
+    WHERE c.c_birth_month = toMonth(cast('2002-10-01' as date)) 
+    AND c.c_birth_day = toDayOfMonth(cast('2002-10-01' as date))
 )
 ORDER BY f.total_sales DESC
 OFFSET (SELECT count(*) / 2 FROM FilteredCustomers) ROWS
-FETCH NEXT 5 ROWS ONLY;
+LIMIT 5;

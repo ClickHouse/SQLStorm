@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), 
 TopPosts AS (
     SELECT 
@@ -42,12 +42,12 @@ UserVotes AS (
 PostHistory AS (
     SELECT 
         PH.PostId,
-        ARRAY_AGG(PH.Comment) AS HistoryComments,
+        groupArray(assumeNotNull(PH.Comment)) AS HistoryComments,
         COUNT(PH.Id) AS EditCount
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         PH.PostId
 )

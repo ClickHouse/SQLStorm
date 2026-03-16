@@ -27,7 +27,7 @@ SELECT
     tm.production_year,
     tm.cast_count,
     p.name AS main_actor,
-    STRING_AGG(DISTINCT kw.keyword, ',' ORDER BY kw.keyword) AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ',' ORDER BY kw.keyword) AS keywords
 FROM top_movies tm
 JOIN cast_info ci ON tm.movie_id = ci.movie_id
 JOIN aka_name a ON ci.person_id = a.person_id

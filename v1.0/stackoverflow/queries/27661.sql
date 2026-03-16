@@ -8,13 +8,13 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS PostRank,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag ON TRUE
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -29,7 +29,7 @@ PopularTags AS (
     FROM 
         Posts p
     JOIN 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag ON TRUE
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -57,7 +57,7 @@ PostHistoryReports AS (
     JOIN 
         PostHistoryTypes PHType ON ph.PostHistoryTypeId = PHType.Id
     WHERE 
-        ph.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 month' 
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
 )
 SELECT 
     rp.PostId,

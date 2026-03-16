@@ -52,7 +52,7 @@ SELECT
 FROM 
     HighProfitItems hpi
 LEFT JOIN 
-    CustomerDemographics cd ON hpi.i_item_id = (SELECT i_item_id FROM item ORDER BY RANDOM() LIMIT 1)
+    CustomerDemographics cd ON hpi.i_item_id = (SELECT i_item_id FROM item ORDER BY rand() LIMIT 1)
 WHERE 
     (hpi.total_profit IS NOT NULL AND hpi.total_profit <= (SELECT MAX(total_profit) FROM HighProfitItems) / 2)
     OR (hpi.total_profit IS NULL AND hpi.unique_customers IS NOT NULL)

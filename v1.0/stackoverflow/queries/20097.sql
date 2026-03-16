@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '365 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 365 DAY
         AND p.AnswerCount > 0
 ),
 CommentsStats AS (
@@ -29,7 +29,7 @@ CommentsStats AS (
 BadgesSummary AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(b.Id) AS BadgeCount
     FROM 
         Badges b
@@ -39,7 +39,7 @@ BadgesSummary AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS Reasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS Reasons
     FROM 
         PostHistory ph
     JOIN 

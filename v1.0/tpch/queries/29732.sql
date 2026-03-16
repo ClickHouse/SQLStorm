@@ -7,7 +7,7 @@ SELECT
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     MAX(l.l_extendedprice) AS max_extended_price,
     MIN(l.l_discount) AS min_discount,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     part p
 JOIN 

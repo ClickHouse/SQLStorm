@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_ext_sales_price) AS total_spent,
     AVG(ws.ws_ext_sales_price) AS avg_order_value,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
     COUNT(DISTINCT wp.wp_url) AS distinct_web_pages_visited
 FROM 
     customer c

@@ -10,13 +10,13 @@ WITH RankedPosts AS (
         P.ViewCount,
         P.Score,
         ROW_NUMBER() OVER (PARTITION BY P.Tags ORDER BY P.Score DESC) AS TagRank,
-        ARRAY_AGG(DISTINCT T.TagName) AS TagList
+        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS TagList
     FROM 
         Posts P
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     LEFT JOIN 
-        LATERAL unnest(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) AS T(TagName) ON true
+        arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) AS T(TagName) ON true
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 

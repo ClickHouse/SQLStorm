@@ -29,7 +29,7 @@ FilteredMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -42,7 +42,7 @@ SELECT
     fm.production_year,
     fm.cast_count,
     COALESCE(mk.keywords, 'No Keywords') AS keywords,
-    ARRAY_AGG(DISTINCT cn.name) AS companies
+    arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies
 FROM 
     FilteredMovies fm
 LEFT JOIN 

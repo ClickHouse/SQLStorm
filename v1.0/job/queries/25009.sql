@@ -6,7 +6,7 @@ WITH MovieDetails AS (
         ak.name AS actor_name,
         pt.kind AS production_type,
         COUNT(DISTINCT kc.keyword) AS keyword_count,
-        ARRAY_AGG(DISTINCT ci.note) AS role_notes
+        arrayDistinct(groupArray(assumeNotNull(ci.note))) AS role_notes
     FROM
         title t
     JOIN 

@@ -8,7 +8,7 @@ WITH ranked_orders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year'
+        o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
 ),
 customer_orders AS (
     SELECT 

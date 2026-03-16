@@ -28,7 +28,7 @@ MovieDetails AS (
         t.movie_title,
         t.production_year,
         COUNT(c.id) AS total_cast,
-        STRING_AGG(DISTINCT a.name, ', ') AS full_cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS full_cast_names
     FROM
         TopRatedMovies t
     LEFT JOIN

@@ -12,8 +12,8 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' AND 
-    o.o_orderdate < DATE '1997-02-01' AND 
+    o.o_orderdate >= toDate('1997-01-01') AND 
+    o.o_orderdate < toDate('1997-02-01') AND 
     s.s_acctbal > 0
 GROUP BY 
     n.n_name

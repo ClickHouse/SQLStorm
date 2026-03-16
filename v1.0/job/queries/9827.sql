@@ -5,7 +5,7 @@ SELECT
     ci.person_role_id AS role_id,
     ct.kind AS comp_cast_type,
     COUNT(DISTINCT mc.company_id) AS company_count,
-    STRING_AGG(DISTINCT co.name, ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies,
     MAX(mi.info) AS movie_info
 FROM 
     title t

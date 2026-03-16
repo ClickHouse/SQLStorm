@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 FilteredTags AS (
     SELECT 
-        UNNEST(string_to_array(Tags, ',')) AS Tag 
+        arrayJoin(splitByString(',', Tags)) AS Tag 
     FROM 
         RankedPosts
     WHERE 

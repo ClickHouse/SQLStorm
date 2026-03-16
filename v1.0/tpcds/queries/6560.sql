@@ -6,7 +6,7 @@ WITH CustomerSales AS (
         c.c_last_name,
         SUM(ws.ws_net_paid_inc_tax) AS total_spent,
         COUNT(DISTINCT ws.ws_order_number) AS order_count,
-        STRING_AGG(DISTINCT sm.sm_carrier, ', ') AS ship_carriers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sm.sm_carrier))), ', ') AS ship_carriers
     FROM 
         customer c
     JOIN 

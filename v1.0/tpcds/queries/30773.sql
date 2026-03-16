@@ -65,4 +65,4 @@ WHERE
     hs.total_sales IS NOT NULL 
 ORDER BY 
     hs.total_sales DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     MAX(CASE WHEN o.o_orderstatus = 'F' THEN o.o_totalprice ELSE 0 END) AS max_filled_order_value,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ': ', c.c_acctbal), '; ') AS customer_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ': ', c.c_acctbal)))), '; ') AS customer_info
 FROM 
     part p
 JOIN 

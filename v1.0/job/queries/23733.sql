@@ -46,7 +46,7 @@ latest_movies AS (
 SELECT 
     lm.actor_id,
     lm.actor_name,
-    STRING_AGG(DISTINCT lm.title, ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lm.title))), ', ') AS titles,
     COUNT(DISTINCT lm.title) AS movie_count,
     MAX(lm.production_year) AS latest_year,
     MIN(lm.production_year) AS earliest_year,

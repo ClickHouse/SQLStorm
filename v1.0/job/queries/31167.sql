@@ -29,7 +29,7 @@ SELECT
     ah.name AS actor_name,
     mh.title AS movie_title,
     mh.production_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     COUNT(DISTINCT cm.company_id) AS company_count,
     ROW_NUMBER() OVER (PARTITION BY ah.name ORDER BY COUNT(cm.company_id) DESC) AS actor_rank
 FROM 

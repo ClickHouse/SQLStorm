@@ -18,7 +18,7 @@ QuestionStats AS (
     GROUP BY P.OwnerUserId 
 ),
 PopularTags AS (
-    SELECT UNNEST(string_to_array(T.Tags, '><')) AS TagName, COUNT(*) AS TagCount
+    SELECT arrayJoin(splitByString('><', T.Tags)) AS TagName, COUNT(*) AS TagCount
     FROM Posts T
     WHERE T.PostTypeId = 1
     GROUP BY TagName

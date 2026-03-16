@@ -49,8 +49,8 @@ AggregatedInfo AS (
     SELECT 
         title,
         production_year,
-        STRING_AGG(DISTINCT CONCAT(actor_name, ' (ID: ', actor_id, ')'), '; ') AS actors,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(actor_name, ' (ID: ', actor_id, ')')))), '; ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
         MAX(movie_info) AS relevant_info
     FROM 
         MovieDetails

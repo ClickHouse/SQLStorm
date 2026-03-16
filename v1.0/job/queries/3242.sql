@@ -37,7 +37,7 @@ SELECT
     tm.movie_title,
     tm.production_year,
     COALESCE(cd.company_name, 'Independent') AS production_company,
-    (SELECT STRING_AGG(DISTINCT a.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') 
      FROM cast_info ci
      JOIN aka_name a ON ci.person_id = a.person_id 
      WHERE ci.movie_id = (SELECT id FROM aka_title WHERE title = tm.movie_title LIMIT 1)) AS cast_members

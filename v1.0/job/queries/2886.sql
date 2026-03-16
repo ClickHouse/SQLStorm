@@ -25,7 +25,7 @@ ActorRoles AS (
 CompanyInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         SUM(CASE WHEN ct.kind = 'Production' THEN 1 ELSE 0 END) AS production_count
     FROM 
         movie_companies mc

@@ -29,6 +29,6 @@ SELECT tp.p_name, tp.p_retailprice, COUNT(DISTINCT ts.s_suppkey) AS num_supplier
 FROM TopParts tp
 JOIN lineitem l ON l.l_partkey = tp.ps_partkey
 JOIN TopSuppliers ts ON ts.s_suppkey = l.l_suppkey
-WHERE l.l_shipdate >= DATE '1996-01-01' AND l.l_shipdate < DATE '1997-01-01'
+WHERE l.l_shipdate >= toDate('1996-01-01') AND l.l_shipdate < toDate('1997-01-01')
 GROUP BY tp.p_name, tp.p_retailprice
 ORDER BY total_quantity_sold DESC;

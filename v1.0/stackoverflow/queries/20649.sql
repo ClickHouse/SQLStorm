@@ -32,7 +32,7 @@ RecentPostHistory AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 PostStatistics AS (
     SELECT 
@@ -75,4 +75,4 @@ WHERE
     ps.ScoreRank <= 10
 ORDER BY 
     ps.Score DESC NULLS LAST
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

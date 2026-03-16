@@ -33,7 +33,7 @@ SELECT
     COALESCE(ps.UpVotes, 0) AS TotalUpVotes,
     COALESCE(ps.DownVotes, 0) AS TotalDownVotes,
     CASE 
-        WHEN rp.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 'Old Post'
+        WHEN rp.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Old Post'
         ELSE 'Recent Post'
     END AS PostAge,
     CASE 

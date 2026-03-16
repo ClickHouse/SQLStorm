@@ -8,7 +8,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.OwnerUserId IS NOT NULL
 ), 
 PostVoteSummary AS (
@@ -25,11 +25,11 @@ PostVoteSummary AS (
 ClosedPostReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(c.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(c.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes c ON ph.Comment::INTEGER = c.Id
+        CloseReasonTypes c ON CAST(ph.Comment AS INTEGER) = c.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
     GROUP BY 
@@ -49,7 +49,7 @@ SELECT
         WHEN rp.RecentPostRank = 2 THEN 'Second Most Recent Post'
         ELSE 'Older Post'
     END AS PostAgeCategory,
-    EXTRACT(EPOCH FROM cast('2024-10-01 12:34:56' as timestamp) - rp.CreationDate) AS AgeInSeconds
+    toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - rp.CreationDate) AS AgeInSeconds
 FROM 
     RankedPosts rp
 LEFT JOIN 

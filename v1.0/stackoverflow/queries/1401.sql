@@ -21,7 +21,7 @@ UserBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 ),

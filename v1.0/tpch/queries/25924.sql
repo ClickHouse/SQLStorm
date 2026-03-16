@@ -26,7 +26,7 @@ SELECT si.nation_name, COUNT(DISTINCT si.s_suppkey) AS unique_suppliers,
        SUM(oli.l_quantity) AS total_quantity,
        AVG(oli.l_extendedprice) AS avg_extended_price,
        MAX(si.comment_length) AS max_comment_length,
-       STRING_AGG(DISTINCT ps.part_supplier_desc, ', ') AS part_supplier_descriptions
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ps.part_supplier_desc))), ', ') AS part_supplier_descriptions
 FROM SupplierInfo si
 JOIN PartSupplierInfo ps ON si.s_suppkey = ps.ps_suppkey
 JOIN OrderLineItemInfo oli ON ps.ps_partkey = oli.l_partkey

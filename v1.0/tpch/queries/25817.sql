@@ -3,7 +3,7 @@ WITH part_brand_counts AS (
         p_brand, 
         COUNT(*) AS brand_count, 
         SUM(p_retailprice) AS total_retailprice,
-        STRING_AGG(p_name, ', ') AS part_names
+        arrayStringConcat(groupArray(assumeNotNull(p_name)), ', ') AS part_names
     FROM part
     GROUP BY p_brand
 ),

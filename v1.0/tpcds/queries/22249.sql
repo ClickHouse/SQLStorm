@@ -56,4 +56,4 @@ WHERE
     AND (j.total_returns < 5 OR j.total_returns IS NULL)
 ORDER BY 
     j.net_profit_adjusted DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

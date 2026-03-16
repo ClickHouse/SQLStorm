@@ -56,4 +56,4 @@ JOIN
     UserRankWithBadges ur ON u.Id = ur.OwnerUserId
 ORDER BY 
     ur.TopPostCount DESC, ur.BadgeCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

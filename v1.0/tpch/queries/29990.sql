@@ -50,7 +50,7 @@ SELECT
     COUNT(*) AS supplier_count,
     MAX(ps.ps_supplycost) AS max_supply_cost,
     SUM(ps.ps_availqty) AS total_available_quantity,
-    STRING_AGG(s.s_name, ', ') AS supplier_names
+    arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS supplier_names
 FROM 
     TopPartSuppliers ps
 JOIN 

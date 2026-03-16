@@ -60,4 +60,4 @@ GROUP BY
 ORDER BY 
     total_revenue DESC, 
     total_availability DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

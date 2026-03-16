@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Votes v ON v.PostId = p.Id
     WHERE 
         p.PostTypeId = 1
-        AND p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, u.DisplayName, p.OwnerUserId, p.CreationDate
 ),
@@ -33,7 +33,7 @@ TopPosts AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 

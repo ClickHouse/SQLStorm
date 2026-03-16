@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT s.s_name, '; ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), '; ') AS supplier_names
 FROM 
     part p
 JOIN 
@@ -22,8 +22,8 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     r.r_name = 'Asia' 
-    AND o.o_orderdate >= DATE '1996-01-01' 
-    AND o.o_orderdate < DATE '1996-12-31'
+    AND o.o_orderdate >= toDate('1996-01-01') 
+    AND o.o_orderdate < toDate('1996-12-31')
 GROUP BY 
     p.p_name
 HAVING 

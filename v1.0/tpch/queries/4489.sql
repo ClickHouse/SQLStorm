@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01'
+        o.o_orderdate >= toDate('1997-01-01')
 ),
 SupplierAggregates AS (
     SELECT 
@@ -41,7 +41,7 @@ LineItemDiscounts AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate > DATE '1998-10-01' - INTERVAL '6 months'
+        l.l_shipdate > toDate('1998-10-01') - INTERVAL 6 MONTH
     GROUP BY 
         l.l_orderkey
 )

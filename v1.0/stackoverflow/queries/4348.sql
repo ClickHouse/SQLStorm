@@ -17,7 +17,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (2, 6) 
     WHERE 
-        P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount, U.DisplayName
 ),
@@ -38,7 +38,7 @@ TopPosts AS (
 PostBadges AS (
     SELECT 
         B.UserId,
-        STRING_AGG(B.Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS Badges
     FROM 
         Badges B
     GROUP BY 

@@ -67,7 +67,7 @@ LEFT JOIN (
 LEFT JOIN Promotions ph ON ph.p_promo_sk = (
     SELECT p.p_promo_sk FROM promotion p 
     WHERE p.p_response_target IS NOT NULL 
-    ORDER BY RANDOM() 
+    ORDER BY rand() 
     LIMIT 1
 )
 WHERE c.c_birth_year IS NULL OR c.c_birth_month IS NULL

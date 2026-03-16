@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 SupplierRevenue AS (
     SELECT 
@@ -46,10 +46,10 @@ SELECT
             ELSE NULL 
         END) AS avg_order_value,
     MAX(ts.total_revenue) AS max_supplier_revenue,
-    STRING_AGG(CASE 
+    arrayStringConcat(groupArray(assumeNotNull(CASE 
             WHEN ts.total_revenue > 1000000 THEN ts.s_name 
             ELSE NULL 
-        END, ', ') AS high_revenue_suppliers
+        END)), ', ') AS high_revenue_suppliers
 FROM 
     nation n
 JOIN 

@@ -2,7 +2,7 @@
 WITH RECURSIVE RecentOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, o.o_custkey
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1995-01-01'
+    WHERE o.o_orderdate >= toDate('1995-01-01')
     
     UNION ALL
     
@@ -39,7 +39,7 @@ LEFT JOIN customer c ON sp.ps_suppkey = c.c_custkey
 LEFT JOIN region r ON c.c_nationkey = r.r_regionkey
 LEFT JOIN CustomerStats cs ON c.c_custkey = cs.c_custkey
 WHERE p.p_retailprice > 100
-AND l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1997-12-31'
+AND l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1997-12-31')
 GROUP BY p.p_name, r.r_name, cs.total_spent, p.p_partkey
 HAVING COUNT(DISTINCT l.l_orderkey) > 5
 ORDER BY total_revenue DESC

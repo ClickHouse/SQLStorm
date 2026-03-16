@@ -7,8 +7,8 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     COUNT(DISTINCT c.Id) AS CommentCount,
     COUNT(DISTINCT v.Id) AS VoteCount,
-    ARRAY_AGG(DISTINCT pt.Name) AS PostType,
-    ARRAY_AGG(DISTINCT lt.Name) AS LinkType
+    arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostType,
+    arrayDistinct(groupArray(assumeNotNull(lt.Name))) AS LinkType
 FROM 
     Posts p
 LEFT JOIN 
@@ -24,7 +24,7 @@ LEFT JOIN
 LEFT JOIN 
     LinkTypes lt ON pl.LinkTypeId = lt.Id
 WHERE 
-    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 GROUP BY 
     p.Id, u.DisplayName
 ORDER BY 

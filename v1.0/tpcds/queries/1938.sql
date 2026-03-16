@@ -62,4 +62,4 @@ WHERE
     ca.ca_city IS NULL OR ca.ca_state = 'CA'
 ORDER BY 
     tc.total_sales DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

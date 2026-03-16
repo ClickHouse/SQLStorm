@@ -16,14 +16,14 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.OwnerUserId
 ),
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, '; ') AS CloseReasons,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS CloseReasons,
         COUNT(*) AS CloseCount
     FROM 
         PostHistory ph

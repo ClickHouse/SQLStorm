@@ -19,7 +19,7 @@ MovieData AS (
         m.title,
         m.production_year,
         (SELECT COUNT(*) FROM cast_info ci WHERE ci.movie_id = m.id) AS total_cast,
-        COALESCE((SELECT STRING_AGG(DISTINCT k.keyword, ', ') FROM movie_keyword mk JOIN keyword k ON mk.keyword_id = k.id WHERE mk.movie_id = m.id), 'No Keywords') AS keywords
+        COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') FROM movie_keyword mk JOIN keyword k ON mk.keyword_id = k.id WHERE mk.movie_id = m.id), 'No Keywords') AS keywords
     FROM 
         aka_title m
     WHERE 

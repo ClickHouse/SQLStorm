@@ -3,7 +3,7 @@ WITH AddressAnalysis AS (
     SELECT
         ca_city,
         COUNT(*) AS TotalAddresses,
-        STRING_AGG(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), '; ') AS FullAddresses,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type))), '; ') AS FullAddresses,
         COUNT(DISTINCT ca_zip) AS DistinctZipCodes
     FROM
         customer_address

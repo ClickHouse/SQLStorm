@@ -9,7 +9,7 @@ WITH PostStats AS (
         p.CreationDate,
         u.Reputation AS OwnerReputation,
         COUNT(c.Id) AS TotalComments,
-        AVG(EXTRACT(EPOCH FROM (v.CreationDate - p.CreationDate))) AS AvgVoteAge
+        AVG(toUnixTimestamp((v.CreationDate - p.CreationDate))) AS AvgVoteAge
     FROM 
         Posts p
     LEFT JOIN 

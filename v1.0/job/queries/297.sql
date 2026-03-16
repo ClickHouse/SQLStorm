@@ -26,7 +26,7 @@ CompanyCounts AS (
 KeywordDetails AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(CAST(mk.keyword_id AS TEXT), ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(CAST(mk.keyword_id AS TEXT))), ', ') AS keywords
     FROM 
         movie_keyword mk
     GROUP BY 

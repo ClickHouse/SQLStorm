@@ -4,7 +4,7 @@ WITH RecursiveActorMovies AS (
         a.name AS actor_name,
         COUNT(DISTINCT m.id) AS movie_count,
         SUM(m.production_year) AS total_production_years,
-        STRING_AGG(DISTINCT m.title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.title))), ', ') AS movie_titles
     FROM 
         cast_info ca
     JOIN 

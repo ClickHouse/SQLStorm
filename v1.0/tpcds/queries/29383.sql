@@ -5,7 +5,7 @@ WITH AddressSummary AS (
         ca_city,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
         COUNT(DISTINCT ca_street_name) AS unique_streets,
-        STRING_AGG(DISTINCT ca_street_type, ', ') AS street_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_type))), ', ') AS street_types,
         SUM(LENGTH(ca_street_name)) AS total_street_name_length
     FROM 
         customer_address

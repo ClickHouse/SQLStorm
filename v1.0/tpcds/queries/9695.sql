@@ -44,4 +44,4 @@ GROUP BY
     pi.i_item_id, pi.i_item_desc, pi.total_quantity_sold, pi.total_sales_value, ca.ca_city, ca.ca_state
 ORDER BY 
     total_sales_value DESC  
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

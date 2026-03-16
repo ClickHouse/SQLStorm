@@ -42,4 +42,4 @@ CROSS JOIN
     customer_summary cs
 ORDER BY 
     ss.total_sales DESC, cs.total_customers DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

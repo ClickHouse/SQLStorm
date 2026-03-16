@@ -28,7 +28,7 @@ actor_role_summary AS (
     SELECT 
         ak.name AS actor_name,
         COUNT(DISTINCT ci.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT t.title, ', ') AS movies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movies,
         SUM(CASE WHEN ci.note IS NULL THEN 1 ELSE 0 END) AS roles_with_no_notes
     FROM 
         aka_name ak

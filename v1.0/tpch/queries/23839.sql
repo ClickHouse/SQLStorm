@@ -66,4 +66,4 @@ WHERE
     AND (p.p_comment LIKE '%extra%' OR p.p_comment IS NULL)
 ORDER BY 
     p.p_partkey
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

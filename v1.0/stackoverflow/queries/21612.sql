@@ -14,14 +14,14 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
         PH.PostId,
         PH.Comment AS CloseReason,
         PH.CreationDate AS CloseDate,
-        STRING_AGG(CONCAT(PH.UserDisplayName, ' ', PH.CreationDate), '; ') AS ClosedBy
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(PH.UserDisplayName, ' ', PH.CreationDate))), '; ') AS ClosedBy
     FROM 
         PostHistory PH
     WHERE 
@@ -42,7 +42,7 @@ RecentVotes AS (
     FROM 
         Votes V
     WHERE 
-        V.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+        V.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         V.PostId
 )

@@ -15,7 +15,7 @@ OrderLineItems AS (
     SELECT o.o_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_price
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate >= DATE '1998-10-01' - INTERVAL '30 days'
+    WHERE l.l_shipdate >= toDate('1998-10-01') - INTERVAL 30 DAY
     GROUP BY o.o_orderkey
 )
 SELECT r.c_name, r.c_acctbal, r.c_mktsegment, 

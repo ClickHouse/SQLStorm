@@ -29,7 +29,7 @@ SELECT
     ak.name AS actor_name,
     r.role AS actor_role,
     cn.name AS company_name,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM top_movies tm
 JOIN cast_info ci ON tm.movie_id = ci.movie_id
 JOIN aka_name ak ON ci.person_id = ak.person_id

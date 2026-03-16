@@ -42,13 +42,13 @@ SELECT
     p.CommentCount,
     p.Rating,
     p.ScoreAdjustment,
-    STRING_AGG(tag.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ') AS Tags
 FROM 
     RankedPosts p
 LEFT JOIN 
     (SELECT 
          PostId,
-         STRING_AGG(TagName, ', ') AS TagName
+         arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') AS TagName
      FROM 
          Tags t
      JOIN 

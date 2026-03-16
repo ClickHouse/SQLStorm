@@ -39,4 +39,4 @@ LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
 WHERE (c.total_spent IS NULL OR c.total_spent > 500)
 AND (p.p_retailprice BETWEEN 10.00 AND 100.00)
 ORDER BY p.p_partkey
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

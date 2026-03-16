@@ -6,7 +6,7 @@ WITH movie_statistics AS (
                 WHEN c.nr_order IS NOT NULL THEN c.nr_order 
                 ELSE 0 
             END) AS avg_cast_order,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS associated_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS associated_keywords
     FROM 
         aka_title AS m
     LEFT JOIN 

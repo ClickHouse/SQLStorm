@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days'
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, u.DisplayName
 ), RecentActivity AS (
@@ -37,7 +37,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON ph.UserId = u.Id
     WHERE 
-        ph.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days'
+        ph.CreationDate >= DATE('2024-10-01') - INTERVAL 30 DAY
 )
 SELECT 
     rp.PostId,

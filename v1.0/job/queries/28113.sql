@@ -37,8 +37,8 @@ smart_movie_summary AS (
         md.movie_id,
         md.movie_title,
         md.production_year,
-        STRING_AGG(DISTINCT ad.actor_name, ', ') AS cast_names,
-        STRING_AGG(DISTINCT md.movie_keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ad.actor_name))), ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.movie_keyword))), ', ') AS keywords,
         COUNT(DISTINCT ad.person_id) AS number_of_actors
     FROM 
         movie_details md

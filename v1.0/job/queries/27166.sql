@@ -4,9 +4,9 @@ WITH MovieDetails AS (
         mt.id AS movie_id,
         mt.title,
         mt.production_year,
-        STRING_AGG(DISTINCT ak.name, ',') AS aka_names,
-        STRING_AGG(DISTINCT cn.name, ',') AS company_names,
-        STRING_AGG(DISTINCT kw.keyword, ',') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ',') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ',') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ',') AS keywords
     FROM 
         aka_title mt
     LEFT JOIN 
@@ -30,7 +30,7 @@ PersonDetails AS (
     SELECT 
         p.id AS person_id,
         p.name,
-        STRING_AGG(DISTINCT pi.info, ',') AS personal_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pi.info))), ',') AS personal_info
     FROM 
         name p
     LEFT JOIN 

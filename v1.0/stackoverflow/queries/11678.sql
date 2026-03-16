@@ -9,7 +9,7 @@ SELECT
     COALESCE(a.AcceptedAnswerId, 0) AS AcceptedAnswerId,
     u.DisplayName AS OwnerDisplayName,
     u.Reputation AS OwnerReputation,
-    DATE_PART('epoch', cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate) AS AgeInSeconds
+    datePart('epoch', toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate) AS AgeInSeconds
 FROM 
     Posts p
 JOIN 

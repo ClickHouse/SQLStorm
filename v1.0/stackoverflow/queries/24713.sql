@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 )
 
 SELECT 
@@ -23,7 +23,7 @@ SELECT
     CASE 
         WHEN AVG(rp.ViewCount) IS NOT NULL THEN AVG(rp.ViewCount) 
         ELSE 0 END AS AverageViews,
-    ARRAY_AGG(DISTINCT t.TagName) AS TagsUsed,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsUsed,
     MAX(b.Date) FILTER (WHERE b.Class = 1) AS GoldBadgeDate 
 FROM 
     Users u

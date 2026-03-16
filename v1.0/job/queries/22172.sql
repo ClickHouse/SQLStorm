@@ -97,4 +97,4 @@ WHERE
 ORDER BY 
     md.production_year DESC,
     md.actor_name ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

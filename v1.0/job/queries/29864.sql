@@ -32,8 +32,8 @@ top_actors AS (
 )
 SELECT 
     ra.actor_name,
-    STRING_AGG(rt.movie_title, ', ') AS movies,
-    STRING_AGG(CONCAT(rt.movie_title, ' (', rt.production_year, ')'), ', ') AS movies_with_year
+    arrayStringConcat(groupArray(assumeNotNull(rt.movie_title)), ', ') AS movies,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(rt.movie_title, ' (', rt.production_year, ')'))), ', ') AS movies_with_year
 FROM 
     ranked_titles rt
 JOIN 

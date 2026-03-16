@@ -51,4 +51,4 @@ JOIN
 ORDER BY
     cs.total_sales DESC,
     ws.total_revenue DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

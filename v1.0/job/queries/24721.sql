@@ -10,7 +10,7 @@ WITH RankedMovies AS (
         aka_title t
     WHERE 
         t.title IS NOT NULL
-        AND t.production_year BETWEEN 1990 AND EXTRACT(YEAR FROM DATE '2024-10-01')
+        AND t.production_year BETWEEN 1990 AND toYear(toDate('2024-10-01'))
 ),
 FilteredCast AS (
     SELECT 
@@ -55,7 +55,7 @@ SELECT
     END AS actor_classification,
     s.avg_actor_rank,
     (SELECT COUNT(*) FROM movie_info mi WHERE mi.movie_id = s.movie_id AND mi.note IS NOT NULL) AS non_null_notes_count,
-    (SELECT STRING_AGG(DISTINCT k.keyword, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') 
      FROM movie_keyword mk 
      JOIN keyword k ON mk.keyword_id = k.id 
      WHERE mk.movie_id = s.movie_id) AS keywords,

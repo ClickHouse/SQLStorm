@@ -62,4 +62,4 @@ WHERE
     cu.customer_rank <= 10
 ORDER BY 
     cu.total_profit DESC 
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

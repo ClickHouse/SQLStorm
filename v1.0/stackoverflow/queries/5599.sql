@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC, p.CreationDate DESC) AS Rank,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -16,9 +16,9 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON c.PostId = p.Id
     LEFT JOIN 
-        unnest(string_to_array(p.Tags, '>')) AS t(TagName) ON t.TagName IS NOT NULL
+        arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' AND
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND
         p.PostTypeId = 1
     GROUP BY 
         p.Id, u.DisplayName
@@ -41,7 +41,7 @@ SELECT
     t.OwnerDisplayName,
     COUNT(DISTINCT b.Id) AS BadgeCount,
     AVG(p.Score) AS AverageScore,
-    STRING_AGG(DISTINCT t.Title, '; ') AS TopPostTitles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.Title))), '; ') AS TopPostTitles,
     SUM(p.ViewCount) AS TotalViews
 FROM 
     TopPosts t

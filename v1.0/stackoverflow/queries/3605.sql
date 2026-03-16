@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 year')
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR)
 ), UserStatistics AS (
     SELECT 
         u.Id AS UserId,
@@ -38,7 +38,7 @@ WITH RankedPosts AS (
     FROM 
         PostLinks pl
     WHERE 
-        pl.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '6 months')
+        pl.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 6 MONTH)
     GROUP BY 
         pl.PostId
 )

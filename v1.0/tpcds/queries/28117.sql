@@ -3,7 +3,7 @@ SELECT
     ca_state,
     COUNT(DISTINCT c_customer_id) AS total_customers,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), ', ') AS customer_names,
     MAX(cd_dep_count) AS max_dependents,
     MIN(cd_dep_employed_count) AS min_employed_dependents,
     SUM(ws_net_profit) AS total_net_profit

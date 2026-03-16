@@ -28,7 +28,7 @@ WITH RECURSIVE ActorHierarchy AS (
 ),
 MovieOverview AS (
     SELECT t.title, t.production_year, COUNT(DISTINCT ci.person_id) AS total_actors,
-           STRING_AGG(DISTINCT a.name, ', ') AS actors_list
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors_list
     FROM aka_title t
     LEFT JOIN cast_info ci ON t.id = ci.movie_id
     LEFT JOIN aka_name a ON ci.person_id = a.person_id

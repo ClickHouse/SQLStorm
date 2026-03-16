@@ -10,7 +10,7 @@ WITH RecentPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS RN
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 PostEngagement AS (
     SELECT 
@@ -43,7 +43,7 @@ ClosedPostHistory AS (
         ph.PostId,
         ph.UserDisplayName,
         ph.CreationDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS ClosureReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS ClosureReasons
     FROM PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE ph.PostHistoryTypeId IN (10, 11)  

@@ -7,7 +7,7 @@ FROM
 JOIN 
     orders O ON L.l_orderkey = O.o_orderkey
 WHERE 
-    O.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    O.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     L.l_orderkey, O.o_orderdate
 ORDER BY 

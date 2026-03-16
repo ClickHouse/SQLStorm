@@ -5,7 +5,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END) AS total_returned_value,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(CASE WHEN s.s_acctbal > 5000 THEN s.s_acctbal ELSE NULL END) AS average_supplier_balance,
-    array_agg(DISTINCT s.s_name) AS supplier_names
+    arrayDistinct(groupArray(assumeNotNull(s.s_name))) AS supplier_names
 FROM 
     customer c 
 JOIN 

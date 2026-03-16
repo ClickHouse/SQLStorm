@@ -9,7 +9,7 @@ SELECT
     u.DisplayName AS UserDisplayName,
     COUNT(DISTINCT c.Id) AS CommentCount,
     COUNT(DISTINCT v.Id) AS VoteCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     Posts p
 JOIN 
@@ -19,11 +19,11 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(p.Tags, ', ')) AS tag_array ON TRUE
+    arrayJoin(splitByString(', ', p.Tags)) AS tag_array ON TRUE
 LEFT JOIN 
     Tags t ON t.TagName = tag_array
 WHERE 
-    p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.Id, u.DisplayName
 ORDER BY 

@@ -57,4 +57,4 @@ JOIN PostStats ts ON tu.UserId = ts.PostId
 LEFT JOIN UserActivity uc ON uc.UserId = tu.UserId
 WHERE tu.TopRank <= 10
 ORDER BY ts.TotalBounty DESC, ts.TotalComments DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

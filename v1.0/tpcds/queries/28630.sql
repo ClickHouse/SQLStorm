@@ -4,7 +4,7 @@ WITH split_strings AS (
         c.c_customer_sk,
         c.c_first_name,
         c.c_last_name,
-        STRING_AGG(DISTINCT ca.ca_street_number || ' ' || ca.ca_street_name || ' ' || ca.ca_street_type, ', ') AS full_address,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_street_number || ' ' || ca.ca_street_name || ' ' || ca.ca_street_type))), ', ') AS full_address,
         REGEXP_REPLACE(c.c_email_address, '@.*', '') AS username,
         LENGTH(c.c_first_name || ' ' || c.c_last_name) AS full_name_length
     FROM 

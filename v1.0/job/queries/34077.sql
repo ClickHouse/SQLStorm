@@ -30,7 +30,7 @@ SELECT
     a.name AS actor_name,
     COUNT(DISTINCT cc.movie_id) AS total_movies,
     AVG(COALESCE(m.production_year, 0)) AS average_production_year,
-    STRING_AGG(DISTINCT COALESCE(t.title, 'No Title'), ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(t.title, 'No Title')))), ', ') AS movie_titles,
     RANK() OVER (ORDER BY COUNT(DISTINCT cc.movie_id) DESC) AS actor_rank
 FROM 
     aka_name a

@@ -3,7 +3,7 @@ WITH AddressStats AS (
     SELECT 
         ca_city,
         COUNT(ca_address_sk) AS address_count,
-        STRING_AGG(ca_street_name || ' ' || ca_street_number, ', ') AS street_info
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_number)), ', ') AS street_info
     FROM 
         customer_address
     GROUP BY 
@@ -14,7 +14,7 @@ DemographicsStats AS (
         cd_gender,
         COUNT(cd_demo_sk) AS demo_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_levels
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_levels
     FROM 
         customer_demographics
     GROUP BY 
@@ -24,7 +24,7 @@ DateStats AS (
     SELECT 
         d_year,
         COUNT(d_date_sk) AS valid_dates,
-        STRING_AGG(DISTINCT d_day_name, ', ') AS days_of_week
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d_day_name))), ', ') AS days_of_week
     FROM 
         date_dim
     WHERE 

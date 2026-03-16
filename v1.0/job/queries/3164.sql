@@ -39,7 +39,7 @@ SELECT
     md.production_year,
     md.total_cast,
     md.movie_info,
-    COALESCE(STRING_AGG(DISTINCT ka.name, ', ' ORDER BY ka.name), 'No Cast') AS cast_names,
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ka.name))), ', ' ORDER BY ka.name), 'No Cast') AS cast_names,
     CASE 
         WHEN md.total_cast > 10 THEN 'Large Cast'
         WHEN md.total_cast BETWEEN 5 AND 10 THEN 'Medium Cast'

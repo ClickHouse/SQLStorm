@@ -32,9 +32,9 @@ final_benchmark AS (
         md.movie_id,
         md.title,
         md.production_year,
-        ARRAY_AGG(DISTINCT md.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT ad.actor_name) AS actors,
-        ARRAY_AGG(DISTINCT ad.actor_role) AS roles,
+        arrayDistinct(groupArray(assumeNotNull(md.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(ad.actor_name))) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(ad.actor_role))) AS roles,
         COUNT(DISTINCT md.company_name) AS company_count
     FROM
         movie_details md

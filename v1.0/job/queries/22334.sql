@@ -31,7 +31,7 @@ CompanyCounts AS (
 MovieInfoSummary AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, ', ') AS all_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS all_info
     FROM 
         movie_info mi
     WHERE 

@@ -14,7 +14,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.ViewCount IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.OwnerUserId
@@ -34,11 +34,11 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        ARRAY_AGG(DISTINCT cr.Name) AS CloseReasons
+        arrayDistinct(groupArray(assumeNotNull(cr.Name))) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON ph.Comment = cr.Id::varchar
+        CloseReasonTypes cr ON ph.Comment = CAST(cr.Id AS varchar)
     WHERE 
         ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY 
@@ -76,7 +76,7 @@ LEFT JOIN
 LEFT JOIN 
     ClosedPosts cp ON rp.PostId = cp.PostId
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(string_to_array(rp.LatestBody, ' '))
+    PopularTags pt ON pt.TagName = ANY(splitByString(' ', rp.LatestBody))
 WHERE 
     rp.Score > 5
     AND rp.CommentCount > 5

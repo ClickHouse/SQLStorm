@@ -34,7 +34,7 @@ TopPosts AS (
 PostComments AS (
     SELECT 
         c.PostId,
-        STRING_AGG(c.Text, ' | ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS Comments
     FROM 
         Comments c
     GROUP BY 
@@ -43,7 +43,7 @@ PostComments AS (
 PostBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges
     FROM 
         Badges b
     GROUP BY 

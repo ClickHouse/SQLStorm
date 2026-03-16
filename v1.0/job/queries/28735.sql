@@ -5,7 +5,7 @@ WITH filtered_movies AS (
         tit.production_year,
         COALESCE(info.info, 'No info') AS movie_info,
         COUNT(DISTINCT mc.company_id) AS company_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         title AS tit
     LEFT JOIN 
@@ -58,7 +58,7 @@ SELECT
     movie_info,
     company_count,
     keywords,
-    STRING_AGG(DISTINCT actor_name || ' (' || role || ')', ', ') AS actor_roles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name || ' (' || role || ')'))), ', ') AS actor_roles
 FROM 
     combined
 GROUP BY 

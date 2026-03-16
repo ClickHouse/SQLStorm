@@ -38,7 +38,7 @@ SELECT
 FROM 
     nation_supply ns
 JOIN 
-    part_details pd ON ns.n_nationkey = (SELECT s.s_nationkey FROM supplier s JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey WHERE ps.ps_partkey = pd.p_partkey FETCH FIRST 1 ROW ONLY)
+    part_details pd ON ns.n_nationkey = (SELECT s.s_nationkey FROM supplier s JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey WHERE ps.ps_partkey = pd.p_partkey LIMIT 1)
 WHERE 
     pd.total_sales IS NOT NULL
 ORDER BY 

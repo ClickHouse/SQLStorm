@@ -29,7 +29,7 @@ AggregatedData AS (
         movie_title,
         production_year,
         COUNT(DISTINCT aka_id) AS aka_count,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords
     FROM 
         Dataset
     GROUP BY 

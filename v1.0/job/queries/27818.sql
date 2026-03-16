@@ -3,7 +3,7 @@ WITH ranked_movies AS (
         t.title AS movie_title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS movie_keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS movie_keywords,
         RANK() OVER (ORDER BY COUNT(DISTINCT c.person_id) DESC) AS rank
     FROM 
         aka_title t
@@ -33,7 +33,7 @@ actor_details AS (
     SELECT 
         a.name AS actor_name,
         COUNT(c.movie_id) AS movies_count,
-        STRING_AGG(DISTINCT t.title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movie_titles
     FROM 
         aka_name a
     JOIN 

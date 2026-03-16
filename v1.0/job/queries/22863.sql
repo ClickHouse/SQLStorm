@@ -30,7 +30,7 @@ SELECT
     rt.production_year,
     MAX(ac.actor_name) AS lead_actor,
     COUNT(DISTINCT ac.role_name) AS distinct_roles,
-    STRING_AGG(DISTINCT ac.role_name, ', ') AS roles_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ac.role_name))), ', ') AS roles_list,
     CASE
         WHEN rt.production_year > 2000 THEN 'Modern Era'
         WHEN rt.production_year BETWEEN 1990 AND 2000 THEN '90s Classic'

@@ -17,7 +17,7 @@ WITH calculated AS (
     JOIN 
         nation n ON s.s_nationkey = n.n_nationkey
     WHERE 
-        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate <= DATE '1997-12-31'
+        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate <= toDate('1997-12-31')
     GROUP BY 
         p.p_partkey, p.p_name, s.s_name, n.n_name
 ), ranked AS (

@@ -27,7 +27,7 @@ cast_details AS (
     SELECT 
         ci.movie_id,
         COUNT(ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names
     FROM 
         cast_info ci
     JOIN 
@@ -58,7 +58,7 @@ SELECT
         WHEN fm.cast_count IS NOT NULL AND fm.cast_count BETWEEN 3 AND 5 THEN 'Medium Cast'
         ELSE 'Small Cast'
     END AS cast_size,
-    STRING_AGG(fm.cast_names, '; ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(fm.cast_names)), '; ') AS actors
 FROM 
     filtered_movies fm
 GROUP BY 

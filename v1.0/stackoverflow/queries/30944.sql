@@ -30,4 +30,4 @@ WHERE U.Reputation > 500
 GROUP BY U.DisplayName, U.Reputation, U.Location
 HAVING COUNT(DISTINCT P.Id) > 5 
 ORDER BY TotalScore DESC, U.Reputation ASC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

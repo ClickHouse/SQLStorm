@@ -23,7 +23,7 @@ LatestMovies AS (
 SELECT 
     lm.title,
     lm.production_year,
-    COALESCE(string_agg(DISTINCT k.keyword, ', '), 'None') AS keywords,
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'None') AS keywords,
     COUNT(DISTINCT cc.id) AS cast_count
 FROM 
     LatestMovies lm

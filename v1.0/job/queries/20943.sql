@@ -30,7 +30,7 @@ SELECT
     mh.title AS episode_title,
     mh.production_year,
     mh.level,
-    ARRAY_AGG(DISTINCT ak.name) AS actor_names,
+    arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names,
     CASE 
         WHEN COUNT(DISTINCT ak.name) = 0 THEN 'No Actors'
         ELSE 'Actors Found'

@@ -46,7 +46,7 @@ role_summary AS (
 name_summary AS (
     SELECT 
         ak.person_id,
-        STRING_AGG(ak.name, ', ') AS all_names,
+        arrayStringConcat(groupArray(assumeNotNull(ak.name)), ', ') AS all_names,
         COUNT(DISTINCT ak.id) AS name_count
     FROM 
         aka_name ak

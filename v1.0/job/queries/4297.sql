@@ -37,7 +37,7 @@ SELECT
      FROM movie_companies mc 
      JOIN company_name cn ON mc.company_id = cn.imdb_id 
      WHERE mc.movie_id = (SELECT mt.id FROM aka_title mt WHERE mt.title = fm.title LIMIT 1)) AS company_count,
-    (SELECT STRING_AGG(DISTINCT cn.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') 
      FROM movie_companies mc 
      JOIN company_name cn ON mc.company_id = cn.imdb_id 
      WHERE mc.movie_id = (SELECT mt.id FROM aka_title mt WHERE mt.title = fm.title LIMIT 1)) AS company_names

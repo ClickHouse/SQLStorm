@@ -58,7 +58,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     COALESCE(SUM(od.total_revenue), 0) AS total_revenue,
     COALESCE(SUM(sp.ps_availqty), 0) AS total_available_supply,
-    ARRAY_AGG(DISTINCT sp.p_name || ' (' || sp.p_brand || ')') AS available_parts
+    arrayDistinct(groupArray(assumeNotNull(sp.p_name || ' (' || sp.p_brand || ')'))) AS available_parts
 FROM 
     NationCustomer n
 LEFT JOIN 

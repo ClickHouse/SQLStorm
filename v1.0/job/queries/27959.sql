@@ -29,8 +29,8 @@ MovieDetails AS (
     SELECT 
         tm.title,
         tm.production_year,
-        ARRAY_AGG(DISTINCT ak.name) AS aka_names,
-        ARRAY_AGG(DISTINCT c.role_id) AS roles
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aka_names,
+        arrayDistinct(groupArray(assumeNotNull(c.role_id))) AS roles
     FROM 
         TopMovies tm
     LEFT JOIN 

@@ -14,7 +14,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(o.o_totalprice) AS total_orders,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_revenue,
-    STRING_AGG(DISTINCT p.p_name, ', ') FILTER (WHERE l.l_returnflag = 'R') AS returned_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') FILTER (WHERE l.l_returnflag = 'R') AS returned_parts,
     CASE 
         WHEN SUM(o.o_totalprice) IS NULL THEN 'No Orders'
         ELSE 'Orders Present'

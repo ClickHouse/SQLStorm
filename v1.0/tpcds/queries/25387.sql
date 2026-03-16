@@ -25,7 +25,7 @@ CustomerInfo AS (
     JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
     JOIN household_demographics hd ON c.c_customer_sk = hd.hd_demo_sk
     JOIN income_band ib ON hd.hd_income_band_sk = ib.ib_income_band_sk
-    WHERE d.d_date >= DATE '2023-01-01'
+    WHERE d.d_date >= toDate('2023-01-01')
 ),
 AddressCustomer AS (
     SELECT a.full_address,

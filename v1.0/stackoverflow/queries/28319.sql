@@ -37,7 +37,7 @@ TopContributors AS (
 ),
 FrequentTags AS (
     SELECT 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName,
         COUNT(*) AS TagFrequency
     FROM 
         Posts p
@@ -53,7 +53,7 @@ SELECT
     tc.QuestionCount,
     tc.PositiveResponses,
     COUNT(rp.PostId) AS RecentPostsCount,
-    STRING_AGG(ft.TagName, ', ') AS MostFrequentTags
+    arrayStringConcat(groupArray(assumeNotNull(ft.TagName)), ', ') AS MostFrequentTags
 FROM 
     TopContributors tc
 LEFT JOIN 

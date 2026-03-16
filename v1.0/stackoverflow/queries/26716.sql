@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -44,7 +44,7 @@ PostWithComments AS (
         tp.OwnerDisplayName,
         tp.OwnerReputation,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, ' | ') AS CommentTexts 
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS CommentTexts 
     FROM 
         TopPosts tp
     LEFT JOIN 

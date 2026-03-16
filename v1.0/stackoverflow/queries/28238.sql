@@ -2,7 +2,7 @@
 WITH ProcessedTags AS (
     SELECT 
         P.Id AS PostId,
-        UNNEST(string_to_array(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2))) AS TagName,
         P.Title,
         P.Body,
         P.CreationDate

@@ -18,7 +18,7 @@ WITH RECURSIVE regional_orders AS (
     LEFT JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01'
+        o.o_orderdate >= toDate('1997-01-01')
     GROUP BY 
         n.n_nationkey, n.n_name
     UNION ALL

@@ -41,7 +41,7 @@ SELECT
     DISTINCT m.title AS movie_title,
     m.production_year,
     COUNT(DISTINCT ka.name) AS popular_actors,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     RankedMovies m
 LEFT JOIN 

@@ -10,7 +10,7 @@ SELECT
             WHEN cd.cd_marital_status = 'M' THEN 1 
             ELSE 0 
         END) AS married_customers,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customer_names
 FROM 
     customer_address ca
 JOIN 

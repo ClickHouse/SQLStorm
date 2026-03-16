@@ -40,9 +40,9 @@ UserEngagement AS (
     LEFT JOIN PostStatistics ps ON u.Id = ps.OwnerUserId
 )
 SELECT ue.*, 
-       CASE WHEN ue.Answers > 0 THEN (ue.Questions::decimal / ue.Answers) ELSE NULL END AS QuestionToAnswerRatio,
+       CASE WHEN ue.Answers > 0 THEN (CAST(ue.Questions AS decimal) / ue.Answers) ELSE NULL END AS QuestionToAnswerRatio,
        CASE WHEN ue.LastPostDate IS NOT NULL THEN 
-           EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - ue.LastPostDate)) / 86400 
+           toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - ue.LastPostDate)) / 86400 
        ELSE NULL 
        END AS DaysSinceLastPost
 FROM UserEngagement ue

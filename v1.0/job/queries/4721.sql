@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM cast('2024-10-01' as date)) - t.production_year ORDER BY t.production_year DESC) AS rank
+        ROW_NUMBER() OVER (PARTITION BY toYear(cast('2024-10-01' as date)) - t.production_year ORDER BY t.production_year DESC) AS rank
     FROM 
         aka_title t
     WHERE 
@@ -25,7 +25,7 @@ MovieDetails AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS actor_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors
     FROM 
         TopRankedMovies t
     LEFT JOIN 

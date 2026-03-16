@@ -3,7 +3,7 @@ WITH RankedTitles AS (
         t.id AS title_id, 
         t.title, 
         t.production_year, 
-        ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY RANDOM()) AS rn
+        ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY rand()) AS rn
     FROM 
         title t
     WHERE 

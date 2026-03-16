@@ -22,7 +22,7 @@ PostHistoryStats AS (
         ph.PostId,
         COUNT(ph.Id) AS HistoryCount,
         MAX(ph.CreationDate) AS LastModificationDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS ModifiedTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS ModifiedTypes
     FROM 
         PostHistory ph
     INNER JOIN 

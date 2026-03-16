@@ -8,7 +8,7 @@ WITH ranked_orders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderstatus IN ('O', 'F')
+        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderstatus IN ('O', 'F')
 ),
 supplier_summary AS (
     SELECT 

@@ -7,8 +7,8 @@ SELECT
     COUNT(DISTINCT C.c_customer_sk) AS CustomerCount,
     SUM(CD.cd_purchase_estimate) AS TotalPurchaseEstimate,
     AVG(CD.cd_dep_count) AS AverageDependentCount,
-    STRING_AGG(DISTINCT CONCAT_WS(' ', C.c_first_name, C.c_last_name), ', ') AS Customers,
-    STRING_AGG(DISTINCT CONCAT_WS(', ', CA.ca_street_number, CA.ca_street_name, CA.ca_street_type), '; ') AS Addresses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' ', C.c_first_name, C.c_last_name)))), ', ') AS Customers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(', ', CA.ca_street_number, CA.ca_street_name, CA.ca_street_type)))), '; ') AS Addresses
 FROM 
     customer C
 JOIN 

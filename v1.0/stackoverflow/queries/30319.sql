@@ -52,13 +52,13 @@ PostHistories AS (
     INNER JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryCount,
-        STRING_AGG(DISTINCT ph.HistoryAction, ', ') AS Actions
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.HistoryAction))), ', ') AS Actions
     FROM 
         PostHistories ph
     GROUP BY 

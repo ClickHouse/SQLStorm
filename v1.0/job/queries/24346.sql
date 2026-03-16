@@ -47,8 +47,8 @@ movies_with_keywords AS (
 company_info AS (
     SELECT
         mc.movie_id,
-        STRING_AGG(c.name, ', ') AS companies,
-        STRING_AGG(ct.kind, ', ') AS company_types
+        arrayStringConcat(groupArray(assumeNotNull(c.name)), ', ') AS companies,
+        arrayStringConcat(groupArray(assumeNotNull(ct.kind)), ', ') AS company_types
     FROM
         movie_companies mc
     JOIN company_name c ON mc.company_id = c.id
@@ -59,7 +59,7 @@ SELECT
     mh.movie_id,
     mh.title,
     mh.production_year,
-    string_agg(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     ci.companies,
     ci.company_types,
     MAX(cwr.actor_rank) AS max_actors,

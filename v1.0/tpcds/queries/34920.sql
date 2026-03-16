@@ -35,7 +35,7 @@ SELECT
     AVG(ws.ws_net_profit) AS avg_profit_per_sale,
     MAX(ws.ws_net_profit) AS max_profit_per_sale,
     MIN(ws.ws_net_profit) AS min_profit_per_sale,
-    STRING_AGG(DISTINCT r.r_reason_desc, ', ') AS return_reasons
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_reason_desc))), ', ') AS return_reasons
 FROM 
     customer c
 LEFT JOIN 
@@ -56,4 +56,4 @@ HAVING
     SUM(ws.ws_net_profit) > (SELECT AVG(ws2.ws_net_profit) FROM web_sales ws2 WHERE ws2.ws_sold_date_sk >= 20200101)
 ORDER BY 
     total_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

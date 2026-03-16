@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.OwnerUserId, p.Score
 )
@@ -46,7 +46,7 @@ LEFT JOIN
      FROM Posts p
      JOIN PostHistory ph ON p.Id = ph.PostId
      WHERE ph.PostHistoryTypeId IN (10, 11, 12)   
-     AND ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months') PH ON RP.PostId = PH.Id
+     AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH) PH ON RP.PostId = PH.Id
 WHERE 
     RP.Rank <= 3 
     OR RP.TotalBounties > 0 

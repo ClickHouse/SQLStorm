@@ -64,4 +64,4 @@ JOIN
     ItemsWithReturns it ON fs.ws_item_sk = it.i_item_sk
 ORDER BY 
     it.TotalReturns DESC, fs.ws_sales_price DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -11,7 +11,7 @@ WITH UserPostCounts AS (
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        STRING_AGG(T.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM Posts P
     JOIN Tags T ON P.Tags LIKE '%' || T.TagName || '%' 
     GROUP BY P.Id

@@ -6,7 +6,7 @@ SELECT
     AVG(l.l_discount) AS avg_discount,
     MIN(l.l_shipdate) AS first_ship_date,
     MAX(l.l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' - ', s.s_address), '; ') AS supplier_addresses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' - ', s.s_address)))), '; ') AS supplier_addresses
 FROM 
     part p
 JOIN 

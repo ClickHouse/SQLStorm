@@ -4,7 +4,7 @@ WITH TagStats AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(p.Score) AS TotalScore,
         AVG(p.ViewCount) AS AverageViews,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS ActiveUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS ActiveUsers
     FROM
         Tags t
     JOIN

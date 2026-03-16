@@ -2,7 +2,7 @@ WITH RankedMovies AS (
     SELECT 
         a.title AS movie_title,
         a.production_year,
-        STRING_AGG(DISTINCT c.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS cast_names,
         ROW_NUMBER() OVER (PARTITION BY a.production_year ORDER BY a.production_year DESC, a.title) AS rank
     FROM 
         aka_title a

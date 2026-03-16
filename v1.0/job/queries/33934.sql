@@ -60,7 +60,7 @@ SELECT
         WHEN COALESCE(mkc.keyword_count, 0) = 0 AND tm.cast_count > 10 THEN 'Popular without Keywords'
         ELSE 'Less Popular'
     END AS popularity_indicator,
-    STRING_AGG(DISTINCT ak.name, ', ') AS cast_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names
 FROM 
     TopMovies tm
 LEFT JOIN 

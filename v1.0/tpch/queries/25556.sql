@@ -4,7 +4,7 @@ SELECT
     CONCAT('Supplier: ', s.s_name, ', Region: ', r.r_name) AS supplier_region_info,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS shipping_methods,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS shipping_methods,
     CASE 
         WHEN SUM(l.l_extendedprice * (1 - l.l_discount)) > 100000 THEN 'High Revenue'
         WHEN SUM(l.l_extendedprice * (1 - l.l_discount)) BETWEEN 50000 AND 100000 THEN 'Medium Revenue'

@@ -17,7 +17,7 @@ SELECT
     rm.title,
     rm.production_year,
     rm.cast_count,
-    (SELECT STRING_AGG(j.name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(j.name)), ', ') 
      FROM aka_name j 
      JOIN cast_info ci ON j.person_id = ci.person_id 
      WHERE ci.movie_id = (SELECT id FROM aka_title WHERE title = rm.title AND production_year = rm.production_year LIMIT 1)) AS cast_names,

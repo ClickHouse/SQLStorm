@@ -36,7 +36,7 @@ SELECT
     mm.movie_id,
     mm.title,
     mm.production_year,
-    ARRAY_AGG(mm.actor_name ORDER BY mm.actor_name) AS cast_members,
+    groupArray(assumeNotNull(mm.actor_name ORDER BY mm.actor_name)) AS cast_members,
     mm.total_cast
 FROM 
     MostCastMovies mm

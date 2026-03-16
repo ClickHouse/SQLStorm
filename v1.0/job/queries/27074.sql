@@ -4,8 +4,8 @@ WITH RankedMovies AS (
         m.title,
         m.production_year,
         COUNT(c.id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title m
     LEFT JOIN 
@@ -25,7 +25,7 @@ WITH RankedMovies AS (
     SELECT 
         mc.movie_id,
         COUNT(mc.company_id) AS company_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 
@@ -35,8 +35,8 @@ WITH RankedMovies AS (
 ), MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT CASE WHEN it.info = 'Summary' THEN mi.info END, '; ') AS summary,
-        STRING_AGG(DISTINCT CASE WHEN it.info = 'Ratings' THEN mi.info END, '; ') AS ratings
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN it.info = 'Summary' THEN mi.info END))), '; ') AS summary,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN it.info = 'Ratings' THEN mi.info END))), '; ') AS ratings
     FROM 
         movie_info mi
     JOIN 

@@ -24,9 +24,9 @@ movie_stats AS (
     SELECT m.id AS movie_id,
            m.title,
            COUNT(DISTINCT ci.person_id) AS actor_count,
-           STRING_AGG(DISTINCT a.name, ', ') AS actor_list,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_list,
            SUM(CASE WHEN mi.info_type_id = 1 THEN 1 ELSE 0 END) AS info_count,
-           ARRAY_AGG(DISTINCT k.keyword) AS keywords
+           arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM aka_title m
     LEFT JOIN cast_info ci ON m.id = ci.movie_id
     LEFT JOIN aka_name a ON ci.person_id = a.person_id

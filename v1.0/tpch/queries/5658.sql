@@ -20,7 +20,7 @@ JOIN
 JOIN 
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND p.p_size IN (SELECT DISTINCT p_size FROM part WHERE p_retailprice > 100.00)
 GROUP BY 
     n.n_name

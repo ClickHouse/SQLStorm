@@ -60,4 +60,4 @@ HAVING
     SUM(swr.net_sales) > 1000
 ORDER BY 
     total_net_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

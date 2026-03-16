@@ -64,4 +64,4 @@ WHERE
     ci.cd_purchase_estimate > 10000
 ORDER BY 
     si.total_profit DESC, ci.customer_name
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

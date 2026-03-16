@@ -22,7 +22,7 @@ WITH RankedPosts AS (
         p.Id, p.Title, p.Body, p.Tags, p.Score, p.CreationDate, u.DisplayName
 ), TagStatistics AS (
     SELECT 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '> <')) AS TagName,
+        arrayJoin(splitByString('> <', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts p
     WHERE p.PostTypeId = 1
@@ -50,7 +50,7 @@ SELECT
     COUNT(*) AS TotalPostsUnderTag,
     MAX(rp.Score) AS HighestScore,
     AVG(rp.Score) AS AverageScore,
-    ARRAY_AGG(rp.Title ORDER BY rp.Score DESC) AS TopPostTitles
+    groupArray(assumeNotNull(rp.Title ORDER BY rp.Score DESC)) AS TopPostTitles
 FROM TagRankedPosts rp
 JOIN TagStatistics t ON rp.TagName = t.TagName
 WHERE rp.TagPostRank <= 3 

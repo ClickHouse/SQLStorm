@@ -5,7 +5,7 @@ WITH AddressDetails AS (
         ca_state,
         ca_country,
         COUNT(DISTINCT c_customer_id) AS customer_count,
-        STRING_AGG(DISTINCT ca_street_name, ', ') AS street_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), ', ') AS street_names,
         SUM(CASE WHEN cd_gender = 'M' THEN 1 ELSE 0 END) AS male_count,
         SUM(CASE WHEN cd_gender = 'F' THEN 1 ELSE 0 END) AS female_count
     FROM 

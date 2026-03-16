@@ -4,7 +4,7 @@ WITH MovieDetails AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT kw.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords,
         COUNT(DISTINCT ci.person_id) AS cast_count
     FROM 
         aka_title t

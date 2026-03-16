@@ -54,7 +54,7 @@ FROM
 LEFT JOIN 
     ReturnStats rs2 ON rs.ws_item_sk = rs2.sr_item_sk
 FULL OUTER JOIN 
-    customer c ON c.c_customer_sk = (SELECT c_sub.c_customer_sk FROM customer c_sub WHERE c_sub.c_birth_year > 1980 ORDER BY RANDOM() LIMIT 1)
+    customer c ON c.c_customer_sk = (SELECT c_sub.c_customer_sk FROM customer c_sub WHERE c_sub.c_birth_year > 1980 ORDER BY rand() LIMIT 1)
 LEFT JOIN 
     customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk
 LEFT JOIN 

@@ -7,7 +7,7 @@ RankedOrders AS (
     SELECT o_orderkey, o_totalprice, o_orderdate,
            RANK() OVER (PARTITION BY o_orderstatus ORDER BY o_totalprice DESC) AS price_rank
     FROM orders
-    WHERE o_orderdate >= DATE '1996-01-01'
+    WHERE o_orderdate >= toDate('1996-01-01')
 ),
 CustomerNation AS (
     SELECT c.c_custkey, c.c_name, n.n_name,
@@ -30,7 +30,7 @@ FROM
 LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
 LEFT JOIN SupplierCost sc ON p.p_partkey = sc.ps_partkey
 LEFT JOIN RankedOrders so ON l.l_orderkey = so.o_orderkey AND so.price_rank <= 5
-LEFT JOIN nation n ON n.n_nationkey = (SELECT s.s_nationkey FROM supplier s WHERE s.s_suppkey = sc.ps_suppkey FETCH FIRST 1 ROWS ONLY)
+LEFT JOIN nation n ON n.n_nationkey = (SELECT s.s_nationkey FROM supplier s WHERE s.s_suppkey = sc.ps_suppkey LIMIT 1)
 LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_retailprice > 10.00

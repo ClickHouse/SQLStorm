@@ -35,7 +35,7 @@ RoleSummary AS (
         md.production_year, 
         COUNT(DISTINCT md.actor_name) AS total_actors,
         COUNT(DISTINCT md.keyword) AS total_keywords,
-        STRING_AGG(DISTINCT md.company_name, ', ') AS production_companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.company_name))), ', ') AS production_companies
     FROM 
         MovieDetails md
     GROUP BY 

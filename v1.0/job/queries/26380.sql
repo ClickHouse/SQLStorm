@@ -42,7 +42,7 @@ TitleWithActorInfo AS (
 SELECT
     tw.title,
     tw.production_year,
-    STRING_AGG(DISTINCT tw.actor_name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tw.actor_name))), ', ') AS actors,
     COUNT(DISTINCT tw.actor_md5) AS unique_actor_count
 FROM
     TitleWithActorInfo tw

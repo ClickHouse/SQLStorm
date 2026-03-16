@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         RANK() OVER (ORDER BY p.Score DESC) AS RankByScore,
         p.OwnerUserId
     FROM Posts p
-    WHERE p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+    WHERE p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 UserReputation AS (
     SELECT 
@@ -29,7 +29,7 @@ PostHistoryDetail AS (
         COUNT(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 1 END) AS ClosureCount,
         COUNT(CASE WHEN ph.PostHistoryTypeId IN (24) THEN 1 END) AS EditSuggestionsCount
     FROM PostHistory ph
-    WHERE ph.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months')
+    WHERE ph.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
     GROUP BY ph.PostId
 ),
 PostVoteStats AS (
@@ -64,14 +64,14 @@ SELECT
         WHEN rp.RankByScore = 1 THEN 'Top Scored'
         ELSE 'Regular Post'
     END AS PostCategory,
-    STRING_AGG('Tag: ' || t.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull('Tag: ' || t.TagName)), ', ') AS Tags
 FROM RankedPosts rp
 JOIN UserReputation ur ON ur.UserId = rp.OwnerUserId
 LEFT JOIN PostHistoryDetail phd ON phd.PostId = rp.PostId
 LEFT JOIN PostVoteStats pvs ON pvs.PostId = rp.PostId
-LEFT JOIN LATERAL (
+LEFT JOIN (
     SELECT 
-        DISTINCT UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS TagName
+        DISTINCT arrayJoin(splitByString(',', p.Tags)) AS TagName
     FROM Posts p 
     WHERE p.Id = rp.PostId
 ) AS t ON TRUE

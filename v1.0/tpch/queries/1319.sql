@@ -10,7 +10,7 @@ OrderSummary AS (
     SELECT o.o_custkey, COUNT(DISTINCT o.o_orderkey) AS total_orders,
            SUM(o.o_totalprice) AS total_spent
     FROM orders o
-    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= DATE '1995-01-01'
+    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= toDate('1995-01-01')
     GROUP BY o.o_custkey
 ),
 HighValueCustomers AS (

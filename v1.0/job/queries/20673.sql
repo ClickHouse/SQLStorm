@@ -18,7 +18,7 @@ MovieInfo AS (
         mv.id AS movie_id,
         MIN(mv.production_year) AS earliest_year,
         COUNT(DISTINCT k.keyword) AS keyword_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords_list
     FROM 
         aka_title mv
     LEFT JOIN 

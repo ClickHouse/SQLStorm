@@ -19,7 +19,7 @@ MovieDetails AS (
         mt.title,
         mt.production_year,
         COUNT(DISTINCT ci.person_id) AS total_actors,
-        ARRAY_AGG(DISTINCT ak.name) AS actor_names
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names
     FROM 
         aka_title mt
     LEFT JOIN 
@@ -67,7 +67,7 @@ SELECT
     (SELECT AVG(CASE WHEN ci.note IS NULL THEN 0 ELSE 1 END) 
      FROM cast_info ci 
      WHERE ci.movie_id = fm.movie_id) AS avg_actor_notes,
-    STRING_AGG(DISTINCT ki.keyword, ', ' ORDER BY ki.keyword) AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ki.keyword))), ', ' ORDER BY ki.keyword) AS keywords
 FROM 
     FilteredMovies fm
 LEFT JOIN 

@@ -6,13 +6,13 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.ViewCount DESC) AS Rank,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Tags t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.CreationDate, p.PostTypeId
 ),
@@ -28,7 +28,7 @@ FilteredPosts AS (
             SELECT 1 
             FROM Comments c 
             WHERE c.PostId = rp.PostId 
-            AND c.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+            AND c.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
         )
 )
 SELECT 

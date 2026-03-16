@@ -3,8 +3,8 @@ WITH AddressStats AS (
     SELECT
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), '; ') AS full_addresses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type)))), '; ') AS full_addresses
     FROM
         customer_address
     GROUP BY
@@ -14,7 +14,7 @@ CustomerDemographicStats AS (
     SELECT
         cd_gender,
         COUNT(*) AS demographic_count,
-        STRING_AGG(CONCAT(cd_marital_status, ' - ', cd_education_status), ', ') AS demographics
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(cd_marital_status, ' - ', cd_education_status))), ', ') AS demographics
     FROM
         customer_demographics
     GROUP BY
@@ -34,4 +34,4 @@ JOIN
     CustomerDemographicStats C ON A.address_count > C.demographic_count
 ORDER BY 
     A.address_count DESC, C.demographic_count ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -33,7 +33,7 @@ SELECT
     mh.production_year,
     COUNT(DISTINCT mc.company_id) AS company_count,
     AVG(CAST(pi.info AS numeric)) AS average_rating,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ak.name ORDER BY mh.production_year DESC) AS role_rank
 FROM 
     movie_hierarchy mh

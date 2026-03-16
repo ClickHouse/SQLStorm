@@ -16,7 +16,7 @@ FilteredSales AS (
         COALESCE(c.c_first_name, 'Unknown') AS customer_first_name,
         CASE 
             WHEN c.c_birth_year IS NULL THEN 'Birth year unknown'
-            ELSE CAST(EXTRACT(YEAR FROM DATE '2002-10-01') - c.c_birth_year AS VARCHAR)
+            ELSE CAST(toYear(toDate('2002-10-01')) - c.c_birth_year AS VARCHAR)
         END AS customer_age,
         d.d_day_name,
         d.d_month_seq,

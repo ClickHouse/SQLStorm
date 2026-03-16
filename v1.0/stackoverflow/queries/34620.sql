@@ -28,13 +28,13 @@ RecentEdits AS (
         PostHistory PH
     WHERE 
         PH.PostHistoryTypeId IN (4, 5, 6) 
-        AND PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ), 
 AggregateEdits AS (
     SELECT 
         RE.UserId,
         COUNT(RE.PostId) AS EditCount,
-        STRING_AGG(DISTINCT P.Title, ', ') AS EditedPosts
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(P.Title))), ', ') AS EditedPosts
     FROM 
         RecentEdits RE
     JOIN 

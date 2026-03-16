@@ -37,7 +37,7 @@ RecentPostHistory AS (
     INNER JOIN 
         Posts P ON PH.PostId = P.Id
     WHERE 
-        PH.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        PH.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 )
 SELECT 
     U.DisplayName,
@@ -48,8 +48,8 @@ SELECT
     COALESCE(TAU.TotalAnswers, 0) AS TotalAnswers,
     COALESCE(TAU.TotalQuestions, 0) AS TotalQuestions,
     COALESCE(TAU.TotalViews, 0) AS TotalViews,
-    STRING_AGG(RPH.Comment, '; ') AS RecentComments,
-    STRING_AGG(RPH.Title, ', ') AS RecentPostsTitles
+    arrayStringConcat(groupArray(assumeNotNull(RPH.Comment)), '; ') AS RecentComments,
+    arrayStringConcat(groupArray(assumeNotNull(RPH.Title)), ', ') AS RecentPostsTitles
 FROM 
     Users U 
 LEFT JOIN 

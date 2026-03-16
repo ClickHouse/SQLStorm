@@ -10,21 +10,21 @@ WITH RECURSIVE MovieHierarchy AS (
     JOIN MovieHierarchy mh ON mt.episode_of_id = mh.movie_id
 ),
 CastDetails AS (
-    SELECT c.movie_id, STRING_AGG(a.name, ', ') AS cast_names,
+    SELECT c.movie_id, arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS cast_names,
            COUNT(c.person_id) AS num_cast
     FROM cast_info c
     JOIN aka_name a ON c.person_id = a.person_id
     GROUP BY c.movie_id
 ),
 MovieKeywords AS (
-    SELECT mk.movie_id, STRING_AGG(k.keyword, ', ') AS keywords
+    SELECT mk.movie_id, arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id
 ),
 MovieCompanies AS (
-    SELECT mc.movie_id, STRING_AGG(DISTINCT cn.name, '; ') AS companies,
-           STRING_AGG(DISTINCT ct.kind, '; ') AS company_types
+    SELECT mc.movie_id, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), '; ') AS companies,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), '; ') AS company_types
     FROM movie_companies mc
     JOIN company_name cn ON mc.company_id = cn.id
     JOIN company_type ct ON mc.company_type_id = ct.id

@@ -49,7 +49,7 @@ SELECT
     cs.company_name,
     cs.company_type,
     cs.num_movies,
-    ARRAY_AGG(DISTINCT mt.keyword) AS keywords
+    arrayDistinct(groupArray(assumeNotNull(mt.keyword))) AS keywords
 FROM 
     MovieTitles mt
 JOIN 

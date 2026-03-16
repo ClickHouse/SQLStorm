@@ -8,7 +8,7 @@ SELECT
             WHEN cd_gender = 'M' THEN ws_ext_sales_price 
             ELSE NULL 
         END) AS avg_male_sales,
-    STRING_AGG(DISTINCT cd_education_status, ', ') AS education_statuses,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_statuses,
     MAX(ws_sales_price) AS max_sales_price,
     MIN(ws_sales_price) AS min_sales_price
 FROM 

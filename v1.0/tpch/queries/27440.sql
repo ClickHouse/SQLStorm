@@ -5,7 +5,7 @@ SELECT
     c.c_name, 
     COUNT(DISTINCT o.o_orderkey) as order_count, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) as total_revenue, 
-    STRING_AGG(DISTINCT n.n_name, '; ' ORDER BY n.n_name) as relevant_nations
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), '; ' ORDER BY n.n_name) as relevant_nations
 FROM 
     part p
 JOIN 

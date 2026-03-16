@@ -22,7 +22,7 @@ PostStats AS (
         p.Title,
         p.CreationDate,
         p.LastActivityDate,
-        EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)) / 60 AS ActivityDurationMinutes,
+        toUnixTimestamp((p.LastActivityDate - p.CreationDate)) / 60 AS ActivityDurationMinutes,
         p.Score,
         p.ViewCount,
         p.AnswerCount,

@@ -34,7 +34,7 @@ SELECT
     c.c_name,
     COUNT(DISTINCT cd.p_partkey) AS part_count,
     SUM(l.l_extendedprice) AS total_revenue,
-    STRING_AGG(DISTINCT cd.mfgr_brand_info, '; ') AS unique_mfgr_brands
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.mfgr_brand_info))), '; ') AS unique_mfgr_brands
 FROM CombinedDetails cd
 JOIN customer c ON c.c_custkey = cd.s_suppkey % (SELECT COUNT(c2.c_custkey) FROM customer c2)
 JOIN orders o ON o.o_custkey = c.c_custkey

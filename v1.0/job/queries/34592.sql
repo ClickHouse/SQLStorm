@@ -30,7 +30,7 @@ SELECT
     t.production_year,
     COUNT(ci.id) AS roles_count,
     AVG(CASE WHEN ci.nr_order IS NOT NULL THEN ci.nr_order ELSE 0 END) AS avg_order,
-    STRING_AGG(DISTINCT cct.kind, ', ') AS cast_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cct.kind))), ', ') AS cast_types,
     CASE 
         WHEN COUNT(ci.id) > 5 THEN 'Experienced'
         ELSE 'Novice'

@@ -56,7 +56,7 @@ LEFT JOIN RecursivePostHistory r ON ps.PostId = r.PostId AND r.RecentEdit = 1
 LEFT JOIN (
     SELECT 
         pt.Id AS PostId, 
-        STRING_AGG(t.TagName, ', ') AS TagNames
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagNames
     FROM Posts pt
     JOIN Tags t ON pt.Tags LIKE '%' || t.TagName || '%'
     GROUP BY pt.Id

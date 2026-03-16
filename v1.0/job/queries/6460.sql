@@ -5,7 +5,7 @@ SELECT
     t.production_year,
     r.role AS role_name,
     ct.kind AS company_type,
-    STRING_AGG(DISTINCT k.keyword, ',' ORDER BY k.keyword ASC) AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',' ORDER BY k.keyword ASC) AS keywords
 FROM 
     aka_name AS a
 JOIN 

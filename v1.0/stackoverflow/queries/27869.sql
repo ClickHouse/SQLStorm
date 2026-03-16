@@ -35,13 +35,13 @@ FilteredPosts AS (
         rp.DownVotes,
         rp.Rank,
         (rp.UpVotes - rp.DownVotes) AS NetVotes,
-        ARRAY_AGG(DISTINCT t.TagName) AS AllTags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS AllTags
     FROM 
         RankedPosts rp
     LEFT JOIN 
         Posts p ON rp.PostId = p.Id
     LEFT JOIN 
-        Tags t ON t.TagName = ANY(string_to_array(rp.Tags, '>'))
+        Tags t ON t.TagName = ANY(splitByString('>', rp.Tags))
     WHERE 
         rp.ViewCount > 100  
     GROUP BY 

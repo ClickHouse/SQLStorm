@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         t.production_year,
         a.name AS actor_name,
         c.kind AS cast_type,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COUNT(mc.company_id) AS production_companies
     FROM 
         aka_title t

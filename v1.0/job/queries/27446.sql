@@ -3,8 +3,8 @@ WITH movie_performance AS (
         t.title AS movie_title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT CONCAT(a.name, ' as ', r.role), ', ') AS cast_list,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' as ', r.role)))), ', ') AS cast_list,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         title t
     JOIN 
@@ -31,7 +31,7 @@ SELECT
     mp.production_year,
     mp.total_cast,
     mp.cast_list,
-    ARRAY_LENGTH(mp.keywords, 1) AS keyword_count
+    length(mp.keywords, 1) AS keyword_count
 FROM 
     movie_performance mp
 ORDER BY 

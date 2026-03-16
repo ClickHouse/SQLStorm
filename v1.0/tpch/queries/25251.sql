@@ -3,7 +3,7 @@ SELECT
     CONCAT(p.p_name, ' - ', s.s_name) AS part_supplier,
     SUM(l.l_quantity) AS total_quantity,
     AVG(p.p_retailprice) AS average_price,
-    STRING_AGG(DISTINCT CONCAT('OrderID:', o.o_orderkey, ' Date:', o.o_orderdate), '; ') AS orders_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('OrderID:', o.o_orderkey, ' Date:', o.o_orderdate)))), '; ') AS orders_info
 FROM 
     part p 
 JOIN 

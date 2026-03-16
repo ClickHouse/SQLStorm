@@ -30,7 +30,7 @@ top_movies AS (
 SELECT 
     keyword,
     COUNT(DISTINCT movie_title) AS movie_count,
-    ARRAY_AGG(DISTINCT actor_name) AS actors
+    arrayDistinct(groupArray(assumeNotNull(actor_name))) AS actors
 FROM 
     top_movies
 GROUP BY 

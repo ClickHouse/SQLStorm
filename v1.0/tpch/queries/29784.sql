@@ -16,7 +16,7 @@ SELECT
     rp.p_brand, 
     COUNT(rp.p_partkey) AS part_count, 
     SUM(rp.p_retailprice) AS total_retail_price, 
-    STRING_AGG(rp.p_name, ', ') AS part_names
+    arrayStringConcat(groupArray(assumeNotNull(rp.p_name)), ', ') AS part_names
 FROM RankedParts rp
 WHERE rp.price_rank <= 5
 GROUP BY rp.p_brand

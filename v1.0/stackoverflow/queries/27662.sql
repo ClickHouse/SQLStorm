@@ -12,7 +12,7 @@ WITH TagUsage AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         t.TagName
 ),
@@ -22,8 +22,8 @@ TagStats AS (
         PostCount,
         AnswerCount,
         VoterCount,
-        ROUND((AnswerCount::FLOAT / NULLIF(PostCount, 0)) * 100, 2) AS AnswerRate, 
-        ROUND((VoterCount::FLOAT / NULLIF(PostCount, 0)) * 100, 2) AS VoterEngagement
+        ROUND((CAST(AnswerCount AS FLOAT) / NULLIF(PostCount, 0)) * 100, 2) AS AnswerRate, 
+        ROUND((CAST(VoterCount AS FLOAT) / NULLIF(PostCount, 0)) * 100, 2) AS VoterEngagement
     FROM 
         TagUsage
 ),

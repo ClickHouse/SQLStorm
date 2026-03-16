@@ -3,7 +3,7 @@ SELECT
     p.p_name AS part_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(CONCAT(o.o_orderdate, ' - ', o.o_orderstatus), '; ') AS order_dates_statuses
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(o.o_orderdate, ' - ', o.o_orderstatus))), '; ') AS order_dates_statuses
 FROM 
     supplier s
 JOIN 

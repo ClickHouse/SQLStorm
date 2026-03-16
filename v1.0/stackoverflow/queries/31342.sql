@@ -12,17 +12,17 @@ WITH RecursiveUserActivity AS (
     JOIN 
         Posts P ON U.Id = P.OwnerUserId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 RecentUserBadges AS (
     SELECT 
         B.UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Badges B
     WHERE 
-        B.Date >= CURRENT_DATE - INTERVAL '1 year'
+        B.Date >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         B.UserId
 ),

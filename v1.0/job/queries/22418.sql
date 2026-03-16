@@ -35,7 +35,7 @@ MovieCompanies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -70,4 +70,4 @@ WHERE
     rm.title_rank <= 5 
 ORDER BY 
     rm.production_year, rm.title, cd.nr_order
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

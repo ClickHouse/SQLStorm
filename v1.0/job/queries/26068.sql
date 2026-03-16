@@ -5,7 +5,7 @@ WITH movie_details AS (
         mt.production_year,
         ak.name AS actor_name,
         ak.imdb_index AS actor_index,
-        STRING_AGG(kw.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') AS keywords
     FROM 
         aka_title mt
     JOIN 
@@ -26,7 +26,7 @@ actor_roles AS (
     SELECT 
         ak.name AS actor_name,
         COUNT(DISTINCT ci.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT rt.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS roles
     FROM 
         cast_info ci
     JOIN 
@@ -52,4 +52,4 @@ JOIN
     actor_roles ar ON md.actor_name = ar.actor_name
 ORDER BY 
     md.production_year DESC, ar.movie_count DESC
-OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 0;

@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(l.l_extendedprice) AS avg_price,
     MAX(l.l_tax) AS max_tax,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     (SELECT COUNT(*) FROM customer c WHERE c.c_nationkey = n.n_nationkey) AS customers_count
 FROM 
     part p

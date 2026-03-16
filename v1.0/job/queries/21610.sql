@@ -59,8 +59,8 @@ SELECT
     t.title,
     im.film_type,
     im.total_actors,
-    STRING_AGG(ai.actor_name, ', ') AS actor_names,
-    STRING_AGG(CONCAT(ai.actor_name, ' - ', ai.actor_gender), '; ') AS actor_details
+    arrayStringConcat(groupArray(assumeNotNull(ai.actor_name)), ', ') AS actor_names,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(ai.actor_name, ' - ', ai.actor_gender))), '; ') AS actor_details
 FROM 
     ImportantMovies im
 JOIN 

@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Tags,
         p.CreationDate,
         p.AnswerCount,
-        ROW_NUMBER() OVER (PARTITION BY (SELECT COUNT(*) FROM UNNEST(string_to_array(p.Tags, ','))) ORDER BY p.CreationDate DESC) AS RankByTagCount
+        ROW_NUMBER() OVER (PARTITION BY (SELECT COUNT(*) FROM arrayJoin(splitByString(',', p.Tags))) ORDER BY p.CreationDate DESC) AS RankByTagCount
     FROM 
         Posts p
     WHERE 
@@ -18,7 +18,7 @@ PopularTags AS (
         COUNT(*) AS PostCount
     FROM 
         Posts p,
-        UNNEST(string_to_array(p.Tags, ',')) AS tag
+        arrayJoin(splitByString(',', p.Tags)) AS tag
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 
@@ -56,7 +56,7 @@ SELECT
 FROM 
     RankedPosts p
 JOIN 
-    PopularTags rt ON rt.TagName = ANY(string_to_array(p.Tags, ','))
+    PopularTags rt ON rt.TagName = ANY(splitByString(',', p.Tags))
 JOIN 
     UserActivities u ON p.PostId IN (SELECT Id FROM Posts WHERE OwnerUserId = u.UserId)
 WHERE 

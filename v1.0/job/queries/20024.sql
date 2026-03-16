@@ -33,8 +33,8 @@ SELECT
     mh.title AS movie_title,
     mh.production_year,
     COUNT(DISTINCT c.role_id) AS total_roles,
-    AVG(EXTRACT(YEAR FROM DATE '2024-10-01') - mh.production_year) AS avg_age_of_movies,
-    STRING_AGG(DISTINCT ik.keyword || ' (' || ik.id || ')', ', ') AS movie_keywords,
+    AVG(toYear(toDate('2024-10-01')) - mh.production_year) AS avg_age_of_movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ik.keyword || ' (' || ik.id || ')'))), ', ') AS movie_keywords,
     CASE 
         WHEN COUNT(DISTINCT c.role_id) = 0 THEN 'No roles'
         ELSE 'Has roles'
@@ -60,7 +60,7 @@ WHERE
 GROUP BY
     ak.name, mh.title, mh.production_year
 HAVING
-    AVG(EXTRACT(YEAR FROM DATE '2024-10-01') - mh.production_year) > 15
+    AVG(toYear(toDate('2024-10-01')) - mh.production_year) > 15
 ORDER BY
     mh.production_year DESC, total_roles DESC
 LIMIT 100;

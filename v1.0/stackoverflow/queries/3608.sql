@@ -44,7 +44,7 @@ RecentPostHistory AS (
         PH.Comment
     FROM PostHistory PH
     JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
-    WHERE PH.CreationDate >= cast('2024-10-01' as date) - interval '30 days'
+    WHERE PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 UserPosts AS (
     SELECT 

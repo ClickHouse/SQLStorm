@@ -51,7 +51,7 @@ SELECT
     c.production_year,
     COUNT(c.title) AS total_movies,
     AVG(c.actor_count) AS avg_actors,
-    ARRAY_AGG(DISTINCT c.popular_keyword) AS sampled_keywords
+    arrayDistinct(groupArray(assumeNotNull(c.popular_keyword))) AS sampled_keywords
 FROM 
     combined_results AS c
 GROUP BY 

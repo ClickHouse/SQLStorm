@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         mt.production_year,
         mt.kind_id,
         ROW_NUMBER() OVER (PARTITION BY mt.kind_id ORDER BY mt.production_year DESC) AS RankByYear,
-        STRING_AGG(aka.name, ', ') AS ActorNames
+        arrayStringConcat(groupArray(assumeNotNull(aka.name)), ', ') AS ActorNames
     FROM
         aka_title mt
     JOIN

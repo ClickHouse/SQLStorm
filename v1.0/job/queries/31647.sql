@@ -31,8 +31,8 @@ SELECT
     at.title AS movie_title,
     at.production_year,
     COUNT(DISTINCT mc.company_id) AS company_count,
-    STRING_AGG(DISTINCT ckt.kind, ', ') AS company_types,
-    ARRAY_AGG(DISTINCT kw.keyword) AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ckt.kind))), ', ') AS company_types,
+    arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ak.id ORDER BY at.production_year DESC) AS movie_rank
 FROM 
     cast_info ci

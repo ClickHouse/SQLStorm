@@ -2,7 +2,7 @@ WITH UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM Badges b
     GROUP BY b.UserId
 ),
@@ -63,4 +63,4 @@ FROM TopUsers tu
 LEFT JOIN AggregatePostStats aps ON tu.UserId = aps.OwnerUserId
 WHERE tu.BadgeCount >= 0 OR tu.Reputation >= 1000
 ORDER BY tu.Reputation DESC, tu.DisplayName
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

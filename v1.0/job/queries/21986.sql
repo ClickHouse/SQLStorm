@@ -11,7 +11,7 @@ MoviesWithKeywords AS (
     SELECT 
         t.id AS movie_id,
         t.title,
-        STRING_AGG(k.keyword, ', ') AS all_keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS all_keywords
     FROM aka_title t
     LEFT JOIN movie_keyword mk ON t.id = mk.movie_id
     LEFT JOIN keyword k ON mk.keyword_id = k.id

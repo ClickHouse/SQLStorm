@@ -42,7 +42,7 @@ SupplementedOrders AS (
     LEFT JOIN 
         lineitem lp ON o.o_orderkey = lp.l_orderkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 SignificantNations AS (
     SELECT 

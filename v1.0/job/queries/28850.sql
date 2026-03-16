@@ -54,7 +54,7 @@ ActorDetails AS (
 SELECT 
     ad.title,
     ad.production_year,
-    STRING_AGG(ad.actor_name, ', ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(ad.actor_name)), ', ') AS actors
 FROM 
     ActorDetails ad
 GROUP BY 

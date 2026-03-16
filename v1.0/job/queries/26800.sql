@@ -6,7 +6,7 @@ WITH MovieDetails AS (
         a.production_year,
         a.kind_id,
         k.keyword AS movie_keyword,
-        ARRAY_AGG(DISTINCT c.name) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_names,
         COALESCE(SUM(CASE WHEN mi.info = 'Award' THEN 1 ELSE 0 END), 0) AS award_count
     FROM 
         aka_title a

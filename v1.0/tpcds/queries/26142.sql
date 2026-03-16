@@ -20,7 +20,7 @@ CombinedData AS (
         ac.address_count,
         td.total_sales
     FROM AddressCounts ac
-    JOIN TrendData td ON td.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
+    JOIN TrendData td ON td.d_year = toYear(cast('2002-10-01' as date))
     ORDER BY ac.ca_state, td.d_month_seq
 )
 SELECT 

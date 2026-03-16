@@ -34,7 +34,7 @@ AggregatedData AS (
     SELECT 
         a.actor_name,
         COUNT(t.title) AS total_titles,
-        STRING_AGG(DISTINCT t.keyword, ', ') AS keywords_used
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.keyword))), ', ') AS keywords_used
     FROM ActorInfo a
     JOIN TopTitles t ON a.title = t.title
     GROUP BY a.actor_name

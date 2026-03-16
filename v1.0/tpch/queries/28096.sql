@@ -2,7 +2,7 @@ WITH SupplierOrders AS (
     SELECT s.s_name, 
            COUNT(DISTINCT o.o_orderkey) AS total_orders, 
            SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-           STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
     FROM supplier s
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     JOIN part p ON ps.ps_partkey = p.p_partkey

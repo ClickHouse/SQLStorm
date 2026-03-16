@@ -26,7 +26,7 @@ PostStats AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.LastActivityDate >= CURRENT_DATE - INTERVAL '1 year'
+        P.LastActivityDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title, P.OwnerUserId
 ), 

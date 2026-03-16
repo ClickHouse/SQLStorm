@@ -4,7 +4,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, ' (', n.n_name, ')'), '; ') AS customers_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, ' (', n.n_name, ')')))), '; ') AS customers_info,
     MAX(p.p_retailprice) AS max_retail_price,
     MIN(CASE WHEN p.p_size < 20 THEN p.p_size END) AS min_small_part_size
 FROM 

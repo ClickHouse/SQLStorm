@@ -15,7 +15,7 @@ RecentPostHistory AS (
         PH.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY PH.PostId ORDER BY PH.CreationDate DESC) AS RowNum
     FROM PostHistory PH
-    WHERE PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 FilteredPosts AS (
     SELECT 
@@ -31,7 +31,7 @@ FilteredPosts AS (
     LEFT JOIN Badges B ON P.OwnerUserId = B.UserId
     LEFT JOIN RecentPostHistory RPH ON P.Id = RPH.PostId AND RPH.RowNum = 1
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
         AND (P.ClosedDate IS NULL OR P.AcceptedAnswerId IS NOT NULL)
         AND P.ViewCount > 100
     GROUP BY P.Id, P.Title, RV.VoteCount

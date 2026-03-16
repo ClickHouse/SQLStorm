@@ -53,4 +53,4 @@ WHERE
 ORDER BY 
     rs.total_supply_cost DESC, 
     cs.avg_order_value DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

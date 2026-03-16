@@ -27,7 +27,7 @@ FilteredAddresses AS (
         customer_address ca
     CROSS JOIN (
         SELECT 
-            STRING_AGG(DISTINCT p.p_promo_name, ', ') AS faList
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS faList
         FROM 
             promotion p
     ) AS fa

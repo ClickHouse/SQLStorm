@@ -18,7 +18,7 @@ SalesData AS (
         ws.ws_order_number,
         ws.ws_sales_price,
         ws.ws_quantity,
-        CURRENT_TIMESTAMP AS query_time,
+        now64(6) AS query_time,
         ROW_NUMBER() OVER (PARTITION BY ws.ws_order_number ORDER BY ws.ws_sales_price DESC) AS rn
     FROM 
         web_sales ws

@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 /* Considering only Questions */
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' /* Only questions created in the last year */
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR /* Only questions created in the last year */
 )
 
 SELECT 

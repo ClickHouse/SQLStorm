@@ -21,7 +21,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '30 days')
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 30 DAY)
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId, p.CreationDate
 ),
@@ -75,7 +75,7 @@ SELECT
     END AS UserReputation,
     COALESCE(lp.Title, 'No Recent Post') AS LatestPostTitle,
     COALESCE(pld.LinkType, 'No Links') AS LinkType,
-    EXTRACT(EPOCH FROM (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - pp.CreationDate)) / 60 AS AgeInMinutes
+    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - pp.CreationDate)) / 60 AS AgeInMinutes
 FROM 
     PopularPosts pp
 LEFT JOIN 
@@ -86,4 +86,4 @@ LEFT JOIN
     PostLinksDetails pld ON pp.PostId = pld.PostId
 ORDER BY 
     pp.UpVoteCount DESC, pp.CommentCount DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

@@ -49,7 +49,7 @@ UserActivity AS (
     JOIN 
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE 
-        v.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        v.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         v.UserId
 )
@@ -72,7 +72,7 @@ SELECT
         WHEN rb.Score BETWEEN 1 AND 10 THEN 'Moderate Engagement'
         ELSE 'Highly Engaged'
     END AS EngagementLevel,
-    STRING_AGG(DISTINCT TRIM(REGEXP_REPLACE(rb.Tags, '[<>]', '')), ', ') AS ConcatenatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(TRIM(REGEXP_REPLACE(rb.Tags, '[<>]', ''))))), ', ') AS ConcatenatedTags
 FROM 
     UserReputation up
 JOIN 

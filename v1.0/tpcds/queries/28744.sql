@@ -2,7 +2,7 @@
 WITH AddressCounts AS (
     SELECT ca_county, 
            COUNT(*) AS address_count,
-           STRING_AGG(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), '; ') AS full_address
+           arrayStringConcat(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type))), '; ') AS full_address
     FROM customer_address 
     GROUP BY ca_county
 ),
@@ -10,7 +10,7 @@ DemographicsSummary AS (
     SELECT cd_gender, 
            cd_marital_status, 
            COUNT(*) AS demographic_count,
-           STRING_AGG(CONCAT(cd_education_status, ' (', cd_purchase_estimate, ')'), '; ') AS education_details
+           arrayStringConcat(groupArray(assumeNotNull(CONCAT(cd_education_status, ' (', cd_purchase_estimate, ')'))), '; ') AS education_details
     FROM customer_demographics 
     GROUP BY cd_gender, cd_marital_status
 ),
@@ -18,7 +18,7 @@ DateSummary AS (
     SELECT d_year, 
            d_month_seq, 
            COUNT(DISTINCT d_date_sk) AS active_days,
-           STRING_AGG(d_day_name, ', ') AS active_days_names
+           arrayStringConcat(groupArray(assumeNotNull(d_day_name)), ', ') AS active_days_names
     FROM date_dim 
     GROUP BY d_year, d_month_seq
 )

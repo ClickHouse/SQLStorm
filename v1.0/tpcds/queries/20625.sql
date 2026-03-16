@@ -79,4 +79,4 @@ WHERE
     hi.revenue_category != 'No Revenue'
 ORDER BY
     hi.total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

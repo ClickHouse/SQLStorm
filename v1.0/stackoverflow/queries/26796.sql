@@ -38,15 +38,15 @@ SELECT
     tu.DownVotes,
     tu.AvgPostScore,
     COUNT(DISTINCT p.Id) AS TotalPosts,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
 FROM 
     TopUsers tu
 LEFT JOIN 
     Posts p ON tu.UserId = p.OwnerUserId 
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(p.Tags, '><')) AS TagName
+            arrayJoin(splitByString('><', p.Tags)) AS TagName
     ) t ON TRUE
 WHERE 
     tu.Rank <= 10

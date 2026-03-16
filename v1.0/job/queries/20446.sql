@@ -12,7 +12,7 @@ WITH RankedMovies AS (
 MovieKeywords AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords,
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
         COUNT(k.keyword) AS keyword_count
     FROM movie_keyword m
     JOIN keyword k ON m.keyword_id = k.id
@@ -48,7 +48,7 @@ SELECT
     f.actor_count,
     f.keywords,
     f.keyword_count,
-    ARRAY_AGG(DISTINCT ar.role_name) AS roles,
+    arrayDistinct(groupArray(assumeNotNull(ar.role_name))) AS roles,
     SUM(CASE WHEN ar.role_rank < 3 THEN 1 ELSE 0 END) AS top_roles_count
 FROM FilteredMovies f
 LEFT JOIN ActorRoles ar ON f.movie_id = ar.movie_id

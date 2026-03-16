@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
+        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
 ),
 SupplierAggregation AS (
     SELECT 
@@ -38,7 +38,7 @@ SELECT
     n.n_name AS nation,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     AVG(l.l_extendedprice) AS average_extended_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS top_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS top_parts,
     SUM(coalesce(l.l_discount * l.l_extendedprice, 0)) AS discount_total
 FROM 
     TopParts p 

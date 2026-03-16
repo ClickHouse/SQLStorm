@@ -43,7 +43,7 @@ SELECT
     ca.ca_state,
     ca.ca_country,
     COUNT(*) AS customer_count,
-    STRING_AGG(CONCAT(fc.c_first_name, ' ', fc.c_last_name), ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(fc.c_first_name, ' ', fc.c_last_name))), ', ') AS customer_names
 FROM 
     CustomerAddresses ca
 JOIN 

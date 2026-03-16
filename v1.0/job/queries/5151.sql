@@ -36,9 +36,9 @@ FilteredMovies AS (
 SELECT 
     production_year,
     COUNT(*) AS movie_count,
-    STRING_AGG(title, ', ') AS titles,
-    STRING_AGG(DISTINCT company_name, ', ') AS companies,
-    STRING_AGG(DISTINCT keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(title)), ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords
 FROM 
     FilteredMovies
 GROUP BY 

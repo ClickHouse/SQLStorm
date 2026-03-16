@@ -74,4 +74,4 @@ WHERE
     sb.total_net_profit IS NOT NULL
 ORDER BY 
     sb.total_net_profit DESC, ti.item_desc ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

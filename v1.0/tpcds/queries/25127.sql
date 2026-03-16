@@ -26,8 +26,8 @@ CustomerDetails AS (
         c_birth_year,
         da.full_address,
         CASE 
-            WHEN EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c_birth_year < 18 THEN 'Minor'
-            WHEN EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c_birth_year BETWEEN 18 AND 65 THEN 'Adult'
+            WHEN toYear(cast('2002-10-01' as date)) - c_birth_year < 18 THEN 'Minor'
+            WHEN toYear(cast('2002-10-01' as date)) - c_birth_year BETWEEN 18 AND 65 THEN 'Adult'
             ELSE 'Senior'
         END AS age_group
     FROM 

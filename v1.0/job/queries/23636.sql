@@ -46,7 +46,7 @@ MovieDetails AS (
 SELECT 
     md.title,
     md.production_year,
-    STRING_AGG(DISTINCT md.actor_name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name))), ', ') AS actors,
     COALESCE(md.keyword_count, 0) AS number_of_keywords,
     CASE 
         WHEN md.cast_size IS NULL THEN 'No cast information'

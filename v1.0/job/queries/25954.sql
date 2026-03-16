@@ -23,7 +23,7 @@ GroupedByYear AS (
     SELECT 
         production_year,
         COUNT(title_id) AS title_count,
-        STRING_AGG(title, ', ') AS titles
+        arrayStringConcat(groupArray(assumeNotNull(title)), ', ') AS titles
     FROM 
         RankedTitles
     WHERE 

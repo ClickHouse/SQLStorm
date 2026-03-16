@@ -4,7 +4,7 @@ SELECT
     s.s_name,
     COUNT(l.l_linenumber) AS total_lines,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     MAX(o.o_orderdate) AS last_order_date
 FROM 
     part p

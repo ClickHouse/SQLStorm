@@ -16,7 +16,7 @@ RecentPosts AS (
     FROM Posts P
     JOIN PostTypes PT ON P.PostTypeId = PT.Id
     LEFT JOIN Posts PP ON P.ParentId = PP.Id
-    WHERE P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' 
+    WHERE P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
       AND P.OwnerUserId IS NOT NULL
 )
 SELECT 
@@ -40,6 +40,6 @@ JOIN PostLinks PL ON PL.PostId = RP.PostId
 JOIN Tags RT ON RT.Id = PL.RelatedPostId
 JOIN RecursiveTagCounts TC ON RT.TagName = TC.TagName
 WHERE RP.RecentPostRank = 1
-  AND RP.LastActivityDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 week'
+  AND RP.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 WEEK
   AND TC.PostCount > 5
 ORDER BY U.Reputation DESC, TC.PostCount DESC;

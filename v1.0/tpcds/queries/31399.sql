@@ -25,7 +25,7 @@ SELECT
     COUNT(DISTINCT ch.c_customer_sk) AS total_customers,
     AVG(cd.cd_dep_count) AS avg_dependents,
     SUM(ws.ws_net_profit) AS total_net_profit,
-    STRING_AGG(DISTINCT CONCAT(cd.cd_gender, ' - ', cd.cd_credit_rating), '; ') AS demographic_summary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cd.cd_gender, ' - ', cd.cd_credit_rating)))), '; ') AS demographic_summary
 FROM customer_address ca
 LEFT JOIN customer c ON c.c_current_addr_sk = ca.ca_address_sk
 LEFT JOIN customer_hierarchy ch ON ch.c_customer_sk = c.c_customer_sk

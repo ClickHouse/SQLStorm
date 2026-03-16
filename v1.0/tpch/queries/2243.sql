@@ -10,7 +10,7 @@ WITH RankedOrders AS (
         orders o
     WHERE 
         o.o_orderstatus = 'O' AND 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 SupplierSales AS (
     SELECT 

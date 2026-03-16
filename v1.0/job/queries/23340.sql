@@ -19,7 +19,7 @@ explicit_movie_info AS (
 ),
 cast_summary AS (
     SELECT mc.movie_id, 
-           STRING_AGG(mc.actor_name, ', ') AS actors_list,
+           arrayStringConcat(groupArray(assumeNotNull(mc.actor_name)), ', ') AS actors_list,
            MAX(mc.actor_order) AS total_actors
     FROM movie_cast mc
     GROUP BY mc.movie_id
@@ -40,5 +40,4 @@ LEFT JOIN cast_summary cs ON em.movie_id = cs.movie_id
 WHERE (em.keyword_count > 2 OR cs.total_actors > 5)
   AND (em.production_year IS NOT NULL OR cs.actors_list IS NOT NULL)
 ORDER BY em.production_year DESC, em.title
-OFFSET 5 ROWS 
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

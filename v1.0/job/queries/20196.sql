@@ -45,7 +45,7 @@ FilteredMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -78,5 +78,4 @@ GROUP BY
 ORDER BY 
     fm.production_year DESC,
     fm.title ASC
-OFFSET 10 ROWS 
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

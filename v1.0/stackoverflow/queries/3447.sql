@@ -44,7 +44,7 @@ PostStatistics AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year' 
+        p.CreationDate > now64(6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.AnswerCount
 ),
@@ -57,7 +57,7 @@ RecentActivities AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
+        ph.CreationDate > now64(6) - INTERVAL 30 DAY
     GROUP BY 
         ph.PostId, ph.UserId, ph.PostHistoryTypeId
 )

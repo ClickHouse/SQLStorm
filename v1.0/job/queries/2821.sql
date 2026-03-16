@@ -46,7 +46,7 @@ actors_info AS (
 SELECT 
     ai.actor_name AS actor,
     COUNT(DISTINCT ai.movie_title) AS movies_count,
-    STRING_AGG(DISTINCT ai.movie_title, ', ') AS movies_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ai.movie_title))), ', ') AS movies_list,
     AVG(CASE WHEN ai.additional_info IS NULL THEN 0 ELSE 1 END) AS info_available_ratio
 FROM 
     actors_info ai

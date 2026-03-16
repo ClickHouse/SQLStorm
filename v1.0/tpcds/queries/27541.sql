@@ -7,7 +7,7 @@ SELECT
     a.ca_state,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid) AS total_spent,
-    STRING_AGG(DISTINCT i.i_product_name, '; ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), '; ') AS purchased_items,
     COUNT(DISTINCT CASE WHEN ws.ws_sales_price > 500 THEN ws.ws_order_number END) AS high_value_orders
 FROM 
     customer c

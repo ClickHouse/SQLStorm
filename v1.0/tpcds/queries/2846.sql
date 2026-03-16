@@ -46,6 +46,6 @@ SELECT
 FROM 
     MonthlySales m
 LEFT JOIN 
-    CustomerReturns c ON c.c_customer_id = (SELECT c_customer_id FROM customer ORDER BY RANDOM() LIMIT 1)
+    CustomerReturns c ON c.c_customer_id = (SELECT c_customer_id FROM customer ORDER BY rand() LIMIT 1)
 ORDER BY 
     m.d_month_seq;

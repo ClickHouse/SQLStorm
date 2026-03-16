@@ -24,7 +24,7 @@ CustomerOrders AS (
     JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 MONTH'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 OrderDetails AS (
     SELECT 

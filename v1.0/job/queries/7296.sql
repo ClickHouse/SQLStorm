@@ -29,7 +29,7 @@ recent_movies AS (
 SELECT 
     rm.title,
     rm.production_year,
-    STRING_AGG(rt.actor_name, ', ') AS cast,
+    arrayStringConcat(groupArray(assumeNotNull(rt.actor_name)), ', ') AS cast,
     COUNT(DISTINCT rt.actor_name) AS num_actors
 FROM 
     recent_movies rm

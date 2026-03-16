@@ -21,7 +21,7 @@ HighDemandOrders AS (
 SELECT r.n_name, COUNT(DISTINCT c.c_custkey) AS customer_count,
        AVG(s.s_acctbal) AS average_account_balance, 
        SUM(COALESCE(sp.total_supply_cost, 0)) AS total_cost,
-       STRING_AGG(DISTINCT p.p_name, ', ') AS top_parts
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS top_parts
 FROM nation r
 LEFT JOIN supplier s ON r.n_nationkey = s.s_nationkey
 LEFT JOIN customer c ON s.s_suppkey = c.c_nationkey

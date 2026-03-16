@@ -2,12 +2,12 @@
 WITH RECURSIVE recent_orders AS (
     SELECT o_orderkey, o_custkey, o_orderdate, o_totalprice, o_orderstatus
     FROM orders
-    WHERE o_orderdate >= DATE '1998-10-01' - INTERVAL '30 days'
+    WHERE o_orderdate >= toDate('1998-10-01') - INTERVAL 30 DAY
     UNION ALL
     SELECT o.o_orderkey, o.o_custkey, o.o_orderdate, o.o_totalprice, o.o_orderstatus
     FROM orders o
     JOIN recent_orders ro ON o.o_orderkey < ro.o_orderkey
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
 ),
 ranked_suppliers AS (
     SELECT s.s_suppkey, SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,

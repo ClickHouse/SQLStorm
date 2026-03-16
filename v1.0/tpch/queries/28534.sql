@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS average_extended_price,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customers,
     MIN(o.o_orderdate) AS first_order_date,
     MAX(o.o_orderdate) AS last_order_date
 FROM 

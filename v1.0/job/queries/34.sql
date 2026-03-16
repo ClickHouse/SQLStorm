@@ -27,7 +27,7 @@ FilteredTitles AS (
 MovieInfo AS (
     SELECT 
         mt.id AS movie_id, 
-        STRING_AGG(mi.info, ', ') AS information
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS information
     FROM 
         movie_info mi
     JOIN 

@@ -42,7 +42,7 @@ LEFT JOIN top_items ti ON ci.ca_city = (
     FROM customer c 
     JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk
     WHERE ti.i_item_id = c.c_customer_id 
-    FETCH FIRST 1 ROW ONLY
+    LIMIT 1
 )
 ORDER BY ci.ca_city, total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -21,7 +21,7 @@ WITH PostEngagement AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         P.Id, P.Title, P.ViewCount, P.Score, P.CommentCount, P.AnswerCount, P.CreationDate, 
         U.DisplayName, U.Reputation, P.PostTypeId

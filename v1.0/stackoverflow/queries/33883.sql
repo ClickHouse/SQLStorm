@@ -39,7 +39,7 @@ SELECT
     LPH.TotalVotes,
     LPH.Score,
     LPH.ViewCount,
-    (SELECT STRING_AGG(DISTINCT T.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
      FROM Tags T 
      INNER JOIN Posts P ON P.Tags LIKE '%' || T.TagName || '%' 
      WHERE P.Id = LPH.PostId) AS Tags,

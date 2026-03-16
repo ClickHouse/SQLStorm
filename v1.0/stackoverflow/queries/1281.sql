@@ -22,14 +22,14 @@ PopularPosts AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes va ON p.Id = va.PostId
     WHERE
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY
         p.Id, p.Title
 ),
 PostHistories AS (
     SELECT
         ph.PostId,
-        STRING_AGG(DISTINCT pt.Name || ' (' || CAST(ph.CreationDate AS DATE) || ')', ', ') AS History,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name || ' (' || CAST(ph.CreationDate AS DATE) || ')'))), ', ') AS History,
         MAX(ph.CreationDate) AS LastChangeDate
     FROM
         PostHistory ph

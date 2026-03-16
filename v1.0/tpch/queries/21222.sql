@@ -11,7 +11,7 @@ WITH RECURSIVE supplier_hierarchy AS (
 price_variance AS (
     SELECT ps.ps_partkey, 
            AVG(ps.ps_supplycost) AS avg_cost,
-           STDDEV(ps.ps_supplycost) AS std_dev_cost
+           stddevPop(ps.ps_supplycost) AS std_dev_cost
     FROM partsupp ps
     GROUP BY ps.ps_partkey
 ),
@@ -41,4 +41,4 @@ SELECT fs.p_partkey, fs.p_name, fs.p_brand, fs.p_retailprice, fs.rank_within_cat
 FROM final_selection fs
 WHERE fs.rank_within_category <= 5
 ORDER BY fs.p_retailprice DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

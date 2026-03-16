@@ -37,7 +37,7 @@ SELECT ns.n_name, ns.total_acctbal, ns.supplier_count,
            (SELECT c.c_custkey FROM customer c WHERE c.c_nationkey = (SELECT n.n_nationkey FROM nation n WHERE n.n_name = ns.n_name)))
        AS order_count,
        ROW_NUMBER() OVER (PARTITION BY ns.n_name ORDER BY ns.total_acctbal DESC) AS row_num,
-       (SELECT STRING_AGG(DISTINCT p.p_name, ', ') 
+       (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') 
         FROM part p
         JOIN over_threshold ot ON p.p_partkey = ot.p_partkey
         WHERE EXISTS (SELECT 1 FROM lineitem l WHERE l.l_partkey = p.p_partkey AND l.l_discount IS NOT NULL)

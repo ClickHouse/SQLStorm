@@ -5,7 +5,7 @@ WITH RankedCustomers AS (
         CONCAT(c.c_first_name, ' ', c.c_last_name) AS full_name,
         cd.cd_gender,
         cd.cd_marital_status,
-        STRING_AGG(cd.cd_education_status, ', ') AS education_statuses,
+        arrayStringConcat(groupArray(assumeNotNull(cd.cd_education_status)), ', ') AS education_statuses,
         ca.ca_city,
         ca.ca_state,
         COUNT(DISTINCT s.ss_ticket_number) AS total_sales,

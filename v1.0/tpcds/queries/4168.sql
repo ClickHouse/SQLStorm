@@ -54,4 +54,4 @@ WHERE
     cs.total_returns > 0
 ORDER BY 
     cs.total_net_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         ROW_NUMBER() OVER (PARTITION BY p.Tags ORDER BY p.Score DESC) AS rn,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(t.TagName, ', ') AS TagsList
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
     FROM 
         Posts p 
     JOIN 
@@ -17,9 +17,9 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '><')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('><', p.Tags)) AS t(TagName) ON TRUE
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.AnswerCount, u.DisplayName, p.Tags
 ), FilteredPosts AS (
@@ -46,4 +46,4 @@ WHERE
 ORDER BY 
     fp.Score DESC, 
     fp.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

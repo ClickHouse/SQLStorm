@@ -57,4 +57,4 @@ JOIN
     CustomerDemographics cd ON s.c_customer_sk = cd.cd_demo_sk
 ORDER BY 
     s.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

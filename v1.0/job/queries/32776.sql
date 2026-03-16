@@ -36,7 +36,7 @@ cast_performance AS (
 keyword_summary AS (
     SELECT
         mk.movie_id,
-        STRING_AGG(kw.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') AS keywords
     FROM
         movie_keyword mk
     JOIN

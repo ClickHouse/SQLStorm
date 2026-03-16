@@ -19,7 +19,7 @@ LEFT JOIN
 LEFT JOIN 
     Users U ON P.OwnerUserId = U.Id
 WHERE 
-    P.CreationDate > DATE '2020-01-01' 
+    P.CreationDate > toDate('2020-01-01') 
 GROUP BY 
     P.Id, P.Title, P.CreationDate, U.DisplayName, U.Reputation
 ORDER BY 

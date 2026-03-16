@@ -32,7 +32,7 @@ LineItemStats AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate > DATE '1997-01-01'
+        l.l_shipdate > toDate('1997-01-01')
     GROUP BY 
         l.l_orderkey
 )

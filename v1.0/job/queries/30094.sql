@@ -24,8 +24,8 @@ WITH RECURSIVE movie_hierarchy AS (
 company_movie_info AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS companies,
-        ARRAY_AGG(DISTINCT kt.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(kt.keyword))) AS keywords
     FROM 
         movie_companies mc
     JOIN 

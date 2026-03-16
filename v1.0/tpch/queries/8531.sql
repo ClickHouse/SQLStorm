@@ -5,13 +5,13 @@ WITH TopSuppliers AS (
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     GROUP BY s.s_suppkey, s.s_name
     ORDER BY total_cost DESC
-    FETCH FIRST 10 ROWS ONLY
+    LIMIT 10
 ),
 RecentOrders AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_totalprice, o.o_orderdate, c.c_nationkey
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '30 DAYS'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 30 DAY
 ),
 LateShipments AS (
     SELECT l.l_orderkey, COUNT(*) AS late_count

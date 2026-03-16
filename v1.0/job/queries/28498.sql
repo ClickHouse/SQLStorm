@@ -2,7 +2,7 @@
 WITH movie_info_aggregated AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(mi.info, ' | ') AS all_info,
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ' | ') AS all_info,
         COUNT(mi.info_type_id) AS info_count
     FROM 
         movie_info mi

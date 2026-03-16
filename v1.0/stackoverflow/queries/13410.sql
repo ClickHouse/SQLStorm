@@ -4,7 +4,7 @@ SELECT
     COUNT(p.Id) AS TotalPosts,
     AVG(p.Score) AS AverageScore,
     SUM(p.ViewCount) AS TotalViews,
-    AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AverageDurationInSeconds,
+    AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AverageDurationInSeconds,
     COUNT(DISTINCT c.Id) AS TotalComments,
     COUNT(DISTINCT v.Id) AS TotalVotes
 FROM 

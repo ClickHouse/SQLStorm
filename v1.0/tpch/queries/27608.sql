@@ -5,7 +5,7 @@ WITH SupplierParts AS (
         COUNT(ps.ps_availqty) AS available_quantity,
         SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,
         AVG(p.p_retailprice) AS avg_retail_price,
-        STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments
     FROM 
         supplier s
     JOIN 
@@ -20,7 +20,7 @@ RegionSummary AS (
         n.n_name AS nation_name,
         r.r_name AS region_name,
         COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments
     FROM 
         nation n
     JOIN 

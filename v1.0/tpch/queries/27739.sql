@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(l.l_quantity) AS avg_quantity,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS part_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS part_comments,
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_quantity,
     cast('1998-10-01' as date) AS query_date
 FROM
@@ -28,7 +28,7 @@ JOIN
 WHERE
     r.r_comment LIKE '%global%'
     AND s.s_comment NOT LIKE '%obsolete%'
-    AND l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY
     r.r_name, n.n_name, s.s_name, p.p_name
 ORDER BY

@@ -68,7 +68,7 @@ LEFT JOIN
 JOIN 
     TopSites AS t ON cs.c_customer_sk = t.ws_web_site_sk
 JOIN 
-    Comparison AS c ON EXTRACT(MONTH FROM cast('2002-10-01' as date)) = c.d_month_seq
+    Comparison AS c ON toMonth(cast('2002-10-01' as date)) = c.d_month_seq
 WHERE 
     (cs.c_preferred_cust_flag = 'Y' OR cs.c_birth_year < 1980)
     AND t.rank <= 5

@@ -12,7 +12,7 @@ WITH ranked_movies AS (
     SELECT 
         m.movie_id,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') FILTER (WHERE k.keyword IS NOT NULL) AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') FILTER (WHERE k.keyword IS NOT NULL) AS keywords
     FROM 
         complete_cast m
     LEFT JOIN 
@@ -46,7 +46,7 @@ SELECT
         WHEN mc.cast_count IS NULL THEN 'No cast available'
         ELSE 'Cast available'
     END AS cast_availability,
-    COALESCE(STRING_AGG(DISTINCT c.name, ', ' ORDER BY c.name), 'No main characters') AS main_characters
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ' ORDER BY c.name), 'No main characters') AS main_characters
 FROM 
     ranked_movies r
 LEFT JOIN 

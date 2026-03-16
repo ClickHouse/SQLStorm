@@ -29,7 +29,7 @@ detailed_movie_info AS (
         COALESCE(mac.actor_count, 0) AS actor_count,
         COALESCE(kc.keyword_count, 0) AS keyword_count,
         m.production_year,
-        STRING_AGG(DISTINCT p.info, ', ') AS person_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.info))), ', ') AS person_info
     FROM
         aka_title m
     LEFT JOIN

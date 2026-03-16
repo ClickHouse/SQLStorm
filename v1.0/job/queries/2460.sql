@@ -40,7 +40,7 @@ MovieDetails AS (
         tm.movie_id,
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT a.actor_name, ', ') AS actor_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.actor_name))), ', ') AS actor_list,
         COALESCE(SUM(mk.id), 0) AS keyword_count
     FROM 
         TopMovies tm

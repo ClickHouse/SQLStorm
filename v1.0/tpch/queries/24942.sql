@@ -8,7 +8,7 @@ WITH RankedOrders AS (
         o_orderpriority,
         ROW_NUMBER() OVER (PARTITION BY o_custkey ORDER BY o_orderdate DESC) AS rn
     FROM orders
-    WHERE o_orderdate >= (cast('1998-10-01' as date) - INTERVAL '1 year')
+    WHERE o_orderdate >= (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
 ),
 CustomerSums AS (
     SELECT 
@@ -59,4 +59,4 @@ WHERE tc.total_spend >
       (SELECT AVG(total_spend) FROM CustomerSums)
   AND sd.total_supply_value IS NOT NULL
 ORDER BY tc.total_spend DESC, sd.total_supply_value ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

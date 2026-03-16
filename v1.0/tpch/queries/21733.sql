@@ -22,7 +22,7 @@ SELECT n.n_name,
        COALESCE(SUM(CASE WHEN cs.total_spent IS NOT NULL THEN cs.total_spent ELSE 0 END), 0) AS total_cust_spent,
        COALESCE(SUM(rs.total_sales), 0) AS total_order_sales,
        COUNT(DISTINCT ss.s_suppkey) AS total_suppliers,
-       STRING_AGG(DISTINCT p.p_name, '; ') AS small_parts
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), '; ') AS small_parts
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN CustomerSales cs ON n.n_nationkey = cs.c_custkey

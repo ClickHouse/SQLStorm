@@ -4,7 +4,7 @@ SELECT
     a.name AS actor_name,
     c.kind AS cast_type,
     COUNT(mk.id) AS keyword_count,
-    STRING_AGG(k.keyword, ',') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ',') AS keywords,
     AVG(LENGTH(mi.info)) AS average_info_length
 FROM 
     aka_title t

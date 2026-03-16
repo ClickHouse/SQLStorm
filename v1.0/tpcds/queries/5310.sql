@@ -45,5 +45,5 @@ SELECT
     cs.customer_count,
     ss.state_sales_amount
 FROM top_sales ts
-JOIN customer_stats cs ON cs.cd_demo_sk = (SELECT c_current_cdemo_sk FROM customer WHERE c_customer_id = (SELECT c_customer_id FROM customer ORDER BY RANDOM() LIMIT 1))
+JOIN customer_stats cs ON cs.cd_demo_sk = (SELECT c_current_cdemo_sk FROM customer WHERE c_customer_id = (SELECT c_customer_id FROM customer ORDER BY rand() LIMIT 1))
 JOIN state_sales ss ON ss.state_sales_amount = (SELECT MAX(state_sales_amount) FROM state_sales);

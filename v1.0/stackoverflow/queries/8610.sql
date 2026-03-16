@@ -39,11 +39,11 @@ TopPosts AS (
 RecentBadges AS (
     SELECT 
         B.UserId,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Badges B
     WHERE 
-        B.Date >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        B.Date >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         B.UserId
 )

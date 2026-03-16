@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') 
+        AND p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
 ),
 TopPosts AS (
     SELECT 
@@ -34,7 +34,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, ' ') AS AllComments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' ') AS AllComments
     FROM 
         Comments c
     GROUP BY 
@@ -43,7 +43,7 @@ PostComments AS (
 PostHistoryAggregated AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CONCAT(ph.CreationDate, ' - ', ph.Comment), ' | ') AS EditHistory
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.CreationDate, ' - ', ph.Comment))), ' | ') AS EditHistory
     FROM 
         PostHistory ph
     WHERE 

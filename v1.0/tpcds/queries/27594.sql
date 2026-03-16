@@ -40,7 +40,7 @@ SELECT
     cd.ca_state,
     cd.ca_country,
     SUM(sd.total_quantity_sold) AS total_quantity,
-    STRING_AGG(CONCAT(id.i_item_desc, ' (', id.i_brand, ': $', id.i_current_price, ')'), ', ') AS items_purchased
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(id.i_item_desc, ' (', id.i_brand, ': $', id.i_current_price, ')'))), ', ') AS items_purchased
 FROM customer_data cd
 JOIN sales_data sd ON cd.c_customer_sk = sd.ws_item_sk
 JOIN item_data id ON sd.ws_item_sk = id.i_item_sk

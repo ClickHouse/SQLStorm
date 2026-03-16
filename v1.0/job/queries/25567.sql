@@ -38,7 +38,7 @@ CastDetails AS (
 MovieInfo AS (
     SELECT 
         mv.movie_id,
-        STRING_AGG(DISTINCT CONCAT(mv.info_type_id, ' - ', mv.info), '; ') AS movie_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(mv.info_type_id, ' - ', mv.info)))), '; ') AS movie_details
     FROM 
         movie_info mv
     GROUP BY 

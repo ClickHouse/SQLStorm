@@ -35,7 +35,7 @@ SalesDetails AS (
         pc.c_last_name,
         pc.total_sales,
         pc.order_count,
-        ARRAY_AGG(ws.ws_order_number) AS order_ids
+        groupArray(assumeNotNull(ws.ws_order_number)) AS order_ids
     FROM 
         ProminentCustomers pc
     JOIN 

@@ -22,7 +22,7 @@ OrderDetails AS (
 )
 SELECT CR.region_name, SUM(OD.o_totalprice) AS total_order_value,
        COUNT(DISTINCT OD.o_orderkey) AS unique_orders,
-       STRING_AGG(SS.s_name, ', ') AS suppliers_involved,
+       arrayStringConcat(groupArray(assumeNotNull(SS.s_name)), ', ') AS suppliers_involved,
        CASE 
            WHEN SUM(OD.o_totalprice) > (SELECT AVG(total_supply_cost) FROM RankedSuppliers)
            THEN 'Above Average'

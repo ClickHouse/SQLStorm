@@ -16,13 +16,13 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
     GROUP BY 
         p.Id
 ),
 PopularTags AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(p.Tags, '>'))) AS TagName,
+        TRIM(arrayJoin(splitByString('>', p.Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -45,7 +45,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(string_to_array(rp.Tags, '>')) 
+    PopularTags pt ON pt.TagName = ANY(splitByString('>', rp.Tags)) 
 WHERE 
     rp.Rank = 1 
 ORDER BY 

@@ -23,7 +23,7 @@ CastRoles AS (
 MovieInfo AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT i.info, ', ') AS info_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.info))), ', ') AS info_details
     FROM 
         movie_info m
     JOIN info_type i ON m.info_type_id = i.id
@@ -47,7 +47,7 @@ FinalResults AS (
         COALESCE(c.actor_count, 0) AS actor_count,
         COALESCE(c.director_count, 0) AS director_count,
         COALESCE(mi.info_details, 'No Info') AS info_details,
-        STRING_AGG(DISTINCT mk.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.keyword))), ', ') AS keywords
     FROM 
         RankedMovies rm
     LEFT JOIN CastRoles c ON rm.movie_id = c.movie_id

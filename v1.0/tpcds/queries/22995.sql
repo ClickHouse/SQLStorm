@@ -65,4 +65,4 @@ GROUP BY
     ci.c_first_name, ci.c_last_name, ci.cd_gender, rs.ws_item_sk, id.i_item_desc, id.i_current_price
 ORDER BY 
     total_net_profit DESC NULLS LAST
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

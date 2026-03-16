@@ -8,7 +8,7 @@ SELECT
     SUM(ws_net_profit) AS total_net_profit,
     SUM(ws_quantity) AS total_items_sold,
     COUNT(DISTINCT ws_order_number) AS total_orders,
-    EXTRACT(YEAR FROM d_date) AS sales_year
+    toYear(d_date) AS sales_year
 FROM 
     customer_address ca
 JOIN 

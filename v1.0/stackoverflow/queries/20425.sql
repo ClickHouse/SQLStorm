@@ -11,11 +11,11 @@ WITH RankedPosts AS (
     LEFT JOIN (
         SELECT 
             Id,
-            (SELECT COUNT(*) FROM UNNEST(STRING_TO_ARRAY(Tags, '><')) AS tag_table) AS TagCount
+            (SELECT COUNT(*) FROM arrayJoin(splitByString('><', Tags)) AS tag_table) AS TagCount
         FROM Posts 
         WHERE Tags IS NOT NULL
     ) TH ON p.Id = TH.Id
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 ActiveUsers AS (
     SELECT 
@@ -28,7 +28,7 @@ ActiveUsers AS (
     LEFT JOIN Badges b ON u.Id = b.UserId
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2
-    WHERE u.LastAccessDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY u.Id, u.DisplayName
 ),
 ClosedPosts AS (

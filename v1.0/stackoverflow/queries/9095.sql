@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.LastActivityDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.OwnerUserId IS NOT NULL
 ),
 PopularTags AS (
@@ -37,7 +37,7 @@ ActiveUsers AS (
     JOIN 
         Votes v ON v.UserId = u.Id
     WHERE 
-        u.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years'
+        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
     GROUP BY 
         u.Id, u.DisplayName
 )

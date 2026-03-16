@@ -60,7 +60,7 @@ LEFT JOIN
         SELECT o.o_orderkey
         FROM orders o 
         LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-        WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year'
+        WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
         AND l.l_returnflag = 'R'
     ) 
 GROUP BY 

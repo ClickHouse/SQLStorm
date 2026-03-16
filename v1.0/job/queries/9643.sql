@@ -29,9 +29,9 @@ cast_details AS (
 SELECT 
     rt.production_year, 
     rt.title, 
-    STRING_AGG(DISTINCT cd.actor_name, ', ') AS actors, 
-    STRING_AGG(DISTINCT ci.company_name, ', ') AS companies, 
-    STRING_AGG(DISTINCT ci.company_type, ', ') AS company_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.actor_name))), ', ') AS actors, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.company_name))), ', ') AS companies, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.company_type))), ', ') AS company_types
 FROM ranked_titles rt
 LEFT JOIN cast_details cd ON rt.title_id = cd.movie_id
 LEFT JOIN company_info ci ON rt.title_id = ci.movie_id

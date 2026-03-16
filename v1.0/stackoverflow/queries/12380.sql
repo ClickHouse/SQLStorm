@@ -33,6 +33,6 @@ LEFT JOIN
 LEFT JOIN 
     PostTypes PT ON P.PostTypeId = PT.Id
 WHERE 
-    P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+    P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ORDER BY 
     P.CreationDate DESC;

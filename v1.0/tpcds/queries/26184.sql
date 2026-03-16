@@ -3,8 +3,8 @@ WITH AddressStats AS (
     SELECT 
         ca_state,
         COUNT(ca_address_sk) AS address_count,
-        STRING_AGG(ca_street_name, ', ') AS street_names,
-        STRING_AGG(DISTINCT ca_city, ', ') AS unique_cities
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS unique_cities
     FROM 
         customer_address
     GROUP BY 
@@ -14,7 +14,7 @@ CustomerStats AS (
     SELECT 
         cd_gender,
         COUNT(c_customer_sk) AS customer_count,
-        STRING_AGG(DISTINCT c_first_name || ' ' || c_last_name, '; ') AS customer_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c_first_name || ' ' || c_last_name))), '; ') AS customer_names,
         MAX(cd_purchase_estimate) AS max_purchase_estimate
     FROM 
         customer 

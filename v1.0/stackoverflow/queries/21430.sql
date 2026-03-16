@@ -17,13 +17,13 @@ PostRanked AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 BadgesRanked AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -32,7 +32,7 @@ BadgesRanked AS (
 PostDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT CAST(pt.Name AS VARCHAR), ', ') AS PostHistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(pt.Name AS VARCHAR)))), ', ') AS PostHistoryTypes,
         MAX(ph.CreationDate) AS LastUpdate
     FROM 
         PostHistory ph

@@ -31,7 +31,7 @@ SELECT
     md.production_year, 
     md.keyword, 
     COUNT(md.company_name) AS company_count, 
-    STRING_AGG(DISTINCT md.director_name, ', ') AS directors 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.director_name))), ', ') AS directors 
 FROM 
     MovieDetails md
 GROUP BY 

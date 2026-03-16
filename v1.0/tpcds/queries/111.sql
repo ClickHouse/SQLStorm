@@ -51,4 +51,4 @@ AND (i.i_brand_id IS NULL OR EXISTS (
     AND cd.cd_marital_status = 'M'
 ))
 ORDER BY total_sales_amount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

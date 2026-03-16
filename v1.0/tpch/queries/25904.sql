@@ -5,7 +5,7 @@ SELECT
     o.o_orderdate AS order_date, 
     COUNT(DISTINCT li.l_orderkey) AS order_count,
     ROUND(SUM(li.l_extendedprice * (1 - li.l_discount)), 2) AS total_revenue,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_involved,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_involved,
     MAX(CASE 
         WHEN li.l_returnflag = 'R' THEN 'Returned' 
         ELSE 'Not Returned' 
@@ -28,8 +28,8 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_name LIKE '%steel%'
-    AND o.o_orderdate >= DATE '1996-01-01'
-    AND o.o_orderdate < DATE '1997-01-01'
+    AND o.o_orderdate >= toDate('1996-01-01')
+    AND o.o_orderdate < toDate('1997-01-01')
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderdate
 ORDER BY 

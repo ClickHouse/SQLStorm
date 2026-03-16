@@ -34,7 +34,7 @@ TopMovies AS (
 
 SELECT 
     tm.production_year,
-    STRING_AGG(DISTINCT tm.title, ', ') AS top_movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tm.title))), ', ') AS top_movie_titles,
     SUM(tm.cast_count) AS total_cast_count,
     SUM(tm.keyword_count) AS total_keyword_count
 FROM 

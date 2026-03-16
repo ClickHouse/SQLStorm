@@ -29,9 +29,9 @@ AggregatedResults AS (
     SELECT 
         actor_name,
         COUNT(DISTINCT movie_title) AS movie_count,
-        ARRAY_AGG(DISTINCT production_year) AS production_years,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT highlight, '; ') AS highlights
+        arrayDistinct(groupArray(assumeNotNull(production_year))) AS production_years,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(highlight))), '; ') AS highlights
     FROM 
         ActorTitles
     GROUP BY 

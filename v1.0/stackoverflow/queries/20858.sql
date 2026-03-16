@@ -28,7 +28,7 @@ RecentActors AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        u.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        u.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -36,11 +36,11 @@ TopBadgers AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        b.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
     HAVING 

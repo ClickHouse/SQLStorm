@@ -16,7 +16,7 @@ PostStats AS (
         SUM(p.Score) AS TotalScore,
         AVG(p.ViewCount) AS AvgViewCount
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY p.OwnerUserId
 ),
 AggregatedStats AS (

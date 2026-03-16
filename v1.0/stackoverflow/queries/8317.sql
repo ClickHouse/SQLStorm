@@ -57,9 +57,9 @@ LEFT JOIN
 LEFT JOIN 
     PostTypes PT ON P.PostTypeId = PT.Id
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            string_agg(T.TagName, ', ') AS TagName
+            arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagName
         FROM 
             Tags T
         WHERE 

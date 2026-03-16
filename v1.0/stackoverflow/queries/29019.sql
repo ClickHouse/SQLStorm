@@ -6,7 +6,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         SUM(CASE WHEN p.PostTypeId = 1 AND p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswers,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgPostLifeSeconds
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgPostLifeSeconds
     FROM 
         Users u
     LEFT JOIN 

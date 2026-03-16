@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PopularUsers AS (
     SELECT 
@@ -59,7 +59,7 @@ MergedInfo AS (
 SELECT 
     mi.PostId,
     mi.Title,
-    COALESCE(CAST(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - mi.CreationDate)) / 3600 AS INT), 0) AS AgeInHours,
+    COALESCE(CAST(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - mi.CreationDate)) / 3600 AS INT), 0) AS AgeInHours,
     mi.ViewCount,
     mi.Score,
     mi.RankScore,
@@ -67,13 +67,13 @@ SELECT
     mi.TotalBounties,
     mi.PostedQuestions,
     mi.ScoreCategory,
-    STRING_AGG(t.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
 FROM 
     MergedInfo mi
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(Tags, '<>')) AS TagName
+            arrayJoin(splitByString('<>', Tags)) AS TagName
         FROM 
             Posts 
         WHERE 

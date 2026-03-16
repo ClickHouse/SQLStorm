@@ -46,7 +46,7 @@ SELECT
     actor_name,
     company_note,
     movie_info,
-    STRING_AGG(DISTINCT keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords
 FROM complex_joins
 WHERE actor_name IS NOT NULL
 GROUP BY title, actor_name, company_note, movie_info

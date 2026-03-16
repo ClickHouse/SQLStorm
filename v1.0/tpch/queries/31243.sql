@@ -2,12 +2,12 @@ WITH RECURSIVE sales_data AS (
     SELECT o.o_orderkey, o.o_orderdate, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate >= DATE '1997-01-01'
+    WHERE l.l_shipdate >= toDate('1997-01-01')
     GROUP BY o.o_orderkey, o.o_orderdate
 ),
 ranked_sales AS (
     SELECT sd.o_orderkey, sd.o_orderdate, sd.total_revenue,
-           RANK() OVER (PARTITION BY EXTRACT(YEAR FROM sd.o_orderdate) ORDER BY sd.total_revenue DESC) AS revenue_rank
+           RANK() OVER (PARTITION BY toYear(sd.o_orderdate) ORDER BY sd.total_revenue DESC) AS revenue_rank
     FROM sales_data sd
 ),
 top_customers AS (

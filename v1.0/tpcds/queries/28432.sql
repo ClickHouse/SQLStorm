@@ -36,7 +36,7 @@ AddressStatistics AS (
         ca_state,
         COUNT(*) AS total_customers,
         COUNT(DISTINCT ca_city) AS unique_cities,
-        STRING_AGG(full_address, '; ') AS all_addresses
+        arrayStringConcat(groupArray(assumeNotNull(full_address)), '; ') AS all_addresses
     FROM
         FilteredAddresses
     GROUP BY

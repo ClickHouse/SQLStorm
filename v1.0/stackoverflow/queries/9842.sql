@@ -8,7 +8,7 @@ WITH PostStats AS (
         COUNT(DISTINCT v.UserId) AS VoteCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        AVG(EXTRACT(EPOCH FROM (COALESCE(NULLIF(p.LastActivityDate, '1970-01-01'), '2024-10-01 12:34:56') - p.CreationDate))) AS AverageActiveDuration
+        AVG(toUnixTimestamp((COALESCE(NULLIF(p.LastActivityDate, '1970-01-01'), '2024-10-01 12:34:56') - p.CreationDate))) AS AverageActiveDuration
     FROM 
         Posts p
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate > (CURRENT_TIMESTAMP - INTERVAL '1 year') 
+        p.CreationDate > (now64(6) - INTERVAL 1 YEAR) 
         AND p.PostTypeId IN (1, 2)  
     GROUP BY 
         p.Id, p.Title, p.PostTypeId

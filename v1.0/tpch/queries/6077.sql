@@ -15,7 +15,7 @@ OrderSummary AS (
     SELECT o.o_orderkey, o.o_orderstatus, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate > DATE '1995-01-01' AND l.l_shipdate < DATE '1996-01-01'
+    WHERE l.l_shipdate > toDate('1995-01-01') AND l.l_shipdate < toDate('1996-01-01')
     GROUP BY o.o_orderkey, o.o_orderstatus
 ),
 FinalReport AS (

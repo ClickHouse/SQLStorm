@@ -31,7 +31,7 @@ SELECT
     AVG(o.o_totalprice) AS avg_order_value,
     MAX(CASE WHEN l.l_shipdate < '1997-01-01' THEN l.l_shipdate END) AS last_ship_before_1997,
     PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY o.o_totalprice) AS ninety_percentile_order_value,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     ROW_NUMBER() OVER (PARTITION BY c.c_custkey ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS rank_by_revenue
 FROM customer c
 LEFT JOIN nation n ON c.c_nationkey = n.n_nationkey

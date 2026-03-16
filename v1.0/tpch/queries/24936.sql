@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 SupplierParts AS (
     SELECT 
@@ -16,7 +16,7 @@ SupplierParts AS (
         ps.ps_suppkey,
         SUM(ps.ps_availqty) AS TotalAvailableQuantity,
         AVG(ps.ps_supplycost) AS AvgSupplyCost,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS PartNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS PartNames
     FROM 
         partsupp ps
     LEFT JOIN 
@@ -57,7 +57,7 @@ SELECT
 FROM 
     RankedOrders r
 LEFT JOIN 
-    CustomerOrderStats cs ON cs.TotalSpent > 1000 AND cs.LastOrderDate >= CURRENT_DATE - INTERVAL '30 days'
+    CustomerOrderStats cs ON cs.TotalSpent > 1000 AND cs.LastOrderDate >= CURRENT_DATE - INTERVAL 30 DAY
 JOIN 
     lineitem l ON r.o_orderkey = l.l_orderkey
 FULL OUTER JOIN 

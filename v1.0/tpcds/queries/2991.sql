@@ -65,7 +65,7 @@ SELECT
 FROM 
     TopReturningCustomers T
 LEFT JOIN 
-    ship_mode SM ON T.return_count > 10 AND SM.sm_ship_mode_sk = (SELECT sm_ship_mode_sk FROM ship_mode ORDER BY RANDOM() LIMIT 1)
+    ship_mode SM ON T.return_count > 10 AND SM.sm_ship_mode_sk = (SELECT sm_ship_mode_sk FROM ship_mode ORDER BY rand() LIMIT 1)
 ORDER BY 
     T.total_return_amt DESC
 LIMIT 25;

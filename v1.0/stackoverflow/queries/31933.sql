@@ -28,13 +28,13 @@ PostDetails AS (
     LEFT JOIN 
         RecursivePostHistory ph ON p.Id = ph.PostId AND ph.rn = 1
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ), 
 BadgesSummary AS (
     SELECT 
         UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS Badges
     FROM 
         Badges
     GROUP BY 

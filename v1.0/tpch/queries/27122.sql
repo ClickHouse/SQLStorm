@@ -34,7 +34,7 @@ AggregatedData AS (
         COUNT(DISTINCT ps.ps_partkey) AS supplied_parts,
         SUM(ld.l_discount) AS total_discount,
         AVG(ld.l_extendedprice) AS avg_extended_price,
-        STRING_AGG(DISTINCT pd.short_name, ', ') AS example_part_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pd.short_name))), ', ') AS example_part_names
     FROM 
         SupplierDetails sd
     JOIN 

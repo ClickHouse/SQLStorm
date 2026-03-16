@@ -18,7 +18,7 @@ HighReturnCustomers AS (
         C.c_first_name,
         C.c_last_name,
         CASE 
-            WHEN C.c_birth_year IS NOT NULL THEN EXTRACT(YEAR FROM DATE '2002-10-01') - C.c_birth_year
+            WHEN C.c_birth_year IS NOT NULL THEN toYear(toDate('2002-10-01')) - C.c_birth_year
             ELSE NULL 
         END AS customer_age
     FROM 

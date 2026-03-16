@@ -43,7 +43,7 @@ SELECT
     th.production_year AS Year,
     COUNT(DISTINCT cd.actor_name) AS Total_Cast,
     AVG(CASE WHEN cd.actor_rank <= 3 THEN 1 ELSE 0 END) AS Avg_Top_Cast_Rank,
-    STRING_AGG(DISTINCT p.note, ', ') AS Notes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.note))), ', ') AS Notes,
     CASE 
         WHEN COUNT(cd.person_id) > 0 THEN 'Has Cast' 
         ELSE 'No Cast Information' 

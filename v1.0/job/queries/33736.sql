@@ -32,7 +32,7 @@ SELECT
     mh.production_year,
     COUNT(DISTINCT ci.person_id) AS total_cast,
     AVG(CASE WHEN ri.role IS NOT NULL THEN 1 ELSE 0 END) AS avg_has_role,
-    STRING_AGG(DISTINCT ak.name, ', ') AS known_actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS known_actors,
     SUM(CASE WHEN mi.info_type_id IS NOT NULL THEN 1 ELSE 0 END) AS info_count
 FROM
     movie_hierarchy mh

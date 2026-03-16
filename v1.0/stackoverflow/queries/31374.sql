@@ -65,7 +65,7 @@ PostHistoryDetails AS (
     JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
         AND p.OwnerUserId IS NOT NULL
 )
 

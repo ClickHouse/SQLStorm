@@ -14,13 +14,13 @@ WITH PostSummary AS (
         PH.CreationDate AS LastEditDate,
         PT.Name AS PostTypeName,
         (SELECT COUNT(*) FROM PostHistory PH2 WHERE PH2.PostId = P.Id) AS EditCount,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS TagList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagList
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
     JOIN PostHistory PH ON P.Id = PH.PostId
     JOIN PostTypes PT ON P.PostTypeId = PT.Id
     LEFT JOIN Tags T ON POSITION('|' || T.TagName || '|' IN '|' || P.Tags || '|') > 0
-    WHERE P.CreationDate >= CURRENT_DATE - INTERVAL '5 years' 
+    WHERE P.CreationDate >= CURRENT_DATE - INTERVAL 5 YEAR 
     GROUP BY P.Id, P.Title, P.Body, P.CreationDate, U.DisplayName, P.ViewCount, P.AnswerCount, P.CommentCount, P.Score, P.Tags, PH.CreationDate, PT.Name
 ),
 VoteSummary AS (

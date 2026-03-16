@@ -51,4 +51,4 @@ GROUP BY
     ca.ca_country
 ORDER BY
     total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

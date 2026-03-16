@@ -8,7 +8,7 @@ SELECT
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes,
     SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositiveScorePosts,
-    AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgPostDurationInSeconds
+    AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgPostDurationInSeconds
 FROM 
     Users u
 LEFT JOIN 

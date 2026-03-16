@@ -7,7 +7,7 @@ WITH TagStats AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         AVG(p.Score) AS AvgScore,
         MAX(p.ViewCount) AS MaxViews,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopAuthors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopAuthors
     FROM 
         Tags t
     LEFT JOIN 
@@ -75,4 +75,4 @@ JOIN
 ORDER BY 
     ts.PostCount DESC, 
     pt.TotalPosts DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

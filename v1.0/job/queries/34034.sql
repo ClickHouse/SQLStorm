@@ -33,7 +33,7 @@ WITH RECURSIVE movie_hierarchy AS (
 SELECT 
     COALESCE(ak.name, 'Unknown') AS actor_name,
     COUNT(DISTINCT mh.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT mh.title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mh.title))), ', ') AS movie_titles,
     SUM(CASE WHEN mh.production_year = 2021 THEN 1 ELSE 0 END) AS movies_in_2021,
     AVG(mh.order_no) AS avg_order_no,
     RANK() OVER (ORDER BY COUNT(DISTINCT mh.movie_id) DESC) AS movie_rank

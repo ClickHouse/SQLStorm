@@ -23,7 +23,7 @@ TopMovies AS (
 )
 SELECT 
     t.production_year,
-    STRING_AGG(t.movie_title, ', ') AS top_movies,
+    arrayStringConcat(groupArray(assumeNotNull(t.movie_title)), ', ') AS top_movies,
     SUM(COALESCE(t.total_actors, 0)) AS total_actors_count
 FROM 
     TopMovies t

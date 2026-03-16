@@ -44,7 +44,7 @@ sales_summary AS (
     FROM 
         annual_sales a
     JOIN 
-        demographics d ON a.w_warehouse_id = (SELECT w.w_warehouse_id FROM warehouse w ORDER BY RANDOM() LIMIT 1)
+        demographics d ON a.w_warehouse_id = (SELECT w.w_warehouse_id FROM warehouse w ORDER BY rand() LIMIT 1)
 )
 SELECT 
     w.w_warehouse_name,

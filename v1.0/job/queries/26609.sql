@@ -29,7 +29,7 @@ MovieDetails AS (
         tm.production_year,
         kt.kind AS kind_name,
         COUNT(ci.id) AS cast_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM 
         TopMovies tm
     LEFT JOIN 

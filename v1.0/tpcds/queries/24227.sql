@@ -59,7 +59,7 @@ Combined AS (
             FROM 
                 store
             ORDER BY 
-                RANDOM()
+                rand()
             LIMIT 1
         )
 )
@@ -79,7 +79,7 @@ LEFT JOIN
     web_page wo ON wo.wp_customer_sk = c.c_customer_sk
 WHERE 
     cb.total_quantity > 10
-    AND (c.c_birth_month = EXTRACT(MONTH FROM DATE '2002-10-01') OR c.c_birth_month IS NULL)
+    AND (c.c_birth_month = toMonth(toDate('2002-10-01')) OR c.c_birth_month IS NULL)
 GROUP BY 
     c.c_customer_id, c.c_first_name, c.c_last_name, cb.total_returns, cb.return_count, cb.total_quantity
 ORDER BY 

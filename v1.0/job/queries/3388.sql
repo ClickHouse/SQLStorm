@@ -24,7 +24,7 @@ MovieDetails AS (
         tm.title, 
         tm.production_year, 
         COUNT(DISTINCT mc.company_id) AS company_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         TopMovies tm
     LEFT JOIN 
@@ -38,7 +38,7 @@ MovieDetails AS (
 MovieKeywords AS (
     SELECT 
         m.title,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title m
     JOIN 

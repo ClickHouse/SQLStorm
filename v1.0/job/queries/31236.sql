@@ -23,7 +23,7 @@ SELECT
     t.title AS movie_title,
     t.production_year,
     COUNT(DISTINCT c.role_id) AS total_roles,
-    STRING_AGG(DISTINCT keyword.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword.keyword))), ', ') AS keywords,
     AVG(pi.info_type_id) AS avg_info_type_id,
     ROW_NUMBER() OVER (PARTITION BY a.name ORDER BY COUNT(DISTINCT c.role_id) DESC) AS role_rank
 FROM 

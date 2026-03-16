@@ -41,7 +41,7 @@ Result AS (
     JOIN 
         OrderDetails od ON spi.p_partkey = od.l_partkey
     WHERE 
-        od.o_orderdate >= DATE '1997-01-01' AND od.o_orderdate < DATE '1997-12-31'
+        od.o_orderdate >= toDate('1997-01-01') AND od.o_orderdate < toDate('1997-12-31')
     GROUP BY 
         spi.s_name, 
         spi.p_name

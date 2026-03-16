@@ -63,4 +63,4 @@ JOIN address_info ai ON fs.c_customer_id = ai.ca_address_id
 WHERE fs.rn = 1 
   AND ai.avg_profits > 1000
 ORDER BY fs.total_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

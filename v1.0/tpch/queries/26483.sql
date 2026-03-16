@@ -3,7 +3,7 @@ SELECT
     p.p_brand,
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     AVG(p.p_retailprice) AS avg_retail_price,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ': ', s.s_comment), '; ') AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ': ', s.s_comment)))), '; ') AS supplier_comments
 FROM 
     part p
 JOIN 

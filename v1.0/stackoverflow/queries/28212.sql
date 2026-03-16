@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -19,15 +19,15 @@ LatestPostDetails AS (
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT tc.TagName) AS TagsUsed
+        arrayDistinct(groupArray(assumeNotNull(tc.TagName))) AS TagsUsed
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        TagCounts tc ON tc.TagName = ANY (string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'))
+        TagCounts tc ON tc.TagName = ANY (splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
     GROUP BY 
         p.Id, u.DisplayName
     HAVING 
@@ -57,7 +57,7 @@ SELECT
     h.OwnerDisplayName,
     h.CommentCount,
     COUNT(DISTINCT tc.TagName) AS DistinctTagCount,
-    STRING_AGG(DISTINCT tc.TagName, ', ') AS TagList
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tc.TagName))), ', ') AS TagList
 FROM 
     HighScoringPosts h
 LEFT JOIN 

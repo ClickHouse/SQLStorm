@@ -47,8 +47,8 @@ FinalReport AS (
         rm.title,
         rm.production_year,
         ac.actor_count,
-        STRING_AGG(DISTINCT cc.company_name, ', ') AS companies,
-        STRING_AGG(DISTINCT mi.info, '; ') AS additional_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cc.company_name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS additional_info
     FROM 
         RankedMovies rm
     LEFT JOIN 

@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         mt.title AS movie_title,
         mt.production_year,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        ARRAY_AGG(DISTINCT cn.name) AS character_names
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS character_names
     FROM 
         aka_title mt
     JOIN 

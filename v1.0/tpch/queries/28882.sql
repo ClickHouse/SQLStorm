@@ -24,4 +24,4 @@ HAVING
     COUNT(DISTINCT s.s_suppkey) > 5
 ORDER BY
     average_retail_price DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

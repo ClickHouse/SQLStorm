@@ -40,7 +40,7 @@ PopularTags AS (
         COUNT(*) AS TagCount
     FROM 
         Posts,
-        UNNEST(string_to_array(Tags, ',')) AS value
+        arrayJoin(splitByString(',', Tags)) AS value
     WHERE 
         Tags IS NOT NULL
     GROUP BY 

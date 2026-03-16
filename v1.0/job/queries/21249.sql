@@ -11,7 +11,7 @@ WITH RankedMovies AS (
 ActorNames AS (
     SELECT 
         ak.person_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
     FROM aka_name ak
     GROUP BY ak.person_id
 ),

@@ -53,4 +53,4 @@ WHERE c.c_current_cdemo_sk IN (
 )
 GROUP BY ca.ca_address_id, c.c_first_name, c.c_last_name, r.total_quantity, a.total_returns
 ORDER BY net_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -30,7 +30,7 @@ WITH RankedSales AS (
     FROM 
         web_sales
     WHERE 
-        ws_sold_date_sk >= (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = DATE '2002-10-01' - INTERVAL '30 days')
+        ws_sold_date_sk >= (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = toDate('2002-10-01') - INTERVAL 30 DAY)
     GROUP BY 
         ws_item_sk
 ), SalesSummary AS (

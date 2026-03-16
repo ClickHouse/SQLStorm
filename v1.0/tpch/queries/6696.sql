@@ -4,7 +4,7 @@ WITH RankedOrders AS (
         o.o_orderkey,
         o.o_orderdate,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue,
-        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
+        RANK() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
     FROM 
         orders o
     JOIN 
@@ -37,4 +37,4 @@ WHERE
     n.n_regionkey IN (SELECT r.r_regionkey FROM region r WHERE r.r_name = 'ASIA')
 ORDER BY 
     cs.total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

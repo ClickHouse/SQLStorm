@@ -35,7 +35,7 @@ SELECT
         WHEN ci.nr_order IS NULL THEN NULL
         ELSE ci.nr_order
     END) AS avg_order,
-    STRING_AGG(DISTINCT ak.name || ' (' || COALESCE(NULLIF(ak.md5sum, ''), 'No MD5') || ')', ', ') AS actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name || ' (' || COALESCE(NULLIF(ak.md5sum, ''), 'No MD5') || ')'))), ', ') AS actors
 FROM 
     title_hierarchy th
 LEFT JOIN 

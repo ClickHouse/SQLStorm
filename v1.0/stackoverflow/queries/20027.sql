@@ -74,7 +74,7 @@ WITH RankedPosts AS (
         UserActivity ua ON f.OwnerUserId = ua.UserId
     WHERE 
         f.NetVote > 0
-        AND f.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+        AND f.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 )
 SELECT 
     PostId,

@@ -27,7 +27,7 @@ SELECT
     COUNT(DISTINCT cc.movie_id) AS total_movies,
     SUM(CASE WHEN cc.status_id IS NULL THEN 1 ELSE 0 END) AS total_undisclosed_casts,
     ROW_NUMBER() OVER (PARTITION BY ka.id ORDER BY COUNT(DISTINCT cc.movie_id) DESC) AS rank_movies,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS associated_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS associated_keywords,
     MAX(CASE WHEN mi.info_type_id = (SELECT id FROM info_type WHERE info = 'Box Office') THEN mi.info END) AS box_office_info
 FROM 
     aka_name ka

@@ -6,7 +6,7 @@ WITH RecurTagCounts AS (
     FROM (
         SELECT 
             Posts.Id AS PostId,
-            UNNEST(string_to_array(Tags, '><')) AS Tags
+            arrayJoin(splitByString('><', Tags)) AS Tags
         FROM 
             Posts
         WHERE 
@@ -41,7 +41,7 @@ RecentPosts AS (
             PostId
     ) AS v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, u.Reputation, v.SilentVote
 ),

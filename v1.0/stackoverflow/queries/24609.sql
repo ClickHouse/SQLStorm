@@ -63,7 +63,7 @@ FinalMetrics AS (
     LEFT JOIN 
         Users ps ON p.Author = ps.DisplayName
     WHERE 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 YEAR'
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
 )
 SELECT 
     fm.UserId,
@@ -97,4 +97,4 @@ WHERE
     OR (fm.TotalUpvotes IS NULL AND fm.TotalDownvotes IS NULL)
 ORDER BY 
     fm.ReputationScore DESC, fm.CreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -24,8 +24,8 @@ JOIN part p ON ps.ps_partkey = p.p_partkey
 JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
 LEFT JOIN SupplierHierarchy sh ON s.s_suppkey = sh.s_suppkey
-WHERE o.o_orderdate >= DATE '1996-01-01' 
-AND o.o_orderdate < DATE '1997-01-01'
+WHERE o.o_orderdate >= toDate('1996-01-01') 
+AND o.o_orderdate < toDate('1997-01-01')
 AND (p.p_size IS NULL OR p.p_size BETWEEN 1 AND 10)
 GROUP BY n.n_name, p.p_name
 HAVING SUM(li.l_extendedprice * (1 - li.l_discount)) > 10000

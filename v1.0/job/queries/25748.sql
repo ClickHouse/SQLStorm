@@ -27,7 +27,7 @@ CastRoles AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        COALESCE(STRING_AGG(DISTINCT rt.role, ', '), 'No roles') AS roles
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', '), 'No roles') AS roles
     FROM 
         cast_info ci
     LEFT JOIN 

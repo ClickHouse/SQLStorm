@@ -37,7 +37,7 @@ SELECT
     gender_desc,
     AVG(name_length) AS avg_name_length,
     COUNT(*) AS total_customers,
-    STRING_AGG(full_name, ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names
 FROM 
     FilteredCustomers
 GROUP BY 

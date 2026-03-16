@@ -18,7 +18,7 @@ KeyedMovies AS (
         rm.movie_id,
         rm.title,
         rm.production_year,
-        COALESCE(STRING_AGG(DISTINCT k.keyword, ', '), 'No Keywords') AS keywords
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'No Keywords') AS keywords
     FROM
         RankedMovies AS rm
     LEFT JOIN

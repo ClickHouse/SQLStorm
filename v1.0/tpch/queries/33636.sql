@@ -18,7 +18,7 @@ SELECT
     SUM(o.o_totalprice) AS total_spent,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     MAX(o.o_orderdate) AS last_order_date,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS purchased_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS purchased_parts,
     AVG(CASE WHEN s.s_acctbal IS NULL THEN 0 ELSE s.s_acctbal END) AS avg_supplier_balance
 FROM 
     customer c

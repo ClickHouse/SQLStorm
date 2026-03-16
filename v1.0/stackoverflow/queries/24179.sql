@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2 
     LEFT JOIN Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, p.PostTypeId, b.UserId
 ),
@@ -24,7 +24,7 @@ PostHistoryAggregated AS (
         ph.PostId,
         COUNT(ph.Id) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11)) AS CloseOpenCount,
         COUNT(ph.Id) FILTER (WHERE ph.PostHistoryTypeId = 12) AS DeletionCount,
-        COUNT(ph.Id) FILTER (WHERE ph.PostHistoryTypeId = 24 AND ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 MONTH') AS SuggestionsAppliedCount
+        COUNT(ph.Id) FILTER (WHERE ph.PostHistoryTypeId = 24 AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH) AS SuggestionsAppliedCount
     FROM 
         PostHistory ph
     GROUP BY 

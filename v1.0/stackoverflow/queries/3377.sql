@@ -46,7 +46,7 @@ SELECT
     U.UpVotes,
     U.DownVotes,
     COALESCE(COUNT(DISTINCT CP.PostId), 0) AS ClosedPostCount,
-    COALESCE(STRING_AGG(CONCAT(CP.Title, ' (Closed on: ', CAST(CP.ClosedDate AS date), ' - Reason: ', CP.CloseReason, ')'), '; '), 'No closed posts') AS ClosedPostDetails
+    COALESCE(arrayStringConcat(groupArray(assumeNotNull(CONCAT(CP.Title, ' (Closed on: ', CAST(CP.ClosedDate AS date), ' - Reason: ', CP.CloseReason, ')'))), '; '), 'No closed posts') AS ClosedPostDetails
 FROM 
     UserVoteStats U
 LEFT JOIN 

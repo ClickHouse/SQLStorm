@@ -75,7 +75,7 @@ SELECT
         WHEN ra.VoteCount BETWEEN 50 AND 100 THEN 'Moderately Active' 
         ELSE 'Less Active' 
     END AS ActivityStatus,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     PostHierarchy ph
 LEFT JOIN 

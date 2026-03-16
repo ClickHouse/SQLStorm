@@ -27,7 +27,7 @@ PopularTags AS (
         TRIM(tag) AS Tag
     FROM
         Posts b,
-        UNNEST(STRING_TO_ARRAY(b.Tags, ',')) AS tag
+        arrayJoin(splitByString(',', b.Tags)) AS tag
     WHERE
         b.PostTypeId = 1  
 ),

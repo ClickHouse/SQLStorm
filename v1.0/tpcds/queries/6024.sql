@@ -45,4 +45,4 @@ JOIN
     SalesOverTime sot ON sot.yearly_sales > 1000000
 ORDER BY 
     cs.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

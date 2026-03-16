@@ -4,7 +4,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned,
     COUNT(DISTINCT s.s_suppkey) AS num_suppliers,
     r.r_name AS region_name,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_phone, ')'), ', ') AS supplier_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')')))), ', ') AS supplier_info
 FROM
     part p
 JOIN

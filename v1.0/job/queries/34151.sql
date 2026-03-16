@@ -19,7 +19,7 @@ SELECT
     movie_id,
     title,
     production_year,
-    STRING_AGG(actor_name, ', ') AS actor_list
+    arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS actor_list
 FROM
     movies_with_cast
 GROUP BY

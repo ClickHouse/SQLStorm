@@ -38,7 +38,7 @@ MovieDetails AS (
 MovieKeywordStats AS (
     SELECT 
         mv.movie_id,
-        STRING_AGG(kw.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mv
     JOIN 
@@ -62,4 +62,4 @@ WHERE
 ORDER BY 
     md.production_year DESC, 
     md.cast_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

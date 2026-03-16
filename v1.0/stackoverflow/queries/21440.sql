@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         COALESCE(
             (SELECT COUNT(c.Id) 
              FROM Comments c 
-             WHERE c.PostId = p.Id AND c.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')), 0
+             WHERE c.PostId = p.Id AND c.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)), 0
         ) AS RecentComments
     FROM 
         Posts p
@@ -26,7 +26,7 @@ WITH RankedPosts AS (
 PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, '; ') AS CommentsAggregate,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS CommentsAggregate,
         MAX(ph.CreationDate) AS LastUpdate
     FROM 
         PostHistory ph

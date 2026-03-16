@@ -3,8 +3,8 @@ SELECT
     ca.ca_city AS City,
     COUNT(DISTINCT c.c_customer_id) AS Unique_Customers,
     AVG(cd.cd_purchase_estimate) AS Avg_Purchase_Estimate,
-    STRING_AGG(DISTINCT cd.cd_gender, ', ') AS Genders,
-    STRING_AGG(DISTINCT cd.cd_marital_status, ', ') AS Marital_Statuses,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_gender))), ', ') AS Genders,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_marital_status))), ', ') AS Marital_Statuses,
     SUM(ss.ss_quantity) AS Total_Quantity_Sold,
     SUM(ss.ss_net_profit) AS Total_Net_Profit
 FROM 

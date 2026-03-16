@@ -5,7 +5,7 @@ WITH movie_stats AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT c.note, ', ') AS cast_notes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.note))), ', ') AS cast_notes,
         COALESCE(SUM(CASE WHEN mi.info ILIKE '%Oscar%' THEN 1 ELSE 0 END), 0) AS oscar_count, 
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(DISTINCT c.person_id) DESC) AS year_rank
     FROM 

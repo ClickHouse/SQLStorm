@@ -12,7 +12,7 @@ SELECT
     u.Reputation,
     v.VoteTypeId,
     COUNT(v.Id) AS VoteCount,
-    AVG(EXTRACT(EPOCH FROM (v.CreationDate - p.CreationDate))) AS AvgTimeToVote
+    AVG(toUnixTimestamp((v.CreationDate - p.CreationDate))) AS AvgTimeToVote
 FROM 
     Posts p
 JOIN 
@@ -20,7 +20,7 @@ JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 WHERE 
-    p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year' 
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, 
     p.CommentCount, p.AnswerCount, u.Id, u.DisplayName, 

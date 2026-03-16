@@ -42,7 +42,7 @@ CustomerBenchmark AS (
         ca_city,
         ca_state,
         ca_country,
-        EXTRACT(YEAR FROM DATE '2002-10-01') - c_birth_year AS age,
+        toYear(toDate('2002-10-01')) - c_birth_year AS age,
         total_orders,
         total_spent,
         DENSE_RANK() OVER (ORDER BY total_spent DESC) AS spend_rank

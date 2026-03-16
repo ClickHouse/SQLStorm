@@ -6,7 +6,7 @@ WITH PartSupplierDetails AS (
         p.p_brand, 
         COUNT(ps.ps_availqty) AS availability_count,
         SUM(ps.ps_supplycost) AS total_supply_cost,
-        STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments
     FROM 
         part p
     JOIN 

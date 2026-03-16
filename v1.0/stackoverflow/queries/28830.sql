@@ -20,12 +20,12 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
         AND p.ViewCount > 100
 ),
 TagStats AS (
     SELECT 
-        TRIM(BOTH '<>' FROM unnest(string_to_array(p.Tags, '><'))) AS Tag,
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', p.Tags))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts p
@@ -57,7 +57,7 @@ TopPostsByTag AS (
     JOIN 
         Posts p ON rp.PostID = p.Id
     JOIN 
-        LATERAL unnest(string_to_array(p.Tags, '><')) AS rt(Tag) ON TRUE
+        arrayJoin(splitByString('><', p.Tags)) AS rt(Tag) ON TRUE
     JOIN 
         TopTags tt ON rt.Tag = tt.Tag
     WHERE 
@@ -66,7 +66,7 @@ TopPostsByTag AS (
 
 SELECT 
     t.Tag,
-    STRING_AGG(tp.OwnerDisplayName || ': ' || tp.Title, '; ') AS TopPosts
+    arrayStringConcat(groupArray(assumeNotNull(tp.OwnerDisplayName || ': ' || tp.Title)), '; ') AS TopPosts
 FROM 
     TopPostsByTag tp
 JOIN 

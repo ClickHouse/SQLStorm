@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score IS NOT NULL AND 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
 ), 
 UserBadges AS (
     SELECT 
@@ -28,7 +28,7 @@ UserBadges AS (
 PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CONCAT(ph.Comment, ' (', pht.Name, ')'), '; ') AS Comments,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.Comment, ' (', pht.Name, ')'))), '; ') AS Comments,
         MAX(ph.CreationDate) AS LastUpdate
     FROM 
         PostHistory ph

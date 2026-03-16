@@ -40,11 +40,11 @@ SELECT
     tr.region_sales AS total_region_sales,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(o.o_totalprice) AS avg_order_value,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     TopRegions tr
 LEFT JOIN 
-    orders o ON o.o_orderkey IN (SELECT l.l_orderkey FROM lineitem l WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '1 year')
+    orders o ON o.o_orderkey IN (SELECT l.l_orderkey FROM lineitem l WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR)
 LEFT JOIN 
     customer c ON o.o_custkey = c.c_custkey 
 GROUP BY 

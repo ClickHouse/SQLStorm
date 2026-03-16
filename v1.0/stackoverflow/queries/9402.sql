@@ -19,7 +19,7 @@ PopularPosts AS (
         COUNT(C.Id) AS CommentCount
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY P.Id, P.OwnerUserId, P.Title, P.Score, P.ViewCount
     ORDER BY P.Score DESC, P.ViewCount DESC
     LIMIT 10
@@ -30,7 +30,7 @@ PostContributions AS (
         PH.UserId,
         COUNT(PH.Id) AS EditCount
     FROM PostHistory PH
-    WHERE PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY PH.PostId, PH.UserId
 )
 SELECT 

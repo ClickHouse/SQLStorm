@@ -9,7 +9,7 @@ WITH FilteredPosts AS (
         u.Reputation,
         ph.CreationDate AS LastEditDate,
         p.ViewCount,
-        CARDINALITY(REGEXP_SPLIT_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '>')) AS TagCount,
+        CARDINALITY(splitByRegexp('>', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS TagCount,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT b.Id) AS BadgeCount
     FROM 
@@ -24,7 +24,7 @@ WITH FilteredPosts AS (
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
         p.PostTypeId = 1 /* Questions only */
-        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, u.DisplayName, u.Reputation, ph.CreationDate
 ),
@@ -62,7 +62,7 @@ SELECT
     tp.CommentCount,
     tp.BadgeCount,
     (SELECT 
-         STRING_AGG(DISTINCT c.UserDisplayName, ', ') 
+         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.UserDisplayName))), ', ') 
      FROM 
          Comments c 
      WHERE 

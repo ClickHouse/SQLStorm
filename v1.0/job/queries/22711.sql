@@ -14,8 +14,8 @@ MovieDetails AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        COALESCE(STRING_AGG(DISTINCT c.name, ', '), 'No Cast') AS cast_names,
-        COALESCE(STRING_AGG(DISTINCT co.name, ', '), 'No Companies') AS company_names,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', '), 'No Cast') AS cast_names,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', '), 'No Companies') AS company_names,
         COUNT(DISTINCT kw.keyword) AS keyword_count,
         COUNT(DISTINCT ci.id) AS complete_cast_count
     FROM

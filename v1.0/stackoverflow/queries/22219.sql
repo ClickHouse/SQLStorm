@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 CelebrityUsers AS (
     SELECT 
@@ -42,10 +42,10 @@ ClosedPostDetails AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastClosedDate,
-        STRING_AGG(CASE 
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
             WHEN ph.Comment IS NOT NULL THEN ph.Comment 
             ELSE 'No reason provided' 
-            END, ', ') AS CloseReasons
+            END)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     WHERE 

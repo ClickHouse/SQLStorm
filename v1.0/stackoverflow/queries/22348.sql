@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Posts p
         JOIN PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
 ),
 UserInteractions AS (
@@ -74,4 +74,4 @@ WHERE
 ORDER BY 
     ps.Score DESC,
     ps.ViewCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -19,7 +19,7 @@ SELECT
     SUM(ps.ps_supplycost * l.l_quantity) AS total_cost,
     rs.nation_name,
     COUNT(DISTINCT rs.s_suppkey) AS supplier_count,
-    STRING_AGG(rs.s_name, ', ') AS supplier_names
+    arrayStringConcat(groupArray(assumeNotNull(rs.s_name)), ', ') AS supplier_names
 FROM 
     part p
 JOIN 

@@ -20,7 +20,7 @@ WITH RankedMovies AS (
 HighlightedMovies AS (
     SELECT 
         rm.*,
-        (SELECT STRING_AGG(DISTINCT ak.name, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') 
          FROM cast_info c
          JOIN aka_name ak ON c.person_id = ak.person_id
          WHERE c.movie_id = rm.movie_id) AS actor_names

@@ -29,7 +29,7 @@ SELECT
     mh.movie_title,
     mh.production_year,
     COUNT(DISTINCT ci.person_id) AS actor_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
     CASE 
         WHEN COUNT(DISTINCT ak.name) = 0 THEN 'No Actors'
         ELSE ''

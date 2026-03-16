@@ -8,7 +8,7 @@ WITH PostStats AS (
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS VoteCount,
-        ARRAY_REMOVE(STRING_TO_ARRAY(p.Tags, '><'), '') AS TagsArray
+        ARRAY_REMOVE(splitByString('><', p.Tags), '') AS TagsArray
     FROM 
         Posts p
     LEFT JOIN 
@@ -24,7 +24,7 @@ WITH PostStats AS (
 ),
 TagStats AS (
     SELECT 
-        unnest(TagsArray) AS Tag,
+        arrayJoin(TagsArray) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         PostStats

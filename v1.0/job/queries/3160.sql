@@ -39,7 +39,7 @@ selected_titles AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -51,7 +51,7 @@ movie_keywords AS (
 SELECT 
     st.title,
     st.production_year,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
     COALESCE(mk.keywords, 'No keywords') AS keywords,
     CASE 
         WHEN rm.year_rank = 1 THEN 'Latest Movie'

@@ -4,7 +4,7 @@ WITH AddressStats AS (
         ca_state,
         COUNT(*) AS address_count,
         STRING_AGG(DISTINCT ca_city) AS cities,
-        STRING_AGG(DISTINCT CONCAT(ca_street_name, ' ', ca_street_type), ', ') AS street_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_name, ' ', ca_street_type)))), ', ') AS street_names
     FROM 
         customer_address
     GROUP BY 

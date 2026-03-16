@@ -22,8 +22,8 @@ JOIN
 JOIN 
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
-    o.o_orderdate >= DATE '1994-01-01' 
-    AND o.o_orderdate < DATE '1995-01-01'
+    o.o_orderdate >= toDate('1994-01-01') 
+    AND o.o_orderdate < toDate('1995-01-01')
     AND l.l_discount BETWEEN 0.1 AND 0.5
 GROUP BY 
     n.n_name, r.r_name, s.s_acctbal

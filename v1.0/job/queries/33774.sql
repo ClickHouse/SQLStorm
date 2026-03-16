@@ -30,7 +30,7 @@ SELECT
     ak.person_id,
     ak.name,
     COUNT(DISTINCT mh.movie_id) AS total_movies,
-    ARRAY_AGG(DISTINCT mh.title) AS movie_titles,
+    arrayDistinct(groupArray(assumeNotNull(mh.title))) AS movie_titles,
     AVG(CASE WHEN mi.info IS NOT NULL THEN LENGTH(mi.info) END) AS avg_info_length,
     MAX(mh.production_year) AS latest_production_year,
     MAX(CASE WHEN ci.note IS NOT NULL THEN ci.note ELSE 'No Note' END) AS cast_note

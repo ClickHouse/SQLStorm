@@ -5,7 +5,7 @@ WITH UserStats AS (
         U.CreationDate,
         U.DisplayName,
         (SELECT COUNT(*) FROM Badges B WHERE B.UserId = U.Id) AS BadgeCount,
-        (SELECT COUNT(DISTINCT P.Id) FROM Posts P WHERE P.OwnerUserId = U.Id AND P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') AS PostsLastYear,
+        (SELECT COUNT(DISTINCT P.Id) FROM Posts P WHERE P.OwnerUserId = U.Id AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AS PostsLastYear,
         ROW_NUMBER() OVER (ORDER BY U.Reputation DESC) AS ReputationRank
     FROM 
         Users U
@@ -29,7 +29,7 @@ PostDetails AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 TopUserPosts AS (
@@ -59,7 +59,7 @@ SELECT
         WHEN UP.PostRank <= 5 THEN 'High Rank Post'
         ELSE 'Other Post'
     END AS PostType,
-    (SELECT STRING_AGG(DISTINCT T.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
      FROM Posts P 
      JOIN Tags T ON T.WikiPostId = P.Id 
      WHERE P.Id = UP.PostId) AS AssociatedTags,

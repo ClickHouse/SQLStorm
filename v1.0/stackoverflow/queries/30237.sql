@@ -60,7 +60,7 @@ SELECT
     END AS UserTier,
     (
         SELECT 
-            STRING_AGG(DISTINCT t.TagName, ', ') 
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
         FROM 
             Posts p 
         JOIN 
@@ -74,4 +74,4 @@ WHERE
     us.Reputation > 1000
 ORDER BY 
     us.Reputation DESC, us.PostCount DESC
-OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 0;

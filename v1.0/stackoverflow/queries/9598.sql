@@ -58,4 +58,4 @@ FROM
     CombinedData
 ORDER BY 
     TotalScore DESC, BadgeCount DESC, DisplayName ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 RecentVotes AS (
     SELECT 
@@ -22,16 +22,16 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         v.PostId
 ),
 PostHistoryWithReason AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CASE WHEN ph.PostHistoryTypeId = 10 
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId = 10 
                       THEN 'Closed Reason: ' || (SELECT Name FROM CloseReasonTypes cr WHERE cr.Id = CAST(ph.Comment AS INT))
-                      ELSE NULL END, ', ') AS CloseReasons,
+                      ELSE NULL END)), ', ') AS CloseReasons,
         COUNT(CASE WHEN ph.PostId IS NOT NULL THEN 1 END) AS EditCount
     FROM 
         PostHistory ph

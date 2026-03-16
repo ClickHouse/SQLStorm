@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         CreationDate,
         ROW_NUMBER() OVER (PARTITION BY PostTypeId ORDER BY Score DESC, ViewCount DESC) AS Rank
     FROM Posts
-    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserActivity AS (
     SELECT 
@@ -28,12 +28,12 @@ PostHistoryDetails AS (
         P.Title,
         PH.Comment,
         PH.CreationDate AS HistoryDate,
-        (SELECT STRING_AGG(NAME, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(NAME)), ', ') 
          FROM PostHistoryTypes PHT 
          WHERE PHT.Id = PH.PostHistoryTypeId) AS HistoryType
     FROM PostHistory PH
     JOIN Posts P ON PH.PostId = P.Id
-    WHERE PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
+    WHERE PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
 ),
 HighScoringPosts AS (
     SELECT 
@@ -72,4 +72,4 @@ SELECT
 FROM FinalResults
 WHERE (DownvotesReceived IS NULL OR DownvotesReceived < UpvotesReceived)
 ORDER BY UpvotesReceived DESC, TotalPosts DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

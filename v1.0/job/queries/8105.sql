@@ -32,7 +32,7 @@ AggregateStats AS (
     SELECT 
         movie_id,
         COUNT(DISTINCT actor_name) AS actor_count,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
         MAX(production_year) AS latest_year
     FROM 
         MovieDetails

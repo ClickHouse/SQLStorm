@@ -25,7 +25,7 @@ RankedMovies AS (
 )
 SELECT
     r.actor_name,
-    STRING_AGG(r.movie_title, ', ') AS movies,
+    arrayStringConcat(groupArray(assumeNotNull(r.movie_title)), ', ') AS movies,
     COUNT(DISTINCT r.movie_title) AS movie_count,
     MAX(r.cast_order) AS max_order,
     CASE

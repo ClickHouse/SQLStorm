@@ -83,4 +83,4 @@ WHERE
 ORDER BY 
     e.o_orderdate DESC, 
     e.o_totalprice DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

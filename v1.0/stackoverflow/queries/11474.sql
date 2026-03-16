@@ -25,8 +25,8 @@ WITH Benchmark AS (
 )
 SELECT 
     *,
-    EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - CreationDate)) AS AgeInSeconds,
-    EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - LastEditDate)) AS TimeSinceLastEditInSeconds
+    toUnixTimestamp((now64(6) - CreationDate)) AS AgeInSeconds,
+    toUnixTimestamp((now64(6) - LastEditDate)) AS TimeSinceLastEditInSeconds
 FROM 
     Benchmark
 ORDER BY 

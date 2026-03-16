@@ -25,7 +25,7 @@ SELECT
     n.n_name AS nation_name,
     s.s_name AS supplier_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments
 FROM 
     RankedParts rp
 JOIN 

@@ -24,7 +24,7 @@ ranked_movies AS (
         movie_id,
         title,
         production_year,
-        string_agg(actor_name, ', ') AS actor_list,
+        arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS actor_list,
         COUNT(*) AS total_actors,
         MAX(actor_order) AS highest_actor_order
     FROM 

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -51,7 +51,7 @@ SELECT
     ps.UpVotes,
     ps.DownVotes,
     ps.UpVotes - ps.DownVotes AS NetVotes,
-    COALESCE(CAST(ROUND(ps.UpVotes::numeric / NULLIF(ps.VoteCount, 0) * 100, 2) AS VARCHAR), '0.00%') AS VotePercentage
+    COALESCE(CAST(ROUND(CAST(ps.UpVotes AS numeric) / NULLIF(ps.VoteCount, 0) * 100, 2) AS VARCHAR), '0.00%') AS VotePercentage
 FROM 
     TopPosts tp
 JOIN 

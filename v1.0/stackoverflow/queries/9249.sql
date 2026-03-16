@@ -8,7 +8,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN P.Score < 0 THEN 1 ELSE 0 END) AS NegativePosts,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - P.CreationDate)) / 60) AS AvgPostAgeMinutes
+        AVG(toUnixTimestamp((now64(6) - P.CreationDate)) / 60) AS AvgPostAgeMinutes
     FROM 
         Users U
     LEFT JOIN 

@@ -7,7 +7,7 @@ WITH RECURSIVE SalesData AS (
     FROM 
         web_sales
     WHERE 
-        ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = CAST('2002-10-01' AS DATE) - INTERVAL '1 year')
+        ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = CAST('2002-10-01' AS DATE) - INTERVAL 1 YEAR)
     GROUP BY 
         ws_item_sk
     
@@ -20,7 +20,7 @@ WITH RECURSIVE SalesData AS (
     FROM 
         catalog_sales
     WHERE 
-        cs_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = CAST('2002-10-01' AS DATE) - INTERVAL '1 year')
+        cs_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = CAST('2002-10-01' AS DATE) - INTERVAL 1 YEAR)
     GROUP BY 
         cs_item_sk
 )
@@ -41,7 +41,7 @@ SELECT
     SUM(COALESCE(isales.quantity_sold, 0)) AS total_item_sold,
     SUM(COALESCE(isales.sales_revenue, 0)) AS total_sales_revenue,
     MAX(CASE WHEN id.d_dow = 0 THEN 'Sunday' ELSE 'Weekday' END) AS sale_day_type,
-    STRING_AGG(DISTINCT ip.p_promo_name, ', ') AS promo_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ip.p_promo_name))), ', ') AS promo_names
 FROM 
     customer ia 
 LEFT JOIN 

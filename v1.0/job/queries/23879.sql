@@ -68,7 +68,7 @@ SELECT
         ELSE 'No' 
     END AS has_multiple_movies_by_company,
     COALESCE(COUNT(DISTINCT ak.id), 0) AS actors_appeared_in_other_movies,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actors_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors_names
 FROM 
     MoviesWithCompanies mwc
 LEFT JOIN 

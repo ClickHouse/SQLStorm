@@ -35,8 +35,8 @@ Directors AS (
 MovieInfo AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT d.director_name, ', ') AS directors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d.director_name))), ', ') AS directors
     FROM 
         TopMovies m
     LEFT JOIN 

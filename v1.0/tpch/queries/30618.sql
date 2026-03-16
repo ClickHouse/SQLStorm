@@ -36,7 +36,7 @@ SELECT
     MAX(l.l_shipdate) AS last_ship_date,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     ss.total_cost AS supplier_cost
 FROM part p
 LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey

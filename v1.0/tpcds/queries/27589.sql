@@ -48,4 +48,4 @@ WHERE
     ec.city IS NOT NULL AND ec.state IS NOT NULL
 ORDER BY 
     sd.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

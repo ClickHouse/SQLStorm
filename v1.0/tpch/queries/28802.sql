@@ -22,7 +22,7 @@ WITH RankedSuppliers AS (
 )
 SELECT 
     part_name, 
-    STRING_AGG(CONCAT(s_name, ' (', nation_name, ') - Available Qty: ', CAST(ps_availqty AS VARCHAR), ' - Cost: $', CAST(ps_supplycost AS DECIMAL(12,2))), '; ') AS Best_Suppliers
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(s_name, ' (', nation_name, ') - Available Qty: ', CAST(ps_availqty AS VARCHAR), ' - Cost: $', CAST(ps_supplycost AS DECIMAL(12,2))))), '; ') AS Best_Suppliers
 FROM 
     RankedSuppliers
 WHERE 

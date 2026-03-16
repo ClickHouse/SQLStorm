@@ -29,7 +29,7 @@ PostStatistics AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS TotalUpVotes,  
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS TotalDownVotes, 
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 WHEN v.VoteTypeId = 3 THEN -1 ELSE 0 END), 0) AS NetVotes,
-        STRING_AGG(t.TagName, ', ') AS TagsAggregated
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsAggregated
     FROM 
         RankedPosts rp
     JOIN 
@@ -37,7 +37,7 @@ PostStatistics AS (
     LEFT JOIN 
         Votes v ON rp.PostId = v.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(rp.Tags, ',')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString(',', rp.Tags)) AS t(TagName) ON TRUE
     WHERE 
         rp.rn = 1  
     GROUP BY 

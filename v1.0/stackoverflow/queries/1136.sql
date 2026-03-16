@@ -36,7 +36,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(CASE WHEN c.UserId IS NOT NULL THEN 1 END) AS CommentCount,
-        STRING_AGG(c.Text, ' | ') AS CommentTexts
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS CommentTexts
     FROM 
         Comments c
     GROUP BY 
@@ -60,4 +60,4 @@ WHERE
 ORDER BY 
     tp.Score DESC,
     tp.CreationDate DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

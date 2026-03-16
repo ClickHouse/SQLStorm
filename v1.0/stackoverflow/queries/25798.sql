@@ -2,7 +2,7 @@
 WITH TagSplit AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -23,7 +23,7 @@ UserEngagement AS (
         COUNT(DISTINCT p.Id) AS QuestionCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpvotesReceived,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownvotesReceived,
-        AVG(EXTRACT(EPOCH FROM (v.CreationDate - u.CreationDate))/86400) AS AvgPostAge 
+        AVG(toUnixTimestamp((v.CreationDate - u.CreationDate))/86400) AS AvgPostAge 
     FROM 
         Users u
     LEFT JOIN 

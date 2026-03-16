@@ -50,4 +50,4 @@ WHERE
     cs.total_spent > 1000
 ORDER BY 
     ts.total_net_profit DESC, cs.total_orders DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

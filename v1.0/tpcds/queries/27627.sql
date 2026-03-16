@@ -3,7 +3,7 @@ SELECT
     ca.ca_city,
     COUNT(DISTINCT c.c_customer_id) AS customer_count,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT cd_education_status, ', ') AS unique_education_statuses,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS unique_education_statuses,
     SUM(CASE WHEN cd_gender = 'F' THEN 1 ELSE 0 END) AS female_customers,
     SUM(CASE WHEN cd_gender = 'M' THEN 1 ELSE 0 END) AS male_customers
 FROM 

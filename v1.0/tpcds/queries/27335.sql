@@ -7,7 +7,7 @@ WITH address_data AS (
         MAX(ca_zip) AS max_zip,
         MIN(ca_zip) AS min_zip,
         AVG(ca_gmt_offset) AS avg_gmt_offset,
-        STRING_AGG(DISTINCT ca_street_name, '; ') AS street_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), '; ') AS street_names
     FROM
         customer_address
     GROUP BY
@@ -19,7 +19,7 @@ demo_data AS (
         cd_gender,
         COUNT(*) AS total_demographics,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_statuses
     FROM
         customer_demographics
     GROUP BY

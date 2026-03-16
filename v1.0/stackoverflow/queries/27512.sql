@@ -44,7 +44,7 @@ StringProcessing AS (
         r.CommentCount,
         r.UpVoteCount,
         r.DownVoteCount,
-        ARRAY_LENGTH(string_to_array(r.Tags, ','), 1) AS TagCount,
+        length(splitByString(',', r.Tags), 1) AS TagCount,
         COALESCE(TOP.TopTag, 'No Tag') AS PopularTag
     FROM 
         RankedPosts r

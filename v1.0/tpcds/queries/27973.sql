@@ -3,7 +3,7 @@ SELECT
     ca.ca_city, 
     COUNT(DISTINCT c.c_customer_id) AS customer_count,
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT CONCAT(cd.cd_gender, ' - ', cd.cd_demo_sk), ', ') AS gender_distribution,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cd.cd_gender, ' - ', cd.cd_demo_sk)))), ', ') AS gender_distribution,
     SUM(CASE WHEN cd.cd_marital_status = 'M' THEN 1 ELSE 0 END) AS married_count,
     SUM(CASE WHEN cd.cd_marital_status = 'S' THEN 1 ELSE 0 END) AS single_count,
     COUNT(DISTINCT CASE WHEN ca.ca_state = 'CA' THEN c.c_customer_id END) AS customers_in_CA

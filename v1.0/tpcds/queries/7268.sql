@@ -57,7 +57,7 @@ SELECT
 FROM 
     SalesSummary s
 JOIN 
-    WarehouseStats ws ON s.Year = EXTRACT(YEAR FROM DATE '2002-10-01')
+    WarehouseStats ws ON s.Year = toYear(toDate('2002-10-01'))
 LEFT JOIN 
     Promotions ps ON ps.Promo_Orders > 0
 GROUP BY 

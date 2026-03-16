@@ -7,18 +7,18 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS Rank,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p 
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
-                UNNEST(string_to_array(p.Tags, '><')) AS TagName
+                arrayJoin(splitByString('><', p.Tags)) AS TagName
         ) AS t ON TRUE
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, pt.Name
 ),
@@ -69,15 +69,15 @@ SELECT
         WHEN ps.ScorePerView > 2 THEN 'Moderately Engaged'
         ELSE 'Low Engagement' 
     END AS EngagementLevel,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     PostStatistics ps
 JOIN 
     Posts p ON ps.PostId = p.Id
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            UNNEST(string_to_array(p.Tags, '><')) AS TagName
+            arrayJoin(splitByString('><', p.Tags)) AS TagName
     ) AS t ON TRUE
 WHERE 
     ps.ScorePerView IS NOT NULL

@@ -43,6 +43,6 @@ SELECT
 FROM TopPosts tp
 JOIN PostHistory ph ON ph.PostId = tp.PostId
 JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
-WHERE ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 GROUP BY tp.PostId, tp.Title, tp.CreationDate, tp.OwnerDisplayName, tp.CommentCount, tp.UpVotes, tp.DownVotes, pht.Name
 ORDER BY tp.UpVotes DESC;

@@ -11,7 +11,7 @@ SELECT
     cd.cd_credit_rating,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_spent,
-    STRING_AGG(DISTINCT CONCAT(i.i_item_desc, ': $', i.i_current_price), '; ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(i.i_item_desc, ': $', i.i_current_price)))), '; ') AS purchased_items
 FROM 
     customer c
 JOIN 

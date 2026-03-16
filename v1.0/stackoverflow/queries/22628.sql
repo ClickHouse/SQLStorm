@@ -6,17 +6,17 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankByScore,
-        STRING_AGG(t.TagName, ', ') AS TagsAggregate,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsAggregate,
         COALESCE(CAST(SUBSTRING(p.Body FROM '<p>(.*?)</p>') AS TEXT), 'No Body') AS ExtractedBody
     FROM 
         Posts p
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '> <')) AS tag_ids 
+        arrayJoin(splitByString('> <', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_ids 
         ON TRUE
     LEFT JOIN 
         Tags t ON t.Id = CAST(tag_ids AS INT)
     WHERE 
-        p.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         p.Id
 ), 
@@ -33,7 +33,7 @@ UserPostStats AS (
     LEFT JOIN 
         Posts p ON p.OwnerUserId = u.Id 
     WHERE 
-        u.Reputation > 1000 AND u.CreationDate < cast('2024-10-01' as date) - INTERVAL '1 year'
+        u.Reputation > 1000 AND u.CreationDate < cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id
 ),
@@ -41,7 +41,7 @@ ClosePostStats AS (
     SELECT 
         ph.UserId,
         COUNT(DISTINCT ph.PostId) AS ClosedPostsCount,
-        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasonNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasonNames
     FROM 
         PostHistory ph
     JOIN 

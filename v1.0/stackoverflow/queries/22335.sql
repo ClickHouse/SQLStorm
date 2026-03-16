@@ -17,7 +17,7 @@ PostHistoryStats AS (
         PH.PostId,
         COUNT(PH.Id) AS EditCount,
         MAX(PH.CreationDate) AS LastEditDate,
-        STRING_AGG(PHT.Name, '; ') AS HistoryTypeNames
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), '; ') AS HistoryTypeNames
     FROM PostHistory PH
     JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     WHERE PH.PostHistoryTypeId IN (4, 5, 6, 10, 12) 

@@ -12,7 +12,7 @@ WITH ranked_titles AS (
 actor_names AS (
     SELECT 
         ak.person_id,
-        STRING_AGG(ak.name, ', ') AS full_name
+        arrayStringConcat(groupArray(assumeNotNull(ak.name)), ', ') AS full_name
     FROM 
         aka_name ak
     GROUP BY 

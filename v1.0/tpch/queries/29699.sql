@@ -5,7 +5,7 @@ WITH RankedSuppliers AS (
         s.s_address,
         n.n_name AS nation_name,
         ROW_NUMBER() OVER (PARTITION BY n.n_name ORDER BY SUM(ps.ps_supplycost) DESC) AS supplier_rank,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
     FROM 
         supplier s
     JOIN 
@@ -31,8 +31,8 @@ TopSuppliers AS (
 SELECT 
     nation_name,
     COUNT(*) AS supplier_count,
-    STRING_AGG(s_name || ' (' || s_address || ')', '; ') AS supplier_details,
-    STRING_AGG(part_names, '; ') AS supplied_parts
+    arrayStringConcat(groupArray(assumeNotNull(s_name || ' (' || s_address || ')')), '; ') AS supplier_details,
+    arrayStringConcat(groupArray(assumeNotNull(part_names)), '; ') AS supplied_parts
 FROM 
     TopSuppliers
 GROUP BY 

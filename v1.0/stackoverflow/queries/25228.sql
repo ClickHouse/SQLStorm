@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Votes v ON p.Id = v.PostId
     WHERE
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY
         p.Id, p.Title, p.CreationDate, p.Body, p.Tags
 ),
@@ -43,7 +43,7 @@ SELECT
     fp.UpVoteCount,
     fp.DownVoteCount,
     (fp.UpVoteCount - fp.DownVoteCount) AS NetVoteScore,
-    ARRAY_LENGTH(string_to_array(fp.Tags, '><'), 1) AS TagCount,
+    length(splitByString('><', fp.Tags), 1) AS TagCount,
     CASE
         WHEN fp.UpVoteCount > fp.DownVoteCount THEN 'Positive'
         WHEN fp.UpVoteCount < fp.DownVoteCount THEN 'Negative'

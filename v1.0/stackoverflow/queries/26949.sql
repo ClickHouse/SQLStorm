@@ -7,13 +7,13 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(p.ViewCount) AS TotalViews,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsUsed
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsUsed
     FROM 
         Users u
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN 
-        LATERAL unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS t(TagName) ON TRUE
     GROUP BY 
         u.Id, u.DisplayName
 ),

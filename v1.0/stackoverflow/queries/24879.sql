@@ -26,7 +26,7 @@ RecentPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ),
 TopPosts AS (
@@ -74,7 +74,7 @@ SELECT
     ps.DisplayName,
     ps.Sentiment,
     ps.PostStatus,
-    COALESCE((SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
         FROM Tags t 
         WHERE t.WikiPostId = ps.PostId), 'No Tags') AS Tags,
     (SELECT COUNT(*) FROM Posts p2 WHERE p2.AcceptedAnswerId = ps.PostId) AS AnsweredCount

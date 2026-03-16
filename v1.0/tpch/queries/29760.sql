@@ -5,7 +5,7 @@ SELECT
     COUNT(o.o_orderkey) AS order_count,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(s.s_acctbal) AS average_supplier_balance,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     part p
 JOIN 

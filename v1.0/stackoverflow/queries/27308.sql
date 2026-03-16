@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.AnswerCount,
         p.CommentCount,
-        STRING_AGG(t.TagName, ', ') AS Tags,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
         u.DisplayName AS OwnerName
     FROM 
         Posts p
@@ -27,8 +27,8 @@ PostActivity AS (
         ph.PostId,
         COUNT(*) AS EditCount,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT CASE WHEN ph.PostHistoryTypeId IN (4, 5) THEN ph.Text END, '; ') AS LastEdits,
-        STRING_AGG(DISTINCT CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN ph.Comment END, '; ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId IN (4, 5) THEN ph.Text END))), '; ') AS LastEdits,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN ph.Comment END))), '; ') AS CloseReasons
     FROM 
         PostHistory ph
     GROUP BY 

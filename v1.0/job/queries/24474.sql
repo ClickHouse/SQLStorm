@@ -38,7 +38,7 @@ SELECT
     t.production_year,
     t.total_movies,
     COALESCE(t.active_actors, 0) AS active_actors,
-    (SELECT STRING_AGG(a.actor_name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(a.actor_name)), ', ') 
      FROM RecursiveActorMovies a 
      WHERE a.production_year = t.production_year) AS actor_names,
     CASE 

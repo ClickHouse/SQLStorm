@@ -15,7 +15,7 @@ PostStatistics AS (
         COUNT(DISTINCT CASE WHEN PH.PostHistoryTypeId IN (10, 11) THEN P.Id END) AS ClosedPosts
     FROM Posts P
     LEFT JOIN PostHistory PH ON P.Id = PH.PostId
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY P.OwnerUserId
 ),
 UserPostStats AS (

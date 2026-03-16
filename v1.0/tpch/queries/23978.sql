@@ -31,7 +31,7 @@ SELECT tc.c_name,
        ps.total_available,
        CASE
            WHEN total_spent IS NULL THEN 'No Orders'
-           ELSE total_spent::TEXT
+           ELSE CAST(total_spent AS TEXT)
        END AS total_spent,
        COALESCE(tc.rank, 10) AS customer_rank
 FROM TopCustomers tc
@@ -39,4 +39,4 @@ FULL OUTER JOIN PartSupplierData ps ON tc.c_custkey = ps.p_partkey
 WHERE (tc.total_spent > 1000 OR ps.ps_supplycost < 20.00)
   AND (tc.rank IS NOT NULL OR ps.total_available IS NULL)
 ORDER BY customer_rank DESC, ps.p_name
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

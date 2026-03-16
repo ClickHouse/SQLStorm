@@ -35,7 +35,7 @@ RecentPosts AS (
     FROM 
         Posts 
     WHERE 
-        LastEditDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        LastEditDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 
 SELECT 
@@ -49,7 +49,7 @@ SELECT
      FROM Comments C 
      WHERE C.PostId = R.Id) AS TotalCommentsOnPost,
     (SELECT 
-        STRING_AGG(DISTINCT T.TagName, ', ') 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
      FROM 
         Posts P 
      JOIN 

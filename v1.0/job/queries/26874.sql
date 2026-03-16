@@ -31,7 +31,7 @@ FilteredMovies AS (
 SELECT 
     f.actor_id,
     f.actor_name,
-    STRING_AGG(f.movie_title || ' (' || f.production_year || ')', ', ') AS movies
+    arrayStringConcat(groupArray(assumeNotNull(f.movie_title || ' (' || f.production_year || ')')), ', ') AS movies
 FROM 
     FilteredMovies f
 GROUP BY 

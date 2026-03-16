@@ -47,9 +47,9 @@ SELECT
 FROM 
     SupplierDetails sd
 LEFT JOIN 
-    PartSuppliers pd ON pd.ps_partkey = (SELECT p.p_partkey FROM part p ORDER BY RANDOM() LIMIT 1)
+    PartSuppliers pd ON pd.ps_partkey = (SELECT p.p_partkey FROM part p ORDER BY rand() LIMIT 1)
 LEFT JOIN 
-    CustomerOrders co ON co.c_name = (SELECT c.c_name FROM customer c ORDER BY RANDOM() LIMIT 1)
+    CustomerOrders co ON co.c_name = (SELECT c.c_name FROM customer c ORDER BY rand() LIMIT 1)
 WHERE 
     sd.comment_length > 100
 ORDER BY 

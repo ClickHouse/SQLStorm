@@ -50,7 +50,7 @@ PostsWithHistory AS (
     SELECT 
         ph.UserId,
         COUNT(ph.Id) AS EditCount,
-        STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypes
     FROM 
         PostHistory ph
     JOIN 

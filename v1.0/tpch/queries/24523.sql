@@ -30,7 +30,7 @@ SupplierRegions AS (
 SELECT p.p_partkey, p.p_name, COALESCE(p.p_size, 0) AS size,
        (SELECT MAX(l.l_extendedprice)
         FROM lineitem l
-        WHERE l.l_partkey = p.p_partkey AND l.l_shipdate BETWEEN DATE '1998-10-01' - INTERVAL '1 year' AND DATE '1998-10-01') AS max_price,
+        WHERE l.l_partkey = p.p_partkey AND l.l_shipdate BETWEEN toDate('1998-10-01') - INTERVAL 1 YEAR AND toDate('1998-10-01')) AS max_price,
        (SELECT SUM(ps.ps_availqty)
         FROM partsupp ps
         WHERE ps.ps_partkey = p.p_partkey

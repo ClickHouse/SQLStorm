@@ -49,7 +49,7 @@ SELECT
     T.TagName,
     T.PostCount,
     T.TotalViews,
-    STRING_AGG(DISTINCT PH.Comment, '; ') AS HistoryComments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.Comment))), '; ') AS HistoryComments
 FROM TopUsers U
 LEFT JOIN PostHistory PH ON U.UserId = PH.UserId
 LEFT JOIN PopularTags T ON U.CommentCount >= 5

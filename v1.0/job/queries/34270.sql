@@ -37,7 +37,7 @@ CastDetails AS (
 MovieInfoCTE AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(mi.info, '; ') AS details
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS details
     FROM 
         movie_info mi
     WHERE 
@@ -50,7 +50,7 @@ MoviesWithDetails AS (
         mh.movie_id,
         mh.title,
         mh.production_year,
-        STRING_AGG(DISTINCT mi.details, ', ') AS movie_details,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.details))), ', ') AS movie_details,
         COUNT(cd.actor_name) AS actor_count
     FROM 
         MovieHierarchy mh

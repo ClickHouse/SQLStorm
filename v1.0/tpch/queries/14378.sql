@@ -15,7 +15,7 @@ JOIN
 JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE
-    r.r_name = 'ASIA' AND l.l_shipdate >= DATE '1996-01-01'
+    r.r_name = 'ASIA' AND l.l_shipdate >= toDate('1996-01-01')
 GROUP BY
     p.p_partkey, p.p_name
 ORDER BY

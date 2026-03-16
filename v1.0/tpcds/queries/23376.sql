@@ -49,4 +49,4 @@ LEFT JOIN TotalSales s ON a.c_customer_sk = s.ws_ship_customer_sk
 WHERE (a.ca_state = 'CA' OR a.ca_state = 'TX')
 AND (r.total_refunds IS NOT NULL OR s.total_sales IS NOT NULL)
 ORDER BY refund_percentage DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

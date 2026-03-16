@@ -22,7 +22,7 @@ RecentPosts AS (
         COALESCE((SELECT COUNT(*) FROM Posts A WHERE A.ParentId = P.Id AND A.PostTypeId = 2), 0) AS AnswerCount
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostHistoryAnalytics AS (
     
@@ -34,7 +34,7 @@ PostHistoryAnalytics AS (
         ROW_NUMBER() OVER (PARTITION BY PH.PostId ORDER BY PH.CreationDate DESC) AS EditRank
     FROM PostHistory PH
     JOIN Posts P ON PH.PostId = P.Id
-    WHERE PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT 
     R.UserId,

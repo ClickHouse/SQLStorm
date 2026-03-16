@@ -65,4 +65,4 @@ GROUP BY
     i.i_item_id, i.i_item_desc, s.total_sales, r.total_returns, r.total_returned_amount, i.i_current_price, s.sales_rank
 ORDER BY 
     web_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

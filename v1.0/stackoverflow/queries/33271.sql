@@ -61,7 +61,7 @@ SELECT
         WHEN ps.Level = 2 THEN 'Sub Post'
         ELSE CONCAT('Nested Level ', ps.Level)
     END AS PostLevelDescription,
-    STRING_AGG(DISTINCT CONCAT(u.DisplayName, ' (', u.Reputation, ')'), ', ') AS ActiveCommenters
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' (', u.Reputation, ')')))), ', ') AS ActiveCommenters
 FROM 
     PostStatistics ps
 LEFT JOIN 

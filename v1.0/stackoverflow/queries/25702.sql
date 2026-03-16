@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY p.Tags ORDER BY p.ViewCount DESC) AS TagRank,
         p.Body,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray
     FROM Posts p
     JOIN Tags t ON p.Tags LIKE '%' || t.TagName || '%'  
     WHERE p.PostTypeId = 1  

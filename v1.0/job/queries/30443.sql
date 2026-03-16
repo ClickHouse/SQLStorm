@@ -44,7 +44,7 @@ FullMovieInfo AS (
         mh.movie_id,
         mh.title,
         mh.production_year,
-        ARRAY_AGG(DISTINCT ar.actor_name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(ar.actor_name))) AS actors,
         COUNT(DISTINCT ar.actor_name) AS actor_count
     FROM 
         MovieHierarchy mh

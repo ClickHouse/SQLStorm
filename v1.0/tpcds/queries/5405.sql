@@ -25,7 +25,7 @@ date_summary AS (
     FROM 
         date_dim d
     JOIN 
-        sales_summary ds ON d.d_date_sk = (SELECT MAX(d2.d_date_sk) FROM date_dim d2 WHERE d2.d_date = DATE '2002-10-01')
+        sales_summary ds ON d.d_date_sk = (SELECT MAX(d2.d_date_sk) FROM date_dim d2 WHERE d2.d_date = toDate('2002-10-01'))
     GROUP BY 
         d.d_year
 ),

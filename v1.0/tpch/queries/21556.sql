@@ -26,7 +26,7 @@ SuppliersWithDetails AS (
 SELECT 
     np.n_name,
     MAX(np.total_orders) AS max_orders,
-    STRING_AGG(DISTINCT pp.p_name, ', ') AS highly_priced_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pp.p_name))), ', ') AS highly_priced_parts,
     COALESCE(MAX(sp.s_name), 'No Supplier') AS top_supplier_name
 FROM (
     SELECT 

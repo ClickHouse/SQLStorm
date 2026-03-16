@@ -32,7 +32,7 @@ StringProcessing AS (
         rp.CreationDate,
         rp.CommentCount,
         rp.VoteCount,
-        STRING_AGG(tag.TagName, ', ') AS AllTags,
+        arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ') AS AllTags,
         CASE 
             WHEN CHAR_LENGTH(rp.Body) > 1000 THEN 'Long Body'
             ELSE 'Short Body'
@@ -44,9 +44,9 @@ StringProcessing AS (
     FROM 
         RankedPosts rp
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
-                unnest(string_to_array(rp.Tags, '<>')) AS TagName
+                arrayJoin(splitByString('<>', rp.Tags)) AS TagName
         ) AS tag ON TRUE
     GROUP BY 
         rp.PostId, rp.Title, rp.Body, rp.OwnerDisplayName, rp.CreationDate, rp.CommentCount, rp.VoteCount

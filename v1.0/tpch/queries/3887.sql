@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01'
+        o.o_orderdate >= toDate('1997-01-01')
 ),
 SupplierDetails AS (
     SELECT 
@@ -67,4 +67,4 @@ WHERE
     r.CustomerCount > 10
 ORDER BY 
     r.CustomerCount DESC, p.Revenue DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

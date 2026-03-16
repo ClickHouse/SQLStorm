@@ -3,7 +3,7 @@ SELECT
     s.s_name, 
     SUM(ps.ps_availqty) AS total_available_quantity, 
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT CONCAT('Order ID: ', o.o_orderkey, ', Customer: ', c.c_name), '; ') AS order_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Order ID: ', o.o_orderkey, ', Customer: ', c.c_name)))), '; ') AS order_details
 FROM 
     part p
 JOIN 

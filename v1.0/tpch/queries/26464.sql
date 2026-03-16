@@ -40,6 +40,6 @@ Combination AS (
     LIMIT 10
 )
 SELECT 
-    STRING_AGG(CONCAT(aggregated_string, ' | ', supplier_info, ' | ', customer_detail, ' | ', part_info), '; ') AS benchmark_result
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(aggregated_string, ' | ', supplier_info, ' | ', customer_detail, ' | ', part_info))), '; ') AS benchmark_result
 FROM 
     Combination;

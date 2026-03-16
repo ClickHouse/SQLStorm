@@ -24,7 +24,7 @@ WITH Benchmarking AS (
 )
 SELECT 
     *,
-    (EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - CreationDate)) / 3600) AS HoursSinceCreation,
+    (toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - CreationDate)) / 3600) AS HoursSinceCreation,
     (SELECT COUNT(*) FROM Posts WHERE AcceptedAnswerId = PostId) AS AcceptedAnswers
 FROM 
     Benchmarking

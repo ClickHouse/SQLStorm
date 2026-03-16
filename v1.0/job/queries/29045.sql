@@ -2,8 +2,8 @@ WITH MovieDetails AS (
     SELECT 
         mt.title AS movie_title,
         mt.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS featured_cast,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS associated_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS featured_cast,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS associated_keywords
     FROM 
         aka_title mt
     JOIN 

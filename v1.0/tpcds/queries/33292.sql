@@ -30,7 +30,7 @@ SELECT
     SUM(ws.ws_net_profit) AS total_net_profit,
     AVG(ws.ws_net_paid_inc_tax) AS avg_net_paid,
     MAX(ws.ws_sales_price) AS max_sales_price,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customer_names
 FROM 
     web_sales ws
 JOIN 

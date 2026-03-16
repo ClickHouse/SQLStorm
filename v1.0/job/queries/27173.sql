@@ -36,7 +36,7 @@ SELECT
     md.movie_title,
     md.movie_kind,
     md.production_year,
-    STRING_AGG(DISTINCT md.actor_name || ' (' || md.role_name || ')', ', ') AS actor_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name || ' (' || md.role_name || ')'))), ', ') AS actor_details
 FROM MovieDetails md
 GROUP BY md.movie_title, md.movie_kind, md.production_year
 ORDER BY md.production_year DESC, md.movie_title;

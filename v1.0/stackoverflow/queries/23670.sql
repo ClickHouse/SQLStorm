@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.ViewCount IS NOT NULL
 ),
 UserStatistics AS (
@@ -32,7 +32,7 @@ UserStatistics AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '3 years' 
+        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 YEAR 
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation, u.Location
 ),
@@ -60,7 +60,7 @@ PostChanges AS (
 PostLinksAggregated AS (
     SELECT 
         pl.PostId,
-        ARRAY_AGG(pl.RelatedPostId) AS RelatedPosts
+        groupArray(assumeNotNull(pl.RelatedPostId)) AS RelatedPosts
     FROM 
         PostLinks pl
     GROUP BY 

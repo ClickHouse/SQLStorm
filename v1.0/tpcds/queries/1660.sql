@@ -46,4 +46,4 @@ HAVING
     SUM(CASE WHEN rs.RankSales <= 3 THEN rs.ws_sales_price ELSE 0 END) > 500
 ORDER BY
     TopSalesTotal DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

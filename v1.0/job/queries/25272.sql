@@ -34,7 +34,7 @@ CastRoles AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, ', ') AS additional_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS additional_info
     FROM 
         movie_info mi
     JOIN 

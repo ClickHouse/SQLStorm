@@ -33,7 +33,7 @@ detailed_movies AS (
     SELECT 
         md.movie_title,
         md.production_year,
-        STRING_AGG(mk.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keywords
     FROM 
         movie_details md
     LEFT JOIN 
@@ -50,7 +50,7 @@ SELECT
 FROM 
     detailed_movies dm
 JOIN 
-    aka_name ak ON ak.name IN (SELECT unnest(string_to_array(dm.keywords, ', ')))
+    aka_name ak ON ak.name IN (SELECT arrayJoin(splitByString(', ', dm.keywords)))
 GROUP BY 
     dm.movie_title, dm.production_year, dm.keywords
 ORDER BY 

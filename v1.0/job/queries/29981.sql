@@ -33,8 +33,8 @@ KeywordCount AS (
 ComposedTitles AS (
     SELECT
         rm.movie_id,
-        STRING_AGG(DISTINCT rm.title, ' | ') AS all_titles,
-        STRING_AGG(DISTINCT rm.actor_name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.title))), ' | ') AS all_titles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.actor_name))), ', ') AS actor_names,
         kc.keyword_count
     FROM
         RankedMovies rm

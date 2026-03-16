@@ -52,4 +52,4 @@ WHERE
     AND ss.avg_price > (SELECT AVG(avg_price) FROM SalesStatistics)
 ORDER BY 
     ss.total_profit DESC NULLS LAST
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

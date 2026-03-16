@@ -74,7 +74,7 @@ SELECT
     sm.production_year,
     COALESCE(SUM(sm.role_count), 0) AS total_roles,
     COUNT(DISTINCT sm.actor_name) AS unique_actors,
-    STRING_AGG(DISTINCT sm.actor_name, ', ') AS actor_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sm.actor_name))), ', ') AS actor_names
 FROM 
     SelectedMovies sm
 GROUP BY 

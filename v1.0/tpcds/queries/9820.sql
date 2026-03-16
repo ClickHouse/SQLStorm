@@ -11,8 +11,8 @@ WITH CustomerSales AS (
         store_sales ss ON c.c_customer_sk = ss.ss_customer_sk
     WHERE 
         ss.ss_sold_date_sk BETWEEN 
-        (SELECT d_date_sk FROM date_dim WHERE d_date = DATE '2023-01-01') AND 
-        (SELECT d_date_sk FROM date_dim WHERE d_date = DATE '2023-12-31')
+        (SELECT d_date_sk FROM date_dim WHERE d_date = toDate('2023-01-01')) AND 
+        (SELECT d_date_sk FROM date_dim WHERE d_date = toDate('2023-12-31'))
     GROUP BY 
         c.c_customer_id
 ),

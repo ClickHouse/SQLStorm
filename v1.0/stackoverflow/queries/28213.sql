@@ -8,16 +8,16 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        ROW_NUMBER() OVER (PARTITION BY STRING_AGG(tag.TagName, ', ') ORDER BY p.Score DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ') ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     CROSS JOIN 
-        LATERAL unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag(TagName)
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag(TagName)
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days') 
+        AND p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) 
     GROUP BY 
         p.Id, p.Title, u.DisplayName, p.CreationDate, p.ViewCount, p.Score
 ),
@@ -52,4 +52,4 @@ JOIN
         RankedPosts) stats ON TRUE
 ORDER BY 
     tp.OverallRank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -56,7 +56,7 @@ LEFT JOIN
         SELECT DISTINCT o.o_custkey 
         FROM orders o 
         JOIN lineitem l ON o.o_orderkey = l.l_orderkey 
-        WHERE l.l_shipdate > DATE '1997-01-01'
+        WHERE l.l_shipdate > toDate('1997-01-01')
     )
 WHERE 
     co.total_spent > (SELECT AVG(total_spent) FROM CustomerOrderSummary)

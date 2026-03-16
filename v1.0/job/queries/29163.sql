@@ -11,7 +11,7 @@ WITH RankedMovies AS (
 MovieCast AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT an.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS cast_names,
         COUNT(DISTINCT ci.person_id) AS total_cast
     FROM complete_cast mc
     JOIN cast_info ci ON mc.movie_id = ci.movie_id
@@ -21,7 +21,7 @@ MovieCast AS (
 MovieInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT it.info, '; ') AS movie_infos
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(it.info))), '; ') AS movie_infos
     FROM movie_info mi
     JOIN info_type it ON mi.info_type_id = it.id
     GROUP BY mi.movie_id

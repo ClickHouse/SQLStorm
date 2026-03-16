@@ -53,4 +53,4 @@ WHERE
     AND (s.net_sales IS NOT NULL OR s.total_returns > 0)
 ORDER BY 
     s.net_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

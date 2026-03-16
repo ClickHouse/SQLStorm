@@ -28,7 +28,7 @@ CompanyStats AS (
     SELECT 
         at.title,
         COUNT(DISTINCT mc.company_id) AS company_count,
-        STRING_AGG(cn.name, ', ' ORDER BY cn.name) AS company_names
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ' ORDER BY cn.name) AS company_names
     FROM 
         aka_title at
     LEFT JOIN 
@@ -44,7 +44,7 @@ SELECT
     rm.not_null_note_ratio,
     cb.company_count,
     cb.company_names,
-    STRING_AGG(abm.actor_name, ', ' ORDER BY abm.actor_rank) AS actor_names
+    arrayStringConcat(groupArray(assumeNotNull(abm.actor_name)), ', ' ORDER BY abm.actor_rank) AS actor_names
 FROM 
     RankedMovies rm
 JOIN 

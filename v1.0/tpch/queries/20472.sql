@@ -81,4 +81,4 @@ WHERE
 ORDER BY 
     co.total_spent DESC,
     supplier_name
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

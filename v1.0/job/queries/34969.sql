@@ -4,13 +4,13 @@ WITH RECURSIVE movie_hierarchy AS (
         m.title,
         m.production_year,
         COALESCE(NULLIF((
-            SELECT STRING_AGG(c.name, ', ')
+            SELECT arrayStringConcat(groupArray(assumeNotNull(c.name)), ', ')
             FROM complete_cast cc
             JOIN aka_name c ON cc.subject_id = c.person_id
             WHERE cc.movie_id = m.id
         ), ''), 'Unknown') AS cast_names,
         COALESCE(NULLIF((
-            SELECT STRING_AGG(CONCAT('[', ct.kind, '] ', co.name), ', ')
+            SELECT arrayStringConcat(groupArray(assumeNotNull(CONCAT('[', ct.kind, '] ', co.name))), ', ')
             FROM movie_companies mc
             JOIN company_name co ON mc.company_id = co.id
             JOIN company_type ct ON mc.company_type_id = ct.id
@@ -26,13 +26,13 @@ WITH RECURSIVE movie_hierarchy AS (
         mt.title,
         mt.production_year,
         COALESCE(NULLIF((
-            SELECT STRING_AGG(c.name, ', ')
+            SELECT arrayStringConcat(groupArray(assumeNotNull(c.name)), ', ')
             FROM complete_cast cc
             JOIN aka_name c ON cc.subject_id = c.person_id
             WHERE cc.movie_id = ml.linked_movie_id
         ), ''), 'Unknown') AS cast_names,
         COALESCE(NULLIF((
-            SELECT STRING_AGG(CONCAT('[', ct.kind, '] ', co.name), ', ')
+            SELECT arrayStringConcat(groupArray(assumeNotNull(CONCAT('[', ct.kind, '] ', co.name))), ', ')
             FROM movie_companies mc
             JOIN company_name co ON mc.company_id = co.id
             JOIN company_type ct ON mc.company_type_id = ct.id

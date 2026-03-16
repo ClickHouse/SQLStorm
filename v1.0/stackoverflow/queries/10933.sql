@@ -7,7 +7,7 @@ SELECT
     COUNT(c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
 FROM 
     Posts p
 JOIN 
@@ -17,12 +17,12 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(p.Tags, '<>')) AS TagName
+            arrayJoin(splitByString('<>', p.Tags)) AS TagName
     ) t ON true
 WHERE 
-    p.CreationDate >= DATE '2023-01-01' 
+    p.CreationDate >= toDate('2023-01-01') 
 GROUP BY 
     p.Id, p.Title, p.CreationDate, u.DisplayName
 ORDER BY 

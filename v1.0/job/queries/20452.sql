@@ -37,7 +37,7 @@ company_details AS (
 movie_info_summary AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS all_info,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS all_info,
         COUNT(DISTINCT mk.keyword_id) AS total_keywords
     FROM 
         movie_info m

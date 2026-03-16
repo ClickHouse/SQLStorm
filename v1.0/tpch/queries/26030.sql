@@ -9,7 +9,7 @@ SELECT
         WHEN LENGTH(s.s_name) > 20 THEN LENGTH(s.s_name) 
         ELSE NULL 
     END) AS avg_long_supplier_name_length,
-    STRING_AGG(DISTINCT SUBSTRING(p.p_name, 1, 10), ', ') AS sample_product_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(p.p_name, 1, 10)))), ', ') AS sample_product_names
 FROM 
     nation n
 JOIN 

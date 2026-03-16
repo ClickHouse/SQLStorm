@@ -17,7 +17,7 @@ UserBadges AS (
     SELECT
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM
         Users u
     LEFT JOIN
@@ -78,4 +78,4 @@ WHERE
     rp.rank <= 5
 ORDER BY
     rp.ViewCount DESC, rp.Score DESC
-FETCH FIRST 1000 ROWS ONLY;
+LIMIT 1000;

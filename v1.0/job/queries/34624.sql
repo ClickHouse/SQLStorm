@@ -30,7 +30,7 @@ SELECT
     COUNT(DISTINCT ci.person_id) AS total_cast,
     COUNT(DISTINCT kc.keyword) AS total_keywords,
     MAX(ci.nr_order) AS max_cast_order,
-    STRING_AGG(DISTINCT CONCAT(a.name, ' as ', rt.role), ', ') AS cast_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' as ', rt.role)))), ', ') AS cast_details
 FROM 
     MovieHierarchy mh
 JOIN 

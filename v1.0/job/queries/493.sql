@@ -19,7 +19,7 @@ PersonRoleCounts AS (
     SELECT 
         ci.person_id,
         COUNT(ci.id) AS role_count,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles_played
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles_played
     FROM 
         cast_info ci
     JOIN 

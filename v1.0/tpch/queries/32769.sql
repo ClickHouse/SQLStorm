@@ -1,7 +1,7 @@
 WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, o.o_orderstatus, 1 AS order_level
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
     
     UNION ALL
     
@@ -15,7 +15,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END) AS return_revenue,
     AVG(o.o_totalprice) AS average_order_value,
     MAX(l.l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_mfgr, ')'), '; ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_mfgr, ')')))), '; ') AS part_names,
     ROW_NUMBER() OVER (PARTITION BY n.n_name ORDER BY SUM(l.l_extendedprice) DESC) AS nation_rank
 FROM 
     customer c

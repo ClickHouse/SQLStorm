@@ -24,7 +24,7 @@ top_movies AS (
 related_keywords AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     JOIN aka_title m ON mk.movie_id = m.id
@@ -41,12 +41,11 @@ SELECT
         ELSE 'Small Cast'
     END AS cast_size_category,
     CASE 
-        WHEN EXTRACT(YEAR FROM cast('2024-10-01' as date)) - tm.production_year <= 3 THEN 'Recent Release'
+        WHEN toYear(cast('2024-10-01' as date)) - tm.production_year <= 3 THEN 'Recent Release'
         ELSE 'Classic'
     END AS age_category
 FROM top_movies tm
 LEFT JOIN related_keywords rk ON tm.movie_id = rk.movie_id
 WHERE tm.rn <= 5
 ORDER BY tm.production_year DESC, tm.cast_count DESC
-OFFSET 5 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Votes v 
         ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
+        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
 )
 , BadgedUsers AS (
     SELECT 
@@ -28,7 +28,7 @@ WITH RankedPosts AS (
         Badges b 
         ON u.Id = b.UserId
     WHERE 
-        b.Date >= (cast('2024-10-01' as date) - INTERVAL '2 years') 
+        b.Date >= (cast('2024-10-01' as date) - INTERVAL 2 YEAR) 
     GROUP BY 
         u.Id
 )
@@ -45,7 +45,7 @@ WITH RankedPosts AS (
         Posts p 
         ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '30 days')
+        ph.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 30 DAY)
     GROUP BY 
         ph.PostId, ph.CreationDate, p.OwnerUserId, ph.PostHistoryTypeId
 )
@@ -73,7 +73,7 @@ SELECT
          Comments c 
      WHERE 
          c.PostId = rp.PostId 
-         AND c.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 month')) AS RecentCommentCount
+         AND c.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 MONTH)) AS RecentCommentCount
 FROM 
     RankedPosts rp
 LEFT JOIN 

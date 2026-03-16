@@ -28,7 +28,7 @@ top_movies AS (
 movies_with_keywords AS (
     SELECT 
         t.id AS movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

@@ -15,7 +15,7 @@ WITH RankedMovies AS (
 KeyMovieInfo AS (
     SELECT 
         mw.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords,
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
         MAX(CASE WHEN i.info_type_id = 1 THEN i.info END) AS summary
     FROM 
         movie_keyword mw

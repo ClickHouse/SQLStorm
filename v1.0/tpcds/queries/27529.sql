@@ -20,7 +20,7 @@ AddressStats AS (
     SELECT 
         ca.ca_state,
         COUNT(*) AS total_addresses,
-        STRING_AGG(c.full_name, ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(c.full_name)), ', ') AS customer_names
     FROM 
         CustomerInfo c
     JOIN 

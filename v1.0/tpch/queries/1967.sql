@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
+        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
 ),
 SupplierDetails AS (
     SELECT 
@@ -67,6 +67,6 @@ GROUP BY
     p.p_name, s.s_name, c.c_name, rd.total_spent, rd.order_count
 HAVING 
     SUM(l.l_quantity) > 50 
-    AND MAX(l.l_shipdate) > DATE '1998-10-01' - INTERVAL '30 days'
+    AND MAX(l.l_shipdate) > toDate('1998-10-01') - INTERVAL 30 DAY
 ORDER BY 
     total_orders DESC, net_revenue DESC;

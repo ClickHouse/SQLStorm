@@ -4,7 +4,7 @@ WITH RankedOrders AS (
         o.o_orderkey,
         o.o_orderdate,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
+        RANK() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
     FROM 
         orders o
     JOIN 
@@ -51,7 +51,7 @@ SELECT
 FROM 
     RankedOrders ro
 JOIN 
-    SupplierTotalCost stc ON stc.ps_suppkey = (SELECT ps_suppkey FROM partsupp ORDER BY RANDOM() LIMIT 1)
+    SupplierTotalCost stc ON stc.ps_suppkey = (SELECT ps_suppkey FROM partsupp ORDER BY rand() LIMIT 1)
 JOIN 
     CustomerOrders co ON co.order_count > 5
 WHERE 

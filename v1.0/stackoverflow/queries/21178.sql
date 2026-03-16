@@ -4,7 +4,7 @@ WITH RankedUsers AS (
         U.Id AS UserId,
         U.DisplayName,
         U.Reputation,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM U.CreationDate) ORDER BY U.Reputation DESC) AS UserRank
+        ROW_NUMBER() OVER (PARTITION BY toYear(U.CreationDate) ORDER BY U.Reputation DESC) AS UserRank
     FROM 
         Users U
     WHERE 
@@ -30,7 +30,7 @@ RecentPosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         P.Id, P.OwnerUserId, P.Title, P.CreationDate, P.PostTypeId
 ),

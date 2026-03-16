@@ -72,7 +72,7 @@ FROM
 LEFT JOIN 
     SalesSummary ss ON ci.c_customer_sk = ss.ws_bill_customer_sk
 JOIN 
-    DateInfo di ON di.d_year = EXTRACT(YEAR FROM CURRENT_DATE)
+    DateInfo di ON di.d_year = toYear(CURRENT_DATE)
 ORDER BY 
     ss.total_sales DESC
 LIMIT 100;

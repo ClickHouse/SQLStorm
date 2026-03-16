@@ -28,7 +28,7 @@ SELECT
         WHEN tc.sales_rank <= 10 THEN 'Top Customer'
         ELSE 'Regular Customer'
     END AS customer_type,
-    STRING_AGG(DISTINCT CONCAT(i.i_product_name, ' (', ws.ws_quantity, ')'), '; ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(i.i_product_name, ' (', ws.ws_quantity, ')')))), '; ') AS purchased_items
 FROM
     TopCustomers tc
 LEFT JOIN customer c ON c.c_customer_id = tc.customer_id

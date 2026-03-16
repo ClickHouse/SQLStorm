@@ -3,7 +3,7 @@ SELECT
     CONCAT_WS(', ', r.r_name, n.n_name) AS location_info,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT p.p_name, '; ') AS product_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), '; ') AS product_list,
     l.l_shipmode AS shipping_method
 FROM 
     customer c

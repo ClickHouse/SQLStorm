@@ -39,17 +39,17 @@ FROM
 INNER JOIN 
     nations_with_suppliers np ON r.r_regionkey = (SELECT n.n_regionkey FROM nation n WHERE n.n_name = np.n_name LIMIT 1)
 LEFT JOIN 
-    lineitem l ON l.l_orderkey IN (SELECT o.o_orderkey FROM orders o WHERE o.o_orderstatus = 'O' AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31')
+    lineitem l ON l.l_orderkey IN (SELECT o.o_orderkey FROM orders o WHERE o.o_orderstatus = 'O' AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31'))
 LEFT JOIN 
     partsupp ps ON l.l_partkey = ps.ps_partkey
 LEFT JOIN 
     ranked_parts rp ON ps.ps_suppkey IN (SELECT s.s_suppkey FROM supplier s WHERE s.s_nationkey = (SELECT n.n_nationkey FROM nation n WHERE n.n_name = np.n_name))
 WHERE 
     l.l_returnflag = 'N' AND 
-    l.l_shipdate >= DATE '1998-10-01' - INTERVAL '1 year'
+    l.l_shipdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
 GROUP BY 
     r.r_name, np.n_name, np.supplier_count, rp.p_name, rp.p_retailprice
 HAVING 
-    SUM(l.l_extendedprice * (1 - l.l_discount)) > (SELECT AVG(l2.l_extendedprice) FROM lineitem l2 WHERE l2.l_shipdate < DATE '1998-10-01')
+    SUM(l.l_extendedprice * (1 - l.l_discount)) > (SELECT AVG(l2.l_extendedprice) FROM lineitem l2 WHERE l2.l_shipdate < toDate('1998-10-01'))
 ORDER BY 
     total_revenue DESC, r.r_name, np.n_name;

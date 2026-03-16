@@ -13,14 +13,14 @@ WITH RankedPosts AS (
         Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 PostHistoryRanked AS (
     SELECT 
         ph.PostId,
         ph.PostHistoryTypeId,
         COUNT(*) AS ChangeCount,
-        STRING_AGG(ph.Comment, '; ') AS CommentsHistory
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS CommentsHistory
     FROM 
         PostHistory ph
     WHERE 

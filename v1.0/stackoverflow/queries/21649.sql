@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostDetails AS (
     SELECT 
@@ -36,12 +36,12 @@ PostHistoryDetails AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         ph.CreationDate,
-        STRING_AGG(ph.Comment, ', ') AS Comments,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS Comments,
         COUNT(*) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11, 12)) AS ChangeCount
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
     GROUP BY ph.PostId, ph.PostHistoryTypeId, ph.CreationDate
 ),
 FinalResults AS (

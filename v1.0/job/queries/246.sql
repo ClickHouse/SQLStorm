@@ -4,7 +4,7 @@ WITH movie_details AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
         AVG(CASE WHEN c.nr_order IS NOT NULL THEN 1 ELSE 0 END) AS avg_actor_order,
         COUNT(DISTINCT k.keyword) AS keyword_count
     FROM 
@@ -34,7 +34,7 @@ highest_actor_counts AS (
 movie_company_info AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         MAX(ct.kind) AS type_of_company
     FROM 
         movie_companies AS mc

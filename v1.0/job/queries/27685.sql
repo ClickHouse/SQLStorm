@@ -1,7 +1,7 @@
 WITH movie_info_aggregated AS (
     SELECT
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS aggregated_info,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS aggregated_info,
         COUNT(DISTINCT mi.info_type_id) AS info_type_count
     FROM
         movie_info mi
@@ -12,7 +12,7 @@ cast_info_aggregated AS (
     SELECT
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT cm.kind, ', ') AS cast_roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cm.kind))), ', ') AS cast_roles
     FROM
         cast_info ci
     JOIN
@@ -52,7 +52,7 @@ final_benchmark AS (
         ca.cast_roles,
         ma.aggregated_info,
         ma.info_type_count,
-        STRING_AGG(DISTINCT ti.keywords, ', ') AS all_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ti.keywords))), ', ') AS all_keywords
     FROM
         title_info ti
     LEFT JOIN

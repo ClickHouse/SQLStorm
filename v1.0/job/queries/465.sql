@@ -14,7 +14,7 @@ MovieCast AS (
     SELECT
         mc.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names
     FROM
         complete_cast mc
     JOIN
@@ -42,7 +42,7 @@ SELECT
     f.title,
     f.production_year,
     f.total_cast,
-    STRING_AGG(DISTINCT mt.linked_movie_id::TEXT, ', ') AS linked_movies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(mt.linked_movie_id AS TEXT)))), ', ') AS linked_movies
 FROM
     FilteredMovies f
 LEFT JOIN

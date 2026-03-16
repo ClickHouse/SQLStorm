@@ -31,10 +31,10 @@ aggregated_data AS (
         title_id,
         title,
         production_year,
-        ARRAY_AGG(DISTINCT actor_name) AS actors,
-        ARRAY_AGG(DISTINCT cast_type) AS roles,
-        ARRAY_AGG(DISTINCT person_info) AS additional_info,
-        ARRAY_AGG(DISTINCT keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(actor_name))) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(cast_type))) AS roles,
+        arrayDistinct(groupArray(assumeNotNull(person_info))) AS additional_info,
+        arrayDistinct(groupArray(assumeNotNull(keyword))) AS keywords
     FROM 
         movie_details
     GROUP BY 
@@ -43,10 +43,10 @@ aggregated_data AS (
 SELECT 
     ad.title,
     ad.production_year,
-    STRING_AGG(DISTINCT ad.actors::text, ', ') AS actor_names,
-    STRING_AGG(DISTINCT ad.roles::text, ', ') AS cast_roles,
-    STRING_AGG(DISTINCT ad.additional_info::text, ', ') AS person_information,
-    STRING_AGG(DISTINCT ad.keywords::text, ', ') AS movie_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ad.actors AS text)))), ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ad.roles AS text)))), ', ') AS cast_roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ad.additional_info AS text)))), ', ') AS person_information,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ad.keywords AS text)))), ', ') AS movie_keywords
 FROM 
     aggregated_data ad
 GROUP BY 

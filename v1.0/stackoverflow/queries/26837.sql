@@ -43,7 +43,7 @@ SELECT
     u.TotalDownVotes,
     u.QuestionCount,
     u.AnswerCount,
-    ARRAY_AGG(t.Title) AS TopQuestions
+    groupArray(assumeNotNull(t.Title)) AS TopQuestions
 FROM 
     TopUsers u
 LEFT JOIN 

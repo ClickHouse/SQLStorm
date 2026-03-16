@@ -5,7 +5,7 @@ SELECT
     COUNT(o.o_orderkey) AS total_orders,
     SUM(l.l_quantity) AS total_quantity,
     AVG(p.p_retailprice) AS average_retail_price,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     part p
 JOIN 

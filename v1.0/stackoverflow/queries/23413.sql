@@ -15,13 +15,13 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
         AND p.Score >= 0
 ),
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     WHERE 
@@ -41,15 +41,15 @@ SELECT
         WHEN rp.MostActivePostForUser = 1 THEN 'User''s Most Active Post'
         ELSE 'Regular Post'
     END AS PostStatus,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     RankedPosts rp
 LEFT JOIN 
     ClosedPosts cp ON rp.PostId = cp.PostId
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(p.Tags, '><')) AS TagName
+            arrayJoin(splitByString('><', p.Tags)) AS TagName
         FROM 
             Posts p
         WHERE 
@@ -64,4 +64,4 @@ GROUP BY
     rp.MostActivePostForUser
 ORDER BY 
     rp.Score DESC, rp.CreationDate ASC
-OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 0;

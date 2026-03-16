@@ -60,7 +60,7 @@ SELECT
     FP.CreationDate,
     FP.ViewCount,
     FP.Score,
-    STRING_AGG(FP.FieldName || ': ' || FP.FieldValue, '; ') AS AdditionalInfo
+    arrayStringConcat(groupArray(assumeNotNull(FP.FieldName || ': ' || FP.FieldValue)), '; ') AS AdditionalInfo
 FROM 
     FilteredPosts FP
 GROUP BY 

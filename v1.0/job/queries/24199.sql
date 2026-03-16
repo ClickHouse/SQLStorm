@@ -37,7 +37,7 @@ SELECT
     END AS uncredited_role,
     COALESCE(o.note, 'No additional notes') AS movie_notes,
     COUNT(DISTINCT mc.company_id) AS production_companies,
-    STRING_AGG(DISTINCT c.kind, ', ') AS company_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_types
 FROM
     FilteredTitles ft
 LEFT JOIN
@@ -47,7 +47,7 @@ LEFT JOIN
 LEFT JOIN
     movie_info mi ON ft.production_year = mi.movie_id
 LEFT JOIN
-    (SELECT movie_id, STRING_AGG(note, '; ') AS note 
+    (SELECT movie_id, arrayStringConcat(groupArray(assumeNotNull(note)), '; ') AS note 
      FROM movie_info 
      GROUP BY movie_id
      HAVING COUNT(*) > 0) AS o ON ft.production_year = o.movie_id

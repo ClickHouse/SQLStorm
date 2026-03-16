@@ -65,4 +65,4 @@ HAVING
 ORDER BY 
     net_profit_sum DESC,
     avg_purchase_estimate DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

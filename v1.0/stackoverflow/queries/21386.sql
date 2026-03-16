@@ -26,7 +26,7 @@ WITH RecursiveCTE AS (
 PostHistoryData AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph

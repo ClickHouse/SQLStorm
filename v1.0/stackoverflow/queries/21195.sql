@@ -21,7 +21,7 @@ PopularPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '6 months' 
+        P.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH 
         AND P.Score > 0
 ),
 RecentComments AS (
@@ -31,7 +31,7 @@ RecentComments AS (
     FROM 
         Comments C
     WHERE 
-        C.CreationDate >= CURRENT_DATE - INTERVAL '30 days'
+        C.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY
     GROUP BY 
         C.PostId
 ),

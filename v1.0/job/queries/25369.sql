@@ -54,7 +54,7 @@ FinalResults AS (
 SELECT 
     title,
     production_year,
-    STRING_AGG(keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords,
     cast_count,
     company_count
 FROM 

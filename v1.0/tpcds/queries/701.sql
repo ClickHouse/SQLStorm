@@ -43,4 +43,4 @@ WHERE
     OR cu.c_preferred_cust_flag = 'Y'
 ORDER BY 
     total_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

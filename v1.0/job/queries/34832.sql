@@ -26,7 +26,7 @@ SELECT
     mh.movie_title,
     mh.production_year,
     COUNT(*) OVER (PARTITION BY ah.name) AS num_movies,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     CASE 
         WHEN ah.name IS NULL THEN 'Unknown'
         ELSE ah.name

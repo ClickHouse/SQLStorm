@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '90 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY
         AND p.PostTypeId = 1
 ),
 TopUsers AS (
@@ -35,7 +35,7 @@ SELECT
     tu.TotalPosts,
     tu.TotalViews,
     tu.TotalScore,
-    ARRAY_AGG(p.Title ORDER BY p.Score DESC) AS TopPostTitles
+    groupArray(assumeNotNull(p.Title ORDER BY p.Score DESC)) AS TopPostTitles
 FROM 
     TopUsers tu
 JOIN 

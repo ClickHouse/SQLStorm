@@ -15,7 +15,7 @@ FilteredMovies AS (
         rm.title_id,
         rm.title,
         rm.production_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COUNT(DISTINCT mc.company_id) AS company_count
     FROM 
         RankedMovies rm

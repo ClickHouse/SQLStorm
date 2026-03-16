@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 FilteredPosts AS (
     SELECT 

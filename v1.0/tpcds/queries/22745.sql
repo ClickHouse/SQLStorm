@@ -37,7 +37,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_profit) AS total_net_profit,
     AVG(CASE WHEN ws.ws_ship_date_sk IS NULL THEN -1 ELSE 1 END) AS shipping_status,
-    STRING_AGG(DISTINCT id.sanitized_item_desc, ', ') AS sold_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(id.sanitized_item_desc))), ', ') AS sold_items
 FROM web_sales ws
 JOIN TopItems ti ON ws.ws_item_sk = ti.ws_item_sk
 JOIN ItemDetails id ON id.i_item_sk = ws.ws_item_sk

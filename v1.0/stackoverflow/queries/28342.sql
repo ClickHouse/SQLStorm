@@ -25,11 +25,11 @@ WITH RankedPosts AS (
 TagDetails AS (
     SELECT 
         p.Id AS PostId,
-        string_agg(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS t(TagName) ON p.Id = p.Id
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS t(TagName) ON p.Id = p.Id
     GROUP BY 
         p.Id
 ),

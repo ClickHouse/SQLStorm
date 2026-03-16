@@ -16,7 +16,7 @@ WITH SupplierDetails AS (
     JOIN 
         part p ON ps.ps_partkey = p.p_partkey
     LEFT JOIN 
-        LATERAL (SELECT 
+        (SELECT 
                       CONCAT('Supplier ', s.s_name, ' supplies ', p.p_name, ' and has available quantity of ', ps.ps_availqty) AS part_info
                   ) AS pi ON TRUE
 ),

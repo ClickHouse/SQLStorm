@@ -22,7 +22,7 @@ LEFT JOIN
 LEFT JOIN 
     VoteTypes vt ON v.VoteTypeId = vt.Id
 WHERE 
-    p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days' 
+    p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY 
 GROUP BY 
     p.Id, p.Title, p.CreationDate, u.DisplayName, u.Reputation, p.ViewCount, p.AcceptedAnswerId
 ORDER BY 

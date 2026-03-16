@@ -58,4 +58,4 @@ WHERE
     AND (cs.total_sales - cs.total_returns * 0.1) > 0
 ORDER BY
     sales_position
-FETCH NEXT 20 ROWS ONLY;
+LIMIT 20;

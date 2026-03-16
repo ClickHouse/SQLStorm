@@ -51,11 +51,11 @@ SELECT
     p.AnswerCount,
     p.CommentCount,
     p.VoteCount,
-    STRING_AGG(t.TagName, ', ') AS Tags 
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags 
 FROM 
     FilteredPosts p
 LEFT JOIN 
-    Tags t ON t.TagName IN (SELECT UNNEST(STRING_TO_ARRAY(p.Tags, ', '))) 
+    Tags t ON t.TagName IN (SELECT arrayJoin(splitByString(', ', p.Tags))) 
 GROUP BY 
     p.PostId, p.Title, p.OwnerDisplayName, p.CreationDate, p.AnswerCount, p.CommentCount, p.VoteCount
 ORDER BY 

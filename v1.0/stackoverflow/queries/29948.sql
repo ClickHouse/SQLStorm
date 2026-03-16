@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     WHERE 
         p.PostTypeId = 1 
     AND 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 TaggedPosts AS (
     SELECT 
@@ -32,7 +32,7 @@ TaggedPosts AS (
     JOIN 
         Posts p ON rp.PostId = p.Id
     JOIN 
-        LATERAL (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag) AS tag_table ON TRUE
+        (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag) AS tag_table ON TRUE
     JOIN 
         Tags t ON t.TagName = tag_table.tag
     WHERE 
@@ -44,7 +44,7 @@ PostMetrics AS (
         COUNT(tp.PostId) AS TotalPosts,
         AVG(tp.ViewCount) AS AvgViews,
         SUM(tp.Score) AS TotalScore,
-        STRING_AGG(DISTINCT tp.TagName, ', ') AS PopularTags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.TagName))), ', ') AS PopularTags
     FROM 
         TaggedPosts tp
     GROUP BY 

@@ -31,7 +31,7 @@ SELECT hp.i_item_sk,
        hp.i_item_desc, 
        hp.total_net_profit, 
        hp.total_sales, 
-       (SELECT COUNT(*) FROM web_sales ws WHERE ws.ws_sold_date_sk = DATE_PART('year', cast('2002-10-01' as date))) AS total_web_sales_this_year
+       (SELECT COUNT(*) FROM web_sales ws WHERE ws.ws_sold_date_sk = datePart('year', cast('2002-10-01' as date))) AS total_web_sales_this_year
 FROM HighProfitItems hp
 WHERE hp.profit_rank <= 10
 ORDER BY hp.total_net_profit DESC;

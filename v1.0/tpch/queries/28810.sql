@@ -5,7 +5,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS shipping_modes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS shipping_modes,
     MIN(o.o_orderdate) AS first_order_date,
     MAX(o.o_orderdate) AS last_order_date,
     CASE 

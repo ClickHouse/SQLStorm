@@ -26,7 +26,7 @@ ProductSupply AS (
         p.p_partkey,
         p.p_name,
         SUM(ps.ps_availqty) AS total_available,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM 
         part p
     LEFT JOIN 

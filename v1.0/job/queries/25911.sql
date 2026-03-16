@@ -4,7 +4,7 @@ WITH ranked_movies AS (
         m.title,
         m.production_year,
         COUNT(DISTINCT c.person_id) AS actor_count,
-        ARRAY_AGG(DISTINCT ak.name) AS actor_names
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names
     FROM 
         aka_title m
     JOIN 
@@ -32,7 +32,7 @@ popular_movies AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         movie_keyword mk
     JOIN 

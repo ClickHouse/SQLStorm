@@ -30,11 +30,11 @@ RecentActivity AS (
     FROM 
         Users U
     LEFT JOIN 
-        Posts P ON U.Id = P.OwnerUserId AND P.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        Posts P ON U.Id = P.OwnerUserId AND P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     LEFT JOIN 
-        Comments C ON U.Id = C.UserId AND C.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        Comments C ON U.Id = C.UserId AND C.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     LEFT JOIN 
-        PostHistory PH ON U.Id = PH.UserId AND PH.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        PostHistory PH ON U.Id = PH.UserId AND PH.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     GROUP BY 
         U.Id
 )

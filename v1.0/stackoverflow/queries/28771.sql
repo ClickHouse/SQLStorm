@@ -40,8 +40,8 @@ SELECT
     UPS.TotalDownvotes,
     (SELECT COUNT(*) FROM TagUsage) AS TotalTags,
     (SELECT COUNT(*) FROM PostHistorySummary) AS TotalEditors,
-    (SELECT COUNT(DISTINCT P.Id) FROM Posts P WHERE P.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')) AS RecentPosts,
-    (SELECT COUNT(*) FROM Votes V WHERE V.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month')) AS RecentVotes
+    (SELECT COUNT(DISTINCT P.Id) FROM Posts P WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)) AS RecentPosts,
+    (SELECT COUNT(*) FROM Votes V WHERE V.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)) AS RecentVotes
 FROM UserPostStats UPS
 JOIN Users U ON U.Id = UPS.UserId
 ORDER BY UPS.TotalPosts DESC

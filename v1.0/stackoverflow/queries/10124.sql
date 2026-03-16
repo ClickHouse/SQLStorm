@@ -20,7 +20,7 @@ WITH PostActivity AS (
     LEFT JOIN 
         Badges B ON P.OwnerUserId = B.UserId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.LastActivityDate
 )
@@ -32,7 +32,7 @@ SELECT
     P.VoteCount,
     P.ClosureCount,
     P.BadgeCount,
-    EXTRACT(EPOCH FROM (P.LastActivityDate - P.CreationDate)) AS ActiveDuration
+    toUnixTimestamp((P.LastActivityDate - P.CreationDate)) AS ActiveDuration
 FROM 
     PostActivity P
 ORDER BY 

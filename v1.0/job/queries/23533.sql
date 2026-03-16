@@ -26,7 +26,7 @@ ActorKeywords AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS companies,
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS companies,
         COUNT(DISTINCT cn.id) AS company_count
     FROM 
         movie_companies mc
@@ -58,7 +58,7 @@ ExtendedMovieInfo AS (
     LEFT JOIN (
         SELECT 
             movie_id,
-            STRING_AGG(keyword, ', ') AS keywords
+            arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords
         FROM 
             ActorKeywords
         GROUP BY 

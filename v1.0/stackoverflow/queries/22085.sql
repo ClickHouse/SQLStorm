@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '30 days' 
+        P.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY 
     GROUP BY 
         P.Id, P.Title, P.Score, P.CreationDate, U.DisplayName
 ), 
@@ -53,7 +53,7 @@ PostHistoryData AS (
     INNER JOIN 
         PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     WHERE 
-        PH.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        PH.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
 )
 SELECT 
     PS.PostId,

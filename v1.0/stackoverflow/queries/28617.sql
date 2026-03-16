@@ -35,9 +35,9 @@ SELECT
     mau.AnswerCount,
     mau.TotalScore,
     mau.TotalViews,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Posts p 
-     JOIN LATERAL UNNEST(string_to_array(p.Tags, ',')) AS tag ON TRUE
+     JOIN arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
      JOIN Tags t ON t.TagName = tag 
      WHERE p.OwnerUserId = mau.UserId) AS MostUsedTags
 FROM 

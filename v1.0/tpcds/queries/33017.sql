@@ -53,7 +53,7 @@ FROM (
     JOIN 
         SalesCTE scte ON ca.ca_address_sk = (SELECT c_current_addr_sk FROM customer WHERE c_customer_sk = scte.ss_store_sk)
     LEFT JOIN 
-        DateCTE dcte ON dcte.d_month_seq = DATE_PART('month', cast('2002-10-01' as date))
+        DateCTE dcte ON dcte.d_month_seq = datePart('month', cast('2002-10-01' as date))
 ) AS aggregated_data
 GROUP BY 
     ca_city

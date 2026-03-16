@@ -6,7 +6,7 @@ SELECT
     r.role AS person_role,
     ci.name AS company_name,
     ci.country_code AS company_country,
-    STRING_AGG(k.keyword, ', ' ORDER BY k.keyword) AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ' ORDER BY k.keyword) AS keywords
 FROM 
     title t
 JOIN 

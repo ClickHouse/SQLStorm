@@ -20,7 +20,7 @@ PostWithTagCounts AS (
     LEFT JOIN (
         SELECT 
             P.Id AS PostId,
-            unnest(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) AS TagName
+            arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) AS TagName
         FROM Posts P
     ) T ON P.Id = T.PostId
     GROUP BY P.Id, P.Title, P.Score, P.OwnerUserId, P.ClosedDate
@@ -30,7 +30,7 @@ ActiveAndClosedPosts AS (
         P.PostId,
         P.Title,
         COUNT(C.Id) AS CommentCount,
-        SUM(CASE WHEN P.CloseDate < CAST('2024-10-01 12:34:56' AS TIMESTAMP) THEN 1 ELSE 0 END) AS ClosedCount,
+        SUM(CASE WHEN P.CloseDate < toDateTime64('2024-10-01 12:34:56', 6) THEN 1 ELSE 0 END) AS ClosedCount,
         SUM(CASE WHEN P.CloseDate = '9999-12-31' THEN 1 ELSE 0 END) AS ActiveCount
     FROM PostWithTagCounts P
     LEFT JOIN Comments C ON P.PostId = C.PostId

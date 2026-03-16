@@ -56,4 +56,4 @@ SELECT
 FROM FinalResults fr
 WHERE fr.average_profit > 50
 ORDER BY fr.total_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

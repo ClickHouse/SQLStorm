@@ -15,7 +15,7 @@ CustomerOrders AS (
            COUNT(o.o_orderkey) AS OrderCount
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= (cast('1998-10-01' as date) - INTERVAL '1 year')
+    WHERE o.o_orderdate >= (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
     GROUP BY c.c_custkey, c.c_name
 ),
 RankedSuppliers AS (

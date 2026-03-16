@@ -24,7 +24,7 @@ TopMovies AS (
 MovieGenres AS (
     SELECT 
         m.title,
-        STRING_AGG(DISTINCT g.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(g.keyword))), ', ') AS genres
     FROM 
         TopMovies m
     LEFT JOIN 
@@ -38,7 +38,7 @@ CompanyInfo AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT cn.name) AS company_count,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types
     FROM 
         movie_companies mc
     JOIN 

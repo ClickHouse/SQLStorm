@@ -35,7 +35,7 @@ TopPosts AS (
 UserBadges AS (
     SELECT 
         u.Id AS UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,  
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,  
         COUNT(b.Id) AS BadgeCount
     FROM 
         Users u
@@ -62,4 +62,4 @@ WHERE
     tp.AnswerCount > 0  
 ORDER BY 
     tp.UpVotes DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

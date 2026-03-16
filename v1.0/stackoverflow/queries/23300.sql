@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
@@ -49,7 +49,7 @@ SELECT
     SUM(pvc.DownVotes) AS TotalDownVotes,
     AVG(rp.Score) AS AvgScore,
     AVG(rp.ViewCount) AS AvgViewCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     Users u
 JOIN 
@@ -61,7 +61,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT 
         p.OwnerUserId, 
-        TRIM(UNNEST(STRING_TO_ARRAY(p.Tags, ','))) AS TagName
+        TRIM(arrayJoin(splitByString(',', p.Tags))) AS TagName
      FROM 
         Posts p) AS t ON t.OwnerUserId = u.Id
 WHERE 

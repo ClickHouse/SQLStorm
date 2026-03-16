@@ -72,4 +72,4 @@ SELECT
     LEAD(LastActivityDate) OVER (ORDER BY LastActivityDate DESC) AS NextActivityDate
 FROM EngagementSummary
 ORDER BY TotalViewCount DESC, Reputation DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

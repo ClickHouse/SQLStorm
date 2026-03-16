@@ -16,7 +16,7 @@ ClosedPosts AS (
         P.Title,
         COUNT(CASE WHEN PH.PostHistoryTypeId = 10 THEN 1 END) AS CloseVoteCount,
         MAX(PH.CreationDate) AS LastCloseDate,
-        STRING_AGG(CASE WHEN PH.UserId IS NOT NULL THEN PH.UserDisplayName END, ', ') AS Closers
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PH.UserId IS NOT NULL THEN PH.UserDisplayName END)), ', ') AS Closers
     FROM Posts P
     JOIN PostHistory PH ON P.Id = PH.PostId
     WHERE PH.PostHistoryTypeId = 10
@@ -42,7 +42,7 @@ PostStats AS (
         P.CreationDate
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
       AND P.Score IS NOT NULL
 )
 SELECT 

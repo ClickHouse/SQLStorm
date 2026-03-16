@@ -44,4 +44,4 @@ AND av.total_calculated_value > 0
 AND NOT EXISTS (SELECT 1 FROM lineitem l WHERE l.l_orderkey = ro.o_orderkey AND l.l_discount > 0.1)
 ORDER BY ro.o_orderdate DESC, av.total_supplycost DESC
 OFFSET (SELECT COUNT(*) / 2 FROM orders) ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10;

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) OVER (PARTITION BY p.ParentId) AS ParentUpvotes
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
+    WHERE p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
       AND p.Score IS NOT NULL
 ),
 UserStats AS (
@@ -31,7 +31,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId, 
         COUNT(*) AS CloseCount,
-        STRING_AGG(DISTINCT ph.Comment, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), ', ') AS CloseReasons
     FROM PostHistory ph
     WHERE ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY ph.PostId

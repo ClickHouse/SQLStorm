@@ -5,7 +5,7 @@ WITH UserStats AS (
         COUNT(DISTINCT P.Id) AS PostCount,
         SUM(CASE WHEN P.Score IS NOT NULL THEN P.Score ELSE 0 END) AS TotalScore,
         SUM(CASE WHEN P.ViewCount IS NOT NULL THEN P.ViewCount ELSE 0 END) AS TotalViews,
-        AVG(CASE WHEN P.CreationDate IS NOT NULL THEN EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - P.CreationDate)) / 3600 ELSE NULL END) AS AvgPostAgeHours
+        AVG(CASE WHEN P.CreationDate IS NOT NULL THEN toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.CreationDate)) / 3600 ELSE NULL END) AS AvgPostAgeHours
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     WHERE U.Reputation > 1000
@@ -43,7 +43,7 @@ SELECT
     COALESCE(B.GoldBadges, 0) AS TotalGoldBadges,
     COALESCE(B.SilverBadges, 0) AS TotalSilverBadges,
     COALESCE(B.BronzeBadges, 0) AS TotalBronzeBadges,
-    (SELECT STRING_AGG(PP.Title, ', ') FROM PopularPosts PP WHERE PP.OwnerUserId = U.UserId AND PP.PostRank <= 5) AS TopPosts
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(PP.Title)), ', ') FROM PopularPosts PP WHERE PP.OwnerUserId = U.UserId AND PP.PostRank <= 5) AS TopPosts
 FROM UserStats U
 LEFT JOIN BadgeCounts B ON U.UserId = B.UserId
 ORDER BY U.TotalScore DESC, U.PostCount DESC;

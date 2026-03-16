@@ -12,7 +12,7 @@ SELECT
     COUNT(v.Id) AS VoteCount,
     COUNT(c.Id) AS CommentCount,
     pt.Name AS PostType,
-    STRING_AGG(t.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
 FROM 
     Posts p
 JOIN 
@@ -24,7 +24,7 @@ LEFT JOIN
 LEFT JOIN 
     PostTypes pt ON p.PostTypeId = pt.Id
 LEFT JOIN 
-    UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag ON tag IS NOT NULL
+    arrayJoin(splitByString(',', p.Tags)) AS tag ON tag IS NOT NULL
 LEFT JOIN 
     Tags t ON TRIM(tag) = t.TagName
 GROUP BY 

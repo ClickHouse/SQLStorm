@@ -26,9 +26,9 @@ SELECT
     t.title AS movie_title,
     t.production_year,
     COUNT(DISTINCT c.person_id) AS distinct_cast_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
     SUM(CASE WHEN p.gender = 'F' THEN 1 ELSE 0 END) AS female_cast_count,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
 FROM 
     TopCastMovies t
 LEFT JOIN 

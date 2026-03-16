@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount, U.DisplayName
 ),
@@ -45,7 +45,7 @@ SELECT
     T.Score,
     T.ViewCount,
     T.OwnerDisplayName,
-    STRING_AGG(DISTINCT PT.Name, ', ') AS PostTypes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PT.Name))), ', ') AS PostTypes,
     COUNT(DISTINCT B.Id) AS BadgeCount,
     COALESCE(SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpvoteCount
 FROM 

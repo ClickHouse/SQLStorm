@@ -35,7 +35,7 @@ SELECT
     COUNT(*) AS supplier_count,
     AVG(ps.supply_cost) AS avg_supply_cost,
     SUM(ps.available_quantity) AS total_available_quantity,
-    STRING_AGG(DISTINCT ps.supplier_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ps.supplier_name))), ', ') AS supplier_names
 FROM 
     ProductSuppliers ps
 JOIN 

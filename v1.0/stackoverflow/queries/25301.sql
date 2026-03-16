@@ -21,7 +21,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     WHERE
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
     GROUP BY
         p.Id, u.DisplayName
 ),
@@ -47,12 +47,12 @@ SELECT
     t.CommentCount,
     t.AnswerCount,
     t.PostMonth,
-    ARRAY_AGG(DISTINCT tr.TagName) AS Tags
+    arrayDistinct(groupArray(assumeNotNull(tr.TagName))) AS Tags
 FROM
     TopPosts t
 LEFT JOIN
     (SELECT 
-        DISTINCT UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS TagName
+        DISTINCT arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS TagName
      FROM 
         Posts) tr ON tr.TagName ILIKE '%' || t.Tags || '%'
 GROUP BY

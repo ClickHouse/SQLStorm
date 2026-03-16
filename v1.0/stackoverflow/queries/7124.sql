@@ -26,7 +26,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT 
          UserId, 
-         STRING_AGG(Name, ', ') AS Name 
+         arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS Name 
      FROM 
          Badges 
      GROUP BY 

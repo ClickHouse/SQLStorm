@@ -5,7 +5,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     MAX(o.o_orderdate) AS last_order_date,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     CONCAT(s.s_name, ' (', s.s_address, ')') AS supplier_info,
     CASE 
         WHEN MAX(o.o_totalprice) < 1000 THEN 'Low Value Order'

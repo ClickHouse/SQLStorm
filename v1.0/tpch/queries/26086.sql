@@ -3,7 +3,7 @@ SELECT
     SUBSTRING(p.p_comment, 1, 20) AS short_comment,
     COUNT(o.o_orderkey) AS order_count,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied
 FROM 
     supplier s
 JOIN 
@@ -21,7 +21,7 @@ JOIN
 WHERE 
     p.p_retailprice > 100.00
 AND 
-    o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     supplier_product, short_comment
 ORDER BY 

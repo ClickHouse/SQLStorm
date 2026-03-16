@@ -60,4 +60,4 @@ WHERE
     AND ci.buy_potential IS NOT NULL
 ORDER BY 
     ss.total_sales DESC NULLS LAST
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

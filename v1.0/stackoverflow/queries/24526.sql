@@ -31,11 +31,11 @@ PostAnalysis AS (
 ClosePostReasons AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
     FROM 
         Posts p 
         LEFT JOIN PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (10, 11)
-        LEFT JOIN CloseReasonTypes cr ON ph.Comment::INT = cr.Id
+        LEFT JOIN CloseReasonTypes cr ON CAST(ph.Comment AS INT) = cr.Id
     WHERE 
         ph.Comment IS NOT NULL
     GROUP BY 
@@ -74,7 +74,7 @@ WHERE
     ur.Reputation > (
         SELECT AVG(Reputation) FROM UserReputation
     ) 
-    AND ur.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    AND ur.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ORDER BY 
     ur.Reputation DESC, 
     ups.PostsCount DESC

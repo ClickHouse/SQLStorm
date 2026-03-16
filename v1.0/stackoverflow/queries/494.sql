@@ -30,7 +30,7 @@ PostHistoryDetails AS (
         p.Id AS PostId,
         MAX(ph.CreationDate) AS LastEdited,
         COUNT(DISTINCT ph.Id) AS EditCount,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
     FROM 
         Posts p
     LEFT JOIN 
@@ -67,4 +67,4 @@ WHERE
     rp.rn = 1
 ORDER BY 
     rp.Score DESC, rp.CreationDate ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

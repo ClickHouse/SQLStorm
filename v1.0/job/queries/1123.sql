@@ -18,7 +18,7 @@ WITH RankedMovies AS (
 MovieGenres AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(kg.keyword, ', ') AS genres
+        arrayStringConcat(groupArray(assumeNotNull(kg.keyword)), ', ') AS genres
     FROM 
         movie_keyword mk
     JOIN 

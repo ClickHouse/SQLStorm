@@ -19,14 +19,14 @@ PostTagStats AS (
         P.Id AS PostId,
         P.Title,
         P.AcceptedAnswerId,
-        ARRAY_AGG(DISTINCT TRIM(T.TagName)) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(TRIM(T.TagName)))) AS Tags,
         P.CreationDate,
         P.ViewCount,
         P.AnswerCount,
         P.Score
     FROM 
         Posts P
-        LEFT JOIN UNNEST(string_to_array(P.Tags, '>')) AS TagTag(TagName) ON true
+        LEFT JOIN arrayJoin(splitByString('>', P.Tags)) AS TagTag(TagName) ON true
         LEFT JOIN Tags T ON T.TagName = TRIM(TagTag.TagName)
     GROUP BY 
         P.Id, P.Title, P.AcceptedAnswerId, P.CreationDate, P.ViewCount, P.AnswerCount, P.Score
@@ -43,7 +43,7 @@ RecentActivity AS (
         LEFT JOIN PostHistory PH ON P.Id = PH.PostId
         LEFT JOIN Posts CA ON P.AcceptedAnswerId = CA.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         P.Id
 )

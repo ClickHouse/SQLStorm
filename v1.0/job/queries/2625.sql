@@ -35,7 +35,7 @@ SELECT
     COALESCE(mw.actor_count, 0) AS actor_count,
     REPLACE(mw.title, ' ', '-') AS title_slug,
     (SELECT 
-        STRING_AGG(DISTINCT CONCAT(a.name, ' (', ci.role_id, ')'), ', ')
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.name, ' (', ci.role_id, ')')))), ', ')
      FROM 
         cast_info ci
      JOIN 

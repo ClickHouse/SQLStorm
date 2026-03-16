@@ -30,7 +30,7 @@ movies_with_info AS (
         m.title,
         m.production_year,
         ki.kind AS genre,
-        STRING_AGG(DISTINCT k.keyword, ',' ORDER BY k.keyword) AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',' ORDER BY k.keyword) AS keywords
     FROM 
         title m
     LEFT JOIN 

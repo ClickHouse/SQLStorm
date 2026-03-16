@@ -32,7 +32,7 @@ ActorRankings AS (
         actor_name,
         COUNT(movie_title) AS title_count,
         AVG(production_year) AS avg_production_year,
-        STRING_AGG(movie_title, ', ') AS recent_titles
+        arrayStringConcat(groupArray(assumeNotNull(movie_title)), ', ') AS recent_titles
     FROM 
         FilteredActors
     GROUP BY 

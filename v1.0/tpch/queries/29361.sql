@@ -18,7 +18,7 @@ WITH ProcessedData AS (
 SELECT 
     r.r_name AS region_name,
     COUNT(*) AS total_products,
-    STRING_AGG(DISTINCT supplier_product_info, '; ') AS suppliers_products,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(supplier_product_info))), '; ') AS suppliers_products,
     MIN(short_comment) AS first_comment,
     MAX(type_with_underscores) AS max_type
 FROM 

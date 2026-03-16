@@ -52,4 +52,4 @@ FROM
     AggregatedResults 
 ORDER BY 
     total_qty DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

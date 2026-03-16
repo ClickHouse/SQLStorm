@@ -78,4 +78,4 @@ WHERE
 ORDER BY 
     ss.discount_ratio DESC, 
     ss.total_sales_value DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

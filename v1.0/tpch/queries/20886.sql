@@ -11,7 +11,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '12 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH
 ),
 SupplierDetails AS (
     SELECT 
@@ -65,7 +65,7 @@ SELECT
     hvo.o_totalprice,
     CASE 
         WHEN hvo.lineitem_count IS NULL THEN 'Lineitem Missing'
-        ELSE CONCAT(hvo.lineitem_count::VARCHAR, ' Lineitems')
+        ELSE CONCAT(CAST(hvo.lineitem_count AS VARCHAR), ' Lineitems')
     END AS lineitem_status,
     'Order Priority: ' || COALESCE(ro.o_orderpriority, 'Normal') AS order_priority
 FROM 

@@ -10,7 +10,7 @@ WITH UserActivity AS (
     FROM Users U
     LEFT JOIN Posts P ON P.OwnerUserId = U.Id
     LEFT JOIN Votes V ON V.PostId = P.Id
-    WHERE U.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE U.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY U.Id, U.DisplayName, U.Reputation
 ),
 TopUsers AS (
@@ -32,7 +32,7 @@ PostDetails AS (
     LEFT JOIN Users U ON P.OwnerUserId = U.Id
     LEFT JOIN (SELECT PostId, COUNT(*) AS CommentCount FROM Comments GROUP BY PostId) PC ON PC.PostId = P.Id
     LEFT JOIN (SELECT PostId, COUNT(*) AS Revisions FROM PostHistory GROUP BY PostId) PH ON PH.PostId = P.Id
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
       AND P.Score > 0
 ),
 RankedPosts AS (

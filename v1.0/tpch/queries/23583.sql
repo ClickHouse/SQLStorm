@@ -20,7 +20,7 @@ WITH RECURSIVE supplier_agg AS (
 ), filtered_line_items AS (
     SELECT l_orderkey, SUM(l_extendedprice * (1 - l_discount)) AS net_price
     FROM lineitem
-    WHERE l_returnflag = 'N' AND l_shipdate < cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE l_returnflag = 'N' AND l_shipdate < cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY l_orderkey
 ), combined_results AS (
     SELECT n.n_name, si.supplier_count, si.avg_acctbal,

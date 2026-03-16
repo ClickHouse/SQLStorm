@@ -73,7 +73,7 @@ SELECT
         WHEN em.total_cast = 0 THEN 'No Data'
         ELSE 'No Cast'
     END AS cast_status,  
-    STRING_AGG(a.name, ', ' ORDER BY a.name) AS actors_names  
+    arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ' ORDER BY a.name) AS actors_names  
 FROM 
     EnrichedMovies em
 LEFT JOIN 

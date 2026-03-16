@@ -22,7 +22,7 @@ PopularPosts AS (
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.ViewCount DESC) AS PostRank
     FROM Posts P
     LEFT JOIN Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (8, 9)  
-    WHERE P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score
 ),
 ClosedPostHistory AS (
@@ -36,7 +36,7 @@ ClosedPostHistory AS (
 AggregateCloseReasons AS (
     SELECT
         PH.PostId,
-        ARRAY_AGG(DISTINCT CRT.Name) AS CloseReasons
+        arrayDistinct(groupArray(assumeNotNull(CRT.Name))) AS CloseReasons
     FROM PostHistory PH
     JOIN CloseReasonTypes CRT ON PH.Comment = CAST(CRT.Id AS VARCHAR) AND PH.PostHistoryTypeId = 10
     GROUP BY PH.PostId

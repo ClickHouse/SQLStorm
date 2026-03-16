@@ -40,9 +40,9 @@ company_details AS (
 SELECT 
     md.title,
     md.production_year,
-    STRING_AGG(cd.actor_name, ', ') AS cast,
-    STRING_AGG(CAST(cd.actor_rank AS TEXT), ', ') AS actor_ranks,
-    STRING_AGG(cd.actor_name || ' - Rank: ' || cd.actor_rank, '; ') AS detailed_cast,
+    arrayStringConcat(groupArray(assumeNotNull(cd.actor_name)), ', ') AS cast,
+    arrayStringConcat(groupArray(assumeNotNull(CAST(cd.actor_rank AS TEXT))), ', ') AS actor_ranks,
+    arrayStringConcat(groupArray(assumeNotNull(cd.actor_name || ' - Rank: ' || cd.actor_rank)), '; ') AS detailed_cast,
     COALESCE(cd2.company_name, 'Independent') AS production_company
 FROM 
     movie_details md

@@ -3,7 +3,7 @@ WITH ranked_orders AS (
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate,
            RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= (DATE '1998-10-01' - INTERVAL '1 YEAR')
+    WHERE o.o_orderdate >= (toDate('1998-10-01') - INTERVAL 1 YEAR)
 ),
 customer_balance AS (
     SELECT c.c_custkey, c.c_name, c.c_acctbal,

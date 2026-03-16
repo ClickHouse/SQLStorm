@@ -19,13 +19,13 @@ WITH RankedPosts AS (
         Votes v ON v.PostId = p.Id
     WHERE 
         p.PostTypeId = 1 AND  
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'  
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR  
     GROUP BY 
         p.Id, u.DisplayName
 ),
 TagSummary AS (
     SELECT 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '>')) AS Tag,
+        arrayJoin(splitByString('>', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag,
         COUNT(rp.PostId) AS PostCount,
         SUM(rp.CommentCount) AS TotalComments,
         SUM(rp.UpvoteCount) AS TotalUpvotes,

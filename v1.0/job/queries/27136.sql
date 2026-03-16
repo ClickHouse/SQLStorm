@@ -4,8 +4,8 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         aka_title AS t
     JOIN 
@@ -27,7 +27,7 @@ FilteredMovies AS (
         rm.cast_count,
         rm.actors,
         rm.keywords,
-        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM cast('2024-10-01' as date)) - rm.production_year ORDER BY rm.cast_count DESC) AS rank_by_age
+        RANK() OVER (PARTITION BY toYear(cast('2024-10-01' as date)) - rm.production_year ORDER BY rm.cast_count DESC) AS rank_by_age
     FROM 
         RankedMovies AS rm
 )

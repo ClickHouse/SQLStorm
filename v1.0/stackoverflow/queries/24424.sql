@@ -22,13 +22,13 @@ RecentPostActivity AS (
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+    WHERE P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     GROUP BY P.Id, P.Title, P.OwnerUserId
 ),
 PostCloseReasons AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(CRT.Name, ', ' ORDER BY CRT.Id) AS CloseReasonNames,
+        arrayStringConcat(groupArray(assumeNotNull(CRT.Name)), ', ' ORDER BY CRT.Id) AS CloseReasonNames,
         COUNT(*) AS CloseCount
     FROM PostHistory PH
     JOIN CloseReasonTypes CRT ON CAST(PH.Comment AS INTEGER) = CRT.Id

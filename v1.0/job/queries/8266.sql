@@ -19,9 +19,9 @@ WITH RankedMovies AS (
 SELECT 
     movie_title,
     production_year,
-    STRING_AGG(DISTINCT keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT company_name, ', ') AS production_companies,
-    STRING_AGG(DISTINCT actor_name, ', ') AS actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS production_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors
 FROM RankedMovies
 WHERE rn = 1
 GROUP BY movie_title, production_year

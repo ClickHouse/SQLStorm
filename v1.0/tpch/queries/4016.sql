@@ -67,6 +67,6 @@ LEFT JOIN
     RecentOrders ro ON ro.o_custkey = co.c_custkey
 WHERE 
     rp.p_retailprice BETWEEN 100 AND 500
-    AND (co.order_count > 5 OR ro.last_order_date >= DATE '1997-01-01')
+    AND (co.order_count > 5 OR ro.last_order_date >= toDate('1997-01-01'))
 ORDER BY 
     r.r_name, n.n_name, s.s_name, rp.p_brand;

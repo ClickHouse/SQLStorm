@@ -55,7 +55,7 @@ SELECT
     COUNT(DISTINCT l.l_orderkey) AS total_orders,
     SUM(l.total_price) AS total_revenue,
     AVG(a.avg_total_price) AS avg_customer_order_value,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' : ', p.p_size), '; ') AS part_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' : ', p.p_size)))), '; ') AS part_details
 FROM 
     ranked_suppliers ss
 LEFT JOIN 

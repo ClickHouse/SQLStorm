@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_sales_value,
     AVG(ws.ws_sales_price) AS average_order_value,
-    STRING_AGG(DISTINCT cd.cd_gender || ' - ' || cd.cd_marital_status, ', ') AS demographics_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_gender || ' - ' || cd.cd_marital_status))), ', ') AS demographics_info,
     CONCAT('City: ', ca.ca_city, ', State: ', ca.ca_state) AS location_info
 FROM 
     customer_address ca

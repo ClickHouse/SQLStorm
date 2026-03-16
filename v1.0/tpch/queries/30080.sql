@@ -25,7 +25,7 @@ SELECT
     SUM(COALESCE(tv.total_value, 0)) AS sum_total_value,
     COUNT(DISTINCT sh.s_suppkey) AS supplier_count,
     AVG(pd.avg_supply_cost) AS avg_supply_cost,
-    STRING_AGG(pd.p_name, ', ') AS part_names
+    arrayStringConcat(groupArray(assumeNotNull(pd.p_name)), ', ') AS part_names
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey

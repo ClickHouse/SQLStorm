@@ -57,7 +57,7 @@ SELECT
     tm.title,
     tm.production_year,
     tm.actor_count,
-    STRING_AGG(a.name, ', ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actors
 FROM 
     TopMovies tm
 LEFT JOIN 

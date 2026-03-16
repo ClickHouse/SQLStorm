@@ -20,13 +20,13 @@ WITH PostDetails AS (
         P.CommentCount,
         P.FavoriteCount,
         P.ClosedDate,
-        ARRAY_LENGTH(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><'), 1) AS TagCount
+        length(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2)), 1) AS TagCount
     FROM 
         Posts P
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 ),
 TagConversion AS (
     SELECT 
@@ -36,11 +36,11 @@ TagConversion AS (
         P.BodyLength,
         P.TitleLength,
         P.TagCount,
-        STRING_AGG(T.TagName, ', ') AS TagList
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagList
     FROM 
         PostDetails P
     LEFT JOIN 
-        Tags T ON (T.TagName = ANY(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><')))  
+        Tags T ON (T.TagName = ANY(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2))))  
     GROUP BY 
         P.PostId, P.Author, P.PostType, P.BodyLength, P.TitleLength, P.TagCount
 )

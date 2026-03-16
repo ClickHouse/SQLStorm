@@ -8,8 +8,8 @@ WITH CustomerStats AS (
         COALESCE(cd.cd_education_status, 'N/A') AS education_status,
         COUNT(DISTINCT st.ss_ticket_number) AS total_purchases,
         SUM(st.ss_sales_price) AS total_spent,
-        STRING_AGG(DISTINCT ca.ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT ca.ca_state, ', ') AS states
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_city))), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_state))), ', ') AS states
     FROM 
         customer c
     LEFT JOIN 

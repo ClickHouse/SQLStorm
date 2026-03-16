@@ -9,7 +9,7 @@ WITH RECURSIVE UserReputation AS (
            COALESCE((SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2), 0) AS UpVotes
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ), HotTopics AS (
     SELECT Tags, COUNT(*) AS TopicCount
     FROM Posts
@@ -37,7 +37,7 @@ SELECT up.DisplayName AS UserDisplayName,
        phs.SuggestionAppliedCount
 FROM UserReputation up
 INNER JOIN ActivePosts ap ON ap.OwnerDisplayName = up.DisplayName
-LEFT JOIN HotTopics ht ON ht.Tags LIKE '%' || (SELECT STRING_AGG(Tags, ',') FROM (SELECT DISTINCT Tags FROM Posts LIMIT 3)) || '%'
+LEFT JOIN HotTopics ht ON ht.Tags LIKE '%' || (SELECT arrayStringConcat(groupArray(assumeNotNull(Tags)), ',') FROM (SELECT DISTINCT Tags FROM Posts LIMIT 3)) || '%'
 LEFT JOIN PostHistoryStats phs ON phs.PostId = ap.Id
 WHERE up.Reputation > 100 AND phs.LastClosedDate IS NULL
 ORDER BY up.Rank DESC, ap.ViewCount DESC

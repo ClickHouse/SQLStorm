@@ -19,7 +19,7 @@ RecentVotes AS (
         COUNT(CASE WHEN V.VoteTypeId = 2 THEN 1 END) AS UpVotes,
         COUNT(CASE WHEN V.VoteTypeId = 3 THEN 1 END) AS DownVotes
     FROM Votes V
-    WHERE V.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE V.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY V.PostId
 ),
 
@@ -59,7 +59,7 @@ LEFT JOIN Posts P ON P.OwnerUserId = U.UserId
 LEFT JOIN PostDetails PD ON PD.PostId = P.Id
 WHERE 
     U.Reputation > 10 AND
-    (P.LastActivityDate IS NULL OR P.LastActivityDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months')
+    (P.LastActivityDate IS NULL OR P.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
 ORDER BY 
     U.ViewRank, U.Reputation DESC
 LIMIT 100;

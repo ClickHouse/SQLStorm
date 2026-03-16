@@ -71,4 +71,4 @@ HAVING
     COUNT(DISTINCT l.l_orderkey) > 10
 ORDER BY 
     total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

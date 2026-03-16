@@ -25,7 +25,7 @@ SELECT ca.ca_city,
        SUM(st.total_sales) AS city_total_sales,
        COUNT(DISTINCT cs.c_customer_sk) AS unique_customers,
        AVG(cs.total_net_profit) AS avg_customer_profit,
-       STRING_AGG(CONCAT(cs.c_first_name, ' ', cs.c_last_name), ', ') AS customer_names
+       arrayStringConcat(groupArray(assumeNotNull(CONCAT(cs.c_first_name, ' ', cs.c_last_name))), ', ') AS customer_names
 FROM customer_address ca
 JOIN customer c ON ca.ca_address_sk = c.c_current_addr_sk
 LEFT JOIN sales_trend st ON st.ws_sold_date_sk = (SELECT MAX(ws_sold_date_sk) FROM web_sales)
@@ -34,4 +34,4 @@ WHERE ca.ca_state = 'CA'
 GROUP BY ca.ca_city
 HAVING SUM(st.total_sales) > (SELECT AVG(total_sales) FROM sales_trend)
 ORDER BY city_total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -10,7 +10,7 @@ WITH PostDetails AS (
         p.Tags,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        COALESCE(MAX(b.Date), DATE '1970-01-01') AS LastBadgeDate
+        COALESCE(MAX(b.Date), toDate('1970-01-01')) AS LastBadgeDate
     FROM 
         Posts p
     JOIN 
@@ -20,14 +20,14 @@ WITH PostDetails AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, u.DisplayName, p.Body, p.CreationDate, p.ViewCount, p.Score, p.Tags
 ),
 PostTagCounts AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -54,7 +54,7 @@ PostBenchmarks AS (
         pd.ViewCount,
         pd.CommentCount,
         pd.LastBadgeDate,
-        ARRAY_AGG(tp.Tag) AS PopularTags
+        groupArray(assumeNotNull(tp.Tag)) AS PopularTags
     FROM 
         PostDetails pd
     JOIN 

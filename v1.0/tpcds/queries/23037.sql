@@ -41,4 +41,4 @@ WHERE hvc.c_customer_id IS NOT NULL
 GROUP BY ah.ca_city, ah.ca_state, ah.ca_country, 
          hvc.c_customer_id, hvc.cd_gender, hvc.total_paid, hvc.order_count
 ORDER BY ah.ca_country, ah.ca_state, rank
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -20,7 +20,7 @@ RecentPosts AS (
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (2, 3) 
-    WHERE P.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
+    WHERE P.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
     GROUP BY P.Id, P.Title, P.CreationDate, P.OwnerUserId, P.Score
 ), 
 PostMetadata AS (
@@ -42,9 +42,9 @@ PostsWithTag AS (
     SELECT 
         P.Id,
         P.Title,
-        STRING_AGG(T.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM Posts P
-    LEFT JOIN LATERAL UNNEST(STRING_TO_ARRAY(P.Tags, '<>')) AS T(TagName) ON TRUE
+    LEFT JOIN arrayJoin(splitByString('<>', P.Tags)) AS T(TagName) ON TRUE
     GROUP BY P.Id, P.Title
 )
 SELECT 

@@ -61,4 +61,4 @@ FROM
     UserPerformance
 ORDER BY 
     PerformanceRank
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

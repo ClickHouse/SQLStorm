@@ -2,7 +2,7 @@ WITH address_counts AS (
     SELECT ca_city, 
            ca_state, 
            COUNT(ca_address_sk) AS address_count, 
-           STRING_AGG(ca_street_name, ', ' ORDER BY ca_street_number) AS street_names
+           arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ' ORDER BY ca_street_number) AS street_names
     FROM customer_address
     GROUP BY ca_city, ca_state
 ), demographic_stats AS (

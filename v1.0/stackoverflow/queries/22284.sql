@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount
 ),
@@ -77,7 +77,7 @@ WHERE
             Posts p ON pl.RelatedPostId = p.Id
         WHERE 
             pl.LinkTypeId = 3 
-            AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+            AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     )
 ORDER BY 
     tp.ViewCount DESC, 

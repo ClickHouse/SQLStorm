@@ -34,7 +34,7 @@ ActivePosts AS (
              FROM Comments c 
              WHERE c.PostId = p.Id), 0) AS TotalComments
     FROM Posts p
-    WHERE p.PostTypeId = 1 AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.PostTypeId = 1 AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostDetails AS (
     SELECT 
@@ -44,7 +44,7 @@ PostDetails AS (
         ap.LastActivityDate, 
         ap.TotalComments,
         COALESCE(
-            (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+            (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
              FROM Tags t 
              WHERE t.WikiPostId = ap.PostId), 'No Tags') AS Tags
     FROM ActivePosts ap

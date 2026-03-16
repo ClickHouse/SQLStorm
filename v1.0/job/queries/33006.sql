@@ -31,7 +31,7 @@ SELECT
     mh.production_year,
     mh.parent_movie_title,
     COUNT(c.id) AS cast_count,
-    ARRAY_AGG(DISTINCT a.name) AS actor_names,
+    arrayDistinct(groupArray(assumeNotNull(a.name))) AS actor_names,
     MIN(c.nr_order) AS min_order,
     MAX(c.nr_order) AS max_order,
     CASE 

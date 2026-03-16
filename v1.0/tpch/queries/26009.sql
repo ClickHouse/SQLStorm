@@ -11,7 +11,7 @@ WITH RECURSIVE OrderHierarchy AS (
     SELECT o_orderkey AS orderkey, 
            MIN(o_orderdate) AS earliest_order, 
            COUNT(DISTINCT c_name) AS unique_customers,
-           STRING_AGG(DISTINCT s_name, '; ') AS suppliers_list
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s_name))), '; ') AS suppliers_list
     FROM OrderHierarchy 
     WHERE order_rank <= 5
     GROUP BY o_orderkey

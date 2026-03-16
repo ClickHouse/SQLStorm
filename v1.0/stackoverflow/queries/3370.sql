@@ -14,7 +14,7 @@ WITH UserActivity AS (
         Posts P ON U.Id = P.OwnerUserId
     WHERE 
         U.Reputation > 500 AND 
-        U.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation
 ),
@@ -49,7 +49,7 @@ PostStats AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         P.Id, P.OwnerUserId
 )

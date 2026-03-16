@@ -59,7 +59,7 @@ SELECT
         WHEN rm.total_cast_members BETWEEN 5 AND 10 THEN 'Medium Cast'
         ELSE 'Small Cast'
     END AS cast_size,
-    (SELECT STRING_AGG(DISTINCT cn.name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') 
      FROM company_name cn 
      JOIN movie_companies mct ON cn.id = mct.company_id 
      WHERE mct.movie_id = rm.movie_id) AS production_companies,

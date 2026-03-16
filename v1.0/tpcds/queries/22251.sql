@@ -59,7 +59,7 @@ SELECT
               WHERE ss.ss_customer_sk = pc.c_customer_sk AND 
                     ss.ss_sold_date_sk > (SELECT MAX(d_date_sk) FROM date_dim WHERE d_year = 2023)), 0) AS store_sales_last_year,
     (SELECT 
-        STRING_AGG(r.r_reason_desc, ', ') 
+        arrayStringConcat(groupArray(assumeNotNull(r.r_reason_desc)), ', ') 
      FROM 
         store_returns sr 
      JOIN 

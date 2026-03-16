@@ -21,9 +21,9 @@ WITH ranked_movies AS (
 SELECT 
     rm.production_year,
     COUNT(*) AS total_movies,
-    STRING_AGG(DISTINCT rm.title, ', ') AS titles,
-    STRING_AGG(DISTINCT rm.company_name, ', ') AS companies,
-    STRING_AGG(DISTINCT rm.movie_keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.title))), ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.company_name))), ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.movie_keyword))), ', ') AS keywords
 FROM 
     ranked_movies rm
 WHERE 

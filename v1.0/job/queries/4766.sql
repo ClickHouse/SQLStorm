@@ -32,7 +32,7 @@ SELECT
     ak.name AS actor_name,
     ak.imdb_index AS actor_imdb_index,
     COALESCE(mt.info, 'N/A') AS movie_info,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     TopMovies tm
 LEFT JOIN 

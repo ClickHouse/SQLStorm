@@ -29,7 +29,7 @@ WITH RecursiveMovieData AS (
 MovieCompanies AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT c.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS company_names,
         COUNT(DISTINCT mc.company_id) AS total_companies
     FROM 
         movie_companies mc

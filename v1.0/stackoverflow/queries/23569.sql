@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 FilteredPosts AS (
@@ -43,7 +43,7 @@ SELECT
     fp.ScoreCategory,
     fp.CommentCategory,
     CONCAT('Votes: ', COALESCE(fp.UpVoteCount, 0), ' up, ', COALESCE(fp.DownVoteCount, 0), ' down') AS VoteSummary,
-    (SELECT STRING_AGG(tag.TagName, ', ')
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ')
      FROM Tags tag
      WHERE tag.WikiPostId = fp.PostId) AS TagsList,
     CASE

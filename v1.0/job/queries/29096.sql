@@ -33,7 +33,7 @@ SELECT
     tm.keyword,
     n.name AS top_actor,
     COUNT(ci.role_id) AS role_count,
-    STRING_AGG(DISTINCT ci.note, ', ') AS actor_notes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), ', ') AS actor_notes
 FROM 
     TopMovies tm
 JOIN 

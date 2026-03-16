@@ -82,7 +82,7 @@ RecentActivity AS (
     JOIN 
         PostActivity pa ON p.Id = pa.PostId
     WHERE 
-        pa.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
+        pa.CreationDate > now64(6) - INTERVAL 30 DAY
     GROUP BY 
         p.OwnerUserId
 )

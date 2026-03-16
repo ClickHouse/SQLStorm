@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(p.p_retailprice) AS average_price,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT CASE WHEN l.l_returnflag = 'R' THEN l.l_comment END, '; ') AS return_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN l.l_returnflag = 'R' THEN l.l_comment END))), '; ') AS return_comments
 FROM 
     part p
 JOIN 
@@ -20,7 +20,7 @@ JOIN
 WHERE 
     p.p_name LIKE ' rubber%'
     AND n.n_name IN (SELECT DISTINCT n_name FROM nation WHERE n_regionkey = 1)
-    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     p.p_name, s.s_name, n.n_name
 ORDER BY 

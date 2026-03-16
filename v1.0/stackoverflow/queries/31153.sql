@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
 ),
 UserReputation AS (
     SELECT 
@@ -58,4 +58,4 @@ WHERE
 ORDER BY 
     ur.TotalReputation DESC,
     rp.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

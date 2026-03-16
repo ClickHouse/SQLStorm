@@ -59,7 +59,7 @@ SELECT
     tm.null_notes_count,
     tm.average_order,
     COALESCE(ct.kind, 'Unknown') AS company_type,
-    STRING_AGG(DISTINCT cn.name, ', ') AS companies_involved
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies_involved
 FROM 
     top_movies tm
 LEFT JOIN 

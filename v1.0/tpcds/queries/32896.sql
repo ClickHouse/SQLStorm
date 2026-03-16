@@ -44,7 +44,7 @@ SELECT
     ROW_NUMBER() OVER (PARTITION BY hvc.hd_income_band_sk ORDER BY cr.total_returned_amt DESC) AS income_band_rank
 FROM HighValueCustomers hvc
 LEFT JOIN CustomerReturns cr ON hvc.c_customer_sk = cr.sr_customer_sk
-LEFT JOIN MonthlyReturns mt ON mt.d_month_seq = EXTRACT(MONTH FROM cast('2002-10-01' as date))
+LEFT JOIN MonthlyReturns mt ON mt.d_month_seq = toMonth(cast('2002-10-01' as date))
 WHERE hvc.cd_marital_status = 'M' 
   AND hvc.hd_income_band_sk IS NOT NULL
 ORDER BY hvc.c_last_name, hvc.c_first_name;

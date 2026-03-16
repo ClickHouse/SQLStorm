@@ -23,8 +23,8 @@ WITH RankedMovies AS (
         rm.title,
         rm.production_year,
         rm.actor_count,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT CAST(pi.info AS VARCHAR) || ' (' || rt.role || ')', ', ') AS actor_roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(pi.info AS VARCHAR) || ' (' || rt.role || ')'))), ', ') AS actor_roles
     FROM 
         RankedMovies rm
     LEFT JOIN 

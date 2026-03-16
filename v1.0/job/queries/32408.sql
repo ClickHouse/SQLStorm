@@ -28,7 +28,7 @@ cast_summary AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names
     FROM 
         cast_info ci
     JOIN 
@@ -70,7 +70,7 @@ SELECT
     COALESCE(fm.total_cast, 0) AS total_cast,
     COALESCE(fm.synopsis, 'No synopsis available') AS synopsis,
     COALESCE(fm.rating, 'Not rated') AS rating,
-    STRING_AGG(DISTINCT cmt.kind, ', ') AS company_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cmt.kind))), ', ') AS company_types
 FROM 
     filtered_movies fm
 LEFT JOIN 

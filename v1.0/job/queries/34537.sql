@@ -33,7 +33,7 @@ SELECT
     a.name AS actor_name,
     COUNT(DISTINCT c.movie_id) AS movie_count,
     COALESCE(AVG(mh.level), 0) AS avg_link_depth,
-    STRING_AGG(DISTINCT mh.movie_title || ' (' || mh.production_year || ')', '; ') AS linked_movies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mh.movie_title || ' (' || mh.production_year || ')'))), '; ') AS linked_movies
 FROM 
     aka_name a
 JOIN 

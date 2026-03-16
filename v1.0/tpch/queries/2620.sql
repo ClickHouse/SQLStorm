@@ -63,4 +63,4 @@ WHERE
     ts.rank <= 5 OR ts.s_name IS NULL
 ORDER BY 
     fc.total_spent DESC, fc.c_name ASC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

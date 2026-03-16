@@ -16,7 +16,7 @@ MovieDetails AS (
         ht.production_year,
         COALESCE(SUM(CASE WHEN mk.id IS NOT NULL THEN 1 ELSE 0 END), 0) AS keyword_count,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names
     FROM title ht
     LEFT JOIN movie_keyword mk ON ht.id = mk.movie_id
     LEFT JOIN cast_info ci ON ht.id = ci.movie_id

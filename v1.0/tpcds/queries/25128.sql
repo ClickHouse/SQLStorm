@@ -3,7 +3,7 @@ WITH AddressCounts AS (
     SELECT 
         ca_city,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT ca_street_name, ', ') AS unique_street_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), ', ') AS unique_street_names
     FROM 
         customer_address
     WHERE 
@@ -26,7 +26,7 @@ DateMetrics AS (
     SELECT 
         d_year,
         COUNT(*) AS total_days,
-        STRING_AGG(d_day_name, ', ') AS day_names
+        arrayStringConcat(groupArray(assumeNotNull(d_day_name)), ', ') AS day_names
     FROM 
         date_dim
     WHERE 

@@ -48,7 +48,7 @@ SELECT
     COUNT(*) AS customer_count,
     AVG(macc.total_sales) AS avg_sales,
     SUM(macc.order_count) AS total_orders,
-    STRING_AGG(CONCAT(macc.c_customer_sk, ' - ', macc.total_sales), '; ') AS customer_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(macc.c_customer_sk, ' - ', macc.total_sales))), '; ') AS customer_details
 FROM 
     MostActiveCustomers macc
 GROUP BY 

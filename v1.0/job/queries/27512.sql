@@ -34,8 +34,8 @@ FilteredTitles AS (
 
 SELECT 
     actor_name,
-    STRING_AGG(movie_title, ', ') AS titles,
-    STRING_AGG(DISTINCT company_type, ', ') AS company_types,
+    arrayStringConcat(groupArray(assumeNotNull(movie_title)), ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS company_types,
     COUNT(*) AS movie_count
 FROM 
     FilteredTitles

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     WHERE 
         P.PostTypeId = 1 
       AND 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopAnsweredPosts AS (
     SELECT 
@@ -32,11 +32,11 @@ TopAnsweredPosts AS (
     LEFT JOIN (
         SELECT 
             PH.PostId,
-            STRING_AGG(CRT.Name, ', ') AS CloseReason
+            arrayStringConcat(groupArray(assumeNotNull(CRT.Name)), ', ') AS CloseReason
         FROM 
             PostHistory PH
         JOIN 
-            CloseReasonTypes CRT ON PH.Comment = CRT.Id::TEXT
+            CloseReasonTypes CRT ON PH.Comment = CAST(CRT.Id AS TEXT)
         WHERE 
             PH.PostHistoryTypeId = 10
         GROUP BY 
@@ -54,7 +54,7 @@ PopularTags AS (
     FROM 
         Posts P
     JOIN 
-        UNNEST(STRING_TO_ARRAY(P.Tags, ',')) AS T(TagName) ON TRUE
+        arrayJoin(splitByString(',', P.Tags)) AS T(TagName) ON TRUE
     WHERE 
         P.PostTypeId = 1
     GROUP BY 

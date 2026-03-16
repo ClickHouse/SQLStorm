@@ -17,7 +17,7 @@ CTE_CompleteCast AS (
     SELECT 
         cc.movie_id,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT p.name, ', ') FILTER (WHERE p.name IS NOT NULL) AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') FILTER (WHERE p.name IS NOT NULL) AS cast_names,
         MAX(CASE WHEN cc.status_id = 1 THEN 'Complete' ELSE 'Incomplete' END) AS cast_status
     FROM 
         complete_cast cc
@@ -33,7 +33,7 @@ CTE_CompanyInfo AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT co.id) AS total_companies,
-        STRING_AGG(DISTINCT co.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS company_names
     FROM 
         movie_companies mc
     JOIN 

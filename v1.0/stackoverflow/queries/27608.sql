@@ -29,7 +29,7 @@ FilteredPosts AS (
     FROM 
         RankedPosts rp
     WHERE 
-        rp.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        rp.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
 ),
 TopPosts AS (
     SELECT 
@@ -45,8 +45,8 @@ SELECT
     COUNT(t.PostId) as TotalQuestions,
     SUM(t.CommentCount) as TotalComments,
     ROUND(AVG(t.AverageVoteType), 2) as AvgVoteType,
-    STRING_AGG(t.Title, '; ') as Titles,
-    STRING_AGG(t.Body, ' ') as AllBodies
+    arrayStringConcat(groupArray(assumeNotNull(t.Title)), '; ') as Titles,
+    arrayStringConcat(groupArray(assumeNotNull(t.Body)), ' ') as AllBodies
 FROM 
     TopPosts t
 GROUP BY 

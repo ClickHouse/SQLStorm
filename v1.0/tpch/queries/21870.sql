@@ -6,7 +6,7 @@ WITH ranked_orders AS (
         o.o_totalprice,
         RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1996-01-01'
+    WHERE o.o_orderdate >= toDate('1996-01-01')
 ),
 supplier_part_stats AS (
     SELECT 
@@ -36,7 +36,7 @@ order_totals AS (
         l.l_orderkey,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS net_order_value
     FROM lineitem l
-    WHERE l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    WHERE l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     GROUP BY l.l_orderkey
 )
 SELECT 

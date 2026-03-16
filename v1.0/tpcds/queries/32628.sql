@@ -64,4 +64,4 @@ WHERE
     (ts.web_sales_quantity > 1000 OR ts.total_returned_quantity < 50)
 ORDER BY 
     net_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

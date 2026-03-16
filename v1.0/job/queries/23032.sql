@@ -20,7 +20,7 @@ CompanyMovieInfo AS (
 ActorRoles AS (
     SELECT a.person_id,
            COUNT(DISTINCT ci.movie_id) AS movies_played,
-           STRING_AGG(DISTINCT r.role || ' in ' || t.title, '; ') AS roles
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role || ' in ' || t.title))), '; ') AS roles
     FROM cast_info ci
     JOIN aka_name a ON ci.person_id = a.id
     JOIN title t ON ci.movie_id = t.id
@@ -40,4 +40,4 @@ LEFT JOIN ActorRoles ar ON rt.id IN (SELECT ci.movie_id FROM cast_info ci WHERE 
 WHERE rt.year_rank <= 5
   AND (crm.total_movies > 1 OR crm.total_movies IS NULL)
 ORDER BY rt.production_year DESC, rt.title
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

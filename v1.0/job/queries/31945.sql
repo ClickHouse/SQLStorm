@@ -43,7 +43,7 @@ MovieInfo AS (
         m.title,
         m.production_year,
         COUNT(k.keyword) AS keyword_count,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

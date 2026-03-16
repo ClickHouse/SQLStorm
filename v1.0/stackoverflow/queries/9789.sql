@@ -9,7 +9,7 @@ SELECT
     COUNT(c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes,
-    ARRAY_AGG(DISTINCT pt.Name) AS PostTypes,
+    arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypes,
     ht.Name AS LastHistoryType,
     ph.CreationDate AS LastHistoryDate
 FROM 
@@ -28,7 +28,7 @@ JOIN
     PostTypes pt ON p.PostTypeId = pt.Id
 WHERE 
     u.Reputation > 1000
-    AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 GROUP BY 
     u.Id, u.DisplayName, u.Reputation, p.Title, p.CreationDate, p.Score, p.ViewCount, ht.Name, ph.CreationDate
 ORDER BY 

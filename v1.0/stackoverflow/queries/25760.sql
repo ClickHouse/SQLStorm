@@ -7,7 +7,7 @@ WITH PostTagProcessing AS (
         p.CreationDate,
         p.OwnerUserId,
         p.Tags,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '>'), 1) AS TagCount,
+        length(splitByString('>', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount,
         COALESCE(u.DisplayName, 'Community User') AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounty
@@ -47,7 +47,7 @@ FinalBenchmarking AS (
         pha.EditCount,
         pha.UniqueEditors,
         ptp.TotalBounty,
-        (COALESCE(ptp.CommentCount, 0) + COALESCE(pha.EditCount, 0))::float / NULLIF(ptp.TagCount, 0) AS InteractionToTagRatio 
+        (COALESCE(ptp.CommentCount, 0) + COALESCE(pha.EditCount, 0)CAST() AS float) / NULLIF(ptp.TagCount, 0) AS InteractionToTagRatio 
     FROM 
         PostTagProcessing ptp
     JOIN 

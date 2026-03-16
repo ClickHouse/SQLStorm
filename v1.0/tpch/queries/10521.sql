@@ -6,7 +6,7 @@ FROM
 JOIN 
     orders ON l_orderkey = o_orderkey 
 WHERE 
-    l_shipdate BETWEEN DATE '1994-01-01' AND DATE '1994-12-31' 
+    l_shipdate BETWEEN toDate('1994-01-01') AND toDate('1994-12-31') 
 GROUP BY 
     o_orderdate 
 ORDER BY 

@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(CASE WHEN l.l_returnflag = 'R' THEN 1 ELSE 0 END) AS returns,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ': ', s.s_address), '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ': ', s.s_address)))), '; ') AS supplier_details
 FROM 
     part p
 JOIN 

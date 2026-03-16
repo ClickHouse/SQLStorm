@@ -44,8 +44,8 @@ SELECT
     a.min_email_length,
     a.max_email_length,
     a.avg_email_length,
-    STRING_AGG(DISTINCT cd.ca_city, ', ') AS unique_cities,
-    STRING_AGG(DISTINCT cd.ca_state, ', ') AS unique_states
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.ca_city))), ', ') AS unique_cities,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.ca_state))), ', ') AS unique_states
 FROM 
     aggregated_data a
 JOIN 

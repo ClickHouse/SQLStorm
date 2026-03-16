@@ -8,7 +8,7 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     COUNT(DISTINCT c.Id) AS CommentCount,
     COUNT(DISTINCT a.Id) AS AnswerCount,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
 FROM 
     Posts p
 LEFT JOIN 

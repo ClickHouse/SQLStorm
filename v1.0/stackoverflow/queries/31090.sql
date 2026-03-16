@@ -20,7 +20,7 @@ RecentPostHistory AS (
         ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY ph.CreationDate DESC) AS HistoryRank
     FROM Posts p
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    WHERE ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 AggregatedVotes AS (
     
@@ -56,7 +56,7 @@ SELECT
     ups.TotalDownVotes,
     ups.AcceptedPosts,
     COUNT(rph.PostId) AS RecentEdits,
-    STRING_AGG(rph.Title, ', ') AS RecentEditedTitles
+    arrayStringConcat(groupArray(assumeNotNull(rph.Title)), ', ') AS RecentEditedTitles
 FROM Users u
 LEFT JOIN UserReputation ur ON u.Id = ur.UserId
 LEFT JOIN UserPostStats ups ON u.Id = ups.UserId

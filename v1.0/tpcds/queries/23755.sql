@@ -51,4 +51,4 @@ WHERE (rco.total_spent IS NULL OR rco.total_spent > (SELECT AVG(total_spent) FRO
    AND cd.cd_gender = 'M'
    AND (pa.promo_revenue IS NULL OR pa.promo_revenue > 1000)
 ORDER BY rco.total_spent DESC, rco.c_last_name ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

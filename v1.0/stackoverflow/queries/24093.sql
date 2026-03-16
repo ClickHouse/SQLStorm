@@ -22,7 +22,7 @@ WITH RankedPosts AS (
             PostId
     ) vs ON p.Id = vs.PostId
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostCloseReasons AS (
     SELECT 
@@ -37,7 +37,7 @@ PostCloseReasons AS (
 TaggedPosts AS (
     SELECT 
         rp.PostId,
-        STRING_AGG(t.TagName, ', ') AS TagsAgg
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsAgg
     FROM 
         RankedPosts rp
     LEFT JOIN 

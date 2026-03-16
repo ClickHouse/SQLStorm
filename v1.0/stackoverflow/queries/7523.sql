@@ -63,4 +63,4 @@ FROM
 ORDER BY 
     PostCount DESC,
     Upvotes DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

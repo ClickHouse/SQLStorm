@@ -30,7 +30,7 @@ WITH RecursiveGenreRanking AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT mc.company_id) AS distinct_companies,
-        STRING_AGG(DISTINCT com.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(com.name))), ', ') AS company_names
     FROM 
         movie_companies mc
     JOIN 
@@ -64,7 +64,7 @@ WITH RecursiveGenreRanking AS (
 SELECT 
     title,
     production_year,
-    STRING_AGG(DISTINCT CONCAT('Genre: ', keyword), '; ') AS genres,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Genre: ', keyword)))), '; ') AS genres,
     SUM(distinct_roles) AS total_distinct_roles,
     AVG(role_ratio) AS average_role_ratio,
     MAX(distinct_companies) AS max_distinct_companies,

@@ -26,7 +26,7 @@ WITH movie_details AS (
 unique_keywords AS (
     SELECT DISTINCT
         movie_title,
-        ARRAY_AGG(DISTINCT movie_keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(movie_keyword))) AS keywords
     FROM 
         movie_details
     GROUP BY 

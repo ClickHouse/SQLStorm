@@ -84,7 +84,7 @@ SELECT
           THEN CAST(Upvotes AS FLOAT) / TotalVotes 
           ELSE NULL 
      END) AS UpvoteRatio,
-    (SELECT STRING_AGG(DISTINCT T.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
      FROM Tags T 
      JOIN Posts P ON P.Tags LIKE '%' || T.TagName || '%'
      WHERE P.OwnerUserId = FinalStats.UserId) AS AssociatedTags

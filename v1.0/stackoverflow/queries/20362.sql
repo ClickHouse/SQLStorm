@@ -59,11 +59,11 @@ SELECT
     SUM(CASE WHEN ps.IsAccepted = 1 THEN 1 ELSE 0 END) AS AcceptedPosts,
     SUM(ps.TotalBounty) AS TotalBounties,
     AVG(ps.UpVotes - ps.DownVotes) AS AverageVoteDifferential,
-    STRING_AGG(ps.Title, '; ') AS PostTitles
+    arrayStringConcat(groupArray(assumeNotNull(ps.Title)), '; ') AS PostTitles
 FROM UserPosts ps
 JOIN UserReputation ur ON ps.UserId = ur.Id
 WHERE ur.Reputation > 0
 GROUP BY ur.DisplayName, ur.Reputation, ur.ReputationLevel
 HAVING COUNT(ps.PostId) > 5
 ORDER BY TotalPosts DESC, TotalBounties DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

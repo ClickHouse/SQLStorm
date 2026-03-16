@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes V ON V.PostId = P.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 CommentsWithTags AS (
     SELECT 
@@ -23,13 +23,13 @@ CommentsWithTags AS (
         C.PostId,
         C.Text,
         C.UserDisplayName,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
     FROM 
         Comments C
     LEFT JOIN 
         Posts P ON C.PostId = P.Id
     LEFT JOIN 
-        UNNEST(string_to_array(P.Tags, '><')) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('><', P.Tags)) AS T(TagName) ON TRUE
     GROUP BY 
         C.Id, C.PostId, C.Text, C.UserDisplayName
 ),
@@ -86,7 +86,7 @@ SELECT
     Rank,
     COALESCE(CommentTags, 'No comments') AS CommentTags,
     COALESCE(CloseCount, 0) AS CloseCount,
-    COALESCE(LastReopenDate, DATE '1970-01-01') AS LastReopenDate,
+    COALESCE(LastReopenDate, toDate('1970-01-01')) AS LastReopenDate,
     COALESCE(UniqueEditors, 0) AS UniqueEditors,
     NetVotes
 FROM 

@@ -56,4 +56,4 @@ WHERE
     AND (i.i_category_id IN (SELECT DISTINCT i_category_id FROM item) OR s.total_returned IS NULL)
 ORDER BY 
     return_status ASC, return_rate_status DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -4,8 +4,8 @@ WITH ranked_movies AS (
         t.title AS movie_title,
         t.production_year,
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
-        ARRAY_AGG(DISTINCT kw.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords
     FROM 
         title t
     LEFT JOIN 
@@ -42,10 +42,7 @@ SELECT
     hcm.movie_id,
     hcm.movie_title,
     hcm.production_year,
-    hcm.cast_count,
-    unnest(hcm.company_names) AS company_name,
-    unnest(hcm.keywords) AS keyword
-FROM 
+    hcm.cast_count ARRAY JOIN hcm.company_names AS company_name ARRAY JOIN hcm.keywords AS keywordFROM 
     high_cast_movies hcm
 ORDER BY 
     hcm.production_year DESC, hcm.cast_count DESC;

@@ -22,7 +22,7 @@ CompleteCasting AS (
         t.title,
         t.production_year,
         COUNT(ci.id) AS total_cast,
-        STRING_AGG(DISTINCT c.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS cast_names
     FROM
         title t
     LEFT JOIN
@@ -39,7 +39,7 @@ CompleteCasting AS (
 KeywordSummaries AS (
     SELECT
         t.title,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM
         title t
     JOIN

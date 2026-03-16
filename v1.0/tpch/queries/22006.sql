@@ -68,7 +68,7 @@ SELECT
         WHEN n.order_count > 0 THEN 'Active'
         ELSE 'Inactive'
     END AS nation_activity,
-    STRING_AGG(DISTINCT CONCAT(pd.p_name, ' (', pd.total_cost, ')'), ', ') AS parts_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(pd.p_name, ' (', pd.total_cost, ')')))), ', ') AS parts_details
 FROM 
     RelevantNationInfo n
 LEFT JOIN 

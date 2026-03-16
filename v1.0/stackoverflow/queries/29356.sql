@@ -33,7 +33,7 @@ TopPosts AS (
 ProcessedTags AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(trim(both '<>' from p.Tags), '> <')) AS TagName 
+        arrayJoin(splitByString('> <', trim(both '<>' from p.Tags))) AS TagName 
     FROM 
         Posts p
     WHERE 
@@ -44,7 +44,7 @@ SELECT
     COUNT(DISTINCT tp.PostId) AS QuestionCount,
     SUM(tp.ViewCount) AS TotalViews,
     AVG(tp.Score) AS AvgScore,
-    STRING_AGG(tp.OwnerDisplayName, ', ') AS PostOwners
+    arrayStringConcat(groupArray(assumeNotNull(tp.OwnerDisplayName)), ', ') AS PostOwners
 FROM 
     ProcessedTags t
 JOIN 

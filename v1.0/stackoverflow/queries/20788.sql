@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 ClosedPosts AS (
@@ -35,7 +35,7 @@ PostTags AS (
     FROM 
         Posts p
     INNER JOIN 
-        LATERAL unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '> <')) AS t(TagName) ON true
+        arrayJoin(splitByString('> <', substring(p.Tags, 2, length(p.Tags) - 2))) AS t(TagName) ON true
     GROUP BY 
         p.Id, t.TagName
 ),
@@ -48,7 +48,7 @@ TopPostStatistics AS (
         rp.Score,
         rp.UserReputation,
         cp.LastClosedDate,
-        STRING_AGG(pt.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(pt.TagName)), ', ') AS Tags
     FROM 
         RankedPosts rp
     LEFT JOIN 

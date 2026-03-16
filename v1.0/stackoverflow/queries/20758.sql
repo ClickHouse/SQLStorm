@@ -8,7 +8,7 @@ WITH RankedPosts AS (
            P.Score,
            ROW_NUMBER() OVER (PARTITION BY P.PostTypeId ORDER BY P.Score DESC) AS Rank
     FROM Posts P
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT U.Id AS UserId,
@@ -24,7 +24,7 @@ UserStats AS (
 PostHistoryAnalysis AS (
     SELECT PH.PostId,
            COUNT(*) AS EditCount,
-           ARRAY_AGG(DISTINCT PH.PostHistoryTypeId) AS EditTypes
+           arrayDistinct(groupArray(assumeNotNull(PH.PostHistoryTypeId))) AS EditTypes
     FROM PostHistory PH
     WHERE PH.PostHistoryTypeId IN (4, 5, 6) 
     GROUP BY PH.PostId
@@ -36,7 +36,7 @@ RecentClosures AS (
     FROM Posts P
     JOIN PostHistory PH ON P.Id = PH.PostId
     WHERE PH.PostHistoryTypeId = 10 
-    AND PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY P.Id, PH.UserId
 )
 SELECT RP.PostId,

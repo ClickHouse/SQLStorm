@@ -26,7 +26,7 @@ cast_aggregates AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT CONCAT(COALESCE(aka.name, 'Unknown'), '(', COALESCE(rt.role, 'No Role'), ')'), ', ') AS cast_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(COALESCE(aka.name, 'Unknown'), '(', COALESCE(rt.role, 'No Role'), ')')))), ', ') AS cast_list
     FROM 
         cast_info ci
     LEFT JOIN 
@@ -39,7 +39,7 @@ cast_aggregates AS (
 company_aggregates AS (
     SELECT
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COUNT(DISTINCT mc.company_id) AS total_companies
     FROM 
         movie_companies mc

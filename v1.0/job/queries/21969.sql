@@ -18,7 +18,7 @@ WITH movie_details AS (
 cast_info_details AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_members,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_members,
         COUNT(DISTINCT ci.role_id) AS roles_count,
         COUNT(DISTINCT ci.nr_order) AS nr_order_count
     FROM 

@@ -46,4 +46,4 @@ LEFT JOIN RelevantOrders ro ON ro.lineitem_count > 0
 WHERE (r.p_retailprice IS NOT NULL AND r.p_retailprice > 200)
   OR (r.p_name LIKE '%fragile%' AND ts.s_acctbal < 1000)
 ORDER BY r.price_category DESC, ts.s_name ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

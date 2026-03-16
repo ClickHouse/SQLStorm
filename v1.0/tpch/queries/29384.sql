@@ -8,7 +8,7 @@ SELECT
         WHEN CHAR_LENGTH(p.p_name) BETWEEN 10 AND 30 THEN 1 
         ELSE 0 
     END) AS medium_length_name_count,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ': ', r.r_name), '; ') AS nation_region_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ': ', r.r_name)))), '; ') AS nation_region_details
 FROM 
     part p
 JOIN 
@@ -25,4 +25,4 @@ GROUP BY
     p.p_mfgr
 ORDER BY 
     supplier_count DESC, total_avail_qty DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

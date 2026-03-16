@@ -20,9 +20,9 @@ SELECT
     r.r_name,
     COUNT(DISTINCT ns.n_nationkey) AS nation_count,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     CASE 
-        WHEN MAX(l.l_shipdate) < cast('1998-10-01' as date) - INTERVAL '1 year' THEN 'Inactive'
+        WHEN MAX(l.l_shipdate) < cast('1998-10-01' as date) - INTERVAL 1 YEAR THEN 'Inactive'
         ELSE 'Active'
     END AS supplier_status
 FROM region r

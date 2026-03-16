@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         COALESCE(p.AcceptedAnswerId, 0) AS AcceptedAnswerId,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        string_agg(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2  
     LEFT JOIN 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '>')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('>', substring(p.Tags, 2, length(p.Tags)-2))) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -30,7 +30,7 @@ FilteredPosts AS (
     FROM 
         RankedPosts rp
     WHERE 
-        rp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
+        rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 )
 SELECT 
     fp.PostId,

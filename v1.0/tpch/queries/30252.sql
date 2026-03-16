@@ -19,7 +19,7 @@ SalesSummary AS (
         AVG(o.o_totalprice) AS avg_order_value
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    WHERE o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY c.c_nationkey
 ),
 PartSupplier AS (
@@ -53,4 +53,4 @@ LEFT JOIN supplier s ON s.s_suppkey = p.p_partkey
 GROUP BY fn.n_name
 HAVING SUM(ss.total_revenue) > 1000000
 ORDER BY total_orders DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

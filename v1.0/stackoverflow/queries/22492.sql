@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 TopUsers AS (
     SELECT 
@@ -35,7 +35,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT c.UserDisplayName) AS CommentingUsers 
+        arrayDistinct(groupArray(assumeNotNull(c.UserDisplayName))) AS CommentingUsers 
     FROM 
         Comments c
     GROUP BY 

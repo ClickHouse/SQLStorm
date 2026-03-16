@@ -34,7 +34,7 @@ TopUsers AS (
 TaggedPosts AS (
     SELECT 
         u.Id AS UserId,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Tags t
     JOIN 

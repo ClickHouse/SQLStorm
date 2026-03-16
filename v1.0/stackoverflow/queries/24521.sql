@@ -15,14 +15,14 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
         AND p.Score > (SELECT AVG(Score) FROM Posts)  
 ),
 PostComments AS (
     SELECT 
         c.PostId,
         COUNT(*) AS CommentCount,
-        STRING_AGG(c.Text, '; ' ORDER BY c.CreationDate) AS CommentsSummary
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ' ORDER BY c.CreationDate) AS CommentsSummary
     FROM 
         Comments c
     GROUP BY 
@@ -32,7 +32,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS Badges 
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges 
     FROM 
         Badges b
     WHERE 
@@ -62,4 +62,4 @@ WHERE
     (rp.Rank <= 5 OR ub.BadgeCount > 0)  
 ORDER BY 
     rp.Score DESC, rp.CreationDate ASC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

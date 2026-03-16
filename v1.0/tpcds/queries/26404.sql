@@ -5,7 +5,7 @@ WITH AddressInfo AS (
         ca_state,
         ca_zip,
         COUNT(DISTINCT ca_address_id) AS AddressCount,
-        STRING_AGG(DISTINCT ca_street_name, ', ') AS UniqueStreetNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), ', ') AS UniqueStreetNames
     FROM 
         customer_address 
     WHERE 

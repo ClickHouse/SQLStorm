@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
 ), 
 TopPosts AS (
@@ -44,7 +44,7 @@ SELECT
         ELSE 'Not Active' 
     END AS PostStatus,
     SUM(CASE WHEN c.UserId IS NOT NULL THEN 1 ELSE 0 END) OVER (PARTITION BY tp.PostId) AS CommentCount,
-    (SELECT STRING_AGG(tag.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ') 
      FROM Tags tag 
      INNER JOIN Posts p ON tag.ExcerptPostId = p.Id 
      WHERE p.Id = tp.PostId

@@ -33,7 +33,7 @@ LEFT JOIN customer c ON n.n_nationkey = c.c_nationkey
 LEFT JOIN orders o ON c.c_custkey = o.o_custkey
 LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 WHERE r.r_name IS NOT NULL
-AND l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1997-12-31'
+AND l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1997-12-31')
 GROUP BY r.r_name
 HAVING COUNT(DISTINCT c.c_custkey) > 10
 ORDER BY total_sales DESC

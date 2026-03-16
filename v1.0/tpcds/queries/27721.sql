@@ -3,8 +3,8 @@ WITH AddressAnalysis AS (
     SELECT 
         ca_country,
         COUNT(DISTINCT c_customer_sk) AS customer_count,
-        STRING_AGG(DISTINCT ca_city, ', ') AS unique_cities,
-        STRING_AGG(DISTINCT ca_state, ', ') AS unique_states,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS unique_cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_state))), ', ') AS unique_states,
         AVG(ca_gmt_offset) AS avg_gmt_offset
     FROM 
         customer_address ca
@@ -18,7 +18,7 @@ DemographicAnalysis AS (
         cd_gender,
         COUNT(DISTINCT c_customer_sk) AS count_by_gender,
         SUM(cd_dep_count) AS total_dependencies,
-        STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses
     FROM 
         customer_demographics cd
     JOIN 

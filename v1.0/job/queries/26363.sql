@@ -42,8 +42,8 @@ ActorMovies AS (
 SELECT 
     fm.title,
     fm.production_year,
-    STRING_AGG(DISTINCT am.actor_name, ', ') AS actor_list,
-    STRING_AGG(DISTINCT am.actor_info, ', ') AS actor_birthdates
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(am.actor_name))), ', ') AS actor_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(am.actor_info))), ', ') AS actor_birthdates
 FROM 
     FilteredMovies fm
 LEFT JOIN 

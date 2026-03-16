@@ -7,8 +7,8 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' 
-        AND o.o_orderdate < DATE '1997-01-01'
+        o.o_orderdate >= toDate('1996-01-01') 
+        AND o.o_orderdate < toDate('1997-01-01')
 ),
 SupplierDetails AS (
     SELECT 
@@ -36,7 +36,7 @@ FilteredLineItems AS (
     FROM 
         lineitem li
     WHERE 
-        li.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year'
+        li.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         li.l_orderkey, li.l_partkey, li.l_quantity, li.l_extendedprice, li.l_discount
 )

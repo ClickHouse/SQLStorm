@@ -45,4 +45,4 @@ LEFT JOIN customer_hierarchy ch ON ch.c_custkey = ps.s_suppkey
 WHERE (ps.total_availqty IS NOT NULL OR ts.total_sales IS NOT NULL)
   AND (p.p_retailprice BETWEEN 10.00 AND 500.00 OR p.p_type LIKE '%Mechanical%')
 ORDER BY p.p_partkey
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

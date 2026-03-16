@@ -27,7 +27,7 @@ FilteredMovies AS (
 MovieGenres AS (
     SELECT
         mt.movie_id,
-        STRING_AGG(kt.keyword, ', ') AS genres
+        arrayStringConcat(groupArray(assumeNotNull(kt.keyword)), ', ') AS genres
     FROM
         movie_keyword mt
     JOIN
@@ -38,7 +38,7 @@ MovieGenres AS (
 MovieCast AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast
     FROM 
         cast_info ci
     JOIN 

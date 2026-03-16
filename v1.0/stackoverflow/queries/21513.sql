@@ -64,7 +64,7 @@ SELECT
         ELSE 'Negative'
     END AS ScoreStatus,
     CASE 
-        WHEN epd.LastEditDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Outdated'
+        WHEN epd.LastEditDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Outdated'
         ELSE 'Recent'
     END AS EditRecency
 FROM EnhancedPostDetails epd

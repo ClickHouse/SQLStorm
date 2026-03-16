@@ -17,11 +17,11 @@ PostHistories AS (
         ph.PostId,
         MIN(ph.CreationDate) AS FirstEditDate,
         COUNT(ph.Id) AS EditCount,
-        STRING_AGG(DISTINCT CASE 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE 
             WHEN ph.PostHistoryTypeId IN (4, 5, 6) THEN 'Edited'
             WHEN ph.PostHistoryTypeId IN (10, 11) THEN 'Closed'
             ELSE NULL
-        END, ', ') AS HistoryTypes
+        END))), ', ') AS HistoryTypes
     FROM 
         PostHistory ph
     GROUP BY 
@@ -61,9 +61,9 @@ LEFT JOIN
 LEFT JOIN 
     AggregatedVotes av ON rp.PostId = av.PostId
 WHERE 
-    rp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     AND (ph.EditCount IS NULL OR ph.EditCount > 0) 
 ORDER BY 
     rp.Score DESC,
     rp.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

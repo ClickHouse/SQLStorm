@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     AVG(o.o_totalprice) AS average_order_value,
     MAX(l.l_extendedprice) AS max_line_item_price,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     supplier s
 JOIN 

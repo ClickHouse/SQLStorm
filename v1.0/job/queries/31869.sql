@@ -56,7 +56,7 @@ SELECT
     hl.production_year,
     hl.max_cast_count,
     hl.min_cast_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
 FROM 
     highlights hl
 LEFT JOIN 

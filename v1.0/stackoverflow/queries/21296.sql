@@ -16,7 +16,7 @@ WITH RankedPost AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= DATE '2020-01-01' 
+        p.CreationDate >= toDate('2020-01-01') 
         AND p.Body IS NOT NULL 
         AND (p.Title IS NOT NULL OR p.Tags IS NOT NULL)
     GROUP BY 
@@ -35,7 +35,7 @@ FilteredPost AS (
         RankedPost rp
     WHERE 
         rp.RN = 1 
-        AND (EXTRACT(DOW FROM rp.CreationDate) = 0 OR rp.ViewCount > 100) 
+        AND (toDayOfWeek(rp.CreationDate) = 0 OR rp.ViewCount > 100) 
 )
 SELECT 
     fp.PostId,
@@ -49,7 +49,7 @@ SELECT
         WHEN fp.UpVotes >= 10 THEN 'Popular'
         ELSE 'Regular'
     END AS PostStatus,
-    STRING_AGG(t.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
 FROM 
     FilteredPost fp
 LEFT JOIN 

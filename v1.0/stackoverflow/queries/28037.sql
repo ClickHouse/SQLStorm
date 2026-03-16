@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Body,
         u.DisplayName AS Author,
-        STRING_AGG(t.TagName, ', ') AS Tags,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        LATERAL (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '> <')) AS TagName) t ON TRUE
+        (SELECT arrayJoin(splitByString('> <', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName) t ON TRUE
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Body, u.DisplayName
 )

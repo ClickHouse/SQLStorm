@@ -2,9 +2,9 @@
 SELECT 
     t.title AS movie_title,
     COUNT(DISTINCT c.person_id) AS cast_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-    STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
     AVG(CASE WHEN mi.info_type_id IS NOT NULL THEN LENGTH(mi.info) ELSE NULL END) AS avg_info_length
 FROM 
     title t

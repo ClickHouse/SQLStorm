@@ -33,4 +33,4 @@ HAVING
     COUNT(l.l_orderkey) > 10
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

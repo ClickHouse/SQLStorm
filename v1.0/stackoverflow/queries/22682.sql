@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 
 PostSummaries AS (
@@ -41,7 +41,7 @@ PostSummaries AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(b.Id) FILTER (WHERE b.Class = 1) AS GoldBadges,
         COUNT(b.Id) FILTER (WHERE b.Class = 2) AS SilverBadges,
         COUNT(b.Id) FILTER (WHERE b.Class = 3) AS BronzeBadges

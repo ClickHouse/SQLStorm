@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(p.p_retailprice) AS avg_price,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ' (', r.r_name, ')'), ', ') AS supplier_locations,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ' (', r.r_name, ')')))), ', ') AS supplier_locations,
     MAX(o.o_orderdate) AS last_order_date
 FROM 
     part p
@@ -22,7 +22,7 @@ JOIN
 WHERE 
     p.p_name LIKE '%steel%' 
     AND o.o_orderstatus = 'O'
-    AND o.o_orderdate >= DATE '1997-01-01'
+    AND o.o_orderdate >= toDate('1997-01-01')
 GROUP BY 
     p.p_name
 HAVING 

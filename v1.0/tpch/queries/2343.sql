@@ -11,7 +11,7 @@ WITH RankedOrders AS (
     FROM 
         orders
     WHERE 
-        o_orderdate >= DATE '1997-01-01'
+        o_orderdate >= toDate('1997-01-01')
 ),
 HighValueCustomers AS (
     SELECT 
@@ -64,7 +64,7 @@ SalesByRegion AS (
     JOIN 
         nation n ON c.c_nationkey = n.n_nationkey
     WHERE 
-        l.l_shipdate >= DATE '1997-01-01'
+        l.l_shipdate >= toDate('1997-01-01')
     GROUP BY 
         n.n_name
 )
@@ -87,7 +87,7 @@ JOIN
             region n 
         WHERE 
             n.r_regionkey = h.c_custkey % 5
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
 WHERE 
     h.total_spent IS NOT NULL

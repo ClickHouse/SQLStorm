@@ -39,7 +39,7 @@ SELECT
     tm.production_year,
     COALESCE(mk.keyword, 'No Keywords') AS keyword,
     (SELECT COUNT(*) FROM movie_info mi WHERE mi.movie_id = tm.production_year) AS info_count,
-    (SELECT STRING_AGG(DISTINCT p.info, ', ') FROM person_info p WHERE p.person_id IN (SELECT DISTINCT c.person_id FROM cast_info c WHERE c.movie_id = (SELECT id FROM aka_title WHERE title = tm.title LIMIT 1))) AS cast_infos
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.info))), ', ') FROM person_info p WHERE p.person_id IN (SELECT DISTINCT c.person_id FROM cast_info c WHERE c.movie_id = (SELECT id FROM aka_title WHERE title = tm.title LIMIT 1))) AS cast_infos
 FROM
     TopMovies tm
 LEFT JOIN 

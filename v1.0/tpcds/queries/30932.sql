@@ -13,7 +13,7 @@ SELECT
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
     SUM(ws.ws_net_profit) AS total_net_profit,
     MAX(ws.ws_sales_price) AS max_sales_price,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customer_names,
     cast('2002-10-01' as date) AS report_date
 FROM customer_address ca
 LEFT JOIN customer c ON c.c_current_addr_sk = ca.ca_address_sk

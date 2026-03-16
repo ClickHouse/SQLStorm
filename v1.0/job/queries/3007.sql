@@ -25,7 +25,7 @@ TopMovies AS (
 MovieKeywords AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -40,7 +40,7 @@ SELECT
     tm.production_year,
     COALESCE(mk.keywords, 'No keywords') AS keywords,
     COUNT(DISTINCT p.id) AS total_person_info,
-    STRING_AGG(DISTINCT p.info, '; ') AS person_info_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.info))), '; ') AS person_info_details
 FROM 
     TopMovies tm
 LEFT JOIN 

@@ -3,8 +3,8 @@ WITH RecursiveMovieCTE AS (
         m.id AS movie_id, 
         m.title AS movie_title, 
         m.production_year, 
-        ARRAY_AGG(DISTINCT c.name) AS cast_names, 
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_names, 
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         ROW_NUMBER() OVER (PARTITION BY m.id ORDER BY m.production_year DESC) AS rn
     FROM 
         aka_title m
@@ -32,8 +32,8 @@ WITH RecursiveMovieCTE AS (
 ), CompanyInfoCTE AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
-        ARRAY_AGG(DISTINCT ct.kind) AS company_types,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(ct.kind))) AS company_types,
         (SELECT COUNT(*) 
          FROM movie_companies mcs 
          WHERE mcs.movie_id = mc.movie_id) AS num_companies

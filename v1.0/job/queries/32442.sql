@@ -28,7 +28,7 @@ SELECT
     ah.id AS actor_id,
     COUNT(DISTINCT mh.movie_id) AS number_of_movies,
     SUM(COALESCE(l.length, 0)) AS total_linked_movies_length,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     AVG(CASE WHEN ai.info_type_id IS NOT NULL THEN LENGTH(ai.info) END) AS avg_info_length
 FROM 
     aka_name ah

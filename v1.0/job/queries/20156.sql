@@ -35,7 +35,7 @@ MovieDetails AS (
             WHEN m.production_year IS NULL THEN 'Unknown Year'
             ELSE CAST(m.production_year AS VARCHAR) 
         END AS production_year,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title m
     LEFT JOIN 

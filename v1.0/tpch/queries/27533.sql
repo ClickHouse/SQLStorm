@@ -27,7 +27,7 @@ SELECT
     n.n_name AS nation_name,
     COUNT(c.c_custkey) AS total_customers,
     SUM(o.o_totalprice) AS total_sales,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     OrderedSuppliers os
 JOIN 

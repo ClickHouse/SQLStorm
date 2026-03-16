@@ -7,7 +7,7 @@ WITH UserStatistics AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(p.ViewCount) AS TotalViews,
         SUM(p.Score) AS TotalScore,
-        ARRAY_AGG(DISTINCT b.Name) AS BadgeNames,
+        arrayDistinct(groupArray(assumeNotNull(b.Name))) AS BadgeNames,
         COUNT(DISTINCT c.Id) AS TotalComments
     FROM 
         Users u

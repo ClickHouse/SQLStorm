@@ -21,9 +21,9 @@ TaggedPosts AS (
            rp.ViewCount,
            rp.Score,
            rp.OwnerDisplayName,
-           STRING_AGG(t.TagName, ', ') AS TagsAggregated
+           arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsAggregated
     FROM RankedPosts rp
-    LEFT JOIN Tags t ON t.TagName IN (SELECT unnest(string_to_array(substring(rp.Tags, 2, length(rp.Tags)-2), '><')))
+    LEFT JOIN Tags t ON t.TagName IN (SELECT arrayJoin(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2))))
     GROUP BY rp.Id, rp.Title, rp.CreationDate, rp.Body, rp.ViewCount, rp.Score, rp.OwnerDisplayName
 ),
 HighScoringPosts AS (

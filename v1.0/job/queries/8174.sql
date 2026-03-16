@@ -3,8 +3,8 @@ SELECT
     a.name AS actor_name, 
     t.title AS movie_title, 
     t.production_year, 
-    STRING_AGG(DISTINCT k.keyword, ', ' ORDER BY k.keyword) AS keywords, 
-    STRING_AGG(DISTINCT c.kind, ', ' ORDER BY c.kind) AS comp_types 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ' ORDER BY k.keyword) AS keywords, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ' ORDER BY c.kind) AS comp_types 
 FROM 
     aka_name AS a 
 JOIN 

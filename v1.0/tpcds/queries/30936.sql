@@ -2,15 +2,15 @@
 WITH RECURSIVE SalesGrowth AS (
     SELECT 
         ws_sold_date_sk, 
-        EXTRACT(YEAR FROM d.d_date) AS sales_year,
+        toYear(d.d_date) AS sales_year,
         SUM(ws_sales_price) AS total_sales,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM d.d_date) ORDER BY SUM(ws_sales_price) DESC) AS sales_rank
+        ROW_NUMBER() OVER (PARTITION BY toYear(d.d_date) ORDER BY SUM(ws_sales_price) DESC) AS sales_rank
     FROM 
         web_sales ws
     JOIN 
         date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
     GROUP BY 
-        ws_sold_date_sk, EXTRACT(YEAR FROM d.d_date)
+        ws_sold_date_sk, toYear(d.d_date)
 ),
 TopGrowth AS (
     SELECT 
@@ -68,9 +68,9 @@ FROM
 JOIN 
     StoreSalesStats ss ON ci.c_customer_sk = ss.s_store_sk
 LEFT JOIN 
-    TopGrowth sg ON sg.sales_year = EXTRACT(YEAR FROM DATE '2002-10-01')
+    TopGrowth sg ON sg.sales_year = toYear(toDate('2002-10-01'))
 WHERE 
     ci.total_orders > 0
 ORDER BY 
     sg.total_sales DESC, ci.total_purchases DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -32,7 +32,7 @@ RecentOrderCount AS (
         customer c
     LEFT JOIN 
         orders o ON c.c_custkey = o.o_custkey 
-        AND o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 YEAR'
+        AND o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         c.c_custkey
 )
@@ -57,4 +57,4 @@ WHERE
     AND t.total_spent IS NOT NULL
 ORDER BY 
     t.total_spent DESC NULLS LAST
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

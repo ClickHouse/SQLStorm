@@ -31,7 +31,7 @@ SELECT
     r.role AS persons_role,
     COUNT(DISTINCT cc.id) AS total_cast,
     AVG(rw.rank) AS avg_rank,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     MovieHierarchy m
 LEFT JOIN 

@@ -36,8 +36,8 @@ SELECT
     tm.ReleaseYear,
     tm.MovieKeyword,
     tm.CastCount,
-    STRING_AGG(DISTINCT cn.name, ', ') AS CompanyNames,
-    STRING_AGG(DISTINCT pi.info, ', ') AS PersonInfo
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS CompanyNames,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pi.info))), ', ') AS PersonInfo
 FROM 
     TopMovies tm
 LEFT JOIN 

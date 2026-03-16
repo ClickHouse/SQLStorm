@@ -17,8 +17,8 @@ WITH ranked_movies AS (
         rm.title,
         rm.production_year,
         kt.kind AS movie_kind,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT kn.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kn.keyword))), ', ') AS keywords
     FROM 
         ranked_movies rm
     LEFT JOIN 

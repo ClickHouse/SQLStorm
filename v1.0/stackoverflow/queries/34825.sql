@@ -23,7 +23,7 @@ RecentPostHistory AS (
     JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ),
 TopUsers AS (
     SELECT 
@@ -38,7 +38,7 @@ SELECT
     tu.DisplayName,
     tu.PostCount,
     COUNT(rph.PostId) AS RecentChangesCount,
-    STRING_AGG(DISTINCT rph.Title, ', ') AS RecentTitles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rph.Title))), ', ') AS RecentTitles,
     CASE 
         WHEN tu.PostCount >= 10 THEN 'Active'
         ELSE 'Less Active'

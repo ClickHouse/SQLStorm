@@ -32,7 +32,7 @@ AggregateInfo AS (
     SELECT 
         person_id,
         COUNT(DISTINCT aka_id) AS aka_count,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
         MAX(production_year) AS last_movie_year
     FROM 
         MovieDetails

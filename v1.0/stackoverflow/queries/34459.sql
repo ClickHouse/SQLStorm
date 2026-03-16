@@ -24,7 +24,7 @@ ActiveUsers AS (
     SELECT u.Id AS UserId, u.DisplayName, 
            MAX(CASE WHEN p.OwnerUserId IS NOT NULL THEN 'Active' ELSE 'Inactive' END) AS UserActivity
     FROM Users u
-    LEFT JOIN Posts p ON u.Id = p.OwnerUserId AND p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    LEFT JOIN Posts p ON u.Id = p.OwnerUserId AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY u.Id, u.DisplayName
 )
 SELECT 

@@ -3,7 +3,7 @@ WITH filtered_movies AS (
         mk.movie_id,
         mt.title AS movie_title,
         mt.production_year,
-        ARRAY_AGG(DISTINCT ak.name) AS aka_names
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aka_names
     FROM 
         movie_keyword mk
     JOIN 
@@ -28,7 +28,7 @@ WITH filtered_movies AS (
 brief_cast AS (
     SELECT 
         ci.movie_id, 
-        STRING_AGG(DISTINCT cn.name, ', ') AS cast_names, 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS cast_names, 
         COUNT(DISTINCT ci.person_id) AS num_cast_members
     FROM 
         cast_info ci

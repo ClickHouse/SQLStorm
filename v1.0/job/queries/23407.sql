@@ -26,7 +26,7 @@ CompanyStats AS (
         M.movie_id,
         C.name AS company_name,
         COUNT(*) AS company_count,
-        STRING_AGG(DISTINCT CT.kind, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CT.kind))), ', ') AS company_types
     FROM
         movie_companies M
     JOIN

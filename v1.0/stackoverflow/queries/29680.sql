@@ -19,13 +19,13 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
     GROUP BY 
         p.Id, u.DisplayName
 ),
 TagAnalysis AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS Tag,
+        arrayJoin(splitByString('>', Tags)) AS Tag,
         p.ViewCount,
         p.CommentCount,
         p.UpVotes,

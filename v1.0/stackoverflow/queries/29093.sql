@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><'))) AS tag,
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS tag,
         COUNT(*) AS total_posts
     FROM 
         Posts
@@ -44,7 +44,7 @@ SELECT
     COALESCE(PA.close_count, 0) AS close_count,
     COALESCE(PA.reopen_count, 0) AS reopen_count,
     COALESCE(PA.delete_count, 0) AS delete_count,
-    STRING_AGG(DISTINCT TC.tag, ', ') AS popular_tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(TC.tag))), ', ') AS popular_tags
 FROM 
     Users U
 LEFT JOIN 

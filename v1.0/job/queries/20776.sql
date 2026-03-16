@@ -39,7 +39,7 @@ SELECT
     tm.production_year,
     tm.actor_count,
     COALESCE(cn.name, 'Unknown Company') AS company_name,
-    STRING_AGG(DISTINCT kt.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS keywords,
     MAX(CASE WHEN it.info = 'summary' THEN mi.info END) AS movie_summary,
     COUNT(mr.linked_movie_id) AS related_movie_count
 FROM 

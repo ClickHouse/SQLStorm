@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         COUNT(c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS ScoreRank
     FROM 
         Posts p
@@ -18,9 +18,9 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS t(TagName) ON TRUE
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' AND p.ViewCount > 100
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND p.ViewCount > 100
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId, u.DisplayName, p.Score, p.ViewCount, p.PostTypeId
 ),
@@ -38,11 +38,11 @@ SELECT
     tp.Score,
     tp.ViewCount,
     tp.CommentCount,
-    STRING_AGG(tag, ', ') AS TagsList
+    arrayStringConcat(groupArray(assumeNotNull(tag)), ', ') AS TagsList
 FROM 
     TopPosts tp
 JOIN 
-    UNNEST(tp.Tags) AS tag ON TRUE
+    arrayJoin(tp.Tags) AS tag ON TRUE
 GROUP BY 
     tp.Title, tp.OwnerDisplayName, tp.Score, tp.ViewCount, tp.CommentCount
 ORDER BY 

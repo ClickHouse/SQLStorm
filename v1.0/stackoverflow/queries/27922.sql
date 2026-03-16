@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY Tag ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p,
-        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '>')) AS Tag
+        arrayJoin(splitByString('>', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag
     WHERE 
         p.PostTypeId = 1 
 ), 
@@ -40,7 +40,7 @@ PostStatistics AS (
     FROM 
         TopRankedPosts tp
     CROSS JOIN 
-        UNNEST(string_to_array(tp.Tags, '>')) AS Tag
+        arrayJoin(splitByString('>', tp.Tags)) AS Tag
     GROUP BY 
         Tag
 )
@@ -50,7 +50,7 @@ SELECT
     ps.TotalPosts,
     ps.AvgViews,
     ps.PositiveScoreCount,
-    STRING_AGG(tp.Title, '; ') AS TopPostTitles
+    arrayStringConcat(groupArray(assumeNotNull(tp.Title)), '; ') AS TopPostTitles
 FROM 
     PostStatistics ps
 JOIN 

@@ -32,7 +32,7 @@ SELECT
     cct.kind AS casting_type,
     ROW_NUMBER() OVER (PARTITION BY m.production_year ORDER BY m.title) AS row_num,
     COALESCE(NULLIF(m.note, ''), 'No note available') AS movie_note,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     aka_title m
 LEFT JOIN 

@@ -39,6 +39,6 @@ LEFT JOIN LineItemAnalysis lp ON ro.o_orderkey = lp.l_orderkey
 LEFT JOIN SupplierParts sp ON ro.o_orderkey = sp.ps_partkey
 LEFT JOIN RegionSupplier rs ON rs.supplier_count > 2
 WHERE ro.order_rank <= 5 
-  AND (ro.o_totalprice >= 100 OR ro.o_orderdate < cast('1998-10-01' as date) - INTERVAL '30 days')
+  AND (ro.o_totalprice >= 100 OR ro.o_orderdate < cast('1998-10-01' as date) - INTERVAL 30 DAY)
 ORDER BY ro.o_totalprice DESC, rs.r_regionkey ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

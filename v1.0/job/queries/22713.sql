@@ -24,7 +24,7 @@ movie_details AS (
     SELECT 
         ht.title,
         ht.production_year,
-        STRING_AGG(DISTINCT ha.actor_name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ha.actor_name))), ', ') AS actors
     FROM 
         aka_title ht
     LEFT JOIN 

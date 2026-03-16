@@ -14,7 +14,7 @@ HighCastMovies AS (
     SELECT 
         m.movie_id,
         COUNT(*) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors
     FROM 
         cast_info m
     JOIN 

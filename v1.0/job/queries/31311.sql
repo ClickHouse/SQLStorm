@@ -28,7 +28,7 @@ cast_summary AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        ARRAY_AGG(DISTINCT ak.name) AS cast_names
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS cast_names
     FROM 
         cast_info AS ci
     JOIN 
@@ -69,7 +69,7 @@ SELECT
     COALESCE(md.total_cast, 0) AS total_cast,
     COALESCE(md.total_keywords, 0) AS total_keywords,
     md.depth,
-    STRING_AGG(DISTINCT ak.name, ', ') AS cast_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names
 FROM 
     movie_details AS md
 LEFT JOIN 

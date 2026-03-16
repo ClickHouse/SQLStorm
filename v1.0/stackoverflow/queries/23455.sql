@@ -11,8 +11,8 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
-        AND p.Score >= (SELECT AVG(Score) FROM Posts WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days')
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        AND p.Score >= (SELECT AVG(Score) FROM Posts WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY)
 ),
 UserBadges AS (
     SELECT 
@@ -57,14 +57,14 @@ PostEngagement AS (
 PostHistoryAggregate AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         COUNT(DISTINCT ph.Id) AS EditCount
     FROM 
         PostHistory ph
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate > cast('2024-10-01' as date) - INTERVAL '90 days'
+        ph.CreationDate > cast('2024-10-01' as date) - INTERVAL 90 DAY
     GROUP BY 
         ph.PostId
 )

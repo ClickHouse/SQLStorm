@@ -55,7 +55,7 @@ FROM
         RegionNation rn ON ss.s_suppkey = cs.TotalOrders
     ) AS rs
 WHERE 
-    rs.LastOrderDate > cast('1998-10-01' as date) - INTERVAL '1 year'
+    rs.LastOrderDate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
     AND (rs.TotalSupplyCost IS NOT NULL OR rs.TotalOrderValue IS NOT NULL)
 ORDER BY 
     rs.RegionName, Rank

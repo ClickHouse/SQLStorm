@@ -22,6 +22,6 @@ SELECT
     COUNT(*) AS total_entries,
     COUNT(DISTINCT trimmed_part_type) AS unique_part_types,
     COUNT(DISTINCT short_supplier_comment) AS unique_comments,
-    STRING_AGG(updated_comment, '; ') AS aggregated_updated_comments
+    arrayStringConcat(groupArray(assumeNotNull(updated_comment)), '; ') AS aggregated_updated_comments
 FROM 
     String_Processing_Benchmark;

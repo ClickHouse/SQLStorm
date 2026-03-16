@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS Rank
     FROM Posts p
-    WHERE p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 RecentUserStats AS (
     SELECT
@@ -22,14 +22,14 @@ RecentUserStats AS (
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE u.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE u.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY u.Id, u.Reputation
 ),
 ClosedPosts AS (
     SELECT
         ph.PostId,
         COUNT(*) AS CloseReasonCount,
-        ARRAY_AGG(DISTINCT crt.Name) AS CloseReasons
+        arrayDistinct(groupArray(assumeNotNull(crt.Name))) AS CloseReasons
     FROM PostHistory ph
     INNER JOIN CloseReasonTypes crt ON CAST(ph.Comment AS INTEGER) = crt.Id
     WHERE ph.PostHistoryTypeId = 10

@@ -21,7 +21,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE
-        v.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        v.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         v.PostId
 ),
@@ -57,7 +57,7 @@ LEFT JOIN
     ClosedPosts cp ON up.PostId = cp.PostId
 WHERE 
     up.Rank = 1
-    AND (cp.ClosedDate IS NULL OR cp.ClosedDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '60 days')
+    AND (cp.ClosedDate IS NULL OR cp.ClosedDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 60 DAY)
 ORDER BY 
     up.Score DESC, up.CreationDate DESC
 LIMIT 100;

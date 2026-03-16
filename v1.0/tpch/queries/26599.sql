@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS order_count, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(l.l_quantity) AS avg_quantity,
-    STRING_AGG(DISTINCT CONCAT_WS(' - ', s.s_address, s.s_phone), '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' - ', s.s_address, s.s_phone)))), '; ') AS supplier_details
 FROM 
     part p
 JOIN 
@@ -20,7 +20,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     p.p_name LIKE '%Widget%' 
-    AND o.o_orderdate >= DATE '1997-01-01' 
+    AND o.o_orderdate >= toDate('1997-01-01') 
 GROUP BY 
     p.p_name, s.s_name, c.c_name
 HAVING 

@@ -8,7 +8,7 @@ active_orders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, c.c_mktsegment
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= toDate('1997-01-01')
 ),
 line_item_summary AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue

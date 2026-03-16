@@ -50,4 +50,4 @@ WHERE
     a.sanitized_city LIKE 'San%'
 ORDER BY 
     total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -6,7 +6,7 @@ WITH MovieDetails AS (
         c.name AS company_name,
         c.country_code,
         k.keyword AS movie_keyword,
-        ARRAY_AGG(DISTINCT a.name) AS actor_names
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actor_names
     FROM 
         aka_title t
     JOIN 
@@ -32,7 +32,7 @@ RoleStatistics AS (
     SELECT 
         role_id,
         COUNT(DISTINCT movie_id) AS movie_count,
-        ARRAY_AGG(DISTINCT ni.name) AS role_names
+        arrayDistinct(groupArray(assumeNotNull(ni.name))) AS role_names
     FROM 
         cast_info ci
     JOIN 

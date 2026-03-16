@@ -7,7 +7,7 @@ SELECT
         ELSE NULL 
         END) AS avg_cost_long_comments,
     MAX(l.l_shipdate) AS latest_ship_date,
-    STRING_AGG(DISTINCT c.c_name, '; ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), '; ') AS customer_names
 FROM 
     part p
 JOIN 

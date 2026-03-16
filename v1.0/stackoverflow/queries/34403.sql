@@ -16,9 +16,9 @@ PostsWithScores AS (
 RecentPosts AS (
     SELECT P.Id, P.Title, P.CreationDate,
            (SELECT COUNT(*) FROM Comments C WHERE C.PostId = P.Id) AS CommentCount,
-           (SELECT COUNT(*) FROM PostHistory PH WHERE PH.PostId = P.Id AND PH.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')) AS EditCount
+           (SELECT COUNT(*) FROM PostHistory PH WHERE PH.PostId = P.Id AND PH.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)) AS EditCount
     FROM Posts P
-    WHERE P.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '60 days')
+    WHERE P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 60 DAY)
 )
 SELECT U.DisplayName, U.Reputation, U.Rank,
        PP.Title, PP.CreationDate, PP.CommentCount, 

@@ -29,7 +29,7 @@ SELECT
     a.name AS actor_name,
     COUNT(DISTINCT ci.movie_id) AS total_movies,
     AVG(CASE WHEN mc.status_id IS NOT NULL THEN 1 ELSE 0 END) AS avg_have_complete_cast,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS associated_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS associated_keywords,
     mh.level AS movie_level,
     MIN(mh.production_year) AS first_movie_year,
     MAX(mh.production_year) AS latest_movie_year

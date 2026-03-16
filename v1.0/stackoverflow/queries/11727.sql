@@ -8,7 +8,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(P.ViewCount) AS TotalViews,
         SUM(P.Score) AS TotalScore,
-        AVG(EXTRACT(EPOCH FROM P.CreationDate)) AS AvgPostAge
+        AVG(toUnixTimestamp(P.CreationDate)) AS AvgPostAge
     FROM 
         Users U
     LEFT JOIN 

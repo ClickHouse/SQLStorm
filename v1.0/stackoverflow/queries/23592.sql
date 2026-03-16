@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
         AND p.Score > 0
 ), 
 TopRankedPosts AS (
@@ -62,7 +62,7 @@ SELECT
         WHEN pa.Score BETWEEN 5 AND 10 THEN 'Moderately Engaged'
         ELSE 'Low Engagement'
     END AS EngagementLevel,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
     SUM(COALESCE(v.BountyAmount, 0)) AS TotalBounties
 FROM 
     PostAnalytics pa
@@ -77,5 +77,4 @@ GROUP BY
 ORDER BY 
     pa.Score DESC,
     pa.CreationDate ASC
-OFFSET 5 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

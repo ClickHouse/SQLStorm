@@ -8,7 +8,7 @@ SELECT
         END) AS total_returned_quantity,
     AVG(l_extendedprice * (1 - l_discount)) AS avg_price_after_discount,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS combined_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS combined_comments
 FROM 
     part p
 JOIN 

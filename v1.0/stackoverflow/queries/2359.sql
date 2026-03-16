@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 year')
+        P.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR)
     GROUP BY 
         P.Id, P.Title, P.ViewCount, P.Score, P.PostTypeId
 ),

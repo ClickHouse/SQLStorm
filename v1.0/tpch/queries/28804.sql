@@ -19,7 +19,7 @@ JOIN
 JOIN 
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND p.p_retailprice > 50.00
     AND s.s_comment LIKE '%reliable%'
 GROUP BY 

@@ -16,7 +16,7 @@ WITH RankedMovies AS (
 DetailedCastInfo AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
         COUNT(DISTINCT c.person_id) AS num_actors
     FROM 
         cast_info c

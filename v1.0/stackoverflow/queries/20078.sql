@@ -22,7 +22,7 @@ ActivePosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.OwnerUserId
 ),
 PostHistoryStats AS (
@@ -31,9 +31,9 @@ PostHistoryStats AS (
         MIN(ph.CreationDate) AS FirstEditedDate,
         MAX(ph.CreationDate) AS LastEditedDate,
         COUNT(*) AS EditCount,
-        STRING_AGG(DISTINCT CASE WHEN ph.PostHistoryTypeId = 4 THEN 'Edited Title'
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId = 4 THEN 'Edited Title'
                                  WHEN ph.PostHistoryTypeId = 5 THEN 'Edited Body'
-                                 ELSE 'Other' END, ', ') AS EditTypes
+                                 ELSE 'Other' END))), ', ') AS EditTypes
     FROM PostHistory ph
     GROUP BY ph.PostId
 ),
@@ -42,7 +42,7 @@ UserPostInfo AS (
         u.Id AS UserId,
         COUNT(ap.PostId) AS ActivePostCount,
         SUM(ph.EditCount) AS TotalEdits,
-        STRING_AGG(DISTINCT ph.EditTypes, '; ') AS EditTypesSummary,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.EditTypes))), '; ') AS EditTypesSummary,
         MAX(r.UserRank) AS HighestUserRank
     FROM Users u
     LEFT JOIN ActivePosts ap ON u.Id = ap.OwnerUserId

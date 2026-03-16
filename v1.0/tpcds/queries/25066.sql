@@ -42,7 +42,7 @@ SELECT
     c.c_last_name AS last_name,
     c.c_email_address AS email_address,
     COUNT(*) AS unique_addresses,
-    STRING_AGG(c.full_address, '; ') AS all_addresses,
+    arrayStringConcat(groupArray(assumeNotNull(c.full_address)), '; ') AS all_addresses,
     c.cd_gender AS gender,
     c.cd_marital_status AS marital_status,
     SUM(c.cd_purchase_estimate) AS total_purchase_estimate

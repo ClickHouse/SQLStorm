@@ -37,7 +37,7 @@ SELECT
     fm.title,
     fm.production_year,
     fm.total_companies,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     FilteredMovies fm
 LEFT JOIN 

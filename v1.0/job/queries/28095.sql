@@ -42,8 +42,8 @@ KeywordSummary AS (
 MovieActorSummary AS (
     SELECT 
         movie_title,
-        STRING_AGG(DISTINCT actor_name, ', ') AS actors,
-        STRING_AGG(DISTINCT actor_role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_role))), ', ') AS roles
     FROM 
         MovieDetails
     GROUP BY 
@@ -56,7 +56,7 @@ SELECT
     k.keyword_count,
     a.actors,
     a.roles,
-    STRING_AGG(DISTINCT m.company_name || ' (' || m.company_type || ')', '; ') AS production_companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.company_name || ' (' || m.company_type || ')'))), '; ') AS production_companies
 FROM 
     MovieDetails m
 JOIN 

@@ -47,7 +47,7 @@ MovieRank AS (
 SELECT 
     mr.movie_title,
     mr.production_year,
-    STRING_AGG(mr.actor_name || ' (' || mr.role_name || ')' , ', ') AS cast_details,
+    arrayStringConcat(groupArray(assumeNotNull(mr.actor_name || ' (' || mr.role_name || ')')), ', ') AS cast_details,
     CASE 
         WHEN mr.keyword_count IS NULL THEN 'No Keywords'
         ELSE CAST(mr.keyword_count AS TEXT)

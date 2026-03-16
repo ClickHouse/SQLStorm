@@ -4,7 +4,7 @@ SELECT
     at.title AS movie_title,
     at.production_year,
     ct.kind AS company_kind,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     aka_name a
 JOIN 

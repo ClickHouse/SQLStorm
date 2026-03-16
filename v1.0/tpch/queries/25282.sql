@@ -5,7 +5,7 @@ SELECT
     UPPER(p.p_mfgr) AS mfgr_upper,
     SUBSTRING(p.p_comment, 1, 10) AS short_comment,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     COUNT(DISTINCT o.o_orderkey) FILTER (WHERE o.o_orderstatus = 'O') AS open_orders,
     MAX(p.p_retailprice) OVER (PARTITION BY p.p_type) AS max_price_by_type,
     REPLACE(p.p_container, 'Box', 'Container') AS updated_container

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, u.DisplayName
 )
@@ -29,7 +29,7 @@ SELECT
     rp.VoteCount,
     (
         SELECT 
-            STRING_AGG(CONCAT(c.UserDisplayName, ': ', c.Text), '; ')
+            arrayStringConcat(groupArray(assumeNotNull(CONCAT(c.UserDisplayName, ': ', c.Text))), '; ')
         FROM 
             Comments c 
         WHERE 
@@ -37,7 +37,7 @@ SELECT
     ) AS Comments,
     (
         SELECT 
-            STRING_AGG(CONCAT(ph.CreationDate, ' - ', pht.Name, ': ', ph.Text), '; ')
+            arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.CreationDate, ' - ', pht.Name, ': ', ph.Text))), '; ')
         FROM 
             PostHistory ph
         JOIN 

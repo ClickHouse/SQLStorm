@@ -54,7 +54,7 @@ PopularMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(CAST(mk.keyword_id AS text), ', ') AS keyword_ids
+        arrayStringConcat(groupArray(assumeNotNull(CAST(mk.keyword_id AS text))), ', ') AS keyword_ids
     FROM 
         movie_keyword mk
     GROUP BY 

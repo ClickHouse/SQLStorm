@@ -49,7 +49,7 @@ final_actor_stats AS (
         actor_name,
         COUNT(DISTINCT movie_title) AS total_movies,
         AVG(production_year) AS avg_production_year,
-        STRING_AGG(DISTINCT movie_type, ', ') AS movie_category,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_type))), ', ') AS movie_category,
         SUM(CASE WHEN movie_order = 1 THEN 1 ELSE 0 END) AS latest_movie_flag
     FROM 
         actor_movies

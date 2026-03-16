@@ -8,7 +8,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         SUM(p.Score) AS TotalScore,
         SUM(p.ViewCount) AS TotalViewCount,
-        AVG(EXTRACT(epoch FROM p.CreationDate)) AS AvgPostDate, -- Using standard SQL for date handling
+        AVG(toUnixTimestamp(p.CreationDate)) AS AvgPostDate, -- Using standard SQL for date handling
         COALESCE(SUM(c.CommentCount), 0) AS TotalComments
     FROM 
         Users u

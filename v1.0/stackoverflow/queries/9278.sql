@@ -47,7 +47,7 @@ FROM
 JOIN 
     RecentActivity ra ON rp.PostId = ra.PostId
 WHERE 
-    ra.LastActivityDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    ra.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ORDER BY 
     rp.Rank
 LIMIT 10;

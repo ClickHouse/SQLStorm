@@ -23,10 +23,10 @@ PostDetails AS (
         p.ViewCount, 
         p.AnswerCount, 
         COALESCE(p.AcceptedAnswerId, -1) AS AcceptedAnswerId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM Posts p
     LEFT JOIN Tags t ON t.ExcerptPostId = p.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.OwnerUserId, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount
 ),
 VoteDetails AS (
@@ -36,7 +36,7 @@ VoteDetails AS (
                  WHEN v.VoteTypeId = 3 THEN -1 
                  ELSE 0 END) AS NetVotes
     FROM Votes v
-    WHERE v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY v.PostId
 )
 
@@ -68,5 +68,5 @@ LEFT JOIN (
 ) CTE_RolledBackPosts ON pd.PostId = CTE_RolledBackPosts.PostId
 LEFT JOIN PostHistory ph ON pd.PostId = ph.PostId AND ph.UserId IS NOT NULL
 WHERE ur.ReputationRank <= 100 
-AND pd.CreationDate < cast('2024-10-01' as date) - INTERVAL '30 days'
+AND pd.CreationDate < cast('2024-10-01' as date) - INTERVAL 30 DAY
 ORDER BY ur.Reputation DESC, pd.ViewCount DESC;

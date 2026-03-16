@@ -34,7 +34,7 @@ SELECT
     tm.cast_count,
     ak.name AS actor_name,
     pi.info AS actor_info,
-    STRING_AGG(kw.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') AS keywords
 FROM 
     TopMovies tm
 JOIN 

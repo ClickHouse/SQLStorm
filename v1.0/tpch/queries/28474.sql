@@ -8,8 +8,8 @@ WITH SupplierDetails AS (
 ), AggregatedSupplier AS (
     SELECT COUNT(DISTINCT s_suppkey) AS SupplierCount, 
            SUM(ps_supplycost) AS TotalSupplyCost,
-           STRING_AGG(DISTINCT SupplierInfo, '; ') AS AllSuppliers,
-           STRING_AGG(DISTINCT PartInfo, '; ') AS AllParts
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SupplierInfo))), '; ') AS AllSuppliers,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PartInfo))), '; ') AS AllParts
     FROM SupplierDetails
 )
 SELECT SupplierCount, TotalSupplyCost, AllSuppliers, AllParts

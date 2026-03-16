@@ -34,7 +34,7 @@ TopActors AS (
 SELECT 
     ta.actor_name,
     ta.movie_count,
-    STRING_AGG(rm.movie_title, ', ') AS movies_list
+    arrayStringConcat(groupArray(assumeNotNull(rm.movie_title)), ', ') AS movies_list
 FROM 
     TopActors ta
 LEFT JOIN 

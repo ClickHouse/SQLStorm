@@ -5,7 +5,7 @@ WITH StringProcessing AS (
         s.s_name AS supplier_name,
         c.c_name AS customer_name,
         COUNT(DISTINCT o.o_orderkey) AS order_count,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nation_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nation_names,
         LENGTH(p.p_comment) AS comment_length,
         p.p_comment AS part_comment,
         CONCAT('Supplier: ', s.s_name, ' | Customer: ', c.c_name) AS details

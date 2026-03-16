@@ -4,8 +4,8 @@ SELECT
     t.production_year,
     p.gender AS actor_gender,
     COUNT(DISTINCT c.id) AS total_roles,
-    STRING_AGG(DISTINCT r.role, ', ') AS roles,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     aka_name a
 JOIN 

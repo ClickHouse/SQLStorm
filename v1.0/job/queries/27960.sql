@@ -5,8 +5,8 @@ WITH movie_details AS (
         t.production_year,
         c.name AS company_name,
         COUNT(DISTINCT ca.id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS alternate_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS alternate_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title t
     LEFT JOIN 

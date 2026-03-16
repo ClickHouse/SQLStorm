@@ -16,7 +16,7 @@ WITH RECURSIVE SupplierCTE AS (
            COUNT(DISTINCT l.l_partkey) AS distinct_parts, o.o_orderdate
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
     GROUP BY o.o_orderkey, o.o_orderdate
 ), RankedOrders AS (
     SELECT os.o_orderkey, os.total_sales, os.distinct_parts, os.o_orderdate,

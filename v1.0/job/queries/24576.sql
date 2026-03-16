@@ -39,7 +39,7 @@ MoviesWithInfo AS (
         t.title,
         t.production_year,
         COUNT(mi.info) AS info_count,
-        STRING_AGG(mi.info, ', ') AS all_info
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS all_info
     FROM 
         title t
     LEFT JOIN 

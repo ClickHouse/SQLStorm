@@ -21,8 +21,8 @@ CompleteMovieInfo AS (
     LEFT JOIN MovieKeywords mk ON mt.movie_id = mk.movie_id
 )
 SELECT cm.movie_id, cm.title, cm.production_year, cm.kind,
-       STRING_AGG(DISTINCT cm.actor_name || ' (' || cm.role || ')', ', ') AS actors,
-       STRING_AGG(DISTINCT cm.keyword, ', ') AS keywords
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cm.actor_name || ' (' || cm.role || ')'))), ', ') AS actors,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cm.keyword))), ', ') AS keywords
 FROM CompleteMovieInfo cm
 GROUP BY cm.movie_id, cm.title, cm.production_year, cm.kind
 ORDER BY cm.production_year DESC, cm.title;

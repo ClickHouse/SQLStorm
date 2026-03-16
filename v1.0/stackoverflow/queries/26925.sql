@@ -17,14 +17,14 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.CreationDate, u.DisplayName, u.Reputation
 ), 
 PostTagCounts AS (
     SELECT 
         p.Id AS PostId,
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -45,7 +45,7 @@ TagUsage AS (
 TopPosts AS (
     SELECT 
         rp.*,
-        STRING_AGG(t.Tag, ', ') AS UsedTags
+        arrayStringConcat(groupArray(assumeNotNull(t.Tag)), ', ') AS UsedTags
     FROM 
         RankedPosts rp
     JOIN 

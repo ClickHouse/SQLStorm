@@ -15,7 +15,7 @@ WITH movie_cast AS (
 movie_keywords AS (
     SELECT
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM
         movie_keyword mk
     JOIN
@@ -59,7 +59,7 @@ SELECT
         WHEN am.complete_cast_count = 0 THEN 'No complete cast available'
         ELSE 'Complete cast available'
     END AS cast_availability,
-    (SELECT STRING_AGG(DISTINCT c.name, ', ')
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ')
      FROM company_name c
      JOIN movie_companies mc ON c.id = mc.company_id
      WHERE mc.movie_id = am.title_id) AS production_companies

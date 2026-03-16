@@ -57,7 +57,7 @@ sales_loss AS (
         nation n ON c.c_nationkey = n.n_nationkey
     WHERE 
         l_returnflag = 'R' 
-        AND o.o_orderdate < DATE_TRUNC('year', DATE '1998-10-01')
+        AND o.o_orderdate < DATE_TRUNC('year', toDate('1998-10-01'))
     GROUP BY 
         n.n_name
 )
@@ -72,7 +72,7 @@ FROM
 FULL OUTER JOIN 
     sales_loss ls ON r.part_count > 0 OR ls.lost_sales IS NOT NULL
 JOIN 
-    top_months ts ON ts.sale_month = DATE_TRUNC('month', DATE '1998-10-01')
+    top_months ts ON ts.sale_month = DATE_TRUNC('month', toDate('1998-10-01'))
 JOIN 
     ranked_sales ms ON ms.sale_month = ts.sale_month
 WHERE 

@@ -5,7 +5,7 @@ WITH AddressStats AS (
         COUNT(*) AS total_addresses,
         MAX(LENGTH(ca_street_name)) AS max_street_name_length,
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length,
-        STRING_AGG(ca_street_name, ', ') AS all_street_names
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS all_street_names
     FROM 
         customer_address
     GROUP BY 
@@ -15,8 +15,8 @@ DemoStats AS (
     SELECT
         cd_gender,
         COUNT(*) AS total_demographics,
-        STRING_AGG(cd_marital_status, ', ') AS marital_statuses,
-        STRING_AGG(cd_education_status, ', ') AS education_statuses
+        arrayStringConcat(groupArray(assumeNotNull(cd_marital_status)), ', ') AS marital_statuses,
+        arrayStringConcat(groupArray(assumeNotNull(cd_education_status)), ', ') AS education_statuses
     FROM 
         customer_demographics
     GROUP BY 
@@ -26,7 +26,7 @@ ItemStats AS (
     SELECT
         i_category,
         COUNT(*) AS total_items,
-        STRING_AGG(DISTINCT i_color, ', ') AS unique_colors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i_color))), ', ') AS unique_colors,
         MAX(i_current_price) AS max_price,
         MIN(i_current_price) AS min_price
     FROM 

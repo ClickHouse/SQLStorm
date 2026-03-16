@@ -29,8 +29,8 @@ MovieDetails AS (
     SELECT 
         tm.title,
         tm.actor_count,
-        STRING_AGG(DISTINCT an.name, ', ' ORDER BY an.name) AS actors,
-        STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ' ORDER BY an.name) AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) AS companies
     FROM 
         TopMovies tm
     LEFT JOIN 

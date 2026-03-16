@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 9 
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score IS NOT NULL
 ),
 ClosedPosts AS (
@@ -80,4 +80,4 @@ WHERE
 ORDER BY 
     ps.Score DESC, 
     ps.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

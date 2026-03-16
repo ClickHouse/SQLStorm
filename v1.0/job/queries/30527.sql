@@ -28,7 +28,7 @@ SELECT
     COALESCE(cn.name, 'Unknown Company') AS company_name,
     COUNT(DISTINCT ci.person_id) AS cast_count,
     AVG(COALESCE(ci.nr_order, 0)) AS avg_cast_order,
-    STRING_AGG(DISTINCT a.name, ', ') AS aka_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS aka_names,
     ROW_NUMBER() OVER (PARTITION BY m.id ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS rank_by_cast_size,
     MAX(mh.level) AS hierarchy_level
 FROM 

@@ -30,7 +30,7 @@ MovieDetails AS (
         tm.title,
         tm.production_year,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
         COUNT(DISTINCT mc.company_id) AS production_companies
     FROM 
         TopMovies tm

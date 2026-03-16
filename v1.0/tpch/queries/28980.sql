@@ -3,8 +3,8 @@ SELECT
     COUNT(*) AS supplier_count,
     SUM(CASE WHEN s.s_acctbal > 10000 THEN 1 ELSE 0 END) AS high_balance_suppliers,
     AVG(l.l_quantity) AS average_quantity,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     part p
 JOIN 

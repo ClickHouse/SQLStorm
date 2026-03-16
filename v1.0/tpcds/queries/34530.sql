@@ -25,4 +25,4 @@ WHERE ca.ca_state IN ('CA', 'NY')
 GROUP BY ca.ca_city, ca.ca_state
 HAVING COUNT(DISTINCT ch.c_customer_sk) > 0
 ORDER BY total_net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

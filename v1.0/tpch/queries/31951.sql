@@ -31,7 +31,7 @@ SELECT
     SUM(o.o_totalprice) AS total_sales,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price_after_discount,
     MAX(l.l_returnflag) AS max_return_flag,
-    STRING_AGG(DISTINCT pt.p_type, ', ') AS product_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.p_type))), ', ') AS product_types,
     MAX(CASE WHEN sh.level IS NULL THEN 'No Supplier' ELSE 'Supplier Exists' END) AS supplier_status
 FROM 
     region r

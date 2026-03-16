@@ -4,8 +4,8 @@ SELECT
     s.s_name AS supplier_name, 
     COUNT(DISTINCT p.p_partkey) AS total_parts, 
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS returned_quantity,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
-    STRING_AGG(DISTINCT s.s_comment || ' (' || CAST(s.s_acctbal AS TEXT) || ')', '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment || ' (' || CAST(s.s_acctbal AS TEXT) || ')'))), '; ') AS supplier_details
 FROM 
     region r
 JOIN 

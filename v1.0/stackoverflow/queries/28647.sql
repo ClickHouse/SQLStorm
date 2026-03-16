@@ -36,7 +36,7 @@ TopPosts AS (
 PostTags AS (
     SELECT 
         tp.PostId,
-        unnest(string_to_array(tp.Tags, '><')) AS TagName
+        arrayJoin(splitByString('><', tp.Tags)) AS TagName
     FROM 
         TopPosts tp
 )
@@ -50,7 +50,7 @@ SELECT
     tp.OwnerDisplayName,
     tp.OwnerReputation,
     COUNT(pt.TagName) AS TagCount,
-    ARRAY_AGG(DISTINCT pt.TagName) AS AssociatedTags
+    arrayDistinct(groupArray(assumeNotNull(pt.TagName))) AS AssociatedTags
 FROM 
     TopPosts tp
 LEFT JOIN 

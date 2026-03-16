@@ -45,6 +45,6 @@ SELECT
     cus.total_spent
 FROM RankedParts rp
 JOIN SupplierCount sc ON rp.p_partkey = sc.ps_partkey
-JOIN CustomerOrderSummary cus ON cus.c_custkey = (SELECT FLOOR(RANDOM() * (SELECT COUNT(*) FROM customer)) + 1)
+JOIN CustomerOrderSummary cus ON cus.c_custkey = (SELECT FLOOR(rand() * (SELECT COUNT(*) FROM customer)) + 1)
 WHERE rp.price_rank <= 5
 ORDER BY rp.p_retailprice DESC, cus.total_spent DESC;

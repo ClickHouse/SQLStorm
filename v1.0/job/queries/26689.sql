@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         r.role,
-        array_agg(a.name ORDER BY a.name) AS actor_names
+        groupArray(assumeNotNull(a.name ORDER BY a.name)) AS actor_names
     FROM 
         title t
     JOIN 

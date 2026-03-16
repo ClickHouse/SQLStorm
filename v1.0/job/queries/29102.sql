@@ -5,8 +5,8 @@ WITH movie_summary AS (
         t.production_year,
         t.kind_id,
         COUNT(c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COALESCE(MAX(mi.info), 'No additional info') AS additional_info
     FROM 
         aka_title AS t
@@ -28,7 +28,7 @@ year_grouped AS (
         production_year,
         COUNT(movie_id) AS movies_count,
         SUM(total_cast) AS total_cast_count,
-        STRING_AGG(title, ', ') AS movie_titles
+        arrayStringConcat(groupArray(assumeNotNull(title)), ', ') AS movie_titles
     FROM 
         movie_summary
     GROUP BY 

@@ -9,7 +9,7 @@ WITH RankedMovies AS (
     LEFT JOIN 
         movie_info mi ON t.id = mi.movie_id AND mi.info_type_id = (SELECT id FROM info_type WHERE info = 'Plot')
     LEFT JOIN 
-        (SELECT movie_id, STRING_AGG(info, '; ') AS info FROM movie_info GROUP BY movie_id) ki ON t.id = ki.movie_id
+        (SELECT movie_id, arrayStringConcat(groupArray(assumeNotNull(info)), '; ') AS info FROM movie_info GROUP BY movie_id) ki ON t.id = ki.movie_id
 ),
 CastCount AS (
     SELECT 
@@ -23,7 +23,7 @@ CastCount AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 

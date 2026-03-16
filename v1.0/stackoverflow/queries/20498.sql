@@ -17,7 +17,7 @@ PostDetails AS (
         p.Id AS PostId,
         p.Title,
         p.CreationDate,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
         CASE 
             WHEN p.AcceptedAnswerId IS NOT NULL THEN 'Accepted'
             ELSE 'Not Accepted'
@@ -25,8 +25,8 @@ PostDetails AS (
         COALESCE(SUM(c.Score), 0) AS CommentScore
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    LEFT JOIN LATERAL (
-        SELECT unnest(string_to_array(p.Tags, '><')) AS TagName
+    LEFT JOIN (
+        SELECT arrayJoin(splitByString('><', p.Tags)) AS TagName
     ) t ON TRUE
     GROUP BY p.Id, p.Title, p.CreationDate, p.AcceptedAnswerId
 ),

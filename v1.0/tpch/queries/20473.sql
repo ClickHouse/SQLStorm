@@ -25,8 +25,8 @@ NationTotals AS (
     JOIN 
         nation n ON c.c_nationkey = n.n_nationkey
     WHERE 
-        o.o_orderdate >= DATE '1990-01-01' AND 
-        o.o_orderdate < DATE '1991-01-01'
+        o.o_orderdate >= toDate('1990-01-01') AND 
+        o.o_orderdate < toDate('1991-01-01')
     GROUP BY 
         n.n_nationkey
     HAVING 
@@ -66,7 +66,7 @@ SELECT
     fr.r_regionkey,
     fr.r_name,
     SUM(pt.total_revenue) AS total_revenue,
-    STRING_AGG(DISTINCT CONCAT('Supplier: ', rs.s_name, ' (Balance: ', rs.s_acctbal, ')'), '; ') AS suppliers_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Supplier: ', rs.s_name, ' (Balance: ', rs.s_acctbal, ')')))), '; ') AS suppliers_info,
     COUNT(DISTINCT fp.p_partkey) AS part_count,
     CASE 
         WHEN SUM(pt.total_revenue) IS NULL THEN 'No Revenue'

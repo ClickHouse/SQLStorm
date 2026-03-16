@@ -7,7 +7,7 @@ WITH MovieSummary AS (
             WHEN r.role = 'lead' THEN 1 
             ELSE 0 
         END) AS lead_percentage,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title t
     JOIN 

@@ -40,11 +40,11 @@ PostsWithTags AS (
         FP.CommentCount,
         FP.UpVoteCount,
         FP.DownVoteCount,
-        STRING_AGG(T.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM FilteredPosts FP
     LEFT JOIN Posts P ON FP.PostId = P.Id
-    LEFT JOIN LATERAL (
-        SELECT unnest(string_to_array(P.Tags, '><')) AS TagName
+    LEFT JOIN (
+        SELECT arrayJoin(splitByString('><', P.Tags)) AS TagName
     ) T ON TRUE
     GROUP BY FP.PostId, FP.Title, FP.Body, FP.CreationDate, FP.OwnerDisplayName, FP.CommentCount, FP.UpVoteCount, FP.DownVoteCount
 )

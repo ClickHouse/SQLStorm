@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName, p.PostTypeId
 ),
@@ -63,6 +63,6 @@ FROM
 LEFT JOIN 
     PostHistorySummary ph ON tp.PostId = ph.PostId
 WHERE 
-    ph.LastHistoryDate IS NULL OR ph.LastHistoryDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months'
+    ph.LastHistoryDate IS NULL OR ph.LastHistoryDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ORDER BY 
     tp.UpVoteCount DESC, tp.CommentCount DESC;

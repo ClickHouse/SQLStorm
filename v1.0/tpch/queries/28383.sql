@@ -6,7 +6,7 @@ WITH RankedParts AS (
         p.p_type,
         COUNT(ps.ps_partkey) AS supplier_count,
         AVG(ps.ps_supplycost) AS avg_supply_cost,
-        string_agg(DISTINCT s.s_name, ', ') AS supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
         ROW_NUMBER() OVER (PARTITION BY p.p_brand ORDER BY AVG(ps.ps_supplycost) ASC) AS rn
     FROM 
         part p

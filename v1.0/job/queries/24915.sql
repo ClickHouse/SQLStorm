@@ -26,7 +26,7 @@ MovieTitleCTE AS (
 KeywordCTE AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -45,7 +45,7 @@ SELECT
         THEN 'Popular' 
         ELSE 'Niche' 
     END AS movie_type,
-    EXTRACT(YEAR FROM cast('2024-10-01' as date)) - mt.production_year AS age_of_movie
+    toYear(cast('2024-10-01' as date)) - mt.production_year AS age_of_movie
 FROM 
     MovieTitleCTE mt
 LEFT JOIN 
@@ -58,4 +58,4 @@ WHERE
 ORDER BY 
     age_of_movie DESC,
     lead_ratio DESC NULLS LAST
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

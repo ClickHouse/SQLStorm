@@ -87,4 +87,4 @@ WHERE
 ORDER BY 
     tp.OwnerReputation DESC, 
     tp.ViewCount DESC 
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

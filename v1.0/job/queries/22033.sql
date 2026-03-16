@@ -66,7 +66,7 @@ SELECT
     fm.rank,
     fm.related_title,
     COUNT(mi.id) AS total_movie_info,
-    STRING_AGG(DISTINCT mi.info, ', ') AS all_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS all_info
 FROM 
     Filtered_Movies fm
 LEFT JOIN 

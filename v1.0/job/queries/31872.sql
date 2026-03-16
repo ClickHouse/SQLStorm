@@ -32,7 +32,7 @@ MaxRoles AS (
 RolesWithMovies AS (
     SELECT 
         a.subject_id AS movie_id, 
-        STRING_AGG(DISTINCT ca.name, ', ' ORDER BY ca.name) AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.name))), ', ' ORDER BY ca.name) AS cast_names
     FROM 
         complete_cast a
     LEFT JOIN 

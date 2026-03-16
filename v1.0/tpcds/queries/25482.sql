@@ -50,7 +50,7 @@ SELECT
     sd.ca_state,
     SUM(sd.ws_sales_price * sd.ws_quantity) AS total_spent,
     COUNT(DISTINCT sd.ws_order_number) AS total_orders,
-    STRING_AGG(DISTINCT CONCAT(id.i_item_id, ': ', id.i_item_desc), '; ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(id.i_item_id, ': ', id.i_item_desc)))), '; ') AS purchased_items
 FROM 
     SalesData sd
 JOIN 

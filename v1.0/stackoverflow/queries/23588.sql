@@ -16,7 +16,7 @@ WITH PostStatistics AS (
     JOIN
         Users U ON P.OwnerUserId = U.Id
     WHERE
-        P.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 RecentVotes AS (
     SELECT
@@ -26,7 +26,7 @@ RecentVotes AS (
     FROM
         Votes V
     WHERE
-        V.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')
+        V.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
     GROUP BY
         V.PostId, V.VoteTypeId
 ),
@@ -34,11 +34,11 @@ ClosedPosts AS (
     SELECT
         PH.PostId,
         MAX(PH.CreationDate) AS LastClosedDate,
-        STRING_AGG(DISTINCT CR.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CR.Name))), ', ') AS CloseReasons
     FROM
         PostHistory PH
     JOIN
-        CloseReasonTypes CR ON PH.Comment::INTEGER = CR.Id
+        CloseReasonTypes CR ON CAST(PH.Comment AS INTEGER) = CR.Id
     WHERE
         PH.PostHistoryTypeId IN (10, 11) 
     GROUP BY

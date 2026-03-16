@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ),
@@ -50,7 +50,7 @@ LEFT JOIN
     UserBadges ub ON u.Id = ub.UserId
 WHERE 
     (up.CommentCount > 10 OR ub.GoldBadges > 0) AND
-    (up.CreationDate BETWEEN DATE '2023-01-01' AND TIMESTAMP '2024-10-01 12:34:56')
+    (up.CreationDate BETWEEN toDate('2023-01-01') AND toDateTime64('2024-10-01 12:34:56', 6))
 ORDER BY 
     up.CreationDate DESC, 
     ub.GoldBadges DESC;

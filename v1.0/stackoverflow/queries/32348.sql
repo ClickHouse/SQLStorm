@@ -71,7 +71,7 @@ SELECT
     ph.Level AS PostLevel,
     ph.ParentId AS ParentPostId,
     CASE 
-        WHEN ps.LastHistoryUpdate IS NOT NULL AND ps.LastHistoryUpdate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        WHEN ps.LastHistoryUpdate IS NOT NULL AND ps.LastHistoryUpdate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         THEN 'Stale Post' 
         ELSE 'Active Post' 
     END AS PostStatus
@@ -86,7 +86,7 @@ LEFT JOIN
 LEFT JOIN 
     RecursivePostHierarchy ph ON p.Id = ph.PostId
 WHERE 
-    p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ORDER BY 
     ps.NetVotes DESC, 
     ps.CommentCount DESC

@@ -35,7 +35,7 @@ PopularPosts AS (
             ELSE 'Cold'
         END AS Popularity
     FROM PostsWithAnswers p
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostHistoryWithCloseReason AS (
     SELECT 

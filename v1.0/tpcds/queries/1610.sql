@@ -71,4 +71,4 @@ WHERE
     )
 ORDER BY 
     ss.average_price DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

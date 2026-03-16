@@ -45,7 +45,7 @@ MovieDetails AS (
 SELECT 
     ta.actor_name,
     COUNT(md.title) AS movies_participated,
-    STRING_AGG(DISTINCT md.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keyword))), ', ') AS keywords
 FROM 
     TopActors ta
 JOIN 

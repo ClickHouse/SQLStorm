@@ -4,7 +4,7 @@ WITH TagStats AS (
         COUNT(p.Id) AS PostCount,
         SUM(CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswersCount,
         AVG(p.Score) AS AvgScore,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS Contributors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS Contributors
     FROM 
         Tags t
     JOIN 

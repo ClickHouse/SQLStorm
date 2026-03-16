@@ -3,7 +3,7 @@ WITH MovieStats AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names
     FROM 
         title t
     JOIN 
@@ -20,7 +20,7 @@ WITH MovieStats AS (
 CompanyStats AS (
     SELECT 
         t.title,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies,
         COUNT(DISTINCT mc.id) AS total_companies
     FROM 
         title t

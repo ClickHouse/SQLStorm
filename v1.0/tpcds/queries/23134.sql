@@ -59,4 +59,4 @@ AND EXISTS (
       AND a.ca_city LIKE 'New%'
 )
 ORDER BY d.total_demos DESC, s.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

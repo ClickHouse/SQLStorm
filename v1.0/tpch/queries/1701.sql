@@ -52,7 +52,7 @@ SELECT
     COALESCE(SUM(sc.total_supply_cost), 0) AS total_supply_cost,
     COUNT(DISTINCT cs.c_custkey) AS number_of_customers,
     AVG(cs.avg_order_value) AS average_customer_order_value,
-    STRING_AGG(DISTINCT tp.p_name, ', ') AS top_products
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.p_name))), ', ') AS top_products
 FROM 
     region r
 LEFT JOIN 

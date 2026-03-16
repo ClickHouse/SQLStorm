@@ -6,7 +6,7 @@ WITH RecursiveMovieCTE AS (
         t.production_year,
         COUNT(DISTINCT ca.person_id) AS total_cast,
         SUM(CASE WHEN ca.note IS NOT NULL THEN 1 ELSE 0 END) AS cast_with_note,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.title) AS year_rank
     FROM 
         aka_title t
@@ -21,8 +21,8 @@ WITH RecursiveMovieCTE AS (
 MovieCompanyCTE AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT c.name, ', ') AS companies,
-        STRING_AGG(DISTINCT co.kind, ', ') AS company_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.kind))), ', ') AS company_types,
         COUNT(DISTINCT mc.id) AS total_companies
     FROM 
         movie_companies mc

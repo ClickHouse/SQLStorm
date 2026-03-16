@@ -27,7 +27,7 @@ CompanyDetails AS (
 CompleteCastInfo AS (
     SELECT 
         cc.movie_id,
-        STRING_AGG(CONCAT_WS(' as ', n.name, rt.role), ', ') AS cast_details
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT_WS(' as ', n.name, rt.role))), ', ') AS cast_details
     FROM 
         complete_cast cc
     JOIN 
@@ -40,7 +40,7 @@ CompleteCastInfo AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -51,10 +51,10 @@ MovieKeywords AS (
 FlexibleInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(CASE 
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
             WHEN info_type.info IS NULL THEN 'Unknown Info' 
             ELSE CONCAT_WS(': ', info_type.info, mi.info) 
-        END, '; ') AS info_collection
+        END)), '; ') AS info_collection
     FROM 
         movie_info mi
     JOIN 

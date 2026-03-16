@@ -19,13 +19,13 @@ TaggedPosts AS (
         Posts.CreationDate,
         Posts.Score,
         Posts.ViewCount,
-        ARRAY_AGG(DISTINCT Tags.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(Tags.TagName))) AS Tags
     FROM 
         Posts
     JOIN 
         Tags ON Posts.Tags LIKE '%' || Tags.TagName || '%'
     WHERE 
-        Posts.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        Posts.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         Posts.Id
 ),

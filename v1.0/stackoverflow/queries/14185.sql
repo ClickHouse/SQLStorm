@@ -12,7 +12,7 @@ SELECT
     COUNT(c.Id) AS CommentCount,
     COUNT(CASE WHEN v.VoteTypeId = 2 THEN v.Id END) AS UpVoteCount,
     COUNT(CASE WHEN v.VoteTypeId = 3 THEN v.Id END) AS DownVoteCount,
-    AVG(EXTRACT(EPOCH FROM (ph.CreationDate - p.CreationDate))) AS AvgTimeToEdit
+    AVG(toUnixTimestamp((ph.CreationDate - p.CreationDate))) AS AvgTimeToEdit
 FROM 
     Posts p
 JOIN 

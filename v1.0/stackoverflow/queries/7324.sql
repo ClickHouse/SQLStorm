@@ -35,7 +35,7 @@ PostHistoryStats AS (
     SELECT 
         h.UserId,
         COUNT(*) AS EditsMade,
-        AVG(EXTRACT(EPOCH FROM CURRENT_TIMESTAMP) - EXTRACT(EPOCH FROM h.CreationDate)) / 60 AS AvgEditTimeInMinutes
+        AVG(toUnixTimestamp(now64(6)) - toUnixTimestamp(h.CreationDate)) / 60 AS AvgEditTimeInMinutes
     FROM 
         PostHistory h
     WHERE 
@@ -68,4 +68,4 @@ WHERE
     rp.Rank = 1 
 ORDER BY 
     rp.Score DESC, rp.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

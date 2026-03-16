@@ -14,7 +14,7 @@ PostStats AS (
            COUNT(CASE WHEN P.PostTypeId = 2 THEN 1 END) AS AnswerCount,
            SUM(P.Score) AS TotalScore,
            SUM(P.ViewCount) AS TotalViews,
-           AVG(EXTRACT(EPOCH FROM (P.CreationDate - U.CreationDate)) / 86400) AS AverageAccountAge
+           AVG(toUnixTimestamp((P.CreationDate - U.CreationDate)) / 86400) AS AverageAccountAge
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
     GROUP BY P.OwnerUserId

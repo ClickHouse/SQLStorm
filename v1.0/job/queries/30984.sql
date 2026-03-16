@@ -30,7 +30,7 @@ CastDetails AS (
         ci.movie_id,
         ak.name AS actor_name,
         COUNT(DISTINCT cct.kind) AS cast_type_count,
-        STRING_AGG(DISTINCT cct.kind, ', ') AS cast_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cct.kind))), ', ') AS cast_types
     FROM
         cast_info ci
     JOIN 

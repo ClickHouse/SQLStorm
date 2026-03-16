@@ -38,11 +38,11 @@ QuestionStats AS (
         COUNT(p.Id) AS QuestionCount,
         AVG(p.Score) AS AvgScore,
         MAX(p.ViewCount) AS MaxViews,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed
     FROM 
         Posts p
     JOIN 
-        UNNEST(string_to_array(p.Tags, ',')) AS Tag ON true
+        arrayJoin(splitByString(',', p.Tags)) AS Tag ON true
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM Tag)
     WHERE 

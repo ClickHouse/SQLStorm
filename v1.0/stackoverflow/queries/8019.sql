@@ -16,18 +16,18 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '6 months'  
+        p.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH  
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.CreationDate, u.DisplayName
 ),
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        (SELECT unnest(string_to_array(p.Tags, '>')) AS tag FROM Posts p) AS tag ON TRUE
+        (SELECT arrayJoin(splitByString('>', p.Tags)) AS tag FROM Posts p) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

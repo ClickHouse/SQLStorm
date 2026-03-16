@@ -19,7 +19,7 @@ CompanyCounts AS (
 CastRoles AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(DISTINCT cr.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.role))), ', ') AS roles
     FROM cast_info ci
     JOIN role_type cr ON ci.role_id = cr.id
     GROUP BY ci.movie_id
@@ -40,4 +40,4 @@ LEFT JOIN CompanyCounts cc ON rm.movie_id = cc.movie_id
 LEFT JOIN CastRoles cr ON rm.movie_id = cr.movie_id
 WHERE rm.rn <= 10 AND (cc.company_count IS NOT NULL OR cr.roles IS NOT NULL)
 ORDER BY rm.production_year DESC, rm.movie_id
-OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 0;

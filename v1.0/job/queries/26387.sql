@@ -31,9 +31,9 @@ WITH MovieDetails AS (
 SELECT 
     movie_title,
     production_year,
-    STRING_AGG(DISTINCT actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT company_type, ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS companies,
     COUNT(DISTINCT person_info) AS info_count
 FROM 
     MovieDetails

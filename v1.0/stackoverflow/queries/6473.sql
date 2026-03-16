@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName
 ),
@@ -47,6 +47,6 @@ JOIN
     PostHistory ph ON tp.PostId = ph.PostId
 WHERE 
     ph.PostHistoryTypeId IN (10, 11, 12) 
-    AND ph.CreationDate BETWEEN DATE '2023-01-01' AND DATE '2023-12-31'
+    AND ph.CreationDate BETWEEN toDate('2023-01-01') AND toDate('2023-12-31')
 ORDER BY 
     tp.Score DESC, tp.CommentCount DESC;

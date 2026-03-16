@@ -30,7 +30,7 @@ WITH RankedPosts AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph
@@ -59,4 +59,4 @@ WHERE
     rp.PostRank = 1
 ORDER BY 
     rp.ViewCount DESC, rp.CreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -24,7 +24,7 @@ RecentPosts AS (
         COUNT(c.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL '1 month'
+    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL 1 MONTH
     GROUP BY p.Id, p.OwnerUserId, p.Title, p.CreationDate
 ),
 
@@ -60,7 +60,7 @@ SELECT
         ELSE 'Expert'
     END AS UserLevel,
     (
-        SELECT STRING_AGG(DISTINCT pt.Name, ', ')
+        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ')
         FROM PostTypes pt
         JOIN Posts p ON pt.Id = p.PostTypeId
         WHERE p.OwnerUserId = eua.UserId

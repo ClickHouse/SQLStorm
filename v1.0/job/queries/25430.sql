@@ -4,7 +4,7 @@ WITH top_movies AS (
         m.title,
         m.production_year,
         COUNT(c.id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM
         aka_title m
     JOIN
@@ -26,7 +26,7 @@ detailed_movie_info AS (
         tm.production_year,
         tm.cast_count,
         tm.actor_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COUNT(DISTINCT mc.company_id) AS company_count
     FROM
         top_movies tm

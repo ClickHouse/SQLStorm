@@ -62,4 +62,4 @@ WHERE
     AND it.AvgSalesPrice IS NOT NULL
 ORDER BY 
     it.TotalSalesPrice DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

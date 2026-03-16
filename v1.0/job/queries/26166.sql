@@ -18,7 +18,7 @@ ActorMovieCount AS (
     SELECT 
         actor_name,
         COUNT(movie_title) AS movie_count,
-        STRING_AGG(movie_title, ', ' ORDER BY production_year DESC) AS movie_list
+        arrayStringConcat(groupArray(assumeNotNull(movie_title)), ', ' ORDER BY production_year DESC) AS movie_list
     FROM 
         RankedTitles
     WHERE 

@@ -10,7 +10,7 @@ WITH TopUsers AS (
     LEFT JOIN 
         Posts P ON U.Id = P.OwnerUserId
     WHERE 
-        U.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        U.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         U.Id, U.DisplayName
 ), 
@@ -43,7 +43,7 @@ RecentActivities AS (
     JOIN 
         Users U ON PH.UserId = U.Id
     WHERE 
-        PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 )
 
 SELECT 

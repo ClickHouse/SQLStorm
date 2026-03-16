@@ -23,7 +23,7 @@ MoviesWithCast AS (
         mt.id AS movie_id, 
         mt.title, 
         mt.production_year, 
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names 
     FROM 
         aka_title mt 
     LEFT JOIN 
@@ -55,7 +55,7 @@ SELECT
     mv.movie_id, 
     mv.title, 
     mv.production_year, 
-    STRING_AGG(DISTINCT mr.role, ', ') AS roles, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mr.role))), ', ') AS roles, 
     MAX(mv.actor_names) AS top_actor 
 FROM 
     MoviesWithCast mv 

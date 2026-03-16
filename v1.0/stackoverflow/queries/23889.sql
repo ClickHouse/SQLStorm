@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -31,7 +31,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         MAX(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN ph.CreationDate END) AS ClosedOrReopenedAt,
-        ARRAY_AGG(DISTINCT ch.Name) AS CloseReasons
+        arrayDistinct(groupArray(assumeNotNull(ch.Name))) AS CloseReasons
     FROM 
         PostHistory ph
     LEFT JOIN 
@@ -46,7 +46,7 @@ PopularPosts AS (
         rp.CleanTags,
         us.Reputation,
         ps.ClosedOrReopenedAt,
-        array_length(ps.CloseReasons, 1) AS CloseReasonCount,
+        length(ps.CloseReasons, 1) AS CloseReasonCount,
         CASE WHEN rp.ViewCount > 1000 THEN 'High Traffic' ELSE 'Normal Traffic' END AS TrafficLabel,
         RANK() OVER (ORDER BY us.Views DESC, rp.ViewCount DESC) AS ViewRank
     FROM 

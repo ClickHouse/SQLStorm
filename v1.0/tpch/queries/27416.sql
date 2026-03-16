@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT o_orderkey) AS total_orders,
     SUM(l_extendedprice * (1 - l_discount)) AS total_revenue,
     MAX(l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT p_name, ', ') AS supplied_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p_name))), ', ') AS supplied_parts
 FROM 
     supplier s
 JOIN 
@@ -16,7 +16,7 @@ JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     s.s_acctbal > 10000
-    AND l_shipdate >= DATE '1997-01-01'
+    AND l_shipdate >= toDate('1997-01-01')
 GROUP BY 
     s.s_suppkey, s.s_name, s.s_phone
 HAVING 

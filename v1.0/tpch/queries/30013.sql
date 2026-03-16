@@ -28,14 +28,14 @@ JOIN part p ON ps.ps_partkey = p.p_partkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey
 WHERE c.c_acctbal IS NOT NULL
-AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 AND (l.l_returnflag IS NULL OR l.l_returnflag != 'R')
 GROUP BY c.c_name, r.r_name, c.c_custkey, o.o_orderkey, l.l_extendedprice, l.l_discount, r.r_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > (SELECT AVG(total_sales) 
                                                        FROM (SELECT SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales 
                                                              FROM lineitem l 
                                                              JOIN orders o ON o.o_orderkey = l.l_orderkey 
-                                                             WHERE o.o_orderdate >= DATE '1997-01-01' 
-                                                               AND o.o_orderdate <= DATE '1997-12-31'
+                                                             WHERE o.o_orderdate >= toDate('1997-01-01') 
+                                                               AND o.o_orderdate <= toDate('1997-12-31')
                                                              GROUP BY o.o_orderkey) AS sales)
 ORDER BY region, total_sales DESC;

@@ -19,8 +19,8 @@ AggStringProcessing AS (
         COUNT(*) AS total_parts,
         AVG(name_length) AS avg_name_length,
         COUNT(DISTINCT brand_upper) AS unique_brands,
-        STRING_AGG(DISTINCT comment_lower, '; ') AS all_comments,
-        STRING_AGG(name_brand_concat, ', ') AS concatenated_names_brands
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(comment_lower))), '; ') AS all_comments,
+        arrayStringConcat(groupArray(assumeNotNull(name_brand_concat)), ', ') AS concatenated_names_brands
     FROM 
         StringProcessing
 )

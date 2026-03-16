@@ -20,10 +20,10 @@ WITH MovieInfo AS (
     FROM MovieInfo
 ), AggregatedResults AS (
     SELECT production_year, 
-           STRING_AGG(movie_title, ', ') AS movies_list,
-           STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords, 
-           STRING_AGG(DISTINCT company_name, ', ') AS companies,
-           STRING_AGG(DISTINCT CONCAT(person_name, ' (', person_role, ')'), ', ') AS cast_details
+           arrayStringConcat(groupArray(assumeNotNull(movie_title)), ', ') AS movies_list,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords, 
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(person_name, ' (', person_role, ')')))), ', ') AS cast_details
     FROM RankedMovies
     GROUP BY production_year
 )

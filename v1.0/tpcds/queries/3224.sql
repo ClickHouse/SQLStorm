@@ -67,4 +67,4 @@ WHERE
 ORDER BY
     r.total_net_paid DESC,
     r.total_quantity DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -2,7 +2,7 @@ WITH NationSupplier AS (
     SELECT 
         n.n_name AS nation_name,
         COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM 
         nation n
     JOIN 

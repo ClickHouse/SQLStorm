@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         Badges b ON u.Id = b.UserId
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '30 days') 
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) 
 )
 SELECT 
     rp.PostId,

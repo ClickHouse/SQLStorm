@@ -30,7 +30,7 @@ ActiveUsers AS (
     FROM 
         UserStats
     WHERE 
-        LastActiveDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        LastActiveDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -49,7 +49,7 @@ TopUsers AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(p.Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', p.Tags)) AS Tag
     FROM 
         Posts p
     WHERE 

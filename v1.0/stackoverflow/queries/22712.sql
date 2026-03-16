@@ -50,8 +50,8 @@ TagsExploded AS (
         ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.CreationDate DESC) AS TagPosition
     FROM 
         Posts p
-    JOIN LATERAL (
-        SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName
+    JOIN (
+        SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
     ) AS t ON true
 )
 SELECT 
@@ -81,4 +81,4 @@ WHERE
     AND ur.ReputationLevel IN ('Experienced', 'Elite')
 ORDER BY 
     ur.Reputation DESC, ps.NetVotes DESC
-OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 0;

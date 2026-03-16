@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
@@ -29,7 +29,7 @@ PostStats AS (
     SELECT 
         p.Id AS PostId,
         COUNT(c.Id) AS CommentCount,
-        COALESCE(MAX(v.CreationDate), DATE '1970-01-01') AS LastVoteDate
+        COALESCE(MAX(v.CreationDate), toDate('1970-01-01')) AS LastVoteDate
     FROM 
         Posts p
     LEFT JOIN 
@@ -52,7 +52,7 @@ SELECT
     ps.LastVoteDate,
     CASE 
         WHEN ps.LastVoteDate IS NULL THEN 'No Votes'
-        WHEN ps.LastVoteDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 'Inactive'
+        WHEN ps.LastVoteDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Inactive'
         ELSE 'Active'
     END AS VoteStatus
 FROM 

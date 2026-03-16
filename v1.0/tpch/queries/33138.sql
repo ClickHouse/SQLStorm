@@ -40,7 +40,7 @@ SupplierPartData AS (
 SELECT 
     d.r_name AS region_name,
     SUM(COALESCE(ct.total_spent, 0)) AS total_customer_spending,
-    STRING_AGG(DISTINCT sp.p_name, ', ') AS products_available,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sp.p_name))), ', ') AS products_available,
     COUNT(DISTINCT oh.o_orderkey) AS orders_in_last_year
 FROM region d
 LEFT JOIN nation n ON d.r_regionkey = n.n_regionkey

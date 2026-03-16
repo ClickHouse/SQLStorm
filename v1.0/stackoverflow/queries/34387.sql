@@ -63,7 +63,7 @@ LEFT JOIN
      WHERE TagRank = 1) PTag ON TRUE
 WHERE 
     U.Reputation > 100 AND 
-    U.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    U.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ORDER BY 
     U.Reputation DESC,
     TotalPosts DESC;

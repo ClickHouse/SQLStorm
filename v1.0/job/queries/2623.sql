@@ -15,7 +15,7 @@ WITH RankedMovies AS (
 DirectorMovies AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS directors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS directors
     FROM 
         aka_name ak
     JOIN 

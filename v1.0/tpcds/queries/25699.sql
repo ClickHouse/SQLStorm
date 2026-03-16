@@ -18,7 +18,7 @@ demographic_analysis AS (
 address_aggregates AS (
     SELECT ca_state, 
            COUNT(DISTINCT ca_address_id) AS unique_address_count, 
-           STRING_AGG(DISTINCT street_suffix, ', ') AS street_suffixes 
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(street_suffix))), ', ') AS street_suffixes 
     FROM address_patterns 
     GROUP BY ca_state
 )

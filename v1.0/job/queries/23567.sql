@@ -12,7 +12,7 @@ aggregated_actors AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM 
         cast_info ci
     JOIN 
@@ -73,4 +73,4 @@ FROM
 ORDER BY 
     f.production_year DESC,
     f.actor_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

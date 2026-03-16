@@ -39,7 +39,7 @@ PostDetails AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8 
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        p.CreationDate >= now64(6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount
 )

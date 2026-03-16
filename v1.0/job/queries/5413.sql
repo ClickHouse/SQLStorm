@@ -6,7 +6,7 @@ WITH MovieData AS (
         ak.name AS actor_name,
         ak.id AS actor_id,
         COUNT(DISTINCT mc.company_id) AS production_companies,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         aka_title mt
     JOIN 

@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > DATE('2024-10-01') - INTERVAL '60 days'
+        p.CreationDate > DATE('2024-10-01') - INTERVAL 60 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),
@@ -47,7 +47,7 @@ SELECT
     tp.OwnerName, 
     tp.CommentCount, 
     tp.VoteCount, 
-    EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - tp.CreationDate)) AS AgeInSeconds
+    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - tp.CreationDate)) AS AgeInSeconds
 FROM 
     TopPosts tp
 ORDER BY 

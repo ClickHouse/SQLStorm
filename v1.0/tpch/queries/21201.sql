@@ -36,7 +36,7 @@ SELECT
         WHEN SUM(o.o_totalprice) > 100000 THEN 'High Value'
         ELSE 'Low Value'
     END AS value_category,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_served
 FROM 
     RankedOrders o
 LEFT JOIN 

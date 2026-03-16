@@ -30,7 +30,7 @@ RecentPostHistory AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LatestHistoryDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
     FROM 
         PostHistory ph
     JOIN 
@@ -67,7 +67,7 @@ SELECT
 FROM 
     PostDetails pd
 WHERE 
-    pd.MostRecentActivity > cast('2024-10-01' as date) - INTERVAL '30 days' 
+    pd.MostRecentActivity > cast('2024-10-01' as date) - INTERVAL 30 DAY 
 ORDER BY 
     pd.UserTotalPosts DESC, pd.AverageVotes DESC
 LIMIT 50;

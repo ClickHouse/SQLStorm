@@ -17,7 +17,7 @@ PostSummary AS (
         P.OwnerUserId,
         COUNT(*) AS PostCount,
         SUM(CASE WHEN P.Score < 0 THEN 1 ELSE 0 END) AS NegativePosts,
-        SUM(CASE WHEN P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 1 ELSE 0 END) AS RecentPosts
+        SUM(CASE WHEN P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 1 ELSE 0 END) AS RecentPosts
     FROM 
         Posts P
     GROUP BY 
@@ -78,4 +78,4 @@ FROM
     ActiveUsers A
 ORDER BY 
     A.Rank
-OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

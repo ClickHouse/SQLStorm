@@ -56,4 +56,4 @@ LEFT JOIN address_count ac ON ch.c_customer_sk = ac.customer_count
 LEFT JOIN detailed_sales ds ON ch.c_customer_sk = ds.cs_item_sk
 WHERE ch.level = 0
 ORDER BY ss.total_sales DESC NULLS LAST
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

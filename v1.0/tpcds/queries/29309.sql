@@ -8,8 +8,8 @@ WITH StringAggregates AS (
         LOWER(c.c_preferred_cust_flag) AS customer_flag,
         LENGTH(c.c_email_address) AS email_length,
         COUNT(DISTINCT ca.ca_city) AS city_count,
-        STRING_AGG(DISTINCT ca.ca_state, ',') AS unique_states,
-        STRING_AGG(DISTINCT i.i_item_desc, ',') AS purchased_items
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_state))), ',') AS unique_states,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ',') AS purchased_items
     FROM customer c
     JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk
     JOIN store_sales ss ON c.c_customer_sk = ss.ss_customer_sk

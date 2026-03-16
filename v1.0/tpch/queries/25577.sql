@@ -1,7 +1,7 @@
 SELECT 
     s.s_name,
     s.s_address,
-    CONCAT('Supplied ', COUNT(ps.ps_supplycost), ' parts: ', STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_brand, ')'), '; ')) AS supplied_parts,
+    CONCAT('Supplied ', COUNT(ps.ps_supplycost), ' parts: ', arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_brand, ')')))), '; ')) AS supplied_parts,
     SUM(ps.ps_supplycost) AS total_supply_cost,
     CASE 
         WHEN SUM(ps.ps_supplycost) > 10000 THEN 'High Supply'

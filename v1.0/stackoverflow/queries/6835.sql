@@ -31,7 +31,7 @@ PostEngagement AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        P.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title
 ), 

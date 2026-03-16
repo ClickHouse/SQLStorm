@@ -25,7 +25,7 @@ RecentPosts AS (
     LEFT JOIN
         Comments C ON P.Id = C.PostId
     WHERE
-        P.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
+        P.CreationDate > now64(6) - INTERVAL 30 DAY
     GROUP BY
         P.Id, P.OwnerUserId, P.PostTypeId, P.Title, P.CreationDate, P.AcceptedAnswerId, P.Score
 ),
@@ -33,7 +33,7 @@ HistoricChanges AS (
     SELECT
         PH.PostId,
         MAX(PH.CreationDate) AS LastChangeDate,
-        STRING_AGG(PHT.Name, ', ') AS ChangeTypes
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS ChangeTypes
     FROM
         PostHistory PH
     JOIN
@@ -79,11 +79,11 @@ FROM
 LEFT JOIN
     (SELECT 
         P.Id, 
-        STRING_AGG(T.TagName, ', ') AS TagName
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagName
      FROM 
         Posts P
      LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(P.Tags, ',')) AS tag_array ON tag_array IS NOT NULL
+        arrayJoin(splitByString(',', P.Tags)) AS tag_array ON tag_array IS NOT NULL
      LEFT JOIN 
         Tags T ON T.TagName = TRIM(tag_array)
      GROUP BY 

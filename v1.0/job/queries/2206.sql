@@ -30,7 +30,7 @@ MovieDetails AS (
         tm.title,
         tm.production_year,
         COUNT(DISTINCT mc.company_id) AS company_count,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
         MAX(mi.info) AS description
     FROM 
         TopMovies tm

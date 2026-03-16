@@ -43,5 +43,5 @@ SELECT
     (SELECT AVG(PostCount) FROM PostCounts) AS AvgPostsPerType,
     (SELECT AVG(UserCount) FROM UserReputations) AS AvgUsersPerReputation,
     (SELECT AvgViewCount FROM AveragePostViewCount) AS AvgViewCount,
-    (SELECT STRING_AGG(TagName, ', ') FROM PopularTags) AS TopTags
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') FROM PopularTags) AS TopTags
 ;

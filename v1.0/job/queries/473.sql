@@ -40,7 +40,7 @@ SELECT
     m.title,
     m.production_year,
     COALESCE(m.director_count, 0) AS director_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM
     MoviesWithDirectors m
 LEFT JOIN

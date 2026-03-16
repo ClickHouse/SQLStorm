@@ -9,7 +9,7 @@ WITH UserEngagement AS (
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
         MAX(P.CreationDate) AS LastPostDate,
-        ARRAY_AGG(DISTINCT T.TagName) AS TagsUsed
+        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS TagsUsed
     FROM 
         Users U
     LEFT JOIN 
@@ -17,7 +17,7 @@ WITH UserEngagement AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (8, 9) 
     LEFT JOIN
-        (SELECT Id, UNNEST(string_to_array(Tags, '><')) AS TagName FROM Posts WHERE Tags IS NOT NULL) T ON T.Id = P.Id
+        (SELECT Id, arrayJoin(splitByString('><', Tags)) AS TagName FROM Posts WHERE Tags IS NOT NULL) T ON T.Id = P.Id
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation
 ),
@@ -52,7 +52,7 @@ SELECT
     END AS AcceptedAnswers,
     COALESCE((SELECT COUNT(*) FROM Comments C WHERE C.UserId = RU.UserId), 0) AS TotalComments,
     CASE 
-        WHEN RU.LastPostDate IS NOT NULL AND RU.LastPostDate < '2024-10-01 12:34:56'::timestamp - INTERVAL '1 YEAR' THEN 'Inactive for over a year'
+        WHEN RU.LastPostDate IS NOT NULL AND RU.LastPostDate < CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR THEN 'Inactive for over a year'
         ELSE 'Active'
     END AS ActivityStatus
 FROM 

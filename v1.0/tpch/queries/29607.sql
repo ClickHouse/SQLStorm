@@ -4,7 +4,7 @@ SELECT
     n.n_name AS nation_name,
     SUM(l.l_quantity) AS total_quantity,
     AVG(p.p_retailprice) AS average_retail_price,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS comments
 FROM 
     part p
 JOIN 

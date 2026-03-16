@@ -60,4 +60,4 @@ SELECT
     COALESCE(f.total_profit, 0) AS total_profit
 FROM FinalOutput f
 ORDER BY f.total_sales DESC, f.total_orders DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -76,4 +76,4 @@ WHERE
 ORDER BY 
     pp.VoteBalance DESC,
     pp.Score DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

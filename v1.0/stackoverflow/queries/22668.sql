@@ -8,11 +8,11 @@ WITH RankedPosts AS (
         p.CreationDate,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC, p.ViewCount DESC) AS ScoreRank,
         COALESCE(NULLIF(p.Title, ''), '(No Title)') AS DisplayTitle,
-        ARRAY(SELECT DISTINCT UNNEST(string_to_array(p.Tags, '>')) ORDER BY 1) AS TagList
+        ARRAY(SELECT DISTINCT arrayJoin(splitByString('>', p.Tags)) ORDER BY 1) AS TagList
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year' AND
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR AND
         p.ViewCount IS NOT NULL
 ),
 UserBadges AS (
@@ -42,7 +42,7 @@ ActiveUsers AS (
     LEFT JOIN 
         UserBadges ub ON u.Id = ub.UserId
     WHERE 
-        u.LastAccessDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
+        u.LastAccessDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
 ),
 FilteredPosts AS (
     SELECT 

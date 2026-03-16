@@ -18,12 +18,12 @@ WITH RankedPosts AS (
         Badges b ON u.Id = b.UserId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        UNNEST(string_to_array(p.Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', p.Tags)) AS Tag
     FROM 
         Posts p
 ),
@@ -37,7 +37,7 @@ QuestionSummary AS (
         rp.AnswerCount,
         rp.Score,
         rp.OwnerDisplayName,
-        STRING_AGG(pt.Tag, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(pt.Tag)), ', ') AS Tags
     FROM 
         RankedPosts rp
     LEFT JOIN 

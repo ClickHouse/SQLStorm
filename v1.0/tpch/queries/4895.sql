@@ -30,7 +30,7 @@ SELECT
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,
     COALESCE(SUM(lo.order_count), 0) AS total_orders,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ': ', ps.ps_availqty) || ' units', '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ': ', ps.ps_availqty) || ' units'))), '; ') AS supplier_details
 FROM 
     region r
 JOIN 

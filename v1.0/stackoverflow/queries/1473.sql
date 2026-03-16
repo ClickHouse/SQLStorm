@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ),
 TopUsers AS (
@@ -21,7 +21,7 @@ TopUsers AS (
         RANK() OVER (ORDER BY SUM(p.ViewCount) DESC) AS UserRank
     FROM Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY u.Id, u.DisplayName
 )
 SELECT
@@ -35,4 +35,4 @@ FROM TopUsers u
 JOIN RankedPosts rp ON u.UserId = rp.PostId
 WHERE u.UserRank <= 5 AND rp.Rank = 1
 ORDER BY u.TotalViews DESC, rp.UpVotes DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

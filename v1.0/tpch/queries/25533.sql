@@ -22,9 +22,9 @@ JOIN
 WHERE 
     p.p_type LIKE '%brass%'
 AND 
-    o.o_orderdate >= DATE '1997-01-01'
+    o.o_orderdate >= toDate('1997-01-01')
 AND 
-    o.o_orderdate < DATE '1998-01-01'
+    o.o_orderdate < toDate('1998-01-01')
 GROUP BY 
     p.p_name, s.s_name, s.s_address, r.r_name, p.p_comment
 ORDER BY 

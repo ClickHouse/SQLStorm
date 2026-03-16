@@ -52,4 +52,4 @@ LEFT JOIN store_sales t2 ON t1.ws_item_sk = t2.ss_item_sk
 WHERE t1.total_sales > (SELECT AVG(total_sales) FROM sales_cte) 
   AND EXISTS (SELECT 1 FROM store_returns sr WHERE sr.sr_item_sk = t1.ws_item_sk AND sr_return_quantity > 0)
 ORDER BY t1.total_sales DESC
-OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 0;

@@ -54,4 +54,4 @@ WHERE
     sm.total_profit > (SELECT AVG(total_profit) FROM ShippingModes) 
 ORDER BY 
     tc.total_profit DESC, sm.total_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -6,7 +6,7 @@ SELECT
     p.p_brand,
     SUBSTRING(p.p_comment, 1, 10) AS short_comment,
     LENGTH(p.p_name) AS name_length,
-    STRING_AGG(CONCAT(s.s_name, ' (', s.s_address, ')'), ', ') AS suppliers_info,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_address, ')'))), ', ') AS suppliers_info,
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_quantity,
     AVG(CASE WHEN o.o_orderstatus = 'F' THEN l.l_extendedprice ELSE NULL END) AS avg_fulfilled_price
@@ -27,4 +27,4 @@ HAVING
     SUM(l.l_quantity) > 100
 ORDER BY 
     total_returned_quantity DESC, avg_fulfilled_price ASC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

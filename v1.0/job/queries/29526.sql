@@ -5,8 +5,8 @@ WITH MovieData AS (
         t.title AS movie_title,
         t.production_year,
         k.keyword AS movie_keyword,
-        STRING_AGG(DISTINCT c.name, ', ' ORDER BY c.name ASC) AS cast_names,
-        STRING_AGG(DISTINCT co.name, ', ' ORDER BY co.name ASC) AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ' ORDER BY c.name ASC) AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ' ORDER BY co.name ASC) AS company_names
     FROM 
         title t
     JOIN 

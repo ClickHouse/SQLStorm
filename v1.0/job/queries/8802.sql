@@ -5,7 +5,7 @@ SELECT
     t.production_year,
     c.kind AS role_kind,
     COUNT(DISTINCT kc.keyword) AS keyword_count,
-    STRING_AGG(DISTINCT kc.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kc.keyword))), ', ') AS keywords
 FROM 
     aka_name a
 JOIN 

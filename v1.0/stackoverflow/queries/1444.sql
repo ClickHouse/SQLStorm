@@ -20,16 +20,16 @@ SELECT
     rp.CommentCount,
     rp.VoteBalance,
     CASE 
-        WHEN rp.CreationDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') THEN 'Old Post' 
+        WHEN rp.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) THEN 'Old Post' 
         ELSE 'Recent Post' 
     END AS PostAge,
-    ARRAY_AGG(DISTINCT t.TagName) AS TagsList
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsList
 FROM 
     RankedPosts rp
 LEFT JOIN 
     Posts p ON rp.Id = p.Id
 LEFT JOIN 
-    LATERAL (SELECT UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS TagName) AS t ON true
+    (SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName) AS t ON true
 WHERE 
     rp.rn <= 5 AND 
     (rp.Score > 0 OR rp.CommentCount > 5)

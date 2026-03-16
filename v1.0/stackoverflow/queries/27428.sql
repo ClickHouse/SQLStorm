@@ -17,12 +17,12 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score > 0 
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '>')) AS TagName,
+        arrayJoin(splitByString('>', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
         COUNT(*) AS NumberOfPosts
     FROM 
         Posts
@@ -66,7 +66,7 @@ SELECT
 FROM 
     TopTenPosts ttp
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(string_to_array(SUBSTRING(ttp.Title FROM 2 FOR LENGTH(ttp.Title) - 2), '>')) 
+    PopularTags pt ON pt.TagName = ANY(splitByString('>', SUBSTRING(ttp.Title FROM 2 FOR LENGTH(ttp.Title) - 2))) 
 WHERE 
     ttp.OverallRanking <= 10 
 ORDER BY 

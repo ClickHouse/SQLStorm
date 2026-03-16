@@ -15,20 +15,20 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > DATE('2024-10-01') - INTERVAL '30 days' 
+        p.CreationDate > DATE('2024-10-01') - INTERVAL 30 DAY 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.PostTypeId
 ), 
 PopularTags AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '>')) AS Tag,
+        arrayJoin(splitByString('>', Tags)) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > DATE('2024-10-01') - INTERVAL '30 days'
+        p.CreationDate > DATE('2024-10-01') - INTERVAL 30 DAY
     GROUP BY 
-        UNNEST(string_to_array(Tags, '>'))
+        arrayJoin(splitByString('>', Tags))
 )
 
 SELECT 
@@ -48,4 +48,4 @@ WHERE
     rp.Rank <= 5
 ORDER BY 
     rp.CommentCount DESC, rp.UpVoteCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

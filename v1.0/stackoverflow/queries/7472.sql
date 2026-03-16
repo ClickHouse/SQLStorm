@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Users U ON P.OwnerUserId = U.Id
     WHERE 
         P.PostTypeId IN (1, 2) AND 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 

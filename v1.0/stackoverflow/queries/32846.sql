@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserActivity AS (
     SELECT 
@@ -33,11 +33,11 @@ UserActivity AS (
 ),
 FrequentTags AS (
     SELECT 
-        UNNEST(string_to_array(p.Tags, ',')) AS TagName
+        arrayJoin(splitByString(',', p.Tags)) AS TagName
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TagCounts AS (
     SELECT 
@@ -79,7 +79,7 @@ FROM
 JOIN 
     UserActivity ua ON ua.UserId = rp.PostId 
 JOIN 
-    TopTags ta ON ta.TagName = ANY (string_to_array(rp.Tags, ','))
+    TopTags ta ON ta.TagName = ANY (splitByString(',', rp.Tags))
 WHERE 
     rp.ScoreRank <= 5
 ORDER BY 

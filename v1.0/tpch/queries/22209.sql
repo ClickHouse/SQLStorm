@@ -25,7 +25,7 @@ OrderSummary AS (
     WHERE 
         O.o_orderstatus = 'F' AND 
         L.l_returnflag = 'N' AND 
-        L.l_shipdate > DATE '1997-01-01'
+        L.l_shipdate > toDate('1997-01-01')
     GROUP BY O.o_orderkey
 ),
 CustomerSummary AS (

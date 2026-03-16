@@ -5,7 +5,7 @@ WITH ProcessedTags AS (
         p.Title,
         p.ViewCount,
         p.Score,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName
     FROM 
         Posts p
     WHERE 
@@ -78,7 +78,7 @@ FROM
     TopTags t
 JOIN 
     ActiveUsers u ON t.TagName IN (
-        SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) 
+        SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) 
         FROM Posts p 
         WHERE p.OwnerUserId = u.UserId AND p.PostTypeId = 1
     ) 

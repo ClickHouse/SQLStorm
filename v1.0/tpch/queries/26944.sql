@@ -48,7 +48,7 @@ SELECT
     sp.p_type,
     COUNT(DISTINCT ts.s_suppkey) AS num_suppliers,
     SUM(ts.s_acctbal) AS total_acct_bal,
-    STRING_AGG(DISTINCT CONCAT(ts.s_name, ' (', ts.s_address, ')'), '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ts.s_name, ' (', ts.s_address, ')')))), '; ') AS supplier_details
 FROM 
     SupplierProducts sp
 JOIN 

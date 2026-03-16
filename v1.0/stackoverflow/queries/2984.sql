@@ -36,7 +36,7 @@ RecentPosts AS (
         U.DisplayName AS OwnerDisplayName
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
+    WHERE P.CreationDate > now64(6) - INTERVAL 30 DAY
 ),
 PostHistorySummary AS (
     SELECT 
@@ -47,7 +47,7 @@ PostHistorySummary AS (
         MAX(PH.CreationDate) AS LastChangeDate
     FROM PostHistory PH
     JOIN Posts P ON PH.PostId = P.Id
-    WHERE PH.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
+    WHERE PH.CreationDate > now64(6) - INTERVAL 1 YEAR
     GROUP BY PH.PostId, PH.PostHistoryTypeId, P.Title
 )
 SELECT 
@@ -59,7 +59,7 @@ SELECT
     TU.AcceptedAnswersCount,
     TU.CommentCount,
     COALESCE(RP.Title, 'No Recent Posts') AS RecentPostTitle,
-    COALESCE(RP.CreationDate, CURRENT_TIMESTAMP) AS RecentPostCreation,
+    COALESCE(RP.CreationDate, now64(6)) AS RecentPostCreation,
     COALESCE(RP.Score, 0) AS RecentPostScore,
     COALESCE(RP.ViewCount, 0) AS RecentPostViewCount,
     PHS.ChangeCount,

@@ -26,8 +26,8 @@ MovieDetails AS (
     SELECT 
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COALESCE(mi.info, 'No Info') AS movie_info
     FROM 
         TopMovies tm

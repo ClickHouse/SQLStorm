@@ -51,7 +51,7 @@ SELECT
         WHEN m.actor_count > 0 THEN 'Small Cast'
         ELSE 'No Cast'
     END AS cast_category,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     MoviesWithActors m
 LEFT JOIN 

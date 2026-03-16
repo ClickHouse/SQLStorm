@@ -58,7 +58,7 @@ ActiveUsers AS (
     FROM 
         UserActivity ua
     WHERE 
-        ua.LastActive >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' AND 
+        ua.LastActive >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY AND 
         ua.PostCount > 0
 )
 SELECT 
@@ -82,7 +82,7 @@ WHERE
     EXISTS (
         SELECT 1
         FROM Comments c
-        WHERE c.PostId = ph.PostId AND c.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days'
+        WHERE c.PostId = ph.PostId AND c.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY
     )
 ORDER BY 
     ph.Level, UserStatus DESC, Popularity DESC

@@ -16,7 +16,7 @@ SELECT
     COUNT(DISTINCT c.c_customer_sk) AS distinct_customers,
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
     SUM(ws.ws_net_profit) AS total_net_profit,
-    STRING_AGG(DISTINCT CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name)))), ', ') AS customer_names
 FROM customer_address ca
 LEFT JOIN customer c ON ca.ca_address_sk = c.c_current_addr_sk
 LEFT JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk

@@ -3,7 +3,7 @@ SELECT
     t.title AS movie_title,
     a.name AS actor_name,
     ct.kind AS cast_type,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     ci.note AS cast_note,
     ci.nr_order AS cast_order,
     cm.name AS company_name,

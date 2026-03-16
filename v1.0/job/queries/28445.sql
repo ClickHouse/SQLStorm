@@ -10,7 +10,7 @@ WITH movie_keyword_counts AS (
 genre_counts AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(kt.keyword, ', ') AS genres
+        arrayStringConcat(groupArray(assumeNotNull(kt.keyword)), ', ') AS genres
     FROM 
         movie_keyword mk
     JOIN 

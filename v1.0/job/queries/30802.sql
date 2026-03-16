@@ -30,7 +30,7 @@ SELECT
     m.title AS Movie_Title,
     m.production_year,
     COUNT(DISTINCT c.person_id) AS Number_of_Actors,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS Keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS Keywords
 FROM 
     MovieHierarchy m 
 LEFT JOIN 

@@ -30,5 +30,5 @@ LEFT JOIN ranked_lineitems rli ON oh.o_orderkey = rli.l_orderkey
 FULL OUTER JOIN supplier_parts np ON rli.l_partkey = np.ps_partkey
 JOIN nation_suppliers ns ON ns.s_suppkey = np.ps_suppkey
 WHERE (oh.o_totalprice > 1000 AND rli.l_quantity < 10) 
-   OR (oh.o_orderdate < cast('1998-10-01' as date) - INTERVAL '30 days' AND rli.total_extended_price IS NULL)
+   OR (oh.o_orderdate < cast('1998-10-01' as date) - INTERVAL 30 DAY AND rli.total_extended_price IS NULL)
 ORDER BY oh.o_orderdate DESC, calculated_price DESC;

@@ -29,7 +29,7 @@ WITH RECURSIVE CTE_MovieHierarchy AS (
 SELECT 
     m.movie_id,
     COUNT(DISTINCT c.person_id) AS cast_count,
-    STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
     AVG(COALESCE(mi.provided_info_count, 0)) AS avg_additional_info,
     SUM(
         CASE 

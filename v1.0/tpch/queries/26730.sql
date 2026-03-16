@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity, 
     AVG(p.p_retailprice) AS average_retail_price, 
     MAX(o.o_orderdate) AS last_order_date,
-    STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS market_segments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS market_segments
 FROM 
     part p
 JOIN 

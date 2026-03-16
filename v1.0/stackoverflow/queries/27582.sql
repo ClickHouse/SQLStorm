@@ -6,7 +6,7 @@ WITH QualifiedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'), 1) AS TagCount,
+        length(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         COALESCE((
             SELECT COUNT(*)
@@ -20,7 +20,7 @@ WITH QualifiedPosts AS (
     WHERE 
         p.PostTypeId = 1 AND 
         p.Score > 0 AND
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 PostHistoryStats AS (
     SELECT 

@@ -26,7 +26,7 @@ DateStats AS (
     SELECT 
         d_year,
         COUNT(*) AS total_days,
-        AVG(EXTRACT(DAY FROM d_date)) AS avg_day_of_month,
+        AVG(toDayOfMonth(d_date)) AS avg_day_of_month,
         MAX(d_dow) AS max_day_of_week,
         MIN(d_dow) AS min_day_of_week
     FROM 

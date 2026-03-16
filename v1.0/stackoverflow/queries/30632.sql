@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
 ), 
 
 RecentVotes AS (
@@ -24,7 +24,7 @@ RecentVotes AS (
     FROM 
         Votes
     WHERE 
-        CreationDate >= CURRENT_DATE - INTERVAL '6 months' 
+        CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH 
     GROUP BY 
         PostId
 ),
@@ -33,7 +33,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         MIN(ph.CreationDate) AS ClosedDate,
-        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

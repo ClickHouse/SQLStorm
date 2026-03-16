@@ -73,4 +73,4 @@ WHERE
 ORDER BY 
     total_sales DESC, 
     supplier_region ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

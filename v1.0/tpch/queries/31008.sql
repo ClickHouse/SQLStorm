@@ -14,7 +14,7 @@ RankedOrders AS (
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate,
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_totalprice IS NOT NULL
+    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_totalprice IS NOT NULL
 ),
 AggregatedData AS (
     SELECT p.p_partkey, SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,

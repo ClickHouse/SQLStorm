@@ -33,7 +33,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastActionDate,
-        STRING_AGG(pt.Name, ', ') AS PostHistoryTypes
+        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostHistoryTypes
     FROM 
         PostHistory ph
     JOIN 

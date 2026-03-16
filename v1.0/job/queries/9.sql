@@ -28,7 +28,7 @@ SELECT
     (SELECT AVG(fm2.cast_count) FROM FilteredMovies fm2 WHERE fm2.production_year = fm.production_year) AS avg_cast_count_for_year
 FROM FilteredMovies fm
 LEFT JOIN (
-    SELECT mk.movie_id, STRING_AGG(k.keyword, ', ') AS keywords
+    SELECT mk.movie_id, arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id

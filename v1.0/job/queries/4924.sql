@@ -25,7 +25,7 @@ MovieDetails AS (
     SELECT 
         tm.*,
         COUNT(DISTINCT mi.info_type_id) AS info_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         TopMovies tm
     LEFT JOIN 

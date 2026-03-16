@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 PostVoteDetails AS (
     SELECT 
@@ -25,14 +25,14 @@ PostVoteDetails AS (
     JOIN 
         Posts P ON V.PostId = P.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         PostId
 ),
 PostHistorySummary AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS EditTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS EditTypes,
         COUNT(PH.Id) AS EditCount,
         MAX(PH.CreationDate) AS LastEditDate
     FROM 

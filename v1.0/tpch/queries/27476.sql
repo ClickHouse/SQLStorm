@@ -7,7 +7,7 @@ SELECT
     AVG(l.l_quantity) AS avg_quantity,
     MAX(l.l_discount) AS max_discount,
     MIN(CASE WHEN l.l_returnflag = 'R' THEN l.l_receiptdate END) AS first_return_date,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS comments_summary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS comments_summary
 FROM 
     part p
 JOIN 

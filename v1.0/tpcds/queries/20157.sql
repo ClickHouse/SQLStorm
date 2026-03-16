@@ -54,7 +54,7 @@ SELECT
     SUM(sp.total_quantity) AS total_sold,
     SUM(sp.total_profit) AS total_revenue,
     COUNT(DISTINCT cp.cd_demo_sk) AS unique_customers,
-    STRING_AGG(DISTINCT CASE WHEN cp.profit_rank <= 10 THEN CONCAT('Customer ', cp.cd_demo_sk) ELSE NULL END, ', ') AS top_customers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN cp.profit_rank <= 10 THEN CONCAT('Customer ', cp.cd_demo_sk) ELSE NULL END))), ', ') AS top_customers
 FROM 
     customer_address ca
 JOIN 

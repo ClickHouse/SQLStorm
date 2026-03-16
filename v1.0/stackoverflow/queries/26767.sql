@@ -12,18 +12,18 @@ WITH PostStats AS (
         u.Reputation,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpVotes,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3) AS DownVotes,
-        (SELECT STRING_AGG(b.Name, ', ') FROM Badges b WHERE b.UserId = p.OwnerUserId) AS UserBadges
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') FROM Badges b WHERE b.UserId = p.OwnerUserId) AS UserBadges
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id 
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TagStats AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', Tags)) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts 
@@ -58,7 +58,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStats ts ON ts.TagName = ANY(string_to_array(rp.Tags, ','))
+    TagStats ts ON ts.TagName = ANY(splitByString(',', rp.Tags))
 WHERE 
     rp.Rank <= 10
 ORDER BY 

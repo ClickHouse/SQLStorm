@@ -71,7 +71,7 @@ LEFT JOIN
             customer_address ca 
         WHERE 
             ca.ca_address_sk = (SELECT c.c_current_addr_sk FROM customer c WHERE c.c_customer_sk = cs.c_customer_sk)
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
 ORDER BY 
     sh.total_net_profit DESC;

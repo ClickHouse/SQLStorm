@@ -29,7 +29,7 @@ SELECT
     ak.name AS actor_name,
     COUNT(DISTINCT ch.movie_id) AS total_movies,
     SUM(CASE WHEN ch.role_id IS NOT NULL THEN 1 ELSE 0 END) AS roles_count,
-    STRING_AGG(DISTINCT at.title || ' (' || at.production_year || ')', ', ') AS movies_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(at.title || ' (' || at.production_year || ')'))), ', ') AS movies_list,
     COALESCE(MAX(n.gender), 'Unknown') AS gender,
     AVG(mh.level) AS avg_hierarchy_level,
     RANK() OVER (PARTITION BY COALESCE(n.gender, 'Unknown') ORDER BY COUNT(DISTINCT ch.movie_id) DESC) AS rank_by_gender

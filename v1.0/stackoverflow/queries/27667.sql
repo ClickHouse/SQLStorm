@@ -21,13 +21,13 @@ RecentPosts AS (
         P.Score,
         P.ViewCount,
         P.CommentCount,
-        STRING_AGG(T.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM 
         Posts P
     JOIN 
         Tags T ON POSITION(T.TagName IN P.Tags) > 0
     WHERE 
-        P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         P.Id,
         P.Title,

@@ -30,9 +30,9 @@ SELECT
     tm.title,
     tm.production_year,
     ak.name AS top_actor,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     COALESCE(mic.info, 'No info available') AS additional_info,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     TopMovies tm
 LEFT JOIN 

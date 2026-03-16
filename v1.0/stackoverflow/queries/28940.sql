@@ -3,7 +3,7 @@ WITH UserBadges AS (
         U.Id AS UserId,
         U.DisplayName,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM Users U
     LEFT JOIN Badges B ON U.Id = B.UserId
     GROUP BY U.Id, U.DisplayName
@@ -16,14 +16,14 @@ ActivePosts AS (
         COUNT(C.Id) AS CommentCount,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpvoteCount,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownvoteCount,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
-    LEFT JOIN LATERAL (
-        SELECT unnest(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><')) AS TagName
+    LEFT JOIN (
+        SELECT arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2))) AS TagName
     ) T ON TRUE
-    WHERE P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY P.Id, P.Title, P.CreationDate
 ),
 PopularBadgedUsers AS (

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Votes v ON p.Id = v.PostId
     WHERE
-        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
+        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
     GROUP BY
         p.Id, u.DisplayName
 ),
@@ -24,7 +24,7 @@ PostHistorySummary AS (
     SELECT
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        STRING_AGG(ph.UserDisplayName, ', ' ORDER BY ph.CreationDate DESC) AS Editors
+        arrayStringConcat(groupArray(assumeNotNull(ph.UserDisplayName)), ', ' ORDER BY ph.CreationDate DESC) AS Editors
     FROM
         PostHistory ph
     WHERE

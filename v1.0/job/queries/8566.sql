@@ -37,10 +37,10 @@ FilteredMovies AS (
 )
 SELECT 
     production_year, 
-    STRING_AGG(title, ', ') AS titles, 
-    STRING_AGG(person_name, '; ') AS cast, 
-    STRING_AGG(company_type, ', ') AS companies, 
-    STRING_AGG(movie_keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(title)), ', ') AS titles, 
+    arrayStringConcat(groupArray(assumeNotNull(person_name)), '; ') AS cast, 
+    arrayStringConcat(groupArray(assumeNotNull(company_type)), ', ') AS companies, 
+    arrayStringConcat(groupArray(assumeNotNull(movie_keyword)), ', ') AS keywords
 FROM 
     FilteredMovies
 GROUP BY 

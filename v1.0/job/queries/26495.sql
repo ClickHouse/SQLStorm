@@ -33,7 +33,7 @@ WITH RecursiveName AS (
 SELECT 
     n.name_text,
     COUNT(DISTINCT n.movie_title) AS movie_count,
-    STRING_AGG(DISTINCT n.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.keyword))), ', ') AS keywords
 FROM NamedMovies n
 GROUP BY n.name_text
 ORDER BY movie_count DESC

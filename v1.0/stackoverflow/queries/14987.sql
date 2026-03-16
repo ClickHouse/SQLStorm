@@ -6,7 +6,7 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     u.Reputation AS OwnerReputation,
     COUNT(v.Id) AS VoteCount,
-    STRING_AGG(t.TagName, ', ') AS Tags,
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
     COALESCE(p.AnswerCount, 0) AS AnswerCount,
     COALESCE(p.CommentCount, 0) AS CommentCount,
     COALESCE(p.ViewCount, 0) AS ViewCount

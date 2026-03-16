@@ -29,7 +29,7 @@ WITH RankedPosts AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(t.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(t.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

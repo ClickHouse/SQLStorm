@@ -42,7 +42,7 @@ MergedAnalysis AS (
     FROM 
         AddressAnalysis aa
     JOIN 
-        CustomerDemographics cd ON RANDOM() < 0.05  
+        CustomerDemographics cd ON rand() < 0.05  
 )
 SELECT 
     ma.ca_city,

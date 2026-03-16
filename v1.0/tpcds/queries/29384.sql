@@ -50,7 +50,7 @@ SELECT
     cb.min_rank,
     cb.avg_rank,
     cb.customer_density,
-    STRING_AGG(rc.full_name, ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(rc.full_name)), ', ') AS customer_names
 FROM 
     CustomerBenchmark cb
 JOIN 

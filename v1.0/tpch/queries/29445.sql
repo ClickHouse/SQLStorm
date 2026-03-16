@@ -23,6 +23,6 @@ SELECT
     COUNT(*) AS total_records,
     MAX(lower_comment) AS max_lower_comment,
     MIN(upper_supplier_comment) AS min_upper_comment,
-    STRING_AGG(modified_comment, '; ') AS concatenated_comments
+    arrayStringConcat(groupArray(assumeNotNull(modified_comment)), '; ') AS concatenated_comments
 FROM 
     String_Benchmark;

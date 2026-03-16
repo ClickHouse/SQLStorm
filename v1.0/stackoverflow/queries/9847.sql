@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 month' 
+    WHERE p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 MONTH 
     GROUP BY p.Id, u.DisplayName, p.Title, p.CreationDate, p.ViewCount, p.PostTypeId
 ),
 TopPosts AS (

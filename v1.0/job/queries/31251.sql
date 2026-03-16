@@ -4,7 +4,7 @@ WITH RECURSIVE movie_hierarchy AS (
         m.title AS movie_title,
         m.production_year,
         0 AS level,
-        NULL::integer AS parent_id
+        CAST(NULL AS integer) AS parent_id
     FROM 
         aka_title m
     WHERE 
@@ -39,7 +39,7 @@ cast_with_roles AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

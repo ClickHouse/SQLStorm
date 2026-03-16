@@ -6,7 +6,7 @@ WITH PartStats AS (
         p.p_type,
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
         MAX(ps.ps_supplycost) AS max_supply_cost,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM
         part p
     JOIN

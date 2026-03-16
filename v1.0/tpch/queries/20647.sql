@@ -63,7 +63,7 @@ SELECT
     n.n_name AS nation_name,
     COUNT(DISTINCT os.l_orderkey) AS total_orders,
     SUM(os.total_sales) AS overall_sales,
-    ARRAY_AGG(DISTINCT ps.p_name) AS product_names,
+    arrayDistinct(groupArray(assumeNotNull(ps.p_name))) AS product_names,
     cs.customer_rank
 FROM nation n
 LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey

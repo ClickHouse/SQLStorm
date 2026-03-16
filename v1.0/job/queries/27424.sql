@@ -4,8 +4,8 @@ WITH RankedMovies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT ak.name) AS aliases,
-        ARRAY_AGG(DISTINCT kw.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aliases,
+        arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords,
         COUNT(DISTINCT ci.person_id) AS cast_count,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.production_year DESC) AS rnk
     FROM 
@@ -42,12 +42,11 @@ SELECT
     tm.title,
     tm.production_year,
     tm.cast_count,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS all_keywords,
-    STRING_AGG(DISTINCT ak.name, ', ') AS all_aliases
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS all_keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS all_aliases
 FROM 
     TopMovies tm
-LEFT JOIN 
-    UNNEST(tm.aliases) AS ak_name ON TRUE
+LEFT ARRAY JOIN tm.aliases AS ak_name
 LEFT JOIN 
     aka_name ak ON ak.name = ak_name
 LEFT JOIN 

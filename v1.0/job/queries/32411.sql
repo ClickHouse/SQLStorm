@@ -29,7 +29,7 @@ SELECT
     mt.title AS movie_title,
     mt.production_year,
     coalesce(AVG(CASE WHEN ci.role_id IS NOT NULL THEN 1 ELSE 0 END), 0) AS avg_lead_role,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     COUNT(DISTINCT mc.company_id) AS production_companies,
     COUNT(DISTINCT ci.person_id) AS total_cast,
     ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY mt.title) AS year_rank
@@ -54,4 +54,4 @@ HAVING
     COUNT(DISTINCT ci.person_id) > 5
 ORDER BY 
     mt.production_year DESC, a.name
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

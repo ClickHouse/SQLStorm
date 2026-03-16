@@ -3,8 +3,8 @@ WITH movie_data AS (
         m.id AS movie_id,
         m.title AS movie_title,
         m.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT c.name) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS companies,
         COUNT(DISTINCT ca.person_id) AS cast_count
     FROM 
         aka_title AS m

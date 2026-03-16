@@ -15,7 +15,7 @@ WITH RecentPostStats AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days'
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AcceptedAnswerId, p.OwnerUserId
 ),
@@ -43,7 +43,7 @@ PostHistoryWithComments AS (
     SELECT 
         ph.PostId,
         COUNT(DISTINCT ph.Id) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11)) AS CloseReopenHistory,
-        STRING_AGG(DISTINCT c.Text, '; ') AS CommentTexts
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Text))), '; ') AS CommentTexts
     FROM 
         PostHistory ph
     LEFT JOIN 

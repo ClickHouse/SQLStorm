@@ -44,4 +44,4 @@ AND ws.ws_sales_price > 0
 GROUP BY c.c_customer_id, ca.ca_city, cd.cd_gender
 HAVING SUM(ws.ws_sales_price) > 1000
 ORDER BY total_sales DESC, order_count DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

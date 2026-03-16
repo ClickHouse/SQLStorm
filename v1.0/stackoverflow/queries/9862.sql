@@ -22,7 +22,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, pt.Name, u.DisplayName
 ),
@@ -51,7 +51,7 @@ SELECT
     tp.OwnerDisplayName,
     tp.CommentCount,
     tp.VoteCount,
-    COALESCE(NULLIF((SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    COALESCE(NULLIF((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
                      FROM Tags t 
                      WHERE t.ExcerptPostId = tp.PostId), ''), 'No Tags') AS Tags
 FROM 

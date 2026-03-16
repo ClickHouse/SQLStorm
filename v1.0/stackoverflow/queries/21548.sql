@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes vt ON p.Id = vt.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostHistoryCTE AS (
     SELECT 
@@ -34,11 +34,11 @@ PostHistoryCTE AS (
 TaggedPosts AS (
     SELECT 
         p.Id AS TagPostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p 
     JOIN 
-        UNNEST(string_to_array(p.Tags, ',')) AS tag ON TRUE
+        arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
     JOIN 
         Tags t ON TRIM(tag) = t.TagName
     GROUP BY 
@@ -73,4 +73,4 @@ WHERE
     rp.RankByScore <= 5
 ORDER BY 
     rp.Score DESC, rp.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

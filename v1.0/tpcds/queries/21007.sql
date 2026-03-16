@@ -53,4 +53,4 @@ FROM customer_levels cl
 LEFT JOIN sales_summary ss ON ss.cs_item_sk = cl.c_customer_sk
 LEFT JOIN customer_stats cs ON cs.cd_demo_sk = cl.c_customer_sk
 ORDER BY cl.level DESC, ss.total_sales_price DESC NULLS LAST
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -11,7 +11,7 @@ WITH RECURSIVE address_hierarchy AS (
 ),
 customer_ages AS (
     SELECT c.c_customer_sk,
-           EXTRACT(YEAR FROM DATE '2002-10-01') - c.c_birth_year AS age,
+           toYear(toDate('2002-10-01')) - c.c_birth_year AS age,
            cd.cd_gender,
            cd.cd_marital_status
     FROM customer c

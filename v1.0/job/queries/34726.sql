@@ -30,7 +30,7 @@ SELECT
     t.production_year,
     COUNT(DISTINCT c.note) AS num_roles,
     AVG(COALESCE(c.nr_order, 0)) AS avg_order,
-    STRING_AGG(DISTINCT c.note, ', ') AS role_notes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.note))), ', ') AS role_notes,
     SUM(COALESCE(mi.info_type_id, 0)) AS total_info_types
 FROM
     aka_name ak

@@ -17,7 +17,7 @@ WITH RankedPosts AS (
          FROM Votes
          GROUP BY PostId) v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -52,7 +52,7 @@ FROM
 LEFT JOIN 
     (SELECT 
          p.Id AS PostId, 
-         STRING_AGG(c.Text, '; ') AS Comments
+         arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS Comments
      FROM 
          Posts p
      LEFT JOIN 

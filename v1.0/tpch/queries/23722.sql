@@ -43,7 +43,7 @@ CustomerOrders AS (
         o.o_totalprice > (
             SELECT AVG(o2.o_totalprice)
             FROM orders o2
-            WHERE o2.o_orderdate > DATE '1998-10-01' - INTERVAL '1 year'
+            WHERE o2.o_orderdate > toDate('1998-10-01') - INTERVAL 1 YEAR
         )
 )
 SELECT
@@ -51,7 +51,7 @@ SELECT
     COALESCE(ts.r_name, 'Unknown Region') AS region,
     ts.total_cost,
     COUNT(co.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT CAST(co.o_orderkey AS TEXT), ', ') AS order_ids
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(co.o_orderkey AS TEXT)))), ', ') AS order_ids
 FROM
     CustomerOrders co
 LEFT JOIN
@@ -66,7 +66,7 @@ HAVING
     SUM(co.o_totalprice) > (
         SELECT SUM(o3.o_totalprice)
         FROM orders o3
-        WHERE o3.o_orderdate < DATE '1998-10-01' - INTERVAL '2 year'
+        WHERE o3.o_orderdate < toDate('1998-10-01') - INTERVAL 2 YEAR
     ) OR ts.total_cost IS NULL
 ORDER BY
     region, total_orders DESC, c.c_name;

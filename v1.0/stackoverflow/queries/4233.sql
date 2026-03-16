@@ -20,15 +20,15 @@ ActivePosts AS (
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY P.Id, P.Title, P.ViewCount, P.CreationDate, P.AcceptedAnswerId
 ),
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        STRING_AGG(T.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM Posts P
-    LEFT JOIN LATERAL (SELECT UNNEST(STRING_TO_ARRAY(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2), '><')) AS TagName) AS TagArray ON TRUE
+    LEFT JOIN (SELECT arrayJoin(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2))) AS TagName) AS TagArray ON TRUE
     LEFT JOIN Tags T ON T.TagName = TagArray.TagName
     GROUP BY P.Id
 ),
@@ -59,6 +59,6 @@ SELECT
 FROM PostSummary PS
 LEFT JOIN Users U ON U.Id = PS.HasAcceptedAnswer
 WHERE PS.ViewCount > 100
-  AND (PS.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '3 months' OR U.Id IS NULL)
+  AND (PS.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH OR U.Id IS NULL)
 ORDER BY PS.CreationDate DESC
 LIMIT 50;

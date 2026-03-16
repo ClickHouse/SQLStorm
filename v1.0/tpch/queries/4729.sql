@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
 ),
 HighValueOrders AS (
     SELECT 
@@ -69,7 +69,7 @@ JOIN
     )
 WHERE 
     h.total_value > 500 
-    AND h.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND h.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     AND (s.s_acctbal IS NULL OR s.s_acctbal > 1000)
 ORDER BY 
     h.o_orderdate, h.c_name;

@@ -18,19 +18,19 @@ PostSummary AS (
         SUM(P.ViewCount) AS TotalViews,
         AVG(COALESCE(P.Score, 0)) AS AverageScore,
         MAX(P.LastActivityDate) AS MostRecentActivity,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
     FROM Posts P
     LEFT JOIN Tags T ON P.Tags LIKE '%' || T.TagName || '%'
-    WHERE P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+    WHERE P.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY P.OwnerUserId
 ),
 ClosedPostHistory AS (
     SELECT 
         PH.UserId,
         COUNT(PH.Id) AS ClosedPostCount,
-        STRING_AGG(DISTINCT CPR.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CPR.Name))), ', ') AS CloseReasons
     FROM PostHistory PH
-    JOIN CloseReasonTypes CPR ON PH.Comment = CPR.Id::TEXT
+    JOIN CloseReasonTypes CPR ON PH.Comment = CAST(CPR.Id AS TEXT)
     WHERE PH.PostHistoryTypeId IN (10, 11) 
     GROUP BY PH.UserId
 ),

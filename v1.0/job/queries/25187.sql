@@ -50,10 +50,10 @@ movie_details AS (
 SELECT 
     md.title,
     md.production_year,
-    ARRAY_AGG(DISTINCT md.keyword) AS keywords,
-    ARRAY_AGG(DISTINCT md.company_name) AS production_companies,
+    arrayDistinct(groupArray(assumeNotNull(md.keyword))) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(md.company_name))) AS production_companies,
     COUNT(DISTINCT ci.role_id) AS unique_roles,
-    STRING_AGG(DISTINCT CAST(ci.role_id AS TEXT), ', ') AS role_ids
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ci.role_id AS TEXT)))), ', ') AS role_ids
 FROM 
     movie_details md
 JOIN 

@@ -30,7 +30,7 @@ SELECT
     mh.production_year,
     COALESCE(cmp.kind, 'Unknown') AS company_type,
     COUNT(DISTINCT ci.person_id) AS total_cast_members,
-    STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
     AVG(CASE 
             WHEN r.role IS NULL THEN 0 
             ELSE 1 

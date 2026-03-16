@@ -11,7 +11,7 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 ), 
 SupplierDetails AS (
     SELECT 
@@ -36,7 +36,7 @@ PartRevenue AS (
     JOIN 
         part p ON l.l_partkey = p.p_partkey
     WHERE 
-        l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+        l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY 
         p.p_partkey, p.p_name
 )

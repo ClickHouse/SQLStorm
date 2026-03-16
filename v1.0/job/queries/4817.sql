@@ -11,7 +11,7 @@ WITH RankedMovies AS (
 ), CastDetails AS (
     SELECT 
         c.movie_id,
-        COALESCE(STRING_AGG(DISTINCT ak.name, ', '), 'No Cast') AS cast_names,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', '), 'No Cast') AS cast_names,
         COUNT(c.person_id) AS total_cast,
         MAX(r.role) AS highest_role
     FROM 
@@ -25,7 +25,7 @@ WITH RankedMovies AS (
 ), MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

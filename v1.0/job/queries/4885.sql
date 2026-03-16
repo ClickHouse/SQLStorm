@@ -37,7 +37,7 @@ SELECT
     fm.title,
     fm.production_year,
     fm.cast_count,
-    STRING_AGG(ad.actor_name, ', ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(ad.actor_name)), ', ') AS actors
 FROM 
     FilteredMovies fm
 LEFT JOIN 

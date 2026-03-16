@@ -32,7 +32,7 @@ WITH RECURSIVE ActorHierarchy AS (
     SELECT 
         m.id AS movie_id,
         m.title,
-        STRING_AGG(cn.name, ', ') AS companies,
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS companies,
         COUNT(mc.company_id) AS num_companions
     FROM aka_title m
     LEFT JOIN movie_companies mc ON m.id = mc.movie_id

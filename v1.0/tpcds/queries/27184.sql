@@ -7,7 +7,7 @@ SELECT
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
     MIN(c_birth_year) AS earliest_birth_year,
     MAX(c_birth_year) AS latest_birth_year,
-    STRING_AGG(DISTINCT ca_city, ', ') AS unique_cities
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS unique_cities
 FROM 
     customer_address ca
 JOIN 

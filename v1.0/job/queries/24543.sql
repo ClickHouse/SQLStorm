@@ -80,7 +80,7 @@ SELECT
         WHEN f.actor_count >= 10 THEN 'Ensemble Cast'
         ELSE 'Small Cast'
     END AS cast_size,
-    (SELECT STRING_AGG(name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(name)), ', ') 
      FROM aka_name 
      WHERE person_id IN (SELECT DISTINCT ci.person_id FROM cast_info ci WHERE ci.movie_id = f.title_id)
     ) AS all_actors

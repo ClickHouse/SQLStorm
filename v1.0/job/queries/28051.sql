@@ -20,7 +20,7 @@ SELECT
     rt.role AS role_name,
     rm.title AS movie_title,
     rm.production_year,
-    STRING_AGG(rm.keyword, ', ' ORDER BY rm.keyword) AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(rm.keyword)), ', ' ORDER BY rm.keyword) AS keywords
 FROM 
     cast_info ci
 JOIN 

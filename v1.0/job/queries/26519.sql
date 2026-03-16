@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         t.production_year,
         kt.kind AS movie_kind,
         COUNT(ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT an.name, ', ') AS all_actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS all_actors
     FROM 
         aka_title AS t
     INNER JOIN 
@@ -57,7 +57,7 @@ SELECT
     movie_kind,
     cast_count,
     all_actors,
-    STRING_AGG(DISTINCT keyword, ', ') AS popular_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS popular_keywords
 FROM 
     FinalResults
 GROUP BY 

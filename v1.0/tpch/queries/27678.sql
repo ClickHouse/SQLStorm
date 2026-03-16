@@ -47,7 +47,7 @@ SELECT
     MAX(ps.ps_supplycost) AS MaxSupplyCost,
     MIN(ps.ps_supplycost) AS MinSupplyCost,
     SUM(ps.ps_availqty) AS TotalAvailableQty,
-    STRING_AGG(DISTINCT ps.LimitedComment, '; ') AS AggregatedComments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ps.LimitedComment))), '; ') AS AggregatedComments
 FROM 
     PartSupplier ps
 JOIN 

@@ -38,7 +38,7 @@ SELECT
     fm.movie_title,
     fm.cast_member,
     COUNT(ud.movie_description) AS description_count,
-    STRING_AGG(ud.movie_description, '; ') AS all_descriptions
+    arrayStringConcat(groupArray(assumeNotNull(ud.movie_description)), '; ') AS all_descriptions
 FROM 
     FilteredMovies fm
 LEFT JOIN 

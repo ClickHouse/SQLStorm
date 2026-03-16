@@ -8,7 +8,7 @@ SELECT
     SUM(ss.ss_net_paid) AS total_spent,
     COUNT(ss.ss_ticket_number) AS total_purchases,
     AVG(ss.ss_net_paid) AS avg_purchase_value,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promo_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promo_names
 FROM 
     customer c
 JOIN 

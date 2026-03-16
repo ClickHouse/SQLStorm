@@ -12,7 +12,7 @@ DemographicsData AS (
     SELECT 
         cd_demo_sk,
         COUNT(*) AS total_customers,
-        STRING_AGG(CASE WHEN cd_gender = 'M' THEN 'Male' WHEN cd_gender = 'F' THEN 'Female' ELSE 'Other' END, ', ') AS genders,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN cd_gender = 'M' THEN 'Male' WHEN cd_gender = 'F' THEN 'Female' ELSE 'Other' END)), ', ') AS genders,
         AVG(cd_purchase_estimate) AS average_purchase_estimate
     FROM 
         customer_demographics

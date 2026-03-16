@@ -46,7 +46,7 @@ ActivePostStats AS (
         FROM Comments
         GROUP BY PostId
     ) PC ON P.Id = PC.PostId
-    WHERE P.CreationDate >= CURRENT_DATE - INTERVAL '30 days'
+    WHERE P.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY
 )
 SELECT 
     AU.DisplayName,

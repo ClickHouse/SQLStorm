@@ -26,7 +26,7 @@ extended_cast_info AS (
 movies_with_keyword AS (
     SELECT
         mt.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM
         movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id

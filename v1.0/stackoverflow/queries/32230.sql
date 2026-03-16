@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
         AND p.Score > 0
 ),
 
@@ -46,7 +46,7 @@ TopContributors AS (
 
 TagStatistics AS (
     SELECT 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName,
         COUNT(*) AS TagCount,
         SUM(p.ViewCount) AS TotalViews
     FROM 
@@ -67,7 +67,7 @@ ClosedPostDetails AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON ph.Comment::int = cr.Id
+        CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
 )

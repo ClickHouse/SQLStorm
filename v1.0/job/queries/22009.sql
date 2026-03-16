@@ -3,7 +3,7 @@ WITH RECURSIVE movies_with_cast AS (
     SELECT
         m.id AS movie_id,
         t.title,
-        ARRAY_AGG(DISTINCT a.name) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actor_names,
         COUNT(DISTINCT c.role_id) AS total_roles
     FROM
         aka_title t
@@ -24,7 +24,7 @@ movie_info_aggregates AS (
     SELECT
         movie_id,
         COUNT(DISTINCT info_type_id) AS info_type_count,
-        STRING_AGG(info, '; ') AS info_details
+        arrayStringConcat(groupArray(assumeNotNull(info)), '; ') AS info_details
     FROM
         movie_info
     WHERE

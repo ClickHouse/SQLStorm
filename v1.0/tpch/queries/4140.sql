@@ -31,7 +31,7 @@ SELECT
     COUNT(DISTINCT ss.s_suppkey) AS SupplierCount,
     AVG(ss.TotalSupplyCost) AS AverageSupplyCost,
     AVG(od.TotalOrderValue) AS AverageOrderValue,
-    STRING_AGG(DISTINCT ss.s_name, '; ') AS SupplierNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ss.s_name))), '; ') AS SupplierNames
 FROM 
     nation ns
 LEFT JOIN 

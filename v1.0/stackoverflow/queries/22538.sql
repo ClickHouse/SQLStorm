@@ -15,12 +15,12 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON p.OwnerUserId = U.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(CASE WHEN b.Class = 1 THEN 1 END) AS GoldBadges,
         COUNT(CASE WHEN b.Class = 2 THEN 1 END) AS SilverBadges,
         COUNT(CASE WHEN b.Class = 3 THEN 1 END) AS BronzeBadges
@@ -73,4 +73,4 @@ WHERE
     RP.Rank <= 5
 ORDER BY 
     RP.CreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

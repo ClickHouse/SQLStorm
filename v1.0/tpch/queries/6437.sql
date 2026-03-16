@@ -3,7 +3,7 @@ WITH RankedOrders AS (
         o.o_orderkey,
         o.o_orderdate,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS order_rank
+        RANK() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS order_rank
     FROM 
         orders o
     JOIN 

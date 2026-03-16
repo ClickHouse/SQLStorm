@@ -39,4 +39,4 @@ LEFT JOIN TopCustomers tc ON tc.c_custkey = ps.ps_partkey
 GROUP BY s.s_suppkey, s.s_name, p.p_name, tc.TotalSpent
 HAVING SUM(ps.ps_availqty) IS NOT NULL
 ORDER BY TotalRevenueFromOrders DESC, TotalAvailable ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

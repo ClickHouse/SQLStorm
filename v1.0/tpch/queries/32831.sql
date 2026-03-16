@@ -1,7 +1,7 @@
 WITH RECURSIVE monthly_sales AS (
     SELECT 
-        EXTRACT(YEAR FROM o_orderdate) AS order_year,
-        EXTRACT(MONTH FROM o_orderdate) AS order_month,
+        toYear(o_orderdate) AS order_year,
+        toMonth(o_orderdate) AS order_month,
         SUM(l_extendedprice * (1 - l_discount)) AS total_sales
     FROM 
         orders o
@@ -10,8 +10,8 @@ WITH RECURSIVE monthly_sales AS (
     WHERE 
         o.o_orderdate >= '1996-01-01' AND o.o_orderdate < '1997-01-01'
     GROUP BY 
-        EXTRACT(YEAR FROM o_orderdate), 
-        EXTRACT(MONTH FROM o_orderdate)
+        toYear(o_orderdate), 
+        toMonth(o_orderdate)
     
     UNION ALL
     
@@ -54,8 +54,8 @@ region_sales AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     JOIN 
-        monthly_sales ms ON EXTRACT(YEAR FROM o.o_orderdate) = ms.order_year AND 
-                            EXTRACT(MONTH FROM o.o_orderdate) = ms.order_month
+        monthly_sales ms ON toYear(o.o_orderdate) = ms.order_year AND 
+                            toMonth(o.o_orderdate) = ms.order_month
     GROUP BY 
         r.r_name
 )

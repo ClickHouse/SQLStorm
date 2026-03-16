@@ -4,7 +4,7 @@ SELECT
     s.s_name AS supplier_name,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(p.p_retailprice) AS total_retail_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     SUM(CASE WHEN o.o_orderstatus = 'O' THEN l.l_quantity ELSE 0 END) AS total_ordered,
     AVG(p.p_size) AS avg_part_size,
     COUNT(DISTINCT CASE WHEN l.l_returnflag = 'R' THEN l.l_orderkey END) AS return_count

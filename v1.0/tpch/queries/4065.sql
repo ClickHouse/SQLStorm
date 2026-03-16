@@ -55,7 +55,7 @@ LEFT JOIN
         FROM partsupp ps 
         WHERE ps.ps_partkey = pd.p_partkey 
         ORDER BY ps.ps_supplycost 
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
 LEFT JOIN 
     (SELECT DISTINCT 

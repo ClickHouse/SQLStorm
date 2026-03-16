@@ -7,7 +7,7 @@ WITH AddressSummary AS (
             ca_street_type, ' ', 
             CASE WHEN ca_suite_number IS NOT NULL THEN CONCAT('Suite ', ca_suite_number) ELSE '' END
         ) AS FullAddress,
-        STRING_AGG(CONCAT(ca_zip, ' ', ca_country), ', ') AS ZipCountryList
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ca_zip, ' ', ca_country))), ', ') AS ZipCountryList
     FROM 
         customer_address
     GROUP BY 
@@ -17,11 +17,11 @@ DemographicSummary AS (
     SELECT 
         cd_gender,
         cd_marital_status,
-        STRING_AGG(CASE 
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
             WHEN cd_credit_rating = 'High' THEN 'Elite'
             WHEN cd_credit_rating = 'Medium' THEN 'Standard'
             ELSE 'Budget'
-        END, ', ') AS CreditRatingCategory
+        END)), ', ') AS CreditRatingCategory
     FROM 
         customer_demographics
     GROUP BY 

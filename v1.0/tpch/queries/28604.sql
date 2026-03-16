@@ -3,7 +3,7 @@ WITH string_aggregates AS (
     SELECT
         p_brand,
         COUNT(DISTINCT p_partkey) AS distinct_parts,
-        STRING_AGG(p_name, ', ') AS part_names,
+        arrayStringConcat(groupArray(assumeNotNull(p_name)), ', ') AS part_names,
         AVG(p_retailprice) AS avg_price
     FROM part
     WHERE p_size > 10
@@ -13,7 +13,7 @@ region_summary AS (
     SELECT
         r_name,
         COUNT(DISTINCT n_nationkey) AS nations_count,
-        STRING_AGG(n_name, '; ') AS nations
+        arrayStringConcat(groupArray(assumeNotNull(n_name)), '; ') AS nations
     FROM region
     JOIN nation ON r_regionkey = n_regionkey
     GROUP BY r_name

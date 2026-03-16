@@ -2,7 +2,7 @@
 SELECT 
     p.p_name,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,
-    STRING_AGG(s.s_name, ',') AS supplier_names
+    arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ',') AS supplier_names
 FROM 
     part p 
 JOIN 
@@ -14,8 +14,8 @@ JOIN
 JOIN 
     supplier s ON ps.ps_suppkey = s.s_suppkey 
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' 
-    AND o.o_orderdate < DATE '1998-01-01' 
+    o.o_orderdate >= toDate('1997-01-01') 
+    AND o.o_orderdate < toDate('1998-01-01') 
 GROUP BY 
     p.p_name 
 HAVING 

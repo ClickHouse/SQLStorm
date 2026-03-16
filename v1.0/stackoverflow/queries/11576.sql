@@ -27,7 +27,7 @@ SELECT
     PQ.Score,
     PQ.ViewCount,
     PQ.OwnerReputation,
-    string_agg(PQ.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(PQ.TagName)), ', ') AS Tags
 FROM 
     PopularQuestions PQ
 GROUP BY 

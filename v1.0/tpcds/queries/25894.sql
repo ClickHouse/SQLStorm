@@ -7,7 +7,7 @@ SELECT
     d.d_date AS purchase_date,
     COALESCE(SUM(ws.ws_ext_sales_price), 0) AS total_spent,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS purchased_items,
     CASE 
         WHEN SUM(ws.ws_ext_sales_price) > 1000 THEN 'High Value'
         WHEN SUM(ws.ws_ext_sales_price) BETWEEN 500 AND 1000 THEN 'Medium Value'

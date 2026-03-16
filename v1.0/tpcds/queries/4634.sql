@@ -54,4 +54,4 @@ GROUP BY
     ic.cd_gender, ic.income_category
 ORDER BY 
     ic.cd_gender, total_sales_by_income DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

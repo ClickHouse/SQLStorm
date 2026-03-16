@@ -3,7 +3,7 @@ SELECT
     s.s_name AS supplier_name,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     CONCAT('Region: ', r.r_name, ' | Comment: ', r.r_comment) AS region_details
 FROM part p

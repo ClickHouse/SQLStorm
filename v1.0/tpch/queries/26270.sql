@@ -4,7 +4,7 @@ SELECT
     n.n_name,
     r.r_name,
     CONCAT('Supplier: ', s.s_name, ', Part: ', p.p_name, ', Nation: ', n.n_name, ', Region: ', r.r_name) AS full_description,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS aggregated_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS aggregated_comments,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_price_per_item

@@ -28,7 +28,7 @@ SELECT
     m.title, 
     m.production_year,
     n.name AS director_name,
-    STRING_AGG(k.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
 FROM 
     RankedMovies m
 LEFT JOIN 

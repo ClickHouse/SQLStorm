@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01'
+        o.o_orderdate >= toDate('1997-01-01')
 ),
 SupplierDetails AS (
     SELECT 
@@ -41,10 +41,10 @@ SELECT
 FROM 
     RankedOrders o
 LEFT JOIN 
-    TopSuppliers ts ON o.o_orderkey = (SELECT l.l_orderkey FROM lineitem l WHERE l.l_returnflag = 'R' AND l.l_orderkey = o.o_orderkey FETCH FIRST 1 ROW ONLY)
+    TopSuppliers ts ON o.o_orderkey = (SELECT l.l_orderkey FROM lineitem l WHERE l.l_returnflag = 'R' AND l.l_orderkey = o.o_orderkey LIMIT 1)
 WHERE 
     o.rn <= 10 
-    AND (o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2 WHERE o2.o_orderdate >= DATE '1997-01-01') 
+    AND (o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2 WHERE o2.o_orderdate >= toDate('1997-01-01')) 
     OR ts.supplier_rank IS NOT NULL)
 ORDER BY 
     o.o_totalprice DESC;

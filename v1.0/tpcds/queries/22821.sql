@@ -57,4 +57,4 @@ LEFT JOIN
     CustomerReturns cr ON hi.ws_item_sk = cr.sr_item_sk
 ORDER BY 
     hi.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

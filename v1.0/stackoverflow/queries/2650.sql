@@ -25,7 +25,7 @@ PostStats AS (
         GROUP BY ParentId
     ) a ON p.Id = a.ParentId
     LEFT JOIN UserBadgeCount pb ON p.OwnerUserId = pb.UserId
-    WHERE p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 RankedPosts AS (
     SELECT 
@@ -49,7 +49,7 @@ FROM RankedPosts rp
 WHERE rp.Score > (
     SELECT AVG(Score)
     FROM Posts
-    WHERE CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 ORDER BY PostCategory, rp.Score DESC
 LIMIT 100;

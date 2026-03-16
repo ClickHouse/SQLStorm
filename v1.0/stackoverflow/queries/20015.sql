@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score IS NOT NULL
-        AND p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP)) - INTERVAL '1 year'
+        AND p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6)) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
@@ -26,13 +26,13 @@ ClosedPosts AS (
         Posts p ON p.Id = ph.PostId
     WHERE 
         ph.PostHistoryTypeId = 10
-        AND ph.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP)) - INTERVAL '1 year'
+        AND ph.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6)) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -44,7 +44,7 @@ PostLinks AS (
     SELECT 
         pl.PostId,
         COUNT(DISTINCT pl.RelatedPostId) AS RelatedPostCount,
-        STRING_AGG(DISTINCT COALESCE(lt.Name, 'Unknown Link Type'), ', ') AS LinkTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(lt.Name, 'Unknown Link Type')))), ', ') AS LinkTypes
     FROM 
         PostLinks pl
     LEFT JOIN 

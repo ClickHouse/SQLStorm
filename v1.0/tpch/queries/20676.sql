@@ -50,7 +50,7 @@ SELECT
     SUM(cl.o_totalprice) AS total_order_price,
     COALESCE(MAX(rs.total_supplycost), 0) AS max_supply_cost,
     SUM(CASE WHEN pli.lineitem_count > 0 THEN 1 ELSE 0 END) AS part_lineitem_count,
-    STRING_AGG(DISTINCT CAST(pli.avg_extended_price AS VARCHAR), ', ') AS avg_extended_prices,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(pli.avg_extended_price AS VARCHAR)))), ', ') AS avg_extended_prices,
     MAX(CASE WHEN cl.price_category = 'No Price' THEN 1 ELSE 0 END) AS no_price_flag
 FROM 
     CustomerOrders cl
@@ -60,7 +60,7 @@ JOIN
             (SELECT n.n_nationkey FROM nation n WHERE n.n_regionkey = 0) LIMIT 1)
 LEFT JOIN 
     PartLineItems pli ON pli.p_partkey = 
-        (SELECT p.p_partkey FROM part p ORDER BY RANDOM() LIMIT 1)
+        (SELECT p.p_partkey FROM part p ORDER BY rand() LIMIT 1)
 GROUP BY 
     cl.c_name
 HAVING 

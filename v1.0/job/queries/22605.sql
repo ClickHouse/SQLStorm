@@ -18,7 +18,7 @@ ActorTitleStats AS (
         COUNT(DISTINCT c.movie_id) AS total_movies,
         AVG(CASE WHEN c.note IS NOT NULL THEN 1 ELSE 0 END) AS avg_movies_with_notes,
         SUM(CASE WHEN c.nr_order IS NOT NULL THEN c.nr_order ELSE 0 END) AS total_order,
-        STRING_AGG(DISTINCT at.title, ', ') AS titles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(at.title))), ', ') AS titles,
         ROW_NUMBER() OVER (PARTITION BY a.person_id ORDER BY COUNT(DISTINCT c.movie_id) DESC) AS rank
     FROM 
         aka_name a

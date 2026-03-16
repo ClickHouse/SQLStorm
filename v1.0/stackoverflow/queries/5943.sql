@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -27,7 +27,7 @@ TopUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation
     HAVING 
@@ -40,7 +40,7 @@ UserBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        b.Date >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 ),

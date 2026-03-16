@@ -5,7 +5,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
     CONCAT('Manufacturer: ', p.p_mfgr, ', Type: ', p.p_type) AS part_details,
-    STRING_AGG(DISTINCT s.s_name, ', ' ORDER BY s.s_name) AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ' ORDER BY s.s_name) AS supplier_names
 FROM 
     part p
 JOIN 

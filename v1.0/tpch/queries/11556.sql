@@ -7,7 +7,7 @@ FROM
 JOIN
     lineitem l ON o.o_orderkey = l.l_orderkey
 WHERE
-    o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY
     o.o_orderkey, o.o_orderdate
 ORDER BY

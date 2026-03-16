@@ -55,4 +55,4 @@ SELECT
     CONCAT('Item: ', fa.i_item_id, ' | Profit Status: ', fa.profit_status) AS item_overview
 FROM FinalAnalytics fa
 ORDER BY fa.net_profit DESC NULLS LAST
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

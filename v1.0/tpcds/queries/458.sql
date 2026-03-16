@@ -9,7 +9,7 @@ WITH RankedSales AS (
     FROM 
         web_sales ws
     WHERE 
-        ws.ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL '1 year')
+        ws.ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL 1 YEAR)
 ),
 FilteredSales AS (
     SELECT 

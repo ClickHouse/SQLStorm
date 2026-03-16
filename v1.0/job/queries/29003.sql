@@ -35,9 +35,9 @@ SELECT
     production_year,
     actor_name,
     actor_gender,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT company_type, ', ') AS companies,
-    STRING_AGG(DISTINCT additional_info, '; ') AS additional_infos
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(additional_info))), '; ') AS additional_infos
 FROM
     MovieDetails
 GROUP BY

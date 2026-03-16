@@ -53,7 +53,7 @@ SELECT
     COUNT(b.o_orderkey) AS order_count,
     SUM(b.o_totalprice) AS total_revenue,
     AVG(b.ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT b.customer_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.customer_name))), ', ') AS customer_names
 FROM 
     BenchmarkData b
 JOIN 

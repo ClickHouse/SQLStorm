@@ -28,7 +28,7 @@ SELECT
     mv.title AS movie_title,
     mv.production_year,
     COUNT(DISTINCT mvh.related_movie_id) AS related_movies_count,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ma.id ORDER BY mv.production_year DESC) AS rank
 FROM
     cast_info ci

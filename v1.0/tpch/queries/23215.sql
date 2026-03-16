@@ -6,7 +6,7 @@ WITH RECURSIVE CTE_Orders AS (
         o.o_totalprice,
         1 AS level
     FROM orders o
-    WHERE o.o_orderstatus = 'O' AND o.o_orderdate < (cast('1998-10-01' as date) - INTERVAL '1 year')
+    WHERE o.o_orderstatus = 'O' AND o.o_orderdate < (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
     
     UNION ALL
     
@@ -29,7 +29,7 @@ MainQuery AS (
     JOIN lineitem l ON p.p_partkey = l.l_partkey
     JOIN orders o ON l.l_orderkey = o.o_orderkey
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
       AND (p.p_size IS NULL OR p.p_size > 10)
       AND (o.o_totalprice NOT IN (SELECT DISTINCT l2.l_extendedprice FROM lineitem l2 WHERE l2.l_returnflag = 'R'))
     GROUP BY p.p_name
@@ -56,4 +56,4 @@ FROM AggregatedResults ar
 LEFT JOIN region r ON r.r_regionkey = (SELECT n.n_regionkey FROM nation n JOIN supplier s ON n.n_nationkey = s.s_nationkey WHERE s.s_acctbal IS NULL)
 WHERE ar.revenue_rank < 10
 ORDER BY ar.total_revenue DESC, ar.p_name
-OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 5;

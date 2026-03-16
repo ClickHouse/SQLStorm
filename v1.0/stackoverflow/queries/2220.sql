@@ -16,7 +16,7 @@ WITH UserPosts AS (
 RecentBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS RecentBadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS RecentBadgeNames,
         MAX(b.Date) AS MostRecentBadgeDate
     FROM 
         Badges b

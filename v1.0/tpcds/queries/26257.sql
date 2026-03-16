@@ -57,4 +57,4 @@ WHERE
     AND cd.cd_credit_rating = 'Good'
 ORDER BY 
     sd.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

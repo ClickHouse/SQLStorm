@@ -66,7 +66,7 @@ PostStatistics AS (
     ) VV ON P.Id = VV.PostId
     JOIN UserActivity CTE ON P.OwnerUserId = CTE.UserId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
 ),
 RankedPosts AS (
     SELECT 

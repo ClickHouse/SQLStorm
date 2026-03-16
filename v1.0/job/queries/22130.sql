@@ -12,7 +12,7 @@ WITH RankedMovies AS (
 FullCast AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(DISTINCT ak.name, ', ') AS full_cast,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS full_cast,
         COUNT(ci.person_id) AS total_cast
     FROM 
         cast_info ci
@@ -39,7 +39,7 @@ MovieDetails AS (
 KeywordRetrieval AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

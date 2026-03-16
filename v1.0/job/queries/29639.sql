@@ -35,7 +35,7 @@ AggregatedMovieInfo AS (
     SELECT 
         m.movie_id,
         COUNT(mi.id) AS info_count,
-        STRING_AGG(mi.info, '; ') AS combined_info
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS combined_info
     FROM 
         movie_info m
     JOIN 

@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM
         Posts
@@ -39,7 +39,7 @@ PostEngagement AS (
     LEFT JOIN
         Votes v ON p.Id = v.PostId
     WHERE
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'  
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR  
     GROUP BY
         p.Id, p.Title
 )
@@ -60,7 +60,7 @@ SELECT
 FROM
     TagCounts tc
 JOIN
-    Posts p ON tc.TagName = ANY(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'))
+    Posts p ON tc.TagName = ANY(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
 JOIN
     ActiveUsers au ON p.OwnerUserId = au.UserId
 JOIN

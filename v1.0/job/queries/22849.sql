@@ -45,7 +45,7 @@ ChainedMovies AS (
 AggregateKeywords AS (
     SELECT 
         t.id AS movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS all_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS all_keywords
     FROM 
         title t 
     LEFT JOIN 

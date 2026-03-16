@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserUpvoteStatistics AS (
     SELECT 
@@ -33,7 +33,7 @@ PostsWithBadges AS (
     FROM 
         Posts p
     LEFT JOIN 
-        Badges b ON p.OwnerUserId = b.UserId AND b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        Badges b ON p.OwnerUserId = b.UserId AND b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ),
 PostInteraction AS (
     SELECT 

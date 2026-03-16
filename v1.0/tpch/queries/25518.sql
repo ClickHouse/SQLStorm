@@ -3,7 +3,7 @@ SELECT
     SUBSTRING(n.n_name FROM 1 FOR 10) AS nation_prefix,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     DATE_TRUNC('month', o.o_orderdate) AS month,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     CASE
         WHEN o.o_orderstatus = 'F' THEN 'Finished'
         WHEN o.o_orderstatus = 'P' THEN 'Pending'

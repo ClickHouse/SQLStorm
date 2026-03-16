@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT p.p_partkey) AS total_parts_supplied,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT SUBSTRING(s.s_address, 1, 15), ', ') AS abbreviated_addresses,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(s.s_address, 1, 15)))), ', ') AS abbreviated_addresses,
     CONCAT_WS(' - ', r.r_name, n.n_name) AS region_nation
 FROM
     supplier s

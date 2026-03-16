@@ -3,7 +3,7 @@ SELECT
     p.p_name AS part_name,
     SUM(ps.ps_availqty) AS total_available_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
     MAX(l.l_shipdate) AS last_ship_date
 FROM 
     supplier s

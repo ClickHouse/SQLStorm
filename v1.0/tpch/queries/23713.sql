@@ -24,7 +24,7 @@ SELECT
     COUNT(DISTINCT CASE WHEN rp.rn < 4 THEN rp.p_partkey END) AS top_parts_count,
     AVG(fc.total_spent) AS avg_customer_spent,
     SUM(CASE WHEN fc.order_count = 0 THEN 1 ELSE 0 END) AS non_ordering_customers,
-    STRING_AGG(DISTINCT rp.p_name, ', ') AS top_part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.p_name))), ', ') AS top_part_names,
     (SELECT COUNT(*) FROM filtered_customers) AS total_customers
 FROM distinct_nations d 
 LEFT JOIN ranked_parts rp ON d.n_nationkey = rp.p_partkey

@@ -4,7 +4,7 @@ WITH SeasonalSales AS (
         o.o_orderkey,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS net_sales,
         COUNT(DISTINCT l.l_orderkey) AS order_count,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(MONTH FROM o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS sales_rank
+        ROW_NUMBER() OVER (PARTITION BY toMonth(o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS sales_rank
     FROM 
         orders o
     JOIN 
@@ -12,7 +12,7 @@ WITH SeasonalSales AS (
     WHERE 
         o.o_orderdate BETWEEN '1997-01-01' AND '1997-12-31'
     GROUP BY 
-        o.o_orderkey, EXTRACT(MONTH FROM o.o_orderdate)
+        o.o_orderkey, toMonth(o.o_orderdate)
 ),
 TopSales AS (
     SELECT 

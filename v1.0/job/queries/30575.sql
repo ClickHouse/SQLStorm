@@ -30,7 +30,7 @@ WITH RECURSIVE movie_hierarchy AS (
 SELECT 
     a.name AS actor_name,
     COUNT(DISTINCT c.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT mt.title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mt.title))), ', ') AS movie_titles,
     MAX(mt.production_year) AS latest_production_year,
     COUNT(DISTINCT CASE WHEN m.info_type_id = 1 THEN m.info END) AS special_info_count,
     ROW_NUMBER() OVER (PARTITION BY a.id ORDER BY COUNT(DISTINCT c.movie_id) DESC) AS actor_ranking

@@ -24,8 +24,8 @@ WITH RankedMovies AS (
 
 SELECT 
     rm.movie_title,
-    STRING_AGG(DISTINCT rm.movie_keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT CONCAT(rm.cast_role, ': ', ms.name), '; ') AS cast_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.movie_keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(rm.cast_role, ': ', ms.name)))), '; ') AS cast_details
 FROM 
     RankedMovies rm
 JOIN 

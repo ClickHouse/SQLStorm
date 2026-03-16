@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, '(', s.s_phone, ')'), ', ') AS supplier_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, '(', s.s_phone, ')')))), ', ') AS supplier_details,
     CASE 
         WHEN AVG(ps.ps_supplycost) > (SELECT AVG(ps_supplycost) FROM partsupp) THEN 'Above Average'
         ELSE 'Below Average' 

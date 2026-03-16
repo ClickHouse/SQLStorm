@@ -27,7 +27,7 @@ WITH MovieInfo AS (
 KeywordFiltered AS (
     SELECT 
         movie_id,
-        STRING_AGG(keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

@@ -37,15 +37,15 @@ ActivePosts AS (
         P.ViewCount,
         P.AnswerCount,
         MAX(PH.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
     FROM 
         Posts P
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     LEFT JOIN 
-        LATERAL (SELECT unnest(string_to_array(P.Tags, '<>')) AS TagName) T ON TRUE
+        (SELECT arrayJoin(splitByString('<>', P.Tags)) AS TagName) T ON TRUE
     WHERE 
-        P.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
+        P.CreationDate > now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title, P.ViewCount, P.AnswerCount
 )

@@ -7,7 +7,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate <= DATE '1997-12-31'
+        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate <= toDate('1997-12-31')
 ),
 SupplierCosts AS (
     SELECT 
@@ -19,7 +19,7 @@ SupplierCosts AS (
     JOIN 
         lineitem l ON ps.ps_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate <= DATE '1997-12-31'
+        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate <= toDate('1997-12-31')
     GROUP BY 
         ps.ps_partkey, ps.ps_supplycost
 ),

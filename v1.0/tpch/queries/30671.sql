@@ -39,4 +39,4 @@ AND (l.l_tax IS NULL OR l.l_tax < 0.1)
 GROUP BY p.p_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY average_supplier_balance DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

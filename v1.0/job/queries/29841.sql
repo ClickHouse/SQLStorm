@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         at.title AS movie_title,
         at.production_year,
         ak.name AS actor_name,
-        COALESCE(STRING_AGG(DISTINCT kw.keyword, ', '), 'No keywords') AS keywords,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', '), 'No keywords') AS keywords,
         ROW_NUMBER() OVER(PARTITION BY at.id ORDER BY ak.name) AS actor_rank
     FROM 
         aka_title at

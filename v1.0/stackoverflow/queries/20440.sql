@@ -20,7 +20,7 @@ ClosedPosts AS (
         ph.PostId,
         ph.CreationDate AS CloseDate,
         MAX(ph.CreationDate) OVER (PARTITION BY ph.PostId) AS LastEditDate,
-        STRING_AGG(DISTINCT c.Text, '; ') AS CloseComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Text))), '; ') AS CloseComments
     FROM 
         PostHistory ph
     JOIN 

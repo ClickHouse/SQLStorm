@@ -32,8 +32,8 @@ SELECT
     mh.level,
     COALESCE(c.name, 'Unknown') AS character_name,
     COUNT(DISTINCT ci.person_id) AS total_cast_members,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-    ARRAY_AGG(DISTINCT CASE WHEN ci.nr_order = 1 THEN p.name END) AS lead_actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(CASE WHEN ci.nr_order = 1 THEN p.name END))) AS lead_actors
 FROM 
     MovieHierarchy mh
 LEFT JOIN 

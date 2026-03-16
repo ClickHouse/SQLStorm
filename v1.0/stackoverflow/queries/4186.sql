@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 AggregatedUserStats AS (
     SELECT 
@@ -29,11 +29,11 @@ AggregatedUserStats AS (
 CloseReasons AS (
     SELECT 
         ph.PostId, 
-        ARRAY_AGG(DISTINCT crt.Name) AS CloseReasons
+        arrayDistinct(groupArray(assumeNotNull(crt.Name))) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes crt ON ph.Comment::int = crt.Id
+        CloseReasonTypes crt ON CAST(ph.Comment AS int) = crt.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
     GROUP BY 

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
         AND u.Reputation > 100
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName, u.Location
@@ -42,7 +42,7 @@ SELECT
         WHEN tp.CommentCount IS NULL THEN 'No Comments Yet'
         ELSE CAST(tp.CommentCount AS TEXT)
     END AS CommentsStatus,
-    COALESCE((SELECT STRING_AGG(name, ', ') 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(name)), ', ') 
                FROM PostHistory ph 
                JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id 
                WHERE ph.PostId = tp.PostId AND pht.Name LIKE '%Edit%'), 'No Edits') AS EditHistory

@@ -6,7 +6,7 @@ WITH PostTagCounts AS (
     FROM
         Posts p
     JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag_name ON true
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS tag_name ON true
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
@@ -56,7 +56,7 @@ SELECT
     ur.GoldBadges,
     ur.SilverBadges,
     ur.BronzeBadges,
-    ARRAY_AGG(DISTINCT pr.ActionType) AS RevisionActions,
+    arrayDistinct(groupArray(assumeNotNull(pr.ActionType))) AS RevisionActions,
     COUNT(pr.Comment) AS RevisionComments
 FROM 
     Posts p
@@ -69,7 +69,7 @@ JOIN
 JOIN 
     UserStatistics ur ON u.Id = ur.UserId
 WHERE 
-    p.CreationDate >= DATE '2022-01-01'  
+    p.CreationDate >= toDate('2022-01-01')  
 GROUP BY 
     p.Id, p.Title, p.Body, p.ViewCount, pt.TagCount, ur.UserId, ur.DisplayName, ur.GoldBadges, ur.SilverBadges, ur.BronzeBadges
 ORDER BY 

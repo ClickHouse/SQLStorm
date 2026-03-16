@@ -31,7 +31,7 @@ ActorsMovies AS (
 SELECT 
     COALESCE(actors.actor_name, 'Unknown Actor') AS actor,
     COUNT(am.movie_id) AS total_movies,
-    STRING_AGG(am.title, ', ') AS movies_list,
+    arrayStringConcat(groupArray(assumeNotNull(am.title)), ', ') AS movies_list,
     MIN(am.production_year) AS first_movie_year,
     MAX(am.production_year) AS last_movie_year
 FROM 

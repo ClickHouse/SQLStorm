@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 PostHistoryAggregate AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, '; ') AS Comments,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS Comments,
         COUNT(*) FILTER (WHERE ph.PostHistoryTypeId IN (1, 4, 10)) AS TitleEdits,
         COUNT(*) FILTER (WHERE ph.PostHistoryTypeId = 12) AS DeleteVotes
     FROM 

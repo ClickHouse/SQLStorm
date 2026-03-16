@@ -48,7 +48,7 @@ SELECT
 FROM
     RankedSales r
 LEFT JOIN
-    date_dim d ON d.d_date_sk = (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date <= DATE '2002-10-01')
+    date_dim d ON d.d_date_sk = (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date <= toDate('2002-10-01'))
 LEFT JOIN
     web_sales ws ON r.c_customer_sk = ws.ws_bill_customer_sk
 WHERE

@@ -3,8 +3,8 @@ WITH address_summary AS (
         ca_city,
         ca_state,
         COUNT(DISTINCT ca_address_sk) AS address_count,
-        STRING_AGG(DISTINCT ca_street_name, ', ') AS street_names,
-        STRING_AGG(DISTINCT ca_street_type, ', ') AS street_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name))), ', ') AS street_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_type))), ', ') AS street_types
     FROM customer_address
     GROUP BY ca_city, ca_state
 ),
@@ -14,7 +14,7 @@ demographics_summary AS (
         cd_marital_status,
         COUNT(DISTINCT cd_demo_sk) AS demographic_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_levels
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_levels
     FROM customer_demographics
     GROUP BY cd_gender, cd_marital_status
 ),
@@ -23,7 +23,7 @@ time_analysis AS (
         d_year,
         d_month_seq,
         COUNT(DISTINCT d_date_sk) AS total_days,
-        STRING_AGG(DISTINCT d_day_name, ', ') AS days_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d_day_name))), ', ') AS days_names
     FROM date_dim
     GROUP BY d_year, d_month_seq
 )
@@ -44,5 +44,5 @@ SELECT
     t.days_names
 FROM address_summary a
 JOIN demographics_summary d ON a.ca_state = 'CA' AND d.cd_gender = 'F'
-JOIN time_analysis t ON t.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
+JOIN time_analysis t ON t.d_year = toYear(cast('2002-10-01' as date))
 ORDER BY a.address_count DESC, d.demographic_count DESC;

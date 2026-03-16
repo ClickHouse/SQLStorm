@@ -36,7 +36,7 @@ WITH RECURSIVE CustomerHierarchy AS (
 SELECT ws.web_site_id, ws.web_name, SUM(ss.ss_net_profit) AS total_net_profit,
        AVG(COALESCE(cs.total_spent, 0)) AS avg_spent_per_customer,
        COUNT(DISTINCT cs.c_customer_sk) AS customer_count,
-       STRING_AGG(DISTINCT CONCAT(ss.ss_item_sk, ': ', ss.ss_sales_price)::text, ', ') AS item_sales
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ss.ss_item_sk, ': ', ss.ss_sales_priceCAST() AS text)))), ', ') AS item_sales
 FROM web_site ws
 JOIN web_sales wsales ON ws.web_site_sk = wsales.ws_web_site_sk
 JOIN store_sales ss ON ss.ss_ticket_number = wsales.ws_order_number

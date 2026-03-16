@@ -7,7 +7,7 @@ SELECT
     o.o_orderdate AS order_date,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT l.l_orderkey) AS order_count,
-    STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments
 FROM 
     part p
 JOIN 
@@ -23,7 +23,7 @@ JOIN
 WHERE 
     p.p_type LIKE '%Rubber%'
     AND s.s_nationkey IN (SELECT n.n_nationkey FROM nation n WHERE n.n_name IN ('USA', 'China'))
-    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey, o.o_orderdate
 HAVING 

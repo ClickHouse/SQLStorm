@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         t.production_year,
         a.name AS actor_name,
         ct.kind AS company_type,
-        STRING_AGG(k.keyword, ', ') AS keywords,
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords,
         COALESCE(mi.info, 'No info') AS movie_info
     FROM title AS t
     JOIN cast_info AS ci ON t.id = ci.movie_id

@@ -15,7 +15,7 @@ WITH RecursiveStringProcessing AS (
 AggregatedData AS (
     SELECT 
         n.n_name AS nation_name,
-        STRING_AGG(LPAD(s.s_name, 20, ' '), '') AS padded_supplier_names,
+        arrayStringConcat(groupArray(assumeNotNull(LPAD(s.s_name, 20, ' '))), '') AS padded_supplier_names,
         SUM(sr.name_length) AS total_name_length,
         AVG(sr.similar_suppliers) AS avg_similar_suppliers
     FROM 

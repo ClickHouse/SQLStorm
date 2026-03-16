@@ -16,7 +16,7 @@ PostStats AS (
         P.OwnerUserId,
         COUNT(CASE WHEN P.PostTypeId = 1 THEN 1 END) AS TotalQuestions,
         COUNT(CASE WHEN P.PostTypeId = 2 THEN 1 END) AS TotalAnswers,
-        AVG(EXTRACT(EPOCH FROM (P.LastActivityDate - P.CreationDate))) AS AvgAnswerTime,
+        AVG(toUnixTimestamp((P.LastActivityDate - P.CreationDate))) AS AvgAnswerTime,
         COALESCE(SUM(P.Score), 0) AS TotalScore
     FROM Posts P
     GROUP BY P.OwnerUserId

@@ -38,7 +38,7 @@ FinalResults AS (
     SELECT
         tw.title,
         tw.production_year,
-        STRING_AGG(tw.actor_name, ', ' ORDER BY tw.role_order) AS cast_names,
+        arrayStringConcat(groupArray(assumeNotNull(tw.actor_name)), ', ' ORDER BY tw.role_order) AS cast_names,
         COUNT(DISTINCT tw.actor_name) AS actor_count
     FROM
         TitleWithActors tw

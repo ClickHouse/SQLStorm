@@ -42,7 +42,7 @@ LEFT JOIN (
     FROM sales_summary 
     WHERE total_sales > 0
 ) ss ON c.c_customer_sk = ss.ws_item_sk
-JOIN calendar cd ON cd.d_month_seq = EXTRACT(MONTH FROM TIMESTAMP '2002-10-01 12:34:56') 
+JOIN calendar cd ON cd.d_month_seq = toMonth(toDateTime64('2002-10-01 12:34:56', 6)) 
 GROUP BY ca.ca_state
 ORDER BY avg_sales DESC
 LIMIT 10;

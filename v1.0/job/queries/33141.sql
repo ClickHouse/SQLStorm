@@ -49,11 +49,11 @@ MovieDetails AS (
         mh.movie_id,
         mh.title,
         mh.production_year,
-        (SELECT STRING_AGG(DISTINCT key.keyword, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(key.keyword))), ', ') 
          FROM movie_keyword mk 
          JOIN keyword key ON mk.keyword_id = key.id 
          WHERE mk.movie_id = mh.movie_id) AS keywords,
-        (SELECT STRING_AGG(DISTINCT c.name, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') 
          FROM movie_companies mc 
          JOIN company_name c ON mc.company_id = c.id 
          WHERE mc.movie_id = mh.movie_id) AS companies

@@ -29,7 +29,7 @@ SELECT
     a.name AS actor_name,
     COUNT(DISTINCT tt.title_id) AS total_titles,
     MAX(tt.production_year) AS latest_production_year,
-    STRING_AGG(DISTINCT tt.title, ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tt.title))), ', ') AS titles,
     SUM(CASE 
             WHEN tt.season_nr IS NOT NULL THEN 1 
             ELSE 0 

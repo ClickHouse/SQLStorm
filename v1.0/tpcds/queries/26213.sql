@@ -35,7 +35,7 @@ WITH processed_addresses AS (
         cd_gender
 ), sales_metrics AS (
     SELECT 
-        EXTRACT(YEAR FROM d_date) AS sales_year,
+        toYear(d_date) AS sales_year,
         SUM(ws_net_paid) AS total_sales,
         SUM(ws_quantity) AS total_quantity_sold
     FROM 
@@ -43,7 +43,7 @@ WITH processed_addresses AS (
     JOIN 
         date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
     GROUP BY 
-        EXTRACT(YEAR FROM d_date)
+        toYear(d_date)
 )
 SELECT 
     am.ca_state, 

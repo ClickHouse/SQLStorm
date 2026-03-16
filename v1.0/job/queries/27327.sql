@@ -34,8 +34,8 @@ MovieDetails AS (
         tm.title, 
         tm.production_year, 
         tm.cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT ci.note, '; ') AS cast_notes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.note))), '; ') AS cast_notes
     FROM 
         TopMovies tm
     LEFT JOIN 

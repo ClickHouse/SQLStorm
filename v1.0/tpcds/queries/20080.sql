@@ -81,4 +81,4 @@ ORDER BY
     customer_value ASC, 
     ci.c_last_name, 
     ci.c_first_name
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

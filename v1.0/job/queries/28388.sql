@@ -4,9 +4,9 @@ WITH ranked_movies AS (
         m.id AS movie_id,
         m.title AS movie_title,
         t.kind AS movie_kind,
-        COALESCE(ARRAY_AGG(DISTINCT ak.name) FILTER (WHERE ak.name IS NOT NULL), ARRAY[]::varchar[]) AS aka_names,
-        COALESCE(ARRAY_AGG(DISTINCT k.keyword) FILTER (WHERE k.keyword IS NOT NULL), ARRAY[]::varchar[]) AS keywords,
-        COALESCE(ARRAY_AGG(DISTINCT c.role_id) FILTER (WHERE c.role_id IS NOT NULL), ARRAY[]::int[]) AS roles,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(ak.name))) FILTER (WHERE ak.name IS NOT NULL), ARRAY[]::varchar[]) AS aka_names,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(k.keyword))) FILTER (WHERE k.keyword IS NOT NULL), ARRAY[]::varchar[]) AS keywords,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(c.role_id))) FILTER (WHERE c.role_id IS NOT NULL), ARRAY[]::int[]) AS roles,
         ROW_NUMBER() OVER (PARTITION BY m.production_year ORDER BY COUNT(c.person_id) DESC) AS rn
     FROM 
         aka_title m

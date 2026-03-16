@@ -26,7 +26,7 @@ TopMovies AS (
 SELECT 
     tm.title,
     tm.production_year,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
     COALESCE(avg_info.info, 'No info available') AS movie_info
 FROM 
     TopMovies tm
@@ -41,7 +41,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT 
         movie_id, 
-        STRING_AGG(info, '; ') AS info 
+        arrayStringConcat(groupArray(assumeNotNull(info)), '; ') AS info 
     FROM 
         movie_info 
     GROUP BY 

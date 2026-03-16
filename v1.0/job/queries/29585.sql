@@ -4,8 +4,8 @@ WITH FilteredMovies AS (
         title.id AS movie_id,
         title.title AS movie_title,
         title.production_year,
-        STRING_AGG(DISTINCT aka_name.name, ', ') AS aliases,
-        STRING_AGG(DISTINCT keyword.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aka_name.name))), ', ') AS aliases,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword.keyword))), ', ') AS keywords
     FROM 
         title
     JOIN 
@@ -24,7 +24,7 @@ WITH FilteredMovies AS (
 CastMembers AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(DISTINCT n.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS cast_names,
         COUNT(*) AS total_cast
     FROM 
         cast_info ci

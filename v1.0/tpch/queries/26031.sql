@@ -10,7 +10,7 @@ WITH PartDetails AS (
         p.p_retailprice,
         p.p_comment,
         COUNT(ps.ps_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT CASE WHEN s.s_nationkey IN (SELECT n.n_nationkey FROM nation n WHERE n.n_name LIKE 'N%') THEN s.s_name END, ', ') AS suppliers_from_nations_starting_with_N
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN s.s_nationkey IN (SELECT n.n_nationkey FROM nation n WHERE n.n_name LIKE 'N%') THEN s.s_name END))), ', ') AS suppliers_from_nations_starting_with_N
     FROM 
         part p
     JOIN 

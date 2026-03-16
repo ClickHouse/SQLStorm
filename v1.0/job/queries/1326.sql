@@ -26,7 +26,7 @@ TopMovies AS (
 MovieKeywords AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword m
     JOIN 
@@ -52,7 +52,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT 
          pi.person_id,
-         STRING_AGG(pi.info, '; ') AS info
+         arrayStringConcat(groupArray(assumeNotNull(pi.info)), '; ') AS info
      FROM 
          person_info pi
      WHERE 

@@ -34,7 +34,7 @@ SELECT
     u.AnswerCount,
     u.UpvotedPostCount,
     u.TotalViews,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Posts p 
      JOIN Tags t ON p.Tags LIKE '%' || t.TagName || '%'
      WHERE p.OwnerUserId = u.UserId) AS PopularTags

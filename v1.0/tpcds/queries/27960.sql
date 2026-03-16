@@ -36,7 +36,7 @@ TopCustomers AS (
 SELECT 
     ca.ca_city,
     ca.ca_state,
-    STRING_AGG(full_name, ', ') AS top_customers,
+    arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS top_customers,
     COUNT(*) AS customer_count,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate
 FROM 

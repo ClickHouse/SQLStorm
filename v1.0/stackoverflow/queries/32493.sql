@@ -55,13 +55,13 @@ RecentPosts AS (
         PS.CommentCount,
         PS.VoteCount,
         PS.HistoryEditCount,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM P.CreationDate) ORDER BY P.CreationDate DESC) AS YearlyRanking
+        ROW_NUMBER() OVER (PARTITION BY toYear(P.CreationDate) ORDER BY P.CreationDate DESC) AS YearlyRanking
     FROM 
         Posts P
     JOIN 
         PostStatistics PS ON P.Id = PS.PostId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 )
 SELECT 
     U.DisplayName AS TopUser,

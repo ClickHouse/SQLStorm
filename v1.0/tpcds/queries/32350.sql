@@ -73,4 +73,4 @@ WHERE
     addr.customer_count < (SELECT COUNT(*) FROM customer) * 0.1
 ORDER BY 
     item_sales DESC NULLS LAST
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

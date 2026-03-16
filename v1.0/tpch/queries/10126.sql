@@ -4,8 +4,8 @@ SELECT
 FROM 
     lineitem 
 WHERE 
-    l_shipdate >= DATE '1996-01-01' 
-    AND l_shipdate < DATE '1996-01-01' + INTERVAL '1 year' 
+    l_shipdate >= toDate('1996-01-01') 
+    AND l_shipdate < toDate('1996-01-01') + INTERVAL 1 YEAR 
 GROUP BY 
     l_orderkey 
 ORDER BY 

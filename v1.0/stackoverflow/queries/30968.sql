@@ -30,7 +30,7 @@ PostAnalytics AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        P.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.OwnerUserId, P.AcceptedAnswerId
 ),

@@ -7,7 +7,7 @@ WITH UserMetrics AS (
         SUM(v.BountyAmount) AS TotalBounty,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgPostLife
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgPostLife
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Votes v ON p.Id = v.PostId

@@ -44,9 +44,9 @@ WITH MovieTitles AS (
 SELECT 
     title, 
     production_year, 
-    STRING_AGG(DISTINCT actor_name || ' (' || actor_role || ')', ', ') AS actors,
-    STRING_AGG(DISTINCT production_company || ' [' || company_type || ']', ', ') AS production_info,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name || ' (' || actor_role || ')'))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(production_company || ' [' || company_type || ']'))), ', ') AS production_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords
 FROM EnrichedMovies
 GROUP BY title, production_year
 ORDER BY production_year DESC, title;

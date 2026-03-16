@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
         COUNT(*) AS Count
     FROM 
         Posts
@@ -39,7 +39,7 @@ TopUsers AS (
         COALESCE(bc.BadgeCount, 0) AS BadgeCount
     FROM 
         Users u
-    LEFT JOIN TagCounts tc ON u.Id = (SELECT OwnerUserId FROM Posts WHERE OwnerUserId IS NOT NULL ORDER BY RANDOM() LIMIT 1)
+    LEFT JOIN TagCounts tc ON u.Id = (SELECT OwnerUserId FROM Posts WHERE OwnerUserId IS NOT NULL ORDER BY rand() LIMIT 1)
     LEFT JOIN AvgViews ac ON u.Id = ac.OwnerUserId
     LEFT JOIN BadgeCounts bc ON u.Id = bc.UserId
 ),

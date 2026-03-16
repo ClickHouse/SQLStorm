@@ -43,7 +43,7 @@ cast_stats AS (
 keyword_analysis AS (
     SELECT
         mk.movie_id,
-        STRING_AGG(kw.keyword, ', ') AS keywords,
+        arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') AS keywords,
         COUNT(DISTINCT mk.keyword_id) AS keyword_count
     FROM movie_keyword mk
     JOIN keyword kw ON mk.keyword_id = kw.id

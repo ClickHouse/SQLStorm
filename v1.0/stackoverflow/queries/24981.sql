@@ -16,12 +16,12 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ), 
 UserBadges AS (
     SELECT 
         u.Id AS UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     JOIN 
@@ -57,7 +57,7 @@ SELECT
     rp.TotalBounty,
     ub.BadgeNames,
     COALESCE(c.CloseReason, 'Not Closed') AS CloseReason,
-    COALESCE(c.ClosedDate::date, NULL) AS ClosedDate,
+    COALESCE(CAST(c.ClosedDate AS date), NULL) AS ClosedDate,
     plc.RelatedPostCount
 FROM 
     RankedPosts rp

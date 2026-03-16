@@ -8,7 +8,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), 
 UserPostStats AS (
     SELECT 
@@ -32,7 +32,7 @@ RecentComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        c.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         c.PostId
 )
@@ -56,4 +56,4 @@ WHERE
     pp.Rank <= 5
 ORDER BY 
     pp.Score DESC, pp.PostId ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -10,7 +10,7 @@ SELECT
     SUM(ws.ws_sales_price) AS total_web_sales,
     SUM(CASE WHEN ws.ws_sales_price > 100 THEN 1 ELSE 0 END) AS high_value_orders,
     AVG(LENGTH(c.c_email_address)) AS avg_email_length,
-    STRING_AGG(DISTINCT wp.wp_url, ', ') AS visited_web_pages
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp.wp_url))), ', ') AS visited_web_pages
 FROM 
     customer c
 JOIN 

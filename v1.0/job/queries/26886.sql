@@ -25,8 +25,8 @@ MovieDetails AS (
         tm.title_id,
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-        STRING_AGG(DISTINCT co.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS company_names,
         COUNT(DISTINCT kc.keyword) AS keyword_count
     FROM
         TopMovies tm

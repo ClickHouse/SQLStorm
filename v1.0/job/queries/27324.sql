@@ -18,7 +18,7 @@ WITH ranked_movies AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -29,7 +29,7 @@ movie_keywords AS (
 movie_info_summary AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT i.info, ', ') AS info_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.info))), ', ') AS info_details
     FROM 
         movie_info mi
     JOIN 

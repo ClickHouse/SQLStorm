@@ -42,7 +42,7 @@ SELECT
     SUM(sp.ps_availqty) AS total_available,
     AVG(sp.ps_supplycost) AS avg_supply_cost,
     COUNT(DISTINCT sp.ps_suppkey) AS supplier_count,
-    STRING_AGG(DISTINCT sp.return_status, ', ') AS return_status_summary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sp.return_status))), ', ') AS return_status_summary
 FROM 
     FilteredParts fp
 LEFT JOIN 

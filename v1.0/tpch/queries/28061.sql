@@ -19,7 +19,7 @@ SELECT
     DISTINCT upper_brand, 
     COUNT(detailed_info) AS supplier_count,
     AVG(comment_length) AS avg_comment_length,
-    STRING_AGG(modified_comment, '; ') AS all_modified_comments
+    arrayStringConcat(groupArray(assumeNotNull(modified_comment)), '; ') AS all_modified_comments
 FROM 
     StringProcessing
 GROUP BY 

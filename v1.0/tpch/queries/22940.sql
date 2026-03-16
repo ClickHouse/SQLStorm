@@ -24,7 +24,7 @@ HighValueOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        (EXTRACT(YEAR FROM o.o_orderdate) = 1997 AND o.o_orderstatus = 'O') OR 
+        (toYear(o.o_orderdate) = 1997 AND o.o_orderstatus = 'O') OR 
         (l.l_returnflag = 'R' AND l.l_shipdate > o.o_orderdate)
     GROUP BY 
         o.o_orderkey, o.o_totalprice, o.o_orderdate

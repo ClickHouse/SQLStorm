@@ -7,7 +7,7 @@ SELECT
     AVG(l.l_quantity) AS avg_quantity,
     MIN(l.l_shipdate) AS first_ship_date,
     MAX(l.l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS product_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS product_comments
 FROM 
     lineitem l
 JOIN 
@@ -21,7 +21,7 @@ JOIN
 JOIN 
     part p ON l.l_partkey = p.p_partkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND o.o_orderstatus = 'O'
 GROUP BY 
     p.p_name, s.s_name, n.n_name

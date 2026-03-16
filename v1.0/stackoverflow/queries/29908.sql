@@ -57,7 +57,7 @@ SELECT
     tp.Tags,
     tp.OwnerDisplayName,
     tp.AnswerCount,
-    STRING_AGG(ph.ChangeType || ': ' || ph.Comment, '; ') AS HistoryComments
+    arrayStringConcat(groupArray(assumeNotNull(ph.ChangeType || ': ' || ph.Comment)), '; ') AS HistoryComments
 FROM 
     TopPosts tp
 LEFT JOIN 

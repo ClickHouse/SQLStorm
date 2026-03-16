@@ -1,7 +1,7 @@
 
 WITH TagStats AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><'))) AS Tag,
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS Tag,
         COUNT(Id) AS PostCount,
         COUNT(DISTINCT OwnerUserId) AS UniqueUsers,
         SUM(ViewCount) AS TotalViews
@@ -32,7 +32,7 @@ CloseReasons AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseCount,
-        ARRAY_AGG(DISTINCT crt.Name) AS CloseReasons
+        arrayDistinct(groupArray(assumeNotNull(crt.Name))) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

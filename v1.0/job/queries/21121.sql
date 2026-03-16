@@ -13,8 +13,8 @@ WITH RankedMovies AS (
 DirectorsAndStars AS (
     SELECT 
         cc.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
-        STRING_AGG(DISTINCT d.name, ', ') AS director_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d.name))), ', ') AS director_names
     FROM 
         cast_info ci
     JOIN 

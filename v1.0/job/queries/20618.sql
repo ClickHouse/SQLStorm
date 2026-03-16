@@ -25,7 +25,7 @@ cast_statistics AS (
         ci.movie_id,
         COUNT(ci.person_id) AS num_actors,
         MAX(CASE WHEN ci.person_role_id IS NOT NULL THEN 1 ELSE 0 END) AS has_roles,
-        STRING_AGG(CASE WHEN ci.note IS NOT NULL THEN ci.note ELSE 'No notes' END, '; ') AS actor_notes
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ci.note IS NOT NULL THEN ci.note ELSE 'No notes' END)), '; ') AS actor_notes
     FROM 
         cast_info ci
     GROUP BY 
@@ -34,8 +34,8 @@ cast_statistics AS (
 company_movie_info AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_kinds
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_kinds
     FROM 
         movie_companies mc
     JOIN 

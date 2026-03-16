@@ -5,7 +5,7 @@ SELECT
     AVG(l_quantity) AS avg_quantity_per_line,
     MAX(l_shipdate) AS latest_shipdate,
     MIN(l_shipdate) AS earliest_shipdate,
-    STRING_AGG(DISTINCT CONCAT('Supplier ', s.s_name, ' in ', n.n_name), ', ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Supplier ', s.s_name, ' in ', n.n_name)))), ', ') AS supplier_details
 FROM 
     part p
 JOIN 

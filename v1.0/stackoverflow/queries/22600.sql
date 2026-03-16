@@ -33,7 +33,7 @@ RecentContributions AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
 ),
 
 TotalAggregates AS (
@@ -80,7 +80,7 @@ LEFT JOIN
     UserActivity ua ON u.Id = ua.UserId
 WHERE 
     u.Reputation > 100 
-    AND (ta.LastContributionDate IS NULL OR ta.LastContributionDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
+    AND (ta.LastContributionDate IS NULL OR ta.LastContributionDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ORDER BY 
     ua.Upvotes DESC NULLS LAST, 
     ua.TotalPosts DESC;

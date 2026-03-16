@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, U.DisplayName, p.PostTypeId, p.Score
 ),
@@ -39,7 +39,7 @@ TopPosts AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, '; ') AS HistoryComments,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS HistoryComments,
         MIN(ph.CreationDate) AS FirstEditedDate
     FROM 
         PostHistory ph

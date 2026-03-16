@@ -7,7 +7,7 @@ SELECT
     cd.cd_gender,
     COUNT(DISTINCT ws.ws_order_number) AS total_web_orders,
     SUM(ws.ws_net_paid) AS total_spent,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS purchased_items,
     DENSE_RANK() OVER (PARTITION BY ca.ca_city ORDER BY SUM(ws.ws_net_paid) DESC) AS city_rank
 FROM customer c
 JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk

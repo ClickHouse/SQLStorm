@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 PopularPosts AS (
     SELECT

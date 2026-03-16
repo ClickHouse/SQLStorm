@@ -3,7 +3,7 @@ WITH RankedMovies AS (
     SELECT 
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT ak.name) AS aka_names,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aka_names,
         COUNT(DISTINCT ci.person_id) AS cast_count
     FROM 
         title t

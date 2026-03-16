@@ -3,7 +3,7 @@ WITH ranked_movies AS (
         mt.id AS movie_id,
         mt.title,
         mt.production_year,
-        COALESCE(ARRAY_AGG(DISTINCT ak.name ORDER BY ak.name DESC), '{}') AS aka_names,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(ak.name ORDER BY ak.name DESC))), '{}') AS aka_names,
         ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY COUNT(ci.id) DESC) AS rank_by_cast_size,
         COUNT(ci.id) AS cast_count
     FROM 
@@ -15,7 +15,7 @@ WITH ranked_movies AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
@@ -24,7 +24,7 @@ movie_keywords AS (
 movie_info_with_types AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT (it.info || ':' || mi.info), '; ') AS movie_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull((it.info || ':' || mi.info)))), '; ') AS movie_info
     FROM 
         movie_info mi
     JOIN info_type it ON mi.info_type_id = it.id

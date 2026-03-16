@@ -45,7 +45,7 @@ SELECT
     nation_name,
     part_count,
     total_supplycost,
-    STRING_AGG(s_comment, '; ') AS comments
+    arrayStringConcat(groupArray(assumeNotNull(s_comment)), '; ') AS comments
 FROM 
     SuppliersWithComments
 GROUP BY 

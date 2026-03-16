@@ -41,7 +41,7 @@ WITH RECURSIVE MovieHierarchy AS (
         mh.title,
         mh.production_year,
         COUNT(cd.actor_name) AS total_cast,
-        STRING_AGG(cd.actor_name, ', ') AS actor_list
+        arrayStringConcat(groupArray(assumeNotNull(cd.actor_name)), ', ') AS actor_list
     FROM 
         MovieHierarchy mh
     LEFT JOIN 

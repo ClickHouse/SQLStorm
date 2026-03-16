@@ -23,7 +23,7 @@ CustomerStats AS (
 ),
 RegionWithComments AS (
     SELECT r.r_regionkey, r.r_name, COUNT(n.n_nationkey) AS nation_count, 
-           STRING_AGG(n.n_comment, '; ') AS combined_comments
+           arrayStringConcat(groupArray(assumeNotNull(n.n_comment)), '; ') AS combined_comments
     FROM region r
     LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
     GROUP BY r.r_regionkey, r.r_name
@@ -35,4 +35,4 @@ WHERE cs.avg_order_value > (SELECT AVG(avg_order_value) FROM CustomerStats)
    OR rc.combined_comments IS NOT NULL
 ORDER BY cs.c_name ASC NULLS LAST
 OFFSET (SELECT COUNT(*) FROM CustomerStats) ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10;

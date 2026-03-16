@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.PostTypeId, p.Score, p.AcceptedAnswerId
 ),
@@ -35,11 +35,11 @@ PostHistorySummary AS (
 TaggedPosts AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        (SELECT DISTINCT UNNEST(string_to_array(Tags, '><')) AS TagName FROM Posts) t ON p.Id IS NOT NULL
+        (SELECT DISTINCT arrayJoin(splitByString('><', Tags)) AS TagName FROM Posts) t ON p.Id IS NOT NULL
     GROUP BY 
         p.Id
 )
@@ -67,6 +67,6 @@ LEFT JOIN
     TaggedPosts tp ON rp.PostId = tp.PostId
 WHERE 
     rp.PostTypeId = 1 
-    AND (ph.LastClosedDate IS NULL OR ph.LastClosedDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
+    AND (ph.LastClosedDate IS NULL OR ph.LastClosedDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ORDER BY 
     rp.Score DESC, rp.CreationDate DESC;

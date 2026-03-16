@@ -23,7 +23,7 @@ TopItems AS (
     FROM 
         store_sales s
     WHERE 
-        s.ss_sold_date_sk IN (SELECT d.d_date_sk FROM date_dim d WHERE d.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)))
+        s.ss_sold_date_sk IN (SELECT d.d_date_sk FROM date_dim d WHERE d.d_year = toYear(cast('2002-10-01' as date)))
     GROUP BY 
         s.ss_item_sk
 ),

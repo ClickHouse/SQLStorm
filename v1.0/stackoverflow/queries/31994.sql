@@ -39,9 +39,9 @@ PostHistorySummary AS (
     SELECT 
         ph.PostId,
         COUNT(CASE WHEN ph.PostHistoryTypeId = 10 THEN 1 END) AS CloseCount,
-        COUNT(CASE WHEN ph.PostHistoryTypeId = 10 AND ph.CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days' THEN 1 END) AS RecentCloseCount,
+        COUNT(CASE WHEN ph.PostHistoryTypeId = 10 AND ph.CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY THEN 1 END) AS RecentCloseCount,
         COUNT(CASE WHEN ph.PostHistoryTypeId = 12 THEN 1 END) AS DeleteCount,
-        COUNT(CASE WHEN ph.PostHistoryTypeId = 12 AND ph.CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days' THEN 1 END) AS RecentDeleteCount
+        COUNT(CASE WHEN ph.PostHistoryTypeId = 12 AND ph.CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY THEN 1 END) AS RecentDeleteCount
     FROM 
         PostHistory ph
     GROUP BY 

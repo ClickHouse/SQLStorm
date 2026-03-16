@@ -39,7 +39,7 @@ SELECT
     ss.max_street_length,
     ss.min_street_length,
     ss.avg_street_length,
-    STRING_AGG(DISTINCT CONCAT(ra.ca_street_name, ' ', ra.ca_city), ', ') AS street_city_combination
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ra.ca_street_name, ' ', ra.ca_city)))), ', ') AS street_city_combination
 FROM 
     CityCount cs
 JOIN 

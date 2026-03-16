@@ -34,4 +34,4 @@ HAVING
 ORDER BY 
     total_orders DESC, 
     avg_sales_price DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

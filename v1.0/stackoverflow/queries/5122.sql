@@ -1,13 +1,13 @@
 
 WITH UserBadges AS (
-    SELECT UserId, COUNT(*) AS BadgeCount, STRING_AGG(Name, ', ') AS BadgeNames
+    SELECT UserId, COUNT(*) AS BadgeCount, arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames
     FROM Badges
     GROUP BY UserId
 ), 
 PostStatistics AS (
     SELECT OwnerUserId, COUNT(*) AS PostCount, SUM(ViewCount) AS TotalViews, AVG(Score) AS AvgScore
     FROM Posts
-    WHERE CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY OwnerUserId
 ),
 CommentDetails AS (

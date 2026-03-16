@@ -23,8 +23,8 @@ AggregatedResults AS (
         AVG(name_length) AS avg_name_length,
         MIN(name_length) AS min_name_length,
         MAX(name_length) AS max_name_length,
-        STRING_AGG(upper_comment, '; ') AS aggregated_comments,
-        STRING_AGG(supplier_info, ', ') AS all_suppliers_info
+        arrayStringConcat(groupArray(assumeNotNull(upper_comment)), '; ') AS aggregated_comments,
+        arrayStringConcat(groupArray(assumeNotNull(supplier_info)), ', ') AS all_suppliers_info
     FROM 
         StringBenchmark
 )

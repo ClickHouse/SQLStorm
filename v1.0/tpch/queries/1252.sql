@@ -4,7 +4,7 @@ WITH SupplierSales AS (
     FROM supplier s
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     JOIN lineitem l ON ps.ps_partkey = l.l_partkey
-    WHERE l.l_shipdate >= DATE '1995-01-01'
+    WHERE l.l_shipdate >= toDate('1995-01-01')
     GROUP BY s.s_suppkey, s.s_name
 ),
 CustomerOrders AS (

@@ -16,7 +16,7 @@ cast_roles AS (
     GROUP BY ci.movie_id, ct.kind
 ),
 title_keywords AS (
-    SELECT mt.movie_id, STRING_AGG(k.keyword, ', ') AS keywords
+    SELECT mt.movie_id, arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mt
     JOIN keyword k ON mt.keyword_id = k.id
     GROUP BY mt.movie_id

@@ -52,7 +52,7 @@ SELECT
     us.GoldBadges,
     us.SilverBadges,
     us.BronzeBadges,
-    AGE(cast('2024-10-01 12:34:56' as timestamp), us.AccountCreationDate) AS AccountAge
+    AGE(toDateTime64('2024-10-01 12:34:56', 6), us.AccountCreationDate) AS AccountAge
 FROM UserStatistics us
 ORDER BY us.TotalPosts DESC, us.TotalComments DESC
 LIMIT 10;

@@ -8,7 +8,7 @@ SELECT
     cd.cd_gender,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     AVG(ws.ws_net_paid) AS average_spent,
-    STRING_AGG(DISTINCT i.i_item_desc, '; ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), '; ') AS purchased_items,
     MAX(date_dim.d_date) AS last_purchase_date
 FROM 
     customer c

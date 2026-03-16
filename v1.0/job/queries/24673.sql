@@ -7,7 +7,7 @@ WITH RankedMovies AS (
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(ci.person_id) DESC) AS actor_count_rank,
         COALESCE(k.keyword, 'No Keywords') AS movie_keyword,
         COUNT(DISTINCT ci.person_id) AS total_actors,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM 
         aka_title t
     LEFT JOIN 
@@ -68,7 +68,7 @@ SELECT
     nm.name AS company_name,
     nm.country_code,
     'Unknown Movie' AS title,
-    EXTRACT(YEAR FROM DATE '2024-10-01') AS production_year,
+    toYear(toDate('2024-10-01')) AS production_year,
     'No Actor Information' AS actor_names,
     0 AS total_actors
 FROM 

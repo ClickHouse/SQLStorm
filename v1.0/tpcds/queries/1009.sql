@@ -70,4 +70,4 @@ FROM
     HighValueCustomers hvc
 ORDER BY 
     hvc.total_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

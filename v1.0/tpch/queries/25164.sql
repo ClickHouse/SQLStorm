@@ -3,7 +3,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,
     COUNT(DISTINCT ps.ps_partkey) AS distinct_part_count,
-    STRING_AGG(DISTINCT CONCAT('Part Name: ', p.p_name, ', Price: ', p.p_retailprice), '; ') AS part_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Part Name: ', p.p_name, ', Price: ', p.p_retailprice)))), '; ') AS part_details
 FROM 
     supplier s
 JOIN 

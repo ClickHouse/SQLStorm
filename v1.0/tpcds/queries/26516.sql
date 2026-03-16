@@ -22,7 +22,7 @@ aggregated_data AS (
         COUNT(DISTINCT email_processed) AS unique_email_count,
         COUNT(DISTINCT warehouse_name) AS unique_warehouses,
         AVG(first_name_length) AS avg_first_name_length,
-        STRING_AGG(birth_country_short, ', ') AS country_short_list
+        arrayStringConcat(groupArray(assumeNotNull(birth_country_short)), ', ') AS country_short_list
     FROM 
         processed_strings
     GROUP BY 

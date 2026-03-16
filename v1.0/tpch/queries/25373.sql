@@ -2,7 +2,7 @@ SELECT
     s.s_name AS supplier_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS product_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS product_names,
     r.r_name AS region_name,
     n.n_name AS nation_name
 FROM 
@@ -23,7 +23,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     s.s_comment LIKE '%quality%'
-    AND o.o_orderdate >= DATE '1997-01-01'
+    AND o.o_orderdate >= toDate('1997-01-01')
 GROUP BY 
     s.s_name, r.r_name, n.n_name
 ORDER BY 

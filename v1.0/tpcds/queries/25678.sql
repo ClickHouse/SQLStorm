@@ -5,8 +5,8 @@ SELECT
     SUM(CASE WHEN cd_gender = 'M' THEN 1 ELSE 0 END) AS male_customers,
     SUM(CASE WHEN cd_gender = 'F' THEN 1 ELSE 0 END) AS female_customers,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT ca_city, ', ') AS cities_list,
-    STRING_AGG(DISTINCT w_warehouse_name, ', ') AS warehouses_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(w_warehouse_name))), ', ') AS warehouses_list
 FROM 
     customer c
 JOIN 

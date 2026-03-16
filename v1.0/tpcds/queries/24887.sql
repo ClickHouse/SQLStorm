@@ -17,13 +17,13 @@ WITH RankedSales AS (
 ),
 MonthlyReturns AS (
     SELECT 
-        EXTRACT(MONTH FROM d.d_date) AS month,
+        toMonth(d.d_date) AS month,
         COUNT(sr.sr_ticket_number) AS total_returns,
         SUM(sr.sr_return_amt_inc_tax) AS total_return_amt
     FROM store_returns sr
     JOIN date_dim d ON sr.sr_returned_date_sk = d.d_date_sk
     WHERE d.d_year = 2022
-    GROUP BY EXTRACT(MONTH FROM d.d_date)
+    GROUP BY toMonth(d.d_date)
 ),
 FinalAnalysis AS (
     SELECT 

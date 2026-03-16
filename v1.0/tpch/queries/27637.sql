@@ -7,7 +7,7 @@ WITH SupplierDetails AS (
 PartAggregate AS (
     SELECT ps.ps_partkey, SUM(ps.ps_availqty) AS total_avail_qty,
            COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
-           STRING_AGG(CONCAT(sd.supplier_info, ' (Qty: ', ps.ps_availqty, ')'), ', ') AS suppliers_details
+           arrayStringConcat(groupArray(assumeNotNull(CONCAT(sd.supplier_info, ' (Qty: ', ps.ps_availqty, ')'))), ', ') AS suppliers_details
     FROM partsupp ps
     JOIN SupplierDetails sd ON ps.ps_suppkey = sd.s_suppkey
     GROUP BY ps.ps_partkey

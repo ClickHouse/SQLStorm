@@ -32,7 +32,7 @@ SELECT
     tm.title,
     tm.production_year,
     COUNT(DISTINCT cr.name) AS actor_count,
-    STRING_AGG(DISTINCT cr.role, ', ') AS roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.role))), ', ') AS roles,
     CASE 
         WHEN COUNT(DISTINCT cr.name) > 5 THEN 'Ensemble Cast'
         ELSE 'Selective Cast'

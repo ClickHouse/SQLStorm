@@ -35,8 +35,8 @@ SELECT
     rm.movie_id,
     rm.movie_title,
     rm.production_year,
-    STRING_AGG(mci.actor_name || ' as ' || mci.role_name, ', ' ORDER BY mci.actor_rank) AS cast_list,
-    STRING_AGG(DISTINCT rm.movie_keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(mci.actor_name || ' as ' || mci.role_name)), ', ' ORDER BY mci.actor_rank) AS cast_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.movie_keyword))), ', ') AS keywords
 FROM 
     RankedMovies rm
 LEFT JOIN 

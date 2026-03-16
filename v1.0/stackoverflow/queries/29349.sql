@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     WHERE 
         p.PostTypeId = 1 
         AND 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 TopPosts AS (
     SELECT 
@@ -34,14 +34,14 @@ TopPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        TRIM(BOTH '<>' FROM UNNEST(string_to_array(Tags, '>'))) AS TagName, 
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('>', Tags))) AS TagName, 
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        TRIM(BOTH '<>' FROM UNNEST(string_to_array(Tags, '>')))
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('>', Tags)))
 ),
 TopTags AS (
     SELECT 
@@ -61,7 +61,7 @@ SELECT
 FROM 
     TopPosts tp
 JOIN 
-    TopTags tt ON tt.TagName = ANY(string_to_array(tp.Tags, '>'))
+    TopTags tt ON tt.TagName = ANY(splitByString('>', tp.Tags))
 ORDER BY 
     tp.Score DESC, 
     tp.ViewCount DESC;

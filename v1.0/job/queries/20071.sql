@@ -15,7 +15,7 @@ movies_produced_2020 AS (
 actor_roles AS (
     SELECT 
         c.movie_id, 
-        COALESCE(STRING_AGG(DISTINCT r.role, ', '), 'No role') AS roles,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', '), 'No role') AS roles,
         COUNT(c.person_id) AS actor_count 
     FROM 
         cast_info c
@@ -30,7 +30,7 @@ actor_roles AS (
 movie_company_links AS (
     SELECT 
         m.movie_id, 
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies 
     FROM 
         movie_companies m
     JOIN 

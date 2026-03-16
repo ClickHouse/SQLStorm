@@ -19,7 +19,7 @@ nation_suppliers AS (
         n.n_nationkey,
         n.n_name,
         COUNT(DISTINCT sp.s_suppkey) AS supplier_count,
-        STRING_AGG(sp.supply_info, '; ') AS supply_details
+        arrayStringConcat(groupArray(assumeNotNull(sp.supply_info)), '; ') AS supply_details
     FROM
         nation n
     JOIN

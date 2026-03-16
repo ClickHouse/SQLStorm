@@ -35,4 +35,4 @@ WHERE p.p_size > 10
 GROUP BY p.p_name, p.p_mfgr, p.p_type, n.n_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 5000
 ORDER BY total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

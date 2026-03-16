@@ -48,4 +48,4 @@ GROUP BY
     rs.sales_rank
 ORDER BY 
     sales_category DESC, total_net_paid DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

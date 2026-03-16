@@ -5,8 +5,8 @@ SELECT
     COUNT(DISTINCT C.c_customer_id) AS customer_count,
     SUM(CD.cd_purchase_estimate) AS total_purchase_estimate,
     AVG(CD.cd_dep_count) AS avg_dependency_count,
-    STRING_AGG(DISTINCT CD.cd_gender, ', ') AS gender_distribution,
-    STRING_AGG(DISTINCT CD.cd_marital_status, ', ') AS marital_status_distribution
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CD.cd_gender))), ', ') AS gender_distribution,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CD.cd_marital_status))), ', ') AS marital_status_distribution
 FROM 
     customer_address CA
 JOIN 

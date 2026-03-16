@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS Author,
         u.Reputation,
         p.Score,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId
     LEFT JOIN 
-        LATERAL (SELECT DISTINCT unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS TagName) t ON TRUE
+        (SELECT DISTINCT arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS TagName) t ON TRUE
     WHERE 
         p.PostTypeId = 1  
     GROUP BY 

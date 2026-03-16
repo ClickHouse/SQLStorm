@@ -6,13 +6,13 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS rn,
-        ARRAY_LENGTH(string_to_array(p.Tags, ','), 1) AS TagCount
+        length(splitByString(',', p.Tags), 1) AS TagCount
     FROM 
         Posts p
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserStatistics AS (
     SELECT 

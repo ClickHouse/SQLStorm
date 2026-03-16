@@ -28,14 +28,14 @@ LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 LEFT JOIN supplier sp ON ps.ps_suppkey = sp.s_suppkey
 LEFT JOIN nation n ON sp.s_nationkey = n.n_nationkey
 LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
-WHERE l.l_shipdate >= DATE '1996-01-01' 
-AND l.l_shipdate < DATE '1997-01-01'
+WHERE l.l_shipdate >= toDate('1996-01-01') 
+AND l.l_shipdate < toDate('1997-01-01')
 GROUP BY p.p_partkey, p.p_name, sp.s_name, r.r_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > (SELECT AVG(total_revenue) 
                          FROM (SELECT SUM(l_extendedprice * (1 - l_discount)) AS total_revenue 
                                FROM lineitem l 
-                               WHERE l.l_shipdate >= DATE '1996-01-01' 
-                               AND l.l_shipdate < DATE '1997-01-01' 
+                               WHERE l.l_shipdate >= toDate('1996-01-01') 
+                               AND l.l_shipdate < toDate('1997-01-01') 
                                GROUP BY l.l_partkey) AS avg_revenue)
 ORDER BY total_revenue DESC
 LIMIT 10;

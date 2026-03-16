@@ -5,7 +5,7 @@ SELECT
     AVG(l.l_quantity) AS average_quantity_ordered,
     MAX(l.l_tax) AS maximum_tax_rate,
     MIN(o.o_orderdate) AS first_order_date,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     supplier s
 JOIN 
@@ -25,7 +25,7 @@ JOIN
 WHERE 
     l.l_shipmode IN ('AIR', 'GROUND')
     AND r.r_name LIKE 'E%'
-    AND o.o_orderdate >= DATE '1997-01-01'
+    AND o.o_orderdate >= toDate('1997-01-01')
 GROUP BY 
     s.s_name, n.n_name, r.r_name
 ORDER BY 

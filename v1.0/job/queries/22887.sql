@@ -73,7 +73,7 @@ SELECT
     f.movie_id,
     f.movie_title,
     f.production_year,
-    STRING_AGG(f.actor_name, ', ') AS lead_actors,
+    arrayStringConcat(groupArray(assumeNotNull(f.actor_name)), ', ') AS lead_actors,
     COUNT(f.role_name) AS total_roles,
     AVG(f.keyword_count) AS avg_keyword_count
 FROM 
@@ -84,4 +84,4 @@ HAVING
     AVG(f.keyword_count) > 0 OR COUNT(f.role_name) > 2
 ORDER BY 
     f.production_year DESC, f.movie_title
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 year') 
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR) 
         AND p.PostTypeId IN (1, 2)
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId
@@ -47,7 +47,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 month')
+        v.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 MONTH)
     GROUP BY 
         v.PostId
 ),
@@ -105,4 +105,4 @@ WHERE
 ORDER BY 
     cs.Score DESC, 
     cs.ViewCount DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

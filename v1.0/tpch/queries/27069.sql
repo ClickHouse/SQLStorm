@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     SUM(l.l_extendedprice) AS total_revenue,
     AVG(l.l_quantity) AS avg_quantity_per_order,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     supplier s
 JOIN 
@@ -20,8 +20,8 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_comment LIKE '%fragile%'
-    AND o.o_orderdate >= DATE '1996-01-01'
-    AND o.o_orderdate < DATE '1997-01-01'
+    AND o.o_orderdate >= toDate('1996-01-01')
+    AND o.o_orderdate < toDate('1997-01-01')
 GROUP BY 
     supplier_region
 ORDER BY 

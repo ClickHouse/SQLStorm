@@ -5,7 +5,7 @@ SELECT
     ca.ca_state,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_spent,
-    STRING_AGG(DISTINCT i.i_product_name, '; ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), '; ') AS purchased_items
 FROM 
     customer AS c
 JOIN 
@@ -22,7 +22,7 @@ WHERE
         FROM 
             date_dim AS d 
         WHERE 
-            d.d_date BETWEEN DATE '2002-10-01' - INTERVAL '1 YEAR' AND DATE '2002-10-01'
+            d.d_date BETWEEN toDate('2002-10-01') - INTERVAL 1 YEAR AND toDate('2002-10-01')
     )
 GROUP BY 
     c.c_first_name, c.c_last_name, ca.ca_city, ca.ca_state

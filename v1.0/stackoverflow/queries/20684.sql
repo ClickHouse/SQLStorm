@@ -44,7 +44,7 @@ PostHistoryDetails AS (
 AggregatedHistory AS (
     SELECT 
         phd.PostId,
-        STRING_AGG(DISTINCT phd.ActionComment, '; ') AS ConcatenatedComments,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(phd.ActionComment))), '; ') AS ConcatenatedComments,
         COUNT(*) AS HistoryCount
     FROM 
         PostHistoryDetails phd

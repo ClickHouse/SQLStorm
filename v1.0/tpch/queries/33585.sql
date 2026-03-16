@@ -26,7 +26,7 @@ SELECT
     SUM(o.o_totalprice) AS total_revenue,
     AVG(o.o_totalprice) AS avg_order_value,
     MAX(o.o_orderdate) AS most_recent_order,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_size, ')', ' - $', ROUND(p.p_retailprice, 2)), ', ') AS products_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_size, ')', ' - $', ROUND(p.p_retailprice, 2))))), ', ') AS products_list
 FROM region r
 JOIN nation n ON r.r_regionkey = n.n_regionkey
 JOIN customer c ON n.n_nationkey = c.c_nationkey

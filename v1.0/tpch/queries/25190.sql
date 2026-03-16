@@ -26,7 +26,7 @@ WITH StringProcessing AS (
     JOIN customer c ON o.o_custkey = c.c_custkey
     WHERE 
         p.p_size > 10
-        AND o.o_orderdate >= DATE '1997-01-01'
+        AND o.o_orderdate >= toDate('1997-01-01')
 )
 SELECT 
     full_description, 

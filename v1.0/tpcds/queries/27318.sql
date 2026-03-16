@@ -26,8 +26,8 @@ DateStats AS (
     SELECT 
         d_year,
         COUNT(*) AS total_dates,
-        MAX(DATE_PART('day', d_date)) AS max_day,
-        MIN(DATE_PART('day', d_date)) AS min_day
+        MAX(datePart('day', d_date)) AS max_day,
+        MIN(datePart('day', d_date)) AS min_day
     FROM 
         date_dim
     GROUP BY 

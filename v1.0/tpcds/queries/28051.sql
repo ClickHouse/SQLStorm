@@ -5,7 +5,7 @@ SELECT
     CONCAT(ca.ca_city, ', ', ca.ca_state, ' ', ca.ca_zip) AS full_address,
     LOWER(c.c_email_address) AS normalized_email,
     DENSE_RANK() OVER (PARTITION BY ca.ca_city ORDER BY c.c_birth_year) AS city_rank,
-    STRING_AGG(DISTINCT CONCAT(cd.cd_gender, ' - ', cd.cd_marital_status), ', ') AS demographics
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cd.cd_gender, ' - ', cd.cd_marital_status)))), ', ') AS demographics
 FROM 
     customer c
 JOIN 

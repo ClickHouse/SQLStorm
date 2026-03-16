@@ -40,8 +40,8 @@ SELECT
     production_year,
     kind_id,
     COUNT(*) AS total_movies,
-    STRING_AGG(actor_name, ', ' ORDER BY actor_name) AS actors_list,
-    STRING_AGG(movie_keyword, ', ') AS keyword_list
+    arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ' ORDER BY actor_name) AS actors_list,
+    arrayStringConcat(groupArray(assumeNotNull(movie_keyword)), ', ') AS keyword_list
 FROM 
     RankedMovies
 WHERE 

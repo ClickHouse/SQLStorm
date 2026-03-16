@@ -45,14 +45,14 @@ RecentPostComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate > CURRENT_DATE - INTERVAL '30 DAY'
+        c.CreationDate > CURRENT_DATE - INTERVAL 30 DAY
     GROUP BY 
         c.PostId
 ),
 PostCloseReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -85,6 +85,6 @@ LEFT JOIN
 LEFT JOIN 
     PostHierarchy ph ON p.Id = ph.PostId
 WHERE 
-    p.CreationDate >= CURRENT_DATE - INTERVAL '1 YEAR'
+    p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ORDER BY 
     TotalUpVotes DESC, RecentCommentCount DESC;

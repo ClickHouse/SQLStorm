@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 TopRankedPosts AS (
     SELECT 
@@ -30,7 +30,7 @@ TopRankedPosts AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(p.Tags, '><')) AS Tag
+        arrayJoin(splitByString('><', p.Tags)) AS Tag
     FROM 
         Posts p
 )

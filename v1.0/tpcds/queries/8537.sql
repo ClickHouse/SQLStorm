@@ -58,4 +58,4 @@ LEFT JOIN
     PromoData pd ON cd.total_spent > pd.total_discount
 ORDER BY 
     cd.total_spent DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

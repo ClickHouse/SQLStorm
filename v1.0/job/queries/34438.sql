@@ -43,7 +43,7 @@ MoviesWithKeywords AS (
         mh.movie_id,
         mh.title,
         mh.production_year,
-        ARRAY_AGG(DISTINCT kw.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(kw.keyword))) AS keywords
     FROM 
         MovieHierarchy mh
     LEFT JOIN 

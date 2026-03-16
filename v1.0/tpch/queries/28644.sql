@@ -7,8 +7,8 @@ SELECT
     r.r_name AS region_name,
     n.n_name AS nation_name,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT p.p_type, ', ') AS part_types,
-    STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS part_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments
 FROM 
     part p
 JOIN 
@@ -27,8 +27,8 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     l.l_shipmode IN ('AIR', 'TRUCK')
-    AND o.o_orderdate >= DATE '1997-01-01'
-    AND o.o_orderdate < DATE '1997-10-01'
+    AND o.o_orderdate >= toDate('1997-01-01')
+    AND o.o_orderdate < toDate('1997-10-01')
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey, r.r_name, n.n_name
 ORDER BY 

@@ -20,7 +20,7 @@ WITH RankedMovies AS (
 DirectorMovies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name, ', ' ORDER BY cn.name) AS director_names
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ' ORDER BY cn.name) AS director_names
     FROM 
         movie_companies mc
     JOIN 

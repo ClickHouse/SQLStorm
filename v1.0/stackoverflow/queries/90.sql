@@ -55,7 +55,7 @@ MostActivePosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        P.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         P.Id, P.Title, P.CreationDate
     HAVING 

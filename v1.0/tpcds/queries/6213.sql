@@ -53,4 +53,4 @@ JOIN
     SalesDetails sd ON sd.total_quantity > 100
 ORDER BY 
     cs.total_net_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

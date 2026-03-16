@@ -80,4 +80,4 @@ WHERE
 ORDER BY 
     u.Reputation DESC,
     UserId
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

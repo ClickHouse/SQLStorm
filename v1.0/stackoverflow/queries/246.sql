@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 )
 
 SELECT 
@@ -35,7 +35,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    Posts pp ON rp.PostId = pp.Id AND pp.LastEditDate >= CURRENT_DATE - INTERVAL '3 months'
+    Posts pp ON rp.PostId = pp.Id AND pp.LastEditDate >= CURRENT_DATE - INTERVAL 3 MONTH
 WHERE 
     rp.UserViewRank <= 10 OR rp.AnswerCount > 5
 ORDER BY 

@@ -24,7 +24,7 @@ cast_summary AS (
     SELECT
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        ARRAY_AGG(DISTINCT ak.name ORDER BY ak.name) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(ak.name ORDER BY ak.name))) AS cast_names,
         MAX(ak.name) AS lead_actor
     FROM 
         cast_info ci
@@ -36,7 +36,7 @@ cast_summary AS (
 keyword_summary AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -72,7 +72,7 @@ SELECT
     md.total_cast,
     md.keywords,
     md.era,
-    ARRAY_AGG(DISTINCT ch.title) AS child_titles
+    arrayDistinct(groupArray(assumeNotNull(ch.title))) AS child_titles
 FROM 
     movie_hierarchy mh
 LEFT JOIN 

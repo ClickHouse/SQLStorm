@@ -29,7 +29,7 @@ SELECT
     COUNT(DISTINCT mc.person_id) AS total_actors,
     MAX(mc.actor_name) AS lead_actor,
     AVG(COALESCE(NULLIF(mc.actor_rank, 0), NULL)) AS avg_actor_rank,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     RankedMovies rm
 LEFT JOIN 

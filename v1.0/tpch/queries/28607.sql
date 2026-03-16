@@ -5,7 +5,7 @@ SELECT
     COUNT(o.o_orderkey) AS total_orders,
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ' - ', r.r_name), '; ') AS countries_and_regions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ' - ', r.r_name)))), '; ') AS countries_and_regions
 FROM 
     part p
 JOIN 

@@ -29,7 +29,7 @@ SELECT
     COALESCE(SUM(l.l_extendedprice * (1 - l.l_discount)), 0) AS total_revenue,
     AVG(o.o_totalprice) AS avg_order_value,
     MAX(o.o_orderdate) AS last_order_date,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS purchased_parts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS purchased_parts,
     ROW_NUMBER() OVER (PARTITION BY c.c_name ORDER BY COUNT(DISTINCT o.o_orderkey) DESC) AS order_rank
 FROM customer c
 LEFT JOIN orders o ON c.c_custkey = o.o_custkey

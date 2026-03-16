@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), TopPosts AS (
     SELECT 
         rp.OwnerDisplayName,
@@ -49,7 +49,7 @@ WITH RankedPosts AS (
         tp.Score,
         tp.ViewCount,
         COALESCE(pc.CommentCount, 0) AS CommentCount,
-        COALESCE(pc.LastCommentDate, DATE '1970-01-01') AS LastCommentDate,
+        COALESCE(pc.LastCommentDate, toDate('1970-01-01')) AS LastCommentDate,
         bu.BadgeCount
     FROM 
         TopPosts tp

@@ -42,4 +42,4 @@ SELECT
 FROM high_profit_items h
 JOIN item ON h.cs_item_sk = item.i_item_sk
 ORDER BY h.total_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

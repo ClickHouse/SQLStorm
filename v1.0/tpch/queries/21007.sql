@@ -46,7 +46,7 @@ SELECT
     COALESCE(SUM(f.l_extendedprice * (1 - f.l_discount)), 0) AS total_revenue,
     AVG(co.total_spent) AS avg_customer_spent,
     COUNT(DISTINCT rs.s_suppkey) AS unique_suppliers,
-    STRING_AGG(DISTINCT rs.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rs.s_name))), ', ') AS supplier_names,
     COUNT(DISTINCT f.l_orderkey) FILTER (WHERE f.return_status = 'Returned') AS returned_items
 FROM 
     region r

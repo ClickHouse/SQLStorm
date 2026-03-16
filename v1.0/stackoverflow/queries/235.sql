@@ -24,7 +24,7 @@ RecentPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 DAY'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 
 SELECT 
@@ -47,4 +47,4 @@ WHERE
 ORDER BY 
     US.Upvotes DESC, 
     U.Reputation DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

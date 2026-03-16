@@ -49,7 +49,7 @@ SELECT
     U.TotalUpVotes,
     U.TotalDownVotes,
     COALESCE(SUM(CASE WHEN PWC.RN = 1 THEN 1 ELSE 0 END), 0) AS LatestPostsCount,
-    STRING_AGG(PWC.Title, ', ') AS LatestPostTitles,
+    arrayStringConcat(groupArray(assumeNotNull(PWC.Title)), ', ') AS LatestPostTitles,
     AVG(PWC.Score) AS AveragePostScore,
     COUNT(DISTINCT PWC.PostId) AS DistinctPostsWithComments
 FROM 

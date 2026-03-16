@@ -41,7 +41,7 @@ movie_keywords AS (
     
     SELECT
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword m
     JOIN keyword k ON m.keyword_id = k.id
     GROUP BY m.movie_id

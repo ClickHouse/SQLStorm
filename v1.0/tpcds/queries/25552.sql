@@ -5,7 +5,7 @@ SELECT
     SUM(CASE WHEN cd_gender = 'M' THEN 1 ELSE 0 END) AS male_customers,
     SUM(CASE WHEN cd_gender = 'F' THEN 1 ELSE 0 END) AS female_customers,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT CONCAT(cd_marital_status, ': ', cd_gender), ', ') AS gender_marital_status
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cd_marital_status, ': ', cd_gender)))), ', ') AS gender_marital_status
 FROM 
     customer_address ca
 JOIN 

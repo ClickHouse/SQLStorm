@@ -39,7 +39,7 @@ SELECT
     fm.title,
     fm.production_year,
     COALESCE(k.keyword, 'No Keyword') AS movie_keyword,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     FilteredMovies fm
 LEFT JOIN 

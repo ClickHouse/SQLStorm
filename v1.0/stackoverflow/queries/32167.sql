@@ -14,7 +14,7 @@ WITH RecursivePost AS (
     LEFT JOIN 
         Votes AS v ON p.Id = v.PostId AND v.VoteTypeId IN (8, 9) 
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, p.ViewCount, p.OwnerUserId
 ),

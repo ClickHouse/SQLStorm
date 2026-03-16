@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.PostTypeId = 1 
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.CreationDate
@@ -45,7 +45,7 @@ SELECT
     pp.CommentCount,
     pp.UniqueVoters,
     pht.Name AS PostHistoryType,
-    STRING_AGG(h.Text, '; ') AS HistoryComments
+    arrayStringConcat(groupArray(assumeNotNull(h.Text)), '; ') AS HistoryComments
 FROM 
     PopularPosts pp
 LEFT JOIN 

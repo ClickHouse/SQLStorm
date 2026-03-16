@@ -55,7 +55,7 @@ SELECT
     actor_name, 
     movie_title, 
     production_year, 
-    STRING_AGG(DISTINCT keyword, ', ') AS keywords, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords, 
     total_cast
 FROM 
     MovieDetails

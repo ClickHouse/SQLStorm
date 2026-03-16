@@ -16,11 +16,11 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
 ),
 PopularTags AS (
     SELECT 
-        UNNEST(string_to_array(TRIM(BOTH '<>' FROM p.Tags), '> <')) AS TagName,
+        arrayJoin(splitByString('> <', TRIM(BOTH '<>' FROM p.Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -49,7 +49,7 @@ PostStatistics AS (
     LEFT JOIN 
         Posts p ON rp.PostId = p.Id
     LEFT JOIN 
-        LATERAL UNNEST(string_to_array(TRIM(BOTH '<>' FROM p.Tags), '> <')) AS pt(TagName) ON TRUE
+        arrayJoin(splitByString('> <', TRIM(BOTH '<>' FROM p.Tags))) AS pt(TagName) ON TRUE
     WHERE 
         pt.TagName IN (SELECT TagName FROM PopularTags)
     GROUP BY 

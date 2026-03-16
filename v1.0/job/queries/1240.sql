@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         t.kind_id, 
         COALESCE(c.name, 'Unknown') AS company_name, 
         COUNT(DISTINCT ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names
     FROM 
         aka_title AS t
     LEFT JOIN 

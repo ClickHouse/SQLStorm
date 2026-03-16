@@ -49,7 +49,7 @@ SELECT
     tm.title,
     tm.production_year,
     COUNT(DISTINCT ct.company_name) AS company_count,
-    STRING_AGG(DISTINCT mk.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.keyword))), ', ') AS keywords,
     CASE 
         WHEN COUNT(DISTINCT ct.company_name) > 0 THEN TRUE 
         ELSE FALSE 

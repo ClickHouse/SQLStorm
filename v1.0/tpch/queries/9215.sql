@@ -43,7 +43,7 @@ OrderSummary AS (
 )
 SELECT 
     fs.nation,
-    ARRAY_AGG(DISTINCT fs.s_name) AS top_suppliers,
+    arrayDistinct(groupArray(assumeNotNull(fs.s_name))) AS top_suppliers,
     COUNT(os.o_orderkey) AS total_orders,
     SUM(os.total_revenue) AS total_revenue_collected
 FROM 

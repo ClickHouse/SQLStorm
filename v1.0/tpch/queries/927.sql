@@ -66,7 +66,7 @@ LEFT JOIN
             region r ON n.n_regionkey = r.r_regionkey
         WHERE 
             n.n_nationkey IN (SELECT DISTINCT c.c_nationkey FROM customer c)
-        FETCH FIRST 1 ROWS ONLY
+        LIMIT 1
     )
 ORDER BY 
     cs.region_revenue DESC NULLS LAST;

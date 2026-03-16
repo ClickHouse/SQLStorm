@@ -26,8 +26,8 @@ TopSuppliers AS (
 )
 SELECT 
     t.nation,
-    STRING_AGG(t.s_name, ', ') AS top_suppliers,
-    STRING_AGG(CAST(t.total_cost AS VARCHAR), ', ') AS costs
+    arrayStringConcat(groupArray(assumeNotNull(t.s_name)), ', ') AS top_suppliers,
+    arrayStringConcat(groupArray(assumeNotNull(CAST(t.total_cost AS VARCHAR))), ', ') AS costs
 FROM 
     TopSuppliers t
 GROUP BY 

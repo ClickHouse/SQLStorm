@@ -17,7 +17,7 @@ AggregatedSupplierData AS (
            COUNT(part_name) AS parts_supplied, 
            SUM(available_quantity) AS total_available_quantity,
            ROUND(AVG(supply_cost), 2) AS avg_supply_cost,
-           STRING_AGG(part_name, ', ') AS part_names_list
+           arrayStringConcat(groupArray(assumeNotNull(part_name)), ', ') AS part_names_list
     FROM SupplierParts
     GROUP BY supplier_name
 )

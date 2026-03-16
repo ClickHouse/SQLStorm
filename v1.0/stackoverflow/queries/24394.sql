@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
         AND p.ViewCount IS NOT NULL
 ),
 PostScore AS (
@@ -33,7 +33,7 @@ PostHistoryDetails AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         COUNT(*) AS VersionCount,
-        STRING_AGG(CONCAT(CAST(ph.CreationDate AS DATE), ' ', ph.UserDisplayName, ': ', ph.Comment), '; ') AS EditComments
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(CAST(ph.CreationDate AS DATE), ' ', ph.UserDisplayName, ': ', ph.Comment))), '; ') AS EditComments
     FROM 
         PostHistory ph
     GROUP BY 

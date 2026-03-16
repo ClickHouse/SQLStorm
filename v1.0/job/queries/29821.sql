@@ -48,7 +48,7 @@ SELECT
     twm.production_year,
     twm.company_count,
     twm.keyword_count,
-    STRING_AGG(DISTINCT nwr.actor_name || ' (' || nwr.role_name || ')', ', ') AS cast_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(nwr.actor_name || ' (' || nwr.role_name || ')'))), ', ') AS cast_details
 FROM
     TopRankedMovies twm
 LEFT JOIN

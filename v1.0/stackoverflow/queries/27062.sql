@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.Score,
         u.DisplayName AS OwnerDisplayName,
         COUNT(a.Id) AS AnswerCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagList,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagList,
         ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.CreationDate DESC) AS rn
     FROM 
         Posts p
@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON a.ParentId = p.Id AND a.PostTypeId = 2
     LEFT JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '> <')) AS tag ON TRUE
+        arrayJoin(splitByString('> <', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -41,7 +41,7 @@ FilteredPosts AS (
     WHERE 
         rp.rn = 1 
         AND rp.AnswerCount > 0 
-        AND rp.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')
+        AND rp.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
 )
 SELECT 
     f.PostId,

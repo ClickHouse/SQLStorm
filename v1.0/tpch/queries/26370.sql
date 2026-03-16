@@ -4,8 +4,8 @@ WITH StringAggregates AS (
         s.s_suppkey AS suppkey,
         COUNT(DISTINCT p.p_partkey) AS part_count,
         SUM(ps.ps_availqty) AS total_available_quantity,
-        STRING_AGG(DISTINCT p.p_name, '; ') AS part_names,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), '; ') AS part_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
         MAX(s.s_acctbal) AS max_account_balance
     FROM 
         supplier s

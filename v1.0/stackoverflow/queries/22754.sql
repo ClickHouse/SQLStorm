@@ -40,7 +40,7 @@ ActivePosts AS (
            END AS ScoreCategory
     FROM Posts p
     LEFT JOIN PostLinks pl ON p.Id = pl.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 QuestionStats AS (
     SELECT p.Id AS PostId,

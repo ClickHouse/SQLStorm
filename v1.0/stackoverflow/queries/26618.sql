@@ -33,7 +33,7 @@ DetailedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         p.Score,
         p.ViewCount,
-        STRING_AGG(c.Text, ' || ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' || ') AS Comments
     FROM 
         Posts p
     LEFT JOIN 
@@ -41,7 +41,7 @@ DetailedPosts AS (
     LEFT JOIN 
         Comments c ON c.PostId = p.Id
     WHERE 
-        p.Tags LIKE CONCAT('%', (SELECT STRING_AGG(TagName, '%||%') FROM TopTags), '%')
+        p.Tags LIKE CONCAT('%', (SELECT arrayStringConcat(groupArray(assumeNotNull(TagName)), '%||%') FROM TopTags), '%')
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.CreationDate, p.Score, p.ViewCount
 ),

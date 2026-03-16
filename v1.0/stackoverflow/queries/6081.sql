@@ -26,14 +26,14 @@ WITH RankedPosts AS (
 
 PopularHashtags AS (
     SELECT 
-        unnest(string_to_array(p.Tags, '>')) AS TagName,
+        arrayJoin(splitByString('>', p.Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
-        unnest(string_to_array(p.Tags, '>'))
+        arrayJoin(splitByString('>', p.Tags))
     ORDER BY 
         TagCount DESC
     LIMIT 10

@@ -1,7 +1,7 @@
 WITH RECURSIVE OrderHierarchy AS (
     SELECT o_orderkey, o_custkey, o_orderdate, o_orderpriority
     FROM orders
-    WHERE o_orderdate >= DATE '1997-01-01'
+    WHERE o_orderdate >= toDate('1997-01-01')
     UNION ALL
     SELECT o1.o_orderkey, o1.o_custkey, o1.o_orderdate, o1.o_orderpriority
     FROM orders o1
@@ -48,7 +48,7 @@ JOIN nation n ON s.s_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey
 LEFT JOIN CustomerAggregates ca ON ca.c_custkey = (SELECT MIN(c_custkey) FROM customer)
 LEFT JOIN SupplierStats sa ON sa.s_suppkey = s.s_suppkey
-WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY p.p_name, s.s_name, r.r_name, ca.total_orders, sa.total_available
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000
 ORDER BY r.r_name, total_quantity DESC;

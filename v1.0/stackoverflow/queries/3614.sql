@@ -29,7 +29,7 @@ SELECT
     TU.Downvotes,
     TU.PostCount,
     COALESCE((
-        SELECT STRING_AGG(DISTINCT T.TagName, ', ') 
+        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
         FROM Posts P 
         JOIN Tags T ON T.ExcerptPostId = P.Id 
         WHERE P.OwnerUserId = TU.UserId

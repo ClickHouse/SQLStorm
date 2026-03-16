@@ -4,8 +4,8 @@ WITH StringAggregates AS (
         n.n_name AS nation_name,
         r.r_name AS region_name,
         COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
-        STRING_AGG(DISTINCT p.p_name, '; ') AS part_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), '; ') AS part_names
     FROM 
         supplier s
     JOIN 

@@ -24,7 +24,7 @@ RecentPosts AS (
         COALESCE(P.AcceptedAnswerId, -1) AS AnswerStatus,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS UserPostRank
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
       AND P.PostTypeId = 1
 ),
 AnswerStats AS (

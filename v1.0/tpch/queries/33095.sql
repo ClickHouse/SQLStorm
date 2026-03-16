@@ -14,7 +14,7 @@ WITH RECURSIVE supplier_hierarchy AS (
 SELECT 
     p.p_name,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     COUNT(DISTINCT l.l_orderkey) AS order_count,
     CASE 
         WHEN p.p_size IS NULL THEN 'NOT SPECIFIED' 

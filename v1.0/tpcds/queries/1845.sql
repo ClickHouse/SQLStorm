@@ -52,4 +52,4 @@ FULL OUTER JOIN HighValueCustomers b ON a.ws_item_sk = b.c_customer_sk
 FULL OUTER JOIN TopStores c ON b.order_count > 10
 WHERE a.total_sales IS NOT NULL OR b.total_spent IS NOT NULL OR c.total_store_sales IS NOT NULL
 ORDER BY a.total_sales DESC, b.total_spent DESC, c.total_store_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         u.DisplayName AS Author,
         COUNT(a.Id) AS AnswerCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank
     FROM 
         Posts p
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON a.ParentId = p.Id AND a.PostTypeId = 2
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '>')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('>', p.Tags)) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
     WHERE 

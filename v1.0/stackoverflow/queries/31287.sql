@@ -25,13 +25,13 @@ PostStats AS (
         COALESCE(uh.TotalScore, 0) AS UserTotalScore
     FROM Posts p
     LEFT JOIN UserPosts uh ON p.OwnerUserId = uh.UserId
-    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS ClosureReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS ClosureReasons
     FROM PostHistory ph
     JOIN CloseReasonTypes cr ON CAST(ph.Comment AS INT) = cr.Id
     WHERE ph.PostHistoryTypeId = 10 

@@ -40,4 +40,4 @@ WHERE
     ps.avg_profit > 50
 ORDER BY 
     ps.total_web_sales DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

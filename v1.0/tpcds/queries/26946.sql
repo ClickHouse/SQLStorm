@@ -7,7 +7,7 @@ SELECT
     cd.cd_education_status,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     AVG(ws.ws_net_profit) AS average_profit,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotional_offers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotional_offers
 FROM 
     customer c
 JOIN 

@@ -24,7 +24,7 @@ WITH UserActivity AS (
          GROUP BY 
             PostId) c ON p.Id = c.PostId
     WHERE 
-        u.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName
 ),

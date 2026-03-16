@@ -9,7 +9,7 @@ SELECT
     SUM(wr.wr_return_amt) AS total_returned_amt,
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
     MAX(cd.cd_credit_rating) AS top_credit_rating,
-    STRING_AGG(DISTINCT CONCAT(p.p_promo_name, ' (', p.p_promo_id, ')'), ', ') AS used_promotions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_promo_name, ' (', p.p_promo_id, ')')))), ', ') AS used_promotions
 FROM 
     customer c
 JOIN 

@@ -55,4 +55,4 @@ SELECT
 FROM HighValueCustomers hvc
 FULL OUTER JOIN OrderSummary os ON hvc.total_sales > 5000
 ORDER BY hvc.total_sales DESC, os.total_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

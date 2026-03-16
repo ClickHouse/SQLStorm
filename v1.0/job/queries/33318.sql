@@ -33,7 +33,7 @@ SELECT
     m.title AS movie_title,
     COUNT(DISTINCT ch.id) AS character_count,
     MAX(m.production_year) AS latest_year,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     SUM(CASE 
         WHEN mp.note IS NOT NULL THEN 1 
         ELSE 0 

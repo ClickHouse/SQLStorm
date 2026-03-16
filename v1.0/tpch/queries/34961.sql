@@ -34,7 +34,7 @@ SELECT n.n_name,
        rr.revenue_rank
 FROM NationHierarchy n
 LEFT JOIN TopSuppliers ts ON n.n_nationkey = ts.s_suppkey
-LEFT JOIN RankedRevenue rr ON rr.o_orderdate = cast('1998-10-01' as date) - INTERVAL '1 DAY'
+LEFT JOIN RankedRevenue rr ON rr.o_orderdate = cast('1998-10-01' as date) - INTERVAL 1 DAY
 JOIN DailyRevenue dr ON dr.o_orderdate = rr.o_orderdate
 WHERE n.n_name IS NOT NULL
 AND (ts.total_cost IS NOT NULL OR rr.revenue_rank < 10)

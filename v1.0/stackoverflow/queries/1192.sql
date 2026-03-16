@@ -19,12 +19,12 @@ WITH UserStats AS (
 ),
 TopTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(T.Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', T.Tags)) AS TagName,
         COUNT(DISTINCT P.Id) AS TagCount
     FROM 
         Posts P
     JOIN 
-        LATERAL (SELECT P.Tags) T ON TRUE
+        (SELECT P.Tags) T ON TRUE
     GROUP BY 
         TagName
     HAVING 
@@ -40,7 +40,7 @@ RecentEdits AS (
         PostHistory H
     WHERE 
         H.PostHistoryTypeId IN (4, 5, 6) 
-        AND H.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        AND H.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 )
 SELECT 
     PS.DisplayName AS UserName,

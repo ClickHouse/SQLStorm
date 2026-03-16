@@ -78,4 +78,4 @@ WHERE
     r.rank <= 5
 ORDER BY 
     r.total_return_value DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

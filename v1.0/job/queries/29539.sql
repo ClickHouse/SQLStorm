@@ -23,7 +23,7 @@ WITH movie_details AS (
 actor_details AS (
     SELECT 
         a.name AS actor_name,
-        STRING_AGG(DISTINCT t.title, ', ') AS movies_starred
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movies_starred
     FROM 
         aka_name a
     JOIN 

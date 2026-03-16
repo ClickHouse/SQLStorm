@@ -7,7 +7,7 @@ WITH RankedUsers AS (
     FROM 
         Users u
     WHERE 
-        u.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        u.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 

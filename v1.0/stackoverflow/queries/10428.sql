@@ -3,7 +3,7 @@ SELECT
     COUNT(p.Id) AS TotalPosts,
     SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositiveScoredPosts,
     SUM(CASE WHEN p.ViewCount > 1000 THEN 1 ELSE 0 END) AS HighViewCountPosts,
-    AVG(COALESCE(EXTRACT(EPOCH FROM p.LastActivityDate - p.CreationDate), 0)) AS AvgTimeToActivity,
+    AVG(COALESCE(toUnixTimestamp(p.LastActivityDate - p.CreationDate), 0)) AS AvgTimeToActivity,
     COUNT(DISTINCT p.OwnerUserId) AS UniquePostOwners,
     COUNT(DISTINCT c.Id) AS TotalComments,
     SUM(v.BountyAmount) AS TotalBountySpent

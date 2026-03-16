@@ -88,4 +88,4 @@ FROM
     PostSummary ps
 ORDER BY 
     ps.ViewCount DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

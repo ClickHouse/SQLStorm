@@ -29,7 +29,7 @@ movie_statistics AS (
     SELECT 
         title_id,
         COUNT(actor_name) AS actor_count,
-        STRING_AGG(actor_name, ', ') AS actor_names
+        arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS actor_names
     FROM 
         expanded_movies
     GROUP BY 
@@ -38,7 +38,7 @@ movie_statistics AS (
 distinct_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

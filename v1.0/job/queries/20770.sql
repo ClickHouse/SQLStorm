@@ -29,7 +29,7 @@ ActorYearCount AS (
 MoviesWithKeywords AS (
     SELECT 
         t.title,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title t
     JOIN 

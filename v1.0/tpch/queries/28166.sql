@@ -1,7 +1,7 @@
 SELECT 
     p.p_name,
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
-    STRING_AGG(CONCAT(s.s_name, ' (', s.s_phone, ')'), '; ') AS supplier_details,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')'))), '; ') AS supplier_details,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
     MAX(ps.ps_supplycost) AS max_supply_cost,

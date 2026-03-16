@@ -10,7 +10,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(s.s_name, ', ') AS suppliers
+    arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS suppliers
 FROM 
     part p
 JOIN 

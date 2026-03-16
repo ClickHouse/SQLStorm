@@ -48,7 +48,7 @@ PostMetrics AS (
 PostHistoryAggregates AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         COUNT(*) AS HistoryCount
     FROM 
         PostHistory ph

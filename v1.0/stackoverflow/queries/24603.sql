@@ -22,7 +22,7 @@ CommentsAgg AS (
     SELECT 
         cm.PostId, 
         COUNT(cm.Id) AS CommentCount,
-        STRING_AGG(cm.Text, ' | ') AS CommentTexts
+        arrayStringConcat(groupArray(assumeNotNull(cm.Text)), ' | ') AS CommentTexts
     FROM 
         Comments cm
     GROUP BY 
@@ -67,7 +67,7 @@ SELECT
         ELSE 'Active'
     END AS PostStatus,
     CASE 
-        WHEN rpi.ClosedDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Long Closed'
+        WHEN rpi.ClosedDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Long Closed'
         ELSE 'Recently Closed'
     END AS ClosureDuration,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rpi.PostId AND v.VoteTypeId = 2) AS UpvoteCount,

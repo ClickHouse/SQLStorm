@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         m.title AS movie_title,
         m.production_year,
         k.keyword AS movie_keyword,
-        ARRAY_AGG(DISTINCT c.name) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_names,
         COUNT(DISTINCT ci.role_id) AS num_roles
     FROM 
         aka_title m
@@ -24,7 +24,7 @@ CompanyDetails AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT co.id) AS num_companies,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 
@@ -62,4 +62,4 @@ WHERE
     production_year >= 2000
 ORDER BY 
     num_roles DESC, production_year DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

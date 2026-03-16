@@ -19,7 +19,7 @@ WITH PostMetrics AS (
     LEFT JOIN 
         Posts PARENT ON p.ParentId = PARENT.Id 
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, PARENT.Title, PARENT.Id
 ),
@@ -27,7 +27,7 @@ PostHistoryDetails AS (
     SELECT 
         PH.PostId,
         COUNT(PH.Id) AS HistoryCount,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryTypes
     FROM 
         PostHistory PH
     JOIN 

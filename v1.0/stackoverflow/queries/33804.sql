@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 PostDetails AS (
     SELECT 
@@ -27,7 +27,7 @@ PostDetails AS (
         rp.DownVotesCount,
         rp.Tags,
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = rp.PostId) AS CommentCount,
-        (SELECT STRING_AGG(b.Name, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
          FROM Badges b 
          WHERE b.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = rp.PostId)) AS UserBadges
     FROM 
@@ -38,7 +38,7 @@ PostDetails AS (
 PostHistoryAggregated AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, '; ') AS CommentsHistory,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS CommentsHistory,
         COUNT(*) AS EditCount
     FROM 
         PostHistory ph

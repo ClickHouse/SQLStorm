@@ -29,11 +29,11 @@ SELECT
     COUNT(DISTINCT sd.customer_sk) AS unique_customers,
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
     MAX(sd.order_count) AS max_orders,
-    STRING_AGG(CASE 
+    arrayStringConcat(groupArray(assumeNotNull(CASE 
         WHEN cd.cd_gender = 'M' THEN 'Male'
         WHEN cd.cd_gender = 'F' THEN 'Female'
         ELSE 'Unknown' 
-    END, ', ') AS gender_distribution
+    END)), ', ') AS gender_distribution
 FROM 
     SalesData sd
 JOIN 

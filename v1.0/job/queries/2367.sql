@@ -25,7 +25,7 @@ SELECT
     tm.title,
     tm.production_year,
     ak.name AS actor_name,
-    STRING_AGG(DISTINCT kc.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kc.keyword))), ', ') AS keywords,
     COALESCE((SELECT COUNT(*) 
               FROM movie_info mi 
               WHERE mi.movie_id = tm.movie_id AND mi.info_type_id IN (SELECT id FROM info_type WHERE info = 'box office')), 0) AS box_office_count,

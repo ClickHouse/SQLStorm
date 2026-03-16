@@ -7,7 +7,7 @@ WITH TagStats AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownvotes,
-        AVG(EXTRACT(EPOCH FROM COALESCE(p.LastActivityDate, TIMESTAMP '2024-10-01 12:34:56') - p.CreationDate)) AS AvgResponseTime
+        AVG(toUnixTimestamp(COALESCE(p.LastActivityDate, toDateTime64('2024-10-01 12:34:56', 6)) - p.CreationDate)) AS AvgResponseTime
     FROM 
         Tags t
     LEFT JOIN 
@@ -39,13 +39,13 @@ CloseReasonStats AS (
     SELECT 
         C.Name AS CloseReason,
         COUNT(ph.Id) AS CloseCount,
-        AVG(EXTRACT(EPOCH FROM ph.CreationDate - p.CreationDate)) AS AvgClosureTime
+        AVG(toUnixTimestamp(ph.CreationDate - p.CreationDate)) AS AvgClosureTime
     FROM 
         PostHistory ph
     JOIN 
         Posts p ON p.Id = ph.PostId
     JOIN 
-        CloseReasonTypes C ON ph.Comment::integer = C.Id
+        CloseReasonTypes C ON CAST(ph.Comment AS integer) = C.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
     GROUP BY 

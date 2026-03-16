@@ -7,7 +7,7 @@ WITH PostDetails AS (
         p.ViewCount,
         p.Score,
         u.DisplayName AS OwnerDisplayName,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id) AS CommentCount,
         COALESCE(a.AcceptedAnswerId, -1) AS AcceptedAnswerId
     FROM 
@@ -27,7 +27,7 @@ WITH PostDetails AS (
 HistoricalEdits AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CONCAT(ph.CreationDate, ': ', ph.Comment), ' | ') AS EditHistory,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.CreationDate, ': ', ph.Comment))), ' | ') AS EditHistory,
         COUNT(*) AS EditCount
     FROM 
         PostHistory ph

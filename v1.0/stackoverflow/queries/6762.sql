@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Comments C ON P.Id = C.PostId
     WHERE 
         P.PostTypeId = 1 AND 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         P.Id
 ),

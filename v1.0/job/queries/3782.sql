@@ -37,7 +37,7 @@ SELECT
     mw.production_year,
     COUNT(*) AS total_movies,
     AVG(mw.director_count) AS avg_directors_per_movie,
-    STRING_AGG(mw.title, ', ') AS movie_titles
+    arrayStringConcat(groupArray(assumeNotNull(mw.title)), ', ') AS movie_titles
 FROM
     MoviesWithDirectors AS mw
 GROUP BY

@@ -21,7 +21,7 @@ WITH UserReputation AS (
         Votes V ON P.Id = V.PostId
     WHERE 
         U.Reputation > 1000 AND 
-        U.CreationDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 YEAR')
+        U.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation, U.CreationDate, U.Views, U.UpVotes, U.DownVotes
 ),

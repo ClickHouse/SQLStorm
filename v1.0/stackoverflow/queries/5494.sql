@@ -40,7 +40,7 @@ ActiveTags AS (
         Tags t
     JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 YEAR'
+        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY
         t.Id, t.TagName
 ),

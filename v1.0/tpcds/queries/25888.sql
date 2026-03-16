@@ -57,4 +57,4 @@ AND
     ci.cd_marital_status = 'M'
 ORDER BY 
     total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

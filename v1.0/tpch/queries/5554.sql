@@ -24,6 +24,6 @@ JOIN lineitem l ON ps.ps_partkey = l.l_partkey
 JOIN orders o ON l.l_orderkey = o.o_orderkey
 JOIN customer c ON o.o_custkey = c.c_custkey
 WHERE t.sales_rank <= 10
-  AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+  AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
   AND l.l_returnflag = 'N'
 ORDER BY t.total_sales DESC, o.o_orderdate ASC;

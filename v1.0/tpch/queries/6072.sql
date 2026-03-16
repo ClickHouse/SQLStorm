@@ -16,7 +16,7 @@ FilteredLineItems AS (
     FROM lineitem l
     JOIN part p ON l.l_partkey = p.p_partkey
     JOIN supplier s ON l.l_suppkey = s.s_suppkey
-    WHERE l.l_shipdate <= cast('1998-10-01' as date) - INTERVAL '30 days' AND l.l_discount > 0.05
+    WHERE l.l_shipdate <= cast('1998-10-01' as date) - INTERVAL 30 DAY AND l.l_discount > 0.05
 )
 SELECT r.o_orderkey, r.o_orderdate, r.o_totalprice, r.c_mktsegment, COUNT(DISTINCT f.l_orderkey) AS total_line_items, SUM(f.l_extendedprice * (1 - f.l_discount)) AS total_revenue
 FROM RankedOrders r

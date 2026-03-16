@@ -66,4 +66,4 @@ WHERE
     f.total_catalog_sales > 10 
 ORDER BY 
     f.adjusted_web_sales DESC, f.adjusted_catalog_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

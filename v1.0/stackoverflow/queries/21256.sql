@@ -8,16 +8,16 @@ WITH RankedPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY p.Id
 ),
 ClosedPosts AS (
     SELECT ph.PostId, 
            COUNT(ph.Id) AS CloseCount,
-           STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasons
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasons
     FROM PostHistory ph
-    JOIN CloseReasonTypes ctr ON ctr.Id::text = ph.Comment AND ph.PostHistoryTypeId = 10
-    WHERE ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    JOIN CloseReasonTypes ctr ON CAST(ctr.Id AS text) = ph.Comment AND ph.PostHistoryTypeId = 10
+    WHERE ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY ph.PostId
 ),
 MaxScore AS (

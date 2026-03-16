@@ -52,7 +52,7 @@ LEFT JOIN (
     SELECT
         CloserUserId,
         COUNT(PostId) AS ClosedPostCount,
-        STRING_AGG(CONCAT('Post ID: ', PostId, ', Closed By: ', CloserDisplayName, ' on ', ClosedDate, ' (Reason: ', CloseReason, ')'), '; ') AS ClosedPostDetails
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT('Post ID: ', PostId, ', Closed By: ', CloserDisplayName, ' on ', ClosedDate, ' (Reason: ', CloseReason, ')'))), '; ') AS ClosedPostDetails
     FROM
         ClosedPosts
     GROUP BY

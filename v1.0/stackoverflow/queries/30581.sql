@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON p.OwnerUserId = U.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ), RecentlyEditedPosts AS (
     SELECT 
         p.Id,
@@ -26,7 +26,7 @@ WITH RankedPosts AS (
         Posts p ON ph.PostId = p.Id
     WHERE 
         ph.PostHistoryTypeId IN (4, 5, 6) 
-        AND ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
+        AND ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
 ), PostVoteCounts AS (
     SELECT 
         PostId,

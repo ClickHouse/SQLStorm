@@ -10,11 +10,11 @@ WITH RECURSIVE sales_trends AS (
     JOIN 
         web_sales ws ON d.d_date_sk = ws.ws_sold_date_sk
     WHERE 
-        d.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') 
+        d.d_year = toYear(toDate('2002-10-01')) 
         AND d.d_month_seq IN (SELECT DISTINCT d_month_seq 
                                FROM date_dim 
-                               WHERE d_year = EXTRACT(YEAR FROM DATE '2002-10-01') 
-                               AND d_month_seq <= EXTRACT(MONTH FROM DATE '2002-10-01'))
+                               WHERE d_year = toYear(toDate('2002-10-01')) 
+                               AND d_month_seq <= toMonth(toDate('2002-10-01')))
     GROUP BY 
         d.d_date, d.d_month_seq
     UNION ALL
@@ -28,11 +28,11 @@ WITH RECURSIVE sales_trends AS (
     JOIN 
         catalog_sales cs ON d.d_date_sk = cs.cs_sold_date_sk 
     WHERE 
-        d.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') 
+        d.d_year = toYear(toDate('2002-10-01')) 
         AND d.d_month_seq IN (SELECT DISTINCT d_month_seq 
                                FROM date_dim 
-                               WHERE d_year = EXTRACT(YEAR FROM DATE '2002-10-01') 
-                               AND d_month_seq <= EXTRACT(MONTH FROM DATE '2002-10-01'))
+                               WHERE d_year = toYear(toDate('2002-10-01')) 
+                               AND d_month_seq <= toMonth(toDate('2002-10-01')))
     GROUP BY 
         d.d_date, d.d_month_seq
 ),

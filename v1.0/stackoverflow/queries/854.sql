@@ -71,4 +71,4 @@ WHERE
     TU.Rank <= 10
 ORDER BY 
     TU.Reputation DESC, PA.Score DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

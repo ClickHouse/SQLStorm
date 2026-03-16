@@ -30,9 +30,9 @@ WITH movie_details AS (
 SELECT 
     md.movie_title,
     md.production_year,
-    ARRAY_AGG(DISTINCT md.movie_keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(md.movie_keyword))) AS keywords,
     COUNT(DISTINCT md.actor_name) AS num_actors,
-    ARRAY_AGG(DISTINCT md.actor_name) AS actor_names,
+    arrayDistinct(groupArray(assumeNotNull(md.actor_name))) AS actor_names,
     md.company_type
 FROM 
     movie_details md

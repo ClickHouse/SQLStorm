@@ -16,7 +16,7 @@ SELECT
      FROM partsupp ps 
      WHERE ps.ps_partkey = p.p_partkey) AS supplier_count,
     (
-        SELECT STRING_AGG(DISTINCT s.s_name, ', ' ORDER BY s.s_name) 
+        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ' ORDER BY s.s_name) 
         FROM supplier s 
         JOIN partsupp ps2 ON s.s_suppkey = ps2.ps_suppkey 
         WHERE ps2.ps_partkey = p.p_partkey

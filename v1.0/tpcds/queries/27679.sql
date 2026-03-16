@@ -29,7 +29,7 @@ AggregatedData AS (
     SELECT 
         gender_marital_status,
         COUNT(*) AS customer_count,
-        STRING_AGG(full_name, ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names
     FROM 
         FilteredRankedCustomers
     GROUP BY 
@@ -41,7 +41,7 @@ SELECT
     customer_names,
     UPPER(gender_marital_status) AS upper_gender_marital_status,
     LENGTH(customer_names) AS names_length,
-    ARRAY_LENGTH(STRING_TO_ARRAY(customer_names, ', '), 1) AS names_array_length
+    length(splitByString(', ', customer_names), 1) AS names_array_length
 FROM 
     AggregatedData
 ORDER BY 

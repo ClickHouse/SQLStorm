@@ -4,7 +4,7 @@ WITH MovieDetails AS (
         m.title,
         m.production_year,
         COUNT(DISTINCT c.person_id) AS actor_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors_list
     FROM 
         aka_title m
     LEFT JOIN 

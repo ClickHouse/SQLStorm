@@ -17,7 +17,7 @@ WITH RankedMovies AS (
 MovieKeywords AS (
     SELECT 
         m.movie_id, 
-        STRING_AGG(k.keyword, ', ') AS keywords 
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords 
     FROM 
         movie_keyword m
     JOIN 
@@ -44,10 +44,10 @@ DetailedMovieInfo AS (
 SELECT 
     production_year, 
     COUNT(*) AS movie_count,
-    STRING_AGG(title, '; ') AS titles,
-    STRING_AGG(DISTINCT actor_name, ', ') AS actors,
+    arrayStringConcat(groupArray(assumeNotNull(title)), '; ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
     SUM(company_count) AS total_companies,
-    STRING_AGG(DISTINCT keywords, '; ') AS aggregated_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keywords))), '; ') AS aggregated_keywords
 FROM 
     DetailedMovieInfo
 GROUP BY 

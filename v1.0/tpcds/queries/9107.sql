@@ -34,8 +34,8 @@ TopCustomers AS (
 ),
 SalesByMonth AS (
     SELECT 
-        EXTRACT(YEAR FROM d.d_date) AS sales_year,
-        EXTRACT(MONTH FROM d.d_date) AS sales_month,
+        toYear(d.d_date) AS sales_year,
+        toMonth(d.d_date) AS sales_month,
         SUM(ws.ws_ext_sales_price) AS monthly_sales
     FROM 
         web_sales AS ws

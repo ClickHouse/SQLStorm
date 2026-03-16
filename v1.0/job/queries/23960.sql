@@ -3,7 +3,7 @@ WITH RecursiveMovies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        COALESCE(EXTRACT(YEAR FROM cast('2024-10-01' as date)) - t.production_year, 0) AS age,
+        COALESCE(toYear(cast('2024-10-01' as date)) - t.production_year, 0) AS age,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.title) AS rn
     FROM 
         aka_title t
@@ -15,7 +15,7 @@ ActorDetails AS (
         ka.name AS actor_name,
         ka.person_id,
         COUNT(DISTINCT ci.movie_id) AS total_movies,
-        STRING_AGG(DISTINCT tt.title, ', ') AS movies_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tt.title))), ', ') AS movies_list
     FROM 
         aka_name ka
     JOIN 

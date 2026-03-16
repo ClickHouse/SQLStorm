@@ -59,4 +59,4 @@ WHERE
     p.rn = 1 
 ORDER BY 
     p.CreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -37,7 +37,7 @@ SELECT
     SUM(ch.o_totalprice) AS total_revenue,
     AVG(ch.o_totalprice) AS avg_order_value,
     MAX(ch.o_orderdate) AS last_order_date,
-    STRING_AGG(DISTINCT p.p_name || ' (Size: ' || p.p_size || ')', ', ') AS products_ordered
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name || ' (Size: ' || p.p_size || ')'))), ', ') AS products_ordered
 FROM 
     Customer_History ch
 JOIN 
@@ -54,4 +54,4 @@ GROUP BY
     n.n_name
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

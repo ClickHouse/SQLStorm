@@ -26,7 +26,7 @@ PostHistoryData AS (
     JOIN 
         Posts p ON p.Id = ph.PostId
     WHERE 
-        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 AggregatedVotes AS (
     SELECT 
@@ -70,4 +70,4 @@ WHERE
     php.HistoryDate IS NOT NULL
 ORDER BY 
     php.HistoryDate DESC, ScoreChange DESC
-OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

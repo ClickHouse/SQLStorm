@@ -52,7 +52,7 @@ PostMetrics AS (
         ud.SilverBadges,
         ud.BronzeBadges,
         COALESCE(cp.CloseCount, 0) AS CloseCount,
-        COALESCE(cp.LastClosedDate, DATE '1900-01-01') AS LastClosedDate,
+        COALESCE(cp.LastClosedDate, toDate('1900-01-01')) AS LastClosedDate,
         rp.ViewCount
     FROM 
         RankedPosts rp

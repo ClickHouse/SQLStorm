@@ -19,7 +19,7 @@ WITH MovieDetails AS (
 ActorNames AS (
     SELECT 
         a.person_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM 
         aka_name a
     INNER JOIN 

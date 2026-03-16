@@ -4,7 +4,7 @@ WITH string_aggregates AS (
         COUNT(DISTINCT c_customer_id) AS unique_customers,
         SUM(LENGTH(c_first_name) + LENGTH(c_last_name)) AS total_name_length,
         AVG(LENGTH(c_email_address)) AS avg_email_length,
-        STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), '; ') AS aggregated_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), '; ') AS aggregated_names
     FROM
         customer_address AS ca
     JOIN

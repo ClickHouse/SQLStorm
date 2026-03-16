@@ -2,7 +2,7 @@ WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_orderdate, o.o_orderstatus, o.o_totalprice,
            1 AS level
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
     
     UNION ALL
     

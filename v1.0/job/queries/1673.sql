@@ -36,7 +36,7 @@ GatheredInfo AS (
         m.movie_id,
         m.title,
         COALESCE(SUM(CASE WHEN mi.note IS NOT NULL THEN 1 ELSE 0 END), 0) AS info_count,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         RankedMovies m
     LEFT JOIN 
@@ -54,7 +54,7 @@ GatheredInfo AS (
 SELECT 
     gi.title,
     gi.info_count,
-    ARRAY_LENGTH(gi.keywords, 1) AS keyword_count,
+    length(gi.keywords, 1) AS keyword_count,
     aw.actor_name,
     aw.actor_role
 FROM 

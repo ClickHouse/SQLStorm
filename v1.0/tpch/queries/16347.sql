@@ -6,8 +6,8 @@ FROM
 JOIN 
     lineitem ON part.p_partkey = lineitem.l_partkey 
 WHERE 
-    lineitem.l_shipdate >= DATE '1995-01-01' 
-    AND lineitem.l_shipdate < DATE '1996-01-01' 
+    lineitem.l_shipdate >= toDate('1995-01-01') 
+    AND lineitem.l_shipdate < toDate('1996-01-01') 
 GROUP BY 
     p_name 
 ORDER BY 

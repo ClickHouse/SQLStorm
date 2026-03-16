@@ -51,4 +51,4 @@ WHERE
     hvi.total_quantity > (SELECT AVG(total_quantity) FROM ranked_sales)
 ORDER BY 
     hvi.total_sales DESC, sd.average_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

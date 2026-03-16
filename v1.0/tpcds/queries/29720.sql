@@ -21,7 +21,7 @@ StreetAddressAnalysis AS (
         AVG(LENGTH(full_address)) AS avg_address_length,
         MAX(LENGTH(full_address)) AS max_address_length,
         MIN(LENGTH(full_address)) AS min_address_length,
-        STRING_AGG(DISTINCT street_type, ', ') AS distinct_street_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(street_type))), ', ') AS distinct_street_types
     FROM 
         AddressParts
     GROUP BY 

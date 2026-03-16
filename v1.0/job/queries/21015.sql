@@ -21,7 +21,7 @@ WITH RecursiveActorInfo AS (
 
 SELECT 
     actor_info.actor_name,
-    STRING_AGG(DISTINCT movie_info.info, ', ') AS movie_infos,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_info.info))), ', ') AS movie_infos,
     COUNT(DISTINCT movie_info.movie_id) AS total_movies,
     MAX(actor_info.recent_movie_rank) AS max_rank,
     (SELECT COUNT(*)

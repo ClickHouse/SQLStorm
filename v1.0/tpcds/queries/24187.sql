@@ -54,7 +54,7 @@ SELECT
                                                  WHERE c.c_customer_sk = cs.c_customer_sk)
                      )
     ) AS active_stores_in_zip,
-    (SELECT STRING_AGG(p.p_promo_name, ', ')
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(p.p_promo_name)), ', ')
      FROM promotion p 
      WHERE EXISTS (
          SELECT 1 
@@ -69,4 +69,4 @@ WHERE
     cs.rn <= 10
 ORDER BY 
     cs.total_sales DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

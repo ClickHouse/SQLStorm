@@ -11,7 +11,7 @@ WITH String_Processing AS (
 SELECT 
     s.s_name AS supplier_name,
     COUNT(DISTINCT ps.ps_partkey) AS total_parts,
-    STRING_AGG(sp.formatted_string, '; ') AS combined_strings
+    arrayStringConcat(groupArray(assumeNotNull(sp.formatted_string)), '; ') AS combined_strings
 FROM 
     supplier s
 JOIN 
@@ -22,4 +22,4 @@ GROUP BY
     s.s_name
 ORDER BY 
     total_parts DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

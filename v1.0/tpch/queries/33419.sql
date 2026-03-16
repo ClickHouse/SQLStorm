@@ -27,7 +27,7 @@ LEFT JOIN
     supplier s ON ps.ps_suppkey = s.s_suppkey
 WHERE 
     o.o_orderstatus = 'F' 
-    AND (l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31' OR l.l_tax IS NULL)
+    AND (l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31') OR l.l_tax IS NULL)
     AND (p.p_retailprice * l.l_quantity) > 1000
 GROUP BY 
     p.p_partkey, p.p_name

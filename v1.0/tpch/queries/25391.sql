@@ -2,9 +2,9 @@ WITH StringAggregation AS (
     SELECT 
         s.s_name AS supplier_name,
         s.s_address AS supplier_address,
-        STRING_AGG(p.p_name, ', ') AS part_names,
+        arrayStringConcat(groupArray(assumeNotNull(p.p_name)), ', ') AS part_names,
         COUNT(DISTINCT p.p_partkey) AS part_count,
-        STRING_AGG(DISTINCT SUBSTRING(p.p_comment, 1, 20), '; ') AS short_comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(p.p_comment, 1, 20)))), '; ') AS short_comments
     FROM 
         supplier s
     JOIN 
@@ -17,7 +17,7 @@ WITH StringAggregation AS (
 RegionSupplier AS (
     SELECT 
         r.r_name AS region_name,
-        STRING_AGG(DISTINCT sa.supplier_name, '; ') AS suppliers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sa.supplier_name))), '; ') AS suppliers,
         SUM(sa.part_count) AS total_parts
     FROM 
         region r

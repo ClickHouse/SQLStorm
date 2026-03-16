@@ -24,7 +24,7 @@ cast_info_summary AS (
     SELECT 
         ci.movie_id,
         COUNT(*) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names
     FROM 
         cast_info ci
     JOIN 
@@ -35,7 +35,7 @@ cast_info_summary AS (
 company_info AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies,
         COUNT(DISTINCT mc.company_type_id) AS company_types_count
     FROM 
         movie_companies mc

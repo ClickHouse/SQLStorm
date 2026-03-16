@@ -22,7 +22,7 @@ TopPosts AS (
            UR.ReputationTier
     FROM PostStats PS
     INNER JOIN UserReputation UR ON PS.OwnerUserId = UR.Id
-    WHERE PS.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE PS.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     ORDER BY NetScore DESC
     LIMIT 10
 )

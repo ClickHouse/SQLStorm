@@ -32,7 +32,7 @@ MovieDetails AS (
         ht.production_year,
         c.name AS company_name,
         ci.note AS cast_note,
-        STRING_AGG(DISTINCT a.name, ', ' ORDER BY a.name) AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ' ORDER BY a.name) AS actor_names
     FROM 
         HighestRankedTitles AS ht
     LEFT JOIN 

@@ -31,7 +31,7 @@ SELECT
     f.movie_id,
     f.title,
     f.production_year,
-    STRING_AGG(f.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(f.keyword)), ', ') AS keywords
 FROM 
     FilteredMovies f
 GROUP BY 

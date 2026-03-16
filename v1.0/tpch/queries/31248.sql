@@ -23,7 +23,7 @@ PartSupply AS (
 SELECT n.n_name, SUM(COALESCE(l.l_extendedprice * (1 - l.l_discount), 0)) AS total_revenue,
        COUNT(DISTINCT o.o_orderkey) AS order_count,
        SUM(CASE WHEN l.l_tax IS NULL THEN 0 ELSE l.l_tax END) AS total_tax,
-       STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM nation n
 LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey
 LEFT JOIN TopSuppliers ts ON n.n_nationkey = ts.s_nationkey
@@ -35,4 +35,4 @@ AND ps.ps_availqty > 0
 GROUP BY n.n_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 10
 ORDER BY total_revenue DESC
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;

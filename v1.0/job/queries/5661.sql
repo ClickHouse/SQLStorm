@@ -30,7 +30,7 @@ top_action_titles AS (
 SELECT 
     tt.production_year,
     COUNT(tt.title) AS num_titles,
-    STRING_AGG(tt.actor_name, ', ') AS notable_actors
+    arrayStringConcat(groupArray(assumeNotNull(tt.actor_name)), ', ') AS notable_actors
 FROM 
     top_action_titles tt
 GROUP BY 

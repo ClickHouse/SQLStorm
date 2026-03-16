@@ -22,7 +22,7 @@ SELECT
     c.c_customer_sk,
     c.c_first_name,
     c.c_last_name,
-    COALESCE(NULLIF(SUM(ws.ws_ext_sales_price), 0)::VARCHAR, 'No Sales') AS total_sales
+    COALESCE(NULLIF(SUM(ws.ws_ext_sales_price), 0, CAST() AS VARCHAR), 'No Sales') AS total_sales
 FROM customer c
 LEFT JOIN web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk
 WHERE c.c_customer_sk IN (SELECT h.c_customer_sk FROM HighValueCustomers h)

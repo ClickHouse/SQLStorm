@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><'))) AS TagName,
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -41,7 +41,7 @@ PostActivity AS (
     LEFT JOIN 
         UserBadges pb ON p.OwnerUserId = pb.UserId
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '30 DAY'
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
 ),
 TopTags AS (
     SELECT 

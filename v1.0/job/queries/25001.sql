@@ -30,10 +30,10 @@ WITH movie_data AS (
 SELECT 
     movie_title,
     production_year,
-    STRING_AGG(DISTINCT actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT actor_role, ', ') AS roles,
-    STRING_AGG(DISTINCT company_type, ', ') AS production_types,
-    STRING_AGG(DISTINCT production_company, ', ') AS production_companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_role))), ', ') AS roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS production_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(production_company))), ', ') AS production_companies
 FROM 
     movie_data
 GROUP BY 

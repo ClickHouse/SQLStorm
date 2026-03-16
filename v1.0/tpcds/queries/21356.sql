@@ -7,7 +7,7 @@ WITH RECURSIVE demo_income AS (
 item_info AS (
     SELECT i.i_item_sk, i.i_product_name, i.i_current_price, i.i_brand
     FROM item i
-    WHERE i_rec_start_date <= DATE '2002-10-01' AND (i_rec_end_date IS NULL OR i_rec_end_date >= DATE '2002-10-01')
+    WHERE i_rec_start_date <= toDate('2002-10-01') AND (i_rec_end_date IS NULL OR i_rec_end_date >= toDate('2002-10-01'))
 ),
 date_filtered AS (
     SELECT d.d_date_sk, d.d_date, d.d_week_seq
@@ -48,7 +48,7 @@ final_summary AS (
         COALESCE(ss.total_sales, 0) AS total_sales,
         COALESCE(rs.total_returns, 0) AS total_returns,
         CASE 
-            WHEN ss.total_sales > 0 THEN (rs.total_returns::numeric / ss.total_sales) * 100
+            WHEN ss.total_sales > 0 THEN (CAST(rs.total_returns AS numeric) / ss.total_sales) * 100
             ELSE NULL 
         END AS return_rate
     FROM customer_details ci

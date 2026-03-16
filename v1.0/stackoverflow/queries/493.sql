@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ),
@@ -39,10 +39,10 @@ SELECT
     COALESCE(tp.CommentCount, 0) AS TotalComments,
     COALESCE(tp.UpVotes - tp.DownVotes, 0) AS NetVotes,
     CASE 
-        WHEN tp.CreationDate < CURRENT_DATE - INTERVAL '6 months' THEN 'Old'
+        WHEN tp.CreationDate < CURRENT_DATE - INTERVAL 6 MONTH THEN 'Old'
         ELSE 'Recent'
     END AS PostAgeCategory,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     TopPosts tp
 JOIN 

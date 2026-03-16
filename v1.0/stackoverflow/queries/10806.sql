@@ -25,7 +25,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT 
         pt.Id, 
-        STRING_AGG(t.TagName, ', ') AS TagName
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagName
      FROM 
         Posts p
      JOIN 
@@ -35,7 +35,7 @@ LEFT JOIN
      GROUP BY 
         pt.Id) AS T ON p.PostTypeId = T.Id
 WHERE 
-    p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 GROUP BY 
     p.Id, p.Title, p.CreationDate, u.DisplayName, p.ViewCount, p.Score, T.TagName, TAG_COUNT.Count
 ORDER BY 

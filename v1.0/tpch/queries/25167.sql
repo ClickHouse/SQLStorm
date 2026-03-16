@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count, 
     SUM(l.l_quantity) AS total_quantity_sold, 
     AVG(l.l_extendedprice) AS avg_price_per_line,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_phone, ')'), '; ') AS supplier_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')')))), '; ') AS supplier_details,
     CONCAT('Type: ', p.p_type, ' | Size: ', p.p_size, ' | Container: ', p.p_container) AS part_info
 FROM 
     part p

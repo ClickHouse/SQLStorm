@@ -15,7 +15,7 @@ AddressStats AS (
            ca.ca_city,
            ca.ca_state,
            COUNT(c.c_customer_sk) AS customer_count,
-           STRING_AGG(DISTINCT R.full_name, ', ') AS customer_names
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(R.full_name))), ', ') AS customer_names
     FROM customer_address ca
     JOIN customer c ON c.c_current_addr_sk = ca.ca_address_sk
     JOIN RankedCustomers R ON c.c_customer_sk = R.c_customer_sk

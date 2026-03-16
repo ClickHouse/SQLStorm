@@ -70,4 +70,4 @@ WHERE
     AND pa.CommentCount > 0
 ORDER BY 
     pa.CreationDate DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

@@ -8,7 +8,7 @@ SELECT
             WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) 
             ELSE 0 
         END) AS total_returned_sales,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     SUBSTRING(p.p_comment, 1, 20) AS short_comment,
     CONCAT('Nation: ', n.n_name, ' | Region: ', r.r_name) AS nation_region_info
 FROM 

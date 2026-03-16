@@ -4,7 +4,7 @@ WITH PartSupplierAggregation AS (
         ps.ps_partkey,
         SUM(ps.ps_availqty) AS total_avail_qty,
         AVG(ps.ps_supplycost) AS avg_supply_cost,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM 
         partsupp ps
     JOIN 

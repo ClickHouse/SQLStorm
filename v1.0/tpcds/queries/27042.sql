@@ -1,7 +1,7 @@
 
 WITH AddressCounts AS (
     SELECT ca_state, COUNT(*) AS state_count,
-           STRING_AGG(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_city, ', ', ca_zip), '; ') AS full_address
+           arrayStringConcat(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_city, ', ', ca_zip))), '; ') AS full_address
     FROM customer_address
     GROUP BY ca_state
 ),

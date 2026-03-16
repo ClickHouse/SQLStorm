@@ -4,7 +4,7 @@ WITH SupplierDetails AS (
         s.s_address AS supplier_address,
         n.n_name AS nation_name,
         r.r_name AS region_name,
-        STRING_AGG(p.p_name, ', ') AS parts_supplied,
+        arrayStringConcat(groupArray(assumeNotNull(p.p_name)), ', ') AS parts_supplied,
         SUM(ps.ps_availqty) AS total_available_quantity,
         SUM(ps.ps_supplycost) AS total_supply_cost
     FROM 

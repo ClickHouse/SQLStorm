@@ -18,7 +18,7 @@ WITH RankedMovies AS (
 ), MovieGenres AS (
     SELECT 
         mt.movie_id, 
-        STRING_AGG(kt.keyword, ', ') AS genres
+        arrayStringConcat(groupArray(assumeNotNull(kt.keyword)), ', ') AS genres
     FROM 
         movie_keyword mt
     JOIN 
@@ -28,8 +28,8 @@ WITH RankedMovies AS (
 ), CompanyData AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types
     FROM 
         movie_companies mc
     JOIN 

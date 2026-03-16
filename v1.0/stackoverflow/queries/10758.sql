@@ -8,7 +8,7 @@ SELECT
     u.Reputation AS OwnerReputation,
     COUNT(c.Id) AS CommentCount,
     COUNT(v.Id) AS VoteCount,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
 FROM 
     Posts p
 JOIN 
@@ -18,9 +18,9 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    UNNEST(string_to_array(p.Tags, '><')) AS t(TagName) ON TRUE
+    arrayJoin(splitByString('><', p.Tags)) AS t(TagName) ON TRUE
 WHERE 
-    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'  
+    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY  
 GROUP BY 
     p.Id, u.DisplayName, u.Reputation
 ORDER BY 

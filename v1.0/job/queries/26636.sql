@@ -27,8 +27,8 @@ AggregatedResults AS (
         MovieTitle,
         ProductionYear,
         COUNT(DISTINCT ActorName) AS NumberOfActors,
-        STRING_AGG(DISTINCT ActorName, ', ') AS ActorsList,
-        STRING_AGG(DISTINCT CompanyType, ', ') AS CompaniesInvolved
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ActorName))), ', ') AS ActorsList,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CompanyType))), ', ') AS CompaniesInvolved
     FROM 
         MovieDetails
     GROUP BY 

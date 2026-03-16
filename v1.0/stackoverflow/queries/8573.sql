@@ -50,7 +50,7 @@ SELECT
     tu.TotalQuestions,
     tu.AnsweredQuestions,
     tu.BadgeCount,
-    COALESCE(ARRAY_AGG(rp.Title ORDER BY rp.ViewCount DESC), ARRAY[]::varchar[]) AS TopQuestions
+    COALESCE(groupArray(assumeNotNull(rp.Title ORDER BY rp.ViewCount DESC)), ARRAY[]::varchar[]) AS TopQuestions
 FROM 
     TopUsers tu
 LEFT JOIN 

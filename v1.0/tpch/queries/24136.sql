@@ -32,8 +32,8 @@ CustomerOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' 
-        AND o.o_orderdate < DATE '1997-12-31'
+        o.o_orderdate >= toDate('1997-01-01') 
+        AND o.o_orderdate < toDate('1997-12-31')
         AND l.l_discount IS NOT NULL
     GROUP BY 
         c.c_custkey, c.c_name, o.o_orderkey

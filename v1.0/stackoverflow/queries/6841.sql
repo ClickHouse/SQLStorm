@@ -33,7 +33,7 @@ SELECT
     U.AnswersProvided,
     U.CommentsMade,
     U.UserRank,
-    (SELECT STRING_AGG(T.TagName, ', ') FROM Tags T JOIN Posts Pt ON Pt.Tags LIKE '%' || T.TagName || '%' WHERE Pt.OwnerUserId = U.UserId) AS TagsAssociated
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') FROM Tags T JOIN Posts Pt ON Pt.Tags LIKE '%' || T.TagName || '%' WHERE Pt.OwnerUserId = U.UserId) AS TagsAssociated
 FROM 
     TopUsers U
 WHERE 

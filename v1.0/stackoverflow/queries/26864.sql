@@ -10,7 +10,7 @@ WITH RankedPosts AS (
             WHEN p.PostTypeId = 2 THEN 'Answer'
             ELSE 'Other'
         END AS PostType,
-        ARRAY(SELECT TRIM(unnest(string_to_array(p.Tags, '>')))) AS TagList,
+        ARRAY(SELECT TRIM(arrayJoin(splitByString('>', p.Tags)))) AS TagList,
         COALESCE(p.AcceptedAnswerId, 0) AS AcceptedAnswer,
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
@@ -22,14 +22,14 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.PostTypeId, p.Tags, p.AcceptedAnswerId
 ),
 PostHistoryAggregated AS (
     SELECT 
         ph.PostId,
-        ARRAY_AGG(DISTINCT pht.Name) AS HistoryTypes,
+        arrayDistinct(groupArray(assumeNotNull(pht.Name))) AS HistoryTypes,
         COUNT(*) AS EditCount,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 

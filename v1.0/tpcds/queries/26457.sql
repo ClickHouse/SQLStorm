@@ -2,7 +2,7 @@ WITH address_summary AS (
     SELECT 
         ca_state,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities,
         SUM(CASE WHEN ca_zip LIKE '9%' THEN 1 ELSE 0 END) AS zip_starting_with_nine
     FROM 
         customer_address

@@ -28,9 +28,9 @@ movie_keywords AS (
 )
 SELECT 
     mci.movie_title,
-    STRING_AGG(DISTINCT mci.actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT mci.actor_role, ', ') AS roles,
-    STRING_AGG(DISTINCT mk.movie_keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mci.actor_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mci.actor_role))), ', ') AS roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.movie_keyword))), ', ') AS keywords,
     mci.production_year
 FROM 
     movie_cast_info mci

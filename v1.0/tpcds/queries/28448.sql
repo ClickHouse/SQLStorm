@@ -5,7 +5,7 @@ WITH AddressSummary AS (
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
         COUNT(ca_address_id) AS total_addresses,
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length,
-        ARRAY_AGG(ca_city) AS cities_in_state
+        groupArray(assumeNotNull(ca_city)) AS cities_in_state
     FROM 
         customer_address
     GROUP BY 
@@ -50,7 +50,7 @@ SELECT
     a.unique_addresses,
     a.total_addresses,
     a.avg_street_name_length,
-    ARRAY_LENGTH(a.cities_in_state, 1) AS num_cities,
+    length(a.cities_in_state, 1) AS num_cities,
     g.cd_gender,
     g.customer_count,
     g.avg_purchase_estimate,

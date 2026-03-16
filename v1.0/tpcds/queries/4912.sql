@@ -37,7 +37,7 @@ SELECT
     hpc.c_customer_id,
     hpc.total_profit,
     COALESCE(address.ca_city, 'Unknown') AS city,
-    CEIL(RANDOM() * 100) AS random_segment,
+    CEIL(rand() * 100) AS random_segment,
     CASE 
         WHEN hpc.total_profit > 1000 THEN 'High'
         WHEN hpc.total_profit BETWEEN 500 AND 1000 THEN 'Medium'

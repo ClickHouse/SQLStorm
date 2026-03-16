@@ -48,4 +48,4 @@ WHERE
     a.avg_net_profit_per_customer IS NOT NULL
 ORDER BY 
     a.avg_net_profit_per_customer DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

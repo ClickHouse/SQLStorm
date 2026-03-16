@@ -32,8 +32,8 @@ MovieDetails AS (
         TopMovies.title,
         TopMovies.production_year,
         TopMovies.cast_count,
-        string_agg(DISTINCT aka_name.name, ', ') AS cast_names,
-        string_agg(DISTINCT company_name.name, ', ') AS companies_involved
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aka_name.name))), ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name.name))), ', ') AS companies_involved
     FROM 
         TopMovies
     LEFT JOIN 

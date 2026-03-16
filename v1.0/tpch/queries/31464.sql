@@ -16,7 +16,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS CustomerCount,
     SUM(o.o_totalprice) AS TotalRevenue,
     AVG(l.l_discount) AS AvgDiscountRate,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS Products,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS Products,
     COALESCE(SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END), 0) AS TotalReturns
 FROM 
     region r
@@ -36,7 +36,7 @@ LEFT JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     r.r_name IN ('AMERICA', 'EUROPE')
-    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 GROUP BY 
     n.n_name
 HAVING 

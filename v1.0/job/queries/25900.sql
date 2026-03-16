@@ -1,12 +1,12 @@
 SELECT 
     t.title AS movie_title,
     COUNT(DISTINCT c.person_id) AS total_cast,
-    STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     MAX(sub.title) AS linked_movie_title,
     COUNT(DISTINCT pi.info) AS total_person_info,
-    STRING_AGG(DISTINCT COALESCE(cn.name, 'Unknown Company'), ', ') AS production_companies,
-    STRING_AGG(DISTINCT ct.kind, ', ') AS company_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(cn.name, 'Unknown Company')))), ', ') AS production_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types
 FROM 
     title t
 JOIN 

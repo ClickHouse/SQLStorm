@@ -53,9 +53,9 @@ actor_movie_info AS (
 SELECT 
     actor_name,
     COUNT(DISTINCT movie_id) AS movie_count,
-    STRING_AGG(DISTINCT title, ', ') AS movie_titles,
-    STRING_AGG(DISTINCT movie_info, ', ') AS additional_info,
-    STRING_AGG(DISTINCT movie_note, ', ') AS notes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(title))), ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_info))), ', ') AS additional_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_note))), ', ') AS notes
 FROM 
     actor_movie_info
 GROUP BY 

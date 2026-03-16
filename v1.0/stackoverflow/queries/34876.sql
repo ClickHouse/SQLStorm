@@ -29,7 +29,7 @@ SELECT
     COUNT(DISTINCT p.Id) AS TotalPosts,
     SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
     MAX(ph.Level) AS MaxAnswerDepth,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed,
     COALESCE(SUM(CASE WHEN b.Class = 1 THEN 1 ELSE 0 END), 0) AS GoldBadges,
     COUNT(DISTINCT v.Id) AS TotalVotes
 FROM 

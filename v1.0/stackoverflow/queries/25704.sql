@@ -32,7 +32,7 @@ UserStats AS (
 TopBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS Badges,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges,
         COUNT(b.Id) AS BadgeCount
     FROM 
         Badges b

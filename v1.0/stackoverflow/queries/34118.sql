@@ -33,7 +33,7 @@ RecentUserActivity AS (
         Votes v ON u.Id = v.UserId
     WHERE 
         u.Reputation > 1000 
-        AND u.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        AND u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         u.Id, u.DisplayName
 ),

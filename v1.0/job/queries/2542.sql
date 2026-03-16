@@ -29,7 +29,7 @@ SELECT
     tm.production_year,
     COALESCE(cn.name, 'Unknown') AS company_name,
     COUNT(DISTINCT mc.company_id) AS company_count,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     TopMovies tm
 LEFT JOIN 

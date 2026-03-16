@@ -5,7 +5,7 @@ SELECT
     ca.ca_state,
     MAX(ws.ws_net_paid_inc_tax) AS max_spent,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
-    STRING_AGG(DISTINCT it.i_product_name, ', ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(it.i_product_name))), ', ') AS purchased_items,
     COUNT(DISTINCT CASE WHEN cd_gender = 'M' THEN c.c_customer_sk END) AS male_customers,
     COUNT(DISTINCT CASE WHEN cd_gender = 'F' THEN c.c_customer_sk END) AS female_customers
 FROM 

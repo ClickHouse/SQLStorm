@@ -18,4 +18,4 @@ HAVING
     SUM(ss.ss_sales_price) > 1000
 ORDER BY 
     total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

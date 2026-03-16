@@ -29,7 +29,7 @@ SELECT
         ELSE 'Classic'
      END) AS era,
     COUNT(DISTINCT c.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT mi.info, ', ') AS more_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS more_info,
     ROW_NUMBER() OVER(PARTITION BY ak.name ORDER BY COUNT(DISTINCT c.movie_id) DESC) AS rank
 FROM aka_name ak
 JOIN cast_info c ON ak.person_id = c.person_id
@@ -38,7 +38,7 @@ LEFT JOIN movie_info mi ON tit.id = mi.movie_id AND mi.info_type_id = (SELECT id
 LEFT JOIN TitleHierarchy th ON tit.id = th.title_id
 WHERE ak.name IS NOT NULL
 AND tit.production_year IS NOT NULL
-AND EXTRACT(YEAR FROM cast('2024-10-01' as date)) - tit.production_year < 20
+AND toYear(cast('2024-10-01' as date)) - tit.production_year < 20
 GROUP BY ak.name, tit.title, tit.production_year
 HAVING COUNT(DISTINCT c.movie_id) > 3
 ORDER BY rank, era DESC

@@ -8,7 +8,7 @@ WITH TagStats AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(p.ViewCount) AS TotalViews,
         AVG(p.Score) AS AverageScore,
-        STRING_AGG(u.DisplayName, ', ') AS TopUsers
+        arrayStringConcat(groupArray(assumeNotNull(u.DisplayName)), ', ') AS TopUsers
     FROM Tags t
     LEFT JOIN Posts p ON p.Tags LIKE CONCAT('%', t.TagName, '%')
     LEFT JOIN Users u ON p.OwnerUserId = u.Id

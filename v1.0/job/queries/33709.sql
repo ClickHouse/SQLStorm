@@ -31,7 +31,7 @@ SELECT
     mt.production_year,
     COUNT(DISTINCT c.role_id) AS role_count,
     AVG(COALESCE(mi.info_type_id, 0)) AS avg_info_type_id,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ah.person_id ORDER BY ah.name) AS person_rank,
     CASE 
         WHEN cc.kind IS NOT NULL THEN cc.kind

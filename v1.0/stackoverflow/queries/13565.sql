@@ -8,7 +8,7 @@ SELECT
     COUNT(v.Id) AS VoteCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-    AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgActivityDuration
+    AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgActivityDuration
 FROM 
     Posts p
 LEFT JOIN 
@@ -18,7 +18,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 WHERE 
-    p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+    p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 GROUP BY 
     p.Id, p.Title, p.ViewCount, p.Score, u.DisplayName
 ORDER BY 

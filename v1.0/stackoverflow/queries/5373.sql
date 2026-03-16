@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         COUNT(DISTINCT a.Id) AS AnswerCount,
         DENSE_RANK() OVER (ORDER BY p.Score DESC) AS RankScore,
         DENSE_RANK() OVER (ORDER BY p.ViewCount DESC) AS RankViews,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 

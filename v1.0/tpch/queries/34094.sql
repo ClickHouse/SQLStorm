@@ -19,7 +19,7 @@ SELECT
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     COALESCE(MAX(s.s_acctbal), 0) AS max_supplier_balance,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations
 FROM 
     part p
 LEFT JOIN 

@@ -4,7 +4,7 @@ WITH movie_data AS (
         mt.title,
         mt.production_year,
         kc.kind AS movie_kind,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
         COUNT(DISTINCT ci.person_id) AS total_cast,
         COALESCE(SUM(CASE WHEN mi.info IS NOT NULL THEN 1 ELSE 0 END), 0) AS has_info,
         RANK() OVER (PARTITION BY mt.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS cast_rank
@@ -39,7 +39,7 @@ SELECT
     ys.movie_count,
     ys.avg_cast_per_movie,
     ys.movies_with_info,
-    STRING_AGG(m.title, '; ') AS movies_with_most_cast_names
+    arrayStringConcat(groupArray(assumeNotNull(m.title)), '; ') AS movies_with_most_cast_names
 FROM 
     yearly_statistics ys
 JOIN 

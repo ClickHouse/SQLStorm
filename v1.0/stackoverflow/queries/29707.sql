@@ -8,14 +8,14 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         p.Tags,
-        ROW_NUMBER() OVER (PARTITION BY TRIM(BOTH '><' FROM UNNEST(STRING_TO_ARRAY(p.Tags, '><'))) ORDER BY p.CreationDate DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY TRIM(BOTH '><' FROM arrayJoin(splitByString('><', p.Tags))) ORDER BY p.CreationDate DESC) AS Rank
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopRankedPosts AS (
     SELECT 
@@ -64,7 +64,7 @@ SELECT
     Score,
     Tags,
     VoteCount,
-    'Popular Tag: ' || (SELECT DISTINCT ON (tag) tag FROM UNNEST(STRING_TO_ARRAY(TRIM(BOTH '><' FROM Tags), '><')) AS tag LIMIT 1) AS PopularTag
+    'Popular Tag: ' || (SELECT DISTINCT ON (tag) tag FROM arrayJoin(splitByString('><', TRIM(BOTH '><' FROM Tags))) AS tag LIMIT 1) AS PopularTag
 FROM 
     FinalResults
 ORDER BY 

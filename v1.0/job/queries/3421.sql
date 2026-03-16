@@ -36,7 +36,7 @@ actor_movies AS (
 )
 SELECT 
     am.actor_name,
-    STRING_AGG(am.title || ' (' || am.production_year || ')', ', ') AS movies
+    arrayStringConcat(groupArray(assumeNotNull(am.title || ' (' || am.production_year || ')')), ', ') AS movies
 FROM 
     actor_movies am
 GROUP BY 

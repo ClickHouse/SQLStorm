@@ -44,13 +44,13 @@ SELECT
     T.Questions,
     T.Answers,
     T.AvgBounty,
-    STRING_AGG(DISTINCT CASE WHEN T.BadgeName <> 'No Badge' THEN T.BadgeName END, ', ') AS Badges
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN T.BadgeName <> 'No Badge' THEN T.BadgeName END))), ', ') AS Badges
 FROM 
     TopUsers T
 LEFT JOIN 
     PostHistory PH ON T.UserId = PH.UserId
 WHERE 
-    PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 GROUP BY 
     T.UserId, T.DisplayName, T.Reputation, T.PostCount, T.Questions, T.Answers, T.AvgBounty
 HAVING 

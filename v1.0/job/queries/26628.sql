@@ -42,7 +42,7 @@ SELECT
     tm.production_year,
     cd.actor_name,
     COUNT(cd.actor_name) AS actor_count,
-    STRING_AGG(cd.actor_name, ', ') AS actor_list
+    arrayStringConcat(groupArray(assumeNotNull(cd.actor_name)), ', ') AS actor_list
 FROM 
     TopMovies tm
 JOIN 

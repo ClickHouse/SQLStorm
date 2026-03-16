@@ -27,7 +27,7 @@ UserReputation AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId, 
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypeNames,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypeNames,
         MAX(ph.CreationDate) AS LastEdited
     FROM 
         PostHistory ph

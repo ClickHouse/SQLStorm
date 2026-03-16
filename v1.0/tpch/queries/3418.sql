@@ -11,7 +11,7 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
 ),
 SupplierCosts AS (
     SELECT 
@@ -34,7 +34,7 @@ LineItemSummary AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+        l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     GROUP BY 
         l.l_orderkey
 )

@@ -73,5 +73,4 @@ HAVING
 ORDER BY 
     total_revenue DESC, 
     total_sales ASC
-OFFSET 5 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

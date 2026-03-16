@@ -24,7 +24,7 @@ date_filter AS (
     FROM 
         date_dim d
     WHERE 
-        d.d_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31'
+        d.d_date BETWEEN toDate('2022-01-01') AND toDate('2022-12-31')
 ),
 sales_data AS (
     SELECT 

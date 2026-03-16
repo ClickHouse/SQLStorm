@@ -18,7 +18,7 @@ CustomerStats AS (
         MIN(d.d_date) AS first_order_date,
         MAX(d.d_date) AS last_order_date,
         SUM(CASE 
-            WHEN c.c_birth_year IS NOT NULL AND EXTRACT(YEAR FROM CURRENT_DATE) - c.c_birth_year >= 18 
+            WHEN c.c_birth_year IS NOT NULL AND toYear(CURRENT_DATE) - c.c_birth_year >= 18 
             THEN 1 ELSE 0 END) AS adult_count
     FROM 
         customer c
@@ -49,7 +49,7 @@ SELECT
     cs.c_customer_id, 
     cs.total_orders, 
     cs.total_spent, 
-    DATE_PART('year', AGE(cs.first_order_date)) AS customer_age,
+    datePart('year', AGE(cs.first_order_date)) AS customer_age,
     pr.promo_count, 
     pr.promo_profit, 
     MAX(rp.ws_net_profit) AS max_web_profit

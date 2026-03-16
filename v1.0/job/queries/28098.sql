@@ -4,7 +4,7 @@ WITH ranked_movies AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COUNT(c.id) AS cast_count
     FROM 
         title m
@@ -38,7 +38,7 @@ movie_details AS (
         tm.title,
         tm.production_year,
         tm.cast_count,
-        ARRAY_AGG(DISTINCT p.info) AS person_infos
+        arrayDistinct(groupArray(assumeNotNull(p.info))) AS person_infos
     FROM 
         top_movies tm
     LEFT JOIN 
@@ -55,7 +55,7 @@ SELECT
     md.title,
     md.production_year,
     md.cast_count,
-    STRING_AGG(DISTINCT info_type.info, ', ') AS additional_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(info_type.info))), ', ') AS additional_info
 FROM 
     movie_details md
 LEFT JOIN 

@@ -7,7 +7,7 @@ SELECT
     COUNT(DISTINCT s.ss_ticket_number) AS total_store_sales,
     SUM(s.ss_net_paid) AS total_sales_amount,
     AVG(s.ss_sales_price) AS avg_sales_price,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
     MAX(d.d_date) AS last_purchase_date
 FROM 
     customer c

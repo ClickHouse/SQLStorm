@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Body,
         p.Score,
         p.ViewCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC, p.CreationDate DESC) AS PostRank
     FROM 
         Posts p
@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Tags t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > DATE '2024-10-01' - INTERVAL '1 year' 
+        AND p.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.Body, p.Score, p.ViewCount
 ),

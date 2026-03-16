@@ -30,7 +30,7 @@ SELECT
     mh.title AS movie_title,
     mh.production_year,
     COUNT(DISTINCT mc.company_id) AS production_companies,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS named_roles
 FROM 
     movie_hierarchy mh

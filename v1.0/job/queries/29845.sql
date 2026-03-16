@@ -18,7 +18,7 @@ MoviesWithKeywords AS (
         rm.movie_id,
         rm.title,
         rm.production_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM
         RankedMovies rm
     LEFT JOIN
@@ -34,7 +34,7 @@ MoviesWithGenres AS (
         mwk.title,
         mwk.production_year,
         mwk.keywords,
-        ARRAY_AGG(DISTINCT kt.kind) AS genres
+        arrayDistinct(groupArray(assumeNotNull(kt.kind))) AS genres
     FROM
         MoviesWithKeywords mwk
     JOIN
@@ -55,7 +55,7 @@ SELECT
         WHEN mwg.production_year BETWEEN 2000 AND 2010 THEN 'Modern'
         ELSE 'Recent'
     END AS era,
-    mwg.genres[array_length(mwg.genres, 1)] AS last_genre
+    mwg.genres[length(mwg.genres, 1)] AS last_genre
 FROM
     MoviesWithGenres mwg
 ORDER BY

@@ -9,7 +9,7 @@ WITH RankedOrders AS (
         orders o
     WHERE 
         o.o_orderstatus = 'O' AND 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
 ),
 SupplierSummary AS (
     SELECT 

@@ -5,7 +5,7 @@ SELECT
     COUNT(o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice) AS total_revenue,
     MAX(p.p_retailprice) AS max_price,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     part p
 JOIN 

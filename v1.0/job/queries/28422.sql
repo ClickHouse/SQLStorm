@@ -22,7 +22,7 @@ highlighted_movies AS (
     SELECT 
         movie_title,
         production_year,
-        ARRAY_AGG(actor_name ORDER BY actor_name) AS actors_list
+        groupArray(assumeNotNull(actor_name ORDER BY actor_name)) AS actors_list
     FROM 
         movie_actors
     GROUP BY 
@@ -35,7 +35,7 @@ highlighted_movies AS (
 SELECT 
     hm.movie_title,
     hm.production_year,
-    STRING_AGG(hm.actors_list::text, ', ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(CAST(hm.actors_list AS text))), ', ') AS actors
 FROM 
     highlighted_movies hm
 GROUP BY 

@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR 
         AND pt.Name = 'Question'
     GROUP BY 
         p.Id, pt.Name, u.DisplayName
@@ -49,13 +49,13 @@ SELECT
     fp.Score,
     fp.OwnerName,
     fp.CommentCount,
-    string_agg(t.TagName, ', ') AS TagsList
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
 FROM 
     FilteredPosts fp
 LEFT JOIN 
     (SELECT 
          Id, 
-         unnest(string_to_array(Tags, '><')) AS TagName 
+         arrayJoin(splitByString('><', Tags)) AS TagName 
      FROM 
          Posts) t ON t.Id = fp.PostId
 GROUP BY 

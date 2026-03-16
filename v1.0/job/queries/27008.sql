@@ -48,7 +48,7 @@ WITH RankedTitles AS (
         m.title_id AS movie_id,
         m.title,
         m.production_year,
-        STRING_AGG(a.name || ' (' || a.role || ')', ', ') AS actor_list
+        arrayStringConcat(groupArray(assumeNotNull(a.name || ' (' || a.role || ')')), ', ') AS actor_list
     FROM 
         TopRankedTitles m
     JOIN 

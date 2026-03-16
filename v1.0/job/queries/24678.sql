@@ -21,7 +21,7 @@ WITH movie_cast AS (
 keyword_movie AS (
     SELECT 
         t.id AS movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM
         aka_title t
     JOIN
@@ -71,4 +71,4 @@ ORDER BY
     mc.production_year DESC, 
     mc.movie_title,
     mc.actor_name
-OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;
+LIMIT 100 OFFSET 0;

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2 
     WHERE 
-        p.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
+        p.CreationDate > now64(6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.OwnerUserId
 ),
@@ -27,7 +27,7 @@ PopularTags AS (
         Tags t
     JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
-        p.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
+        p.CreationDate > now64(6) - INTERVAL 30 DAY
     GROUP BY 
         t.TagName
     HAVING 
@@ -42,7 +42,7 @@ PostHistoryAggregates AS (
         Posts p
     JOIN PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        ph.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
+        ph.CreationDate > now64(6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id
 ),
@@ -57,7 +57,7 @@ FinalReport AS (
         rp.VoteCount,
         COALESCE(pa.CloseCount, 0) AS CloseCount,
         COALESCE(pa.ReopenCount, 0) AS ReopenCount,
-        (SELECT STRING_AGG(pt.TagName, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(pt.TagName)), ', ') 
          FROM PopularTags pt
          JOIN Posts p ON p.Tags LIKE '%' || pt.TagName || '%'
          WHERE p.Id = rp.PostId) AS PopularTags

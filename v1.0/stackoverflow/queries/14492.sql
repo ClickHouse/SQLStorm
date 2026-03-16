@@ -18,4 +18,4 @@ GROUP BY
     u.Id, u.DisplayName, u.Reputation
 ORDER BY 
     PostCount DESC, TotalScore DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

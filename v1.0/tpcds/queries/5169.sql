@@ -37,4 +37,4 @@ GROUP BY
     ca.ca_city, ca.ca_state, cd.cd_gender, cd.cd_marital_status, ib.ib_income_band_sk
 ORDER BY 
     total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

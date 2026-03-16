@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(l.l_quantity) AS avg_quantity_per_order,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS parts_ordered
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS parts_ordered
 FROM 
     customer c
 JOIN 
@@ -15,7 +15,7 @@ JOIN
 JOIN 
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND c.c_mktsegment = 'BUILDING'
 GROUP BY 
     c.c_name

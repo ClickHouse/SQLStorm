@@ -2,7 +2,7 @@
 WITH ProcessedTags AS (
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(trim(both '<>' FROM p.Tags), '> <')) AS Tag
+        arrayJoin(splitByString('> <', trim(both '<>' FROM p.Tags))) AS Tag
     FROM 
         Posts p
     WHERE 

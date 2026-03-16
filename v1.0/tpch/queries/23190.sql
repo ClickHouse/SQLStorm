@@ -21,7 +21,7 @@ RecentOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '30 DAY'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 30 DAY
     GROUP BY 
         o.o_orderkey, o.o_orderstatus
 ),

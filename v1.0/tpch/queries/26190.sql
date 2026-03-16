@@ -18,7 +18,7 @@ RegionNationStats AS (
         r.r_name AS region_name,
         n.n_name AS nation_name,
         AVG(c.c_acctbal) AS average_account_balance,
-        STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS market_segments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS market_segments
     FROM 
         region r
     JOIN 
@@ -40,7 +40,7 @@ SELECT
 FROM 
     StringAggregation sa
 JOIN 
-    RegionNationStats rs ON random() < 0.5  
+    RegionNationStats rs ON rand() < 0.5  
 ORDER BY 
     sa.supplier_count DESC, rs.average_account_balance DESC
 LIMIT 100;

@@ -16,7 +16,7 @@ WITH UserStats AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        U.CreationDate <= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        U.CreationDate <= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         U.Id
 ),
@@ -41,13 +41,13 @@ SELECT
     T.UpVotes,
     T.DownVotes,
     T.Rank,
-    ARRAY_AGG(DISTINCT TAG.TagName) AS ExpertiseTags
+    arrayDistinct(groupArray(assumeNotNull(TAG.TagName))) AS ExpertiseTags
 FROM 
     TopUsers T
 LEFT JOIN 
     Posts P ON T.UserId = P.OwnerUserId
 LEFT JOIN 
-    LATERAL (SELECT unnest(string_to_array(P.Tags, '<>')) AS TagName) TAG ON TRUE
+    (SELECT arrayJoin(splitByString('<>', P.Tags)) AS TagName) TAG ON TRUE
 WHERE 
     T.Rank <= 10
 GROUP BY 

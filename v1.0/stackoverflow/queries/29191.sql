@@ -10,7 +10,7 @@ WITH TaggedPosts AS (
     FROM 
         Posts P
     CROSS JOIN 
-        UNNEST(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) AS TS(TagName)
+        arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) AS TS(TagName)
     WHERE 
         P.PostTypeId = 1 
 ), 

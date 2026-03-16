@@ -7,7 +7,7 @@ WITH UserStatistics AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
         COUNT(DISTINCT p.Id) AS PostsCount,
-        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - u.CreationDate)) / 3600) AS AvgHoursOnline
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.CreationDate)) / 3600) AS AvgHoursOnline
     FROM 
         Users u
     LEFT JOIN 
@@ -22,7 +22,7 @@ QuestionStatistics AS (
         p.OwnerUserId,
         COUNT(p.Id) AS QuestionsAsked,
         COALESCE(SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END), 0) AS PositiveScoredQuestions,
-        COALESCE(MAX(p.CreationDate), DATE '1970-01-01') AS LastQuestionDate
+        COALESCE(MAX(p.CreationDate), toDate('1970-01-01')) AS LastQuestionDate
     FROM 
         Posts p
     WHERE 

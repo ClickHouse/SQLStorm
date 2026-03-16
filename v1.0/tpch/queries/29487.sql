@@ -5,7 +5,7 @@ SELECT
     MAX(p.p_retailprice) AS max_part_price,
     MIN(p.p_retailprice) AS min_part_price,
     AVG(p.p_retailprice) AS avg_part_price,
-    STRING_AGG(DISTINCT p.p_name, ', ' ORDER BY p.p_name ASC) AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ' ORDER BY p.p_name ASC) AS part_names
 FROM 
     supplier s
 JOIN 

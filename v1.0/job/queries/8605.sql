@@ -43,7 +43,7 @@ SELECT
     md.title,
     md.production_year,
     md.cast_count,
-    STRING_AGG(md.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(md.keyword)), ', ') AS keywords
 FROM 
     MovieDetails md
 GROUP BY 

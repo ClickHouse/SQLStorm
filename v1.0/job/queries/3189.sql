@@ -28,7 +28,7 @@ SELECT
     tm.title AS top_movie,
     tm.production_year,
     COALESCE(ki.keyword, 'No Keywords') AS keyword,
-    STRING_AGG(DISTINCT a.name, ', ') AS actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors
 FROM 
     TopMovies tm
 LEFT JOIN 

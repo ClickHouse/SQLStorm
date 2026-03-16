@@ -43,7 +43,7 @@ companies_for_movie AS (
 filtered_companies AS (
     SELECT 
         movie_id,
-        STRING_AGG(company_name || ' (' || company_type || ')', ', ') AS companies
+        arrayStringConcat(groupArray(assumeNotNull(company_name || ' (' || company_type || ')')), ', ') AS companies
     FROM 
         companies_for_movie
     GROUP BY 

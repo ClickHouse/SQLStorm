@@ -35,4 +35,4 @@ SELECT
 FROM customer_info ci
 LEFT JOIN sales_data sd ON ci.total_sales > 0
 ORDER BY ci.total_orders DESC, average_monthly_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

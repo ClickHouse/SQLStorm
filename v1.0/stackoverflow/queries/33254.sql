@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.OwnerUserId, U.DisplayName
 ),
@@ -58,7 +58,7 @@ PostHistoryRecent AS (
     JOIN 
         PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL '6 month'
+        ph.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
 )
 SELECT 
     rp.PostID,

@@ -32,7 +32,7 @@ SELECT u.DisplayName AS UserName,
        COALESCE(SUM(pvc.UpVotes - pvc.DownVotes), 0) AS NetVotes,
        COUNT(DISTINCT cp.PostId) AS ClosedQuestions,
        COALESCE(MAX(cp.ClosedDate), NULL) AS LastClosedDate,
-       STRING_AGG(DISTINCT cp.CloseReason, '; ') AS CloseReasons
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cp.CloseReason))), '; ') AS CloseReasons
 FROM Users u
 JOIN Posts p ON u.Id = p.OwnerUserId AND p.PostTypeId = 1
 LEFT JOIN PostVoteCounts pvc ON p.Id = pvc.PostId

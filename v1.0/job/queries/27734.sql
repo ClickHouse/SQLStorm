@@ -4,10 +4,10 @@ WITH movie_data AS (
         a.id AS movie_id,
         a.title,
         a.production_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT ct.kind, ', ') AS company_types,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
-        STRING_AGG(DISTINCT p.name, ', ') AS cast_members
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.kind))), ', ') AS company_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_members
     FROM 
         aka_title a
     LEFT JOIN 
@@ -32,7 +32,7 @@ WITH movie_data AS (
 info_data AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT it.info, ', ') AS info_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(it.info))), ', ') AS info_details
     FROM 
         movie_info mi
     JOIN 

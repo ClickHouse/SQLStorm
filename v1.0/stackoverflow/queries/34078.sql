@@ -36,7 +36,7 @@ PostMetrics AS (
         p.AnswerCount,
         p.Score,
         COUNT(DISTINCT c.Id) AS CommentCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
         MAX(v.CreationDate) AS LastVoteDate
     FROM 
         Posts p

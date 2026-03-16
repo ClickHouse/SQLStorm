@@ -5,7 +5,7 @@ WITH TagCount AS (
     FROM
         Posts p
     JOIN
-        Tags t ON t.TagName = ANY(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'))
+        Tags t ON t.TagName = ANY(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
     GROUP BY
         p.Id
 ),
@@ -31,7 +31,7 @@ PostStatistics AS (
     ) pc ON pc.PostId = p.Id
     JOIN TagCount tc ON tc.PostId = p.Id
     WHERE
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT
     ps.PostId,

@@ -7,7 +7,7 @@ SELECT
     SUM(ss.ss_quantity) AS total_quantity_sold,
     SUM(ss.ss_net_paid) AS total_sales_amount,
     COUNT(DISTINCT ss.ss_ticket_number) AS total_transactions,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS purchased_items
 FROM 
     customer c
 JOIN 

@@ -67,4 +67,4 @@ OR
     (j.total_net_profit IS NULL AND j.total_quantity_on_hand IS NOT NULL)
 ORDER BY 
     ranking
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

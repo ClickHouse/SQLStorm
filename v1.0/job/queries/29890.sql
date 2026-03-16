@@ -18,7 +18,7 @@ WITH ranked_titles AS (
 ), keyword_summary AS (
     SELECT 
         movie_keyword.movie_id,
-        STRING_AGG(DISTINCT keyword.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword.keyword))), ', ') AS keywords
     FROM 
         movie_keyword
     JOIN 
@@ -42,7 +42,7 @@ WITH ranked_titles AS (
 SELECT 
     md.movie_title,
     md.production_year,
-    STRING_AGG(md.actor_name, ', ' ORDER BY md.actor_rank) AS cast,
+    arrayStringConcat(groupArray(assumeNotNull(md.actor_name)), ', ' ORDER BY md.actor_rank) AS cast,
     md.keywords
 FROM 
     movie_details md

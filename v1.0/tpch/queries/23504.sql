@@ -24,7 +24,7 @@ SELECT
     COALESCE(SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END), 0) AS TotalReturns,
     COALESCE(MAX(o.o_orderdate), '1900-01-01') AS LastOrderDate,
     COUNT(DISTINCT c.c_custkey) FILTER (WHERE c.c_acctbal IS NOT NULL AND c.c_acctbal > 100.00) AS ActiveCustomers,
-    STRING_AGG(DISTINCT ps.ps_comment, ', ') AS UniqueComments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ps.ps_comment))), ', ') AS UniqueComments
 FROM 
     nation n
 LEFT JOIN 

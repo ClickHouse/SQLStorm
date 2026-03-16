@@ -6,7 +6,7 @@ WITH movie_data AS (
         m.production_year,
         a.name AS actor_name,
         ct.kind AS company_type,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         (SELECT COUNT(*) FROM complete_cast cc WHERE cc.movie_id = m.id) AS cast_count
     FROM 
         aka_title m

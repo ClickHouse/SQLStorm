@@ -11,7 +11,7 @@ WITH UserStats AS (
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(CASE WHEN P.PostTypeId IN (4, 5) THEN 1 ELSE 0 END) AS TotalTagWikis,
         SUM(V.BountyAmount) AS TotalBounties,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS TagsContributed
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagsContributed
     FROM 
         Users U
     LEFT JOIN 
@@ -21,7 +21,7 @@ WITH UserStats AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (8, 9)  
     LEFT JOIN 
-        (SELECT UNNEST(STRING_TO_ARRAY(P.Tags, ',')) AS TagName, P.Id AS PostId FROM Posts P) AS T ON P.Id = T.PostId
+        (SELECT arrayJoin(splitByString(',', P.Tags)) AS TagName, P.Id AS PostId FROM Posts P) AS T ON P.Id = T.PostId
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation, U.Views
 )

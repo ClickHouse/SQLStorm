@@ -10,7 +10,7 @@ JOIN
 JOIN
     nation n ON c.c_nationkey = n.n_nationkey
 WHERE
-    l.l_shipdate >= DATE '1996-01-01' AND l.l_shipdate < DATE '1997-01-01'
+    l.l_shipdate >= toDate('1996-01-01') AND l.l_shipdate < toDate('1997-01-01')
 GROUP BY
     n.n_name
 ORDER BY

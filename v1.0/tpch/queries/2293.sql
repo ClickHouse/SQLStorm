@@ -7,7 +7,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < cast('1998-10-01' as date)
+        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < cast('1998-10-01' as date)
 ),
 TopSuppliers AS (
     SELECT 

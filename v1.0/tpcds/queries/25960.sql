@@ -47,4 +47,4 @@ WHERE
     cd.cd_marital_status = 'M'
 ORDER BY 
     sd.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

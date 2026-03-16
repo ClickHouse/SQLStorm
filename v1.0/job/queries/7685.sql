@@ -4,7 +4,7 @@ SELECT
     c.kind AS company_type,
     COUNT(DISTINCT m.id) AS movie_count,
     SUM(CASE WHEN m.production_year = 2023 THEN 1 ELSE 0 END) AS recent_movies,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     aka_name a
 JOIN 

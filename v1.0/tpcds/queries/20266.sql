@@ -47,7 +47,7 @@ SELECT
         WHEN cs.total_spent > 10000 THEN 'Top Customer'
         ELSE 'Regular Customer'
     END AS customer_type,
-    STRING_AGG(CONCAT('[Item: ', rs.ws_item_sk, ', Price: ', rs.ws_sales_price, ', Category: ', rs.value_category, ']'), ', ') AS sales_summary
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT('[Item: ', rs.ws_item_sk, ', Price: ', rs.ws_sales_price, ', Category: ', rs.value_category, ']'))), ', ') AS sales_summary
 FROM
     CustomerSales cs
 LEFT JOIN customer c ON cs.c_customer_id = c.c_customer_id

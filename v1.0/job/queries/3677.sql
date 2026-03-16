@@ -45,7 +45,7 @@ SELECT
         AND mi.info_type_id = (SELECT id FROM info_type WHERE info = 'Synopsis') 
         AND mi.info IS NOT NULL
     ) AS has_synopsis,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     TopMovies tm
 LEFT JOIN 

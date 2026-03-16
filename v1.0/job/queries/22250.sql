@@ -37,8 +37,8 @@ ActorRoles AS (
 
 SELECT 
     rm.production_year,
-    STRING_AGG(DISTINCT rm.title, ', ') AS movie_titles,
-    STRING_AGG(DISTINCT ar.actor_name || ' (' || ar.role || ' - ' || ar.movie_count || ' movies)', '; ') AS actors_with_roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.title))), ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ar.actor_name || ' (' || ar.role || ' - ' || ar.movie_count || ' movies)'))), '; ') AS actors_with_roles,
     CASE 
         WHEN COUNT(DISTINCT ar.actor_name) > 10 THEN 'Many Actors'
         ELSE 'Few Actors'

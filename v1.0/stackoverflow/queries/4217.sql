@@ -11,7 +11,7 @@ WITH UserPostStats AS (
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        u.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -45,7 +45,7 @@ SELECT
          Votes v 
      WHERE 
          v.UserId = u.UserId 
-         AND v.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month') AS RecentVotes
+         AND v.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH) AS RecentVotes
 FROM 
     RankedUserStats u
 WHERE 

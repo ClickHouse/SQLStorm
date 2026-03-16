@@ -39,7 +39,7 @@ RankedMovies AS (
 )
 SELECT 
     r.production_year,
-    STRING_AGG(DISTINCT r.movie_title, ', ') AS movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.movie_title))), ', ') AS movies,
     COUNT(DISTINCT r.actor_name) AS distinct_actors,
     SUM(CASE WHEN r.actor_rank <= 3 THEN 1 ELSE 0 END) AS top_3_movies_count
 FROM RankedMovies r

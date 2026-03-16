@@ -20,7 +20,7 @@ PostStatistics AS (
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         AVG(P.Score) AS AvgScore,
-        COALESCE(MAX(P.CreationDate), CAST('1900-01-01' AS timestamp)) AS LastPostDate
+        COALESCE(MAX(P.CreationDate), toDateTime64('1900-01-01', 6)) AS LastPostDate
     FROM 
         Posts P
     GROUP BY 
@@ -34,7 +34,7 @@ UsersWithPostStats AS (
         COALESCE(PS.Questions, 0) AS Questions,
         COALESCE(PS.Answers, 0) AS Answers,
         COALESCE(PS.AvgScore, 0) AS AvgScore,
-        COALESCE(PS.LastPostDate, CAST('1900-01-01' AS timestamp)) AS LastPostDate,
+        COALESCE(PS.LastPostDate, toDateTime64('1900-01-01', 6)) AS LastPostDate,
         UB.GoldBadges,
         UB.SilverBadges,
         UB.BronzeBadges

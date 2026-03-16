@@ -25,7 +25,7 @@ WITH
     CoActors AS (
         SELECT 
             ci.movie_id, 
-            STRING_AGG(DISTINCT an.name, ', ') AS co_actors
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS co_actors
         FROM 
             cast_info ci 
             JOIN aka_name an ON ci.person_id = an.person_id 
@@ -35,7 +35,7 @@ WITH
     MovieKeywords AS (
         SELECT 
             mk.movie_id, 
-            STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
         FROM 
             movie_keyword mk 
             JOIN keyword k ON mk.keyword_id = k.id 

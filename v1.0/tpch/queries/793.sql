@@ -12,8 +12,8 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' 
-        AND o.o_orderdate < DATE '1997-01-01'
+        o.o_orderdate >= toDate('1996-01-01') 
+        AND o.o_orderdate < toDate('1997-01-01')
 ),
 SupplierParts AS (
     SELECT 
@@ -35,8 +35,8 @@ FilteredLineItems AS (
         lineitem l
     WHERE 
         l.l_returnflag = 'N'
-        AND l.l_shipdate >= DATE '1996-01-01' 
-        AND l.l_shipdate < DATE '1997-01-01'
+        AND l.l_shipdate >= toDate('1996-01-01') 
+        AND l.l_shipdate < toDate('1997-01-01')
     GROUP BY 
         l.l_orderkey, l.l_partkey
 )

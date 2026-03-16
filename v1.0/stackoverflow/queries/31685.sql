@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, U.DisplayName
 ),
@@ -26,7 +26,7 @@ TopActions AS (
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         PH.PostId, PH.PostHistoryTypeId
 ),
@@ -52,7 +52,7 @@ SELECT
     PS.CloseActions,
     PS.EditSuggestions,
     (SELECT 
-        STRING_AGG(B.Name, ', ') 
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') 
      FROM 
         Badges B 
      WHERE 

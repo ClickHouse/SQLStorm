@@ -1,7 +1,7 @@
 SELECT 
     pt.Name AS PostType,
     COUNT(p.Id) AS TotalPosts,
-    AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgResponseTimeSeconds,
+    AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgResponseTimeSeconds,
     SUM(COALESCE(p.Score, 0)) AS TotalScore
 FROM 
     Posts p

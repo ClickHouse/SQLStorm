@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId
 ),
@@ -32,12 +32,12 @@ TopPosts AS (
 PostHistoryAggregates AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, '; ') AS Comments,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS Comments,
         COUNT(ph.Id) AS HistoryCount
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '2 years'
+        ph.CreationDate >= now64(6) - INTERVAL 2 YEAR
     GROUP BY 
         ph.PostId
 )

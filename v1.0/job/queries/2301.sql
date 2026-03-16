@@ -45,7 +45,7 @@ SELECT
 FROM 
     TopRankedMovies m
 FULL OUTER JOIN 
-    MovieCompanies mc ON m.movie_title = mc.movie_id::text
+    MovieCompanies mc ON m.movie_title = CAST(mc.movie_id AS text)
 WHERE 
     (m.person_role IS NULL OR mc.company_name IS NOT NULL)
 ORDER BY 

@@ -31,7 +31,7 @@ AddressLookup AS (
         CONCAT(AD.ca_city, ', ', AD.ca_state, ' ', AD.ca_zip) AS city_state_zip,
         CD.c_customer_sk
     FROM AddressDetails AD
-    JOIN CustomerDetails CD ON AD.ca_address_sk = RANDOM() % 10000 
+    JOIN CustomerDetails CD ON AD.ca_address_sk = rand() % 10000 
 ),
 SalesData AS (
     SELECT 

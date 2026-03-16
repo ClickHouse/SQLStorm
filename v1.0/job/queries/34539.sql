@@ -22,7 +22,7 @@ WITH RECURSIVE actor_hierarchy AS (
 SELECT 
     a.actor_name,
     COUNT(DISTINCT c.movie_id) AS number_of_movies,
-    STRING_AGG(DISTINCT t.title, ', ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS titles,
     MAX(a.generation) AS max_generation
 FROM actor_hierarchy a
 JOIN cast_info c ON a.actor_id = c.person_id

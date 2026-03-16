@@ -7,7 +7,7 @@ SELECT
     MAX(l.l_shipdate) AS last_ship_date,
     MIN(l.l_shipdate) AS first_ship_date,
     AVG(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE NULL END) AS average_returned_qty,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     part p
 JOIN 

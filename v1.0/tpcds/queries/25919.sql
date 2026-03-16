@@ -20,7 +20,7 @@ AddressDistributions AS (
     SELECT
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(ca_city, ', ') AS cities
+        arrayStringConcat(groupArray(assumeNotNull(ca_city)), ', ') AS cities
     FROM 
         customer_address
     GROUP BY 

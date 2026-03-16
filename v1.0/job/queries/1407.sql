@@ -29,7 +29,7 @@ PopularActors AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ' ORDER BY k.keyword) AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ' ORDER BY k.keyword) AS keywords
     FROM 
         movie_keyword mk
     JOIN 

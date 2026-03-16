@@ -14,7 +14,7 @@ WITH RankedPosts AS (
          FROM Votes v 
          WHERE v.PostId = p.Id AND v.VoteTypeId = 3) AS Downvotes
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 YEAR'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 ActiveUsers AS (
     SELECT 
@@ -46,7 +46,7 @@ SELECT
     SUM(rp.Upvotes) AS TotalUpvotes,
     SUM(rp.Downvotes) AS TotalDownvotes,
     MAX(CASE WHEN rp.Rank = 1 THEN rp.CreationDate END) AS MostRecentPostDate,
-    STRING_AGG(DISTINCT COALESCE(b.Name, 'No Badges'), ', ') AS Badges
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(b.Name, 'No Badges')))), ', ') AS Badges
 FROM ActiveUsers au
 LEFT JOIN RankedPosts rp ON au.UserId = rp.Rank
 LEFT JOIN Badges b ON au.UserId = b.UserId

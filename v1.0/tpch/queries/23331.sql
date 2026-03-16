@@ -26,7 +26,7 @@ WITH RECURSIVE SupplierHierarchy AS (
                ELSE 'Shipped'
            END AS shipment_status
     FROM lineitem l
-    WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 days'
+    WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
 ), MergedData AS (
     SELECT p.p_partkey, p.p_name, p.p_retailprice, 
            COALESCE(sa.total_avail, 0) AS total_availability, 

@@ -59,7 +59,7 @@ SELECT
     m.movie_id,
     m.title,
     m.production_year,
-    STRING_AGG(DISTINCT f.actor_name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.actor_name))), ', ') AS actors,
     COUNT(DISTINCT ci.company_name) AS distinct_company_count,
     MAX(ci.company_count) AS max_companies_involved
 FROM 

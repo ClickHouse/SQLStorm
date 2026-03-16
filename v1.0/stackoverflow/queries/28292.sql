@@ -21,7 +21,7 @@ TopPostHistories AS (
     SELECT ph.PostId,
            ph.PostHistoryTypeId,
            COUNT(ph.Id) AS ChangeCount,
-           STRING_AGG(ph.UserDisplayName, ', ') AS Editors
+           arrayStringConcat(groupArray(assumeNotNull(ph.UserDisplayName)), ', ') AS Editors
     FROM PostHistory ph
     GROUP BY ph.PostId, ph.PostHistoryTypeId
     ORDER BY ChangeCount DESC
@@ -30,7 +30,7 @@ TopPostHistories AS (
 UserBadges AS (
     SELECT u.Id AS UserId,
            COUNT(b.Id) AS BadgeCount,
-           STRING_AGG(b.Name, ', ') AS Badges
+           arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges
     FROM Users u
     LEFT JOIN Badges b ON u.Id = b.UserId
     GROUP BY u.Id

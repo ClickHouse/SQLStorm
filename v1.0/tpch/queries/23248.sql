@@ -10,14 +10,14 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 SupplierDetails AS (
     SELECT 
         s.s_suppkey,
         s.s_name,
         SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supplycost,
-        STRING_AGG(s.s_comment, ', ') AS comments
+        arrayStringConcat(groupArray(assumeNotNull(s.s_comment)), ', ') AS comments
     FROM 
         supplier s
     JOIN 
@@ -68,9 +68,8 @@ WHERE
     r.rn_status <= 10 
     AND (d.total_supplycost IS NULL OR d.total_supplycost >= 1000)
     AND r.o_orderkey IS NOT NULL 
-    AND COALESCE(r.o_orderdate, DATE '1900-01-01') > DATE '2000-01-01'
+    AND COALESCE(r.o_orderdate, toDate('1900-01-01')) > toDate('2000-01-01')
 ORDER BY 
     r.o_totalprice DESC, 
     d.comments
-OFFSET 5 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

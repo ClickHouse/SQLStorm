@@ -9,14 +9,14 @@ WITH PostDetails AS (
            ph.CreationDate AS LastEdited,
            COUNT(c.Id) AS CommentCount,
            COUNT(v.Id) AS VoteCount,
-           ARRAY_AGG(DISTINCT t.TagName) AS TagNames
+           arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagNames
     FROM Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN PostHistory ph ON ph.PostId = p.Id 
                                AND ph.PostHistoryTypeId IN (4, 5, 6)  
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id
-    LEFT JOIN Tags t ON t.TagName IN (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')))
+    LEFT JOIN Tags t ON t.TagName IN (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))))
     WHERE p.PostTypeId = 1  
     GROUP BY p.Id, p.Title, p.Body, u.DisplayName, p.CreationDate, ph.CreationDate
 ), 

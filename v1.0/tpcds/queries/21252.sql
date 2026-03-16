@@ -49,4 +49,4 @@ WHERE ss.ss_sold_date_sk IS NULL OR ss.ss_net_profit < (
     WHERE ss3.ss_item_sk = id.i_item_sk
 )
 ORDER BY its.total_sold DESC, id.gender
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;

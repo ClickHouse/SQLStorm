@@ -24,7 +24,7 @@ expanded_cast AS (
 )
 SELECT ec.movie_id, ec.title, ec.production_year, ec.company_name, ec.production_period,
        COUNT(ec.actor_name) AS total_actors,
-       STRING_AGG(DISTINCT ec.actor_name, ', ') AS actor_names,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ec.actor_name))), ', ') AS actor_names,
        CASE WHEN AVG(CASE WHEN ec.actor_rank IS NOT NULL THEN 1 ELSE NULL END) > 5 
             THEN 'Superstar' 
             ELSE 'Regular' END AS status

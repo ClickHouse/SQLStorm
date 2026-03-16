@@ -12,7 +12,7 @@ WITH RankedSales AS (
     JOIN
         item i ON ws.ws_item_sk = i.i_item_sk
     WHERE
-        i.i_rec_start_date <= DATE '2002-10-01' AND (i.i_rec_end_date IS NULL OR i.i_rec_end_date > DATE '2002-10-01')
+        i.i_rec_start_date <= toDate('2002-10-01') AND (i.i_rec_end_date IS NULL OR i.i_rec_end_date > toDate('2002-10-01'))
 ),
 HighValueReturns AS (
     SELECT
@@ -64,4 +64,4 @@ WHERE
     sa.HighValueReturnCount > 0 OR sa.HighValueTotalReturnAmt IS NOT NULL
 ORDER BY
     sa.ws_item_sk, sa.ws_order_number
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -62,7 +62,7 @@ PostHistories AS (
     JOIN 
         PostHistoryTypes h ON ph.PostHistoryTypeId = h.Id
     WHERE 
-        ph.CreationDate > CAST('2022-01-01' AS timestamp) 
+        ph.CreationDate > toDateTime64('2022-01-01', 6) 
 ),
 PostStatistics AS (
     SELECT 
@@ -71,7 +71,7 @@ PostStatistics AS (
         COALESCE(PH.RecentHistoryCount, 0) AS RecentHistoryCount,
         (SELECT COUNT(DISTINCT c.Id) FROM Comments c WHERE c.PostId = p.Id) AS CommentCount,
         (SELECT SUM(V.BountyAmount) FROM Votes V WHERE V.PostId = p.Id AND V.VoteTypeId = 8) AS TotalBounty,
-        (SELECT ARRAY_AGG(DISTINCT t.TagName) FROM Tags t WHERE t.ExcerptPostId = p.Id) AS Tags
+        (SELECT arrayDistinct(groupArray(assumeNotNull(t.TagName))) FROM Tags t WHERE t.ExcerptPostId = p.Id) AS Tags
     FROM 
         Posts p
     LEFT JOIN 

@@ -15,4 +15,4 @@ GROUP BY
     p.Title, u.DisplayName
 ORDER BY 
     CommentCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

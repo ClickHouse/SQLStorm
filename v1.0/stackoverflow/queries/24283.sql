@@ -25,7 +25,7 @@ PostDetails AS (
         END AS PostCategory,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rp.PostId AND v.VoteTypeId = 2) AS UpVotes,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rp.PostId AND v.VoteTypeId = 3) AS DownVotes,
-        (SELECT STRING_AGG(c.Text, '; ') FROM Comments c WHERE c.PostId = rp.PostId) AS CommentSummaries
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') FROM Comments c WHERE c.PostId = rp.PostId) AS CommentSummaries
     FROM 
         RankedPosts rp
     WHERE 
@@ -43,11 +43,11 @@ FinalReport AS (
         pd.DownVotes,
         COALESCE(pd.CommentSummaries, 'No comments') AS CommentSummaries,
         COALESCE((
-            SELECT STRING_AGG(pht.Name, ', ') 
+            SELECT arrayStringConcat(groupArray(assumeNotNull(pht.Name)), ', ') 
             FROM PostHistory ph
             JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
             WHERE ph.PostId = pd.PostId 
-            AND ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+            AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
         ), 'No recent edits') AS RecentEdits
     FROM 
         PostDetails pd

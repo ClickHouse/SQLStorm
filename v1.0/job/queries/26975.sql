@@ -25,7 +25,7 @@ aggregated_roles AS (
         production_year,
         COUNT(DISTINCT aka_id) AS total_aka_names,
         COUNT(DISTINCT role_id) AS distinct_roles,
-        STRING_AGG(DISTINCT person_name, ', ') AS cast_members
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(person_name))), ', ') AS cast_members
     FROM 
         ranked_movies
     WHERE 

@@ -51,9 +51,9 @@ top_performers AS (
 SELECT 
     ap.actor_name,
     COUNT(DISTINCT ap.movie_id) AS movie_count,
-    STRING_AGG(ap.movie_title, ', ') AS movie_titles,
-    STRING_AGG(DISTINCT ap.movie_genre, ', ') AS genres,
-    STRING_AGG(DISTINCT CAST(ap.production_year AS VARCHAR), ', ') AS years
+    arrayStringConcat(groupArray(assumeNotNull(ap.movie_title)), ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ap.movie_genre))), ', ') AS genres,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ap.production_year AS VARCHAR)))), ', ') AS years
 FROM 
     actor_stats ap
 JOIN 

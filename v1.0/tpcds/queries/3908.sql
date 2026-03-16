@@ -50,4 +50,4 @@ WHERE
     id.i_current_price > (SELECT AVG(i.i_current_price) FROM item i)
 ORDER BY 
     sales_amount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.AcceptedAnswerId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -30,7 +30,7 @@ RecentActivity AS (
         COALESCE(AVG(v.BountyAmount), 0) AS AverageBounty
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.OwnerUserId
 ),
 TopUsers AS (
@@ -53,7 +53,7 @@ SELECT
     COALESCE(tu.RecentPosts, 0) AS RecentPosts,
     COALESCE(tu.AverageBounty, 0) AS AverageBounty,
     COUNT(DISTINCT hp.Id) AS HistoryCount,
-    STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
 FROM TopUsers tu
 LEFT JOIN PostHistory hp ON tu.UserId = hp.UserId 
 LEFT JOIN PostHistoryTypes pht ON hp.PostHistoryTypeId = pht.Id

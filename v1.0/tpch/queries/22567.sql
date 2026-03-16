@@ -87,4 +87,4 @@ GROUP BY
     r.r_name
 ORDER BY 
     OverallNetSales DESC
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;

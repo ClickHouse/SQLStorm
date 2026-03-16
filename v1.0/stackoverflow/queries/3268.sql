@@ -20,7 +20,7 @@ WITH PostDetails AS (
         Votes v ON p.Id = v.PostId
     WHERE 
         p.PostTypeId = 1 AND
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
     GROUP BY 
         p.Id, u.DisplayName
 ),

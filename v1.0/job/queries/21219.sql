@@ -35,7 +35,7 @@ TopMoviesWithRoles AS (
         fm.title,
         fm.production_year,
         fm.movie_kind,
-        STRING_AGG(DISTINCT CONCAT('Role: ', rt.role, ' - Count: ', cnt), '; ') AS roles_summary
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Role: ', rt.role, ' - Count: ', cnt)))), '; ') AS roles_summary
     FROM 
         FilteredMovies fm
     LEFT JOIN 

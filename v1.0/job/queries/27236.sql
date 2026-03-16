@@ -27,7 +27,7 @@ top_movies AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -38,7 +38,7 @@ movie_keywords AS (
 movie_companies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name, ', ') AS company_names,
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS company_names,
         COUNT(DISTINCT mc.company_type_id) AS company_types_count
     FROM 
         movie_companies mc

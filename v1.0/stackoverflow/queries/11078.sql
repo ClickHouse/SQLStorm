@@ -11,11 +11,11 @@ WITH PostStats AS (
         U.DisplayName AS OwnerDisplayName,
         U.Reputation AS OwnerReputation,
         P.LastActivityDate,
-        STRING_AGG(T.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
     LEFT JOIN Tags T ON T.ExcerptPostId = P.Id
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY P.Id, U.DisplayName, U.Reputation
 ),
 UserStats AS (

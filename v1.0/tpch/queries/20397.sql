@@ -38,7 +38,7 @@ SELECT
     s.short_comment,
     COUNT(DISTINCT s.o_orderkey) AS order_count,
     AVG(s.total_extended_price) AS avg_extended_price,
-    STRING_AGG(s.short_comment, ', ') AS all_comments,
+    arrayStringConcat(groupArray(assumeNotNull(s.short_comment)), ', ') AS all_comments,
     CASE 
         WHEN SUM(s.lineitem_count) = 0 THEN NULL 
         ELSE (SUM(s.total_extended_price) / NULLIF(SUM(s.lineitem_count), 0)) 
@@ -50,4 +50,4 @@ WHERE s.total_extended_price IS NOT NULL
 GROUP BY s.short_comment
 HAVING COUNT(DISTINCT s.o_orderkey) > 1
 ORDER BY s.short_comment ASC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

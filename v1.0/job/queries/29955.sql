@@ -31,8 +31,8 @@ TitleStatistics AS (
     SELECT 
         rt.title_id,
         COUNT(DISTINCT fc.actor_name) AS actor_count,
-        STRING_AGG(DISTINCT fc.actor_name, ', ') AS actor_list,
-        STRING_AGG(DISTINCT rt.keyword, ', ') AS keywords_collected
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fc.actor_name))), ', ') AS actor_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.keyword))), ', ') AS keywords_collected
     FROM 
         RankedTitles rt
     LEFT JOIN 

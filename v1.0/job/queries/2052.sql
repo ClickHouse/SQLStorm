@@ -35,7 +35,7 @@ SELECT
     fm.title, 
     fm.production_year, 
     COALESCE(fm.cast_count, 0) AS cast_count,
-    (SELECT STRING_AGG(a.name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') 
      FROM aka_name a 
      JOIN cast_info ci ON a.person_id = ci.person_id 
      WHERE ci.movie_id = fm.movie_id) AS cast_names

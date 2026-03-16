@@ -3,7 +3,7 @@ SELECT
     t.title AS movie_title,
     t.production_year,
     COUNT(DISTINCT k.keyword) AS keyword_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords_list,
     MAX(CASE WHEN ci.note IS NOT NULL THEN ci.note ELSE 'No Role Note' END) AS role_note,
     ci.nr_order AS role_order,
     c.kind AS company_type,

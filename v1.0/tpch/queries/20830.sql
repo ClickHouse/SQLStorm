@@ -18,7 +18,7 @@ SELECT
     p.p_name AS part_name,
     COALESCE(SUM(l.l_quantity), 0) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT CASE WHEN ps.ps_supplycost IS NULL THEN 'Not supplied' ELSE 'Supplied' END, ', ') AS supply_status,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN ps.ps_supplycost IS NULL THEN 'Not supplied' ELSE 'Supplied' END))), ', ') AS supply_status,
     MAX(s.s_acctbal) AS max_supplier_balance 
 FROM 
     nation n

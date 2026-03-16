@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.PostTypeId IN (1, 2)  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName
@@ -49,7 +49,7 @@ SELECT
     tp.CommentCount,
     tp.UpVotes,
     tp.DownVotes,
-    (SELECT COUNT(*) FROM PostHistory ph WHERE ph.PostId = tp.PostId AND ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month') AS RecentEdits
+    (SELECT COUNT(*) FROM PostHistory ph WHERE ph.PostId = tp.PostId AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH) AS RecentEdits
 FROM 
     TopPosts tp
 ORDER BY 

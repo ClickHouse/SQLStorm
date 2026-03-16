@@ -40,12 +40,12 @@ FilteredPosts AS (
 ),
 TagCounts AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', Tags)) AS TagName,
         COUNT(*) AS TagFrequency
     FROM 
         FilteredPosts
     GROUP BY 
-        unnest(string_to_array(Tags, ','))
+        arrayJoin(splitByString(',', Tags))
 ),
 TopTags AS (
     SELECT 

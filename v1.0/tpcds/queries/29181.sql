@@ -23,7 +23,7 @@ FilteredAddresses AS (
 AddressConcatenation AS (
     SELECT 
         ca_state,
-        STRING_AGG(ca_street_name, ', ') AS top_street_names,
+        arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS top_street_names,
         COUNT(ca_address_sk) AS address_count
     FROM 
         FilteredAddresses

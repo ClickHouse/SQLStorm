@@ -76,4 +76,4 @@ WHERE
 ORDER BY 
     total_web_sales_amt DESC,
     total_returned_amount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -31,4 +31,4 @@ GROUP BY
     p.p_mfgr, r.r_name, n.n_name, c.c_mktsegment, p.p_name, p.p_retailprice
 ORDER BY 
     supplier_count DESC, average_price DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

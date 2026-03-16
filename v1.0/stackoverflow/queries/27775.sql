@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
         u.DisplayName AS OwnerDisplayName,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS UserRank
     FROM 
@@ -86,4 +86,4 @@ FROM
     FinalReport f
 ORDER BY 
     f.NetVotes DESC, f.Score DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

@@ -25,7 +25,7 @@ CastAggregates AS (
     SELECT 
         ci.movie_id,
         COUNT(ci.person_id) AS actor_count,
-        STRING_AGG(CONCAT_WS(' ', ak.name, ak.surname_pcode), ', ') AS actor_names
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT_WS(' ', ak.name, ak.surname_pcode))), ', ') AS actor_names
     FROM 
         cast_info ci
     JOIN 

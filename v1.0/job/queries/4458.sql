@@ -29,7 +29,7 @@ MovieDetails AS (
 CastDetails AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
         COUNT(DISTINCT c.person_id) AS total_cast
     FROM 
         cast_info c
@@ -57,4 +57,4 @@ WHERE
 ORDER BY
     mt.production_year DESC,
     mt.rank ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

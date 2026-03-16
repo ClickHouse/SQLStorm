@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes ON P.Id = Votes.PostId
     WHERE 
-        P.CreationDate >= current_timestamp - INTERVAL '1 year' 
+        P.CreationDate >= now64(6) - INTERVAL 1 YEAR 
     GROUP BY 
         P.Id, P.Title, Users.DisplayName, P.CreationDate, P.Score
 ),
@@ -48,7 +48,7 @@ SELECT
     T.CommentCount,
     T.UpVoteCount,
     T.DownVoteCount,
-    COALESCE((SELECT STRING_AGG(Tag.TagName, ', ') 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(Tag.TagName)), ', ') 
                FROM Tags Tag 
                WHERE Tag.ExcerptPostId = T.PostId), 'No Tags') AS Tags
 FROM 

@@ -16,11 +16,11 @@ WITH RecentPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     JOIN 
-        UNNEST(string_to_array(p.Tags, ',')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString(',', p.Tags)) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = TRIM(tag)  
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     ORDER BY 
         p.CreationDate DESC
 ),
@@ -64,7 +64,7 @@ SELECT
     pa.FavoriteCount,
     pa.UpVotes,
     pa.DownVotes,
-    STRING_AGG(DISTINCT pa.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pa.TagName))), ', ') AS Tags
 FROM 
     PostAnalytics pa
 GROUP BY 

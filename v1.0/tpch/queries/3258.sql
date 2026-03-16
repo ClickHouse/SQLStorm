@@ -13,8 +13,8 @@ WITH RankedOrders AS (
     JOIN
         customer c ON o.o_custkey = c.c_custkey
     WHERE
-        o.o_orderdate >= DATE '1997-01-01'
-        AND o.o_orderdate < DATE '1997-12-31'
+        o.o_orderdate >= toDate('1997-01-01')
+        AND o.o_orderdate < toDate('1997-12-31')
 ),
 SupplierCosts AS (
     SELECT
@@ -41,7 +41,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(p.total_supply_cost) AS total_cost_of_parts,
     AVG(o.o_totalprice) AS average_order_value,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM
     RankedOrders o
 JOIN

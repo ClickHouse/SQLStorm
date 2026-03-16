@@ -5,7 +5,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_served,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_served,
     CONCAT('Supplier (', s.s_name, ') from ', SUBSTRING(s.s_address, 1, 20), '...') AS supplier_info
 FROM 
     supplier s

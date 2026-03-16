@@ -59,11 +59,11 @@ LEFT JOIN
     StoreInfo si ON si.s_store_sk = (SELECT s.s_store_sk 
                                        FROM store s 
                                        ORDER BY s.s_store_sk 
-                                       FETCH FIRST 1 ROW ONLY) 
+                                       LIMIT 1) 
 WHERE 
     cs.demographic_count > 0
     AND cs.avg_purchase_estimate > 100
 ORDER BY 
     cs.avg_purchase_estimate DESC, 
     sales_status ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

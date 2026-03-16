@@ -27,7 +27,7 @@ aggregate_info AS (
         ak.name,
         um.unique_movie_count,
         SUM(CASE WHEN at.production_year < 2000 THEN 1 ELSE 0 END) AS pre_2000_count,
-        STRING_AGG(DISTINCT at.title, ', ') AS title_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(at.title))), ', ') AS title_list
     FROM 
         aka_name ak
     JOIN 

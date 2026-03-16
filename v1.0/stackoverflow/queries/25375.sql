@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Body, p.Score, p.Tags, u.DisplayName
 ),
@@ -32,7 +32,7 @@ TopPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(Tags, '> <')) AS Tag, 
+        arrayJoin(splitByString('> <', Tags)) AS Tag, 
         COUNT(*) AS TagCount
     FROM 
         TopPosts
@@ -52,6 +52,6 @@ SELECT
 FROM 
     TagStatistics ts
 JOIN 
-    TopPosts tp ON ts.Tag = ANY(STRING_TO_ARRAY(tp.Tags, '> <'))
+    TopPosts tp ON ts.Tag = ANY(splitByString('> <', tp.Tags))
 ORDER BY 
     ts.TagCount DESC, tp.Score DESC;

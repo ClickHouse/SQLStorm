@@ -22,7 +22,7 @@ PopularPosts AS (
         RANK() OVER (ORDER BY p.Score DESC) AS PopularityRank
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.Id, p.Title, p.Score, p.ViewCount
 ),
 TopUsers AS (

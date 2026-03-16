@@ -24,7 +24,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND s.s_comment LIKE '%special%'
 GROUP BY 
     p.p_name, s.s_name, c.c_name, r.r_name, n.n_name, s.s_address

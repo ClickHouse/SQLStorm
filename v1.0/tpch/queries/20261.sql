@@ -13,7 +13,7 @@ RecentOrders AS (
            DENSE_RANK() OVER (ORDER BY o.o_orderdate DESC) AS order_rank
     FROM orders o
     WHERE o.o_orderstatus = 'O' AND 
-          o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+          o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
 ), 
 CustomerPreferences AS (
     SELECT DISTINCT c.c_custkey, c.c_mktsegment,

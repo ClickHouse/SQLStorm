@@ -30,7 +30,7 @@ CollatedInfo AS (
         f.title_id, 
         f.title,
         f.production_year,
-        STRING_AGG(DISTINCT p.info, ', ') AS person_info,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.info))), ', ') AS person_info,
         COUNT(DISTINCT c.id) AS cast_count
     FROM 
         FilteredTitles f

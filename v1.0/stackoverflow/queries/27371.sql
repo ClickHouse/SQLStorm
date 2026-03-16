@@ -2,7 +2,7 @@
 WITH TagCounts AS (
     SELECT
         p.Id AS PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName,
         COUNT(*) AS TagFrequency
     FROM
         Posts p
@@ -29,7 +29,7 @@ UserActivity AS (
         COUNT(DISTINCT p.Id) AS QuestionCount,
         COUNT(DISTINCT c.Id) AS CommentCount,
         SUM(CASE WHEN v.CreationDate IS NOT NULL THEN 1 ELSE 0 END) AS VoteCount,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - u.CreationDate)) / 3600.0) AS AvgActivityDuration_Hours
+        AVG(toUnixTimestamp((p.LastActivityDate - u.CreationDate)) / 3600.0) AS AvgActivityDuration_Hours
     FROM
         Users u
     LEFT JOIN

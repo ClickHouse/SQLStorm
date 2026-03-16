@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(CASE WHEN LENGTH(p.p_comment) > 20 THEN 1 ELSE 0 END) AS long_comment_count,
     AVG(ps.ps_supplycost) AS avg_supplycost,
-    STRING_AGG(DISTINCT CASE WHEN LENGTH(s.s_name) > 15 THEN SUBSTRING(s.s_name, 1, 15) || '...' ELSE s.s_name END, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN LENGTH(s.s_name) > 15 THEN SUBSTRING(s.s_name, 1, 15) || '...' ELSE s.s_name END))), ', ') AS supplier_names,
     MAX(o.o_totalprice) AS max_order_price,
     MIN(o.o_orderdate) AS earliest_order_date
 FROM

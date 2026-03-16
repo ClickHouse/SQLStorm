@@ -57,4 +57,4 @@ SELECT
 FROM CombinedData
 WHERE purchase_rank <= 50
 ORDER BY total_net_profit DESC, total_returned_amt DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

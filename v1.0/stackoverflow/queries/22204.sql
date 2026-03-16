@@ -21,16 +21,16 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
+        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
 ), 
 RecentBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b 
     WHERE 
-        b.Date >= (cast('2024-10-01' as date) - INTERVAL '1 month')
+        b.Date >= (cast('2024-10-01' as date) - INTERVAL 1 MONTH)
     GROUP BY 
         b.UserId
 ), 

@@ -36,7 +36,7 @@ CustomerPurchases AS (
         c.c_name,
         SUM(o.o_totalprice) as total_spent,
         COUNT(o.o_orderkey) as total_orders,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS purchased_parts
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS purchased_parts
     FROM 
         customer c
     JOIN 

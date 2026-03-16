@@ -27,7 +27,7 @@ FilteredCustomers AS (
 )
 SELECT 
     ca.ca_city,
-    STRING_AGG(fc.full_name, ', ') AS top_female_customers
+    arrayStringConcat(groupArray(assumeNotNull(fc.full_name)), ', ') AS top_female_customers
 FROM 
     FilteredCustomers fc
 JOIN 

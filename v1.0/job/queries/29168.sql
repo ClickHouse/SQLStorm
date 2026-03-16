@@ -17,7 +17,7 @@ SELECT
     rm.movie_title,
     rm.production_year,
     COUNT(DISTINCT ak.name) AS actor_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actors_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors_list
 FROM 
     RankedMovies rm
 JOIN 

@@ -2,7 +2,7 @@ SELECT
     p.p_name,
     s.s_name,
     CONCAT('Part: ', p.p_name, ' | Supplier: ', s.s_name, ' | Available Quantity: ', ps.ps_availqty) AS detail,
-    STRING_AGG(CONCAT('Customer: ', c.c_name, ', Phone: ', c.c_phone), '; ') AS customer_details
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT('Customer: ', c.c_name, ', Phone: ', c.c_phone))), '; ') AS customer_details
 FROM
     part p
 JOIN

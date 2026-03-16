@@ -53,4 +53,4 @@ FROM sales_summary s
 JOIN high_value_customers hc ON s.ss_store_sk = hc.c_customer_sk
 WHERE s.unique_customers > 10
 ORDER BY s.total_sales DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

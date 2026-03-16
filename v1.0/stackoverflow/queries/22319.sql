@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, p.OwnerUserId
 ),
 PostSummary AS (
@@ -66,7 +66,7 @@ SELECT
         WHEN us.Reputation BETWEEN 500 AND 1000 THEN 'Intermediate'
         ELSE 'Novice'
     END AS UserLevel,
-    ARRAY_AGG(CONCAT_WS(' - ', ps.Title, ps.Sentiment)) AS PostSummaries
+    groupArray(assumeNotNull(CONCAT_WS(' - ', ps.Title, ps.Sentiment))) AS PostSummaries
 FROM UserStats us
 LEFT JOIN PostSummary ps ON us.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = ps.PostId)
 GROUP BY us.UserId, us.DisplayName, us.Reputation, us.GoldBadges, us.SilverBadges, us.BronzeBadges, us.PostsCount, us.PositivePosts, us.NegativePosts

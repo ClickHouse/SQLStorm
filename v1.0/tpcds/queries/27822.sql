@@ -63,4 +63,4 @@ WHERE
     total_sales > 1000
 ORDER BY 
     total_sales DESC, order_count DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -34,13 +34,13 @@ WITH RankedPosts AS (
 ), PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         COUNT(ph.Id) AS EditCount
     FROM 
         PostHistory ph
         JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')  
+        ph.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)  
     GROUP BY 
         ph.PostId
 )
@@ -62,7 +62,7 @@ FROM
 LEFT JOIN 
     PostHistoryInfo pht ON rp.PostId = pht.PostId
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(string_to_array(rp.Tags, ','))
+    PopularTags pt ON pt.TagName = ANY(splitByString(',', rp.Tags))
 WHERE 
     rp.rn = 1  
 ORDER BY 

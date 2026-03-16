@@ -4,7 +4,7 @@ WITH TagStatistics AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(CASE WHEN p.ViewCount > 1000 THEN 1 ELSE 0 END) AS PopularPostCount,
         AVG(u.Reputation) AS AverageUserReputation,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopContributors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopContributors
     FROM 
         Tags t
     JOIN 

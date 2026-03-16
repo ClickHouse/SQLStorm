@@ -5,7 +5,7 @@ WITH RecursiveTitleCTE AS (
         t.title,
         t.production_year,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.title) AS row_num,
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         aka_title t
     LEFT JOIN 

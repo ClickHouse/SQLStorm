@@ -3,7 +3,7 @@ WITH movie_details AS (
         mt.id AS movie_id,
         mt.title,
         mt.production_year,
-        STRING_AGG(DISTINCT c.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS cast_names,
         COUNT(DISTINCT kc.keyword) AS keyword_count,
         AVG(CASE 
             WHEN ci.nr_order IS NOT NULL THEN ci.nr_order 

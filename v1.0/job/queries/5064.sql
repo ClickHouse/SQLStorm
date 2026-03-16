@@ -4,7 +4,7 @@ WITH MovieStats AS (
         t.production_year,
         COUNT(DISTINCT c.person_id) AS actor_count,
         COUNT(DISTINCT k.keyword) AS keyword_count,
-        ARRAY_AGG(DISTINCT co.name) AS companies
+        arrayDistinct(groupArray(assumeNotNull(co.name))) AS companies
     FROM 
         title t
     JOIN 

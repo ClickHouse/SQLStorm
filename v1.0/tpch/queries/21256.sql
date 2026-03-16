@@ -48,7 +48,7 @@ final_summary AS (
 SELECT f.r_name,
        COALESCE(SUM(f.total_price), 0) AS aggregate_total_price,
        COUNT(DISTINCT f.o_orderkey) AS unique_orders,
-       STRING_AGG(DISTINCT CONCAT('Order ', CAST(f.o_orderkey AS TEXT), ' - ', CAST(f.latest_order_date AS TEXT)), ', ') AS order_details
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Order ', CAST(f.o_orderkey AS TEXT), ' - ', CAST(f.latest_order_date AS TEXT))))), ', ') AS order_details
 FROM final_summary f
 GROUP BY f.r_name
 HAVING SUM(f.total_price) > (

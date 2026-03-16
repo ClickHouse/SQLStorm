@@ -5,7 +5,7 @@ SELECT
     t.production_year,
     cn.name AS company_name,
     ct.kind AS company_kind,
-    STRING_AGG(DISTINCT k.keyword, ',') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',') AS keywords,
     COUNT(DISTINCT p.id) AS person_info_count
 FROM 
     aka_name a

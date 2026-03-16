@@ -17,7 +17,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS CustomerCount,
     AVG(o.o_totalprice) AS AvgOrderValue,
     SUM(CASE WHEN l.l_shipdate > '1997-01-01' THEN l.l_extendedprice * (1 - l.l_discount) END) AS RecentSales,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS PopularParts,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS PopularParts,
     ROW_NUMBER() OVER (PARTITION BY n.n_name ORDER BY COUNT(DISTINCT c.c_custkey) DESC) AS Rank
 FROM 
     nation n
@@ -37,4 +37,4 @@ HAVING
     COUNT(DISTINCT c.c_custkey) > 10
 ORDER BY 
     AvgOrderValue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

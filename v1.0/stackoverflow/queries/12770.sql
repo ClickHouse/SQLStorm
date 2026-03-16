@@ -58,4 +58,4 @@ JOIN
     UserStats us ON pd.OwnerDisplayName = us.DisplayName
 ORDER BY 
     pd.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -17,7 +17,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes ON Posts.Id = Votes.PostId
     WHERE 
-        Posts.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        Posts.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         Posts.Id, Posts.Title, Users.DisplayName
 ),
@@ -26,13 +26,13 @@ PostHistoryDetails AS (
         PH.PostId,
         PHT.Name AS ChangeType,
         COUNT(*) AS ChangeCount,
-        ARRAY_AGG(DISTINCT PH.UserDisplayName) AS UsersInvolved
+        arrayDistinct(groupArray(assumeNotNull(PH.UserDisplayName))) AS UsersInvolved
     FROM 
         PostHistory PH
     JOIN 
         PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     WHERE 
-        PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         PH.PostId, PHT.Name
 ),

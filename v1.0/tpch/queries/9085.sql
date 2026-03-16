@@ -35,7 +35,7 @@ CustomerRecentOrders AS (
     JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         c.c_custkey, c.c_name
 )
@@ -56,4 +56,4 @@ JOIN
 ORDER BY 
     tr.total_value DESC, 
     cr.total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

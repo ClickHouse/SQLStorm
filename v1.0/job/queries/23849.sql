@@ -58,4 +58,4 @@ WHERE
 ORDER BY 
     sm.production_year DESC,
     sm.snippet_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

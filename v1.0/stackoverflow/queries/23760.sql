@@ -48,7 +48,7 @@ WITH UserActivity AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= (CURRENT_TIMESTAMP - INTERVAL '30 days')
+        p.CreationDate >= (now64(6) - INTERVAL 30 DAY)
 ), UserPostStats AS (
     SELECT 
         ra.DisplayName,

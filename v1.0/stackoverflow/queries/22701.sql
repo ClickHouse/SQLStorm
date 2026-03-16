@@ -32,7 +32,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.UserId,
         ph.PostId,
-        STRING_AGG(CONCAT(ph.Comment, ': ', ph.CreationDate), '; ' ORDER BY ph.CreationDate) AS Edits
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.Comment, ': ', ph.CreationDate))), '; ' ORDER BY ph.CreationDate) AS Edits
     FROM 
         PostHistory ph
     WHERE 
@@ -63,7 +63,7 @@ SELECT
     COALESCE(ur.SilverBadges, 0) AS SilverBadges,
     COALESCE(ur.BronzeBadges, 0) AS BronzeBadges,
     ur.RankingScore,
-    STRING_AGG(DISTINCT CONCAT(phd.Edits, ' (Post ID: ', phd.PostId, ')'), '; ') AS PostEditsSummary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(phd.Edits, ' (Post ID: ', phd.PostId, ')')))), '; ') AS PostEditsSummary
 FROM 
     UserRankings ur
 LEFT JOIN 

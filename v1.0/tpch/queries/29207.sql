@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count, 
     SUM(CASE WHEN LENGTH(ps.ps_comment) > 50 THEN 1 ELSE 0 END) AS long_comments,
     AVG(p.p_retailprice) AS average_retail_price,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' - ', s.s_phone), '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' - ', s.s_phone)))), '; ') AS supplier_details
 FROM 
     part p
 JOIN 

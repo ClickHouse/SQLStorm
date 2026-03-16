@@ -6,7 +6,7 @@ WITH RankedOrders AS (
         o.o_totalprice,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rank_by_price
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 SupplierSummary AS (
     SELECT 

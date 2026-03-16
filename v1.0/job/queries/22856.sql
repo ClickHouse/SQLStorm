@@ -38,7 +38,7 @@ movie_details AS (
     SELECT 
         m.id AS movie_id,
         m.title AS movie_title,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         aka_title m
     LEFT JOIN 
@@ -54,7 +54,7 @@ SELECT
     fc.actor_type,
     COALESCE(md.companies, 'No Companies') AS production_companies,
     COUNT(*) OVER (PARTITION BY fc.movie_title) AS total_cast_members,
-    STRING_AGG(DISTINCT pi.info, '; ') FILTER (WHERE pi.info IS NOT NULL) AS additional_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pi.info))), '; ') FILTER (WHERE pi.info IS NOT NULL) AS additional_info
 FROM 
     filtered_cast fc
 LEFT JOIN 

@@ -72,4 +72,4 @@ WHERE
     co.total_spent IS NOT NULL
 ORDER BY 
     co.total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

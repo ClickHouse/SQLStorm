@@ -11,7 +11,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN B.Name IS NOT NULL THEN 1 ELSE 0 END) AS BadgeCount,
         (SELECT COUNT(*) 
          FROM Posts 
-         WHERE OwnerUserId = U.Id AND CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR') AS RecentPostsLastYear
+         WHERE OwnerUserId = U.Id AND CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AS RecentPostsLastYear
     FROM 
         Users U
     LEFT JOIN 
@@ -46,7 +46,7 @@ PostDetails AS (
          WHERE PostTypeId = 2 
          GROUP BY ParentId) a ON P.Id = a.ParentId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 DAY'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 
 SELECT 
@@ -65,7 +65,7 @@ SELECT
         WHEN UA.Reputation BETWEEN 500 AND 1000 THEN 'Intermediate' 
         ELSE 'Novice' 
     END AS ExpertiseLevel,
-    ARRAY_AGG(DISTINCT B.Name) AS BadgeNames
+    arrayDistinct(groupArray(assumeNotNull(B.Name))) AS BadgeNames
 FROM 
     UserActivity UA
 LEFT JOIN 

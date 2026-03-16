@@ -61,7 +61,7 @@ SELECT
     p.p_name,
     f.total_sales,
     f.line_items,
-    COALESCE(p.price_rank::text, 'N/A') AS price_rank,
+    COALESCE(CAST(p.price_rank AS text), 'N/A') AS price_rank,
     f.sales_rank
 FROM 
     customer c

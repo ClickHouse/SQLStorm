@@ -39,7 +39,7 @@ MovieDetails AS (
     SELECT 
         mc.movie_id,
         mc.movie_title,
-        STRING_AGG(mc.actor_name || ' (' || mc.role_name || ')', ', ') AS actors
+        arrayStringConcat(groupArray(assumeNotNull(mc.actor_name || ' (' || mc.role_name || ')')), ', ') AS actors
     FROM 
         MovieCast mc
     GROUP BY 

@@ -6,7 +6,7 @@ WITH MovieDetails AS (
         t.production_year,
         t.phonetic_code,
         k.keyword AS movie_keyword,
-        STRING_AGG(DISTINCT cn.name, ', ' ORDER BY cn.name) AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ' ORDER BY cn.name) AS company_names
     FROM
         aka_title t
     JOIN

@@ -51,4 +51,4 @@ LEFT JOIN Promotions p ON id.i_item_sk = p.p_item_sk
 WHERE id.purchase_estimate > (SELECT AVG(purchase_estimate) FROM ItemDetails WHERE purchase_estimate IS NOT NULL)
   OR (id.marital_status = 'M' AND p.promo_count > 0)
 ORDER BY avg_net_paid_per_item DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -21,7 +21,7 @@ ActorMovieCounts AS (
 CompanyInformation AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies,
         COUNT(DISTINCT mc.company_type_id) AS company_type_count
     FROM 
         movie_companies mc 

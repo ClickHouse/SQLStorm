@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM Posts p
-    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -43,6 +43,6 @@ LEFT JOIN UserStats us ON u.Id = us.UserId
 LEFT JOIN PostHistorySummary phs ON u.Id = phs.UserId
 LEFT JOIN RankedPosts rp ON u.Id = rp.PostId
 WHERE u.Reputation > 1000
-  AND (phs.LastEditDate IS NULL OR phs.LastEditDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+  AND (phs.LastEditDate IS NULL OR phs.LastEditDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ORDER BY AggregateScore DESC, TotalPosts DESC
 LIMIT 100;

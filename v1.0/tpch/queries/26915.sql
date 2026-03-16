@@ -27,7 +27,7 @@ TopBrandSuppliers AS (
     SELECT 
         region_name,
         COUNT(*) AS supplier_count,
-        STRING_AGG(CONCAT('Brand: ', p_brand, ' Supplier: ', supplier_name), '; ') AS brand_supplier_details
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT('Brand: ', p_brand, ' Supplier: ', supplier_name))), '; ') AS brand_supplier_details
     FROM 
         RankedParts
     WHERE 

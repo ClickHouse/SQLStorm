@@ -23,7 +23,7 @@ PostEngagement AS (
         p.Id AS PostId,
         p.Title,
         p.CreationDate,
-        EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) / 3600 AS AgeInHours,
+        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 3600 AS AgeInHours,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.UserId) AS UniqueVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
@@ -40,7 +40,7 @@ ClosePostAnalysis AS (
             WHEN COUNT(*) > 0 THEN 'Closed'
             ELSE 'Active'
         END AS PostStatus,
-        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasonTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasonTypes
     FROM PostHistory AS ph
     JOIN CloseReasonTypes AS ctr ON ph.Comment IS NOT NULL AND ph.PostHistoryTypeId = 10
     GROUP BY ph.PostId

@@ -61,7 +61,7 @@ FinalMovieStats AS (
         mh.movie_id,
         mh.title,
         mh.production_year,
-        STRING_AGG(DISTINCT rc.actor_name, ', ') AS cast_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rc.actor_name))), ', ') AS cast_list,
         COALESCE(SUM(cd.total_companies), 0) AS company_count,
         COUNT(DISTINCT mh.episode_of_id) AS total_episodes,
         AVG(CASE WHEN rc.rank = 1 THEN 1 ELSE 0 END) * 100 AS lead_actor_percentage

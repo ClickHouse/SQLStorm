@@ -38,7 +38,7 @@ SELECT
     SUM(hvc.total_purchases) AS total_purchases,
     SUM(hvc.total_spent) AS total_spent,
     AVG(hvc.total_spent) AS avg_spent_per_customer,
-    STRING_AGG(hvc.full_name, ', ') AS customer_names
+    arrayStringConcat(groupArray(assumeNotNull(hvc.full_name)), ', ') AS customer_names
 FROM 
     HighValueCustomers hvc
 JOIN 

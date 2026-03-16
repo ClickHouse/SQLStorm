@@ -18,18 +18,18 @@ WITH RankedPosts AS (
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'  
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR  
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.Body, p.Tags, p.CreationDate, p.Score
 ), RecentActivities AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.UserDisplayName || ' ' || ph.Comment, '; ') AS ModComments,
+        arrayStringConcat(groupArray(assumeNotNull(ph.UserDisplayName || ' ' || ph.Comment)), '; ') AS ModComments,
         COUNT(*) AS ModificationCount
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL '3 months'  
+        ph.CreationDate >= CURRENT_DATE - INTERVAL 3 MONTH  
     GROUP BY 
         ph.PostId
 )

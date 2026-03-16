@@ -35,7 +35,7 @@ TopActors AS (
 MovieGenres AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(gt.kind, ', ') AS genres
+        arrayStringConcat(groupArray(assumeNotNull(gt.kind)), ', ') AS genres
     FROM 
         movie_companies mc
     JOIN 

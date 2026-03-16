@@ -3,9 +3,9 @@ WITH MovieDetails AS (
     SELECT 
         t.title AS movie_title,
         t.production_year,
-        STRING_AGG(a.name, ', ') AS actor_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT c.kind, ', ') AS company_types
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_types
     FROM 
         aka_title AS t
     JOIN 
@@ -45,10 +45,10 @@ BenchmarkResults AS (
 SELECT 
     era, 
     COUNT(*) AS total_movies, 
-    STRING_AGG(movie_title, ', ') AS movies_list,
-    STRING_AGG(actor_names, '; ') AS actors_list,
-    STRING_AGG(keywords, '; ') AS keywords_list,
-    STRING_AGG(company_types, '; ') AS companies_list
+    arrayStringConcat(groupArray(assumeNotNull(movie_title)), ', ') AS movies_list,
+    arrayStringConcat(groupArray(assumeNotNull(actor_names)), '; ') AS actors_list,
+    arrayStringConcat(groupArray(assumeNotNull(keywords)), '; ') AS keywords_list,
+    arrayStringConcat(groupArray(assumeNotNull(company_types)), '; ') AS companies_list
 FROM 
     BenchmarkResults
 GROUP BY 

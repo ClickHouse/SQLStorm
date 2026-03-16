@@ -43,11 +43,11 @@ FilteredPosts AS (
 PostTags AS (
     SELECT
         p.Id AS PostID,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM
         Posts p
     JOIN
-        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag_name ON true
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tag_name ON true
     JOIN
         Tags t ON t.TagName = tag_name
     GROUP BY

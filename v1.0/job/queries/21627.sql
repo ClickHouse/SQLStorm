@@ -30,7 +30,7 @@ MovieDetails AS (
         tm.title,
         tm.production_year,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         SUM(CASE 
             WHEN mi.info IS NULL THEN 0 
             ELSE 1 
@@ -52,7 +52,7 @@ KeywordStats AS (
     SELECT 
         m.id AS movie_id,
         COUNT(mk.keyword_id) AS keyword_count,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title m
     LEFT JOIN 
@@ -82,4 +82,4 @@ WHERE
     md.production_year > 2000
 ORDER BY 
     md.production_year DESC, md.total_cast DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

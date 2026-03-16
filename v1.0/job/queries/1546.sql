@@ -6,7 +6,7 @@ WITH MovieDetails AS (
         t.production_year,
         t.kind_id,
         COUNT(CASE WHEN c.role_id IS NOT NULL THEN 1 END) AS cast_count,
-        STRING_AGG(CASE WHEN ak.name IS NOT NULL THEN ak.name ELSE 'Unknown' END, ', ') AS actor_names,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ak.name IS NOT NULL THEN ak.name ELSE 'Unknown' END)), ', ') AS actor_names,
         COUNT(DISTINCT mk.keyword_id) AS keyword_count
     FROM 
         aka_title t

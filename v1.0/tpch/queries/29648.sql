@@ -22,7 +22,7 @@ FilteredOrders AS (
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
         o.o_orderstatus = 'F' 
-        AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1998-10-01'
+        AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1998-10-01')
     GROUP BY 
         o.o_orderkey, o.o_orderdate, o.o_totalprice
 ),

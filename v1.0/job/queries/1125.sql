@@ -38,8 +38,8 @@ SELECT
     r.title,
     r.production_year,
     r.num_actors,
-    COALESCE(STRING_AGG(DISTINCT d.actor_name, ', '), 'No Actors') AS actors,
-    COALESCE(STRING_AGG(DISTINCT kw.keyword, ', '), 'No Keywords') AS keywords
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d.actor_name))), ', '), 'No Actors') AS actors,
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', '), 'No Keywords') AS keywords
 FROM 
     RankedMovies r
 LEFT JOIN 

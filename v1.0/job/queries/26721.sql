@@ -47,7 +47,7 @@ SELECT
     ti.production_year,
     ti.cast_count,
     COALESCE(ki.keyword_count, 0) AS keyword_count,
-    STRING_AGG(DISTINCT rt.actor_name, ', ') AS actor_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.actor_name))), ', ') AS actor_names
 FROM 
     TitleInfo ti
 LEFT JOIN 

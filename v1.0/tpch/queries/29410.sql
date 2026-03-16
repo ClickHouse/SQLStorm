@@ -7,7 +7,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity_sold,
     MAX(l.l_extendedprice) AS highest_extended_price,
     MIN(l.l_extendedprice) AS lowest_extended_price,
-    STRING_AGG(DISTINCT r.r_name, ', ' ORDER BY r.r_name) AS regions_available
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ' ORDER BY r.r_name) AS regions_available
 FROM 
     part p
 JOIN 

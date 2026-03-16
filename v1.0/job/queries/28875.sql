@@ -18,7 +18,7 @@ MoviesByYear AS (
     SELECT
         production_year,
         COUNT(*) AS total_movies,
-        STRING_AGG(DISTINCT movie_title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_title))), ', ') AS movie_titles
     FROM
         ActorTitles
     GROUP BY

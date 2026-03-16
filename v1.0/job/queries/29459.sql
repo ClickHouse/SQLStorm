@@ -4,7 +4,7 @@ WITH ranked_titles AS (
         a.title,
         a.production_year,
         COUNT(c.id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
         ROW_NUMBER() OVER (PARTITION BY a.production_year ORDER BY COUNT(c.id) DESC) AS rank_within_year
     FROM 
         aka_title a
@@ -50,8 +50,8 @@ SELECT
     d.production_year,
     d.cast_count,
     d.aka_names,
-    STRING_AGG(DISTINCT d.movie_notes, '; ') AS combined_notes,
-    STRING_AGG(DISTINCT d.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d.movie_notes))), '; ') AS combined_notes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d.keyword))), ', ') AS keywords
 FROM 
     detailed_movie_info d
 GROUP BY 

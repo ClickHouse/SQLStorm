@@ -72,7 +72,7 @@ SELECT
     fr.production_year,
     fr.keyword_count,
     fr.cast_count,
-    STRING_AGG(DISTINCT fr.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fr.keyword))), ', ') AS keywords,
     (CASE 
         WHEN fr.cast_count IS NULL THEN 'No Cast'
         ELSE 'Cast Available'

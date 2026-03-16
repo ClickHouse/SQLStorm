@@ -24,7 +24,7 @@ WITH PostMetrics AS (
 SELECT 
     *,
     (UpVotes - DownVotes) AS NetVotes,
-    (ViewCount / NULLIF(EXTRACT(EPOCH FROM cast('2024-10-01 12:34:56' as timestamp) - CreationDate), 0)) AS ViewsPerSecond
+    (ViewCount / NULLIF(toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - CreationDate), 0)) AS ViewsPerSecond
 FROM 
     PostMetrics
 ORDER BY 

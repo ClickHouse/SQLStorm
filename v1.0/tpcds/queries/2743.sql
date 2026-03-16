@@ -54,4 +54,4 @@ LEFT JOIN
     promotion p ON h.item_sk = p.p_item_sk AND p.p_discount_active = 'Y'
 ORDER BY 
     h.total_sales DESC
-FETCH FIRST 25 ROWS ONLY;
+LIMIT 25;

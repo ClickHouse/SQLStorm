@@ -6,8 +6,8 @@ SELECT
     AVG(l.l_quantity) AS avg_quantity,
     MIN(l.l_shipdate) AS first_ship_date,
     MAX(l.l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ': ', r.r_name), '; ') AS regions_served,
-    STRING_AGG(DISTINCT p.p_comment, ', ') AS part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ': ', r.r_name)))), '; ') AS regions_served,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), ', ') AS part_comments
 FROM 
     supplier s
 JOIN 

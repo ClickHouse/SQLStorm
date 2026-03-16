@@ -28,9 +28,9 @@ WITH ranked_movies AS (
     SELECT 
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS alias_names,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS alias_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         top_movies tm
     LEFT JOIN 

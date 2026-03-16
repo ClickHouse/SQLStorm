@@ -32,7 +32,7 @@ MovieDetails AS (
         tm.movie_id,
         tm.title,
         COUNT(DISTINCT c.person_id) AS unique_actors,
-        STRING_AGG(char_name.name, ', ') AS actor_names
+        arrayStringConcat(groupArray(assumeNotNull(char_name.name)), ', ') AS actor_names
     FROM 
         TopMovies tm
     LEFT JOIN 

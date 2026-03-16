@@ -1,11 +1,11 @@
 WITH RECURSIVE SaleTrends AS (
     SELECT ws_sold_date_sk, 
            SUM(ws_net_paid) AS total_sales,
-           EXTRACT(YEAR FROM d_date) AS sale_year,
-           DENSE_RANK() OVER (PARTITION BY EXTRACT(YEAR FROM d_date) ORDER BY SUM(ws_net_paid) DESC) AS sales_rank
+           toYear(d_date) AS sale_year,
+           DENSE_RANK() OVER (PARTITION BY toYear(d_date) ORDER BY SUM(ws_net_paid) DESC) AS sales_rank
     FROM web_sales 
     JOIN date_dim ON ws_sold_date_sk = d_date_sk
-    WHERE d_date >= cast('2002-10-01' as date) - INTERVAL '1 YEAR'
+    WHERE d_date >= cast('2002-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY ws_sold_date_sk, d_date
     HAVING SUM(ws_net_paid) > 100
 ),
@@ -36,7 +36,7 @@ SELECT ca.ca_city,
        COALESCE(SUM(st.total_sales), 0) AS total_web_sales_last_year
 FROM CustomerAddress ca
 LEFT JOIN HighRollingCustomers hrc ON hrc.order_count > 10 AND hrc.avg_spent > 200
-LEFT JOIN SaleTrends st ON st.sale_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
+LEFT JOIN SaleTrends st ON st.sale_year = toYear(cast('2002-10-01' as date))
 WHERE ca.city_rank <= 5 OR ca.ca_state IN (SELECT DISTINCT ca_state FROM customer_address WHERE ca_zip IS NOT NULL)
 GROUP BY ca.ca_city, ca.ca_state, ca.total_spent
 ORDER BY ca.total_spent DESC;

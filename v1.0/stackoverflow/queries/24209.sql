@@ -70,6 +70,6 @@ LEFT JOIN
 WHERE 
     (U.Reputation > 500 OR S.BadgeCount > 5) 
     AND (E.UpVotes > 0 OR E.CommentCount IS NULL)
-    AND P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ORDER BY 
     S.TotalBounties DESC, U.Reputation DESC, E.CommentCount DESC;

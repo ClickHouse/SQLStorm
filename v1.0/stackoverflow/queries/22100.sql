@@ -13,12 +13,12 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostTags AS (
     SELECT 
         p.PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '> <')) AS Tag
+        arrayJoin(splitByString('> <', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag
     FROM 
         RankedPosts p
 ),
@@ -75,4 +75,4 @@ WHERE
 ORDER BY 
     rp.Score DESC,
     rp.CreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

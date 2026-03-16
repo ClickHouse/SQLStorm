@@ -66,7 +66,7 @@ final_results AS (
 SELECT fr.movie_id,
        fr.title,
        fr.keyword_count,
-       STRING_AGG(fr.actor_name, ', ' ORDER BY fr.actor_name) AS actors
+       arrayStringConcat(groupArray(assumeNotNull(fr.actor_name)), ', ' ORDER BY fr.actor_name) AS actors
 FROM final_results AS fr
 GROUP BY fr.movie_id, fr.title, fr.keyword_count
 HAVING COUNT(DISTINCT fr.actor_name) > 2 

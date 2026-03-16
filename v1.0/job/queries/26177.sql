@@ -24,7 +24,7 @@ AggregatedRoles AS (
         movie_id,
         movie_title,
         production_year,
-        STRING_AGG(actor_name, ', ') AS cast_names,
+        arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS cast_names,
         COUNT(*) AS total_actors
     FROM 
         RankedMovies
@@ -38,7 +38,7 @@ DetailedInfo AS (
         am.production_year,
         am.cast_names,
         am.total_actors,
-        STRING_AGG(mi.info, '; ') AS movie_infos
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS movie_infos
     FROM 
         AggregatedRoles am
     LEFT JOIN 

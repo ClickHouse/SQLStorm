@@ -3,7 +3,7 @@ WITH RECURSIVE actor_movies AS (
     SELECT 
         ka.person_id,
         COUNT(DISTINCT ct.movie_id) AS total_movies,
-        STRING_AGG(DISTINCT kt.keyword, ', ') AS associated_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.keyword))), ', ') AS associated_keywords
     FROM 
         aka_name ka
     JOIN 
@@ -24,7 +24,7 @@ dramatic_movies AS (
         mt.id AS movie_id,
         mt.title,
         mt.production_year,
-        COALESCE(STRING_AGG(DISTINCT cn.name, ', '), 'Unknown') AS companies,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', '), 'Unknown') AS companies,
         SUM(CASE WHEN ct.kind = 'drama' THEN 1 ELSE 0 END) AS drama_count
     FROM 
         aka_title mt

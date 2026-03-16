@@ -30,7 +30,7 @@ SELECT
     ak.name AS actor_name,
     COUNT(DISTINCT c.movie_id) AS total_movies,
     AVG(COALESCE(py.production_year, 0)) AS average_production_year,
-    STRING_AGG(DISTINCT m.movie_title, ', ') AS movies_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.movie_title))), ', ') AS movies_list
 FROM 
     cast_info c
 JOIN 

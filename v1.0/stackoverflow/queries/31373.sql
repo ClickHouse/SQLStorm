@@ -22,13 +22,13 @@ QuestionDetails AS (
         P.AnswerCount,
         COALESCE(CASE WHEN P.ClosedDate IS NOT NULL THEN 'Closed' ELSE 'Open' END, 'Open') AS Status,
         COALESCE(COUNT(C.Id), 0) AS CommentCount,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
     FROM
         Posts P
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
-        LATERAL (SELECT * FROM unnest(string_to_array(P.Tags, '>')) AS T(TagName)) AS T ON TRUE
+        (SELECT * FROM arrayJoin(splitByString('>', P.Tags)) AS T(TagName)) AS T ON TRUE
     WHERE 
         P.PostTypeId = 1  
     GROUP BY 

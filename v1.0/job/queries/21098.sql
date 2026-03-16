@@ -30,7 +30,7 @@ FilteredMovies AS (
         mh.level, 
         mh.production_year,
         COUNT(c.id) AS actor_count,  
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names
     FROM 
         MovieHierarchy mh
     LEFT JOIN 

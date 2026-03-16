@@ -1,14 +1,14 @@
 
 WITH TagCounts AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1  
     GROUP BY 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><'))
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2)))
 ),
 TopTags AS (
     SELECT 
@@ -73,7 +73,7 @@ FROM
 JOIN 
     Posts P ON U.UserId = P.OwnerUserId AND P.PostTypeId = 1  
 JOIN 
-    Tags T ON T.TagName = ANY(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><'))
+    Tags T ON T.TagName = ANY(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2)))
 GROUP BY 
     U.DisplayName, U.Reputation, T.TagName
 ORDER BY 

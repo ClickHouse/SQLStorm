@@ -31,7 +31,7 @@ RecentPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        P.CreationDate >= now64(6) - INTERVAL 30 DAY
 ),
 UserActivity AS (
     SELECT 
@@ -64,11 +64,11 @@ SELECT
         ELSE 'Low Reputation'
     END AS ReputationCategory,
     (SELECT 
-        STRING_AGG(DISTINCT T.TagName, ', ') 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
      FROM 
         Posts P
      JOIN 
-        UNNEST(string_to_array(P.Tags, ',')) AS Tag ON TRUE
+        arrayJoin(splitByString(',', P.Tags)) AS Tag ON TRUE
      JOIN 
         Tags T ON T.TagName = Tag 
      WHERE 

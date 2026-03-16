@@ -22,5 +22,5 @@ SELECT
     MAX(LENGTH(FullAddress)) AS MaxAddressLength,
     MIN(LENGTH(FullAddress)) AS MinAddressLength,
     AVG(LENGTH(FullAddress)) AS AvgAddressLength,
-    STRING_AGG(FullAddress, ', ') AS SampleAddresses
+    arrayStringConcat(groupArray(assumeNotNull(FullAddress)), ', ') AS SampleAddresses
 FROM FilteredAddresses;

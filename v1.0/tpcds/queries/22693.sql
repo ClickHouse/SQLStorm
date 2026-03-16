@@ -46,7 +46,7 @@ SELECT
     fc.c_customer_sk,
     fc.total_paid,
     fc.customer_status,
-    STRING_AGG(CONCAT_WS(' - ', CAST(sr.rank AS CHAR), sr.ws_order_number, sr.ws_net_profit), ', ') AS ranked_sales,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT_WS(' - ', CAST(sr.rank AS CHAR), sr.ws_order_number, sr.ws_net_profit))), ', ') AS ranked_sales,
     mp.max_profit_value
 FROM filtered_customers fc
 LEFT JOIN sales_ranks sr ON fc.c_customer_sk = (SELECT ws_bill_customer_sk FROM web_sales WHERE ws_order_number = sr.ws_order_number LIMIT 1)

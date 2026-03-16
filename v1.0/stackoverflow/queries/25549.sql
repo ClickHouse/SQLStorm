@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.PostTypeId
 ),
@@ -41,7 +41,7 @@ SELECT
     tp.CommentCount,
     u.DisplayName AS OwnerDisplayName,
     u.Reputation AS OwnerReputation,
-    ARRAY_AGG(DISTINCT tag.TagName) AS Tags
+    arrayDistinct(groupArray(assumeNotNull(tag.TagName))) AS Tags
 FROM 
     TopPosts tp
 JOIN 
@@ -51,7 +51,7 @@ JOIN
 LEFT JOIN 
     (SELECT 
         p.Id AS PostId,
-        string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><') AS TagName
+        splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)) AS TagName
     FROM 
         Posts p
     WHERE 

@@ -50,4 +50,4 @@ FROM
     TopPosts tp
 ORDER BY 
     tp.Score DESC, tp.CommentCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

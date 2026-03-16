@@ -49,7 +49,7 @@ SELECT
         WHEN cd.cd_marital_status IS NULL THEN 'Unknown'
         ELSE cd.cd_marital_status
     END AS marital_status,
-    STRING_AGG(CONCAT(cd.cd_gender, ' (Est. Purchases: ', cd.cd_purchase_estimate, ')'), ', ') AS demographic_info
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(cd.cd_gender, ' (Est. Purchases: ', cd.cd_purchase_estimate, ')'))), ', ') AS demographic_info
 FROM 
     AggregatedSales ag
 LEFT JOIN 

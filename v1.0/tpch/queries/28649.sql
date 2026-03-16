@@ -2,7 +2,7 @@ SELECT
     CONCAT(c.c_name, ' from ', s.s_name, ' in ', n.n_name) AS supplier_customer_info,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     LEFT(l.l_comment, 20) AS comment_excerpt
 FROM 
     customer c

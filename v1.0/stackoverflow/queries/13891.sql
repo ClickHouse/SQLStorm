@@ -16,7 +16,7 @@ WITH PostMetrics AS (
     LEFT JOIN 
         (SELECT 
              PostId, 
-             STRING_AGG(TagName, ', ') AS TagName 
+             arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') AS TagName 
          FROM 
              PostLinks PL 
          JOIN 

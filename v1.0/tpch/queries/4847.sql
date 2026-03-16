@@ -29,7 +29,7 @@ LineitemStats AS (
            SUM(l.l_quantity) AS total_quantity,
            SUM(l.l_extendedprice * (1 - l.l_discount)) AS net_revenue
     FROM lineitem l
-    WHERE l.l_shipdate < cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE l.l_shipdate < cast('1998-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY l.l_partkey
 )
 SELECT p.p_partkey,

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id
 ),
@@ -34,12 +34,12 @@ UserReputation AS (
 PostCloseReasons AS (
     SELECT 
         ph.PostId, 
-        STRING_AGG(CASE WHEN ph.PostHistoryTypeId = 10 
-                        THEN cr.Name END, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId = 10 
+                        THEN cr.Name END)), ', ') AS CloseReasons
     FROM 
         PostHistory ph 
     LEFT JOIN 
-        CloseReasonTypes cr ON ph.Comment::int = cr.Id
+        CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
     WHERE 
         ph.PostHistoryTypeId = 10
     GROUP BY 

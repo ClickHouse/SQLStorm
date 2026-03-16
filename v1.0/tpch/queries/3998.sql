@@ -31,7 +31,7 @@ WITH RankedSuppliers AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate >= CURRENT_DATE - INTERVAL '1 month'
+        l.l_shipdate >= CURRENT_DATE - INTERVAL 1 MONTH
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 )

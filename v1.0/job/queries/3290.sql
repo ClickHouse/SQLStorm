@@ -45,7 +45,7 @@ AggregateMovieInfo AS (
         md.movie_title,
         md.production_year,
         COUNT(DISTINCT cr.role_id) AS distinct_roles,
-        STRING_AGG(DISTINCT ci.company_name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.company_name))), ', ') AS companies
     FROM 
         MovieDetails md
     LEFT JOIN 

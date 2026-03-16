@@ -64,4 +64,4 @@ WHERE
     rm.production_year = (SELECT MAX(production_year) FROM aka_title)
 ORDER BY 
     rm.cast_count DESC, rm.title ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

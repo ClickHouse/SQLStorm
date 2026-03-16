@@ -4,7 +4,7 @@ SELECT
     c.c_name AS customer_name,
     o.o_orderkey AS order_key,
     COUNT(l.l_linenumber) AS line_item_count,
-    STRING_AGG(DISTINCT l.l_comment, '; ') AS line_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_comment))), '; ') AS line_comments,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     MAX(l.l_shipdate) AS last_ship_date,
     MIN(l.l_shipdate) AS first_ship_date

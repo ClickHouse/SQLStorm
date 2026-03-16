@@ -72,4 +72,4 @@ FROM
     Sales_Stats s
 ORDER BY 
     s.avg_price_per_item DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

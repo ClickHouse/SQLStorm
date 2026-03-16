@@ -33,7 +33,7 @@ TagStats AS (
         COUNT(p.Id) AS PostCount,
         SUM(p.ViewCount) AS TotalViews,
         AVG(p.Score) AS AverageScore,
-        ARRAY_AGG(DISTINCT rp.PostId) AS RelatedPostIds
+        arrayDistinct(groupArray(assumeNotNull(rp.PostId))) AS RelatedPostIds
     FROM Tags t
     JOIN Posts p ON p.Tags LIKE CONCAT('%', t.TagName, '%')
     JOIN RecentPosts rp ON p.Id = rp.PostId

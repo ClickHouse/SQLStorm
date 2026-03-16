@@ -6,7 +6,7 @@ SELECT
     MIN(cs.ss_sales_price) AS min_item_price,
     MAX(cs.ss_sales_price) AS max_item_price,
     AVG(cs.ss_sales_price) AS avg_item_price,
-    STRING_AGG(DISTINCT i.i_product_name, ', ') AS popular_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), ', ') AS popular_items
 FROM 
     customer_address ca
 JOIN customer c ON ca.ca_address_sk = c.c_current_addr_sk

@@ -33,7 +33,7 @@ TitleWithCompanies AS (
     SELECT 
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names
     FROM 
         title t
     LEFT JOIN 

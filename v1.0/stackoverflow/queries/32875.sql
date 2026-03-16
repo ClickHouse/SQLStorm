@@ -13,14 +13,14 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 
 PostComments AS (
     SELECT 
         C.PostId,
         COUNT(C.Id) AS CommentCount,
-        STRING_AGG(C.Text, '; ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(C.Text)), '; ') AS Comments
     FROM 
         Comments C
     GROUP BY 

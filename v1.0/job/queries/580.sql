@@ -44,7 +44,7 @@ ActorInfo AS (
 ActorsByTitle AS (
     SELECT 
         md.movie_id,
-        STRING_AGG(ai.actor_name, ', ') AS actors,
+        arrayStringConcat(groupArray(assumeNotNull(ai.actor_name)), ', ') AS actors,
         COUNT(ai.actor_name) AS actor_count
     FROM 
         MovieDetails md

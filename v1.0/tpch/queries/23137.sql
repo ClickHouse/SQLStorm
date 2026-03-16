@@ -24,10 +24,10 @@ RecentOrders AS (
         o.o_orderkey,
         o.o_totalprice,
         o.o_orderdate,
-        EXTRACT(YEAR FROM o.o_orderdate) AS order_year
+        toYear(o.o_orderdate) AS order_year
     FROM orders o
     WHERE o.o_orderstatus = 'O'
-      AND o.o_orderdate >= DATE '1998-10-01' - INTERVAL '1 year'
+      AND o.o_orderdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
 ),
 HighValueLineItems AS (
     SELECT 
@@ -43,7 +43,7 @@ SELECT
     SUM(hv.total_revenue) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     COALESCE(MAX(rs.max_supplycost), 0) AS highest_supply_cost,
-    STRING_AGG(DISTINCT c.c_name, ', ' ORDER BY c.c_name) AS customers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ' ORDER BY c.c_name) AS customers
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey

@@ -33,7 +33,7 @@ SELECT
     mc.chain_length,
     ac.name AS actor_name,
     COUNT(DISTINCT ml.linked_movie_id) AS linked_movie_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS associated_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS associated_keywords
 FROM 
     MovieChain mc
 LEFT JOIN 

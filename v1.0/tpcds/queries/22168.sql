@@ -42,4 +42,4 @@ LEFT JOIN
           ))
 ORDER BY 
     s.s_store_name ASC
-OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

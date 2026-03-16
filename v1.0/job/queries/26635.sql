@@ -30,8 +30,8 @@ ActorRoles AS (
 SELECT 
     rm.title,
     rm.production_year,
-    STRING_AGG(DISTINCT ar.actor_name || ' (' || ar.role_name || ')', ', ') AS actors,
-    STRING_AGG(DISTINCT rm.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ar.actor_name || ' (' || ar.role_name || ')'))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.keyword))), ', ') AS keywords
 FROM 
     RankedMovies rm
 LEFT JOIN 

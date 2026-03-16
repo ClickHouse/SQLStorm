@@ -27,7 +27,7 @@ SELECT
     ak.name AS actor_name,
     at.title AS movie_title,
     COUNT(DISTINCT kc.keyword) AS keyword_count,
-    ARRAY_AGG(DISTINCT kc.keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(kc.keyword))) AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ak.id ORDER BY mh.depth) AS movie_rank,
     CASE 
         WHEN COUNT(DISTINCT kc.keyword) > 5 THEN 'Rich'

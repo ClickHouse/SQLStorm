@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '5 years'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 5 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.PostTypeId
 ),
@@ -44,7 +44,7 @@ SELECT
     END AS PopularityStatus,
     CASE 
         WHEN phd.FirstEditDate IS NOT NULL 
-         THEN EXTRACT(EPOCH FROM (phd.LastEditDate - phd.FirstEditDate)) / 3600
+         THEN toUnixTimestamp((phd.LastEditDate - phd.FirstEditDate)) / 3600
          ELSE NULL 
     END AS HoursBetweenFirstAndLastEdit
 FROM 

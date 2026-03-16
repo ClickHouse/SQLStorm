@@ -24,7 +24,7 @@ ClosedPostStatistics AS (
         ph.CreationDate AS ClosedDate,
         ph.UserDisplayName AS ClosedBy,
         ph.Comment AS CloseReason,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM
         Posts p
     JOIN
@@ -32,7 +32,7 @@ ClosedPostStatistics AS (
     JOIN
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     JOIN
-        Tags t ON t.TagName IN (SELECT unnest(string_to_array(p.Tags, ', ')))
+        Tags t ON t.TagName IN (SELECT arrayJoin(splitByString(', ', p.Tags)))
     WHERE
         pht.Name = 'Post Closed'
     GROUP BY
@@ -54,7 +54,7 @@ CombinedStatistics AS (
     FROM
         TagStatistics ts
     LEFT JOIN
-        ClosedPostStatistics cps ON ts.TagName IN (SELECT unnest(string_to_array(cps.Tags, ', ')))
+        ClosedPostStatistics cps ON ts.TagName IN (SELECT arrayJoin(splitByString(', ', cps.Tags)))
 )
 SELECT
     TagName,
@@ -63,7 +63,7 @@ SELECT
     QuestionCount,
     AvgUserReputation,
     COUNT(PostId) FILTER (WHERE PostId IS NOT NULL) AS ClosedPostsCount,
-    STRING_AGG(DISTINCT Title, '; ') AS ClosedPostsTitles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Title))), '; ') AS ClosedPostsTitles
 FROM
     CombinedStatistics
 GROUP BY

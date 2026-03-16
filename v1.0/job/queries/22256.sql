@@ -15,7 +15,7 @@ WITH RankedMovies AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS total_cast_members,
-        STRING_AGG(DISTINCT n.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS cast_names,
         SUM(CASE WHEN c.note IS NULL THEN 1 ELSE 0 END) AS null_notes_count
     FROM 
         cast_info c

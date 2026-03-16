@@ -17,7 +17,7 @@ PopularPosts AS (
         P.ViewCount,
         RANK() OVER (ORDER BY P.Score DESC, P.ViewCount DESC) AS RankScore
     FROM Posts P
-    WHERE P.PostTypeId = 1 AND P.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
+    WHERE P.PostTypeId = 1 AND P.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
 ),
 PostHistoryDetails AS (
     SELECT 
@@ -29,7 +29,7 @@ PostHistoryDetails AS (
         PH.CreationDate AS EditDate
     FROM PostHistory PH
     INNER JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
-    WHERE PH.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '90 days'
+    WHERE PH.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 90 DAY
 )
 SELECT 
     UVS.DisplayName,
@@ -39,7 +39,7 @@ SELECT
     PHD.HistoryType,
     PHD.EditDate
 FROM UserVoteStats UVS
-FULL OUTER JOIN PopularPosts PP ON UVS.UserId = (SELECT U.Id FROM Users U ORDER BY RANDOM() LIMIT 1)
+FULL OUTER JOIN PopularPosts PP ON UVS.UserId = (SELECT U.Id FROM Users U ORDER BY rand() LIMIT 1)
 LEFT JOIN PostHistoryDetails PHD ON PP.PostId = PHD.PostId
 WHERE UVS.Upvotes > UVS.Downvotes
   AND (PHD.Comment IS NOT NULL OR PHD.HistoryType IS NOT NULL)

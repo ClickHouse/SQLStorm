@@ -6,7 +6,7 @@ SELECT
     ca.ca_state,
     COUNT(DISTINCT ws.ws_order_number) AS total_web_orders,
     SUM(ws.ws_sales_price) AS total_web_sales,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
     COUNT(DISTINCT wp.wp_url) AS distinct_webpages_visited
 FROM 
     customer c

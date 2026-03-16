@@ -56,7 +56,7 @@ SELECT
     COUNT(DISTINCT sh.l_orderkey) AS number_of_orders,
     SUM(sh.l_quantity) AS total_quantity_ordered,
     SUM(sh.l_extendedprice) AS total_revenue,
-    STRING_AGG(DISTINCT CONCAT(pd.p_name, ' (', pd.supplier_name, ')'), ', ') AS products_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(pd.p_name, ' (', pd.supplier_name, ')')))), ', ') AS products_supplied
 FROM 
     HighSpenders h
 JOIN 

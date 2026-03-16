@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score > 0
 ),
 TopUsers AS (
@@ -31,14 +31,14 @@ TopUsers AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        unnest(string_to_array(Tags, ','))
+        arrayJoin(splitByString(',', Tags))
     HAVING 
         COUNT(*) > 5
 )
@@ -56,7 +56,7 @@ FROM
 LEFT JOIN 
     PopularTags pt ON pt.TagName IN (
         SELECT 
-            unnest(string_to_array(Tags, ','))
+            arrayJoin(splitByString(',', Tags))
         FROM 
             Posts
         WHERE 

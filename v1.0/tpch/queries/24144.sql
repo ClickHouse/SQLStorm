@@ -40,7 +40,7 @@ suppliers_with_high_sales AS (
     JOIN 
         lineitem l ON ps.ps_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate >= CURRENT_DATE - INTERVAL '1 year'
+        l.l_shipdate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         s.s_suppkey, s.s_name
     HAVING 
@@ -51,7 +51,7 @@ suppliers_with_high_sales AS (
                 FROM 
                     lineitem 
                 WHERE 
-                    l_shipdate >= CURRENT_DATE - INTERVAL '1 year'
+                    l_shipdate >= CURRENT_DATE - INTERVAL 1 YEAR
                 GROUP BY 
                     l_suppkey
             ) AS avg_sales

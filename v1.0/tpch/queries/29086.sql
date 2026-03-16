@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT p.p_partkey) AS unique_parts,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(p.p_retailprice) AS average_price,
-    STRING_AGG(DISTINCT SUBSTRING(p.p_comment, 1, 20), ', ') AS sample_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(p.p_comment, 1, 20)))), ', ') AS sample_comments
 FROM 
     supplier s
 JOIN 

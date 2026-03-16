@@ -2,7 +2,7 @@ WITH movie_info_summary AS (
     SELECT 
         mi.movie_id,
         COUNT(*) AS info_count,
-        STRING_AGG(mi.info, '; ') AS info_details
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS info_details
     FROM 
         movie_info mi
     GROUP BY 
@@ -11,7 +11,7 @@ WITH movie_info_summary AS (
 role_summary AS (
     SELECT 
         cc.movie_id,
-        STRING_AGG(DISTINCT rt.role, ', ') AS unique_roles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ', ') AS unique_roles,
         COUNT(DISTINCT cc.person_id) AS role_count
     FROM 
         cast_info cc
@@ -23,7 +23,7 @@ role_summary AS (
 keyword_summary AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -61,7 +61,7 @@ SELECT
         WHEN md.info_count > 0 THEN 'Has Info'
         ELSE 'No Info'
     END AS info_status,
-    ARRAY_LENGTH(ARRAY_REMOVE(STRING_TO_ARRAY(md.info_details, '; '), NULL), 1) AS num_info_entries
+    length(ARRAY_REMOVE(splitByString('; ', md.info_details), NULL), 1) AS num_info_entries
 FROM 
     movie_data md
 WHERE 

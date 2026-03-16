@@ -23,7 +23,7 @@ WITH RankedSuppliers AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate <= cast('1998-10-01' as date) - INTERVAL '30 days'
+        l.l_shipdate <= cast('1998-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 ), CustomerOrders AS (

@@ -28,7 +28,7 @@ movie_keywords AS (
     
     SELECT 
         mk.movie_id,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -59,7 +59,7 @@ SELECT
     a.title AS movie_title,
     mh.linked_movie_id AS sequel_movie_id,
     COALESCE(mk.keywords, ARRAY[]::TEXT[]) AS keywords,
-    STRING_AGG(DISTINCT CONCAT(a.actor_name, ' as ', a.role), ', ') AS cast_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(a.actor_name, ' as ', a.role)))), ', ') AS cast_info,
     COUNT(DISTINCT a.actor_name) AS total_actors,
     MAX(a.role_order) AS max_role_order
 FROM 

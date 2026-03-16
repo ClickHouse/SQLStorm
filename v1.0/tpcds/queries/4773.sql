@@ -60,4 +60,4 @@ GROUP BY
     ca.ca_city
 ORDER BY 
     total_sales_in_city DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

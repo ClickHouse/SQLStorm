@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '12 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH
 ),
 SupplierStats AS (
     SELECT 

@@ -17,7 +17,7 @@ WITH RankedPosts AS (
                                          END 
                            ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
-    WHERE p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 VoteStats AS (
     SELECT 
@@ -31,7 +31,7 @@ VoteStats AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(ph.Comment, ', ') AS Comments,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS Comments,
         MAX(CASE WHEN pht.Name = 'Post Closed' THEN ph.CreationDate END) AS LastClosedDate
     FROM PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id

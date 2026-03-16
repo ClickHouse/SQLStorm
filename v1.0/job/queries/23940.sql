@@ -22,7 +22,7 @@ character_names AS (
 keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keyword_list
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keyword_list
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id
@@ -62,4 +62,4 @@ FROM movies_with_keywords mwk
 LEFT JOIN distinct_producer_info dp ON mwk.title_id = dp.movie_id
 WHERE mwk.cast_size_category <> 'Small Cast'
 ORDER BY mwk.production_year DESC, mwk.cast_count DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

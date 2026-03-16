@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.PostTypeId
 ), 
@@ -28,14 +28,14 @@ UserActivity AS (
     LEFT JOIN 
         Votes v ON u.Id = v.UserId
     LEFT JOIN 
-        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName
 ),
 ClosedPostReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -74,7 +74,7 @@ SELECT
         WHEN fr.CloseReasons = 'No Close Reasons' THEN 'Active' 
         ELSE 'Closed' 
     END AS PostStatus,
-    EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - fr.CreationDate)) / 3600 AS AgeInHours
+    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - fr.CreationDate)) / 3600 AS AgeInHours
 FROM 
     FinalResults fr
 ORDER BY 

@@ -18,7 +18,7 @@ MovieStats AS (
         movie_title,
         COUNT(*) AS total_cast,
         COUNT(DISTINCT person_id) AS unique_actors,
-        STRING_AGG(DISTINCT person_name, ', ') AS actor_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(person_name))), ', ') AS actor_list
     FROM Recents
     GROUP BY movie_title
 ),

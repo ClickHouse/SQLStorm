@@ -3,7 +3,7 @@ WITH RecursiveMovieCTE AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT c.id) AS cast_ids,
+        arrayDistinct(groupArray(assumeNotNull(c.id))) AS cast_ids,
         COUNT(DISTINCT c.id) AS cast_count,
         COUNT(DISTINCT kc.keyword) AS keyword_count,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(DISTINCT c.id) DESC) AS year_rank
@@ -50,7 +50,7 @@ SELECT
     mw.additional_info,
     COUNT(DISTINCT mc.id) AS production_companies,
     AVG(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS note_presence_ratio,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     MoviesWithInfo mw
 LEFT JOIN 

@@ -63,7 +63,7 @@ movies_with_actors AS (
         dm.title,
         dm.first_year,
         dm.last_year,
-        ARRAY_AGG(DISTINCT ai.actor_name) AS actor_names
+        arrayDistinct(groupArray(assumeNotNull(ai.actor_name))) AS actor_names
     FROM 
         distinct_movies dm
     LEFT JOIN 

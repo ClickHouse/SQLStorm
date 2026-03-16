@@ -20,7 +20,7 @@ RecentPosts AS (
         P.Tags,
         RANK() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 DAYS'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostLinksData AS (
     SELECT 
@@ -38,7 +38,7 @@ ClosedPosts AS (
         C.Name AS CloseReason,
         ROW_NUMBER() OVER (PARTITION BY PH.PostId ORDER BY PH.CreationDate DESC) AS CloseEntry
     FROM PostHistory PH
-    JOIN CloseReasonTypes C ON PH.Comment::INT = C.Id
+    JOIN CloseReasonTypes C ON CAST(PH.Comment AS INT) = C.Id
     WHERE PH.PostHistoryTypeId = 10
 ),
 CombinedData AS (
@@ -70,7 +70,7 @@ SELECT
         WHEN CD.CloseReason = 'Not Closed' AND CD.Reputation > 1000 THEN 'Eligible for Promotion'
         ELSE 'Not Eligible for Promotion' 
     END AS PromotionStatus,
-    STRING_AGG(T.TagName, ', ') AS TagsList
+    arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagsList
 FROM CombinedData CD
 LEFT JOIN (
     SELECT 

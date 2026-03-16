@@ -95,7 +95,7 @@ SELECT
     fp.Title,
     fp.Owner,
     fp.Popularity,
-    STRING_AGG(fp.TagName, ', ') AS Tags,
+    arrayStringConcat(groupArray(assumeNotNull(fp.TagName)), ', ') AS Tags,
     'User has rank: ' || CAST(ua.UserRank AS VARCHAR) AS UserRankInfo
 FROM 
     FilteredPosts fp

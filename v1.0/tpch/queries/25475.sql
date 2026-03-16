@@ -5,8 +5,8 @@ SELECT
     COUNT(DISTINCT p.p_partkey) AS number_of_parts,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(s.s_acctbal) AS average_supplier_account_balance,
-    STRING_AGG(DISTINCT p.p_type, ', ') AS unique_part_types,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_phone, ')'), '; ') AS suppliers_with_contact
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS unique_part_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')')))), '; ') AS suppliers_with_contact
 FROM 
     region r
 JOIN 

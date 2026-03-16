@@ -36,7 +36,7 @@ FROM top_customers cs
 JOIN customer c ON cs.c_customer_sk = c.c_customer_sk
 LEFT JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
 CROSS JOIN (
-    SELECT STRING_AGG(DISTINCT r.r_reason_desc, ', ') AS combinatory_reason
+    SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_reason_desc))), ', ') AS combinatory_reason
     FROM reason r
     WHERE r.r_reason_sk IN (
         SELECT DISTINCT sr_reason_sk 

@@ -3,8 +3,8 @@ WITH AddressStats AS (
     SELECT
         ca_state,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT ca_city, ', ') AS unique_cities,
-        STRING_AGG(DISTINCT CONCAT(ca_street_name, ' ', ca_street_number, ' ', ca_street_type), '; ') AS full_address_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS unique_cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_name, ' ', ca_street_number, ' ', ca_street_type)))), '; ') AS full_address_list
     FROM
         customer_address
     GROUP BY
@@ -15,7 +15,7 @@ GenderStats AS (
         cd_gender,
         COUNT(*) AS demo_count,
         AVG(cd_dep_count) AS avg_dependents,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_levels
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_levels
     FROM
         customer_demographics
     GROUP BY
@@ -26,7 +26,7 @@ SalesData AS (
         d_year,
         SUM(ws_net_profit) AS total_net_profit,
         COUNT(DISTINCT ws_order_number) AS order_count,
-        STRING_AGG(DISTINCT CAST(ws_ship_mode_sk AS TEXT), ', ') AS unique_shipping_modes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws_ship_mode_sk AS TEXT)))), ', ') AS unique_shipping_modes
     FROM
         web_sales
     JOIN

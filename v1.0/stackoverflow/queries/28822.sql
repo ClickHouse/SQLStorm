@@ -15,7 +15,7 @@ WITH RankedPosts AS (
 ),
 FilteredTags AS (
     SELECT 
-        TRIM(BOTH '<>' FROM unnest(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags)-2), '><'))) AS TagName,
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags)-2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         RankedPosts
@@ -42,7 +42,7 @@ SELECT
 FROM 
     TopTags tt
 JOIN 
-    Posts p ON tt.TagName = ANY(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><'))
+    Posts p ON tt.TagName = ANY(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)))
 JOIN 
     Users u ON p.OwnerUserId = u.Id
 WHERE 

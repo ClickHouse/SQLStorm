@@ -49,11 +49,11 @@ FROM
 LEFT JOIN
     nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN
-    customerOrders co ON co.c_custkey IN (SELECT DISTINCT o.o_custkey FROM orders o WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '90 days')
+    customerOrders co ON co.c_custkey IN (SELECT DISTINCT o.o_custkey FROM orders o WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 90 DAY)
 LEFT JOIN
     RankedSales t ON t.p_partkey IN (SELECT ps.ps_partkey FROM partsupp ps WHERE ps.ps_supplycost IS NOT NULL)
 LEFT JOIN
-    TopSuppliers ts ON ts.s_suppkey IN (SELECT DISTINCT l.l_suppkey FROM lineitem l WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 days')
+    TopSuppliers ts ON ts.s_suppkey IN (SELECT DISTINCT l.l_suppkey FROM lineitem l WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY)
 WHERE
     r.r_name LIKE 'N%'
 GROUP BY

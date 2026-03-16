@@ -29,7 +29,7 @@ TopSuppliers AS (
 SELECT 
     r.r_name AS region_name, 
     ts.nation_name, 
-    ARRAY_AGG(ts.s_name) AS top_supplier_names, 
+    groupArray(assumeNotNull(ts.s_name)) AS top_supplier_names, 
     SUM(ts.total_supply_cost) AS total_cost
 FROM 
     TopSuppliers ts

@@ -2,8 +2,8 @@ SELECT
     CONCAT(r.r_name, ', ', n.n_name) AS location,
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(o.o_totalprice) AS total_revenue,
-    STRING_AGG(DISTINCT p.p_name, '; ') AS products_offered,
-    STRING_AGG(DISTINCT s.s_name, '; ') AS suppliers_for_region,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), '; ') AS products_offered,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), '; ') AS suppliers_for_region,
     AVG(l.l_discount) AS average_discount
 FROM 
     region r

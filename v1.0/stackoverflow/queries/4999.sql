@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.PostTypeId
 ),
@@ -33,7 +33,7 @@ PostCommentSummary AS (
     SELECT 
         p.Id AS PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(DISTINCT c.UserDisplayName, ', ') AS Commenters
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.UserDisplayName))), ', ') AS Commenters
     FROM 
         Posts p
     LEFT JOIN 

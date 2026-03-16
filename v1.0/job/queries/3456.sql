@@ -32,7 +32,7 @@ SELECT
     RM.title,
     RM.production_year,
     COALESCE(CA.actor_count, 0) AS total_actors,
-    STRING_AGG(DISTINCT K.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(K.keyword))), ', ') AS keywords
 FROM 
     RankedMovies RM
 LEFT JOIN 

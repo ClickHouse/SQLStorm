@@ -49,4 +49,4 @@ WHERE
     tc.sales_rank <= 100
 ORDER BY
     tc.total_sales DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

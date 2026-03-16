@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         t.title AS movie_title,
         t.production_year,
         k.keyword AS movie_keyword,
-        string_agg(DISTINCT a.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names,
         ROW_NUMBER() OVER (PARTITION BY t.id ORDER BY t.production_year DESC) AS rnk
     FROM 
         aka_title t

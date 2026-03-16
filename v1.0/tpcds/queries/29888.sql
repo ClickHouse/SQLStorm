@@ -42,7 +42,7 @@ SELECT
     cd_gender,
     COUNT(*) AS customer_count,
     AVG(name_length) AS average_name_length,
-    STRING_AGG(DISTINCT name_upper, ', ') AS unique_uppercase_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(name_upper))), ', ') AS unique_uppercase_names
 FROM
     StringProcessed
 GROUP BY

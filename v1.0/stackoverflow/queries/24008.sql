@@ -27,11 +27,11 @@ UserReputation AS (
 PostTagData AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        LATERAL (SELECT UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag) AS tag ON TRUE
+        (SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS tag) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 
@@ -60,4 +60,4 @@ WHERE
 ORDER BY 
     p.CreationDate DESC, 
     u.Reputation DESC NULLS LAST
-OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

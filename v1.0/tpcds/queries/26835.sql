@@ -4,7 +4,7 @@ SELECT
     SUBSTRING(ca_street_name, 1, 15) AS street_name_short,
     COUNT(DISTINCT c.c_customer_sk) AS unique_customers,
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(DISTINCT cd.cd_gender, ', ') AS genders,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.cd_gender))), ', ') AS genders,
     CONCAT(COUNT(DISTINCT c.c_customer_sk), ' customers in ', ca_city) AS customer_report,
     UPPER(ca_country) AS country_upper,
     LENGTH(ca_zip) AS zip_length

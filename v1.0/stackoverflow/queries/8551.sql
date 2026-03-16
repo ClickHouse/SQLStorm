@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, u.DisplayName, p.PostTypeId
 ),
@@ -40,9 +40,9 @@ PostDetails AS (
     FROM 
         RankedPosts rp
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
-                unnest(string_to_array(p.Tags, '><')) AS TagName
+                arrayJoin(splitByString('><', p.Tags)) AS TagName
             FROM 
                 Posts p
             WHERE 
@@ -61,7 +61,7 @@ SELECT
     pd.CommentCount,
     pd.Upvotes,
     pd.Downvotes,
-    STRING_AGG(DISTINCT pd.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pd.TagName))), ', ') AS Tags
 FROM 
     PostDetails pd
 GROUP BY 

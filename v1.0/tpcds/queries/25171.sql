@@ -3,7 +3,7 @@ SELECT
     ca_state,
     COUNT(DISTINCT c_customer_sk) AS unique_customers,
     AVG(cd_purchase_estimate) AS average_purchase_estimate,
-    STRING_AGG(DISTINCT ca_city, ', ') AS cities,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities,
     SUM(ss_net_profit) AS total_net_profit
 FROM 
     customer_address AS ca

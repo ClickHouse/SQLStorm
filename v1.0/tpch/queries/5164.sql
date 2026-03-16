@@ -15,7 +15,7 @@ JOIN
 JOIN 
     lineitem l ON o.o_orderkey = l.l_orderkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND l.l_shipmode IN ('TRUCK', 'SHIP')
 GROUP BY 
     n.n_name, r.r_name

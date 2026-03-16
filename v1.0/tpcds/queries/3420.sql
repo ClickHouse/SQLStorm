@@ -43,4 +43,4 @@ HAVING
     SUM(t.total_profit) > 1000
 ORDER BY 
     t.total_profit DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

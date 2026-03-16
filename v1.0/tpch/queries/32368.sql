@@ -40,7 +40,7 @@ SELECT
     AVG(c.c_acctbal) AS avg_account_balance,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS net_revenue,
     MAX(l.l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     OrderHierarchy oh
 JOIN 
@@ -58,7 +58,7 @@ JOIN
 LEFT JOIN
     customer c ON oh.o_orderkey = c.c_custkey  
 WHERE 
-    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'  
+    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')  
     AND (c.c_acctbal IS NOT NULL AND c.c_acctbal > 0)
 GROUP BY 
     rh.r_name

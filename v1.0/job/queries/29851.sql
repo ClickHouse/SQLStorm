@@ -18,7 +18,7 @@ TopCharacters AS (
     SELECT 
         c.person_id,
         COUNT(DISTINCT c.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT (n.name || ' as ' || r.role), ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull((n.name || ' as ' || r.role)))), ', ') AS roles
     FROM 
         cast_info c
     JOIN 

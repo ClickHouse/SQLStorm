@@ -52,4 +52,4 @@ WHERE
     c.c_customer_id IS NOT NULL
 ORDER BY 
     profit_per_item DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

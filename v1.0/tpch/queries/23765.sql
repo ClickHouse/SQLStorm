@@ -16,7 +16,7 @@ FilteredOrders AS (
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rn
     FROM orders o
     WHERE o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2)
-      AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1997-01-01'
+      AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1997-01-01')
 ),
 EligibleParts AS (
     SELECT p.p_partkey, p.p_name, SUM(ps.ps_availqty) AS total_available

@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.ViewCount DESC) AS Rank
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.PostTypeId = 1 AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
+    WHERE p.PostTypeId = 1 AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
 ),
 TopPosts AS (
     SELECT PostId, Title, ViewCount, OwnerName

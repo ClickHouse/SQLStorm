@@ -58,7 +58,7 @@ SELECT
     mwc.movie_id,
     mwc.title,
     mwc.production_year,
-    STRING_AGG(mwc.actor_name || ' (' || mwc.role || ')', ', ') AS cast,
+    arrayStringConcat(groupArray(assumeNotNull(mwc.actor_name || ' (' || mwc.role || ')')), ', ') AS cast,
     COUNT(DISTINCT mwc.actor_name) AS total_actors
 FROM 
     movies_with_cast AS mwc

@@ -30,7 +30,7 @@ SELECT
     mt.production_year,
     COUNT(mc.company_id) AS num_companies,
     SUM(CASE WHEN mc.note IS NOT NULL THEN 1 ELSE 0 END) AS num_companies_with_notes,
-    ARRAY_AGG(DISTINCT kc.keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(kc.keyword))) AS keywords,
     RANK() OVER (PARTITION BY mt.production_year ORDER BY COUNT(mc.company_id) DESC) AS production_rank,
     CASE 
         WHEN COUNT(DISTINCT mc.company_id) > 5 THEN 'High Production'

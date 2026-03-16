@@ -42,8 +42,8 @@ SELECT
     cd.movie_id,
     cd.title,
     cd.production_year,
-    ARRAY_AGG(DISTINCT cd.genre) AS genres,
-    STRING_AGG(DISTINCT cd.actor_name, ', ') AS actors
+    arrayDistinct(groupArray(assumeNotNull(cd.genre))) AS genres,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.actor_name))), ', ') AS actors
 FROM CombinedData cd
 WHERE cd.actor_rank <= 3  
 GROUP BY cd.movie_id, cd.title, cd.production_year

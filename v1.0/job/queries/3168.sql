@@ -30,7 +30,7 @@ SELECT
     (SELECT COUNT(*) 
      FROM movie_info mi 
      WHERE mi.movie_id IN (SELECT id FROM aka_title WHERE production_year = tm.production_year)) AS related_movie_count,
-    COALESCE((SELECT STRING_AGG(DISTINCT kw.keyword, ', ') 
+    COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') 
               FROM movie_keyword mk 
               JOIN keyword kw ON mk.keyword_id = kw.id 
               WHERE mk.movie_id = (SELECT id FROM aka_title WHERE title = tm.title LIMIT 1)), 'No Keywords') AS keywords

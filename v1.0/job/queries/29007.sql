@@ -38,8 +38,8 @@ top_actors AS (
 SELECT 
     m.movie_id,
     m.movie_title,
-    ARRAY_AGG(DISTINCT a.actor_name) AS main_actors,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(a.actor_name))) AS main_actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     m.production_year
 FROM 
     movie_actor_info m

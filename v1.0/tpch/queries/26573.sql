@@ -29,8 +29,8 @@ SELECT
     rp.r_name AS region_name,
     COUNT(DISTINCT sp.supplier_name) AS supplier_count,
     COUNT(DISTINCT co.customer_name) AS customer_count,
-    STRING_AGG(sp.supply_info, '; ') AS supplier_details,
-    STRING_AGG(co.order_summary, '; ') AS customer_orders_summary
+    arrayStringConcat(groupArray(assumeNotNull(sp.supply_info)), '; ') AS supplier_details,
+    arrayStringConcat(groupArray(assumeNotNull(co.order_summary)), '; ') AS customer_orders_summary
 FROM 
     region rp
 LEFT JOIN 

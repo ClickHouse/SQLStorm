@@ -43,7 +43,7 @@ FilteredParts AS (
 )
 SELECT 
     fp.p_brand,
-    STRING_AGG(fp.p_name, ', ') AS part_names,
+    arrayStringConcat(groupArray(assumeNotNull(fp.p_name)), ', ') AS part_names,
     COUNT(fp.p_partkey) AS num_parts,
     AVG(fp.p_retailprice) AS avg_price
 FROM 

@@ -5,7 +5,7 @@ SELECT
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
     SUM(CASE WHEN cd_gender = 'F' THEN cd_dep_count ELSE 0 END) AS female_dependents,
     SUM(CASE WHEN c_birth_year BETWEEN 1980 AND 2000 THEN 1 ELSE 0 END) AS millennials_count,
-    STRING_AGG(DISTINCT ca_street_name || ' ' || ca_street_number, ', ') AS unique_addresses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_number))), ', ') AS unique_addresses
 FROM 
     customer_address ca
 JOIN 

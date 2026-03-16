@@ -32,7 +32,7 @@ SELECT
     COALESCE(cc.name, 'Unknown') AS company_name,
     COUNT(CASE WHEN ci.role_id IS NOT NULL THEN 1 END) AS cast_count,
     ROW_NUMBER() OVER (PARTITION BY mv.production_year ORDER BY mv.title) AS row_num,
-    STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
     AVG(ti.rating) AS average_rating
 FROM 
     movie_info mi

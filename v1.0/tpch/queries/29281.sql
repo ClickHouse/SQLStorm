@@ -6,7 +6,7 @@ SELECT
     AVG(l.l_extendedprice) AS avg_extended_price,
     MAX(l.l_discount) AS max_discount,
     MIN(l.l_tax) AS min_tax,
-    STRING_AGG(DISTINCT SUBSTRING(l.l_comment, 1, 20), '; ') AS truncated_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(l.l_comment, 1, 20)))), '; ') AS truncated_comments
 FROM 
     part p
 JOIN 

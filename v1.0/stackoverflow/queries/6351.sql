@@ -16,9 +16,9 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        LATERAL (SELECT unnest(string_to_array(p.Tags, '>')) AS TagName) t ON TRUE
+        (SELECT arrayJoin(splitByString('>', p.Tags)) AS TagName) t ON TRUE
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -35,7 +35,7 @@ PostDetails AS (
         tp.Score,
         tp.ViewCount,
         tp.OwnerDisplayName,
-        STRING_AGG(DISTINCT tp.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.TagName))), ', ') AS Tags
     FROM 
         TopPosts tp
     GROUP BY 

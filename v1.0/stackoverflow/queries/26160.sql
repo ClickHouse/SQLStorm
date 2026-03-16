@@ -15,15 +15,15 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(p.Tags, '>')) AS TagName
+        arrayJoin(splitByString('>', p.Tags)) AS TagName
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         TagName
     HAVING 
@@ -37,11 +37,11 @@ PostStatistics AS (
         rp.Score,
         rp.ViewCount,
         rp.OwnerDisplayName,
-        ARRAY_AGG(pt.TagName) AS RelatedTags
+        groupArray(assumeNotNull(pt.TagName)) AS RelatedTags
     FROM 
         RankedPosts rp
     LEFT JOIN 
-        PopularTags pt ON pt.TagName = ANY(string_to_array(rp.Tags, '>'))
+        PopularTags pt ON pt.TagName = ANY(splitByString('>', rp.Tags))
     WHERE 
         rp.PostRank <= 5
     GROUP BY 

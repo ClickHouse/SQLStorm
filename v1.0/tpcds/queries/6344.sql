@@ -57,4 +57,4 @@ GROUP BY
     cd.c_customer_id, cd.cd_gender, cd.cd_marital_status, cd.cd_education_status, cd.cd_purchase_estimate, cd.total_quantity, cd.total_profit
 ORDER BY 
     cd.total_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

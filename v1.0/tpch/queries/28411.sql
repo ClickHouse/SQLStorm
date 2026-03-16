@@ -6,7 +6,7 @@ WITH PartSupplierSummary AS (
         COUNT(DISTINCT ps.ps_suppkey) AS total_suppliers,
         SUM(ps.ps_availqty) AS total_available_quantity,
         AVG(ps.ps_supplycost) AS average_supply_cost,
-        STRING_AGG(CONCAT(s.s_address, ' - ', s.s_phone), '; ') AS supplier_details
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_address, ' - ', s.s_phone))), '; ') AS supplier_details
     FROM 
         part p
     JOIN 
@@ -22,7 +22,7 @@ CustomerOrderSummary AS (
         COUNT(DISTINCT o.o_orderkey) AS total_orders,
         SUM(o.o_totalprice) AS total_spent,
         MAX(o.o_orderdate) AS last_order_date,
-        STRING_AGG(CONCAT(o.o_orderstatus, ' - ', o.o_orderpriority), '; ') AS order_statuses
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(o.o_orderstatus, ' - ', o.o_orderpriority))), '; ') AS order_statuses
     FROM 
         customer c
     JOIN 

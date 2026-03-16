@@ -54,4 +54,4 @@ WHERE
     s.rank < 5
 ORDER BY 
     s.total_sold_quantity DESC, s.max_sales_price ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

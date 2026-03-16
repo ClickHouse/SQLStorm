@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         Posts a ON a.ParentId = p.Id AND a.PostTypeId = 2 /* Answer posts */
     WHERE 
         p.PostTypeId = 1 /* Questions */
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' /* Consider questions from the last year */
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR /* Consider questions from the last year */
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, u.DisplayName, p.Tags
 ),
@@ -36,7 +36,7 @@ SELECT
     trp.OwnerDisplayName,
     trp.Tags,
     SUBSTRING(p.Body FROM 1 FOR 300) AS ShortBody, /* Preview of Body, first 300 chars */
-    COALESCE((SELECT STRING_AGG(c.Text, ' | ') 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') 
               FROM Comments c 
               WHERE c.PostId = trp.PostId), 'No comments') AS CommentPreview
 FROM 

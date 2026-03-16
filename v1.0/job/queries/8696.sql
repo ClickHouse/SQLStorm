@@ -29,7 +29,7 @@ DirectorRoles AS (
 CompanyInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 
@@ -42,7 +42,7 @@ DetailedMovieInfo AS (
         r.title,
         rt.director_count,
         ci.companies,
-        ARRAY_AGG(DISTINCT r.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(r.keyword))) AS keywords
     FROM 
         RankedTitles r
     JOIN 

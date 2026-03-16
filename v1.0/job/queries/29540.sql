@@ -26,8 +26,8 @@ TopActors AS (
 )
 SELECT 
     production_year,
-    STRING_AGG(actor_name, ', ') AS top_actors,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS associated_keywords,
+    arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS top_actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS associated_keywords,
     COUNT(DISTINCT movie_title) AS total_movies
 FROM TopActors
 GROUP BY production_year

@@ -20,14 +20,14 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, u.DisplayName, p.Tags
 ),
 ProcessedTags AS (
     SELECT 
         PostId,
-        UNNEST(string_to_array(Tags, ',')) AS Tag
+        arrayJoin(splitByString(',', Tags)) AS Tag
     FROM 
         RankedPosts
 ),
@@ -63,7 +63,7 @@ FinalResults AS (
         rp.CommentCount,
         rp.UpvoteCount,
         rp.DownvoteCount,
-        (SELECT COUNT(*) FROM TopTags tt WHERE tt.Tag = ANY(string_to_array(rp.Tags, ','))) AS AssociatedTagsCount
+        (SELECT COUNT(*) FROM TopTags tt WHERE tt.Tag = ANY(splitByString(',', rp.Tags))) AS AssociatedTagsCount
     FROM 
         RankedPosts rp
 )

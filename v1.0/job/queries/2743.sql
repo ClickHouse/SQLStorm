@@ -44,7 +44,7 @@ SELECT
     END AS actor_status,
     (
         SELECT 
-            STRING_AGG(DISTINCT cn.name, ', ') 
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') 
         FROM 
             company_name cn 
         JOIN 

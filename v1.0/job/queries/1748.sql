@@ -43,7 +43,7 @@ FilteredNames AS (
 SELECT 
     fn.name,
     fn.movie_count,
-    STRING_AGG(DISTINCT rn.title, ', ') AS titles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rn.title))), ', ') AS titles
 FROM 
     FilteredNames fn
 LEFT JOIN 

@@ -28,7 +28,7 @@ TopMovies AS (
         mh.title,
         mh.level,
         COUNT(CASE WHEN ci.person_role_id IS NOT NULL THEN 1 END) AS cast_count,
-        STRING_AGG(DISTINCT an.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actor_names
     FROM 
         MovieHierarchy mh
     LEFT JOIN 

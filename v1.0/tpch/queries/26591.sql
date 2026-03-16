@@ -7,7 +7,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     MAX(o.o_orderdate) AS last_order_date,
     AVG(o.o_totalprice) AS avg_order_value,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     part p
 JOIN 

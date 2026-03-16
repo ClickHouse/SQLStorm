@@ -33,7 +33,7 @@ MovieDetails AS (
         mh.title,
         mh.production_year,
         COUNT(DISTINCT ci.person_id) AS num_cast_members,
-        STRING_AGG(DISTINCT an.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS cast_names,
         ROW_NUMBER() OVER (PARTITION BY mh.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS rank_within_year
     FROM 
         MovieHierarchy mh

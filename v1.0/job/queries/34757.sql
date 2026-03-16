@@ -34,7 +34,7 @@ WITH RECURSIVE MovieHierarchy AS (
 SELECT 
     mv.title,
     COUNT(DISTINCT mh.person_id) AS total_cast,
-    STRING_AGG(DISTINCT n.name, ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS cast_names,
     AVG(COALESCE(mk.cnt, 0)) AS avg_keywords,
     CASE 
         WHEN COUNT(DISTINCT mh.person_id) > 5 THEN 'Large Cast'

@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Tags, u.DisplayName
 ),
@@ -34,7 +34,7 @@ ExpandedTags AS (
     FROM 
         RankedPosts
     CROSS JOIN 
-        UNNEST(string_to_array(post_tags, ',')) AS tag
+        arrayJoin(splitByString(',', post_tags)) AS tag
 ),
 AggregatedData AS (
     SELECT 
@@ -44,7 +44,7 @@ AggregatedData AS (
         SUM(comment_count) AS total_comments,
         SUM(upvote_count) AS total_upvotes,
         SUM(downvote_count) AS total_downvotes,
-        STRING_AGG(DISTINCT tag, ', ') AS unique_tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag))), ', ') AS unique_tags
     FROM 
         ExpandedTags
     GROUP BY 
@@ -56,7 +56,7 @@ SELECT
     SUM(total_comments) AS comment_count,
     SUM(total_upvotes) AS upvote_count,
     SUM(total_downvotes) AS downvote_count,
-    STRING_AGG(DISTINCT unique_tags, '; ') AS tag_summary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(unique_tags))), '; ') AS tag_summary
 FROM 
     AggregatedData
 GROUP BY 

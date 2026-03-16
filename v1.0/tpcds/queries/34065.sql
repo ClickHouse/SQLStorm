@@ -39,7 +39,7 @@ SELECT
         WHEN s.percent_growth < 0 THEN 'Decreased'
         ELSE 'No Change'
     END AS growth_trend,
-    STRING_AGG(CONCAT(c.c_first_name, ' ', c.c_last_name) , ', ') AS associated_customers
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name))), ', ') AS associated_customers
 FROM sales_comparison s
 LEFT JOIN web_sales ws ON s.ws_item_sk = ws.ws_item_sk
 LEFT JOIN customer c ON ws.ws_ship_customer_sk = c.c_customer_sk

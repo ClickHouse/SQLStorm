@@ -14,7 +14,7 @@ actor_movies AS (
         c.movie_id,
         a.name AS actor_name,
         COUNT(c.id) AS total_roles,
-        STRING_AGG(DISTINCT t.title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movie_titles
     FROM 
         cast_info c
     JOIN 
@@ -29,7 +29,7 @@ SELECT
     COALESCE(SUM(rm.year_rank), 0) AS total_year_rank,
     COUNT(DISTINCT am.movie_id) AS number_of_movies,
     MAX(am.total_roles) AS max_roles_per_movie,
-    STRING_AGG(DISTINCT am.movie_titles, '; ') AS all_movies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(am.movie_titles))), '; ') AS all_movies
 FROM 
     actor_movies am
 LEFT JOIN 

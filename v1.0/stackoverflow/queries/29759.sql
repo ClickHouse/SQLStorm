@@ -8,7 +8,7 @@ WITH TagStats AS (
         SUM(COALESCE(CASE WHEN Votes.VoteTypeId = 3 THEN 1 ELSE 0 END, 0)) AS TotalDownvotes,
         SUM(CASE WHEN Posts.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN Posts.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
-        STRING_AGG(DISTINCT Users.DisplayName, ', ') AS ActiveUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Users.DisplayName))), ', ') AS ActiveUsers
     FROM 
         Tags 
     JOIN 

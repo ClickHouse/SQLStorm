@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT ak.name) AS aliases,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS aliases,
         COUNT(DISTINCT mci.company_id) AS company_count
     FROM 
         aka_title AS t

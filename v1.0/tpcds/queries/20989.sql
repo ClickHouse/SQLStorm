@@ -58,4 +58,4 @@ WHERE NOT EXISTS (
     )
 )
 ORDER BY hvi.web_sales DESC, hvi.i_item_desc
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

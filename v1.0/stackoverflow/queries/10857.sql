@@ -11,7 +11,7 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     u.Reputation AS OwnerReputation,
     COUNT(DISTINCT v.Id) AS VoteCount,
-    STRING_AGG(DISTINCT vt.Name, ', ') AS VoteTypes
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(vt.Name))), ', ') AS VoteTypes
 FROM 
     Posts p
 JOIN 

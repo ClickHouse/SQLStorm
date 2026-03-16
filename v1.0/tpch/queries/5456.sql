@@ -17,7 +17,7 @@ LineItemDetails AS (
     FROM lineitem l
     JOIN orders ls ON l.l_orderkey = ls.o_orderkey
     JOIN FilteredCustomers fc ON ls.o_custkey = fc.c_custkey
-    WHERE l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate <= DATE '1997-12-31'
+    WHERE l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate <= toDate('1997-12-31')
     GROUP BY ls.o_custkey
 )
 SELECT fc.c_name, 

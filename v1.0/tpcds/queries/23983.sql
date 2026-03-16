@@ -48,7 +48,7 @@ SELECT
         WHEN rs.total_return_amount < tc.total_net_profit THEN 'Profitable Catastrophe'
         ELSE 'Return Challenge'
     END AS return_analysis,
-    STRING_AGG(DISTINCT CASE WHEN r.rank <= 3 THEN CONCAT('Order ', r.ws_order_number) END, ', ') AS top_orders
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN r.rank <= 3 THEN CONCAT('Order ', r.ws_order_number) END))), ', ') AS top_orders
 FROM TopCustomers tc
 LEFT JOIN ReturnStatistics rs ON TRUE
 LEFT JOIN RankedSales r ON r.ws_order_number = tc.c_customer_sk

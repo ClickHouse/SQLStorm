@@ -29,7 +29,7 @@ SELECT
     mh.title AS movie_title,
     mh.production_year,
     COUNT(*) OVER (PARTITION BY ak.name ORDER BY mh.production_year) AS movie_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') FILTER (WHERE k.keyword IS NOT NULL) AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') FILTER (WHERE k.keyword IS NOT NULL) AS keywords,
     COALESCE(ci.note, 'No Role Description') AS role_description
 FROM 
     aka_name ak

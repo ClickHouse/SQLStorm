@@ -13,7 +13,7 @@ TopPosts AS (
         FROM Votes
         GROUP BY PostId
     ) uc ON p.Id = uc.PostId
-    WHERE p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostComments AS (
     SELECT PostId, COUNT(*) AS CommentCount
@@ -23,7 +23,7 @@ PostComments AS (
 ClosedPosts AS (
     SELECT ph.PostId
     FROM PostHistory ph
-    WHERE ph.PostHistoryTypeId = 10 AND ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+    WHERE ph.PostHistoryTypeId = 10 AND ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ),
 OverallStats AS (
     SELECT p.Id AS PostId, 

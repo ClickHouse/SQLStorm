@@ -32,14 +32,14 @@ TopUsers AS (
 ), 
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '><')) AS Tag,
+        arrayJoin(splitByString('><', Tags)) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        unnest(string_to_array(Tags, '><'))
+        arrayJoin(splitByString('><', Tags))
     ORDER BY 
         TagCount DESC
     LIMIT 5

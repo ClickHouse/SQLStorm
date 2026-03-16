@@ -76,4 +76,4 @@ WHERE
     AND de.d_year = 2023
 ORDER BY
     si.total_sales DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -42,4 +42,4 @@ WHERE hp.profit_per_item = (
     SELECT MAX(profit_per_item) FROM high_performers
 )
 ORDER BY hp.total_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

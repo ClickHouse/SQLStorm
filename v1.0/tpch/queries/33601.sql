@@ -23,7 +23,7 @@ order_summary AS (
     FROM orders o
     JOIN lineitem li ON o.o_orderkey = li.l_orderkey
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= DATE '1997-01-01' 
+    WHERE o.o_orderdate >= toDate('1997-01-01') 
     GROUP BY o.o_orderkey
     HAVING SUM(li.l_extendedprice * (1 - li.l_discount)) > 5000
 )

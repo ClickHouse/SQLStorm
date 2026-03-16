@@ -24,7 +24,7 @@ SELECT
     avg_length,
     unique_cities,
     total_addresses,
-    ROUND((1234567890 * RANDOM()), 2) AS random_value
+    ROUND((1234567890 * rand()), 2) AS random_value
 FROM 
     address_statistics
 WHERE 

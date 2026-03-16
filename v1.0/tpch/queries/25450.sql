@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT ps.ps_partkey) AS total_parts,
     SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost,
     AVG(CASE WHEN LENGTH(ps.ps_comment) > 50 THEN LENGTH(ps.ps_comment) ELSE NULL END) AS avg_long_comment_length,
-    STRING_AGG(DISTINCT p.p_name, ', ') FILTER (WHERE p.p_brand = 'Brand#45') AS part_names_brand_45
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') FILTER (WHERE p.p_brand = 'Brand#45') AS part_names_brand_45
 FROM
     supplier s
 JOIN

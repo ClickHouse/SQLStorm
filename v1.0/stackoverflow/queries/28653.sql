@@ -37,7 +37,7 @@ FilteredPosts AS (
         rp.ViewCount,
         rp.AnswerCount,
         rp.CommentCount,
-        STRING_AGG(c.Text, ' | ') AS CommentText
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS CommentText
     FROM RankedPosts rp
     LEFT JOIN Comments c ON rp.PostId = c.PostId
     WHERE rp.Rank <= 3 
@@ -53,7 +53,7 @@ SELECT
     fp.AnswerCount,
     fp.CommentCount,
     fp.CommentText,
-    ARRAY_LENGTH(STRING_TO_ARRAY(fp.Tags, ','), 1) AS TagCount,
+    length(splitByString(',', fp.Tags), 1) AS TagCount,
     CASE 
         WHEN fp.ViewCount > 1000 THEN 'High View Count' 
         WHEN fp.ViewCount BETWEEN 500 AND 1000 THEN 'Moderate View Count' 

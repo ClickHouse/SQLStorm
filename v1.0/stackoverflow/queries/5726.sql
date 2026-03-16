@@ -21,7 +21,7 @@ TopPosts AS (
         P.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY P.PostTypeId ORDER BY P.Score DESC, P.CreationDate DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year' AND P.Score > 0
+    WHERE P.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR AND P.Score > 0
 ),
 PostDetails AS (
     SELECT 

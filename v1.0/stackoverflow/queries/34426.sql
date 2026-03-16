@@ -22,7 +22,7 @@ RecentPostHistory AS (
     JOIN 
         Posts P ON PH.PostId = P.Id
     WHERE 
-        PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 BadgesCounts AS (
     SELECT 

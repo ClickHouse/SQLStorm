@@ -47,7 +47,7 @@ FilteredMovies AS (
 MovieKeywords AS (
     SELECT 
         f.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         FilteredMovies f
     LEFT JOIN 

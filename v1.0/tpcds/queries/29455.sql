@@ -6,7 +6,7 @@ SELECT
     ca.ca_state,
     SUM(ws.ws_ext_sales_price) AS total_spent,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
-    STRING_AGG(i.i_item_desc, ', ') AS purchased_items
+    arrayStringConcat(groupArray(assumeNotNull(i.i_item_desc)), ', ') AS purchased_items
 FROM 
     customer c
 JOIN 
@@ -25,4 +25,4 @@ HAVING
     SUM(ws.ws_ext_sales_price) > 500
 ORDER BY 
     total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -39,7 +39,7 @@ PostLinkDetails AS (
     SELECT 
         pl.PostId,
         COUNT(pl.RelatedPostId) AS TotalLinks,
-        STRING_AGG(DISTINCT lt.Name, ', ') AS LinkTypeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lt.Name))), ', ') AS LinkTypeNames
     FROM 
         PostLinks pl
     JOIN 
@@ -76,7 +76,7 @@ LEFT JOIN
     PostLinkDetails pl ON rp.PostID = pl.PostId
 WHERE 
     (rp.ScoreRank = 1 OR ra.VoteCount > 5)
-    AND (ra.LastActivityDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' OR rp.ViewCount > 100)
+    AND (ra.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR OR rp.ViewCount > 100)
 ORDER BY 
     rp.Score DESC, pl.TotalLinks DESC
 LIMIT 50;

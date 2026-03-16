@@ -26,7 +26,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     r.r_name LIKE '%EUROPE%'
-    AND l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
+    AND l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
 GROUP BY 
     r.r_name, n.n_name, SUBSTRING(p.p_name, 1, 20), LEFT(s.s_name, 10), LENGTH(p.p_comment)
 ORDER BY 

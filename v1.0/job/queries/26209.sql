@@ -5,7 +5,7 @@ WITH RankedTitles AS (
         a.title,
         a.production_year,
         k.keyword,
-        ROW_NUMBER() OVER (PARTITION BY a.production_year ORDER BY RANDOM()) AS rank
+        ROW_NUMBER() OVER (PARTITION BY a.production_year ORDER BY rand()) AS rank
     FROM 
         aka_title a
     JOIN 

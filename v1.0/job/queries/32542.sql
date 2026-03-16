@@ -31,7 +31,7 @@ SELECT
     mh.title AS Movie_Title,
     mh.production_year AS Production_Year,
     COUNT(DISTINCT ci.person_id) AS Total_Cast,
-    STRING_AGG(DISTINCT ak.name, ', ') AS Aka_Names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS Aka_Names,
     SUM(CASE WHEN p.gender = 'F' THEN 1 ELSE 0 END) AS Female_Cast,
     SUM(CASE WHEN p.gender = 'M' THEN 1 ELSE 0 END) AS Male_Cast,
     ROW_NUMBER() OVER (PARTITION BY mh.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS Ranking

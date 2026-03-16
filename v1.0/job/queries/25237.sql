@@ -3,10 +3,10 @@ WITH MovieDetails AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COALESCE(c.name, 'Unknown') AS company_name,
-        ARRAY_AGG(DISTINCT a.name) AS aliases,
-        ARRAY_AGG(DISTINCT p.info) AS person_info
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS aliases,
+        arrayDistinct(groupArray(assumeNotNull(p.info))) AS person_info
     FROM 
         aka_title t
     LEFT JOIN 
@@ -39,7 +39,7 @@ FilteredMovies AS (
         MovieDetails md
     WHERE 
         md.production_year >= 2000
-        AND ARRAY_LENGTH(md.keywords, 1) > 1
+        AND length(md.keywords, 1) > 1
 )
 SELECT 
     fm.title,

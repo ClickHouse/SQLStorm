@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.Title,
         p.ViewCount,
         p.Score,
-        ARRAY_AGG(COALESCE(t.TagName, 'N/A')) AS Tags,
+        groupArray(assumeNotNull(COALESCE(t.TagName, 'N/A'))) AS Tags,
         COUNT(c.Id) AS CommentCount,
         u.DisplayName AS Author,
         ROW_NUMBER() OVER(PARTITION BY p.Id ORDER BY p.CreationDate DESC) AS PostRank
@@ -46,7 +46,7 @@ SELECT
     fp.CommentCount,
     fp.Author,
     COUNT(DISTINCT v.Id) AS TotalVotes,
-    STRING_AGG(DISTINCT bh.Name, ', ') AS BadgeNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(bh.Name))), ', ') AS BadgeNames
 FROM 
     FilteredPosts fp
 LEFT JOIN 

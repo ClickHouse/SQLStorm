@@ -10,7 +10,7 @@ SELECT
             WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) 
             ELSE 0 
         END) AS avg_returned_revenue,
-    STRING_AGG(DISTINCT p.p_comment, ', ') AS unique_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), ', ') AS unique_comments
 FROM 
     part p
 JOIN 
@@ -28,7 +28,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     AND s.s_acctbal > 1000
 GROUP BY 
     p.p_name, s.s_name, c.c_name, r.r_name, p.p_comment

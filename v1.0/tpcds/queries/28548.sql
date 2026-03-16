@@ -47,4 +47,4 @@ FROM
     string_benchmark
 ORDER BY 
     name_length DESC, address_length DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

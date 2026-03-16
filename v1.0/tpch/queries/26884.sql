@@ -26,7 +26,7 @@ TopSuppliers AS (
 )
 SELECT 
     region, 
-    STRING_AGG(s_name || ' (Parts: ' || part_count || ', Cost: ' || total_supplycost || ')', '; ') AS top_suppliers
+    arrayStringConcat(groupArray(assumeNotNull(s_name || ' (Parts: ' || part_count || ', Cost: ' || total_supplycost || ')')), '; ') AS top_suppliers
 FROM 
     TopSuppliers
 GROUP BY 

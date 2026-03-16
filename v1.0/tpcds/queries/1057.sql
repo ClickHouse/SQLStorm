@@ -57,4 +57,4 @@ WHERE
     (COALESCE(ss.total_quantity, 0) - COALESCE(rs.total_return_quantity, 0)) > iv.max_quantity_on_hand
 ORDER BY
     web_sales_net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

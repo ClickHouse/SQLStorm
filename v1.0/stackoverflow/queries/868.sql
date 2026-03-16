@@ -20,7 +20,7 @@ WITH UserStats AS (
 RecentPostStats AS (
     SELECT 
         p.OwnerUserId,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgActivityDuration
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgActivityDuration
     FROM
         Posts p
     WHERE 

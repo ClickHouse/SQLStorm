@@ -11,8 +11,8 @@ SELECT
             ELSE 0 
         END) AS total_revenue_returned,
     AVG(p.p_retailprice) AS avg_retail_price,
-    STRING_AGG(DISTINCT CONCAT(c.c_address, ' ', c.c_phone), '; ') AS customer_details,
-    STRING_AGG(DISTINCT CONCAT(s.s_address, ' ', s.s_phone), '; ') AS supplier_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_address, ' ', c.c_phone)))), '; ') AS customer_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_address, ' ', s.s_phone)))), '; ') AS supplier_details
 FROM 
     part p
 JOIN 

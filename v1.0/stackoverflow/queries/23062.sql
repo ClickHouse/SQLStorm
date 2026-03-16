@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE 
         p.Score > 0 AND 
-        p.CreationDate > DATE '2024-10-01' - INTERVAL '30 days'
+        p.CreationDate > toDate('2024-10-01') - INTERVAL 30 DAY
 ), RecentVotes AS (
     SELECT 
         v.PostId,
@@ -23,7 +23,7 @@ WITH RankedPosts AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate > DATE '2024-10-01' - INTERVAL '14 days'
+        v.CreationDate > toDate('2024-10-01') - INTERVAL 14 DAY
     GROUP BY 
         v.PostId
 ), FilteredBadges AS (
@@ -34,7 +34,7 @@ WITH RankedPosts AS (
         Badges b
     WHERE 
         b.Class = 1 AND 
-        b.Date >= DATE '2024-10-01' - INTERVAL '1 year'
+        b.Date >= toDate('2024-10-01') - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 ), Final AS (
@@ -71,7 +71,7 @@ SELECT
 FROM 
     Final f
 WHERE 
-    f.Score > (SELECT AVG(Score) FROM Posts WHERE CreationDate > DATE '2024-10-01' - INTERVAL '30 days')
+    f.Score > (SELECT AVG(Score) FROM Posts WHERE CreationDate > toDate('2024-10-01') - INTERVAL 30 DAY)
 ORDER BY 
     f.Score DESC, f.VoteTotal DESC
 LIMIT 10;

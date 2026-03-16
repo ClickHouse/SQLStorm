@@ -7,8 +7,8 @@ SELECT
     AVG(cd_purchase_estimate) AS avg_purchase_estimate,
     MAX(cd_credit_rating) AS highest_credit_rating,
     MIN(cd_credit_rating) AS lowest_credit_rating,
-    STRING_AGG(DISTINCT cd_marital_status, ', ') AS distinct_marital_statuses,
-    STRING_AGG(DISTINCT cd_education_status, ', ') AS distinct_education_statuses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS distinct_marital_statuses,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS distinct_education_statuses
 FROM 
     customer_address ca
 JOIN 

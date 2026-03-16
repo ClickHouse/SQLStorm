@@ -67,7 +67,7 @@ SELECT
     fr.average_acct_balance,
     fr.total_orders,
     fr.total_revenue,
-    STRING_AGG(DISTINCT rp.p_name, ', ') AS most_expensive_parts
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.p_name))), ', ') AS most_expensive_parts
 FROM 
     FinalReport fr
 LEFT JOIN 

@@ -8,7 +8,7 @@ WITH TagStatistics AS (
         SUM(CASE WHEN p.PostTypeId IN (3, 4, 5) THEN 1 ELSE 0 END) AS WikiCount,
         AVG(u.Reputation) AS AverageReputation,
         MAX(p.CreationDate) AS LastPostDate,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopUsers
     FROM 
         Tags t
     LEFT JOIN 

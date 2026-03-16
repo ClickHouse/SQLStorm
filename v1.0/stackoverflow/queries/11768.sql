@@ -6,7 +6,7 @@ SELECT
     COUNT(c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
     COUNT(DISTINCT b.Id) AS BadgeCount
 FROM 
     Posts p
@@ -19,7 +19,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON u.Id = b.UserId
 LEFT JOIN 
-    unnest(string_to_array(p.Tags, ',')) AS tagsl(tag) ON TRUE
+    arrayJoin(splitByString(',', p.Tags)) AS tagsl(tag) ON TRUE
 LEFT JOIN 
     Tags t ON t.TagName = trim(both ' ' from tagsl.tag)
 WHERE 

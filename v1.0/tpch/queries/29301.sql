@@ -4,7 +4,7 @@ SELECT
     AVG(ps.ps_supplycost) AS average_supply_cost,
     SUM(l.l_quantity) AS total_quantity_sold,
     MAX(o.o_orderdate) AS last_order_date,
-    STRING_AGG(DISTINCT s.s_name, '; ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), '; ') AS supplier_names
 FROM 
     part p
 JOIN 

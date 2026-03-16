@@ -35,13 +35,13 @@ RecentPostHistory AS (
         PostHistoryTypes php ON ph.PostHistoryTypeId = php.Id
     WHERE 
         php.Name IN ('Post Closed', 'Post Reopened', 'Edit Title', 'Edit Body')
-        AND ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 AggregatedPostLinks AS (
     SELECT 
         pl.PostId,
         COUNT(pl.RelatedPostId) AS TotalLinks,
-        STRING_AGG(CONCAT(pl.RelatedPostId, ': ', l.Name), ', ') AS RelatedPosts
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(pl.RelatedPostId, ': ', l.Name))), ', ') AS RelatedPosts
     FROM 
         PostLinks pl
     JOIN 

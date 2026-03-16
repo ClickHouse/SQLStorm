@@ -17,7 +17,7 @@ TopMovies AS (
         rm.title,
         rm.production_year,
         c.kind AS company_type,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COALESCE(SUM(CAST(mvi.info AS INTEGER)), 0) AS vote_count
     FROM 
         RankedMovies rm

@@ -6,7 +6,7 @@ WITH MovieDetails AS (
         t.production_year,
         COALESCE(c.rank, 0) AS movie_rank,
         COUNT(DISTINCT kc.keyword) AS keyword_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors
     FROM 
         aka_title t
     LEFT JOIN 
@@ -49,7 +49,7 @@ RecentMovies AS (
     JOIN 
         cast_info ci ON t.id = ci.movie_id
     WHERE 
-        t.production_year >= EXTRACT(YEAR FROM CURRENT_DATE) - 5
+        t.production_year >= toYear(CURRENT_DATE) - 5
     GROUP BY 
         t.title, t.production_year
 )

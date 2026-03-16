@@ -16,7 +16,7 @@ MovieDetails AS (
         rm.title,
         rm.production_year,
         COUNT(c.movie_id) AS total_cast,
-        STRING_AGG(DISTINCT CAST(c.id AS TEXT), ', ') AS cast_ids
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.id AS TEXT)))), ', ') AS cast_ids
     FROM 
         RankedMovies rm
     LEFT JOIN 

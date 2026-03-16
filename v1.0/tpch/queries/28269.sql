@@ -2,7 +2,7 @@ SELECT
     SUBSTRING(p.p_name, 1, 10) AS short_name,
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     AVG(l.l_quantity) AS avg_quantity_per_order,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied,
     MAX(o.o_totalprice) AS max_order_price
 FROM 
     part p

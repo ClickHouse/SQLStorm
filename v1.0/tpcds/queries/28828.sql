@@ -29,7 +29,7 @@ SELECT
     fd.num_customers,
     fd.avg_purchase_estimate,
     fd.total_dependents,
-    STRING_AGG(DISTINCT fd.word, ', ') AS relevant_words
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fd.word))), ', ') AS relevant_words
 FROM FilteredDemographics fd
 GROUP BY fd.cd_gender, fd.num_customers, fd.avg_purchase_estimate, fd.total_dependents
 ORDER BY fd.cd_gender;

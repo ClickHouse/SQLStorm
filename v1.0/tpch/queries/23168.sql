@@ -32,7 +32,7 @@ SELECT
     SUM(COALESCE(ps.ps_supplycost, 0) * ph.depth) AS total_supply_cost,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(o.o_totalprice) AS avg_order_price,
-    STRING_AGG(DISTINCT ph.p_name, ', ') AS parts_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.p_name))), ', ') AS parts_details
 FROM region r
 LEFT JOIN nation n ON n.n_regionkey = r.r_regionkey
 LEFT JOIN supplier s ON s.s_nationkey = n.n_nationkey

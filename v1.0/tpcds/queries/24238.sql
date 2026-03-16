@@ -52,4 +52,4 @@ WHERE
       AND (net_sales - total_profit) IS NOT NULL
 ORDER BY 
     sales_date ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

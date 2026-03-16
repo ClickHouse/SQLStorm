@@ -47,4 +47,4 @@ FROM
     warehouse_data w
 ORDER BY 
     w.warehouse_total_net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

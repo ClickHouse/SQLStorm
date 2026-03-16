@@ -45,7 +45,7 @@ PostDetails AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.AcceptedAnswerId
 ),
@@ -70,7 +70,7 @@ UserPostHistory AS (
     JOIN 
         Posts P ON PH.PostId = P.Id
     WHERE 
-        PH.CreationDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 years' AND TIMESTAMP '2024-10-01 12:34:56'
+        PH.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR AND toDateTime64('2024-10-01 12:34:56', 6)
 )
 SELECT 
     U.DisplayName,
@@ -80,7 +80,7 @@ SELECT
     DENSE_RANK() OVER (ORDER BY U.Reputation DESC) AS ReputationRank,
     COUNT(DISTINCT PH.PostId) FILTER (WHERE PH.HistoryType = 'Close/Reopen') AS CloseReopenCount,
     COUNT(DISTINCT PH.PostId) FILTER (WHERE PH.HistoryType = 'Delete/Undelete') AS DeleteUndeleteCount,
-    STRING_AGG(DISTINCT PH.UserDisplayName, ', ') AS RelatedUserNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.UserDisplayName))), ', ') AS RelatedUserNames
 FROM 
     UserStatistics U
 JOIN 

@@ -54,7 +54,7 @@ SELECT
         WHEN rm.production_year BETWEEN 2000 AND 2010 THEN 'Modern'
         ELSE 'Recent'
     END AS era,
-    STRING_AGG(DISTINCT ak.name, '; ') AS aka_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), '; ') AS aka_names,
     CASE 
         WHEN COUNT(DISTINCT r.role) > 1 THEN TRUE 
         ELSE FALSE 

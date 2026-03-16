@@ -24,7 +24,7 @@ SELECT
     p.name AS person_name,
     COALESCE(MAX(c.role_id), -1) AS role_id,
     COUNT(DISTINCT tm.movie_id) AS movies_count,
-    STRING_AGG(DISTINCT tm.title, ', ' ORDER BY tm.title) AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tm.title))), ', ' ORDER BY tm.title) AS titles,
     NULLIF(COUNT(DISTINCT c.person_id), 0) AS unique_cast_count
 FROM 
     TopMovies AS tm

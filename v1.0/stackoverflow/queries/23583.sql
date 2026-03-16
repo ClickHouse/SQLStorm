@@ -42,7 +42,7 @@ PostDetails AS (
 RecentActivity AS (
     SELECT 
         PostId,
-        STRING_AGG(DISTINCT UserDisplayName, ', ') AS UsersResponsible,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(UserDisplayName))), ', ') AS UsersResponsible,
         COUNT(*) AS ChangeCount
     FROM 
         PostDetails

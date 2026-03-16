@@ -74,4 +74,4 @@ WHERE
 ORDER BY 
     cs.total_profit DESC, 
     c.c_first_name ASC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount
 ), FilteredPosts AS (
@@ -43,13 +43,13 @@ SELECT
     fp.Sentiment,
     u.DisplayName AS AuthorName,
     u.Reputation AS AuthorReputation,
-    STRING_AGG(t.TagName, ',') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ',') AS Tags
 FROM 
     FilteredPosts fp
 JOIN 
     Users u ON u.Id = (SELECT OwnerUserId FROM Posts WHERE Id = fp.PostId)
 LEFT JOIN 
-    LATERAL unnest(string_to_array(substring((SELECT Tags FROM Posts WHERE Id = fp.PostId), 2, length((SELECT Tags FROM Posts WHERE Id = fp.PostId))-2), '><')) AS t(TagName) ON t.TagName IS NOT NULL
+    arrayJoin(splitByString('><', substring((SELECT Tags FROM Posts WHERE Id = fp.PostId), 2, length((SELECT Tags FROM Posts WHERE Id = fp.PostId))-2))) AS t(TagName) ON t.TagName IS NOT NULL
 GROUP BY 
     fp.PostId, fp.Title, fp.CreationDate, fp.ViewCount, 
     fp.CommentCount, fp.UpVotes, fp.DownVotes, 

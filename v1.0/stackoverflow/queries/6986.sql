@@ -44,7 +44,7 @@ LEFT JOIN (
         p.OwnerUserId,
         COUNT(DISTINCT ph.Id) AS EditHistoryCount,
         COUNT(DISTINCT CASE WHEN p.ClosedDate IS NOT NULL THEN p.Id END) AS ClosedPosts,
-        STRING_AGG(DISTINCT CONCAT('Changed ', p.Title, ' at ', ph.CreationDate), '; ') AS KeyChanges
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Changed ', p.Title, ' at ', ph.CreationDate)))), '; ') AS KeyChanges
     FROM Posts p
     JOIN PostHistory ph ON p.Id = ph.PostId
     GROUP BY p.OwnerUserId

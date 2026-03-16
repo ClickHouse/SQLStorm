@@ -58,7 +58,7 @@ SELECT
     tp.EngagementLevel,
     COALESCE((
         SELECT 
-            STRING_AGG(c.Text, ' | ')
+            arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ')
         FROM 
             Comments c
         WHERE 

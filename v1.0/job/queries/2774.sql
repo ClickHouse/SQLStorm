@@ -26,7 +26,7 @@ ActorTitleInfo AS (
 CompanyAggregate AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
         COUNT(DISTINCT mc.company_id) AS num_companies
     FROM 
         movie_companies mc

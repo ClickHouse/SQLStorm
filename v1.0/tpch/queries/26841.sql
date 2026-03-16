@@ -4,7 +4,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS total_returned_qty,
     SUM(l.l_quantity) AS total_ordered_qty,
     MAX(l.l_shipdate) AS last_ship_date,
-    STRING_AGG(DISTINCT c.c_mktsegment, ', ') AS market_segments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_mktsegment))), ', ') AS market_segments,
     COUNT(DISTINCT o.o_orderkey) AS total_orders
 FROM 
     part p 

@@ -5,7 +5,7 @@ WITH RankedLines AS (
     FROM 
         lineitem l
     WHERE 
-        l_shipdate >= cast('1998-10-01' as date) - INTERVAL '365 days'
+        l_shipdate >= cast('1998-10-01' as date) - INTERVAL 365 DAY
         AND l_returnflag = 'N'
 ),
 FilteredSuppliers AS (
@@ -90,4 +90,4 @@ WHERE
     jr.total_orders >= (SELECT AVG(total_orders) FROM JoinResults)
 ORDER BY 
     jr.total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

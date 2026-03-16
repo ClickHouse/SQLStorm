@@ -27,7 +27,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity_sold,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,
     COALESCE(rcc.total_count, 0) AS customer_count,
-    CASE WHEN l.l_shipdate > DATE '1997-10-01' THEN 'Recent' ELSE 'Old' END AS sale_period
+    CASE WHEN l.l_shipdate > toDate('1997-10-01') THEN 'Recent' ELSE 'Old' END AS sale_period
 FROM part p
 JOIN lineitem l ON p.p_partkey = l.l_partkey
 LEFT JOIN (

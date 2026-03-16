@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.PostTypeId IN (1, 2)  
 ),
 UserBadges AS (
@@ -28,7 +28,7 @@ UserBadges AS (
 PostHistorySummary AS (
     SELECT
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         COUNT(DISTINCT ph.UserId) AS EditorCount,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
@@ -64,7 +64,7 @@ LEFT JOIN
     RankedPosts rp ON p.Id = rp.PostId
 WHERE 
     phs.EditorCount > 5 
-    AND (p.ClosedDate IS NULL OR p.ClosedDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days') 
+    AND (p.ClosedDate IS NULL OR p.ClosedDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) 
 ORDER BY 
     p.Score DESC, OwnerReputation DESC
 LIMIT 100;

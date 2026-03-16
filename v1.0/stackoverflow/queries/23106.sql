@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostDetails AS (
     SELECT 
@@ -67,7 +67,7 @@ SELECT
         WHEN cd.CommentCount > 0 THEN 'Has Comments'
         ELSE 'No Comments'
     END AS CommentStatus,
-    (SELECT STRING_AGG(t.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
      FROM Tags t 
      JOIN Posts p ON p.Id = cd.PostId 
      WHERE p.Tags IS NOT NULL AND POSITION(t.TagName IN p.Tags) > 0) AS AssociatedTags

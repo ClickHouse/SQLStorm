@@ -63,7 +63,7 @@ FinalBenchmark AS (
         t.movie_id,
         MAX(t.title) AS max_title,
         COUNT(DISTINCT t.actor_name) AS unique_actors,
-        STRING_AGG(DISTINCT t.company_name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.company_name))), ', ') AS companies,
         SUM(CASE WHEN t.production_year < 2000 THEN 1 ELSE 0 END) AS pre_2000_count
     FROM
         TopMoviesWithDetails t

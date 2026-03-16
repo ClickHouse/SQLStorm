@@ -48,7 +48,7 @@ SelectedMovies AS (
 SELECT 
     sm.title_id,
     sm.title,
-    STRING_AGG(sm.actor_name || ' as ' || sm.role, ', ') AS cast
+    arrayStringConcat(groupArray(assumeNotNull(sm.actor_name || ' as ' || sm.role)), ', ') AS cast
 FROM 
     SelectedMovies sm
 GROUP BY 

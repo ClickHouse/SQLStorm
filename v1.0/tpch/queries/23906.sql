@@ -49,4 +49,4 @@ CROSS JOIN MinMaxOrderStats B
 WHERE C.TotalSpent BETWEEN (B.MinSpent * 0.9) AND (B.MaxSpent * 1.1)
 AND (C.OrderCount > (SELECT AVG(OrderCount) FROM CustomerOrders) OR C.TotalSpent IS NOT NULL)
 ORDER BY C.TotalSpent DESC
-OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

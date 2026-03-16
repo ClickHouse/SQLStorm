@@ -6,7 +6,7 @@ WITH CustomerOrders AS (
         c.c_last_name,
         COUNT(ws.ws_order_number) AS order_count,
         SUM(ws.ws_net_paid_inc_tax) AS total_spent,
-        STRING_AGG(DISTINCT CONCAT(i.i_item_desc, ' (', ws.ws_quantity, ')'), ', ') AS purchased_items
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(i.i_item_desc, ' (', ws.ws_quantity, ')')))), ', ') AS purchased_items
     FROM 
         customer c
     JOIN 

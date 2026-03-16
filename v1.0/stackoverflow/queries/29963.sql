@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1   
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 ),
 FilteredPosts AS (
     SELECT 
@@ -56,13 +56,13 @@ SELECT
     tp.OwnerDisplayName,
     tp.Score,
     tp.CommentCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS RelatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS RelatedTags
 FROM 
     TopPosts tp
 LEFT JOIN 
     Posts post ON tp.PostId = post.Id
 LEFT JOIN 
-    UNNEST(string_to_array(post.Tags, '><')) AS tag_name ON tag_name IS NOT NULL
+    arrayJoin(splitByString('><', post.Tags)) AS tag_name ON tag_name IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag_name
 WHERE 

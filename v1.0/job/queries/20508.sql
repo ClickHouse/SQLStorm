@@ -26,7 +26,7 @@ MovieDetails AS (
         tm.movie_id,
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         COALESCE(SUM(CASE WHEN mi.info_type_id = 1 THEN 1 END), 0) AS awards_count,
         COALESCE(SUM(CASE WHEN kw.keyword IS NOT NULL THEN 1 END), 0) AS keyword_count
     FROM 

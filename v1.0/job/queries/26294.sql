@@ -8,7 +8,7 @@ SELECT
     t.production_year,
     c.role_id,
     p.info AS person_info,
-    STRING_AGG(DISTINCT k.keyword, ',') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',') AS keywords,
     co.name AS company_name,
     ct.kind AS company_type,
     yt.title AS episode_title

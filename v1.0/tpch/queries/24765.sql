@@ -65,4 +65,4 @@ WHERE
     sup.quartile = 1
 ORDER BY 
     total_revenue DESC, ts.r_name
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

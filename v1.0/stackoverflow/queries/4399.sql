@@ -84,6 +84,6 @@ FROM
 JOIN 
     PostDetails pd ON tu.UserId = pd.OwnerUserId
 WHERE 
-    pd.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+    pd.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ORDER BY 
     tu.Rank, pd.Score DESC;

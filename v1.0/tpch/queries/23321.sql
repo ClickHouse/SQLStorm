@@ -75,5 +75,4 @@ HAVING
 ORDER BY 
     total_order_value DESC, 
     ts.nation_name ASC
-OFFSET 1 ROWS
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 1;

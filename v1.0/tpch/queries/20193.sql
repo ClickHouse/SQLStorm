@@ -54,7 +54,7 @@ SELECT
     COUNT(DISTINCT cp.p_partkey) AS distinct_parts_count,
     SUM(cp.total_spent) AS total_spent_by_customers,
     AVG(cp.avg_order_value) AS avg_order_value,
-    STRING_AGG(DISTINCT cp.supplier_name, ', ') AS suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cp.supplier_name))), ', ') AS suppliers
 FROM ComplexJoin cp
 JOIN nation n ON cp.supplier_name IS NOT NULL OR cp.total_orders IS NULL
 JOIN region r ON n.n_regionkey = r.r_regionkey

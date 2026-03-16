@@ -35,7 +35,7 @@ SELECT
     COUNT(DISTINCT mc.id) AS total_companies,
     SUM(CASE WHEN mp.info IS NOT NULL THEN 1 ELSE 0 END) AS has_info_count,
     ROW_NUMBER() OVER (PARTITION BY ak.person_id ORDER BY mt.production_year DESC) AS actor_movie_rank,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS movie_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS movie_keywords
 FROM 
     aka_name ak
 JOIN 

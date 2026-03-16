@@ -63,4 +63,4 @@ ORDER BY
     ci.purchase_estimation_band DESC, 
     total_profit DESC, 
     return_quantity DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -11,7 +11,7 @@ WITH RecentUserActivity AS (
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     LEFT JOIN Comments C ON U.Id = C.UserId
     LEFT JOIN Votes V ON V.UserId = U.Id
-    WHERE U.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE U.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY U.Id, U.DisplayName
 ),
 
@@ -37,7 +37,7 @@ PostStats AS (
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '3 months'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
     GROUP BY P.Id, P.Title
 )
 

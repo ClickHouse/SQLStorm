@@ -9,7 +9,7 @@ SELECT
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownvotes,
     SUM(b.Class) AS TotalBadges,
     COUNT(DISTINCT c.Id) AS TotalComments,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
 FROM 
     Users u
 LEFT JOIN 
@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT 
          p.Id, 
-         unnest(string_to_array(p.Tags, ',')) AS TagName 
+         arrayJoin(splitByString(',', p.Tags)) AS TagName 
      FROM 
          Posts p) t ON p.Id = t.Id
 LEFT JOIN 

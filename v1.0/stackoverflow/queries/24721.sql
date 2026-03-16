@@ -8,7 +8,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
         AND p.Score > 0
 ),
 UserReputation AS (
@@ -36,15 +36,15 @@ TopComments AS (
 PostsWithTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS TagsList
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
     FROM 
         Posts p
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
                 t.TagName 
             FROM 
-                UNNEST(string_to_array(p.Tags, '>')) AS tags_array(tag) 
+                arrayJoin(splitByString('>', p.Tags)) AS tags_array(tag) 
             JOIN 
                 Tags t ON t.TagName = tags_array.tag
         ) t ON true

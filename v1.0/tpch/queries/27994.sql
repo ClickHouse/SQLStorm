@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT p.p_partkey) AS part_count,
     SUM(ps.ps_availqty) AS total_avail_qty,
     ROUND(AVG(ps.ps_supplycost), 2) AS average_supply_cost,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS aggregated_part_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS aggregated_part_comments
 FROM 
     supplier s
 JOIN 

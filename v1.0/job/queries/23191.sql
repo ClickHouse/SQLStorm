@@ -47,7 +47,7 @@ ActorKeywordSummary AS (
 )
 SELECT 
     aks.actor_name,
-    STRING_AGG(DISTINCT aks.keyword, ', ') AS keywords_appeared,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aks.keyword))), ', ') AS keywords_appeared,
     MAX(at.production_year) AS latest_movie_year
 FROM 
     ActorKeywordSummary aks

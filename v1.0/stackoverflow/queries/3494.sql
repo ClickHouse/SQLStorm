@@ -66,7 +66,7 @@ PostsStatistics AS (
         WHERE PostHistoryTypeId IN (4, 5, 24)
         GROUP BY PostId
     ) ps ON p.Id = ps.PostId
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     tu.DisplayName AS TopUser,
@@ -78,5 +78,5 @@ SELECT
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = ps.PostId AND v.VoteTypeId = 2) AS UpVoteCount,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = ps.PostId AND v.VoteTypeId = 3) AS DownVoteCount
 FROM TopUsers tu
-JOIN PostsStatistics ps ON RANDOM() < 0.1 
+JOIN PostsStatistics ps ON rand() < 0.1 
 ORDER BY tu.ActivityRank, ps.EffectiveCreationDate DESC;

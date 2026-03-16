@@ -5,9 +5,9 @@ SELECT
     ca.ca_state,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_spent,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
     DATE_TRUNC('month', d.d_date) AS month_of_order,
-    EXTRACT(YEAR FROM d.d_date) AS order_year
+    toYear(d.d_date) AS order_year
 FROM 
     customer c
 JOIN 

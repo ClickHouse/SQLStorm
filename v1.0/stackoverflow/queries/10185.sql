@@ -7,7 +7,7 @@ WITH PostStats AS (
         COUNT(v.Id) AS VoteCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgActiveDurationInSeconds
+        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgActiveDurationInSeconds
     FROM 
         Posts p
     LEFT JOIN 

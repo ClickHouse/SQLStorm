@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         p.CreationDate,
         p.Score,
-        ROW_NUMBER() OVER (PARTITION BY STRING_AGG(t.TagName, ', ') ORDER BY p.CreationDate DESC) AS TagRank
+        ROW_NUMBER() OVER (PARTITION BY arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') ORDER BY p.CreationDate DESC) AS TagRank
     FROM 
         Posts p
     JOIN 
@@ -41,7 +41,7 @@ TopActiveUsers AS (
     JOIN 
         Votes v ON v.UserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         u.Id, u.DisplayName
     HAVING 

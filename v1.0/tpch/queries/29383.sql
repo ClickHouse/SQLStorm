@@ -24,7 +24,7 @@ SELECT f.r_name AS region_name,
        popular.p_name AS part_name,
        supplier.total_availqty,
        supplier.total_supplycost,
-       STRING_AGG(DISTINCT CONCAT(n.n_name, ' (', n.n_nationkey, ')'), ', ') AS nations
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ' (', n.n_nationkey, ')')))), ', ') AS nations
 FROM FilteredRegions f
 JOIN RankedSuppliers supplier ON supplier.s_nationkey IN (
     SELECT n.n_nationkey 

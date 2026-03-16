@@ -7,7 +7,7 @@ FROM Posts p
 JOIN Users u ON p.OwnerUserId = u.Id
 LEFT JOIN Comments c ON p.Id = c.PostId
 LEFT JOIN Votes v ON p.Id = v.PostId
-WHERE p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
 GROUP BY p.Title, p.CreationDate, p.Score, u.DisplayName
 ORDER BY p.CreationDate DESC
 LIMIT 100;

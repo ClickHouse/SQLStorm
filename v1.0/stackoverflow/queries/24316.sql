@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.PostTypeId = 1
         AND p.Score > 0
     GROUP BY 
@@ -27,7 +27,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         v.PostId
 )
@@ -45,15 +45,15 @@ SELECT
         WHEN rp.CommentCount > 5 THEN 'Popular'
         ELSE 'Standard' 
     END AS PostCategory,
-    STRING_AGG(DISTINCT ExtractedTags.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ExtractedTags.TagName))), ', ') AS Tags
 FROM 
     RankedPosts rp
 LEFT JOIN 
     RecentVotes rv ON rp.PostId = rv.PostId
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName
+            arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
         FROM 
             Posts p WHERE p.Id = rp.PostId
     ) AS ExtractedTags ON TRUE

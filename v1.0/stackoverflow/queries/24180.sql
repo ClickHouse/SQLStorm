@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate < cast('2024-10-01 12:34:56' as timestamp) 
+        p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.Score
 ),
@@ -58,7 +58,7 @@ SELECT
     rp.Upvotes,
     rp.Downvotes,
     (
-        SELECT STRING_AGG(HT.HistoryType, ', ') 
+        SELECT arrayStringConcat(groupArray(assumeNotNull(HT.HistoryType)), ', ') 
         FROM PostHistoryDetails HT 
         WHERE HT.PostId = rp.PostId AND HT.HistoryRank <= 5 
     ) AS RecentHistoryTypes,
@@ -79,4 +79,4 @@ WHERE
     AND rp.Rank = 1 
 ORDER BY 
     rp.Score DESC, up.Reputation DESC
-OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;
+LIMIT 50 OFFSET 0;

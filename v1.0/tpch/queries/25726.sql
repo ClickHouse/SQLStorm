@@ -4,8 +4,8 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
     MAX(l.l_discount) AS max_discount,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
-    STRING_AGG(DISTINCT c.c_name, '; ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), '; ') AS customer_names,
     r.r_name AS region_name
 FROM 
     part p

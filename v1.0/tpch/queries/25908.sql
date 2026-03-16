@@ -6,7 +6,7 @@ SELECT
     o.o_orderkey AS order_key,
     o.o_orderdate AS order_date,
     STRING_AGG(CONCAT('LineItem: ', l.l_linenumber, ' Qty:', l.l_quantity, ' Price:', l.l_extendedprice) ORDER BY l.l_linenumber) AS line_items_summary,
-    STRING_AGG(DISTINCT s.s_comment, ' | ') AS supplier_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), ' | ') AS supplier_comments,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(o.o_totalprice) AS avg_order_value,
     r.r_name AS region_name

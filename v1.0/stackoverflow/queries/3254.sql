@@ -17,7 +17,7 @@ WITH RankedPosts AS (
          FROM Comments 
          GROUP BY PostId) c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -40,7 +40,7 @@ SELECT
     tp.ViewCount,
     tp.OwnerReputation,
     tp.CommentsCount,
-    ARRAY_AGG(t.TagName) AS Tags,
+    groupArray(assumeNotNull(t.TagName)) AS Tags,
     (SELECT COUNT(*) 
      FROM Votes v 
      WHERE v.PostId = tp.PostId AND v.VoteTypeId = 2) AS UpVotes,

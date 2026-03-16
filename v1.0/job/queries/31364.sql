@@ -17,13 +17,13 @@ WITH RECURSIVE TopMovies AS (
     HAVING COUNT(c.id) > 0
 ),
 MovieKeywords AS (
-    SELECT mk.movie_id, STRING_AGG(k.keyword, ', ') AS keywords
+    SELECT mk.movie_id, arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id
 ),
 CompanyTitles AS (
-    SELECT mc.movie_id, STRING_AGG(DISTINCT cn.name, ', ') AS companies
+    SELECT mc.movie_id, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM movie_companies mc
     JOIN company_name cn ON mc.company_id = cn.id
     WHERE mc.note IS NULL  

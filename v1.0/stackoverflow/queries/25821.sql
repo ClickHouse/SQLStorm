@@ -7,7 +7,7 @@ WITH PostAnalytics AS (
         p.ViewCount,
         p.Score,
         p.AnswerCount,
-        (SELECT COUNT(*) FROM unnest(string_to_array(p.Tags, '<>'))) AS TagCount,
+        (SELECT COUNT(*) FROM arrayJoin(splitByString('<>', p.Tags))) AS TagCount,
         COALESCE(u.DisplayName, 'Community User') AS OwnerDisplayName,
         COALESCE(b.Name, 'No Badge') AS OwnerBadge,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RecentPostRank
@@ -24,7 +24,7 @@ WITH PostAnalytics AS (
 
 TagPerformance AS (
     SELECT 
-        unnest(string_to_array(p.Tags, '<>')) AS TagName,
+        arrayJoin(splitByString('<>', p.Tags)) AS TagName,
         COUNT(*) AS QuestionCount,
         SUM(pa.ViewCount) AS TotalViews,
         SUM(pa.Score) AS TotalScore,

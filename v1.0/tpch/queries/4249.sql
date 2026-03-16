@@ -30,7 +30,7 @@ OrderDetails AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE_TRUNC('year', '1998-10-01'::date) - INTERVAL '1 year'
+        o.o_orderdate >= DATE_TRUNC('year', CAST('1998-10-01' AS date)) - INTERVAL 1 YEAR
 )
 SELECT 
     r.r_name AS region_name,

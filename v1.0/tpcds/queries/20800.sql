@@ -79,4 +79,4 @@ WHERE
 ORDER BY 
     fp.ws_sold_date_sk ASC, 
     fp.total_revenue DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS VoteCount,
-        STRING_AGG(t.TagName, ', ') AS TagsList,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList,
         RANK() OVER (ORDER BY p.CreationDate DESC) AS Rank
     FROM 
         Posts p

@@ -57,7 +57,7 @@ SELECT
     (SELECT COUNT(*) 
      FROM Comments c 
      WHERE c.PostId = pd.PostId) AS CommentCount,
-    (SELECT STRING_AGG(t.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
      FROM Tags t 
      WHERE t.WikiPostId = pd.PostId) AS Tags
 FROM 

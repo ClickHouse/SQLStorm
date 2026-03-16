@@ -48,7 +48,7 @@ SELECT
         WHEN mh.depth > 0 THEN 'Sequel'
         ELSE 'Original'
     END AS movie_type,
-    STRING_AGG(a.name, ', ') AS cast_names,
+    arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS cast_names,
     (SELECT COUNT(*) FROM movie_info mi WHERE mi.movie_id = mh.movie_id AND mi.info_type_id IN (1, 2)) AS info_count
 FROM 
     MovieHierarchy mh
@@ -65,4 +65,4 @@ HAVING
     (mh.production_year BETWEEN 2000 AND 2023 OR mh.production_year IS NULL)
 ORDER BY 
     rm.movie_rank
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 PostVoteSummary AS (
     SELECT 
@@ -30,7 +30,7 @@ CloseReasonSummary AS (
     SELECT 
         PH.PostId,
         COUNT(PH.Id) AS CloseReasonCount,
-        STRING_AGG(CR.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CR.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 

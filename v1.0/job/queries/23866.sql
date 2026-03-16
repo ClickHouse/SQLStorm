@@ -39,7 +39,7 @@ MovieDetails AS (
     SELECT 
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT ar.actor_name || ' (' || ar.role_name || ' - ' || ar.total_roles || ')', ', ') AS actor_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ar.actor_name || ' (' || ar.role_name || ' - ' || ar.total_roles || ')'))), ', ') AS actor_details
     FROM 
         TopMovies tm
     LEFT JOIN 

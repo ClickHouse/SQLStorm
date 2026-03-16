@@ -68,4 +68,4 @@ ORDER BY
     hs.total_sales DESC NULLS LAST,
     cs.avg_sales_price DESC,
     cs.c_customer_id DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

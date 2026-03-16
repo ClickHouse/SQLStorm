@@ -9,13 +9,13 @@ WITH RankedUsers AS (
     WHERE 
         U.Reputation > 1000
         AND U.Location IS NOT NULL
-        AND U.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        AND U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
         B.UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Badges B
     GROUP BY 
@@ -30,7 +30,7 @@ PostStats AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         P.OwnerUserId
 ),
@@ -42,7 +42,7 @@ RecentComments AS (
     FROM 
         Comments C
     WHERE 
-        C.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        C.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         C.UserId
 ),
@@ -81,7 +81,7 @@ SELECT
         WHEN CS.TotalScore > 0 THEN 'Contributor'
         ELSE 'New User'
     END AS ContributionLevel,
-    ARRAY_AGG(DISTINCT T.TagName) AS PopularTags
+    arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS PopularTags
 FROM 
     CombinedStats CS
 LEFT JOIN 

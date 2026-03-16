@@ -47,4 +47,4 @@ FROM
     TotalSales t
 ORDER BY 
     t.total_net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

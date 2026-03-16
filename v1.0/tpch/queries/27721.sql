@@ -2,7 +2,7 @@ WITH StringAggregation AS (
     SELECT 
         n.n_name AS nation,
         s.s_name AS supplier,
-        STRING_AGG(CONCAT(p.p_name, ' (', p.p_brand, ')'), '; ') AS products_sold,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_brand, ')'))), '; ') AS products_sold,
         COUNT(DISTINCT p.p_partkey) AS product_count,
         SUM(l.l_quantity) AS total_quantity,
         SUM(l.l_extendedprice) AS total_sales,
@@ -21,7 +21,7 @@ WITH StringAggregation AS (
         nation n ON s.s_nationkey = n.n_nationkey
     WHERE 
         o.o_orderstatus = 'F' 
-        AND o.o_orderdate >= DATE '1996-01-01'
+        AND o.o_orderdate >= toDate('1996-01-01')
     GROUP BY 
         n.n_name, s.s_name
 )

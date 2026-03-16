@@ -26,4 +26,4 @@ HAVING
     SUM(ss.ss_net_profit) > 1000
 ORDER BY 
     total_profit DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -9,7 +9,7 @@ SELECT
     s.s_name AS supplier_name,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice) AS avg_extended_price,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     part p
 JOIN 
@@ -28,7 +28,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_retailprice > 50.00 
-    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_partkey, 
     p.p_name, 
@@ -39,4 +39,4 @@ GROUP BY
     s.s_name
 ORDER BY 
     total_quantity DESC 
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

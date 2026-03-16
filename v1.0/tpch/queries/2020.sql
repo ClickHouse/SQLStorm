@@ -39,7 +39,7 @@ SELECT
     p.p_name, 
     COUNT(DISTINCT l.l_orderkey) AS number_of_orders,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT ns.n_name, ', ') AS nations_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ns.n_name))), ', ') AS nations_supplied
 FROM 
     part p
 LEFT JOIN 

@@ -24,7 +24,7 @@ actor_details AS (
         n.id AS actor_id,
         n.name,
         n.gender,
-        ARRAY_AGG(DISTINCT r.role ORDER BY r.role) AS roles
+        arrayDistinct(groupArray(assumeNotNull(r.role ORDER BY r.role))) AS roles
     FROM
         name n
     JOIN
@@ -45,7 +45,7 @@ movies_with_actor_count AS (
         aka_title mt
     LEFT JOIN
         actor_counts ac ON mt.id = ac.movie_id
-    LEFT JOIN LATERAL (
+    LEFT JOIN (
         SELECT
             ad.gender
         FROM

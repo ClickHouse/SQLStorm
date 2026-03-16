@@ -45,7 +45,7 @@ RecentActivity AS (
     SELECT 
         p.Id AS PostId, 
         p.LastActivityDate,
-        EXTRACT(EPOCH FROM (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - p.LastActivityDate)) / 86400 AS DaysSinceLastActivity
+        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.LastActivityDate)) / 86400 AS DaysSinceLastActivity
     FROM 
         Posts p
     WHERE 

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Badges b ON p.OwnerUserId = b.UserId
         AND b.Class = 1  
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
         AND p.PostTypeId = 1  
 ),
 FilteredRankedPosts AS (
@@ -25,7 +25,7 @@ FilteredRankedPosts AS (
         rp.ViewCount,
         rp.PostRank,
         rp.CommentCount,
-        COALESCE(DATE_PART('epoch', rp.LatestBadge), 0) AS BadgeTimestamp
+        COALESCE(datePart('epoch', rp.LatestBadge), 0) AS BadgeTimestamp
     FROM 
         RankedPosts rp
     WHERE 
@@ -62,4 +62,4 @@ WHERE
     (v.UpVoteCount - v.DownVoteCount) > 10  
 ORDER BY 
     f.ViewCount DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

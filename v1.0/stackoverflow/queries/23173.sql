@@ -22,18 +22,18 @@ RecentBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
-        b.Date >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 ),
 PostHistoryAggregates AS (
     SELECT 
         h.PostId,
-        ARRAY_AGG(DISTINCT h.UserDisplayName) AS Editors,
+        arrayDistinct(groupArray(assumeNotNull(h.UserDisplayName))) AS Editors,
         COUNT(h.Id) FILTER (WHERE h.PostHistoryTypeId = 10) AS CloseCount,
         COUNT(h.Id) FILTER (WHERE h.PostHistoryTypeId = 11) AS ReopenCount
     FROM 

@@ -5,19 +5,19 @@ WITH MovieDetails AS (
     GROUP BY t.id, t.title, t.production_year, t.kind_id
 ),
 ActorDetails AS (
-    SELECT ci.movie_id, COUNT(DISTINCT ci.person_id) AS actor_count, STRING_AGG(DISTINCT a.name, ', ') AS actors
+    SELECT ci.movie_id, COUNT(DISTINCT ci.person_id) AS actor_count, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors
     FROM cast_info ci
     JOIN aka_name a ON ci.person_id = a.person_id
     GROUP BY ci.movie_id
 ),
 KeywordDetails AS (
-    SELECT mk.movie_id, STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    SELECT mk.movie_id, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id
 ),
 InfoDetails AS (
-    SELECT mi.movie_id, STRING_AGG(DISTINCT mi.info, '; ') AS infos
+    SELECT mi.movie_id, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS infos
     FROM movie_info mi
     GROUP BY mi.movie_id
 )

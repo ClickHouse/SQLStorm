@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Tags,
         u.DisplayName AS OwnerDisplayName,
-        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '>'), 1) AS TagCount,
+        length(splitByString('>', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
         ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY p.CreationDate DESC) AS PostRank
     FROM 
         Posts p

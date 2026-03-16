@@ -58,7 +58,7 @@ AggregatedMovieData AS (
         mh.title,
         mh.production_year,
         COALESCE(SUM(mk.keyword_count), 0) AS total_keywords,
-        STRING_AGG(DISTINCT ma.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ma.name))), ', ') AS actors,
         COUNT(DISTINCT ma.person_id) AS actor_count
     FROM 
         CTE_MovieHierarchy mh

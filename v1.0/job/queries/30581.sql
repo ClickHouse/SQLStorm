@@ -30,7 +30,7 @@ SELECT
     A.name AS actor_name,
     COUNT(DISTINCT c.movie_id) AS movie_count,
     AVG(DISTINCT t.production_year) AS avg_production_year,
-    STRING_AGG(DISTINCT t.title, ', ') AS movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movies,
     SUM(CASE WHEN A.md5sum IS NULL THEN 1 ELSE 0 END) AS null_md5_count,
     RANK() OVER (PARTITION BY A.name ORDER BY COUNT(DISTINCT c.movie_id) DESC) AS actor_rank
 FROM 

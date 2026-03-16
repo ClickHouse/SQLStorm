@@ -18,7 +18,7 @@ TopNations AS (
 OrderStats AS (
     SELECT o.o_custkey, COUNT(o.o_orderkey) AS total_orders, SUM(o.o_totalprice) AS total_revenue
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
     GROUP BY o.o_custkey
 )
 SELECT tn.n_name, sa.total_balance, sa.supplier_count, os.total_orders, os.total_revenue

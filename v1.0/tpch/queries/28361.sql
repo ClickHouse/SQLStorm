@@ -3,7 +3,7 @@ SELECT
     CONCAT('Supplier: ', s.s_name, ', Nation: ', n.n_name) AS supplier_info,
     AVG(ps.ps_supplycost) AS average_supply_cost,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS ship_modes_used,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS ship_modes_used,
     COUNT(DISTINCT c.c_custkey) AS total_customers
 FROM 
     part p

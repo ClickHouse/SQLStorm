@@ -70,7 +70,7 @@ FilteredMovies AS (
 )
 SELECT
     f.actor_name,
-    STRING_AGG(f.movie_title, ', ' ORDER BY f.level) AS movies,
+    arrayStringConcat(groupArray(assumeNotNull(f.movie_title)), ', ' ORDER BY f.level) AS movies,
     MAX(f.level) AS max_level,
     SUM(CASE WHEN f.role_type = 'Director' THEN 1 ELSE 0 END) AS director_count,
     COUNT(*) FILTER (WHERE f.role_type IS NOT NULL) AS defined_roles,

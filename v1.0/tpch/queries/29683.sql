@@ -3,7 +3,7 @@ SELECT
     p.p_name,
     COUNT(DISTINCT ps.ps_suppkey) AS total_suppliers,
     SUM(CASE WHEN p.p_retailprice > 100 THEN 1 ELSE 0 END) AS high_value_parts,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, '(', s.s_phone, ')'), '; ') AS supplier_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, '(', s.s_phone, ')')))), '; ') AS supplier_details,
     SUBSTRING(p.p_comment, 1, 20) AS brief_comment,
     RANK() OVER (ORDER BY SUM(l.l_extendedprice) DESC) AS price_rank
 FROM 
@@ -15,7 +15,7 @@ JOIN
 JOIN 
     lineitem l ON ps.ps_partkey = l.l_partkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_partkey, p.p_name, p.p_retailprice, p.p_comment
 HAVING 

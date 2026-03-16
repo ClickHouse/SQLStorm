@@ -3,10 +3,10 @@ WITH MovieDetails AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT c.kind) AS company_types,
-        ARRAY_AGG(DISTINCT p.name) AS cast_names,
-        ARRAY_AGG(DISTINCT a.name) AS alternate_names
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(c.kind))) AS company_types,
+        arrayDistinct(groupArray(assumeNotNull(p.name))) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS alternate_names
     FROM 
         aka_title t
     JOIN 
@@ -39,7 +39,7 @@ Ranking AS (
         company_types,
         cast_names,
         alternate_names,
-        ROW_NUMBER() OVER (PARTITION BY production_year ORDER BY array_length(keywords, 1) DESC) AS rank
+        ROW_NUMBER() OVER (PARTITION BY production_year ORDER BY length(keywords, 1) DESC) AS rank
     FROM 
         MovieDetails
 )

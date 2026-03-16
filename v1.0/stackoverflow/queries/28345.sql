@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         Comments C ON P.Id = C.PostId
     WHERE 
         P.PostTypeId = 1 AND 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         P.Id, U.DisplayName, P.Title, P.Body, P.Tags, P.CreationDate
 ),
@@ -56,7 +56,7 @@ SELECT
         PH.PostHistoryTypeId IN (10, 11) 
     ) AS CloseReopenCount,
     (SELECT 
-        STRING_AGG(B.Name, ', ') 
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') 
      FROM 
         Badges B 
      JOIN 

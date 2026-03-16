@@ -41,7 +41,7 @@ FilteredLineItems AS (
     FROM
         lineitem l
     WHERE
-        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1997-12-31'
+        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1997-12-31')
 )
 SELECT
     rc.c_name AS customer_name,

@@ -34,7 +34,7 @@ CompanyInfo AS (
 KeywordInfo AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -75,7 +75,7 @@ SELECT
     END AS cast_description,
     CASE 
         WHEN f.production_year IS NOT NULL THEN 
-            (SELECT STRING_AGG(rt.title, ', ') 
+            (SELECT arrayStringConcat(groupArray(assumeNotNull(rt.title)), ', ') 
              FROM RankedTitles rt 
              WHERE rt.production_year = f.production_year 
              AND rt.year_rank <= 3)

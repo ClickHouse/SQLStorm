@@ -12,7 +12,7 @@ WITH RevenueData AS (
     JOIN 
         nation n ON c.c_nationkey = n.n_nationkey
     WHERE 
-        o.o_orderdate >= DATE '1995-01-01' AND o.o_orderdate < DATE '1996-01-01'
+        o.o_orderdate >= toDate('1995-01-01') AND o.o_orderdate < toDate('1996-01-01')
     GROUP BY 
         n.n_name
 ),
@@ -47,8 +47,8 @@ JOIN
                                           JOIN customer c ON n.n_nationkey = c.c_nationkey  
                                           WHERE c.c_custkey IN (SELECT o.o_custkey 
                                                                 FROM orders o 
-                                                                WHERE o.o_orderdate >= DATE '1995-01-01' 
-                                                                AND o.o_orderdate < DATE '1996-01-01')
+                                                                WHERE o.o_orderdate >= toDate('1995-01-01') 
+                                                                AND o.o_orderdate < toDate('1996-01-01'))
                                           LIMIT 1)
 ORDER BY 
     rd.total_revenue DESC, 

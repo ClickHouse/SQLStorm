@@ -33,7 +33,7 @@ RecentPostHistory AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 
 SELECT 
@@ -46,7 +46,7 @@ SELECT
     ue.UpVotes,
     ue.DownVotes,
     COUNT(rph.PostId) FILTER (WHERE rph.rn = 1) AS RecentActionsCount,
-    STRING_AGG(DISTINCT CONCAT(pt.Name, ': ', rph.Text), '; ') AS RecentPostsHistory
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(pt.Name, ': ', rph.Text)))), '; ') AS RecentPostsHistory
 FROM 
     UserEngagement ue
 LEFT JOIN 

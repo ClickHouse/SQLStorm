@@ -28,7 +28,7 @@ PostDetails AS (
     LEFT JOIN Users U ON P.OwnerUserId = U.Id
     LEFT JOIN PostHistory PH ON P.Id = PH.PostId
     LEFT JOIN Comments C ON C.PostId = P.Id
-    WHERE P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 )
 SELECT 
     U.DisplayName as UserName,
@@ -36,7 +36,7 @@ SELECT
     U.TotalScore,
     COALESCE(SUM(CASE WHEN PD.PostStatus = 'Open' THEN 1 ELSE 0 END), 0) AS OpenPosts,
     COALESCE(SUM(CASE WHEN PD.PostStatus = 'Closed' THEN 1 ELSE 0 END), 0) AS ClosedPosts,
-    STRING_AGG(PD.Title, ', ') AS Titles,
+    arrayStringConcat(groupArray(assumeNotNull(PD.Title)), ', ') AS Titles,
     COUNT(PD.PostId) FILTER (WHERE PD.EditRank = 1) AS PostsEditedonce,
     COUNT(DISTINCT PD.PostId) AS TotalUniquePosts
 FROM UserVoteStats U

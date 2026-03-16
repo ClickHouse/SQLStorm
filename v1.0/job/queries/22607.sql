@@ -23,7 +23,7 @@ TitleDetails AS (
     LEFT JOIN (
         SELECT 
             mk.movie_id, 
-            STRING_AGG(k.keyword, ', ') AS info 
+            arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS info 
         FROM 
             movie_keyword mk
         JOIN 
@@ -41,7 +41,7 @@ SELECT
     COUNT(DISTINCT mc.company_id) AS company_count,
     SUM(CASE WHEN mt.info IS NOT NULL THEN 1 ELSE 0 END) AS info_present_count,
     MAX(CASE WHEN mt.note IS NOT NULL THEN mt.note ELSE 'No Notes' END) AS latest_note,
-    STRING_AGG(DISTINCT t2.title, '; ') AS linked_titles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t2.title))), '; ') AS linked_titles
 FROM 
     TitleDetails t
 LEFT JOIN 

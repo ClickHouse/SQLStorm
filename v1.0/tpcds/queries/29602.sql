@@ -5,7 +5,7 @@ WITH AddressDetails AS (
         ca.ca_state,
         ca.ca_country,
         COUNT(DISTINCT c.c_customer_sk) AS customer_count,
-        STRING_AGG(DISTINCT c.c_first_name || ' ' || c.c_last_name, ', ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_first_name || ' ' || c.c_last_name))), ', ') AS customer_names
     FROM 
         customer_address ca
     JOIN 

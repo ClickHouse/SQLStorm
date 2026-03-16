@@ -74,4 +74,4 @@ WHERE
     ps.HistoryCount > 0
 ORDER BY 
     ps.Score DESC, ps.CreationDate ASC
-OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 10;

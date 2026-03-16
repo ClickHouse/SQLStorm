@@ -13,7 +13,7 @@ SELECT
             ELSE NULL 
         END) AS average_spent_women,
     DT.d_year AS year,
-    EXTRACT(MONTH FROM DT.d_date) AS month,
+    toMonth(DT.d_date) AS month,
     CASE 
         WHEN CD.cd_marital_status = 'M' THEN 'Married'
         ELSE 'Single'

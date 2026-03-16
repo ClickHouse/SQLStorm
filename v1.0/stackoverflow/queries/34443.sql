@@ -29,7 +29,7 @@ RecentEdits AS (
            PH.Text
     FROM PostHistory PH
     WHERE PH.PostHistoryTypeId IN (4, 5)  
-      AND PH.CreationDate >= (CURRENT_TIMESTAMP - INTERVAL '30 days')
+      AND PH.CreationDate >= (now64(6) - INTERVAL 30 DAY)
 ),
 TopUsers AS (
     SELECT UserId, 

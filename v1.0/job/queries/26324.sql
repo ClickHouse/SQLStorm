@@ -55,8 +55,8 @@ SELECT
     t.actor_name,
     t.movie_count,
     COUNT(DISTINCT m.title) AS unique_movies,
-    STRING_AGG(DISTINCT m.title, ', ') AS movie_titles,
-    STRING_AGG(DISTINCT m.movie_info, ' | ') AS movie_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.title))), ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.movie_info))), ' | ') AS movie_details
 FROM 
     top_actors t
 JOIN 

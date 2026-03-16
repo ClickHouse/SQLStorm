@@ -23,7 +23,7 @@ CustomerOrderStats AS (
     LEFT JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' OR o.o_orderdate IS NULL
+        o.o_orderdate >= toDate('1996-01-01') OR o.o_orderdate IS NULL
     GROUP BY 
         c.c_custkey, c.c_name
 ),
@@ -35,7 +35,7 @@ LineitemDetails AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+        l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     GROUP BY 
         l.l_orderkey
 )

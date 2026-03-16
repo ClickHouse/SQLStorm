@@ -40,4 +40,4 @@ GROUP BY c.c_custkey, c.c_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 5 
    AND SUM(li.net_price) IS NOT NULL
 ORDER BY total_net_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

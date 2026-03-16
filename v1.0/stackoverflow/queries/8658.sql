@@ -8,7 +8,7 @@ WITH UserStats AS (
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS UpVotePosts,
         SUM(CASE WHEN p.Score < 0 THEN 1 ELSE 0 END) AS DownVotePosts,
         SUM(CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswers,
-        AVG(EXTRACT(EPOCH FROM COALESCE(p.LastActivityDate, p.CreationDate) - p.CreationDate)) AS AvgPostActiveTime
+        AVG(toUnixTimestamp(COALESCE(p.LastActivityDate, p.CreationDate) - p.CreationDate)) AS AvgPostActiveTime
     FROM 
         Users u
     LEFT JOIN 

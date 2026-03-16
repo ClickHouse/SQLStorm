@@ -43,7 +43,7 @@ WITH RankedSuppliers AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '3 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 3 MONTH
     GROUP BY 
         c.c_custkey, c.c_name, o.o_orderkey, o.o_orderstatus
 ), FinalResults AS (

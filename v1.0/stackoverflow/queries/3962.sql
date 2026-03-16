@@ -12,11 +12,11 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        (SELECT Id, unnest(string_to_array(Tags, '><')) AS TagName FROM Posts WHERE Tags IS NOT NULL) t ON p.Id = t.Id
+        (SELECT Id, arrayJoin(splitByString('><', Tags)) AS TagName FROM Posts WHERE Tags IS NOT NULL) t ON p.Id = t.Id
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, t.TagName
 ), RecentVotes AS (
@@ -26,7 +26,7 @@ WITH RankedPosts AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         v.PostId
 )
@@ -52,4 +52,4 @@ WHERE
     rp.rn = 1
 ORDER BY 
     rp.CreationDate DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -17,7 +17,7 @@ AddressAggregates AS (
         MAX(LENGTH(full_address)) AS max_address_length,
         MIN(LENGTH(full_address)) AS min_address_length,
         AVG(LENGTH(full_address)) AS avg_address_length,
-        STRING_AGG(DISTINCT cleaned_street_name, ', ') AS unique_street_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cleaned_street_name))), ', ') AS unique_street_names
     FROM 
         StringProcessing
     GROUP BY 
@@ -35,7 +35,7 @@ SELECT
 FROM 
     AddressAggregates a
 JOIN 
-    date_dim d ON EXTRACT(YEAR FROM d.d_date) = EXTRACT(YEAR FROM DATE '2002-10-01')
+    date_dim d ON toYear(d.d_date) = toYear(toDate('2002-10-01'))
 LEFT JOIN 
     web_sales ws ON ws.ws_ship_date_sk = d.d_date_sk
 GROUP BY 

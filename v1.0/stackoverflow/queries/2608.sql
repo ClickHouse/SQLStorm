@@ -54,7 +54,7 @@ SELECT
     fp.CommentCount,
     fp.UpvoteCount,
     fp.DownvoteCount,
-    STRING_AGG(DISTINCT CONCAT('Changed by ', (SELECT DisplayName FROM Users WHERE Id = phi.UserId), ' on ', CAST(phi.HistoryDate AS VARCHAR)), '; ') AS ChangeDetails
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Changed by ', (SELECT DisplayName FROM Users WHERE Id = phi.UserId), ' on ', CAST(phi.HistoryDate AS VARCHAR))))), '; ') AS ChangeDetails
 FROM 
     FilteredPosts fp
 LEFT JOIN PostHistoryInfo phi ON fp.PostId = phi.PostId

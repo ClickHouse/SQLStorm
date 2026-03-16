@@ -47,7 +47,7 @@ FROM
 LEFT JOIN 
     TopSuppliers ts ON c.order_count > 5 AND ts.sales_rank = 1
 WHERE 
-    c.last_order_date >= CURRENT_DATE - INTERVAL '1 year'
+    c.last_order_date >= CURRENT_DATE - INTERVAL 1 YEAR
 ORDER BY 
     c.total_spent DESC
 LIMIT 10;

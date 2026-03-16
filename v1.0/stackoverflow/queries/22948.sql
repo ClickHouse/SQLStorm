@@ -8,13 +8,13 @@ WITH RankedPosts AS (
         p.PostTypeId,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.CreationDate ASC) AS Rank
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM Users u
     LEFT JOIN Badges b ON u.Id = b.UserId
     GROUP BY u.Id
@@ -22,9 +22,9 @@ UserBadges AS (
 PostCloseReasons AS (
     SELECT
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
     FROM PostHistory ph
-    JOIN CloseReasonTypes cr ON ph.Comment::int = cr.Id
+    JOIN CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
     WHERE ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY ph.PostId
 ),
@@ -32,7 +32,7 @@ UserPostStats AS (
     SELECT
         p.OwnerUserId,
         COUNT(p.Id) AS PostCount,
-        SUM(V.CreationDate IS NOT NULL::int) AS VoteCount,
+        SUM(V.CreationDate IS NOT CAST(NULL AS int)) AS VoteCount,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount
     FROM Posts p
@@ -62,4 +62,4 @@ WHERE bd.BadgeCount > 0
     AND s.PostCount > 2
     AND rb.Rank <= 5
 ORDER BY rb.Score DESC, up.Reputation DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

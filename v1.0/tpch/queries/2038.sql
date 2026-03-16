@@ -58,9 +58,9 @@ LEFT JOIN
         LIMIT 1
     )
 WHERE 
-    r.o_orderdate >= DATE '1995-01-01'
+    r.o_orderdate >= toDate('1995-01-01')
 AND 
-    r.o_orderdate < DATE '1996-01-01'
+    r.o_orderdate < toDate('1996-01-01')
 ORDER BY 
     total_order_value DESC, 
     supplier_cost ASC;

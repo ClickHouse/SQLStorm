@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Votes V ON P.Id = V.PostId
     WHERE
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND (P.ViewCount > 100 OR P.Score > 10)
 ),
 ClosedPostHistory AS (
@@ -24,7 +24,7 @@ ClosedPostHistory AS (
         PH.PostId,
         PH.Comment,
         MAX(PH.CreationDate) AS LatestCloseDate,
-        STRING_AGG(CASE WHEN PHT.Name IS NOT NULL THEN PHT.Name ELSE 'Unknown' END, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PHT.Name IS NOT NULL THEN PHT.Name ELSE 'Unknown' END)), ', ') AS CloseReasons
     FROM
         PostHistory PH
     LEFT JOIN

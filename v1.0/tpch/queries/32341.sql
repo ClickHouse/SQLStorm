@@ -27,8 +27,8 @@ JOIN orders o ON c.c_custkey = o.o_custkey
 JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 LEFT JOIN partsupp ps ON l.l_partkey = ps.ps_partkey
 LEFT JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
-WHERE o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1997-12-31'
+WHERE o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1997-12-31')
 GROUP BY c.c_custkey, c.c_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000
 ORDER BY total_revenue DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

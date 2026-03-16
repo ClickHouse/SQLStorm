@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score IS NOT NULL
 ),
 PostHistoryDetails AS (
@@ -26,24 +26,24 @@ PostHistoryDetails AS (
         ph.CreationDate AS HistoryDate,
         pht.Name AS HistoryType,
         COUNT(*) OVER (PARTITION BY ph.PostId) AS HistoryCount,
-        STRING_AGG(DISTINCT ph.Comment, '; ') AS UserComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS UserComments
     FROM 
         PostHistory ph
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 MONTHS'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         ph.PostId, ph.UserId, ph.CreationDate, pht.Name
 ),
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT crt.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes crt ON ph.Comment::text::int = crt.Id
+        CloseReasonTypes crt ON CAST(ph.Comment AS textCAST() AS int) = crt.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY 

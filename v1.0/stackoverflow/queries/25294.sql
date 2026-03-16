@@ -4,7 +4,7 @@ WITH TagStats AS (
         COUNT(DISTINCT P.Id) AS PostCount,
         AVG(P.Score) AS AverageScore,
         SUM(P.ViewCount) AS TotalViews,
-        STRING_AGG(DISTINCT P.OwnerDisplayName, ', ') AS Authors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(P.OwnerDisplayName))), ', ') AS Authors
     FROM 
         Tags T
     JOIN 

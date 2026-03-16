@@ -27,7 +27,7 @@ OrderDetails AS (
         o.o_custkey, 
         o.o_orderstatus, 
         o.o_totalprice,
-        EXTRACT(YEAR FROM o.o_orderdate) AS order_year,
+        toYear(o.o_orderdate) AS order_year,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_value
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
@@ -39,7 +39,7 @@ SELECT
     od.order_year,
     COUNT(DISTINCT od.o_orderkey) AS num_orders,
     SUM(od.total_value) AS total_revenue,
-    STRING_AGG(DISTINCT sd.formatted_comment, '; ') AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sd.formatted_comment))), '; ') AS supplier_comments
 FROM SupplierDetails sd
 JOIN PartDetails pd ON sd.s_nationkey = pd.p_partkey
 JOIN OrderDetails od ON pd.p_partkey = (SELECT ps.ps_partkey FROM partsupp ps WHERE ps.ps_suppkey = sd.s_suppkey LIMIT 1)

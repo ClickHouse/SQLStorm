@@ -14,11 +14,11 @@ WITH UserPostStats AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS TagName,
+        arrayJoin(splitByString('>', Tags)) AS TagName,
         COUNT(*) AS TagUsageCount
     FROM Posts
     WHERE Tags IS NOT NULL
-    GROUP BY unnest(string_to_array(Tags, '>'))
+    GROUP BY arrayJoin(splitByString('>', Tags))
 ),
 TopTags AS (
     SELECT 
@@ -33,11 +33,11 @@ PostInteractions AS (
         p.Id AS PostId,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS TagsUsed
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsUsed
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    LEFT JOIN Tags t ON t.TagName = ANY(string_to_array(p.Tags, '>'))
+    LEFT JOIN Tags t ON t.TagName = ANY(splitByString('>', p.Tags))
     GROUP BY p.Id
 )
 SELECT 

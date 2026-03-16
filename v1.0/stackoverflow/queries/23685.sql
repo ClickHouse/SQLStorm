@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         COUNT(c.Id) AS CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.CreationDate DESC) AS Rank,
-        ARRAY_AGG(DISTINCT tag.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(tag.TagName))) AS Tags,
         CASE 
             WHEN p.AcceptedAnswerId IS NOT NULL THEN 
                 (SELECT COUNT(*) 
@@ -19,9 +19,9 @@ WITH RankedPosts AS (
     FROM 
         Posts p
         LEFT JOIN Comments c ON c.PostId = p.Id
-        LEFT JOIN unnest(string_to_array(p.Tags, '><')) AS tag(TagName) ON TRUE
+        LEFT JOIN arrayJoin(splitByString('><', p.Tags)) AS tag(TagName) ON TRUE
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId, p.AcceptedAnswerId
 ),
@@ -41,7 +41,7 @@ PostInteraction AS (
             FROM 
                 Badges 
             WHERE 
-                Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+                Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
             GROUP BY 
                 UserId
         ) b ON b.UserId = u.Id
@@ -55,7 +55,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 )
 SELECT 
     pi.PostId,

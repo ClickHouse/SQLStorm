@@ -4,7 +4,7 @@ SELECT
     t.title AS movie_title,
     t.production_year AS year,
     STRING_AGG(DISTINCT k.keyword) AS keywords,
-    STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
     p.info AS person_info
 FROM
     aka_name a

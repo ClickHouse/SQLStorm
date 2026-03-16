@@ -20,7 +20,7 @@ RecentReturns AS (
         cr_returned_date_sk IN (
             SELECT d_date_sk
             FROM date_dim
-            WHERE d_date >= CURRENT_DATE - INTERVAL '3 months'
+            WHERE d_date >= CURRENT_DATE - INTERVAL 3 MONTH
         )
     GROUP BY 
         cr_item_sk

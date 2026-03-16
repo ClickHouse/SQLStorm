@@ -27,7 +27,7 @@ WITH BaseData AS (
     LEFT JOIN 
         household_demographics HD ON c.c_current_hdemo_sk = HD.hd_demo_sk
     CROSS JOIN 
-        (SELECT STRING_AGG(i_brand, ', ') AS BRANDSTR FROM item) AS BrandList
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(i_brand)), ', ') AS BRANDSTR FROM item) AS BrandList
     WHERE 
         d.d_year = 2023 AND
         (ca.ca_state = 'CA' OR ca.ca_state = 'NY')

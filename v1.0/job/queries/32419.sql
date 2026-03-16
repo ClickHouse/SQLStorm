@@ -27,8 +27,8 @@ WITH RECURSIVE movie_hierarchy AS (
 SELECT
     rm.production_year,
     COUNT(rm.movie_id) AS number_of_movies,
-    STRING_AGG(DISTINCT rm.title_with_episode, ', ') AS titles,
-    AVG(NULLIF(EXTRACT(YEAR FROM cast('2024-10-01' as date)) - rm.production_year, 0)) AS avg_year_difference
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.title_with_episode))), ', ') AS titles,
+    AVG(NULLIF(toYear(cast('2024-10-01' as date)) - rm.production_year, 0)) AS avg_year_difference
 FROM
     ranked_movies rm
 LEFT JOIN 

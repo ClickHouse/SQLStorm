@@ -5,7 +5,7 @@ WITH ranked_orders AS (
            o.o_totalprice,
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_orderdate DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1996-01-01' AND o.o_orderstatus IN ('O', 'F')
+    WHERE o.o_orderdate >= toDate('1996-01-01') AND o.o_orderstatus IN ('O', 'F')
 ), 
 customer_summary AS (
     SELECT c.c_custkey,
@@ -32,7 +32,7 @@ SELECT DISTINCT r.r_name,
                 COALESCE(SUM(cs.order_count), 0) AS total_orders,
                 COALESCE(SUM(cs.total_spent), 0) AS total_spent_all_customers,
                 COALESCE(MAX(sp.total_avail_qty), 0) AS max_supplier_avail_qty,
-                ARRAY_AGG(DISTINCT sp.s_name) AS suppliers_names,
+                arrayDistinct(groupArray(assumeNotNull(sp.s_name))) AS suppliers_names,
                 COUNT(DISTINCT n.n_nationkey) FILTER (WHERE n.n_comment IS NULL) AS nations_null_comments
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey

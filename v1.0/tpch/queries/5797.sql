@@ -24,7 +24,7 @@ SELECT
     AVG(ro.o_totalprice) AS avg_order_value,
     MAX(ro.o_totalprice) AS max_order_value,
     MIN(ro.o_totalprice) AS min_order_value,
-    STRING_AGG(CONCAT(ro.c_name, ' (', ro.o_orderkey, ')'), ', ') AS customer_orders
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(ro.c_name, ' (', ro.o_orderkey, ')'))), ', ') AS customer_orders
 FROM ranked_orders ro
 JOIN nation n ON ro.c_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey

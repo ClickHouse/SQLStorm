@@ -53,7 +53,7 @@ SELECT
     fm.production_year,
     fm.actor_count,
     fm.avg_actor_order,
-    STRING_AGG(DISTINCT CONCAT(cn.name, ' (', ct.kind, ')'), ', ') AS companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cn.name, ' (', ct.kind, ')')))), ', ') AS companies
 FROM 
     FilteredMovies fm
 LEFT JOIN 

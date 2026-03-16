@@ -33,7 +33,7 @@ PopularTags AS (
         TagName,
         COUNT(*) AS TagCount
     FROM 
-        (SELECT TRIM(unnest(string_to_array(Tags, '<>'))) AS TagName FROM Posts) AS TagsList
+        (SELECT TRIM(arrayJoin(splitByString('<>', Tags))) AS TagName FROM Posts) AS TagsList
     GROUP BY 
         TagName
 ),

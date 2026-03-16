@@ -2,7 +2,7 @@ WITH BadgeSummary AS (
     SELECT 
         UserId,
         COUNT(*) AS TotalBadges,
-        STRING_AGG(Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames
     FROM Badges
     GROUP BY UserId
 ),
@@ -21,10 +21,10 @@ CloseReasons AS (
     SELECT 
         ph.UserId,
         COUNT(*) AS CloseCount,
-        STRING_AGG(CASE 
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
             WHEN ph.Comment IS NULL THEN 'No comment' 
             ELSE ph.Comment 
-        END, '; ') AS CloseComments
+        END)), '; ') AS CloseComments
     FROM PostHistory ph
     WHERE ph.PostHistoryTypeId = 10 
     GROUP BY ph.UserId

@@ -5,7 +5,7 @@ WITH RankedParts AS (
         p.p_brand,
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
         SUM(ps.ps_availqty) AS total_available_quantity,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers_list,
         ROW_NUMBER() OVER (PARTITION BY p.p_brand ORDER BY COUNT(DISTINCT ps.ps_suppkey) DESC) AS brand_rank
     FROM 
         part p
@@ -38,7 +38,7 @@ SELECT
     fp.suppliers_list,
     COUNT(DISTINCT o.o_orderkey) AS orders_count,
     SUM(o.o_totalprice) AS total_sales_value,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     FilteredParts fp
 LEFT JOIN 

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 MostActiveUsers AS (
     SELECT 
@@ -54,7 +54,7 @@ SELECT
     mah.TotalScore,
     p.Score AS LatestPostScore,
     COALESCE(SUM(CASE WHEN phd.HistoryRank = 1 THEN 1 ELSE 0 END), 0) AS RecentEdits,
-    STRING_AGG(pt.Name, ', ') AS PostHistoryTags
+    arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostHistoryTags
 FROM 
     RankedPosts rp
 JOIN 

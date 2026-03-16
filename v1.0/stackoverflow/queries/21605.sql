@@ -10,17 +10,17 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - interval '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - interval '1 year'
+        b.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         b.UserId
 ),
@@ -57,7 +57,7 @@ LEFT JOIN
     PostHistoryAggregates p ON r.PostId = p.PostId
 WHERE 
     u.Reputation > 100 AND  
-    u.CreationDate < (cast('2024-10-01' as date) - interval '1 year')  
+    u.CreationDate < (cast('2024-10-01' as date) - INTERVAL 1 YEAR)  
 ORDER BY 
     u.Reputation DESC, r.Score DESC
 LIMIT 100  

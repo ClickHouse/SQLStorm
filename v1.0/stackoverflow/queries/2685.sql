@@ -20,7 +20,7 @@ PopularPosts AS (
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.Score, p.CreationDate, u.DisplayName
     HAVING COUNT(DISTINCT c.Id) > 0
 ),
@@ -28,7 +28,7 @@ TopBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM Badges b
     JOIN UserReputation ur ON b.UserId = ur.Id
     WHERE ur.ReputationRank <= 100

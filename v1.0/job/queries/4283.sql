@@ -20,7 +20,7 @@ MovieDetails AS (
     WHERE m.production_year >= 2000
 ),
 GenreKeywords AS (
-    SELECT m.id AS movie_id, STRING_AGG(k.keyword, ', ') AS keywords
+    SELECT m.id AS movie_id, arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM aka_title m
     JOIN movie_keyword mk ON m.id = mk.movie_id
     JOIN keyword k ON mk.keyword_id = k.id

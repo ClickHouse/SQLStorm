@@ -16,7 +16,7 @@ SupplierSales AS (
     FROM supplier s
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     JOIN lineitem l ON ps.ps_partkey = l.l_partkey
-    WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY s.s_suppkey
 ),
 RegionStats AS (

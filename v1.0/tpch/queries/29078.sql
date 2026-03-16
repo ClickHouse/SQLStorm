@@ -53,4 +53,4 @@ FROM
     FinalBenchmark
 WHERE 
     LENGTH(combined_info) > 50
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

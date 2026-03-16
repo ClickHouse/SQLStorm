@@ -32,7 +32,7 @@ SELECT c.c_name,
        cn.n_nationkey,
        COALESCE(SUM(t.total_revenue), 0) AS total_revenue,
        COUNT(DISTINCT o.o_orderkey) AS total_orders,
-       STRING_AGG(DISTINCT CONCAT_WS(' - ', p.p_name, p.p_brand), ', ') AS part_info
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' - ', p.p_name, p.p_brand)))), ', ') AS part_info
 FROM customer c
 LEFT JOIN CustomerNation cn ON c.c_custkey = cn.c_custkey
 LEFT JOIN orders o ON c.c_custkey = o.o_custkey

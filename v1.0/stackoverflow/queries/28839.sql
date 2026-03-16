@@ -12,7 +12,7 @@ WITH UserActivity AS (
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Comments c ON u.Id = c.UserId
     LEFT JOIN Votes v ON u.Id = v.UserId
-    WHERE u.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY u.Id, u.DisplayName, u.Reputation
 ),
 TagStatistics AS (
@@ -23,7 +23,7 @@ TagStatistics AS (
         AVG(p.Score) AS AverageScore
     FROM Tags t
     JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%'
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY t.TagName
 ),
 PostHistoryDetails AS (

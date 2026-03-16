@@ -27,7 +27,7 @@ popular_actors AS (
 title_keyword AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords  -- Standard SQL equivalent of GROUP_CONCAT
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords  -- Standard SQL equivalent of GROUP_CONCAT
     FROM 
         movie_keyword mk
     JOIN 

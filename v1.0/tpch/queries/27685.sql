@@ -7,7 +7,7 @@ SELECT
             WHEN l.l_returnflag = 'R' THEN l.l_quantity 
             ELSE NULL 
         END) AS avg_return_amt,
-    STRING_AGG(DISTINCT CONCAT(n.n_name, ': ', s.s_comment), '; ') AS supplier_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(n.n_name, ': ', s.s_comment)))), '; ') AS supplier_comments,
     REGEXP_REPLACE(UPPER(p.p_name), '[^A-Z0-9 ]', '') AS sanitized_part_name
 FROM 
     supplier s
@@ -24,7 +24,7 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate <= DATE '1997-12-31'
+    o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate <= toDate('1997-12-31')
 GROUP BY 
     s.s_name, p.p_name
 HAVING 

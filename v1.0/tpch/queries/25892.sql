@@ -17,7 +17,7 @@ WITH FilteredParts AS (
         COUNT(*) AS part_count,
         AVG(p_retailprice) AS avg_price,
         SUM(name_length) AS total_name_length,
-        STRING_AGG(brand_upper, ', ') AS unique_brands
+        arrayStringConcat(groupArray(assumeNotNull(brand_upper)), ', ') AS unique_brands
     FROM 
         FilteredParts
     GROUP BY 

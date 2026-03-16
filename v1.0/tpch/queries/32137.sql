@@ -68,7 +68,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     COALESCE(n.n_name, 'Unknown') AS nation_name,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     COUNT(DISTINCT tc.c_custkey) AS total_customers
 FROM 
     part p

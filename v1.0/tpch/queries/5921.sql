@@ -11,7 +11,7 @@ OrderStatistics AS (
     SELECT o.o_orderkey, o.o_orderstatus, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
     GROUP BY o.o_orderkey, o.o_orderstatus
 )
 SELECT sd.nation_name, sd.region_name, COUNT(DISTINCT os.o_orderkey) AS order_count,

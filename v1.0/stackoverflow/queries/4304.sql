@@ -7,7 +7,7 @@ WITH RankedPosts AS (
            p.ViewCount, 
            ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank
     FROM Posts p
-    WHERE p.PostTypeId = 1 AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+    WHERE p.PostTypeId = 1 AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 FilteredComments AS (
     SELECT c.PostId, 

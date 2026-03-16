@@ -20,7 +20,7 @@ AggregatedResults AS (
         COUNT(DISTINCT short_name) AS unique_short_names,
         COUNT(*) AS total_customers,
         COUNT(DISTINCT upper_first_name) AS unique_upper_first_names,
-        STRING_AGG(upper_first_name, ', ') AS example_upper_first_names
+        arrayStringConcat(groupArray(assumeNotNull(upper_first_name)), ', ') AS example_upper_first_names
     FROM 
         StringProcessing
 )

@@ -24,7 +24,7 @@ PostStatistics AS (
         rp.OwnerDisplayName,
         rp.CreationDate,
         rp.Score,
-        ARRAY_AGG(DISTINCT t.TagName) AS RelatedTags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS RelatedTags,
         COUNT(c.Id) AS CommentCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVoteCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVoteCount
@@ -35,7 +35,7 @@ PostStatistics AS (
     LEFT JOIN 
         Votes v ON rp.PostId = v.PostId
     LEFT JOIN 
-        LATERAL unnest(string_to_array(rp.Tags, '><')) AS tag ON true
+        arrayJoin(splitByString('><', rp.Tags)) AS tag ON true
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 

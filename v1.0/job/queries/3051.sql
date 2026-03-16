@@ -17,7 +17,7 @@ WITH ranked_movies AS (
 movie_keywords AS (
     SELECT
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM
         movie_keyword mk
     JOIN
@@ -45,7 +45,7 @@ SELECT
     hcm.production_year,
     hcm.total_cast,
     hcm.keywords,
-    ARRAY_AGG(DISTINCT p.info) FILTER (WHERE p.note IS NOT NULL) AS person_details
+    arrayDistinct(groupArray(assumeNotNull(p.info))) FILTER (WHERE p.note IS NOT NULL) AS person_details
 FROM
     high_cast_movies hcm
 LEFT JOIN

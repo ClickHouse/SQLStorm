@@ -28,7 +28,7 @@ WITH RECURSIVE movie_hierarchy AS (
 
 SELECT 
     a.name AS actor_name,
-    STRING_AGG(DISTINCT mt.title, ', ') AS connected_movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mt.title))), ', ') AS connected_movies,
     COUNT(DISTINCT c.movie_id) AS total_roles,
     AVG(CASE WHEN c.note IS NULL THEN 1 ELSE 0 END) AS zero_notes_percentage
 FROM 

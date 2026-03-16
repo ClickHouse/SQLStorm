@@ -31,7 +31,7 @@ ActorInfo AS (
     SELECT 
         an.name AS actor_name, 
         COUNT(DISTINCT c.movie_id) AS movies_played,
-        AVG(EXTRACT(YEAR FROM CURRENT_DATE) - mt.production_year) AS avg_movie_age
+        AVG(toYear(CURRENT_DATE) - mt.production_year) AS avg_movie_age
     FROM 
         aka_name an
     JOIN 

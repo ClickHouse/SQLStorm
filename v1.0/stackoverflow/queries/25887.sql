@@ -36,7 +36,7 @@ WITH RankedPosts AS (
             UserId
     ) b ON u.Id = b.UserId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 )
 
 SELECT 
@@ -47,7 +47,7 @@ SELECT
     rp.AnswerCount,
     rp.BadgeCount,
     rp.CreationDate,
-    STRING_AGG(rt.Name, ', ') AS RelatedTypes
+    arrayStringConcat(groupArray(assumeNotNull(rt.Name)), ', ') AS RelatedTypes
 FROM 
     RankedPosts rp
 LEFT JOIN 

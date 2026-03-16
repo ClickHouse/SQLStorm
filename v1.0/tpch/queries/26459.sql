@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_quantity) AS total_quantity,
     AVG(l.l_extendedprice - l.l_discount) AS avg_price_after_discount,
-    STRING_AGG(DISTINCT CASE WHEN l.l_returnflag = 'R' THEN 'Returned' ELSE 'Not Returned' END, ', ') AS return_status
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN l.l_returnflag = 'R' THEN 'Returned' ELSE 'Not Returned' END))), ', ') AS return_status
 FROM 
     part p
 JOIN 
@@ -20,8 +20,8 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     p.p_type LIKE '%metal%'
-    AND o.o_orderdate >= DATE '1996-01-01'
-    AND o.o_orderdate < DATE '1997-01-01'
+    AND o.o_orderdate >= toDate('1996-01-01')
+    AND o.o_orderdate < toDate('1997-01-01')
 GROUP BY 
     p.p_name, s.s_name, c.c_name
 HAVING 

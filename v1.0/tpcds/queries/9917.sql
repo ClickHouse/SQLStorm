@@ -58,4 +58,4 @@ JOIN
     Item_Sales its ON i.i_item_sk = its.ws_item_sk
 ORDER BY 
     its.total_item_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

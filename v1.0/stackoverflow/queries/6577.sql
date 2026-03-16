@@ -36,7 +36,7 @@ TopUsers AS (
 UserBadges AS (
     SELECT 
         ub.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges ub
     JOIN 

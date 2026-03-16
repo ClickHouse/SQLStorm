@@ -38,7 +38,7 @@ RecentMovies AS (
 SELECT 
     p.id AS person_id,
     p.name AS person_name,
-    STRING_AGG(DISTINCT rm.movie_title || ' (' || rm.production_year || ')', ', ') AS recent_movies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.movie_title || ' (' || rm.production_year || ')'))), ', ') AS recent_movies
 FROM 
     aka_name AS p
 LEFT JOIN 

@@ -10,8 +10,8 @@ WITH RECURSIVE SupplierSales AS (
     JOIN 
         lineitem l ON ps.ps_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate >= DATE '1997-01-01' 
-        AND l.l_shipdate < DATE '1998-01-01'
+        l.l_shipdate >= toDate('1997-01-01') 
+        AND l.l_shipdate < toDate('1998-01-01')
     GROUP BY 
         s.s_suppkey, s.s_name
 ),
@@ -33,7 +33,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(hv.total_sale) AS total_sales_value,
     AVG(hv.total_sale) AS avg_sales_per_supplier,
-    STRING_AGG(DISTINCT CASE WHEN hv.total_sale > 10000 THEN hv.s_name END, ', ') AS high_value_supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN hv.total_sale > 10000 THEN hv.s_name END))), ', ') AS high_value_supplier_names
 FROM 
     region r
 JOIN 

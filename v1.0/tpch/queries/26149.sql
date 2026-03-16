@@ -7,7 +7,7 @@ WITH PartStats AS (
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
         SUM(ps.ps_availqty) AS total_available_qty,
         AVG(ps.ps_supplycost) AS avg_supply_cost,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM 
         part p
     JOIN 
@@ -22,7 +22,7 @@ RegionWiseStats AS (
         r.r_name AS region,
         COUNT(DISTINCT n.n_nationkey) AS nation_count,
         SUM(p.total_available_qty) AS total_available_qty_region,
-        STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
     FROM 
         region r
     JOIN 

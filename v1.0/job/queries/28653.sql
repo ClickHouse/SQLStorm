@@ -37,7 +37,7 @@ ActorCounts AS (
 DistinctKeywords AS (
     SELECT 
         movie_id,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords
     FROM 
         MovieData
     GROUP BY 
@@ -49,7 +49,7 @@ SELECT
     md.production_year,
     ac.actor_count,
     dk.keywords,
-    STRING_AGG(DISTINCT md.company_type, ', ') AS company_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.company_type))), ', ') AS company_types
 FROM 
     MovieData md
 JOIN 

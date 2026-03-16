@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(o.o_totalprice) AS total_sales,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_discounted_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS product_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS product_names,
     MAX(l.l_shipdate) AS latest_ship_date,
     MIN(l.l_shipdate) AS earliest_ship_date
 FROM 

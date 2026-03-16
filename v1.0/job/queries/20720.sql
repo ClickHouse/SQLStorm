@@ -38,7 +38,7 @@ SELECT
     th.title AS top_level_title,
     mh.depth,
     COUNT(DISTINCT c.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT th.title, ', ') AS linked_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(th.title))), ', ') AS linked_titles,
     CASE 
         WHEN COUNT(DISTINCT i.info) > 0 THEN 'Yes' 
         ELSE 'No' 

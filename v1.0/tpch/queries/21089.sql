@@ -54,7 +54,7 @@ lineitem_summary AS (
 SELECT 
     ns.n_name AS nation_name,
     COALESCE(SUM(a.total_spent), 0) AS total_spent_by_nation,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS products_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS products_supplied,
     RANK() OVER (PARTITION BY ns.n_name ORDER BY COALESCE(SUM(a.total_spent), 0) DESC) AS rank_in_nation,
     CASE 
         WHEN SUM(ls.total_price_after_discount) IS NULL THEN 'No Orders'

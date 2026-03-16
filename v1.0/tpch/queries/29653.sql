@@ -2,7 +2,7 @@ SELECT
     s.s_name AS supplier_name,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(p.p_retailprice) AS avg_part_price,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     r.r_name AS region_name
 FROM 
     supplier s
@@ -21,7 +21,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate <= DATE '1997-12-31'
+    l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate <= toDate('1997-12-31')
 GROUP BY 
     s.s_name, r.r_name
 ORDER BY 

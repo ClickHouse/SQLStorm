@@ -43,7 +43,7 @@ JOIN
 JOIN
     TopSuppliers ts ON ps.ps_suppkey = ts.s_suppkey
 WHERE
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     AND l.l_discount > 0.05
 ORDER BY
     c.c_acctbal DESC, ts.total_supply_value DESC;

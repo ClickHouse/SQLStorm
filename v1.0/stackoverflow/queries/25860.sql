@@ -14,7 +14,7 @@ Post_Summary AS (
         p.Title,
         p.CreationDate,
         p.Score,
-        ARRAY_AGG(DISTINCT t.normalized_tag_name) AS associated_tags,
+        arrayDistinct(groupArray(assumeNotNull(t.normalized_tag_name))) AS associated_tags,
         COUNT(c.Id) AS comment_count,
         COUNT(DISTINCT ph.Id) AS history_count
     FROM 
@@ -26,7 +26,7 @@ Post_Summary AS (
     LEFT JOIN 
         Tags_CTE t ON POSITION(t.normalized_tag_name IN LOWER(p.Tags)) > 0
     WHERE 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score
 ),

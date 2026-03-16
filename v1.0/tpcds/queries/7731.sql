@@ -48,4 +48,4 @@ JOIN
     TopSales ts ON ts.ws_item_sk = (SELECT MIN(rs.ws_item_sk) FROM RankedSales rs WHERE rs.rn <= 5)
 ORDER BY 
     cs.total_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

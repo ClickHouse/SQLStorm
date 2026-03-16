@@ -13,7 +13,7 @@ TotalLineitems AS (
         l_orderkey,
         SUM(l_extendedprice * (1 - l_discount)) AS total_revenue
     FROM lineitem
-    WHERE l_shipdate < DATE '1998-10-01' - INTERVAL '1 year'
+    WHERE l_shipdate < toDate('1998-10-01') - INTERVAL 1 YEAR
     GROUP BY l_orderkey
 ),
 OutstandingOrders AS (

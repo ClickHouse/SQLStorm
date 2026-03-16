@@ -49,4 +49,4 @@ HAVING
     AVG(l.l_extendedprice * (1 - l.l_discount)) > 500
 ORDER BY 
     total_quantity DESC
-FETCH FIRST 10 ROW ONLY;
+LIMIT 10;

@@ -60,7 +60,7 @@ SELECT
     CASE WHEN ar.returning_customer_orders > 0 
         THEN ar.total_returns / ar.returning_customer_orders 
         ELSE 0 END AS avg_returns_per_returning_order,
-    (SELECT STRING_AGG(CONCAT(id.i_item_desc, ' (', id.brand_info, ')'), ', ')
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(CONCAT(id.i_item_desc, ' (', id.brand_info, ')'))), ', ')
      FROM ItemDetails id 
      JOIN RankedSales r ON id.i_item_sk = r.ws_item_sk
      WHERE r.rn <= 5) AS top_items_info

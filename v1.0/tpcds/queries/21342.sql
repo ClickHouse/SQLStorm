@@ -63,4 +63,4 @@ AND (fr.net_profit_ratio IS NOT NULL AND fr.net_profit_ratio > 0)
 GROUP BY c.c_customer_sk, c.c_first_name, c.c_last_name
 HAVING AVG(fr.net_profit_ratio) > 0.1
 ORDER BY unique_items DESC, total_quantity_sold DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

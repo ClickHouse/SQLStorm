@@ -44,7 +44,7 @@ DetailedCast AS (
 SELECT
     movie_title,
     production_year,
-    STRING_AGG(actor_name || ' (' || role_name || ')', ', ') AS top_actors,
+    arrayStringConcat(groupArray(assumeNotNull(actor_name || ' (' || role_name || ')')), ', ') AS top_actors,
     COUNT(actor_name) AS total_actors
 FROM
     DetailedCast

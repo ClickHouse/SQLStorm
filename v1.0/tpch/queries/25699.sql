@@ -15,7 +15,7 @@ WITH RECURSIVE string_benchmark AS (
     SELECT 
         r.r_name,
         COUNT(n.n_nationkey) AS nation_count,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nations_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_list
     FROM region r
     JOIN nation n ON r.r_regionkey = n.n_regionkey
     GROUP BY r.r_name

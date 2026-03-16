@@ -4,7 +4,7 @@ WITH AddressSummary AS (
         ca_state,
         COUNT(*) AS address_count,
         SUM(CASE WHEN ca_city ILIKE '%ville%' THEN 1 ELSE 0 END) AS city_with_ville_count,
-        ARRAY_AGG(DISTINCT ca_city) AS unique_cities,
+        arrayDistinct(groupArray(assumeNotNull(ca_city))) AS unique_cities,
         MAX(ca_zip) AS max_zip,
         MIN(ca_zip) AS min_zip
     FROM customer_address
@@ -42,7 +42,7 @@ SELECT
     asum.ca_state,
     asum.address_count,
     asum.city_with_ville_count,
-    ARRAY_LENGTH(asum.unique_cities, 1) AS unique_city_count,
+    length(asum.unique_cities, 1) AS unique_city_count,
     cd.cd_gender,
     cd.demographic_count,
     cd.max_purchase_estimate,

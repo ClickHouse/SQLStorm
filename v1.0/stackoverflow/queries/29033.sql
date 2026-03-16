@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     JOIN 
-        UNNEST(string_to_array(p.Tags, '<>')) AS t(TagName) ON true
+        arrayJoin(splitByString('<>', p.Tags)) AS t(TagName) ON true
     WHERE 
         p.PostTypeId = 1 
 ),

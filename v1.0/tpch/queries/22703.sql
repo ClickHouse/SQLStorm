@@ -63,4 +63,4 @@ HAVING
     SUM(COALESCE(HighValueParts.p_retailprice, 0)) > (SELECT AVG(p_retailprice) FROM part)
 ORDER BY 
     supplier_count DESC, total_value DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -17,7 +17,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id
 ),
@@ -47,7 +47,7 @@ SELECT
     fp.Score,
     fp.Upvotes - fp.Downvotes AS NetVotes,
     fp.CommentCount,
-    COALESCE((SELECT STRING_AGG(CONCAT(u.DisplayName, ' (', b.Name, ')'), ', ')
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' (', b.Name, ')'))), ', ')
                FROM Badges b 
                JOIN Users u ON u.Id = b.UserId
                WHERE u.Id = (SELECT OwnerUserId FROM Posts WHERE Id = fp.PostId)), 'No Badges') AS UserBadges

@@ -64,4 +64,4 @@ GROUP BY
     n.n_name
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

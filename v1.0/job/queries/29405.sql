@@ -18,7 +18,7 @@ WITH RankedMovies AS (
 CompleteCast AS (
     SELECT
         cc.movie_id,
-        STRING_AGG(CONCAT(ak.name, ' as ', rt.role), ', ') AS full_cast
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ak.name, ' as ', rt.role))), ', ') AS full_cast
     FROM 
         complete_cast cc
     JOIN 

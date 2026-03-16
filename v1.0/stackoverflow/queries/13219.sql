@@ -8,7 +8,7 @@ SELECT
     p.Score,
     u.DisplayName AS OwnerDisplayName,
     u.Reputation AS OwnerReputation,
-    ARRAY_AGG(t.TagName) AS Tags,
+    groupArray(assumeNotNull(t.TagName)) AS Tags,
     COUNT(c.Id) AS CommentCount,
     COALESCE(SUM(v.BountyAmount), 0) AS TotalBountyAmount
 

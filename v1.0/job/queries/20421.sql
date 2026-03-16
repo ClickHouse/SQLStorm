@@ -65,9 +65,9 @@ SELECT
     movie_id,
     title,
     production_year,
-    STRING_AGG(DISTINCT actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT role_name, ', ') AS roles,
-    STRING_AGG(DISTINCT company_name || ' (' || company_type || ')', '; ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(role_name))), ', ') AS roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name || ' (' || company_type || ')'))), '; ') AS companies,
     SUM(actor_role_count) AS total_actor_roles,
     SUM(company_contribution_count) AS total_company_contributions
 FROM

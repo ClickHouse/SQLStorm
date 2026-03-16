@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
 ),
 SupplierPartInfo AS (
     SELECT 
@@ -34,7 +34,7 @@ TotalLineItemProfit AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1997-01-01'
+        l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1997-01-01')
     GROUP BY 
         l.l_orderkey
 ),
@@ -57,7 +57,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(CASE WHEN o.o_orderstatus = 'F' THEN o.o_totalprice ELSE 0 END) AS final_order_total,
     PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY t.total_profit) AS median_profit,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' - ', sp.s_name), '; ') AS part_supplier_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' - ', sp.s_name)))), '; ') AS part_supplier_list
 FROM 
     region r
 JOIN 

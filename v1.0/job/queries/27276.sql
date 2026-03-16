@@ -1,7 +1,7 @@
 WITH MovieKeywords AS (
     SELECT
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM
         movie_keyword mk
     JOIN
@@ -12,7 +12,7 @@ WITH MovieKeywords AS (
 MovieInfo AS (
     SELECT
         mi.movie_id,
-        STRING_AGG(DISTINCT mi.info, '; ') AS information
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS information
     FROM
         movie_info mi
     GROUP BY
@@ -21,7 +21,7 @@ MovieInfo AS (
 CompleteCast AS (
     SELECT
         cc.movie_id,
-        STRING_AGG(DISTINCT p.name, ', ') AS cast_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_list
     FROM
         complete_cast cc
     JOIN

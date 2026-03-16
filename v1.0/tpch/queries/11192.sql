@@ -9,7 +9,7 @@ SELECT
 FROM 
     lineitem 
 WHERE 
-    l_shipdate <= DATE '1998-12-01' 
+    l_shipdate <= toDate('1998-12-01') 
 GROUP BY 
     l_returnflag, 
     l_linestatus 

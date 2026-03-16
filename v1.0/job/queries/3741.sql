@@ -27,7 +27,7 @@ SELECT
     a.name,
     COALESCE(a.name_pcode_nf, 'N/A') AS name_pcode_nf,
     COUNT(DISTINCT am.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT at.title, ', ') FILTER (WHERE at.production_year > 2000) AS post_2000_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(at.title))), ', ') FILTER (WHERE at.production_year > 2000) AS post_2000_titles,
     MAX(at.production_year) AS last_year_active,
     SUM(CASE WHEN am.recent_movie_rank = 1 THEN 1 ELSE 0 END) AS recent_movie_count
 FROM 

@@ -29,7 +29,7 @@ KeywordStats AS (
     SELECT 
         md.movie_title,
         COUNT(mk.id) AS keyword_count,
-        STRING_AGG(k.keyword, ', ') AS keywords_list
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords_list
     FROM 
         MovieDetails md
     JOIN 

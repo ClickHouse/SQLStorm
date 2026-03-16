@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Users U ON P.OwnerUserId = U.Id
     WHERE 
         P.PostTypeId = 1 AND      
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 ),
 TopPosts AS (
     SELECT 
@@ -32,7 +32,7 @@ TopPosts AS (
 PostAnnotations AS (
     SELECT 
         H.PostId,
-        STRING_AGG(CASE WHEN H.PostHistoryTypeId = 10 THEN C.Name END, ', ') AS CloseReasons,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN H.PostHistoryTypeId = 10 THEN C.Name END)), ', ') AS CloseReasons,
         MAX(H.CreationDate) AS LastEdited,
         COUNT(C.Id) AS CommentCount
     FROM 

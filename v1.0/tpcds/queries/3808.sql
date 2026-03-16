@@ -68,4 +68,4 @@ WHERE
     cr.store_total_return_amt IS NOT NULL OR cr.web_total_return_amt IS NOT NULL
 ORDER BY 
     total_return_amount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -20,7 +20,7 @@ AggregatedData AS (
         supplier_name,
         COUNT(part_name) AS part_count,
         SUM(supply_cost) AS total_supply_cost,
-        STRING_AGG(detailed_info, '; ') AS part_details
+        arrayStringConcat(groupArray(assumeNotNull(detailed_info)), '; ') AS part_details
     FROM 
         SupplierPartDetails
     GROUP BY 

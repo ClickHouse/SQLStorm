@@ -66,4 +66,4 @@ FROM CustomerSalesReturns cs
 JOIN customer c ON cs.c_customer_sk = c.c_customer_sk
 WHERE cs.order_count > 0
 ORDER BY return_rate DESC, net_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

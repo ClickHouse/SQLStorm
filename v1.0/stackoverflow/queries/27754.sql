@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         COALESCE(p.Score, 0) AS PostScore,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         ROW_NUMBER() OVER (ORDER BY COALESCE(p.Score, 0) DESC, p.CreationDate DESC) AS Rank
     FROM 
         Posts p
@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(R.Tags) AS Tag,
+        arrayJoin(R.Tags) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts R

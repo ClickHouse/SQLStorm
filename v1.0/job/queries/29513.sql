@@ -32,7 +32,7 @@ TopActors AS (
 SELECT 
     ta.actor_name,
     ta.years_active,
-    STRING_AGG(rm.title || ' (' || rm.production_year || ')', ', ' ORDER BY rm.production_year DESC) AS movies
+    arrayStringConcat(groupArray(assumeNotNull(rm.title || ' (' || rm.production_year || ')')), ', ' ORDER BY rm.production_year DESC) AS movies
 FROM 
     TopActors ta
 JOIN 

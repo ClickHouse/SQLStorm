@@ -35,7 +35,7 @@ SELECT
     mh.movie_title,
     mh.production_year,
     COUNT(DISTINCT ci.person_id) AS total_cast,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
     AVG(CASE WHEN mi.info_type_id = (SELECT id FROM info_type WHERE info = 'budget') 
              THEN CAST(mi.info AS numeric) END) AS avg_budget,
     MAX(CASE WHEN mi.info_type_id = (SELECT id FROM info_type WHERE info = 'duration') 

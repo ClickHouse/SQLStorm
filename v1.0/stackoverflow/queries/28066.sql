@@ -9,14 +9,14 @@ WITH PostStats AS (
         p.AnswerCount,
         COALESCE(u.DisplayName, 'Community User') AS OwnerDisplayName,
         COUNT(DISTINCT c.Id) AS CommentCount,
-        STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames,
-        STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypeNames
     FROM Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Badges b ON u.Id = b.UserId
     LEFT JOIN PostTypes pt ON p.PostTypeId = pt.Id
-    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
+    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
     GROUP BY p.Id, p.Title, p.Tags, p.ViewCount, p.Score, p.AnswerCount, u.DisplayName
 ), 
 CommentsStats AS (

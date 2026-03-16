@@ -8,7 +8,7 @@ WITH RankedPosts AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 
 UserActivity AS (
@@ -76,7 +76,7 @@ SELECT
         WHEN cs.Score IS NULL THEN 'No Score Available'
         ELSE (
             SELECT
-                STRING_AGG(CAST(t.TagName AS VARCHAR), ', ')
+                arrayStringConcat(groupArray(assumeNotNull(CAST(t.TagName AS VARCHAR))), ', ')
             FROM
                 Posts p
             JOIN Tags t ON t.ExcerptPostId = p.Id

@@ -36,7 +36,7 @@ SalesSummary AS (
         rs.ws_item_sk,
         SUM(rs.ws_quantity) AS total_quantity,
         AVG(rs.ws_sales_price) AS avg_sales_price,
-        STRING_AGG(rs.price_string, ', ') AS price_strings
+        arrayStringConcat(groupArray(assumeNotNull(rs.price_string)), ', ') AS price_strings
     FROM 
         RankedSales rs
     WHERE 

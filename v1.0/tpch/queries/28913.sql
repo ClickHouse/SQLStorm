@@ -5,7 +5,7 @@ WITH StringAggregates AS (
         CONCAT('Brand: ', p.p_brand, ', Type: ', p.p_type) AS part_description,
         LENGTH(p.p_comment) AS comment_length,
         COUNT(DISTINCT s.s_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM 
         part p
     JOIN 
@@ -36,4 +36,4 @@ FROM
     FilteredParts
 ORDER BY 
     comment_length DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

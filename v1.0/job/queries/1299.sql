@@ -47,7 +47,7 @@ SELECT
     at.production_year,
     COALESCE(cd.company_name, 'N/A') AS production_company,
     COUNT(DISTINCT ci.person_id) AS cast_count,
-    STRING_AGG(DISTINCT a.name, ', ') AS cast_members
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_members
 FROM 
     ActionTitles at
 LEFT JOIN 

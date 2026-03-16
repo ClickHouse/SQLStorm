@@ -22,8 +22,8 @@ SELECT
     COUNT(DISTINCT ro.o_orderkey) AS total_orders,
     SUM(ro.o_totalprice) AS total_revenue,
     AVG(ro.o_totalprice) AS avg_order_value,
-    STRING_AGG(DISTINCT ro.customer_name, ', ') AS customers,
-    STRING_AGG(DISTINCT ro.supplier_name, ', ') AS suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ro.customer_name))), ', ') AS customers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ro.supplier_name))), ', ') AS suppliers
 FROM 
     RankedOrders ro
 JOIN 

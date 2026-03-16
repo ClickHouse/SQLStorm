@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         COUNT(CASE WHEN V.VoteTypeId = 3 THEN 1 END) AS DownVotes,
         RANK() OVER (PARTITION BY P.PostTypeId ORDER BY P.Score DESC) AS Rank,
         CASE 
-            WHEN P.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Legacy'
+            WHEN P.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Legacy'
             WHEN P.ViewCount > 1000 THEN 'Popular'
             ELSE 'Normal'
         END AS PostCategory
@@ -72,7 +72,7 @@ FROM
 LEFT JOIN 
     Comments C ON IP.PostId = C.PostId
 WHERE 
-    (C.UserId IS NULL OR C.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
+    (C.UserId IS NULL OR C.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ORDER BY 
     IP.Score DESC, 
     IP.ViewCount DESC

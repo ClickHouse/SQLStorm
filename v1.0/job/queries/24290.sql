@@ -31,7 +31,7 @@ TopMovies AS (
 MovieCompanies AS (
     SELECT 
         mc.movie_id, 
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         COUNT(DISTINCT mc.company_id) AS total_companies
     FROM 
         movie_companies mc
@@ -50,7 +50,7 @@ SELECT
         WHEN mc.total_companies = 0 THEN 'No Companies'
         ELSE CONCAT(mc.total_companies, ' Companies')
     END AS company_info,
-    (SELECT STRING_AGG(DISTINCT keyword.keyword, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword.keyword))), ', ') 
      FROM movie_keyword mk 
      JOIN keyword ON mk.keyword_id = keyword.id 
      WHERE mk.movie_id = tm.movie_id) AS keywords

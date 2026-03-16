@@ -1,7 +1,7 @@
 
 WITH TagStats AS (
     SELECT 
-        TRIM(UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><'))) AS TagName,
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -53,7 +53,7 @@ SELECT
     PH.EditCount,
     PH.CloseReopenCount,
     PH.DeleteUndeleteCount,
-    (SELECT STRING_AGG(T.TagName, ', ' ORDER BY T.TagCount DESC)
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ' ORDER BY T.TagCount DESC)
      FROM TagStats T
      WHERE T.TagCount > 5) AS PopularTags
 FROM 

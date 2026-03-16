@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         MAX(v.CreationDate) AS LastVoteDate,
         COUNT(DISTINCT CASE WHEN v.VoteTypeId = 1 THEN v.Id END) AS AcceptCount,
         COUNT(DISTINCT CASE WHEN v.VoteTypeId = 2 THEN v.Id END) AS UpVoteCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
     FROM 
         Posts p
     LEFT JOIN 
@@ -18,9 +18,9 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     LEFT JOIN 
-        unnest(string_to_array(p.Tags, ',')) AS t(TagName) ON t.TagName IS NOT NULL
+        arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE 
-        p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '90 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score
 ),
@@ -35,7 +35,7 @@ RecentHistory AS (
     JOIN 
         PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
     WHERE 
-        ph.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
         AND PHT.Id IN (10, 11, 12)  
 ),
 FilteredPosts AS (

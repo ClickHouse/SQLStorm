@@ -20,11 +20,11 @@ RecentPosts AS (
         P.Tags,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RecentPostRank
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 TopTags AS (
     SELECT 
-        UNNEST(string_to_array(P.Tags, '><')) AS Tag,
+        arrayJoin(splitByString('><', P.Tags)) AS Tag,
         COUNT(*) AS TagCount
     FROM Posts P
     WHERE P.PostTypeId = 1
@@ -52,7 +52,7 @@ SELECT
 FROM RecursiveUserStats U
 LEFT JOIN RecentPosts RP ON U.UserId = RP.OwnerUserId AND RP.RecentPostRank = 1
 LEFT JOIN PostCommentsCount PC ON RP.PostId = PC.PostId
-LEFT JOIN TopTags TT ON TT.Tag = ANY(string_to_array(COALESCE(RP.Tags, ''), '><'))
+LEFT JOIN TopTags TT ON TT.Tag = ANY(splitByString('><', COALESCE(RP.Tags, '')))
 WHERE U.Reputation > 1000
 ORDER BY U.Reputation DESC, TT.TagCount DESC NULLS LAST
 LIMIT 100;

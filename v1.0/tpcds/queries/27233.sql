@@ -23,7 +23,7 @@ AggregatedMetrics AS (
         ca.ca_state,
         COUNT(DISTINCT c.c_customer_sk) AS customer_count,
         AVG(email_length) AS avg_email_length,
-        STRING_AGG(full_name, ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names
     FROM 
         CustomerWithDetails c
     JOIN 

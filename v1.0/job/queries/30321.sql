@@ -27,7 +27,7 @@ WITH RECURSIVE MovieHierarchy AS (
 SELECT 
     ak.name AS actor_name,
     COUNT(DISTINCT ca.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT mk.title, ', ') AS movies_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.title))), ', ') AS movies_list,
     MAX(mh.production_year) AS latest_movie_year,
     COUNT(DISTINCT mh.movie_id) AS movies_in_hierarchy,
     SUM(CASE WHEN mh.production_year IS NULL THEN 1 ELSE 0 END) AS null_year_count

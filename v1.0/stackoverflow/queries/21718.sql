@@ -10,14 +10,14 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 
 CloseAndEditHistory AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(CASE WHEN pt.Name = 'Post Closed' THEN ph.Comment ELSE NULL END, '; ') AS CloseReasons,
-        STRING_AGG(CASE WHEN pt.Name LIKE 'Edit %' THEN ph.Text ELSE NULL END, '; ') AS EditHistory,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN pt.Name = 'Post Closed' THEN ph.Comment ELSE NULL END)), '; ') AS CloseReasons,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN pt.Name LIKE 'Edit %' THEN ph.Text ELSE NULL END)), '; ') AS EditHistory,
         MAX(ph.CreationDate) AS LastActivityDate
     FROM 
         PostHistory ph

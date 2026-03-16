@@ -66,4 +66,4 @@ FROM
     CombinedStats
 ORDER BY 
     Reputation DESC, PostCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

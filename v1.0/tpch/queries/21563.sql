@@ -52,7 +52,7 @@ LEFT JOIN
 LEFT JOIN 
     high_value_lines hvl ON ro.o_orderkey = hvl.l_orderkey
 LEFT JOIN 
-    supplier_data sd ON sd.s_name = (SELECT s_name FROM supplier ORDER BY RANDOM() LIMIT 1)
+    supplier_data sd ON sd.s_name = (SELECT s_name FROM supplier ORDER BY rand() LIMIT 1)
 WHERE 
     r.r_name IS NOT NULL AND 
     (r.r_comment NOT LIKE '%test%' OR r.r_comment IS NULL)

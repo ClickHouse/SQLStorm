@@ -5,7 +5,7 @@ WITH TagStatistics AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(p.ViewCount) AS TotalViews,
         SUM(p.AnswerCount) AS TotalAnswers,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS ActiveUsers,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS ActiveUsers,
         AVG(p.Score) AS AverageScore
     FROM Tags t
     LEFT JOIN Posts p ON p.Tags LIKE '%' || '<' || t.TagName || '>' || '%'
@@ -23,9 +23,9 @@ UsersWithTopTags AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions
     FROM Users u
     LEFT JOIN Posts p ON p.OwnerUserId = u.Id
-    LEFT JOIN LATERAL (
+    LEFT JOIN (
         SELECT 
-            unnest(string_to_array(p.Tags, '><')) AS TagName
+            arrayJoin(splitByString('><', p.Tags)) AS TagName
     ) AS tag ON true
     LEFT JOIN Tags t ON t.TagName = tag.TagName
     GROUP BY u.Id, u.DisplayName

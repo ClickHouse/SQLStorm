@@ -11,7 +11,7 @@ WITH ranked_titles AS (
 nickname_aggregation AS (
     SELECT 
         a.person_id,
-        STRING_AGG(a.name, ', ') AS all_nicknames
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS all_nicknames
     FROM aka_name a
     GROUP BY a.person_id
 ),
@@ -29,7 +29,7 @@ cast_with_roles AS (
 company_info AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT CONCAT(cn.name, ' (', ct.kind, ')'), ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(cn.name, ' (', ct.kind, ')')))), ', ') AS companies
     FROM movie_companies mc
     JOIN company_name cn ON mc.company_id = cn.id
     JOIN company_type ct ON mc.company_type_id = ct.id

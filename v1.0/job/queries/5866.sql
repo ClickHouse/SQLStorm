@@ -36,7 +36,7 @@ Aggregated_Data AS (
         production_year,
         COUNT(DISTINCT title) AS total_movies,
         COUNT(DISTINCT actor_name) AS total_actors,
-        STRING_AGG(DISTINCT role_type, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(role_type))), ', ') AS roles
     FROM 
         Recursive_CTE
     GROUP BY 

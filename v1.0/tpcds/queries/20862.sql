@@ -38,4 +38,4 @@ WHERE
     AND (i.i_rec_end_date IS NULL OR i.i_rec_end_date > cast('2002-10-01' as date))
 ORDER BY 
     total_sales DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

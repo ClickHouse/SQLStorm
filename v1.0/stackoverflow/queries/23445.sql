@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' AND
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND
         p.Score IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId
@@ -73,13 +73,13 @@ SELECT
         WHEN pwb.Score > 10 AND pwb.TotalBadges > 5 THEN 'Highly Active Contributor'
         ELSE 'Regular Contributor'
     END AS ContributorStatus,
-    STRING_AGG(DISTINCT COALESCE(t.TagName, 'No Tags'), ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(t.TagName, 'No Tags')))), ', ') AS AssociatedTags
 FROM 
     PostsWithBadges pwb
 LEFT JOIN 
     (SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '>')) AS TagName
+        arrayJoin(splitByString('>', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
      FROM 
         Posts p
      WHERE 

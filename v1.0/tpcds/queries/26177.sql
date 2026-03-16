@@ -5,7 +5,7 @@ WITH address_summary AS (
         COUNT(DISTINCT ca_address_sk) AS total_addresses,
         COUNT(DISTINCT ca_city) AS unique_cities,
         AVG(ca_gmt_offset) AS avg_gmt_offset,
-        STRING_AGG(DISTINCT CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), ', ') AS address_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type)))), ', ') AS address_list
     FROM 
         customer_address
     GROUP BY 
@@ -16,8 +16,8 @@ demographics_summary AS (
         cd_gender,
         COUNT(DISTINCT cd_demo_sk) AS total_demographics,
         AVG(cd_dep_count) AS avg_dependent_count,
-        STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_levels
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_levels
     FROM 
         customer_demographics
     GROUP BY 
@@ -27,7 +27,7 @@ date_summary AS (
     SELECT 
         d_year,
         COUNT(DISTINCT d_date_sk) AS total_days,
-        STRING_AGG(DISTINCT d_day_name, ', ') AS week_days,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d_day_name))), ', ') AS week_days,
         AVG(d_month_seq) AS avg_month_sequence
     FROM 
         date_dim

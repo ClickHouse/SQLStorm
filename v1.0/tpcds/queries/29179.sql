@@ -13,7 +13,7 @@ demographic_analysis AS (
         cd_gender,
         COUNT(DISTINCT c_customer_sk) AS customer_count,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT full_address, '; ') AS addresses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(full_address))), '; ') AS addresses
     FROM 
         customer c
     JOIN 

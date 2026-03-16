@@ -22,7 +22,7 @@ ActorCounts AS (
 CompanyGenres AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT kt.kind, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kt.kind))), ', ') AS genres
     FROM 
         movie_companies mc
     JOIN 

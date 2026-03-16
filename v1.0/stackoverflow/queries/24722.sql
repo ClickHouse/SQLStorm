@@ -44,7 +44,7 @@ PostHistorySummary AS (
         PH.PostId,
         MAX(PH.CreationDate) AS LastEditDate,
         COUNT(DISTINCT PH.Id) AS HistoryCount,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryTypes
     FROM 
         PostHistory PH
     JOIN 

@@ -19,7 +19,7 @@ TopBadges AS (
     SELECT
         B.UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM
         Badges B
     GROUP BY
@@ -37,7 +37,7 @@ RecentPostStats AS (
     FROM
         Posts P
     WHERE
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 )
 SELECT
     U.DisplayName,
@@ -61,4 +61,4 @@ WHERE
     U.Reputation > 1000
 ORDER BY
     UR.Reputation DESC NULLS LAST
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

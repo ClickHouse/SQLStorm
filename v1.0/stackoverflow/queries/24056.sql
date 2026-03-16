@@ -15,7 +15,7 @@ WITH UserActivity AS (
     LEFT JOIN 
         Votes V ON V.UserId = U.Id AND V.PostId = P.Id
     WHERE 
-        U.CreationDate < (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
+        U.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         U.Id, U.DisplayName
 ), PostStatistics AS (
@@ -37,7 +37,7 @@ WITH UserActivity AS (
     LEFT JOIN 
         Badges B ON B.UserId = U.Id
     WHERE 
-        P.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
+        P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount, U.DisplayName
 ), RecentActivity AS (

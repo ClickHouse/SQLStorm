@@ -32,8 +32,8 @@ ActorStatistics AS (
     SELECT 
         actor_name,
         COUNT(DISTINCT title) AS movie_count,
-        STRING_AGG(DISTINCT keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT company_name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies
     FROM 
         MovieDetails
     GROUP BY 

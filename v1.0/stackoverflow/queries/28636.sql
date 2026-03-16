@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        UNNEST(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
         ID AS PostId
     FROM 
         Posts
@@ -44,7 +44,7 @@ PostDetails AS (
         P.CreationDate,
         P.ViewCount,
         PT.Name AS PostTypeName,
-        ARRAY_AGG(DISTINCT AT.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(AT.TagName))) AS Tags
     FROM 
         Posts P
     JOIN 

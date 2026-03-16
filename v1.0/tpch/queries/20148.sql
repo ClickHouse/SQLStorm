@@ -35,7 +35,7 @@ FinalResults AS (
         n.n_name AS nation,
         COUNT(DISTINCT o.o_orderkey) AS order_count,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-        STRING_AGG(DISTINCT CASE WHEN l.l_returnflag = 'R' THEN 'Returned Part' ELSE 'Normal Part' END, ', ') AS part_statuses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN l.l_returnflag = 'R' THEN 'Returned Part' ELSE 'Normal Part' END))), ', ') AS part_statuses
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
     JOIN supplier s ON l.l_suppkey = s.s_suppkey

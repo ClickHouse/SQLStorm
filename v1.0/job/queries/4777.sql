@@ -24,7 +24,7 @@ ActorInfo AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(co.name, ', ') AS company_names
+        arrayStringConcat(groupArray(assumeNotNull(co.name)), ', ') AS company_names
     FROM 
         movie_companies mc
     JOIN 

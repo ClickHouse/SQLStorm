@@ -4,7 +4,7 @@ SELECT
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     MAX(p.p_retailprice) AS max_retail_price,
     SUM(CASE WHEN o.o_orderstatus = 'F' THEN l.l_extendedprice ELSE 0 END) AS finalized_sales,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     part p
 JOIN 

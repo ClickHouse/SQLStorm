@@ -7,7 +7,7 @@ WITH movie_characteristics AS (
         t.production_year, 
         t.kind_id, 
         COUNT(DISTINCT kc.keyword) AS keyword_count,
-        STRING_AGG(DISTINCT kc.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kc.keyword))), ', ') AS keywords
     FROM 
         aka_name a
     JOIN 
@@ -38,7 +38,7 @@ SELECT
     ap.actor_name,
     COUNT(DISTINCT ap.movie_title) AS movies_featured,
     SUM(ap.keyword_count) AS total_keywords,
-    STRING_AGG(DISTINCT ap.movie_title, '; ') AS featured_movies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ap.movie_title))), '; ') AS featured_movies
 FROM 
     actor_performance ap
 GROUP BY 

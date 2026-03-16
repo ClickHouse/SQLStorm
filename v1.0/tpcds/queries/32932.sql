@@ -41,7 +41,7 @@ SELECT
     AVG(rs.sales_count) AS avg_sales_count,
     COUNT(DISTINCT rs.ws_order_number) AS unique_orders,
     COALESCE(
-        STRING_AGG(CONCAT_WS(':', rs.ws_order_number, CAST(rs.total_sales AS VARCHAR)), ', '),
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT_WS(':', rs.ws_order_number, CAST(rs.total_sales AS VARCHAR)))), ', '),
         'No Orders') AS order_list
 FROM
     RankedSales rs

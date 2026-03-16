@@ -15,19 +15,19 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days') 
+        AND p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) 
         AND p.Score >= 0
 ),
 TagSummary AS (
     SELECT 
-        UNNEST(string_to_array(Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', Tags)) AS TagName,
         COUNT(*) AS PostCount,
         SUM(CASE WHEN Score > 0 THEN 1 ELSE 0 END) AS UpvotedCount,
         AVG(Score) AS AverageScore
     FROM 
         RankedPosts
     GROUP BY 
-        UNNEST(string_to_array(Tags, ','))
+        arrayJoin(splitByString(',', Tags))
 ),
 TopTags AS (
     SELECT 

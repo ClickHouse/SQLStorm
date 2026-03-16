@@ -3,7 +3,7 @@ WITH MovieDetails AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT c.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS cast_names,
         COUNT(DISTINCT kc.keyword) AS keyword_count
     FROM 
         aka_title t
@@ -35,7 +35,7 @@ SELECT
     MAX(rm.keyword_count) AS max_keywords,
     MIN(rm.keyword_count) AS min_keywords,
     AVG(rm.keyword_count) AS avg_keywords,
-    STRING_AGG(rm.title, '; ') AS movies_with_max_keywords
+    arrayStringConcat(groupArray(assumeNotNull(rm.title)), '; ') AS movies_with_max_keywords
 FROM 
     RankedMovies rm
 WHERE 

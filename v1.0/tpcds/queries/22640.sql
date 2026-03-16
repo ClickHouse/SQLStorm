@@ -85,4 +85,4 @@ WHERE
     ra.total_returns > 5
 ORDER BY 
     ra.c_customer_sk, ra.total_returns DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

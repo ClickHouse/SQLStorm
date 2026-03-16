@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 FilteredPosts AS (
     SELECT 
         rp.*,
-        (EXTRACT(EPOCH FROM NOW()) - EXTRACT(EPOCH FROM rp.CreationDate)) / 3600 AS AgeInHours
+        (toUnixTimestamp(NOW()) - toUnixTimestamp(rp.CreationDate)) / 3600 AS AgeInHours
     FROM 
         RankedPosts rp
     WHERE 

@@ -20,7 +20,7 @@ SELECT
         WHEN AVG(o.o_totalprice) BETWEEN 500 AND 1000 THEN 'Medium Value'
         ELSE 'Low Value' 
     END AS OrderValueCategory,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS ProductNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS ProductNames
 FROM 
     customer c
 JOIN 

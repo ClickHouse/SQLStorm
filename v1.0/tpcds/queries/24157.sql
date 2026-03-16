@@ -43,4 +43,4 @@ WHERE
     AND (s_item.i_rec_end_date IS NULL OR s_item.i_rec_end_date > cast('2002-10-01' as date))
 ORDER BY 
     total_revenue DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

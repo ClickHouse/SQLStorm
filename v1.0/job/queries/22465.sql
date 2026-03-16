@@ -29,7 +29,7 @@ ActorMovieCounts AS (
 CompaniesWithMovies AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(co.name, ', ') AS company_names,
+        arrayStringConcat(groupArray(assumeNotNull(co.name)), ', ') AS company_names,
         COUNT(DISTINCT co.id) AS company_count
     FROM movie_companies mc
     JOIN company_name co ON mc.company_id = co.id
@@ -48,7 +48,7 @@ SELECT
     END AS keyword_status,
     CASE 
         WHEN a.actor_count = 0 THEN NULL
-        ELSE ROUND((fm.keyword_count / a.actor_count::numeric), 2)
+        ELSE ROUND((fm.keyword_count / CAST(a.actor_count AS numeric)), 2)
     END AS keyword_per_actor_ratio
 FROM FilteredMovies fm
 JOIN ActorMovieCounts a ON fm.movie_title = (SELECT title FROM aka_title WHERE id = a.movie_id LIMIT 1)

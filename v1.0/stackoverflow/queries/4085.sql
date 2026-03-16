@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), 
 UserPostStats AS (
     SELECT 
@@ -44,7 +44,7 @@ SELECT
     up.TotalViews,
     up.PositiveScore,
     COALESCE(cp.CloseCount, 0) AS CloseCount,
-    ARRAY_AGG(rp.Title) AS TopPosts
+    groupArray(assumeNotNull(rp.Title)) AS TopPosts
 FROM 
     UserPostStats up
 LEFT JOIN 

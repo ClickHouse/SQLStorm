@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid_inc_tax) AS total_spent,
     AVG(ws.ws_net_profit) AS avg_profit,
-    STRING_AGG(DISTINCT CONCAT(i.i_brand, ' ', i.i_product_name), ', ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(i.i_brand, ' ', i.i_product_name)))), ', ') AS purchased_items,
     MAX(d.d_date) AS last_purchase_date,
     CASE 
         WHEN cd.cd_gender = 'M' THEN 'Male'

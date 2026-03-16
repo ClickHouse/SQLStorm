@@ -26,7 +26,7 @@ ActorRoles AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS all_keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS all_keywords
     FROM 
         movie_keyword mk
     JOIN 

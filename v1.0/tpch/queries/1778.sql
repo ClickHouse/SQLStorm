@@ -9,7 +9,7 @@ WITH SupplierSales AS (
     JOIN 
         lineitem l ON ps.ps_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+        l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
     GROUP BY 
         s.s_name
 ),  

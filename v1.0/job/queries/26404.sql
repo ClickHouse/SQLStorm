@@ -43,8 +43,8 @@ SELECT
     ft.title,
     ft.production_year,
     ak.name AS actor_name,
-    ARRAY_AGG(DISTINCT c.role_id) AS roles,
-    ARRAY_AGG(DISTINCT c.note) AS notes
+    arrayDistinct(groupArray(assumeNotNull(c.role_id))) AS roles,
+    arrayDistinct(groupArray(assumeNotNull(c.note))) AS notes
 FROM 
     MostPopularTitles ft
 LEFT JOIN 

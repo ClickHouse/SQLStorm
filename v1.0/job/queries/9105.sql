@@ -4,8 +4,8 @@ WITH movie_details AS (
         t.id AS movie_id, 
         t.title, 
         t.production_year, 
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names, 
-        STRING_AGG(DISTINCT cmt.kind, ', ') AS company_types 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names, 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cmt.kind))), ', ') AS company_types 
     FROM 
         aka_title t 
         JOIN movie_companies mc ON t.movie_id = mc.movie_id 
@@ -19,8 +19,8 @@ WITH movie_details AS (
 cast_details AS (
     SELECT 
         c.movie_id, 
-        STRING_AGG(DISTINCT n.name, ', ') AS cast_names, 
-        STRING_AGG(DISTINCT r.role, ', ') AS roles 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS cast_names, 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles 
     FROM 
         cast_info c 
         JOIN name n ON c.person_id = n.imdb_id 

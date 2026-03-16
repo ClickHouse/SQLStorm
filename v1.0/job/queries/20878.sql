@@ -6,7 +6,7 @@ WITH RankedMovies AS (
         t.production_year,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS rank,
         COALESCE(SUM(CASE WHEN ci.nr_order = 1 THEN 1 ELSE 0 END), 0) AS lead_actors_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies_involved
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies_involved
     FROM aka_title t
     LEFT JOIN complete_cast cc ON t.id = cc.movie_id
     LEFT JOIN cast_info ci ON cc.subject_id = ci.id
@@ -33,7 +33,7 @@ Summary AS (
 KeywordMovies AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id

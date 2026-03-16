@@ -9,8 +9,8 @@ WITH MovieRatings AS (
             
             (CASE 
                 WHEN m.production_year < 2000 THEN NULL 
-                WHEN m.production_year BETWEEN 2000 AND 2010 THEN 7 + RANDOM() * 3  
-                ELSE 5 + RANDOM() * 5 
+                WHEN m.production_year BETWEEN 2000 AND 2010 THEN 7 + rand() * 3  
+                ELSE 5 + rand() * 5 
             END) AS rating
         FROM aka_title m
         WHERE m.production_year IS NOT NULL
@@ -32,8 +32,8 @@ DetailedMovieInfo AS (
         qm.title,
         qm.production_year,
         qm.average_rating,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM QualifiedMovies qm
     LEFT JOIN movie_companies mc ON mc.movie_id = (
         SELECT id FROM aka_title WHERE title = qm.title LIMIT 1

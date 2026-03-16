@@ -23,8 +23,8 @@ WITH string_benchmarks AS (
 SELECT 
     AVG(name_length) AS avg_name_length,
     MAX(price_category) AS max_price_category,
-    STRING_AGG(DISTINCT short_comment, '; ') AS unique_short_comments,
-    STRING_AGG(DISTINCT combined_mfgr_type, ', ') AS unique_mfgr_types,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(short_comment))), '; ') AS unique_short_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(combined_mfgr_type))), ', ') AS unique_mfgr_types,
     SUM(supplier_count) AS total_suppliers
 FROM 
     string_benchmarks;

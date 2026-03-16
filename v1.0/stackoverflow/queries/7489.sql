@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId IN (1, 2)  
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'  
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR  
 ), 
 TopPerformers AS (
     SELECT 

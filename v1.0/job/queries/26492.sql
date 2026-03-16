@@ -21,9 +21,9 @@ WITH RankedMovies AS (
 
 SELECT 
     rm.movie_title,
-    STRING_AGG(rm.actor_name, ', ') AS actor_list,
+    arrayStringConcat(groupArray(assumeNotNull(rm.actor_name)), ', ') AS actor_list,
     COUNT(rm.actor_name) AS total_actors,
-    STRING_AGG(DISTINCT rm.actor_role, ', ') AS roles_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.actor_role))), ', ') AS roles_list
 FROM 
     RankedMovies rm
 WHERE 

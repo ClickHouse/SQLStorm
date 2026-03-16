@@ -25,7 +25,7 @@ PartDetails AS (
 SELECT d.p_name, d.p_brand, d.p_retailprice, d.avg_supply_cost, d.price_margin,
        COUNT(DISTINCT l.l_orderkey) AS order_count,
        SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-       STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM PartDetails d
 LEFT JOIN lineitem l ON d.p_partkey = l.l_partkey
 LEFT JOIN orders o ON l.l_orderkey = o.o_orderkey

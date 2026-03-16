@@ -34,7 +34,7 @@ SELECT
     production_year,
     actor_role,
     company_name,
-    ARRAY_AGG(movie_keyword) AS keywords
+    groupArray(assumeNotNull(movie_keyword)) AS keywords
 FROM 
     MovieOverview
 WHERE 

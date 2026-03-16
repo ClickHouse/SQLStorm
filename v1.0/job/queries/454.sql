@@ -45,7 +45,7 @@ SELECT
     m.title,
     m.production_year,
     COALESCE(cn.name, 'Unknown') AS company_name,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     m.kind_id
 FROM 
     aka_title m

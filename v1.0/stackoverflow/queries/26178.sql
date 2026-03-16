@@ -8,14 +8,14 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.Score,
         COUNT(DISTINCT c.Id) AS CommentCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '>')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('>', p.Tags)) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -31,13 +31,13 @@ UserPostStats AS (
         COUNT(p.Id) AS TotalPosts,
         MAX(p.CreationDate) AS LatestPostDate,
         MAX(p.Score) AS HighestScore,
-        ARRAY_AGG(DISTINCT t.TagName) AS AssociatedTags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS AssociatedTags
     FROM 
         Users u
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, '>')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('>', p.Tags)) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

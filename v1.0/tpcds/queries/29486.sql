@@ -25,4 +25,4 @@ HAVING
     COUNT(DISTINCT ws.ws_order_number) > 0
 ORDER BY 
     total_spent DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

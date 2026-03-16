@@ -6,7 +6,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT p.Id) AS TotalPosts,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
-        AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - p.CreationDate)) / 60) AS AvgPostAgeMinutes,
+        AVG(toUnixTimestamp((now64(6) - p.CreationDate)) / 60) AS AvgPostAgeMinutes,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS Upvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS Downvotes
     FROM
@@ -61,4 +61,4 @@ LEFT JOIN PopularTags pt ON ua.TotalPosts > 0
 LEFT JOIN RecentPostHistory rph ON ua.UserId = rph.UserId
 ORDER BY 
     ua.TotalPosts DESC, ua.Upvotes DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

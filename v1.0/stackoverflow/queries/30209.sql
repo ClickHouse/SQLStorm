@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 AggregatedVotes AS (
     SELECT 
@@ -57,7 +57,7 @@ SELECT
     COALESCE(av.DownVotes, 0) AS DownVotes,
     cd.CommentCount,
     cd.LastCommentDate,
-    EXTRACT(EPOCH FROM CURRENT_TIMESTAMP - rp.CreationDate) / 3600 AS AgeInHours,
+    toUnixTimestamp(now64(6) - rp.CreationDate) / 3600 AS AgeInHours,
     CASE 
         WHEN php.LastEditDate IS NOT NULL THEN 'Edited'
         ELSE 'Not Edited'

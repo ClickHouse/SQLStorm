@@ -46,8 +46,8 @@ SalesPerformance AS (
             (t.total_return_amount / m.total_sales) * 100
         ELSE 0 END AS return_percentage
     FROM TopCustomers t
-    JOIN MonthlySales m ON m.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') 
-                       AND m.d_month_seq = EXTRACT(MONTH FROM DATE '2002-10-01')
+    JOIN MonthlySales m ON m.d_year = toYear(toDate('2002-10-01')) 
+                       AND m.d_month_seq = toMonth(toDate('2002-10-01'))
 )
 SELECT 
     sp.c_customer_sk,

@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         p.ViewCount,
         p.Score,
-        RANK() OVER (PARTITION BY STRING_AGG(t.TagName, ',') ORDER BY p.Score DESC) AS TagRank
+        RANK() OVER (PARTITION BY arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ',') ORDER BY p.Score DESC) AS TagRank
     FROM 
         Posts p
     JOIN 

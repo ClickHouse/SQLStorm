@@ -11,7 +11,7 @@ WITH RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 
 AggregatedUserData AS (
@@ -43,7 +43,7 @@ FilteredComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days')
+        c.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY)
 )
 
 SELECT 
@@ -69,7 +69,7 @@ LEFT JOIN
     FilteredComments fc ON rp.PostId = fc.PostId
 WHERE 
     (rp.Score > 10 OR rp.ViewCount > 100) AND 
-    (fc.CreationDate IS NULL OR fc.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 week'))
+    (fc.CreationDate IS NULL OR fc.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 WEEK))
 ORDER BY 
     rp.CreationDate DESC, 
     rp.Score DESC, 

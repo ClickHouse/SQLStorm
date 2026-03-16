@@ -34,7 +34,7 @@ customer_info AS (
         cs.total_sales,
         cs.order_count,
         rp.last_purchase_date,
-        DATE_PART('year', cast('2002-10-01' as date)) - DATE_PART('year', DATE '1970-01-01' + rp.last_purchase_date) AS years_since_last_purchase
+        datePart('year', cast('2002-10-01' as date)) - datePart('year', toDate('1970-01-01') + rp.last_purchase_date) AS years_since_last_purchase
     FROM 
         sales_data cs
     JOIN 

@@ -53,4 +53,4 @@ JOIN
     SupplierSummary ss ON rs.total_order_value > ss.total_value
 ORDER BY 
     rs.total_order_value DESC, ss.part_count DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

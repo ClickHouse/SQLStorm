@@ -43,7 +43,7 @@ SELECT
     md.keyword,
     md.company_name,
     md.production_note,
-    STRING_AGG(ad.actor_name || ' (' || ad.role_name || ')', ', ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(ad.actor_name || ' (' || ad.role_name || ')')), ', ') AS actors
 FROM 
     MovieDetails AS md
 LEFT JOIN 

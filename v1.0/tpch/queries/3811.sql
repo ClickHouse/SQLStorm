@@ -7,7 +7,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01'
+        o.o_orderdate >= toDate('1997-01-01')
 ), SupplierStats AS (
     SELECT 
         s.s_suppkey,
@@ -65,4 +65,4 @@ WHERE
     n.n_comment LIKE '%supplier%'
 ORDER BY 
     o.o_orderdate DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

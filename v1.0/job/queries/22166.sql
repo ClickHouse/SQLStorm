@@ -30,7 +30,7 @@ CompanyMovieJoin AS (
     SELECT 
         mc.movie_id,
         COUNT(DISTINCT c.id) AS company_count,
-        STRING_AGG(DISTINCT c.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS company_names
     FROM 
         movie_companies mc
     JOIN 
@@ -59,7 +59,7 @@ FROM
 LEFT JOIN (
     SELECT 
         movie_id,
-        STRING_AGG(actor_name, ', ') AS actor_names,
+        arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS actor_names,
         MAX(actor_rank) AS actor_rank
     FROM 
         ActorMovieJoin
@@ -68,7 +68,7 @@ LEFT JOIN (
 ) am ON am.movie_id = rm.movie_id
 LEFT JOIN CompanyMovieJoin cm ON cm.movie_id = rm.movie_id
 WHERE 
-    rm.production_year BETWEEN 1980 AND EXTRACT(YEAR FROM cast('2024-10-01' as date))
+    rm.production_year BETWEEN 1980 AND toYear(cast('2024-10-01' as date))
 ORDER BY 
     rm.production_year DESC, 
     rm.title ASC;

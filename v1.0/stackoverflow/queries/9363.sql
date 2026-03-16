@@ -56,8 +56,8 @@ SELECT
     AU.BadgeCount,
     AU.ReputationRank,
     AU.TotalComments,
-    (AU.AnswerCount::FLOAT / NULLIF(AU.QuestionCount, 0)) * 100 AS AnswerToQuestionRatio,
-    (AU.BadgeCount::FLOAT / NULLIF(AU.PostCount, 0)) * 100 AS BadgeToPostRatio
+    (CAST(AU.AnswerCount AS FLOAT) / NULLIF(AU.QuestionCount, 0)) * 100 AS AnswerToQuestionRatio,
+    (CAST(AU.BadgeCount AS FLOAT) / NULLIF(AU.PostCount, 0)) * 100 AS BadgeToPostRatio
 FROM ActiveUsers AU
 WHERE AU.ReputationRank <= 10
 ORDER BY AU.Reputation DESC, AU.TotalComments DESC;

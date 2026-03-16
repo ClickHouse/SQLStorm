@@ -20,7 +20,7 @@ WITH PostStats AS (
     LEFT JOIN 
         PostLinks pl ON p.Id = pl.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Score, p.ViewCount, u.Reputation
 ),
@@ -62,7 +62,7 @@ TopPosts AS (
 UserBadges AS (
     SELECT
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         COUNT(*) AS BadgeCount
     FROM 
         Badges b

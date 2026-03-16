@@ -22,7 +22,7 @@ RecentPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostVoteCounts AS (
     SELECT 
@@ -41,7 +41,7 @@ SELECT
     COALESCE(RP.RN, 0) AS RecentPostCount,  -- Adjusted to use RP.RN
     PV.UpVotes,
     PV.DownVotes,
-    STRING_AGG(P.TAGS, ', ') AS TagsAggregated
+    arrayStringConcat(groupArray(assumeNotNull(P.TAGS)), ', ') AS TagsAggregated
 FROM 
     Users U
 JOIN 

@@ -6,7 +6,7 @@ WITH TagAnalytics AS (
         SUM(p.ViewCount) AS TotalViews,
         SUM(p.Score) AS TotalScore,
         AVG(u.Reputation) AS AvgUserReputation,
-        STRING_AGG(DISTINCT u.DisplayName, ', ') AS ContributingUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS ContributingUsers
     FROM 
         Tags
     JOIN 
@@ -14,7 +14,7 @@ WITH TagAnalytics AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         Tags.TagName
 ),
@@ -27,7 +27,7 @@ PostHistoryStats AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId
 ),

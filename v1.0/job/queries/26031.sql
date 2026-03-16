@@ -4,7 +4,7 @@ WITH RankedTitles AS (
         at.id AS title_id,
         at.title,
         at.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS aka_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
         at.kind_id,
         RANK() OVER (PARTITION BY at.production_year ORDER BY at.title) AS title_rank
     FROM 
@@ -19,7 +19,7 @@ WITH RankedTitles AS (
 FilteredCast AS (
     SELECT 
         ci.movie_id,
-        STRING_AGG(CONCAT_WS(' as ', cn.name, rt.role), ', ') AS cast_details
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT_WS(' as ', cn.name, rt.role))), ', ') AS cast_details
     FROM 
         cast_info ci
     JOIN 
@@ -57,7 +57,7 @@ SELECT
     fo.production_year,
     fo.aka_names,
     fo.cast_details,
-    STRING_AGG(DISTINCT fo.keywords, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fo.keywords))), ', ') AS keywords
 FROM 
     FinalOutput fo
 GROUP BY 

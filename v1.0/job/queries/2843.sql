@@ -35,7 +35,7 @@ SELECT
     tm.production_year,
     COALESCE(cc.company_count, 0) AS number_of_companies,
     COUNT(DISTINCT l.linked_movie_id) AS linked_movie_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS noted_cast_count
 FROM 
     TopMovies tm

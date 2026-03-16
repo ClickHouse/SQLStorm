@@ -25,7 +25,7 @@ ActorInfo AS (
         a.person_id,
         a.name AS actor_name,
         COUNT(ci.movie_id) AS movie_count,
-        STRING_AGG(DISTINCT t.title, ', ') AS movies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movies,
         MAX(pi.info) AS notable_info
     FROM 
         aka_name a

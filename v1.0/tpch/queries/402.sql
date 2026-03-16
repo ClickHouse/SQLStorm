@@ -34,7 +34,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS returned_quantity,
     SUM(l.l_quantity) AS total_quantity,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
-    COALESCE(CONCAT(s.s_name, ' (', s.s_acctbal::text, ')'), 'No Supplier') AS supplier_info,
+    COALESCE(CONCAT(s.s_name, ' (', CAST(s.s_acctbal AS text), ')'), 'No Supplier') AS supplier_info,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
 FROM 
     lineitem l
@@ -49,9 +49,9 @@ LEFT JOIN
 LEFT JOIN 
     supplier s ON l.l_suppkey = s.s_suppkey
 WHERE 
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY 
     p.p_name, p.p_brand, s.s_name, s.s_acctbal, ts.rnk
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

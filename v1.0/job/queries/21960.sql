@@ -30,7 +30,7 @@ co_actor AS (
         ci.person_id,
         ci.movie_id,
         COUNT(DISTINCT ci.role_id) AS unique_roles,
-        STRING_AGG(DISTINCT ak.name, ', ') AS co_actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS co_actor_names
     FROM 
         cast_info ci
     JOIN 
@@ -42,7 +42,7 @@ co_actor AS (
 studio_info AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         MAX(CASE WHEN ct.kind = 'Distributor' THEN 1 ELSE 0 END) AS is_distributor
     FROM 
         movie_companies mc

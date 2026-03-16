@@ -33,7 +33,7 @@ SELECT
     AVG(s.s_acctbal) AS average_account_balance,
     SUM(CASE WHEN o.o_orderstatus = 'F' THEN o.o_totalprice ELSE 0 END) AS final_order_value,
     SUM(CASE WHEN l.l_discount > 0.1 THEN l.l_extendedprice * (1 - l.l_discount) ELSE l.l_extendedprice END) AS discounted_revenue,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', rs.region, ')'), '; ') AS supplier_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', rs.region, ')')))), '; ') AS supplier_info
 FROM 
     part p
 LEFT JOIN 

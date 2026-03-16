@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 
 TagStats AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -39,7 +39,7 @@ RecentVotes AS (
     FROM 
         Votes
     WHERE 
-        CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        CreationDate >= now64(6) - INTERVAL 30 DAY
     GROUP BY 
         PostId
 )
@@ -58,7 +58,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStats ts ON ts.Tag = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags) - 2), '><'))
+    TagStats ts ON ts.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2)))
 LEFT JOIN 
     RecentVotes rv ON rp.PostId = rv.PostId
 WHERE 

@@ -37,7 +37,7 @@ SELECT cd.ca_state,
        COUNT(*) AS customer_count,
        AVG(cd.total_sales) AS avg_total_sales,
        AVG(cd.avg_order_value) AS avg_order_value_per_customer,
-       STRING_AGG(cd.full_name, ', ') AS customer_names
+       arrayStringConcat(groupArray(assumeNotNull(cd.full_name)), ', ') AS customer_names
 FROM CombinedData cd
 WHERE cd.cd_gender = 'F' AND cd.cd_marital_status = 'M'
 GROUP BY cd.ca_state

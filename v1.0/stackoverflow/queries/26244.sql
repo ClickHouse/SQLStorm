@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         U1.DisplayName AS OwnerDisplayName,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS VoteCount,
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN Users U1 ON p.OwnerUserId = U1.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    LEFT JOIN LATERAL unnest(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag ON TRUE
+    LEFT JOIN arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag ON TRUE
     INNER JOIN Tags t ON tag = t.TagName
     WHERE
         p.PostTypeId = 1  

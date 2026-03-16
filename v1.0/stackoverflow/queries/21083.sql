@@ -1,9 +1,9 @@
 
 WITH UserBadges AS (
     SELECT UserId, COUNT(*) AS BadgeCount,
-           STRING_AGG(CASE WHEN Class = 1 THEN Name ELSE NULL END, ', ') AS GoldBadges,
-           STRING_AGG(CASE WHEN Class = 2 THEN Name ELSE NULL END, ', ') AS SilverBadges,
-           STRING_AGG(CASE WHEN Class = 3 THEN Name ELSE NULL END, ', ') AS BronzeBadges
+           arrayStringConcat(groupArray(assumeNotNull(CASE WHEN Class = 1 THEN Name ELSE NULL END)), ', ') AS GoldBadges,
+           arrayStringConcat(groupArray(assumeNotNull(CASE WHEN Class = 2 THEN Name ELSE NULL END)), ', ') AS SilverBadges,
+           arrayStringConcat(groupArray(assumeNotNull(CASE WHEN Class = 3 THEN Name ELSE NULL END)), ', ') AS BronzeBadges
     FROM Badges
     GROUP BY UserId
 ),
@@ -17,7 +17,7 @@ PostDetails AS (
     FROM Posts p
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id
-    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+    WHERE p.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.OwnerUserId, p.Title
 ),
 AggregateResults AS (

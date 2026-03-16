@@ -25,7 +25,7 @@ SELECT
     akn.name AS actor_name,
     COUNT(DISTINCT mh.movie_id) AS total_movies,
     AVG(mh.production_year) AS avg_production_year,
-    STRING_AGG(DISTINCT akn.name || ' (' || mh.production_year || ')', ', ') AS movie_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(akn.name || ' (' || mh.production_year || ')'))), ', ') AS movie_list
 FROM
     MovieHierarchy mh
 JOIN

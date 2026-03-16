@@ -42,7 +42,7 @@ SELECT
     tp.ViewCount,
     tp.Score,
     COUNT(ph.Id) AS EditCount,
-    STRING_AGG(ph.Comment, '; ') AS EditComments
+    arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS EditComments
 FROM 
     TopPosts tp
 LEFT JOIN 

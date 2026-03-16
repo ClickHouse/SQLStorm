@@ -8,7 +8,7 @@ RecentPosts AS (
     SELECT P.Id AS PostId, P.Title, P.OwnerUserId, P.CreationDate,
            ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS rn
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 PostDetails AS (
     SELECT R.PostId, R.Title, U.DisplayName AS OwnerName, 
@@ -33,7 +33,7 @@ SELECT PDT.PostId, PDT.Title, PDT.OwnerName, PDT.CreationDate,
            WHEN PDT.UpVotes < PDT.DownVotes THEN 'Negative' 
            ELSE 'Neutral' 
        END AS Sentiment,
-       (SELECT STRING_AGG(Name, ', ') 
+       (SELECT arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') 
         FROM PostHistory PH 
         JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id 
         WHERE PH.PostId = PDT.PostId) AS HistoryTypes

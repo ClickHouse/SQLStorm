@@ -38,7 +38,7 @@ SELECT
     a.actor_name,
     a.total_movies,
     a.unique_years_active,
-    STRING_AGG(DISTINCT t.title, ', ') AS titles
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS titles
 FROM 
     TopActors a
 JOIN 

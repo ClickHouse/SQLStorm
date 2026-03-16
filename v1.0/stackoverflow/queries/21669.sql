@@ -34,7 +34,7 @@ WITH RankedPosts AS (
     ) pgnt ON p.Id = pgnt.Id
     WHERE 
         p.ViewCount > (SELECT AVG(ViewCount) FROM Posts) 
-        AND (p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year')
+        AND (p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR)
 )
 
 SELECT 

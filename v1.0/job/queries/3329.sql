@@ -40,8 +40,8 @@ detailed_movies AS (
     SELECT 
         tm.title,
         COALESCE(tm.production_year, 0) AS prod_year,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-        ARRAY_AGG(DISTINCT cm.company_name) AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(cm.company_name))) AS companies
     FROM 
         top_ranked_movies tm
     LEFT JOIN 

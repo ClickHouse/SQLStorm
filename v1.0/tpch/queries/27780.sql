@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_avail_qty,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
     LEFT(p.p_comment, 10) AS short_comment,
     CONCAT('Type: ', p.p_type, ', Size: ', p.p_size) AS type_size
 FROM 

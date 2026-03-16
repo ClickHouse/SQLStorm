@@ -9,7 +9,7 @@ WITH part_summary AS (
         p.p_size,
         CONCAT(REPLACE(p.p_name, ' ', '_'), '_', LPAD(CAST(p.p_partkey AS VARCHAR), 10, '0')) AS part_identifier,
         AVG(ps.ps_supplycost) AS avg_supplycost,
-        ARRAY_AGG(DISTINCT s.s_name) AS suppliers
+        arrayDistinct(groupArray(assumeNotNull(s.s_name))) AS suppliers
     FROM part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey

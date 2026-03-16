@@ -25,7 +25,7 @@ WITH RECURSIVE movie_hierarchy AS (
 )
 SELECT 
     ak.name AS actor_name,
-    STRING_AGG(DISTINCT mh.title, ', ') AS linked_movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mh.title))), ', ') AS linked_movies,
     COUNT(DISTINCT mh.movie_id) AS total_linked_movies,
     SUM(CASE WHEN mh.level = 1 THEN 1 ELSE 0 END) AS root_movies,
     AVG(COALESCE(LENGTH(ak.name), 0)) AS avg_actor_name_length
@@ -52,4 +52,4 @@ HAVING
     COUNT(DISTINCT mh.movie_id) > 2
 ORDER BY 
     avg_actor_name_length DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

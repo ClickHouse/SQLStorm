@@ -22,13 +22,13 @@ RecentPostHistories AS (
     FROM PostHistory ph
     JOIN Posts p ON ph.PostId = p.Id
     WHERE ph.PostHistoryTypeId IN (10, 11, 12, 13) 
-      AND ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+      AND ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostTags AS (
     SELECT p.Id AS PostId,
-           STRING_AGG(t.TagName, ', ') AS Tags
+           arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM Posts p
-    LEFT JOIN UNNEST(STRING_TO_ARRAY(p.Tags, '><')) AS tag ON true
+    LEFT JOIN arrayJoin(splitByString('><', p.Tags)) AS tag ON true
     JOIN Tags t ON t.TagName = TRIM(tag)
     GROUP BY p.Id
 )

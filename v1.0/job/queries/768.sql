@@ -13,7 +13,7 @@ MovieDetails AS (
     SELECT 
         m.movie_id,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT c.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS cast_names,
         AVG(mi.info_length) AS avg_info_length
     FROM 
         complete_cast m

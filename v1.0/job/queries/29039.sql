@@ -51,9 +51,9 @@ SELECT
     m.movie_id,
     m.title,
     m.production_year,
-    STRING_AGG(DISTINCT c.actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT co.company_name || ' (' || co.company_type || ')', ', ') AS companies,
-    STRING_AGG(DISTINCT m.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.actor_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.company_name || ' (' || co.company_type || ')'))), ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.keyword))), ', ') AS keywords,
     COUNT(DISTINCT c.actor_name) AS actor_count,
     AVG(c.avg_order) AS avg_cast_order
 FROM

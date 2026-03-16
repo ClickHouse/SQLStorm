@@ -27,7 +27,7 @@ SELECT
     tc.cd_gender,
     COUNT(*) AS customer_count,
     AVG(LENGTH(tc.full_name)) AS avg_name_length,
-    STRING_AGG(tc.full_name, ', ') AS top_customers
+    arrayStringConcat(groupArray(assumeNotNull(tc.full_name)), ', ') AS top_customers
 FROM TopCustomers tc
 GROUP BY tc.cd_gender
 ORDER BY tc.cd_gender;

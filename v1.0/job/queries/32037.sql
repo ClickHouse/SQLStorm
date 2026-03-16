@@ -32,7 +32,7 @@ SELECT
     mh.level AS Link_Level,
     COUNT(DISTINCT ci.person_id) AS Total_Cast,
     AVG(CASE WHEN ci.nr_order IS NOT NULL THEN ci.nr_order ELSE 0 END) AS Avg_Cast_Order,
-    STRING_AGG(DISTINCT an.name, ', ') AS Cast_Names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS Cast_Names
 FROM 
     aka_title a
 LEFT JOIN 

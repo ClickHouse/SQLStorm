@@ -60,4 +60,4 @@ FROM CustomerHierarchy ch
 LEFT JOIN AggregateSales asales ON ch.c_customer_sk = asales.ws_ship_mode_sk
 WHERE ch.cd_purchase_estimate IS NOT NULL AND asales.avg_net_paid IS NOT NULL
 ORDER BY ch.c_customer_id, asales.avg_net_paid DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

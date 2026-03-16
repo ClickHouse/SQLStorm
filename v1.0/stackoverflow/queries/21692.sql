@@ -31,7 +31,7 @@ PostStats AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= DATE '2023-01-01'
+        P.CreationDate >= toDate('2023-01-01')
     GROUP BY 
         P.Id, P.Title, P.ViewCount, P.AcceptedAnswerId
 ),

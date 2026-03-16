@@ -69,4 +69,4 @@ FROM
 ORDER BY 
     fa.total_quantity DESC, 
     fa.ws_item_sk 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

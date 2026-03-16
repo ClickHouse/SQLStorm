@@ -37,7 +37,7 @@ SELECT
     CASE WHEN cd.has_lead = 1 THEN 'Yes' ELSE 'No' END AS has_lead,
     COALESCE(cmc.company_count, 0) AS company_count,
     COUNT(DISTINCT km.keyword) AS keyword_count,
-    STRING_AGG(DISTINCT km.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(km.keyword))), ', ') AS keywords
 FROM
     RankedMovies rm
 LEFT JOIN

@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS order_count, 
     SUM(l.l_quantity) AS total_quantity, 
     AVG(p.p_retailprice) AS average_price, 
-    STRING_AGG(DISTINCT l.l_comment, '; ') AS comments_summary
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_comment))), '; ') AS comments_summary
 FROM 
     part p 
 JOIN 

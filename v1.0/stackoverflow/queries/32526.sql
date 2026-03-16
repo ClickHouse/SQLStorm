@@ -11,7 +11,7 @@ WITH RECURSIVE UserActivity AS (
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Votes v ON u.Id = v.UserId AND v.VoteTypeId IN (8, 9)  
-    WHERE u.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY u.Id, u.DisplayName, u.Reputation, u.CreationDate, u.LastAccessDate
 ),
 RecentPosts AS (
@@ -25,15 +25,15 @@ RecentPosts AS (
         DENSE_RANK() OVER (PARTITION BY u.Location ORDER BY p.CreationDate DESC) AS LocationRank
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
       AND p.PostTypeId = 1  
 ),
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS TagsList
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
     FROM Posts p
-    JOIN UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags)-2), '>')) AS tag ON tag IS NOT NULL
+    JOIN arrayJoin(splitByString('>', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags)-2))) AS tag ON tag IS NOT NULL
     JOIN Tags t ON t.TagName = tag
     GROUP BY p.Id
 )

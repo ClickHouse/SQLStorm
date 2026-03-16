@@ -33,7 +33,7 @@ PopularTags AS (
     JOIN 
         Posts p ON p.Tags LIKE CONCAT('%<', t.TagName, '>%')
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY 
         t.TagName
     ORDER BY 
@@ -50,7 +50,7 @@ ActiveUsers AS (
     JOIN 
         Comments c ON u.Id = c.UserId
     WHERE 
-        c.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months')
+        c.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
     GROUP BY 
         u.Id, u.DisplayName
     ORDER BY 

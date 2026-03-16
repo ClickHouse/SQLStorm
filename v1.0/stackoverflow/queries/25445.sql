@@ -17,13 +17,13 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.PostTypeId = 1  
 ),
 
 TagStatistics AS (
     SELECT 
-        unnest(string_to_array(trim(both '<>' from Tags), '>')) AS TagName,
+        arrayJoin(splitByString('>', trim(both '<>' from Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts

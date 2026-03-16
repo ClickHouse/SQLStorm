@@ -14,7 +14,7 @@ WITH PostMetrics AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '12 months'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 12 MONTH
     GROUP BY 
         p.PostTypeId
 )

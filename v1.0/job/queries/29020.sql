@@ -23,8 +23,8 @@ HighlightedActors AS (
         actor_name,
         actor_rank,
         production_year,
-        STRING_AGG(keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT actor_role, ', ') AS roles
+        arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_role))), ', ') AS roles
     FROM RankedMovies
     WHERE actor_rank <= 5
     GROUP BY movie_title, actor_name, actor_rank, production_year
@@ -34,8 +34,8 @@ FinalAnalysis AS (
         movie_title,
         COUNT(DISTINCT actor_name) AS number_of_actors,
         AVG(production_year) AS avg_production_year,
-        STRING_AGG(keywords, '; ') AS all_keywords,
-        STRING_AGG(roles, '; ') AS all_roles
+        arrayStringConcat(groupArray(assumeNotNull(keywords)), '; ') AS all_keywords,
+        arrayStringConcat(groupArray(assumeNotNull(roles)), '; ') AS all_roles
     FROM HighlightedActors
     GROUP BY movie_title
 )

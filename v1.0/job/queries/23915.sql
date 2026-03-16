@@ -7,7 +7,7 @@ WITH MovieDetails AS (
         COUNT(DISTINCT ci.id) AS cast_count,
         SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS note_present_count,
         MAX(CASE WHEN ci.nr_order = 1 THEN ak.name END) AS main_actor,
-        STRING_AGG(DISTINCT ak.name, ', ') AS all_actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS all_actors,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.title) AS year_rank
     FROM 
         aka_title AS t

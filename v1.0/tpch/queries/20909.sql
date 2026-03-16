@@ -34,14 +34,14 @@ RecentOrders AS (
         LEFT JOIN customer c ON ro.o_orderkey = c.c_custkey  
     WHERE 
         ro.rn = 1 
-        AND ro.o_orderdate >= DATE '1998-10-01' - INTERVAL '1 month'
+        AND ro.o_orderdate >= toDate('1998-10-01') - INTERVAL 1 MONTH
 )
 SELECT 
     r.r_name,
     n.n_name,
     SUM(li.l_extendedprice * (1 - li.l_discount)) AS total_sales,
     COUNT(DISTINCT ro.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     lineitem li
     JOIN orders o ON li.l_orderkey = o.o_orderkey
@@ -51,7 +51,7 @@ FROM
     LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
     LEFT JOIN RecentOrders ro ON o.o_orderkey = ro.o_orderkey
 WHERE 
-    li.l_shipdate >= DATE '1997-01-01'
+    li.l_shipdate >= toDate('1997-01-01')
     AND (li.l_returnflag = 'N' OR li.l_returnflag IS NULL)
 GROUP BY 
     r.r_name,
@@ -68,4 +68,4 @@ HAVING
     )
 ORDER BY 
     total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

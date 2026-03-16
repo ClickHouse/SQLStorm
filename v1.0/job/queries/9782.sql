@@ -54,7 +54,7 @@ FinalResults AS (
         mwc.title,
         mwc.production_year,
         mwc.keyword,
-        STRING_AGG(mwc.actor_name, ', ') AS actors
+        arrayStringConcat(groupArray(assumeNotNull(mwc.actor_name)), ', ') AS actors
     FROM 
         MoviesWithCast mwc
     GROUP BY 

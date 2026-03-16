@@ -19,10 +19,10 @@ WITH RankedPosts AS (
 TagsList AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(TRIM(tag), ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(TRIM(tag))), ', ') AS Tags
     FROM 
         Posts p,
-        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag
     GROUP BY 
         p.Id
 ),
@@ -66,4 +66,4 @@ LEFT JOIN (
 ) b ON ps.OwnerDisplayName = (SELECT DisplayName FROM Users WHERE Id = b.UserId)
 ORDER BY 
     ps.Score DESC, ps.CreationDate DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -30,7 +30,7 @@ SELECT
     at.title AS movie_title,
     at.production_year,
     COUNT(DISTINCT mh.movie_id) AS num_related_movies,
-    STRING_AGG(DISTINCT kh.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kh.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY akn.name ORDER BY at.production_year DESC) AS row_num
 FROM 
     aka_name akn

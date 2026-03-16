@@ -39,8 +39,8 @@ SELECT
     tt.production_year,
     tt.keyword_count,
     tt.actor_count,
-    STRING_AGG(DISTINCT a.name, ', ') AS actors,
-    STRING_AGG(DISTINCT kc.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kc.keyword))), ', ') AS keywords
 FROM
     TopTitles tt
 LEFT JOIN

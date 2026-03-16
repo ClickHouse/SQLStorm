@@ -20,14 +20,14 @@ WITH UserActivity AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS TagName,
+        arrayJoin(splitByString('>', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        unnest(string_to_array(Tags, '>'))
+        arrayJoin(splitByString('>', Tags))
     HAVING 
         COUNT(*) > 10
 ),
@@ -57,7 +57,7 @@ SELECT
 FROM 
     UserActivity ua
 JOIN 
-    PopularTags pt ON pt.TagName IN (SELECT unnest(string_to_array(Tags, '>')) FROM Posts WHERE OwnerUserId = ua.UserId)
+    PopularTags pt ON pt.TagName IN (SELECT arrayJoin(splitByString('>', Tags)) FROM Posts WHERE OwnerUserId = ua.UserId)
 LEFT JOIN 
     ClosedPosts cp ON cp.PostId IN (SELECT Id FROM Posts WHERE OwnerUserId = ua.UserId)
 WHERE 

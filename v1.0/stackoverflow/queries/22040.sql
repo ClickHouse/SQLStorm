@@ -53,10 +53,10 @@ SELECT
     TU.TotalDownVotes,
     ROUND(COALESCE((CAST(TU.TotalUpVotes AS FLOAT) / NULLIF(TU.TotalPosts, 0)) * 100, 0), 2) AS UpvotePercentage,
     (
-        SELECT STRING_AGG(DISTINCT P.Title, ', ') 
+        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(P.Title))), ', ') 
         FROM Posts P 
         WHERE P.OwnerUserId = TU.Id 
-        AND P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     ) AS RecentPostTitles,
     (
         SELECT COUNT(*) 
@@ -66,4 +66,4 @@ SELECT
 FROM TopUsers TU
 WHERE TU.TotalPosts > 0
 ORDER BY TU.Reputation DESC, TU.BadgeCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -78,4 +78,4 @@ WHERE
     AND (ad.PositiveComments > 5 OR ad.NegativeComments <= 3)
 ORDER BY 
     ad.BadgeCount DESC, ad.PositiveComments DESC, ad.NegativeComments ASC
-OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

@@ -30,14 +30,14 @@ TopUsers AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(p.Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', p.Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.Tags IS NOT NULL
     GROUP BY 
-        unnest(string_to_array(p.Tags, ','))
+        arrayJoin(splitByString(',', p.Tags))
 ),
 TopTags AS (
     SELECT 

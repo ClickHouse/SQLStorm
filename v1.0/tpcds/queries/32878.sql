@@ -56,4 +56,4 @@ WHERE
     r.total_sales > 5
 ORDER BY 
     r.total_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

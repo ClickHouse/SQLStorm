@@ -4,7 +4,7 @@ WITH AddressDetails AS (
         ca_city,
         ca_state,
         COUNT(DISTINCT ca_address_sk) AS unique_addresses,
-        STRING_AGG(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), '; ') AS full_address_list
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type))), '; ') AS full_address_list
     FROM 
         customer_address
     GROUP BY 
@@ -14,7 +14,7 @@ WITH AddressDetails AS (
         cd_gender,
         SUM(cd_dep_count) AS total_dependents,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(CONCAT(cd_gender, ': ', cd_marital_status), '; ') AS gender_marital_status
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(cd_gender, ': ', cd_marital_status))), '; ') AS gender_marital_status
     FROM 
         customer_demographics
     GROUP BY 
@@ -23,7 +23,7 @@ WITH AddressDetails AS (
     SELECT 
         d_year,
         COUNT(DISTINCT d_date_sk) AS total_days,
-        STRING_AGG(d_day_name, ', ') AS day_names
+        arrayStringConcat(groupArray(assumeNotNull(d_day_name)), ', ') AS day_names
     FROM 
         date_dim
     GROUP BY 

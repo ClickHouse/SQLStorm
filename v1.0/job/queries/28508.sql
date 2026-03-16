@@ -4,8 +4,8 @@ WITH MovieDetails AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT d.name, ',' ORDER BY d.name) AS directors,
-        STRING_AGG(DISTINCT k.keyword, ',' ORDER BY k.keyword) AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d.name))), ',' ORDER BY d.name) AS directors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',' ORDER BY k.keyword) AS keywords
     FROM 
         title t
     JOIN 
@@ -28,7 +28,7 @@ WITH MovieDetails AS (
 FullCast AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT a.name, ',' ORDER BY a.name) AS full_cast
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ',' ORDER BY a.name) AS full_cast
     FROM 
         MovieDetails m
     JOIN 

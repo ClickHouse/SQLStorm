@@ -25,8 +25,8 @@ TopMovies AS (
 SELECT 
     tm.title,
     tm.production_year,
-    ARRAY_AGG(DISTINCT a.name) AS actors,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(a.name))) AS actors,
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
     MAX(m.info) AS plot_info
 FROM 
     TopMovies tm

@@ -8,7 +8,7 @@ PartStats AS (
     SELECT p.p_partkey, AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price
     FROM part p
     JOIN lineitem l ON p.p_partkey = l.l_partkey
-    WHERE l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1997-12-31'
+    WHERE l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1997-12-31')
     GROUP BY p.p_partkey
 ),
 OrderStats AS (

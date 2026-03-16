@@ -5,7 +5,7 @@ SELECT
     AVG(l.l_extendedprice) AS avg_price,
     MAX(l.l_discount) AS max_discount,
     MIN(l.l_tax) AS min_tax,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     CONCAT(CAST(COUNT(DISTINCT o.o_orderkey) AS varchar), ' orders placed.') AS order_summary
 FROM 
     part p

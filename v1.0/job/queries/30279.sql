@@ -30,7 +30,7 @@ SELECT
     mh.title AS movie_title,
     mh.production_year,
     COUNT(DISTINCT mc.company_id) AS company_count,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
     ROW_NUMBER() OVER (PARTITION BY ak.person_id ORDER BY mh.production_year DESC) AS row_num,
     MAX(ci.nr_order) AS max_order
 FROM

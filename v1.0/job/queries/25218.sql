@@ -31,7 +31,7 @@ TopMovies AS (
         rm.movie_id,
         rm.title,
         rm.production_year,
-        STRING_AGG(DISTINCT pa.actor_name, ', ') AS top_actors
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pa.actor_name))), ', ') AS top_actors
     FROM 
         RankedMovies rm
     JOIN 
@@ -46,7 +46,7 @@ SELECT
     tm.production_year,
     tm.top_actors,
     COUNT(mi.id) AS info_count,
-    STRING_AGG(DISTINCT mi.info, '; ') AS additional_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS additional_info
 FROM 
     TopMovies tm
 LEFT JOIN 

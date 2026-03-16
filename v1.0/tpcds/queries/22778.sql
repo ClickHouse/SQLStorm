@@ -54,4 +54,4 @@ HAVING
     MAX(m.total_spent) IS NOT NULL
 ORDER BY 
     a.ca_country
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

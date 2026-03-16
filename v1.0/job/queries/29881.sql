@@ -45,7 +45,7 @@ TitleWithActors AS (
 SELECT 
     t.title,
     t.production_year,
-    STRING_AGG(t.actor_name, ', ') AS top_actors
+    arrayStringConcat(groupArray(assumeNotNull(t.actor_name)), ', ') AS top_actors
 FROM 
     TitleWithActors t
 GROUP BY 

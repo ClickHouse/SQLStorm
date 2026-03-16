@@ -23,7 +23,7 @@ WITH CustomerDetails AS (
 
 SELECT 
     ca_city,
-    ARRAY_AGG(c_customer_id) AS customer_ids,
+    groupArray(assumeNotNull(c_customer_id)) AS customer_ids,
     COUNT(*) AS customer_count,
     AVG(cd_purchase_estimate) AS avg_purchase_estimate
 FROM 

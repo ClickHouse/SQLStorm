@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 TopUsers AS (
     SELECT 
@@ -49,7 +49,7 @@ UserBadgeStats AS (
 PostTagStats AS (
     SELECT 
         rp.PostId,
-        unnest(string_to_array(rp.Tags, '>')) AS TagName
+        arrayJoin(splitByString('>', rp.Tags)) AS TagName
     FROM 
         RankedPosts rp
 ),
@@ -77,7 +77,7 @@ SELECT
         WHEN ub.HighestBadgeClass = 3 THEN 'Bronze'
         ELSE 'No Badge'
     END AS HighestBadge,
-    (SELECT STRING_AGG(TagName, ', ') FROM TagUsageCount WHERE UsageCount > 5 LIMIT 5) AS PopularTags
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') FROM TagUsageCount WHERE UsageCount > 5 LIMIT 5) AS PopularTags
 FROM 
     TopUsers tu
 LEFT JOIN 

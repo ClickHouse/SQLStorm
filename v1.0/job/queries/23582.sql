@@ -5,7 +5,7 @@ WITH RatedMovies AS (
         t.title,
         t.production_year,
         COUNT(ci.person_id) AS cast_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         COUNT(DISTINCT mc.company_id) AS company_count,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(ci.person_id) DESC) AS year_rank
     FROM 
@@ -59,7 +59,7 @@ SELECT
     t.title,
     t.production_year,
     COUNT(ci.person_id) AS cast_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
     'Archived Production' AS company_status
 FROM 
     aka_title t

@@ -52,4 +52,4 @@ FROM
     CombinedDetails
 ORDER BY
     total_available_qty DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -42,7 +42,7 @@ PostActivity AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Votes vs ON p.AcceptedAnswerId = vs.PostId AND vs.VoteTypeId = 1
-    WHERE p.CreationDate >= (CURRENT_DATE - INTERVAL '1 year')
+    WHERE p.CreationDate >= (CURRENT_DATE - INTERVAL 1 YEAR)
     GROUP BY p.Id, p.Title
 ),
 

@@ -41,7 +41,7 @@ JOIN
         WHERE supplier_rank = 1 AND nation_name = (SELECT n_name FROM nation WHERE n_nationkey = c.c_nationkey)
     )
 WHERE 
-    o.o_orderdate >= DATE '1996-01-01' 
-    AND o.o_orderdate < DATE '1997-01-01'
+    o.o_orderdate >= toDate('1996-01-01') 
+    AND o.o_orderdate < toDate('1997-01-01')
 ORDER BY 
     o.o_orderdate DESC, c.c_custkey ASC;

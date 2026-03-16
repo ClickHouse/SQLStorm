@@ -14,7 +14,7 @@ WITH RecentUserActivity AS (
     LEFT JOIN Comments C ON U.Id = C.UserId
     LEFT JOIN Badges B ON U.Id = B.UserId
     LEFT JOIN Votes V ON U.Id = V.UserId
-    WHERE U.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE U.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY U.Id, U.DisplayName, U.Reputation
 ),
 TopUsers AS (
@@ -39,7 +39,7 @@ ActiveTags AS (
         SUM(P.ViewCount) AS TotalViews
     FROM Tags T
     JOIN Posts P ON P.Tags LIKE CONCAT('%', T.TagName, '%')
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY T.Id, T.TagName
     ORDER BY PostCount DESC
     LIMIT 5

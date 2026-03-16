@@ -23,9 +23,9 @@ FilteredSuppliers AS (
 )
 SELECT 
     supplier_name,
-    STRING_AGG(part_name, ', ') AS part_names,
+    arrayStringConcat(groupArray(assumeNotNull(part_name)), ', ') AS part_names,
     COUNT(*) AS part_count,
-    STRING_AGG(CONCAT(part_name, ' ($', supply_cost, ')'), '; ') AS detailed_part_info
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(part_name, ' ($', supply_cost, ')'))), '; ') AS detailed_part_info
 FROM FilteredSuppliers
 GROUP BY supplier_name
 ORDER BY part_count DESC, supplier_name;

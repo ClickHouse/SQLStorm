@@ -65,7 +65,7 @@ FilteredPosts AS (
 TagPostCounts AS (
     SELECT 
         P.Id AS PostId,
-        ARRAY_AGG(T.TagName) AS AssociatedTags
+        groupArray(assumeNotNull(T.TagName)) AS AssociatedTags
     FROM 
         Posts P
     JOIN 

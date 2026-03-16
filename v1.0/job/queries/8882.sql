@@ -5,7 +5,7 @@ WITH MovieRankings AS (
         m.title,
         m.production_year,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_names
     FROM 
         title m
     JOIN 
@@ -20,7 +20,7 @@ WITH MovieRankings AS (
 KeywordRanking AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         title m
     JOIN 
@@ -33,7 +33,7 @@ KeywordRanking AS (
 MovieCompanies AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM 
         title m
     JOIN 
@@ -61,4 +61,4 @@ WHERE
     mr.production_year >= 2000
 ORDER BY 
     mr.total_cast DESC, mr.production_year DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

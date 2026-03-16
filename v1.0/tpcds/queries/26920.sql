@@ -49,7 +49,7 @@ SELECT
     male_count,
     female_count,
     (male_count + female_count) AS total_count,
-    ROUND((male_count::decimal / NULLIF((male_count + female_count), 0)) * 100, 2) AS male_percentage,
-    ROUND((female_count::decimal / NULLIF((male_count + female_count), 0)) * 100, 2) AS female_percentage
+    ROUND((CAST(male_count AS decimal) / NULLIF((male_count + female_count), 0)) * 100, 2) AS male_percentage,
+    ROUND((CAST(female_count AS decimal) / NULLIF((male_count + female_count), 0)) * 100, 2) AS female_percentage
 FROM FinalReport
 ORDER BY ca_state;

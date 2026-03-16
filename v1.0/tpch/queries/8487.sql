@@ -5,7 +5,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     AVG(l.l_quantity) AS avg_line_quantity,
-    STDDEV(l.l_quantity) AS stddev_line_quantity
+    stddevPop(l.l_quantity) AS stddev_line_quantity
 FROM 
     nation n
 JOIN 
@@ -21,10 +21,10 @@ JOIN
 JOIN 
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
+    o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
     AND l.l_discount > 0.05
 GROUP BY 
     n.n_name
 ORDER BY 
     total_revenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

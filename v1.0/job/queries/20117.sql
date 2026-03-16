@@ -4,7 +4,7 @@ WITH movie_details AS (
         t.id AS title_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         COALESCE(mci.company_count, 0) AS company_count,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.title) AS title_rank
     FROM 
@@ -65,7 +65,7 @@ LEFT JOIN
     person_roles pr ON rm.title_id = pr.movie_id
 WHERE 
     rm.production_year >= 2000
-    AND (rm.keywords IS NOT NULL AND array_length(rm.keywords, 1) > 2)
+    AND (rm.keywords IS NOT NULL AND length(rm.keywords, 1) > 2)
 ORDER BY 
     rm.production_year DESC,
     rm.title;

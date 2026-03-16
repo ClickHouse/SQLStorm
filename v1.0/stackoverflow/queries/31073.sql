@@ -26,7 +26,7 @@ PostAnalytics AS (
 ClosePostAnalysis AS (
     SELECT p.Id AS PostId, 
            COUNT(ph.Id) AS CloseReasonCount,
-           STRING_AGG(ct.Name, ', ') AS CloseReasons
+           arrayStringConcat(groupArray(assumeNotNull(ct.Name)), ', ') AS CloseReasons
     FROM Posts p
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10  
     LEFT JOIN CloseReasonTypes ct ON CAST(ph.Comment AS INTEGER) = ct.Id

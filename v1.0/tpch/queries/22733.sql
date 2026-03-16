@@ -7,7 +7,7 @@ WITH RankedOrders AS (
         o.o_clerk,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rnk
     FROM orders o
-    WHERE o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
 ),
 
 FilteredLineItems AS (

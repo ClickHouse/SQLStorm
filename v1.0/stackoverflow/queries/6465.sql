@@ -8,7 +8,7 @@ SELECT
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
     CASE WHEN ph.PostId IS NOT NULL THEN 'Closed' ELSE 'Open' END AS PostStatus,
-    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
     MAX(p.LastActivityDate) AS LastActivityDate
 FROM 
     Posts p
@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10
 LEFT JOIN 
-    unnest(string_to_array(p.Tags, '><')) AS tag_name ON true
+    arrayJoin(splitByString('><', p.Tags)) AS tag_name ON true
 LEFT JOIN 
     Tags t ON t.TagName = tag_name
 WHERE 

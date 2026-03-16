@@ -50,7 +50,7 @@ SELECT
     ny.movies_count, 
     ny.avg_actors_per_movie, 
     ny.popularity,
-    STRING_AGG(DISTINCT nm.name, ', ') AS notable_actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(nm.name))), ', ') AS notable_actors
 FROM 
     NotableYears AS ny
 LEFT JOIN 

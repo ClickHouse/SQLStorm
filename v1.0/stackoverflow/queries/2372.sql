@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS rn,
         COALESCE(p.AcceptedAnswerId, -1) AS AcceptedAnswer,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         COUNT(c.Id) AS CommentCount
     FROM 
         Posts p

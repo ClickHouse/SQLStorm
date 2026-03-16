@@ -46,16 +46,16 @@ SELECT
         ELSE 'Closed' 
     END AS PostStatus,
     (SELECT COUNT(*) FROM Comments C WHERE C.PostId = PD.PostId) AS CommentCount,
-    (SELECT STRING_AGG(T.TagName, ', ') FROM Tags T 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') FROM Tags T 
      JOIN Posts PS ON PS.Tags LIKE '%' || T.TagName || '%' 
      WHERE PS.Id = PD.PostId) AS AssociatedTags
 FROM 
     PostDetails PD
 WHERE 
     PD.UserReputation > 200
-    AND PD.PostCreationDate > (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')
+    AND PD.PostCreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     AND (PD.UpVoteCount - PD.DownVoteCount) > 1
 ORDER BY 
     PD.PostCreationDate DESC, 
     NetVoteCount DESC
-OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

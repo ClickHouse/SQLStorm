@@ -3,8 +3,8 @@ WITH address_stats AS (
     SELECT 
         ca_country,
         COUNT(*) AS address_count,
-        STRING_AGG(CASE WHEN ca_state IS NOT NULL THEN ca_state END, ', ') AS states,
-        STRING_AGG(DISTINCT ca_city, ', ') AS unique_cities
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ca_state IS NOT NULL THEN ca_state END)), ', ') AS states,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS unique_cities
     FROM 
         customer_address
     GROUP BY 
@@ -14,7 +14,7 @@ customer_summary AS (
     SELECT 
         cd_gender,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses,
         COUNT(DISTINCT c_customer_id) AS customer_count
     FROM 
         customer_demographics
@@ -27,7 +27,7 @@ warehouse_info AS (
     SELECT 
         w_country,
         COUNT(*) AS warehouse_count,
-        STRING_AGG(w_city, ', ') AS cities_with_warehouses
+        arrayStringConcat(groupArray(assumeNotNull(w_city)), ', ') AS cities_with_warehouses
     FROM 
         warehouse
     GROUP BY 

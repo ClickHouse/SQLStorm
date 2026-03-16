@@ -31,7 +31,7 @@ PostWithBadge AS (
 PostHistoryInfo AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(ph.Comment, '; ') AS EditComments,
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS EditComments,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph
@@ -60,4 +60,4 @@ WHERE
     pw.UpVotes - pw.DownVotes > 5 
 ORDER BY 
     pw.CreationDate DESC NULLS LAST
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

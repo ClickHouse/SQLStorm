@@ -22,7 +22,7 @@ LEFT JOIN
     Badges b ON u.Id = b.UserId
 WHERE 
     p.PostTypeId = 1 
-    AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+    AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 GROUP BY 
     p.Id, p.Title, u.DisplayName, p.CreationDate, p.LastActivityDate, p.ViewCount, b.Date
 ORDER BY 

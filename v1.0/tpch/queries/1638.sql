@@ -4,7 +4,7 @@ WITH RankedOrders AS (
         o.o_orderkey,
         o.o_orderdate,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
+        RANK() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
     FROM 
         orders o
     JOIN 
@@ -18,14 +18,14 @@ MaxRevenueOrders AS (
         MAX(total_revenue) AS max_revenue
     FROM (
         SELECT 
-            EXTRACT(YEAR FROM o.o_orderdate) AS year,
+            toYear(o.o_orderdate) AS year,
             SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
         FROM 
             orders o
         JOIN 
             lineitem l ON o.o_orderkey = l.l_orderkey
         GROUP BY 
-            EXTRACT(YEAR FROM o.o_orderdate)
+            toYear(o.o_orderdate)
     ) AS yearly_revenue
     GROUP BY 
         year
@@ -47,7 +47,7 @@ LEFT JOIN
 LEFT JOIN 
     customer c ON s.s_nationkey = c.c_nationkey
 LEFT JOIN 
-    MaxRevenueOrders mr ON mr.year = EXTRACT(YEAR FROM DATE '1998-10-01')
+    MaxRevenueOrders mr ON mr.year = toYear(toDate('1998-10-01'))
 WHERE 
     s.s_acctbal > 10000
 GROUP BY 

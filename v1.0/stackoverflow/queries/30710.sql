@@ -17,7 +17,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -37,12 +37,12 @@ PostHistoryDetails AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 RelatedPosts AS (
     SELECT 
         pl.PostId,
-        STRING_AGG(pl.RelatedPostId::text, ', ') AS RelatedPostIds
+        arrayStringConcat(groupArray(assumeNotNull(CAST(pl.RelatedPostId AS text))), ', ') AS RelatedPostIds
     FROM 
         PostLinks pl
     GROUP BY 

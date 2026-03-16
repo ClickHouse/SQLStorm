@@ -22,7 +22,7 @@ TopMovies AS (
 MovieDetails AS (
     SELECT 
         m.movie_title,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         COUNT(DISTINCT kw.keyword) AS keyword_count
     FROM 
         TopMovies m

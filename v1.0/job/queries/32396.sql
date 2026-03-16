@@ -37,7 +37,7 @@ LatestActorMovies AS (
 
 MoviesWithKeywords AS (
     SELECT mt.title, 
-           STRING_AGG(kw.keyword, ', ') AS keywords
+           arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') AS keywords
     FROM aka_title mt
     LEFT JOIN movie_keyword mk ON mt.id = mk.movie_id
     LEFT JOIN keyword kw ON mk.keyword_id = kw.id
@@ -57,7 +57,7 @@ FinalResults AS (
 
 SELECT fr.movie_title,
        fr.actor_name,
-       COALESCE(fr.production_year::TEXT, 'Unknown') AS production_year,
+       COALESCE(CAST(fr.production_year AS TEXT), 'Unknown') AS production_year,
        COALESCE(fr.keywords, 'No Keywords') AS keywords,
        CASE 
            WHEN fr.keywords IS NULL OR fr.keywords = '' THEN 'No Keywords Available'

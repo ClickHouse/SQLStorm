@@ -19,7 +19,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.PostTypeId
 ),
@@ -46,9 +46,9 @@ SELECT
         WHEN r.Rank <= 10 THEN 'Top 10'
         ELSE 'Other'
     END AS RankCategory,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ',') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ',') 
      FROM Tags t 
-     JOIN LATERAL UNNEST(string_to_array(p.Tags, ',')) AS tag ON t.TagName = tag
+     JOIN arrayJoin(splitByString(',', p.Tags)) AS tag ON t.TagName = tag
      WHERE p.Id = r.PostId) AS Tags
 FROM 
     RankedPosts r

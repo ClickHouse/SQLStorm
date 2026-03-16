@@ -49,7 +49,7 @@ PostStats AS (
     LEFT JOIN 
         PostHistory h ON tp.PostId = h.PostId
     WHERE 
-        h.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        h.CreationDate >= now64(6) - INTERVAL 30 DAY
 )
 SELECT 
     Title,
@@ -59,7 +59,7 @@ SELECT
     CommentCount,
     UpVotes,
     DownVotes,
-    STRING_AGG(PostHistory, ', ') AS RecentActions
+    arrayStringConcat(groupArray(assumeNotNull(PostHistory)), ', ') AS RecentActions
 FROM 
     PostStats
 GROUP BY 

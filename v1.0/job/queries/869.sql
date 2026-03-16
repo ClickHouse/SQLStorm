@@ -47,7 +47,7 @@ SELECT
     md.title,
     md.production_year,
     COALESCE(ta.actor_name, 'No actors') AS top_actor,
-    STRING_AGG(DISTINCT md.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.keyword))), ', ') AS keywords,
     COUNT(DISTINCT md.movie_id) AS related_movies_count,
     CASE 
         WHEN md.production_year < 2000 THEN 'Classic'

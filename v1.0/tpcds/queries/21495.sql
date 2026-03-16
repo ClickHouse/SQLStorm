@@ -72,4 +72,4 @@ WHERE
     )
 ORDER BY 
     f.adjusted_net_profit DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

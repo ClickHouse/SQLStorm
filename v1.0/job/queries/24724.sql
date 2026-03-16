@@ -31,14 +31,14 @@ qualified_cast AS (
     SELECT 
         ci.person_id,
         COUNT(*) AS movie_count,
-        STRING_AGG(DISTINCT at.title, ', ') AS titles_this_year
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(at.title))), ', ') AS titles_this_year
     FROM 
         cast_info ci
     JOIN 
         aka_title at ON at.id = ci.movie_id
     WHERE 
         at.production_year >= 2000
-        AND at.production_year = EXTRACT(YEAR FROM DATE '2024-10-01')
+        AND at.production_year = toYear(toDate('2024-10-01'))
     GROUP BY 
         ci.person_id
     HAVING 

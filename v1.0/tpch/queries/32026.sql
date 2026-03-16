@@ -35,7 +35,7 @@ CTE_Customer AS (
     JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01'
+        o.o_orderdate >= toDate('1996-01-01')
     GROUP BY 
         c.c_custkey, c.c_name
 ),
@@ -66,7 +66,7 @@ SELECT
     COALESCE(SUM(l.l_quantity), 0) AS total_quantity_sold,
     COUNT(DISTINCT c.c_custkey) AS unique_customers,
     AVG(l.l_discount) AS avg_discount,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers
 FROM 
     part p
 LEFT JOIN 
@@ -81,7 +81,7 @@ LEFT JOIN
     supplier s ON ps.ps_suppkey = s.s_suppkey
 WHERE 
     p.p_retailprice BETWEEN 100 AND 500
-    AND l.l_shipdate >= DATE '1997-01-01'
+    AND l.l_shipdate >= toDate('1997-01-01')
 GROUP BY 
     p.p_partkey, p.p_name, p.p_retailprice
 HAVING 

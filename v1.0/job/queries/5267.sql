@@ -13,7 +13,7 @@ cast_summary AS (
     SELECT 
         c.movie_id,
         COUNT(c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles
     FROM 
         cast_info c
         JOIN role_type r ON c.role_id = r.id
@@ -28,7 +28,7 @@ movie_detail AS (
         cs.total_cast,
         cs.roles,
         COUNT(mk.keyword_id) AS total_keywords,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         ranked_movies rm
         LEFT JOIN cast_summary cs ON rm.movie_id = cs.movie_id

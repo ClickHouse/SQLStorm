@@ -24,7 +24,7 @@ WITH RankedSuppliers AS (
 )
 SELECT r.r_regionkey, r.r_name, COUNT(DISTINCT c.c_custkey) AS customer_count,
        SUM(COALESCE(os.total_price, 0)) AS total_order_revenue,
-       STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN customer c ON n.n_nationkey = c.c_nationkey

@@ -13,7 +13,7 @@ MovieDetails AS (
     SELECT 
         mt.movie_id,
         mt.title,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names,
         COUNT(DISTINCT kc.keyword) AS keyword_count
     FROM 
         aka_title AS mt

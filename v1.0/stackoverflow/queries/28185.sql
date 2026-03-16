@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         P.Id, P.Title, P.ViewCount, P.CreationDate, U.DisplayName
 ),
@@ -28,12 +28,12 @@ TopComments AS (
     FROM 
         Comments C
     WHERE 
-        C.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 week'
+        C.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 WEEK
 ),
 PostHistoryAggregate AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(PHT.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes,
         COUNT(PH.Id) AS HistoryCount
     FROM 
         PostHistory PH

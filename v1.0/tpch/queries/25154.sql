@@ -3,7 +3,7 @@ SELECT
     s.s_name, 
     SUM(ps.ps_availqty) AS total_available_quantity, 
     AVG(s.s_acctbal) AS average_supplier_account_balance, 
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_provided
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_provided
 FROM 
     part p 
 JOIN 

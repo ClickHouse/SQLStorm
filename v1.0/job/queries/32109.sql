@@ -28,7 +28,7 @@ SELECT
     at.title AS movie_title,
     akn.name AS character_name,
     COUNT(DISTINCT ci.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     AVG(CASE 
             WHEN mi.info IS NOT NULL THEN LENGTH(mi.info)
             ELSE 0 

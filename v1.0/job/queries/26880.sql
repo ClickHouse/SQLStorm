@@ -47,7 +47,7 @@ RecentGenres AS (
 ActorDetails AS (
     SELECT 
         ta.actor_name,
-        STRING_AGG(DISTINCT rg.genre || ' (' || rg.movie_count || ')', ', ') AS genres_with_count
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rg.genre || ' (' || rg.movie_count || ')'))), ', ') AS genres_with_count
     FROM 
         TopActors ta
     JOIN 

@@ -4,7 +4,7 @@ SELECT
     p.p_name AS part_name,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(ps.ps_supplycost) AS average_supply_cost,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_served,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_served,
     LENGTH(s.s_comment) AS supplier_comment_length
 FROM 
     supplier s

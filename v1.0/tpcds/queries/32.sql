@@ -55,4 +55,4 @@ WHERE
     w.total_sales IS NOT NULL
 ORDER BY 
     w.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

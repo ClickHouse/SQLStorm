@@ -48,4 +48,4 @@ LEFT JOIN
     SalesSummary ss ON ac.c_customer_id = ss.c_customer_id
 ORDER BY 
     ss.total_sales DESC NULLS LAST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

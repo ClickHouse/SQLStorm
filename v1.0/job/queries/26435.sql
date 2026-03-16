@@ -1,7 +1,7 @@
 WITH MovieKeywords AS (
     SELECT 
         mk.movie_id, 
-        ARRAY_AGG(k.keyword) AS keywords
+        groupArray(assumeNotNull(k.keyword)) AS keywords
     FROM 
         movie_keyword mk
     JOIN 
@@ -15,7 +15,7 @@ MovieDetails AS (
         t.title,
         t.production_year,
         COALESCE(mk.keywords, '{}') AS keywords,
-        STRING_AGG(DISTINCT c.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS cast_names
     FROM 
         title t
     LEFT JOIN 

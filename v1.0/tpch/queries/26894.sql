@@ -4,7 +4,7 @@ SELECT
     SUM(ps_availqty) AS total_available_quantity,
     AVG(ps_supplycost) AS average_supply_cost,
     MAX(p_retailprice) AS max_part_price,
-    STRING_AGG(DISTINCT p_type, ', ') AS part_types_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p_type))), ', ') AS part_types_supplied,
     r_name AS region_name
 FROM 
     supplier s

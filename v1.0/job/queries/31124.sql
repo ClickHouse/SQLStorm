@@ -32,7 +32,7 @@ SELECT
     t.production_year,
     COUNT(DISTINCT c.id) AS cast_count,
     AVG(CASE WHEN p.info IS NOT NULL THEN 1 ELSE 0 END) AS actor_info_presence,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     ROW_NUMBER() OVER (PARTITION BY t.id ORDER BY COUNT(DISTINCT c.id) DESC) AS movie_rank,
     (SELECT COUNT(DISTINCT ci2.person_id)
      FROM cast_info ci2 

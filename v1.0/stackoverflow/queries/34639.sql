@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         COUNT(v.Id) AS VoteCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
@@ -21,11 +21,11 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        unnest(string_to_array(p.Tags, ', ')) AS tag_name ON tag_name IS NOT NULL
+        arrayJoin(splitByString(', ', p.Tags)) AS tag_name ON tag_name IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - interval '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, pt.Name
 ),

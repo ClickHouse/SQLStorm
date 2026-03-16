@@ -4,7 +4,7 @@ SELECT
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_revenue,
     r.r_name AS region,
     n.n_name AS nation,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
     SUM(l.l_quantity) AS total_quantity
 FROM 
     part p

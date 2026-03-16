@@ -30,7 +30,7 @@ FilteredLineItems AS (
         l.l_linestatus,
         LAG(l.l_extendedprice) OVER (PARTITION BY l.l_orderkey ORDER BY l.l_linenumber) AS previous_price
     FROM lineitem l
-    WHERE l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1997-12-31'
+    WHERE l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1997-12-31')
 )
 SELECT 
     r.o_orderkey,

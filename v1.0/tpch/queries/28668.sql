@@ -31,4 +31,4 @@ HAVING
     COUNT(DISTINCT o.o_orderkey) > 10 
 ORDER BY 
     total_revenue DESC, avg_quantity ASC 
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

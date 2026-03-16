@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
       AND P.Score > 0
 ),
 TopUsers AS (
@@ -35,7 +35,7 @@ TopUsers AS (
 PostHistorySummaries AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(PHT.Name, ', ') AS HistoryActions,
+        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryActions,
         COUNT(PH.Id) AS TotalHistoryEvents
     FROM 
         PostHistory PH
@@ -70,4 +70,4 @@ WHERE
 ORDER BY 
     RP.Score DESC, 
     TU.TotalReputation DESC NULLS LAST
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

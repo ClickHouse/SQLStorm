@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Posts p
         JOIN Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -61,8 +61,8 @@ SELECT
     AnswerCount,
     CommentCount,
     OwnerDisplayName,
-    ARRAY_AGG(DISTINCT CommentText) AS Comments,
-    ARRAY_AGG(DISTINCT PostHistoryComment) AS PostHistoryComments
+    arrayDistinct(groupArray(assumeNotNull(CommentText))) AS Comments,
+    arrayDistinct(groupArray(assumeNotNull(PostHistoryComment))) AS PostHistoryComments
 FROM 
     PostDetails
 GROUP BY 

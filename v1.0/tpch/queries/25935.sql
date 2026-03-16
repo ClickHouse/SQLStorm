@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(ps.ps_supplycost) AS total_supply_cost,
     AVG(o.o_totalprice) AS avg_order_price,
-    STRING_AGG(DISTINCT CONCAT(c.c_name, '(', c.c_acctbal, ')'), '; ') AS customer_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c.c_name, '(', c.c_acctbal, ')')))), '; ') AS customer_info
 FROM 
     part p
 JOIN 

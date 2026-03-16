@@ -50,4 +50,4 @@ LEFT JOIN
     promotions p ON ss.total_sales > p.promo_sales
 ORDER BY 
     ss.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

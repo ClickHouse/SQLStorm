@@ -36,8 +36,8 @@ TopMovies AS (
 SELECT 
     tm.title, 
     tm.production_year, 
-    STRING_AGG(DISTINCT p.name, ', ') AS cast_names,
-    STRING_AGG(DISTINCT co.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS company_names
 FROM 
     TopMovies tm
 LEFT JOIN 

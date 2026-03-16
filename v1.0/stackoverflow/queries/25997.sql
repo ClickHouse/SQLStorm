@@ -5,7 +5,7 @@ WITH PostStats AS (
         p.Body,
         p.CreationDate,
         p.ViewCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
         COALESCE((
             SELECT COUNT(*) 
             FROM Comments c 
@@ -29,7 +29,7 @@ WITH PostStats AS (
     FROM 
         Posts p
     LEFT JOIN 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag_name ON TRUE
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 

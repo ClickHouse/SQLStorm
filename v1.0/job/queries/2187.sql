@@ -22,7 +22,7 @@ MovieDetails AS (
     SELECT 
         tm.movie_id,
         tm.title,
-        STRING_AGG(DISTINCT pn.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pn.name))), ', ') AS cast_names,
         COUNT(DISTINCT mc.company_id) AS production_companies,
         AVG(CASE WHEN pn.gender = 'F' THEN 1 ELSE 0 END) AS female_cast_ratio
     FROM 

@@ -46,7 +46,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31' 
+    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31') 
     AND l.l_returnflag = 'N'
 GROUP BY 
     p.p_name, r.r_name
@@ -54,4 +54,4 @@ HAVING
     SUM(l.l_extendedprice * (1 - l.l_discount)) > 100000
 ORDER BY 
     total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

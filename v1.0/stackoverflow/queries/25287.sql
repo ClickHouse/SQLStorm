@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Tags,
         COALESCE((
             SELECT 
-                STRING_AGG(c.Text, ' | ') 
+                arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') 
             FROM 
                 Comments c 
             WHERE 
@@ -23,7 +23,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags
 ),
@@ -55,7 +55,7 @@ SELECT
         WHEN sp.VoteCount BETWEEN 1 AND 10 THEN 'Moderate'
         ELSE 'Unpopular'
     END AS Popularity,
-    STRING_AGG(DISTINCT sp.CleanedTags, ', ') AS UniqueTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sp.CleanedTags))), ', ') AS UniqueTags
 FROM 
     StringProcessed sp
 GROUP BY 

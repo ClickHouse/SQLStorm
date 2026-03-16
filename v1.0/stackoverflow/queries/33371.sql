@@ -14,9 +14,9 @@ WITH RankedPosts AS (
         COALESCE(t.TagName, 'Uncategorized') AS MainTag
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    LEFT JOIN LATERAL (
+    LEFT JOIN (
         SELECT 
-            UNNEST(STRING_TO_ARRAY(p.Tags, '>')) AS TagName
+            arrayJoin(splitByString('>', p.Tags)) AS TagName
     ) t ON TRUE
     WHERE p.PostTypeId = 1 
     GROUP BY p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.Score, p.ViewCount, p.AnswerCount, t.TagName
@@ -27,7 +27,7 @@ PostHistorySummary AS (
         ph.PostHistoryTypeId,
         ph.CreationDate,
         COUNT(*) AS NumberOfEdits,
-        STRING_AGG(DISTINCT ph.Comment, ', ') AS EditComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), ', ') AS EditComments
     FROM PostHistory ph
     GROUP BY ph.PostId, ph.PostHistoryTypeId, ph.CreationDate
 ),
@@ -78,4 +78,4 @@ SELECT
 FROM PostDetails pd
 WHERE pd.UserPostRank <= 5 
 ORDER BY pd.Score DESC, pd.CreationDate DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

@@ -49,13 +49,13 @@ SELECT
         WHEN fp.Score BETWEEN 50 AND 100 THEN 'Moderate Score'
         ELSE 'Low Score'
     END AS ScoreCategory,
-    STRING_AGG(t.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
 FROM 
     FilteredPosts fp 
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(substring(fp.Body, 2, length(fp.Body)-2), '><')) AS TagName
+            arrayJoin(splitByString('><', substring(fp.Body, 2, length(fp.Body)-2))) AS TagName
     ) AS t ON TRUE
 GROUP BY 
     fp.PostId, fp.Title, fp.Score, fp.CommentCount, fp.VoteCount

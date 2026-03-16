@@ -6,7 +6,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT C.Id) AS TotalComments,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpvotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownvotes,
-        AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - U.CreationDate)) / 86400) AS AvgDaysSinceCreation
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - U.CreationDate)) / 86400) AS AvgDaysSinceCreation
     FROM 
         Users U
     LEFT JOIN 

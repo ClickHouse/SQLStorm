@@ -8,7 +8,7 @@ SELECT
     COUNT(ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_spent,
     MAX(ws.ws_sold_date_sk) AS last_order_date,
-    STRING_AGG(DISTINCT CONCAT(LOWER(i.i_item_desc), ' (', i.i_size, ')'), ', ') AS purchased_items
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(LOWER(i.i_item_desc), ' (', i.i_size, ')')))), ', ') AS purchased_items
 FROM 
     customer c
 JOIN 

@@ -2,7 +2,7 @@ WITH movie_details AS (
     SELECT 
         mt.title AS movie_title,
         mt.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actor_names,
         COUNT(DISTINCT kc.keyword) AS keyword_count,
         ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY COUNT(DISTINCT ak.name) DESC) AS year_rank
     FROM 
@@ -34,7 +34,7 @@ top_movies AS (
 SELECT 
     tm.production_year,
     COUNT(*) AS top_movie_count,
-    STRING_AGG(tm.movie_title, '; ') AS top_movie_titles,
+    arrayStringConcat(groupArray(assumeNotNull(tm.movie_title)), '; ') AS top_movie_titles,
     MAX(tm.keyword_count) AS max_keywords
 FROM 
     top_movies tm

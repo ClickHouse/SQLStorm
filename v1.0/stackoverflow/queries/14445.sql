@@ -8,7 +8,7 @@ SELECT
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes,
     SUM(CASE WHEN b.Id IS NOT NULL THEN 1 ELSE 0 END) AS TotalBadges,
     SUM(p.ViewCount) AS TotalPostViews,
-    AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgPostLifecycle,
+    AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgPostLifecycle,
     COUNT(DISTINCT p2.Id) AS TotalAcceptedAnswers
 FROM 
     Users u

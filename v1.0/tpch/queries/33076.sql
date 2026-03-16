@@ -35,7 +35,7 @@ SELECT
         WHEN SUM(l.l_quantity) BETWEEN 50 AND 100 THEN 'Medium Volume'
         ELSE 'Low Volume'
     END AS volume_category,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied
 FROM 
     lineitem l
 JOIN 

@@ -36,7 +36,7 @@ SELECT
     mtt.title AS Movie_Title,
     mtt.production_year AS Production_Year,
     COUNT(DISTINCT ci.person_id) AS Total_Cast,
-    STRING_AGG(DISTINCT ak.name, ', ') AS Cast_Names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS Cast_Names
 FROM MoviesWithTopTitles mtt
 JOIN cast_info ci ON mtt.movie_id = ci.movie_id
 JOIN aka_name ak ON ci.person_id = ak.person_id

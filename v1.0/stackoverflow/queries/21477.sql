@@ -34,7 +34,7 @@ UserStats AS (
 PostHistoryAgg AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         COUNT(DISTINCT ph.Id) AS HistoryCount
     FROM 
         PostHistory ph
@@ -73,4 +73,4 @@ WHERE
     AND (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rp.PostId AND v.VoteTypeId = 2) > 1 
 ORDER BY 
     us.TotalUpVotes DESC, us.DisplayName ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

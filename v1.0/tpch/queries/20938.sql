@@ -28,7 +28,7 @@ SELECT
     n.n_name, 
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS product_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS product_names
 FROM 
     nation n
 LEFT JOIN 
@@ -42,7 +42,7 @@ LEFT JOIN
 JOIN 
     orders o ON l.l_orderkey = o.o_orderkey 
 WHERE 
-    l.l_shipdate >= CURRENT_DATE - INTERVAL '6 months'
+    l.l_shipdate >= CURRENT_DATE - INTERVAL 6 MONTH
     AND (s.s_phone IS NULL OR s.s_phone LIKE '%555%')
     AND p.p_partkey IN (
         SELECT rp.p_partkey

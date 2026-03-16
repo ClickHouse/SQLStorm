@@ -50,7 +50,7 @@ SELECT
     rm.title,
     rm.production_year,
     rm.actor_count,
-    STRING_AGG(kw.keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') AS keywords,
     ha.name AS actor_name,
     ha.movies_count 
 FROM 

@@ -35,7 +35,7 @@ SELECT
     SUM(CASE WHEN r.rank_by_cost <= 3 THEN r.total_supply_cost ELSE 0 END) AS top3_supply_cost,
     SUM(CASE WHEN r.rank_by_parts <= 3 THEN r.part_count ELSE 0 END) AS top3_part_count,
     AVG(r.s_acctbal) AS avg_acct_balance,
-    STRING_AGG(r.short_comment, '; ') AS combined_comments
+    arrayStringConcat(groupArray(assumeNotNull(r.short_comment)), '; ') AS combined_comments
 FROM 
     Ranking r
 GROUP BY 

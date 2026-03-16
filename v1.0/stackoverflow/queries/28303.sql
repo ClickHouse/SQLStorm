@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        AND p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 TopTaggedPosts AS (
     SELECT 
@@ -25,11 +25,11 @@ TopTaggedPosts AS (
         rp.OwnerDisplayName,
         rp.ViewCount,
         rp.Score,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagList
     FROM 
         RankedPosts rp
     JOIN 
-        UNNEST(STRING_TO_ARRAY(rp.Tags, '<>')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('<>', rp.Tags)) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
     WHERE 

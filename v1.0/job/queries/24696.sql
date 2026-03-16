@@ -5,7 +5,7 @@ WITH movie_details AS (
         at.production_year,
         COUNT(DISTINCT cc.person_id) AS actor_count,
         COALESCE(SUM(CASE WHEN cn.country_code IS NOT NULL THEN 1 ELSE 0 END), 0) AS country_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         ROW_NUMBER() OVER (PARTITION BY at.production_year ORDER BY COUNT(DISTINCT cc.person_id) DESC) AS actor_rank
     FROM 
         aka_title at

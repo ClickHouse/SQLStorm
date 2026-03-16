@@ -40,8 +40,8 @@ KeywordInfo AS (
 SELECT
     mw.movie_title,
     mw.production_year,
-    STRING_AGG(DISTINCT mw.actor_name, ', ') AS co_stars,
-    STRING_AGG(DISTINCT ki.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mw.actor_name))), ', ') AS co_stars,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ki.keyword))), ', ') AS keywords
 FROM
     MoviesWithNames mw
 LEFT JOIN

@@ -39,7 +39,7 @@ SELECT
     COUNT(*) AS count,
     AVG(name_length) AS avg_name_length,
     COUNT(DISTINCT hyphenated_name) AS unique_hyphenated_names,
-    STRING_AGG(capitalized_name, ', ') AS capitalized_names_list
+    arrayStringConcat(groupArray(assumeNotNull(capitalized_name)), ', ') AS capitalized_names_list
 FROM 
     ProcessedData
 GROUP BY 

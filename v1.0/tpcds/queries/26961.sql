@@ -30,9 +30,9 @@ filtered_customers AS (
 SELECT 
     ca_city,
     COUNT(*) AS male_customer_count,
-    STRING_AGG(full_name, ', ') AS male_customer_names,
-    STRING_AGG(DISTINCT cd_marital_status, ', ') AS marital_statuses,
-    STRING_AGG(DISTINCT cd_education_status, ', ') AS education_statuses
+    arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS male_customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_marital_status))), ', ') AS marital_statuses,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_statuses
 FROM 
     filtered_customers
 GROUP BY 

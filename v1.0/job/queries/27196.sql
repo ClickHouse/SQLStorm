@@ -38,8 +38,8 @@ MovieDetails AS (
         tm.movie_id,
         tm.title,
         tm.production_year,
-        STRING_AGG(DISTINCT ak.name, ', ' ORDER BY ak.name) AS actor_names,
-        STRING_AGG(DISTINCT kw.keyword, ', ' ORDER BY kw.keyword) AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ' ORDER BY ak.name) AS actor_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ' ORDER BY kw.keyword) AS keywords
     FROM 
         TopMovies tm
     JOIN 

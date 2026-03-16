@@ -26,7 +26,7 @@ SELECT
         ELSE 'Has Balance'
     END AS BalanceStatus,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS AvgPrice,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS Regions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS Regions
 FROM part AS p
 LEFT OUTER JOIN (
     SELECT l.l_partkey, l.l_suppkey, l.l_orderkey, l.l_discount, l.l_extendedprice

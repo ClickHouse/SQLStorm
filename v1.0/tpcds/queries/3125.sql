@@ -41,4 +41,4 @@ FROM TopItems ci
 LEFT JOIN CustomerData cd ON cd.order_count > 0
 GROUP BY ci.ws_item_sk, cd.gender, cd.marital_status
 ORDER BY total_sales DESC
-OFFSET 0 ROWS FETCH NEXT 25 ROWS ONLY;
+LIMIT 25 OFFSET 0;

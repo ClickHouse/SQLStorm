@@ -21,7 +21,7 @@ RecentCloseHistory AS (
     FROM PostHistory PH
     JOIN PostHistoryTypes HT ON PH.PostHistoryTypeId = HT.Id
     WHERE HT.Name IN ('Post Closed', 'Post Reopened')
-    AND PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserBadgeStats AS (
     SELECT UserId, 
@@ -47,7 +47,7 @@ JOIN UserReputation UR ON U.Id = UR.Id
 LEFT JOIN PostStats PS ON U.Id = PS.OwnerUserId
 LEFT JOIN (
     SELECT PostId, 
-           STRING_AGG(HistoryType, ', ') AS RecentActivity
+           arrayStringConcat(groupArray(assumeNotNull(HistoryType)), ', ') AS RecentActivity
     FROM RecentCloseHistory
     GROUP BY PostId
 ) RCH ON PS.PostId = RCH.PostId

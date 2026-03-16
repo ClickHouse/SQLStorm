@@ -19,7 +19,7 @@ FilteredMovies AS (
         movie_id,
         title,
         production_year,
-        STRING_AGG(actor_name, ', ') AS actors
+        arrayStringConcat(groupArray(assumeNotNull(actor_name)), ', ') AS actors
     FROM 
         RankedMovies
     WHERE 

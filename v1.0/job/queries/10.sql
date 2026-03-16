@@ -11,7 +11,7 @@ WITH RankedTitles AS (
 AkaDetails AS (
     SELECT 
         a.person_id,
-        STRING_AGG(a.name, ', ') AS aka_names
+        arrayStringConcat(groupArray(assumeNotNull(a.name)), ', ') AS aka_names
     FROM aka_name a
     GROUP BY a.person_id
 ),

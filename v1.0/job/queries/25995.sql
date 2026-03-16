@@ -47,9 +47,9 @@ company_movies AS (
 )
 SELECT 
     mc.movie_title,
-    STRING_AGG(DISTINCT mk.movie_keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT cm.company_name, ', ') AS companies,
-    STRING_AGG(DISTINCT mc.actor_name || ' (' || mc.role_order || ':' || mc.role_type || ')', ', ') AS cast
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mk.movie_keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cm.company_name))), ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mc.actor_name || ' (' || mc.role_order || ':' || mc.role_type || ')'))), ', ') AS cast
 FROM 
     movie_cast mc
 LEFT JOIN 

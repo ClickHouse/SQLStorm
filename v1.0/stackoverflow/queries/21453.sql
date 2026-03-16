@@ -7,7 +7,7 @@ WITH RankedUsers AS (
         ROW_NUMBER() OVER (PARTITION BY U.Id ORDER BY U.Reputation DESC) AS Rank
     FROM Users U
     WHERE U.Reputation IS NOT NULL 
-      AND U.CreationDate < (cast('2024-10-01' as date) - INTERVAL '1 year')
+      AND U.CreationDate < (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
 ),
 RecentPosts AS (
     SELECT 
@@ -20,14 +20,14 @@ RecentPosts AS (
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount
     FROM Posts P
     LEFT JOIN Comments C ON C.PostId = P.Id
-    WHERE P.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '30 days')
+    WHERE P.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 30 DAY)
     GROUP BY P.Id, P.OwnerUserId, P.CreationDate, P.Title, P.ViewCount, P.Score
 ),
 PostHistoryStats AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS HistoryCount,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryTypes
     FROM PostHistory PH
     JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     GROUP BY PH.PostId

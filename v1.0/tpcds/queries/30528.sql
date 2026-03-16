@@ -35,7 +35,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_quantity) AS total_quantity_sold,
     AVG(ws.ws_net_paid) AS avg_order_value,
-    STRING_AGG(DISTINCT i.i_product_name, ', ') AS product_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), ', ') AS product_names,
     AVG(cd.cd_purchase_estimate) AS avg_purchase_estimate
 FROM 
     web_sales ws

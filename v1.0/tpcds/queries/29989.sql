@@ -6,7 +6,7 @@ WITH CustomerStats AS (
         cd.cd_gender,
         cd.cd_marital_status,
         cd.cd_purchase_estimate,
-        STRING_AGG(DISTINCT ca.ca_city || ', ' || ca.ca_state, '; ') AS locations
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_city || ', ' || ca.ca_state))), '; ') AS locations
     FROM 
         customer c
     JOIN 

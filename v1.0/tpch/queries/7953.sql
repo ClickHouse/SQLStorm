@@ -50,9 +50,9 @@ SELECT
 FROM 
     SupplierPerformance sp
 JOIN 
-    CustomerOrders co ON sp.s_suppkey = (SELECT ps.ps_suppkey FROM partsupp ps ORDER BY RANDOM() LIMIT 1)
+    CustomerOrders co ON sp.s_suppkey = (SELECT ps.ps_suppkey FROM partsupp ps ORDER BY rand() LIMIT 1)
 JOIN 
-    OrderLineStatistics ol ON ol.o_orderkey = (SELECT o.o_orderkey FROM orders o ORDER BY RANDOM() LIMIT 1)
+    OrderLineStatistics ol ON ol.o_orderkey = (SELECT o.o_orderkey FROM orders o ORDER BY rand() LIMIT 1)
 WHERE 
     sp.TotalCost > 50000
 ORDER BY 

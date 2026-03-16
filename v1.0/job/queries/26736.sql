@@ -4,7 +4,7 @@ WITH RecentMovies AS (
         t.title,
         t.production_year,
         k.keyword,
-        ARRAY_AGG(CONCAT_WS(' - ', a.name, rt.role)) AS cast_list
+        groupArray(assumeNotNull(CONCAT_WS(' - ', a.name, rt.role))) AS cast_list
     FROM 
         aka_title t
     JOIN 

@@ -1,7 +1,7 @@
 SELECT 
     SUM(l_extendedprice * (1 - l_discount)) AS revenue,
     n_name,
-    extract(year from o_orderdate) AS year
+    toYear(o_orderdate) AS year
 FROM 
     lineitem
 JOIN 

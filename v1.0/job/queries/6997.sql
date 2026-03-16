@@ -3,7 +3,7 @@ WITH RankedMovies AS (
     SELECT 
         t.title, 
         t.production_year, 
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(c.id) DESC) AS rank
     FROM title t
     JOIN movie_keyword mk ON t.id = mk.movie_id
@@ -27,7 +27,7 @@ SELECT
      FROM person_info pi
      JOIN aka_name an ON pi.person_id = an.person_id
      JOIN name n ON an.person_id = n.imdb_id
-     WHERE n.name IN (SELECT UNNEST(tm.keywords))) AS total_people,
+     WHERE n.name IN (SELECT arrayJoin(tm.keywords))) AS total_people,
     (SELECT COUNT(DISTINCT mc.company_id)
      FROM movie_companies mc
      WHERE mc.movie_id IN (SELECT t.id FROM title t WHERE t.title = tm.title)) AS total_companies

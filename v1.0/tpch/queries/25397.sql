@@ -5,7 +5,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) AS TotalReturnedQuantity,
     COUNT(DISTINCT o.o_orderkey) AS TotalOrders,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS AverageRevenuePerOrder,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS DistinctPartNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS DistinctPartNames
 FROM 
     supplier s
 JOIN 

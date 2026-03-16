@@ -2,9 +2,9 @@
 SELECT 
     ak.name AS actor_name,
     COUNT(DISTINCT c.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT t.title, ', ') AS movies_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movies_list,
     COALESCE(AVG(CAST(m_info.info AS numeric)), 0) AS average_rating,
-    ARRAY_AGG(DISTINCT k.keyword) AS movie_keywords
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS movie_keywords
 FROM 
     aka_name ak
 JOIN 

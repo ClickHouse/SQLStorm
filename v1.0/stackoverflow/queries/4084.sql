@@ -37,9 +37,9 @@ SELECT
     COALESCE(U.PostCount, 0) AS TotalPosts,
     COALESCE(U.Upvotes - U.Downvotes, 0) AS NetVotes,
     U.ReopenedPosts,
-    (SELECT STRING_AGG(DISTINCT T.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
      FROM Posts P 
-     JOIN UNNEST(string_to_array(P.Tags, ',')) AS Tag ON TRUE
+     JOIN arrayJoin(splitByString(',', P.Tags)) AS Tag ON TRUE
      JOIN Tags T ON Tag = T.TagName
      WHERE P.OwnerUserId = U.UserId) AS TagsUsed,
     CASE 
@@ -54,4 +54,4 @@ WHERE
     OR U.HighReputationPostRank <= 5 
 ORDER BY 
     U.Reputation DESC, U.DisplayName
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

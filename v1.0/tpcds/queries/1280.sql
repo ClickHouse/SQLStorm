@@ -47,4 +47,4 @@ GROUP BY
     i.i_item_id, RS.sales_rank, AR.total_returns, AR.total_return_amt, i.i_product_name
 ORDER BY 
     item_rank DESC, returns_count ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

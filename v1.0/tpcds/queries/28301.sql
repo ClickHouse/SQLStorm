@@ -3,7 +3,7 @@ WITH AddressCounts AS (
     SELECT 
         ca_city,
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type), '; ') AS full_address_string
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_number, ' ', ca_street_name, ' ', ca_street_type)))), '; ') AS full_address_string
     FROM 
         customer_address
     GROUP BY 
@@ -14,7 +14,7 @@ CustomerStats AS (
         cd_gender,
         COUNT(c.c_customer_sk) AS customer_count,
         AVG(cd_purchase_estimate) AS average_purchase_estimate,
-        STRING_AGG(DISTINCT c.c_email_address, ', ') AS unique_emails
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_email_address))), ', ') AS unique_emails
     FROM 
         customer c
     JOIN 

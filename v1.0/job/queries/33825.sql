@@ -61,7 +61,7 @@ SELECT
     ), 0) AS actor_count,
     (
         SELECT 
-            STRING_AGG(DISTINCT ak.name, ', ') 
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') 
         FROM 
             cast_info ci
         JOIN 

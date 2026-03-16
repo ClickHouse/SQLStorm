@@ -39,7 +39,7 @@ MovieDetails AS (
 SELECT 
     ta.actor_name,
     COUNT(DISTINCT md.movie_id) AS total_movies,
-    STRING_AGG(DISTINCT md.movie_title || ' (' || md.production_year || ')' || ' - ' || md.keyword, ', ') AS movie_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.movie_title || ' (' || md.production_year || ')' || ' - ' || md.keyword))), ', ') AS movie_info
 FROM 
     TopActors ta
 LEFT JOIN 

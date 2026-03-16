@@ -11,7 +11,7 @@ WITH RankedPosts AS (
                FROM Votes 
                GROUP BY PostId) v ON p.Id = v.PostId
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     AND p.ViewCount > 100
 ), 
 ClosedPostDetails AS (
@@ -31,7 +31,7 @@ FinalData AS (
            rp.CommentCount,
            rp.TotalVotes,
            COALESCE(cp.CloseRank, 0) AS CloseRank,
-           STRING_AGG(DISTINCT t.TagName, ', ') AS TagList
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagList
     FROM RankedPosts rp
     LEFT JOIN ClosedPostDetails cp ON rp.PostId = cp.PostId
     LEFT JOIN Posts p ON rp.PostId = p.Id 

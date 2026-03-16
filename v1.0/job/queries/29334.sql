@@ -37,9 +37,9 @@ SELECT
     r.production_year,
     r.company_count,
     r.keyword_count,
-    STRING_AGG(DISTINCT a.name, ', ') AS actors,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT c.kind, ', ') AS company_types
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.kind))), ', ') AS company_types
 FROM 
     top_ranked_movies r
 LEFT JOIN 

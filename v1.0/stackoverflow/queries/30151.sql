@@ -61,4 +61,4 @@ WHERE
     rua.TotalScore > 0
 ORDER BY 
     rua.TotalScore DESC
-OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 0;

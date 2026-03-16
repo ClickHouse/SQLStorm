@@ -32,7 +32,7 @@ SELECT
     m.title AS movie_title,
     m.production_year,
     COUNT(DISTINCT cc.person_id) AS num_cast_members,
-    STRING_AGG(DISTINCT co.name, ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS company_names,
     SUM(CASE WHEN mi.info_type_id = 1 THEN 1 ELSE 0 END) AS num_plot_descriptions,
     ROW_NUMBER() OVER (PARTITION BY m.id ORDER BY COUNT(DISTINCT cc.person_id) DESC) AS actor_rank
 FROM 

@@ -47,7 +47,7 @@ SELECT
     p.Score,
     p.OwnerDisplayName,
     p.CommentCount,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags,
     (
         SELECT 
             COUNT(*) 
@@ -69,7 +69,7 @@ SELECT
 FROM 
     TopPosts p
 LEFT JOIN 
-    UNNEST(string_to_array(p.Tags, '><')) AS tag ON TRUE
+    arrayJoin(splitByString('><', p.Tags)) AS tag ON TRUE
 JOIN 
     Tags t ON t.TagName = tag
 GROUP BY 

@@ -8,8 +8,8 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1997-01-01' AND
-        o.o_orderdate < DATE '1998-01-01'
+        o.o_orderdate >= toDate('1997-01-01') AND
+        o.o_orderdate < toDate('1998-01-01')
 ),
 SupplierCosts AS (
     SELECT 
@@ -53,8 +53,8 @@ LEFT JOIN
 LEFT JOIN 
     SupplierCosts sc ON sc.ps_partkey = l.l_partkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' AND 
-    l.l_shipdate <= DATE '1997-12-31'
+    l.l_shipdate >= toDate('1997-01-01') AND 
+    l.l_shipdate <= toDate('1997-12-31')
 GROUP BY 
     c.c_name, r.r_name, r.r_regionkey
 HAVING 

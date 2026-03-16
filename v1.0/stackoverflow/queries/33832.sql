@@ -89,7 +89,7 @@ SELECT
     COALESCE(F.AnswerCount, 0) AS AnswersToPost,
     COALESCE(F.CommentCount, 0) AS CommentsOnPost,
     (SELECT COUNT(*) FROM Badges B WHERE B.UserId = U.Id) AS UserBadges,
-    (SELECT STRING_AGG(Name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') 
      FROM Badges B 
      WHERE B.UserId = U.Id) AS BadgeNames,
     CASE 

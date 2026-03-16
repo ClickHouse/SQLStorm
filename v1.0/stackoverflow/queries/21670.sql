@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -40,7 +40,7 @@ PostHistoryDetails AS (
         ph.PostId,
         ph.Comment AS CloseComment,
         ph.CreationDate AS CloseDate,
-        CONCAT(EXTRACT(YEAR FROM ph.CreationDate), '-', LPAD(EXTRACT(MONTH FROM ph.CreationDate)::TEXT, 2, '0')) AS CloseMonthYear
+        CONCAT(toYear(ph.CreationDate), '-', LPAD(toMonth(ph.CreationDateCAST() AS TEXT), 2, '0')) AS CloseMonthYear
     FROM 
         PostHistory ph
     WHERE 
@@ -75,7 +75,7 @@ SELECT
         ELSE 'Open'
     END AS PostStatus,
     COALESCE(fp.CloseMonthYear, 'Not Closed') AS ClosedMonthYear,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Tags t
      JOIN Posts p ON t.ExcerptPostId = p.Id 
      WHERE p.Id = fp.PostId) AS AssociatedTags

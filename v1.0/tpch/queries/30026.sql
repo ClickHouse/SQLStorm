@@ -52,7 +52,7 @@ JOIN TotalSales ts ON sh.s_suppkey IN (
         WHERE p.p_size BETWEEN 10 AND 20
         AND p.p_retailprice IS NOT NULL
         ORDER BY p.p_retailprice
-        FETCH FIRST 1 ROW ONLY
+        LIMIT 1
     )
 )
 JOIN RankedSales rs ON ts.total_sales > rs.total_sales * 0.9

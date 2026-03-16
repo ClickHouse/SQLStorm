@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Body,
         p.CreationDate,
         U.DisplayName AS OwnerDisplayName,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags,
         COUNT(DISTINCT C.Id) AS CommentCount,
         COUNT(DISTINCT HD.Id) AS HistoryCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
@@ -19,11 +19,11 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostHistory HD ON p.Id = HD.PostId
     LEFT JOIN 
-        LATERAL (
+        (
             SELECT 
                 TRIM(value) AS TagName 
             FROM 
-                UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR CHAR_LENGTH(p.Tags) - 2), '><')) AS value
+                arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR CHAR_LENGTH(p.Tags) - 2))) AS value
         ) T ON TRUE
     WHERE 
         p.PostTypeId = 1 

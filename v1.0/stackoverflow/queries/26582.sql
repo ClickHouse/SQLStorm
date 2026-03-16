@@ -42,7 +42,7 @@ TopTags AS (
     FROM 
         Posts P
     CROSS JOIN 
-        (SELECT DISTINCT UNNEST(STRING_TO_ARRAY(Tags, '><')) AS TagName FROM Posts) T
+        (SELECT DISTINCT arrayJoin(splitByString('><', Tags)) AS TagName FROM Posts) T
     GROUP BY 
         T.TagName
     ORDER BY 

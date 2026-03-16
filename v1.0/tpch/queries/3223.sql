@@ -26,7 +26,7 @@ TotalOrderValue AS (
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
         o.o_orderstatus = 'F' 
-        AND l.l_shipdate > (cast('1998-10-01' as date) - INTERVAL '1 year')
+        AND l.l_shipdate > (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
     GROUP BY 
         o.o_orderkey
 ),

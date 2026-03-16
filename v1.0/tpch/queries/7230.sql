@@ -19,7 +19,7 @@ SalesData AS (
     SELECT
         o.o_orderkey,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,
-        EXTRACT(YEAR FROM o.o_orderdate) AS order_year,
+        toYear(o.o_orderdate) AS order_year,
         n.n_regionkey
     FROM
         orders o
@@ -30,7 +30,7 @@ SalesData AS (
     JOIN
         nation n ON c.c_nationkey = n.n_nationkey
     GROUP BY
-        o.o_orderkey, EXTRACT(YEAR FROM o.o_orderdate), n.n_regionkey
+        o.o_orderkey, toYear(o.o_orderdate), n.n_regionkey
 )
 SELECT
     sd.order_year,

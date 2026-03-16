@@ -87,7 +87,7 @@ SELECT
     COUNT(DISTINCT tkr.actor_name) AS total_actors,
     SUM(CASE WHEN tkr.role_classification = 'Lead role' THEN 1 ELSE 0 END) AS lead_role_count,
     MAX(tkr.keyword_count) AS max_keywords,
-    STRING_AGG(DISTINCT tkr.actor_name, ', ') AS actor_names 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tkr.actor_name))), ', ') AS actor_names 
 FROM 
     TitleKeywordRole tkr
 GROUP BY 

@@ -33,8 +33,8 @@ SELECT
     ak.name AS Actor_Name,
     tm.movie_title AS Latest_Movie,
     tm.production_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS Associated_Keywords,
-    STRING_AGG(DISTINCT ci.kind, ', ') AS Movie_Companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS Associated_Keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.kind))), ', ') AS Movie_Companies
 FROM
     TopRankedMovies tm
 JOIN

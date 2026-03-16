@@ -6,7 +6,7 @@ WITH MovieData AS (
         t.kind_id,
         k.keyword AS keyword,
         COUNT(DISTINCT c.person_id) AS actor_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors_list,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors_list,
         t.id AS movie_id
     FROM 
         aka_title AS t
@@ -24,7 +24,7 @@ WITH MovieData AS (
 CompanyData AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies_involved,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies_involved,
         COUNT(DISTINCT mc.id) AS company_count
     FROM 
         movie_companies AS mc

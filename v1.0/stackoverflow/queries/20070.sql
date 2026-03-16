@@ -50,7 +50,7 @@ SELECT
     COALESCE(UB.BronzeBadges, 0) AS UserBronzeBadges,
     MAX(PH.LastEditDate) AS MostRecentEdit,
     CASE
-        WHEN MAX(PH.LastEditDate) < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 'Old Post'
+        WHEN MAX(PH.LastEditDate) < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Old Post'
         ELSE 'Recent Post'
     END AS PostAgeStatus
 FROM 

@@ -55,4 +55,4 @@ JOIN
     CustomerPurchase cp ON ti.ws_item_sk = (SELECT ws_item_sk FROM web_sales WHERE ws_order_number = cp.total_orders LIMIT 1)
 ORDER BY 
     ti.total_sales DESC, cp.total_spent DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

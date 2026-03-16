@@ -21,7 +21,7 @@ PostSummary AS (
         (SELECT COUNT(*) FROM Comments C WHERE C.PostId = P.Id) AS CommentCount,
         ROW_NUMBER() OVER (PARTITION BY P.PostTypeId ORDER BY P.CreationDate DESC) as PostRank
     FROM Posts AS P
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostVoting AS (
     SELECT

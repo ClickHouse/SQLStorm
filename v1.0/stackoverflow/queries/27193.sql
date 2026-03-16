@@ -5,7 +5,7 @@ WITH TagStatistics AS (
         COUNT(DISTINCT Posts.Id) AS PostCount,
         SUM(Posts.ViewCount) AS TotalViews,
         AVG(Users.Reputation) AS AverageReputation,
-        STRING_AGG(DISTINCT Users.DisplayName, ', ') AS ActiveUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Users.DisplayName))), ', ') AS ActiveUsers
     FROM 
         Tags
     JOIN 
@@ -13,7 +13,7 @@ WITH TagStatistics AS (
     JOIN 
         Users ON Posts.OwnerUserId = Users.Id
     WHERE 
-        Posts.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        Posts.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         Tags.TagName
 ),

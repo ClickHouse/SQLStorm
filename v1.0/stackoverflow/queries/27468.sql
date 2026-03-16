@@ -20,17 +20,17 @@ WITH RankedPosts AS (
         (SELECT PostId, COUNT(*) AS CommentCount FROM Comments GROUP BY PostId) c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '1 year'  
+        AND p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR  
 ),
 TagSummary AS (
     SELECT 
-        UNNEST(string_to_array(Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', Tags)) AS TagName,
         COUNT(*) AS PostCount,
         SUM(Score) AS TotalScore
     FROM 
         RankedPosts
     GROUP BY 
-        UNNEST(string_to_array(Tags, ',')) -- added here to ensure compatibility
+        arrayJoin(splitByString(',', Tags)) -- added here to ensure compatibility
 ),
 TopTags AS (
     SELECT 

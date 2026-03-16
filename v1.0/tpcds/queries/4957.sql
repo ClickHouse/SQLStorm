@@ -24,7 +24,7 @@ recent_sales AS (
         ws.ws_sold_date_sk IN (
             SELECT d.d_date_sk 
             FROM date_dim d 
-            WHERE d.d_date >= CURRENT_DATE - INTERVAL '6 months'
+            WHERE d.d_date >= CURRENT_DATE - INTERVAL 6 MONTH
         )
     GROUP BY 
         ws.ws_ship_customer_sk
@@ -59,4 +59,4 @@ WHERE
     sa.purchase_rank <= 10
 ORDER BY 
     sa.total_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -1,7 +1,7 @@
 WITH UserBadges AS (
     SELECT UserId, 
            COUNT(*) AS TotalBadges, 
-           STRING_AGG(Name, ', ') AS BadgeNames 
+           arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames 
     FROM Badges 
     WHERE Class = 1 
     GROUP BY UserId
@@ -48,7 +48,7 @@ SELECT ru.UserId,
        ru.TotalAcceptedAnswersCount,
        ru.TotalPostViews,
        ru.UserRank,
-       STRING_AGG(DISTINCT ph.Comment, '; ') FILTER (WHERE ph.Comment IS NOT NULL) AS HistoryComments,
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') FILTER (WHERE ph.Comment IS NOT NULL) AS HistoryComments,
        SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
        (SELECT COUNT(*)
         FROM Votes v2

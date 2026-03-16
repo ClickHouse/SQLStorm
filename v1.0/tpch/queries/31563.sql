@@ -16,7 +16,7 @@ MostOrderedParts AS (
     SELECT l.l_partkey, SUM(l.l_quantity) AS total_quantity
     FROM lineitem l
     JOIN orders o ON l.l_orderkey = o.o_orderkey
-    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year' 
+    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR 
     GROUP BY l.l_partkey
     HAVING SUM(l.l_quantity) > 500
 ),

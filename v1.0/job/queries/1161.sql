@@ -43,7 +43,7 @@ SELECT
     rm.title,
     rm.production_year,
     COALESCE(pa.movies_count, 0) AS popular_actors_count,
-    STRING_AGG(mk.keyword, ', ') AS keywords,
+    arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keywords,
     rm.cast_count
 FROM 
     RankedMovies AS rm

@@ -24,7 +24,7 @@ SELECT
         ELSE ps.ps_availqty 
         END) AS total_available_quantity,
     AVG(o_totalprice) FILTER (WHERE o_orderstatus = 'O') AS average_open_order_price,
-    STRING_AGG(DISTINCT s.s_name || ' (' || COALESCE(s.s_comment, 'No comment') || ')', ', ') AS suppliers_info,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name || ' (' || COALESCE(s.s_comment, 'No comment') || ')'))), ', ') AS suppliers_info,
     (SELECT COUNT(*) FROM CustomerOrderCount c)
 FROM part p
 JOIN partsupp ps ON p.p_partkey = ps.ps_partkey

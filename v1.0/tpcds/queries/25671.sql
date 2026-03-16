@@ -29,7 +29,7 @@ aggregated_data AS (
     SELECT 
         COUNT(*) AS total_customers,
         COUNT(DISTINCT c_customer_sk) AS distinct_customer_count,
-        STRING_AGG(full_name, ', ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(full_name)), ', ') AS customer_names
     FROM 
         filtered_data
 )
@@ -37,7 +37,7 @@ SELECT
     ad.total_customers,
     ad.distinct_customer_count,
     ad.customer_names,
-    STRING_AGG(DISTINCT fd.ca_state, ', ') AS unique_states
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fd.ca_state))), ', ') AS unique_states
 FROM 
     aggregated_data ad
 JOIN 

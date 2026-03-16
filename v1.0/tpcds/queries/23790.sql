@@ -49,7 +49,7 @@ SELECT
     SUM(sm.total_sales) AS total_sales_value,
     MAX(cd.total_estimated_purchases) AS max_estimated_purchases,
     COUNT(DISTINCT cd.c_customer_sk) AS unique_customers,
-    STRING_AGG(DISTINCT cd.gender, ', ') AS gender_distribution
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.gender))), ', ') AS gender_distribution
 FROM 
     address_hierarchy a
 LEFT JOIN 

@@ -40,7 +40,7 @@ CustomerOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate < DATE('1998-10-01') - INTERVAL '30 days'
+        o.o_orderdate < DATE('1998-10-01') - INTERVAL 30 DAY
 ),
 SupplierDetails AS (
     SELECT 
@@ -67,7 +67,7 @@ SELECT
     sd.s_name,
     COALESCE(sd.total_available, 0) AS available_quantity,
     COUNT(cp.o_orderkey) AS total_orders,
-    STRING_AGG(DISTINCT sd.order_class, ', ') AS classifications,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sd.order_class))), ', ') AS classifications,
     SUM(cp.o_totalprice) AS total_revenue
 FROM 
     SupplierDetails sd

@@ -17,14 +17,14 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId
 ),
 TopComments AS (
     SELECT 
         pc.PostId,
-        STRING_AGG(pc.Text, ' | ') AS TopCommentTexts
+        arrayStringConcat(groupArray(assumeNotNull(pc.Text)), ' | ') AS TopCommentTexts
     FROM 
         (SELECT 
              c.PostId,
@@ -33,7 +33,7 @@ TopComments AS (
          FROM 
             Comments c
          WHERE 
-            c.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
+            c.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
         ) pc
     WHERE 
         pc.CommentRank <= 3  
@@ -48,7 +48,7 @@ PostHistoryChanges AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL '3 months'
+        ph.CreationDate >= CURRENT_DATE - INTERVAL 3 MONTH
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId
 ),

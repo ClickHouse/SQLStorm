@@ -7,7 +7,7 @@ SELECT
     COUNT(*) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     AVG(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity END) AS avg_return_quantity,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', s.s_name, ')'), '; ') AS part_supplier_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', s.s_name, ')')))), '; ') AS part_supplier_list,
     CONCAT(r.r_name, ': ', r.r_comment) AS region_info
 FROM 
     part p

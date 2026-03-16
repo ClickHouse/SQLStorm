@@ -7,7 +7,7 @@ WITH RECURSIVE OrderHierarchy AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
     
     UNION ALL
 
@@ -52,7 +52,7 @@ JOIN
     nation n ON c.c_nationkey = n.n_nationkey
 WHERE 
     o.o_orderstatus = 'O' 
-    AND l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 days'
+    AND l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
 GROUP BY 
     n.n_name
 HAVING 

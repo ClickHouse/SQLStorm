@@ -33,7 +33,7 @@ AggregateData AS (
     SELECT 
         cd_education_status,
         COUNT(*) AS total_customers,
-        STRING_AGG(full_name, '; ') AS customer_names
+        arrayStringConcat(groupArray(assumeNotNull(full_name)), '; ') AS customer_names
     FROM 
         FilteredCustomers
     GROUP BY 

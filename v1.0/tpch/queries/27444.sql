@@ -23,7 +23,7 @@ SELECT
     MAX(LENGTH(sp.upper_name)) AS max_upper_name_length,
     MIN(LENGTH(sp.lower_comment)) AS min_lower_comment_length,
     MAX(LENGTH(sp.modified_comment)) AS max_modified_comment_length,
-    STRING_AGG(sp.brand_type, '; ') AS aggregated_brand_type
+    arrayStringConcat(groupArray(assumeNotNull(sp.brand_type)), '; ') AS aggregated_brand_type
 FROM 
     StringProcessing sp
 JOIN 

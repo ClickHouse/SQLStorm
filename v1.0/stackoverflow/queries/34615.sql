@@ -19,7 +19,7 @@ UserBadges AS (
     SELECT
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM
         Users U
     LEFT JOIN
@@ -51,7 +51,7 @@ SELECT
     COALESCE(UB.BadgeNames, 'None') AS BadgeNames,
     SUM(P.Score) AS TotalScore,
     SUM(P.ViewCount) AS TotalViews,
-    ARRAY_AGG(DISTINCT P.Title) AS UserPosts,
+    arrayDistinct(groupArray(assumeNotNull(P.Title))) AS UserPosts,
     COUNT(DISTINCT C.Id) AS CommentCount,
     MAX(P.LastActivityDate) AS LastActiveDate
 FROM

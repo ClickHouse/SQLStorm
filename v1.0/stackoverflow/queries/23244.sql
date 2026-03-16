@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY P.PostTypeId ORDER BY P.Score DESC) AS RankScore,
         ROW_NUMBER() OVER (PARTITION BY P.PostTypeId ORDER BY P.ViewCount DESC) AS RankViews
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 RecentUsers AS (
     SELECT 
@@ -18,7 +18,7 @@ RecentUsers AS (
         (SELECT COUNT(*) FROM Posts WHERE OwnerUserId = U.Id) AS PostCount,
         (SELECT COUNT(*) FROM Badges WHERE UserId = U.Id) AS BadgeCount
     FROM Users U
-    WHERE U.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+    WHERE U.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 ),
 PostCloseReasons AS (
     SELECT 
@@ -50,6 +50,6 @@ LEFT JOIN RecentUsers U ON P.OwnerUserId = U.UserId
 LEFT JOIN PostCloseReasons PCR ON P.Id = PCR.PostId
 WHERE R.RankScore IS NOT NULL
   AND (U.Reputation IS NULL OR U.Reputation > 50 OR PCR.CloseCount < 2) 
-  AND (P.CreationDate <= cast('2024-10-01 12:34:56' as timestamp) OR P.CreationDate > '2021-01-01') 
+  AND (P.CreationDate <= toDateTime64('2024-10-01 12:34:56', 6) OR P.CreationDate > '2021-01-01') 
 ORDER BY R.RankScore ASC, P.ViewCount DESC
 LIMIT 50;

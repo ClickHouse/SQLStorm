@@ -5,7 +5,7 @@ SELECT
     AVG(l.l_extendedprice) AS avg_price,
     UPPER(r.r_name) AS upper_region_name,
     COUNT(DISTINCT s.s_suppkey) AS unique_suppliers,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS product_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS product_comments
 FROM 
     customer c
 JOIN 

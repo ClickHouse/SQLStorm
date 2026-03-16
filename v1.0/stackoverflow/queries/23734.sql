@@ -32,7 +32,7 @@ PostStats AS (
             PostId
     ) VOT ON P.Id = VOT.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         P.OwnerUserId
 ),
@@ -78,15 +78,15 @@ SELECT
         WHEN TU.NetVotes BETWEEN 20 AND 50 THEN 'Moderately Voted'
         ELSE 'Low Votes'
     END AS VotingCategory,
-    COALESCE(ARRAY_AGG(DISTINCT T.TagName) FILTER (WHERE T.TagName IS NOT NULL), '{}') AS TagsContributed
+    COALESCE(arrayDistinct(groupArray(assumeNotNull(T.TagName))) FILTER (WHERE T.TagName IS NOT NULL), '{}') AS TagsContributed
 FROM 
     TopUsers TU
 LEFT JOIN 
     Posts P ON TU.UserId = P.OwnerUserId
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            UNNEST(string_to_array(P.Tags, '><')) AS TagName
+            arrayJoin(splitByString('><', P.Tags)) AS TagName
     ) T ON TRUE
 GROUP BY 
     TU.UserId, TU.DisplayName, TU.BadgeCount, TU.PostCount, TU.TotalScore, TU.NetVotes

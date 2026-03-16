@@ -28,7 +28,7 @@ WITH RECURSIVE movie_hierarchy AS (
 movie_info_details AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(COALESCE(mi.info, 'N/A'), '; ') AS info_details
+        arrayStringConcat(groupArray(assumeNotNull(COALESCE(mi.info, 'N/A'))), '; ') AS info_details
     FROM 
         movie_info AS mi
     GROUP BY 
@@ -39,7 +39,7 @@ cast_roles AS (
     SELECT 
         c.movie_id,
         COUNT(*) AS role_count,
-        STRING_AGG(DISTINCT r.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.role))), ', ') AS roles
     FROM 
         cast_info AS c
     INNER JOIN 

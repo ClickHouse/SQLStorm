@@ -43,7 +43,7 @@ UserBadges AS (
 BadgeSummary AS (
     SELECT 
         UB.UserId, 
-        STRING_AGG(UB.BadgeName || ' (' || UB.BadgeCount || ')', ', ') AS BadgeDetails
+        arrayStringConcat(groupArray(assumeNotNull(UB.BadgeName || ' (' || UB.BadgeCount || ')')), ', ') AS BadgeDetails
     FROM 
         UserBadges UB
     GROUP BY 

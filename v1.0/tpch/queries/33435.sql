@@ -34,7 +34,7 @@ JOIN
 LEFT JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1997-10-01'
+    l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1997-10-01')
     AND p.p_retailprice > (SELECT AVG(p2.p_retailprice) FROM part p2)
     AND n.n_name IS NOT NULL
 GROUP BY 

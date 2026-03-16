@@ -4,7 +4,7 @@ WITH StringAggregation AS (
         p.p_name AS part_name,
         s.s_name AS supplier_name,
         CONCAT(s.s_name, ' supplies ', p.p_name, ' in ', p.p_container, ' containers.') AS supply_description,
-        STRING_AGG(CONCAT(c.c_name, ' from ', n.n_name), '; ') AS customers_served
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(c.c_name, ' from ', n.n_name))), '; ') AS customers_served
     FROM part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey

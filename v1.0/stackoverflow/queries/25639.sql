@@ -2,7 +2,7 @@ WITH TagAnalysis AS (
     SELECT 
         t.TagName,
         COUNT(p.Id) AS PostCount,
-        STRING_AGG(DISTINCT p.OwnerDisplayName, ', ') AS UniqueAuthors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.OwnerDisplayName))), ', ') AS UniqueAuthors,
         SUM(COALESCE(p.ViewCount, 0)) AS TotalViews,
         AVG(COALESCE(p.Score, 0)) AS AverageScore
     FROM 
@@ -11,7 +11,7 @@ WITH TagAnalysis AS (
         Posts p ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY 
         t.TagName
 ), 

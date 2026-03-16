@@ -4,7 +4,7 @@ SELECT
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price,
     MAX(l.l_shipdate) AS last_ship_date,
     MIN(l.l_shipdate) AS first_ship_date,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_phone, ')'), ', ') AS supplier_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')')))), ', ') AS supplier_info
 FROM 
     part p
 JOIN 

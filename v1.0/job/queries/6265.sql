@@ -3,8 +3,8 @@ WITH movie_details AS (
         t.title AS movie_title,
         t.production_year AS release_year,
         c.name AS company_name,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
-        ARRAY_AGG(DISTINCT a.name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actors,
         COUNT(DISTINCT a.id) AS actor_count
     FROM 
         aka_title t

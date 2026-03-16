@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
 ),
 ClosedPostStats AS (
@@ -21,7 +21,7 @@ ClosedPostStats AS (
         ph.PostId,
         COUNT(*) AS CloseCount,
         MAX(ph.CreationDate) AS LastCloseDate,
-        STRING_AGG(ct.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(ct.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     INNER JOIN 

@@ -20,7 +20,7 @@ WordCount AS (
 ),
 StringAggregation AS (
     SELECT 
-        STRING_AGG(word, ', ') AS all_words,
+        arrayStringConcat(groupArray(assumeNotNull(word)), ', ') AS all_words,
         MAX(length) AS max_length,
         MIN(length) AS min_length,
         AVG(length) AS avg_length

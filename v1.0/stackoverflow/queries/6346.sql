@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 TopPosts AS (
     SELECT 
@@ -36,9 +36,9 @@ SELECT
     T.Score,
     T.UpVoteCount,
     T.DownVoteCount,
-    COALESCE((SELECT STRING_AGG(TG.TagName, ', ') 
+    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(TG.TagName)), ', ') 
               FROM Tags TG 
-              JOIN (SELECT UNNEST(string_to_array(P.Tags, ',')) AS TagName) AS SubTags ON SubTags.TagName = TG.TagName 
+              JOIN (SELECT arrayJoin(splitByString(',', P.Tags)) AS TagName) AS SubTags ON SubTags.TagName = TG.TagName 
               WHERE P.Id = T.PostId), '') AS Tags
 FROM 
     TopPosts T

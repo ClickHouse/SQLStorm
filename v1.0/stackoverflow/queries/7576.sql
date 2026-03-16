@@ -9,13 +9,13 @@ WITH PostStats AS (
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT CASE WHEN v.VoteTypeId = 2 THEN v.Id END) AS UpVotes,
         COUNT(DISTINCT CASE WHEN v.VoteTypeId = 3 THEN v.Id END) AS DownVotes,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    LEFT JOIN unnest(string_to_array(p.Tags, '><')) AS t(TagName) ON TRUE
+    LEFT JOIN arrayJoin(splitByString('><', p.Tags)) AS t(TagName) ON TRUE
     WHERE p.PostTypeId = 1
-    AND p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount
 ),
 UserRankings AS (

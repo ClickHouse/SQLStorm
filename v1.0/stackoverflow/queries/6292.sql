@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score
 ),
@@ -43,7 +43,7 @@ SELECT
     t.UpVotes,
     t.DownVotes,
     t.CloseReopenCount,
-    STRING_AGG(DISTINCT c.UserDisplayName, ', ') AS Commenters
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.UserDisplayName))), ', ') AS Commenters
 FROM 
     TopPosts t
 LEFT JOIN 

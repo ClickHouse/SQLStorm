@@ -24,7 +24,7 @@ LatestMovies AS (
 Genres AS (
     SELECT 
         m.title,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         LatestMovies m
     LEFT JOIN 

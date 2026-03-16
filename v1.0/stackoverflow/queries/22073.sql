@@ -20,7 +20,7 @@ WITH UserStats AS (
 BadgeStats AS (
     SELECT 
         B.UserId,
-        STRING_AGG(B.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames,
         COUNT(*) FILTER (WHERE B.Class = 1) AS GoldCount,
         COUNT(*) FILTER (WHERE B.Class = 2) AS SilverCount,
         COUNT(*) FILTER (WHERE B.Class = 3) AS BronzeCount
@@ -35,7 +35,7 @@ PostHistorySummary AS (
         PH.PostId,
         PH.PostHistoryTypeId,
         COUNT(*) AS EditCount,
-        STRING_AGG(DISTINCT PH.Comment, '; ') AS EditComments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.Comment))), '; ') AS EditComments
     FROM 
         PostHistory PH
     WHERE

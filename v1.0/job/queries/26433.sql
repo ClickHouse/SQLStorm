@@ -32,8 +32,8 @@ aggregated_movie_info AS (
         actor_name,
         movie_title,
         production_year,
-        STRING_AGG(movie_keyword, ', ') AS keywords_collected,
-        STRING_AGG(DISTINCT company_type, ', ') AS companies_involved
+        arrayStringConcat(groupArray(assumeNotNull(movie_keyword)), ', ') AS keywords_collected,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS companies_involved
     FROM 
         movie_details
     GROUP BY 

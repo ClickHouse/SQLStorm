@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId
@@ -52,7 +52,7 @@ AggregatedHistory AS (
     SELECT 
         ph.PostId,
         MAX(ph.EditDate) AS LastEditDate,
-        STRING_AGG(ph.CloseReason, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(ph.CloseReason)), ', ') AS CloseReasons
     FROM 
         PostHistoryData ph
     GROUP BY 

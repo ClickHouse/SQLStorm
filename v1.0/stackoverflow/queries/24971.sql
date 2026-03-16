@@ -7,7 +7,7 @@ WITH RankedUserPostCounts AS (
         RANK() OVER (PARTITION BY CASE WHEN U.Reputation >= 1000 THEN 1 ELSE 0 END ORDER BY COUNT(P.Id) DESC) AS RankByPostCount
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
-    WHERE U.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+    WHERE U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY U.Id, U.DisplayName, U.Reputation
 ),
 LatestPostDetails AS (
@@ -20,12 +20,12 @@ LatestPostDetails AS (
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RowNum
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' 
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
 ),
 UserBadges AS (
     SELECT 
         B.UserId,
-        STRING_AGG(B.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames,
         COUNT(B.Id) AS BadgeCount
     FROM Badges B
     GROUP BY B.UserId

@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score IS NOT NULL 
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserVoteSummary AS (
     SELECT 
@@ -26,7 +26,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.UserDisplayName, ', ') AS CommentingUsers
+        arrayStringConcat(groupArray(assumeNotNull(c.UserDisplayName)), ', ') AS CommentingUsers
     FROM 
         Comments c
     GROUP BY 

@@ -2,7 +2,7 @@
 WITH StringAggregation AS (
     SELECT 
         n.n_name AS nation_name,
-        STRING_AGG(DISTINCT CONCAT(s.s_name, ' - ', p.p_name), '; ') AS supplier_parts
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' - ', p.p_name)))), '; ') AS supplier_parts
     FROM supplier s
     JOIN nation n ON s.s_nationkey = n.n_nationkey
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey

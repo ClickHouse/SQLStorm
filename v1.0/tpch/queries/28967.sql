@@ -2,7 +2,7 @@ SELECT
     p.p_type,
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     AVG(p.p_retailprice) AS average_price,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     r.r_name AS region_name,
     n.n_name AS nation_name
 FROM 

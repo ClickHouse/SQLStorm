@@ -29,7 +29,7 @@ SELECT
     ca.ca_city,
     ca.ca_state,
     COUNT(*) AS total_customers,
-    STRING_AGG(ca.full_name, ', ') AS customer_names,
+    arrayStringConcat(groupArray(assumeNotNull(ca.full_name)), ', ') AS customer_names,
     SUM(CASE WHEN rc.cd_marital_status = 'M' THEN 1 ELSE 0 END) AS married_count,
     SUM(CASE WHEN rc.cd_marital_status = 'S' THEN 1 ELSE 0 END) AS single_count
 FROM 

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score > 10
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.CreationDate
@@ -54,4 +54,4 @@ FROM
     TopPosts tp
 ORDER BY 
     tp.ViewCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -63,4 +63,4 @@ AND
     (isales.net_sales IS NOT NULL OR isales.total_profit > 100)
 ORDER BY 
     isales.total_profit DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

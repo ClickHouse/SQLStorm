@@ -20,7 +20,7 @@ WITH RankedPosts AS (
             PostId
     ) vote_counts ON p.Id = vote_counts.PostId
     WHERE
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 TopPostedUsers AS (
     SELECT

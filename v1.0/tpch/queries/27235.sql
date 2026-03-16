@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     AVG(o.o_totalprice) AS avg_order_price,
     MAX(CASE WHEN l.l_discount > 0 THEN l.l_extendedprice * (1 - l.l_discount) END) AS max_discounted_price,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS shipping_methods
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS shipping_methods
 FROM 
     supplier s
 JOIN 

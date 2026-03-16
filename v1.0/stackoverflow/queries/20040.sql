@@ -49,7 +49,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         UserReputation ur ON u.Id = ur.Id
     WHERE 
-        u.LastAccessDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        u.LastAccessDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 )
 SELECT 
     rp.Title,

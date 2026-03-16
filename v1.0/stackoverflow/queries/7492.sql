@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year')
+        p.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR)
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName
 ), TopUserPosts AS (

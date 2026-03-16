@@ -19,19 +19,19 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > DATE '2023-01-01'
+        p.CreationDate > toDate('2023-01-01')
         AND p.Body IS NOT NULL
 ),
 TagStatistics AS (
     SELECT
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><'))
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2)))
 ),
 TopTags AS (
     SELECT
@@ -56,7 +56,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    TopTags tt ON tt.Tag = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags) - 2), '><'))
+    TopTags tt ON tt.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2)))
 WHERE 
     rp.Rank <= 10
 ORDER BY 

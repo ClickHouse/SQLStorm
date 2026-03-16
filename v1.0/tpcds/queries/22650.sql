@@ -54,7 +54,7 @@ SELECT
     SUM(id.total_sales) AS total_sales,
     SUM(id.total_quantity) AS total_quantity,
     MAX(COALESCE(id.i_current_price, 0)) AS max_price,
-    STRING_AGG(id.i_product_name || ' (' || COALESCE(CAST(id.total_quantity AS VARCHAR), '0') || ' sold)', ', ') AS products_sold,
+    arrayStringConcat(groupArray(assumeNotNull(id.i_product_name || ' (' || COALESCE(CAST(id.total_quantity AS VARCHAR), '0') || ' sold)')), ', ') AS products_sold,
     CASE 
         WHEN COUNT(NULLIF(id.i_product_name, '')) = 0 THEN 'No Products Sold'
         ELSE 'Products Sold'

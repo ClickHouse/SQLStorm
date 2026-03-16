@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(ci.id) AS cast_count,
-        STRING_AGG(CONCAT(a.name, ' (', rt.role, ')'), ', ') AS full_cast,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(a.name, ' (', rt.role, ')'))), ', ') AS full_cast,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(ci.id) DESC) AS rank
     FROM 
         title t
@@ -32,8 +32,8 @@ TopMovies AS (
 SELECT 
     tm.production_year,
     COUNT(tm.movie_id) AS movie_count,
-    STRING_AGG(tm.title, '; ') AS top_movies,
-    STRING_AGG(tm.full_cast, '; ') AS all_casts
+    arrayStringConcat(groupArray(assumeNotNull(tm.title)), '; ') AS top_movies,
+    arrayStringConcat(groupArray(assumeNotNull(tm.full_cast)), '; ') AS all_casts
 FROM 
     TopMovies tm
 GROUP BY 

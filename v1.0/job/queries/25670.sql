@@ -35,7 +35,7 @@ SELECT
     tm.title,
     tm.production_year,
     tm.keyword,
-    (SELECT STRING_AGG(CASE WHEN r.role IS NOT NULL THEN r.role ELSE 'Unknown' END, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(CASE WHEN r.role IS NOT NULL THEN r.role ELSE 'Unknown' END)), ', ') 
      FROM cast_info ci
      JOIN role_type r ON ci.person_role_id = r.id 
      WHERE ci.movie_id = tm.movie_id) AS cast_roles

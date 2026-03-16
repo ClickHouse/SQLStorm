@@ -58,7 +58,7 @@ SELECT
     cl.cd_education_status,
     COUNT(*) AS customer_count,
     ROUND(AVG(cl.cd_purchase_estimate), 2) AS avg_purchase_estimate,
-    STRING_AGG(CONCAT(cl.ca_city, ', ', cl.ca_state, ', ', cl.ca_country), '; ') AS customer_locations
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(cl.ca_city, ', ', cl.ca_state, ', ', cl.ca_country))), '; ') AS customer_locations
 FROM
     CustomerLocationData cl
 GROUP BY

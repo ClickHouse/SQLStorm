@@ -43,7 +43,7 @@ PostHistorySummary AS (
         ph.UserId,
         ph.PostId,
         MAX(ph.CreationDate) AS LatestEditDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS EditTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS EditTypes
     FROM 
         PostHistory ph
     JOIN 

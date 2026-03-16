@@ -1,7 +1,7 @@
 WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 1 AS level
     FROM orders o
-    WHERE o.o_orderdate >= DATE '1997-01-01'
+    WHERE o.o_orderdate >= toDate('1997-01-01')
     
     UNION ALL
 
@@ -29,7 +29,7 @@ FinalResults AS (
     SELECT n.n_name AS nation_name,
            COUNT(DISTINCT d.o_orderkey) AS total_orders,
            SUM(d.o_totalprice) AS total_sales,
-           STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
            MAX(ps.avg_price) AS max_avg_price,
            MIN(ps.total_revenue) AS min_total_revenue,
            SUM(CASE WHEN s.total_parts IS NULL THEN 0 ELSE s.total_parts END) AS suppliers_with_parts

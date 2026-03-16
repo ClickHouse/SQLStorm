@@ -28,7 +28,7 @@ SELECT
     tm.production_year,
     a.name AS actor_name,
     COUNT(DISTINCT c.person_id) AS total_movies_by_actor,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
 FROM 
     TopMovies tm
 LEFT JOIN 

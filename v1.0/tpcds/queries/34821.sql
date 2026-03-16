@@ -79,7 +79,7 @@ Final_Report AS (
     FROM 
         Daily_Sales d
     LEFT JOIN 
-        Sales_By_Customer sbc ON d.sale_date = DATE '2002-10-01' 
+        Sales_By_Customer sbc ON d.sale_date = toDate('2002-10-01') 
     LEFT JOIN 
         Top_Selling_Items ti ON sbc.total_orders > 0
     GROUP BY 

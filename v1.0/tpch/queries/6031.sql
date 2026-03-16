@@ -2,7 +2,7 @@
 WITH recent_orders AS (
     SELECT o_orderkey, o_custkey, o_orderdate, o_totalprice
     FROM orders
-    WHERE o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+    WHERE o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 customer_data AS (
     SELECT c.c_custkey, c.c_name, c.c_nationkey, c.c_mktsegment

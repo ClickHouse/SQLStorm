@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
 ),
 PopularPosts AS (
     SELECT 
@@ -50,7 +50,7 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= DATE('2024-10-01') - INTERVAL '6 months'
+        b.Date >= DATE('2024-10-01') - INTERVAL 6 MONTH
 ),
 UserRanking AS (
     SELECT 

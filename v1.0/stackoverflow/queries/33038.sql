@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.Score DESC) AS Rank,
+        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.Score DESC) AS Rank,
         COUNT(c.Id) AS CommentCount
     FROM 
         Posts p
@@ -68,7 +68,7 @@ SELECT
         WHEN ph.ReopenCount > 0 THEN 'Reopened'
         ELSE 'Active'
     END AS PostStatus,
-    STRING_AGG(DISTINCT b.Name, ', ') AS Badges
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS Badges
 FROM 
     RankedPosts rp
 LEFT JOIN 

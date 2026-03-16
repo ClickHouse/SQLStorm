@@ -19,7 +19,7 @@ MovieDetails AS (
         COALESCE(NULLIF(rm.movie_kind, ''), 'Unknown') AS kind,
         rm.production_year,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names
     FROM
         RankedMovies rm
     LEFT JOIN

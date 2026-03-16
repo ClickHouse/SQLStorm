@@ -27,7 +27,7 @@ cast_details AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS num_cast_members,
-        STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
         MAX(CASE WHEN ak.name LIKE '%John%' THEN 'Yes' ELSE 'No' END) AS has_john
     FROM 
         cast_info c

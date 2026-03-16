@@ -45,7 +45,7 @@ DistinctActors AS (
 SELECT 
     d.actor_name,
     d.movie_count,
-    STRING_AGG(a.movie_title, ', ') AS movies
+    arrayStringConcat(groupArray(assumeNotNull(a.movie_title)), ', ') AS movies
 FROM 
     DistinctActors d
 JOIN 

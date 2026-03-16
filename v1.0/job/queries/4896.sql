@@ -24,7 +24,7 @@ TopRatedMovies AS (
         tm.title,
         tm.production_year,
         COUNT(ci.id) AS cast_count,
-        STRING_AGG(DISTINCT cn.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS cast_names
     FROM 
         TopRatedMovies tm
     LEFT JOIN 

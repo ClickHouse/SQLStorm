@@ -32,7 +32,7 @@ WITH RECURSIVE MovieHierarchy AS (
         COUNT(DISTINCT CASE 
             WHEN rc.role IS NOT NULL THEN rc.role 
             ELSE 'Unknown' END) AS role_count,
-        STRING_AGG(DISTINCT rc.role, ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rc.role))), ', ') AS roles
     FROM 
         cast_info ci
     LEFT JOIN 
@@ -42,7 +42,7 @@ WITH RECURSIVE MovieHierarchy AS (
 ), CompanyInfo AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies,
         COUNT(DISTINCT mc.company_id) AS company_count
     FROM 
         movie_companies mc

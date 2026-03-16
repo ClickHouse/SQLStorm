@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         COUNT(v.Id) AS VoteCount,
-        ARRAY_AGG(DISTINCT t.TagName) AS UniqueTags,
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS UniqueTags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RN
     FROM 
         Posts p
@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        Tags t ON t.TagName IN (SELECT UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')))
+        Tags t ON t.TagName IN (SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))))
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 
@@ -42,12 +42,10 @@ SELECT
     fp.OwnerDisplayName,
     COUNT(fp.PostId) AS QuestionCount,
     SUM(fp.VoteCount) AS TotalVotes,
-    STRING_AGG(fp.Title, '; ') AS QuestionTitles,
-    STRING_AGG(DISTINCT tag, ', ') AS AllUniqueTags
+    arrayStringConcat(groupArray(assumeNotNull(fp.Title)), '; ') AS QuestionTitles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag))), ', ') AS AllUniqueTags
 FROM 
-    FilteredPosts fp,
-    UNNEST(fp.UniqueTags) AS tag
-GROUP BY 
+    FilteredPosts fp ARRAY JOIN fp.UniqueTags AS tagGROUP BY 
     fp.OwnerDisplayName
 ORDER BY 
     TotalVotes DESC

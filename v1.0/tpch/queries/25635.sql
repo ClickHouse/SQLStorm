@@ -6,7 +6,7 @@ SELECT
     AVG(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE NULL END) AS avg_return_qty,
     MAX(p.p_retailprice) AS max_part_price,
     MIN(p.p_retailprice) AS min_part_price,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS unique_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS unique_comments
 FROM 
     supplier s
 JOIN 

@@ -73,4 +73,4 @@ WHERE
 ORDER BY 
     rc.total_returned_quantity DESC, 
     cd.c_last_name ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

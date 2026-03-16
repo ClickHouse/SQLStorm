@@ -41,4 +41,4 @@ FROM
 ORDER BY 
     ps.Score DESC, 
     ps.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

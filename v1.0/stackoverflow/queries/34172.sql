@@ -7,17 +7,17 @@ WITH RecentPosts AS (
         p.Score,
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
-        ARRAY_AGG(DISTINCT t.TagName) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        unnest(string_to_array(p.Tags, '><')) AS tag ON true
+        arrayJoin(splitByString('><', p.Tags)) AS tag ON true
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 
-        p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),
@@ -62,7 +62,7 @@ SELECT
     tp.Downvotes,
     tp.TotalVotes,
     CASE 
-        WHEN tp.Upvotes > 0 THEN ROUND(tp.Upvotes::decimal / NULLIF(tp.TotalVotes, 0), 2)
+        WHEN tp.Upvotes > 0 THEN ROUND(CAST(tp.Upvotes AS decimal) / NULLIF(tp.TotalVotes, 0), 2)
         ELSE 0
     END AS UpvoteRatio,
     CASE 

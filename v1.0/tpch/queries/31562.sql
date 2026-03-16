@@ -12,7 +12,7 @@ SELECT p.p_partkey, p.p_name, p.p_retailprice,
        MAX(CASE WHEN c.c_mktsegment = 'BUILDING' THEN o.o_totalprice ELSE NULL END) AS max_building_order,
        COUNT(DISTINCT o.o_orderkey) AS total_orders,
        AVG(ps.ps_supplycost) AS avg_supply_cost,
-       STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied
 FROM part p
 LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 LEFT JOIN supplier s ON ps.ps_suppkey = s.s_suppkey

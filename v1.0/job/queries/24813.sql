@@ -98,5 +98,4 @@ ORDER BY
     M.total_cast DESC, 
     D.directed_movies_count DESC, 
     K.keyword_rank
-OFFSET 5 ROWS 
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

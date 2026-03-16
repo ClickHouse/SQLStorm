@@ -64,7 +64,7 @@ SELECT
     r.title,
     r.production_year,
     COUNT(DISTINCT rm.actor_name) AS num_actors,
-    STRING_AGG(DISTINCT rm.company_name, ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.company_name))), ', ') AS companies,
     MAX(rm.display_country_code) AS country_info
 FROM 
     RankedTitles r

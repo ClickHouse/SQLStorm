@@ -4,7 +4,7 @@ SELECT
     a.name AS actor_name,
     ct.kind AS cast_type,
     c.name AS company_name,
-    STRING_AGG(DISTINCT k.keyword, ',') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ',') AS keywords,
     COUNT(DISTINCT m.id) AS total_movies,
     MAX(m.production_year) AS latest_movie_year
 FROM 

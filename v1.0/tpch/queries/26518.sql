@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity, 
     AVG(p.p_retailprice) AS average_retail_price,
     MAX(l.l_discount) AS max_discount,
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_provided
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_provided
 FROM 
     part p
 JOIN 

@@ -40,8 +40,8 @@ SELECT
     actor_id, 
     actor_name, 
     COUNT(movie_title) AS movie_count,
-    ARRAY_AGG(DISTINCT movie_title) AS movie_list,
-    STRING_AGG(DISTINCT company_name || ' (' || company_type || ')', ', ') AS companies_involved
+    arrayDistinct(groupArray(assumeNotNull(movie_title))) AS movie_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name || ' (' || company_type || ')'))), ', ') AS companies_involved
 FROM 
     movie_details
 GROUP BY 

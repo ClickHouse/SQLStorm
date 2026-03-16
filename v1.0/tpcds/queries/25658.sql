@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT wr.wr_order_number) AS total_web_returns,
     SUM(wr.wr_return_amt) AS total_return_amount,
     AVG(wr.wr_return_tax) AS average_return_tax,
-    STRING_AGG(DISTINCT CONCAT(wp.wp_url, '(', wp.wp_type, ')'), ', ') AS accessed_web_pages
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(wp.wp_url, '(', wp.wp_type, ')')))), ', ') AS accessed_web_pages
 FROM 
     customer c
 JOIN 

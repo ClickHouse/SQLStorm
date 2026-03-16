@@ -24,7 +24,7 @@ actor_summary AS (
     SELECT 
         ah.person_id,
         COUNT(*) AS movie_count,
-        STRING_AGG(DISTINCT ah.movie_title, ', ') AS movie_titles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ah.movie_title))), ', ') AS movie_titles,
         MAX(ah.production_year) AS latest_movie_year
     FROM 
         actor_hierarchy ah

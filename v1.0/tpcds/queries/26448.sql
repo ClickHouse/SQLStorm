@@ -30,7 +30,7 @@ AggregatedInfo AS (
     SELECT 
         fc.cd_gender,
         COUNT(*) AS customer_count,
-        STRING_AGG(CONCAT(fc.c_first_name, ' ', fc.c_last_name), ', ') AS top_customers
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(fc.c_first_name, ' ', fc.c_last_name))), ', ') AS top_customers
     FROM 
         FilteredCustomers fc
     GROUP BY 
@@ -45,7 +45,7 @@ SELECT
 FROM 
     AggregatedInfo ai
 JOIN 
-    customer_demographics cd ON cd.cd_demo_sk IN (SELECT c.c_current_cdemo_sk FROM customer c WHERE CONCAT(c.c_first_name, ' ', c.c_last_name) IN (SELECT unnest(string_to_array(ai.top_customers, ', '))))
+    customer_demographics cd ON cd.cd_demo_sk IN (SELECT c.c_current_cdemo_sk FROM customer c WHERE CONCAT(c.c_first_name, ' ', c.c_last_name) IN (SELECT arrayJoin(splitByString(', ', ai.top_customers))))
 GROUP BY 
     ai.cd_gender, ai.customer_count, ai.top_customers
 ORDER BY 

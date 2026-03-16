@@ -24,7 +24,7 @@ QualifiedOrders AS (
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
         o.o_orderstatus = 'O' AND 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '12 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH
     GROUP BY 
         o.o_orderkey, o.o_custkey
 ),

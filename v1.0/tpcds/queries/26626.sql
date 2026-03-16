@@ -57,4 +57,4 @@ SELECT
     END AS customer_segment
 FROM CustomerBenchmark
 ORDER BY total_profit DESC, order_count DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -32,7 +32,7 @@ SELECT
     mh.season_nr,
     mh.episode_nr,
     COUNT(DISTINCT ci.person_id) AS total_cast,
-    STRING_AGG(DISTINCT ak.name, ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS cast_names,
     AVG(CAST(pi.info AS numeric)) AS average_person_info,
     CASE 
         WHEN mh.season_nr > 0 THEN 'Series'

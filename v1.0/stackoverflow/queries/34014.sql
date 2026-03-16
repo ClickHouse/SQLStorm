@@ -15,7 +15,7 @@ UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -46,7 +46,7 @@ PopularPosts AS (
         p.ViewCount,
         p.Score,
         COALESCE((
-            SELECT STRING_AGG(t.TagName, ', ')
+            SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ')
             FROM Tags t
             WHERE p.Tags LIKE CONCAT('%', t.TagName, '%')
         ), 'No tags') AS Tags,
@@ -56,7 +56,7 @@ PopularPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND 
         p.ViewCount > 100
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score

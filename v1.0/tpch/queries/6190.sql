@@ -31,7 +31,7 @@ JOIN lineitem li ON li.l_suppkey = ts.s_suppkey
 JOIN orders o ON li.l_orderkey = o.o_orderkey
 JOIN CustomerOrders cs ON o.o_custkey = cs.c_custkey
 WHERE r.r_name IN ('ASIA', 'EUROPE')
-AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY r.r_name, nt.n_name, cs.c_name, ts.s_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY total_revenue DESC;

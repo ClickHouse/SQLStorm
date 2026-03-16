@@ -4,7 +4,7 @@ WITH UserBadges AS (
         U.Id AS UserId,
         U.DisplayName,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 
@@ -24,7 +24,7 @@ PostMetrics AS (
         COUNT(C.Id) AS CommentCount,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS TagList
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagList
     FROM 
         Posts P
     LEFT JOIN 
@@ -32,7 +32,7 @@ PostMetrics AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     LEFT JOIN 
-        UNNEST(STRING_TO_ARRAY(P.Tags, '><')) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('><', P.Tags)) AS T(TagName) ON TRUE
     GROUP BY 
         P.Id, P.Title, P.Body, P.Tags, P.OwnerUserId, P.Score, P.ViewCount
 ),

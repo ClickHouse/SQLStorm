@@ -49,13 +49,13 @@ SELECT
     f.UpVotes,
     f.DownVotes,
     f.OwnerDisplayName,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
 FROM 
     FilteredPosts f
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS TagName
+            arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName
         FROM 
             Posts p
         WHERE 

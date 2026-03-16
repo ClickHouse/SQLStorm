@@ -43,8 +43,8 @@ SELECT
     f.title,
     f.production_year,
     f.total_orders,
-    ARRAY_AGG(DISTINCT co.name) AS production_companies,
-    COALESCE(STRING_AGG(DISTINCT k.keyword, ', '), 'No Keywords') AS keywords
+    arrayDistinct(groupArray(assumeNotNull(co.name))) AS production_companies,
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', '), 'No Keywords') AS keywords
 FROM 
     filtered_movies f
 LEFT JOIN 

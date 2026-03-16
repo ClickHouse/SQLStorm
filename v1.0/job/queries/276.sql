@@ -25,7 +25,7 @@ MovieStats AS (
         t.title,
         t.production_year,
         COALESCE(mi.info, 'N/A') AS movie_info,
-        COALESCE(STRING_AGG(DISTINCT cn.name, ', '), 'No Cast') AS cast_names
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', '), 'No Cast') AS cast_names
     FROM 
         TopMovies t
     LEFT JOIN 

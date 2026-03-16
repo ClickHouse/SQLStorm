@@ -26,7 +26,7 @@ FilteredMovies AS (
 MovieKeywords AS (
     SELECT 
         m.movie_id, 
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords 
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords 
     FROM 
         movie_keyword m
     INNER JOIN 

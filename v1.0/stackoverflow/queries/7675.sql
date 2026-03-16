@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
         AND p.PostTypeId = 1
     GROUP BY 
         p.Id, p.Title, p.Score
@@ -40,7 +40,7 @@ SELECT
     tp.CommentCount,
     tp.UpVotes,
     tp.DownVotes,
-    (SELECT STRING_AGG(t.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
      FROM Tags t 
      JOIN Posts p ON p.Id = t.ExcerptPostId 
      WHERE p.Id = tp.PostId) AS Tags,
@@ -48,7 +48,7 @@ SELECT
      FROM PostHistory bh 
      WHERE bh.PostId = tp.PostId 
        AND bh.PostHistoryTypeId IN (10, 11) 
-       AND bh.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month') AS CloseVoteCount
+       AND bh.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH) AS CloseVoteCount
 FROM 
     TopPosts tp 
 ORDER BY 

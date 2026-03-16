@@ -36,9 +36,9 @@ SELECT
     ru.Upvotes, 
     ru.Downvotes, 
     ru.TotalBadges,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Posts p2 
-     LEFT JOIN UNNEST(STRING_TO_ARRAY(p2.Tags, ',')) AS tag ON TRUE 
+     LEFT JOIN arrayJoin(splitByString(',', p2.Tags)) AS tag ON TRUE 
      LEFT JOIN Tags t ON t.TagName = tag 
      WHERE p2.OwnerUserId = ru.UserId) AS PopularTags
 FROM 

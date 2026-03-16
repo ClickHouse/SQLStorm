@@ -30,7 +30,7 @@ FilteredSuppliers AS (
 SELECT 
     fs.region_name,
     fs.nation_name,
-    STRING_AGG(fs.s_name, ', ') AS top_suppliers,
+    arrayStringConcat(groupArray(assumeNotNull(fs.s_name)), ', ') AS top_suppliers,
     SUM(fs.total_supply_cost) AS total_cost
 FROM 
     FilteredSuppliers fs

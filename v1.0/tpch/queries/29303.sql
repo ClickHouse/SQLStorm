@@ -3,7 +3,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue,
     AVG(p.p_retailprice) AS avg_price,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
-    STRING_AGG(DISTINCT p.p_name, ', ') FILTER (WHERE p.p_size > 10) AS large_parts 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') FILTER (WHERE p.p_size > 10) AS large_parts 
 FROM 
     supplier s
 JOIN 

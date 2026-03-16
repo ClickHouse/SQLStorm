@@ -33,7 +33,7 @@ SELECT
     tm.movie_title, 
     tm.production_year, 
     tm.company_name, 
-    STRING_AGG(tm.movie_keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(tm.movie_keyword)), ', ') AS keywords
 FROM 
     top_movies tm
 GROUP BY 

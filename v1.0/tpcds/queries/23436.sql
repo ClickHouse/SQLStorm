@@ -61,4 +61,4 @@ FROM
     SalesWithReturns swr
 ORDER BY 
     swr.total_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

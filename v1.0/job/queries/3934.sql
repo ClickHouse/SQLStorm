@@ -46,7 +46,7 @@ SELECT
         WHEN tm.total_cast BETWEEN 5 AND 10 THEN 'Medium Cast'
         ELSE 'Small Cast'
     END AS cast_size,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM 
     TopMovies tm
 LEFT JOIN 

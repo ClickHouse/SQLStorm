@@ -46,6 +46,6 @@ JOIN orders o ON li.l_orderkey = o.o_orderkey
 JOIN CustomerOrders co ON o.o_custkey = co.c_custkey
 JOIN TopNSuppliers so ON li.l_suppkey = so.s_suppkey
 JOIN PartSupplier po ON li.l_partkey = po.p_partkey
-WHERE li.l_shipdate >= DATE '1997-01-01'
+WHERE li.l_shipdate >= toDate('1997-01-01')
 AND (li.l_discount > 0.1 OR co.total_orders > 5)
 ORDER BY return_status, price_rank;

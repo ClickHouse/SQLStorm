@@ -41,7 +41,7 @@ MovieDetails AS (
             WHEN mi.info IS NULL THEN 'No Info'
             ELSE mi.info
         END AS info,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies
     FROM 
         title m
     LEFT JOIN 

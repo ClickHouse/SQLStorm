@@ -28,7 +28,7 @@ cast_details AS (
 SELECT 
     mv.title,
     mv.production_year,
-    STRING_AGG(DISTINCT cd.actor_name, ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd.actor_name))), ', ') AS cast_names,
     ct.kind AS company_type,
     COUNT(k.keyword) AS keyword_count
 FROM 

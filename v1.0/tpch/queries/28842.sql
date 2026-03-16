@@ -18,7 +18,7 @@ SELECT
     UPPER('Total unique part names: ') AS description,
     COUNT(DISTINCT p_name) AS unique_part_names,
     AVG(comment_length) AS avg_comment_length,
-    STRING_AGG(DISTINCT full_description, '; ') AS concatenated_descriptions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(full_description))), '; ') AS concatenated_descriptions
 FROM String_Bench
 WHERE comment_length > 20
 GROUP BY upper_part_name

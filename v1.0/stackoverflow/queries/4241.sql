@@ -19,7 +19,7 @@ WITH RankedPosts AS (
             PostId
     ) c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 

@@ -46,7 +46,7 @@ RecentClosedPosts AS (
     JOIN 
         Users us ON us.Id = cp.LastEditorId
     WHERE 
-        cp.LastEditDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        cp.LastEditDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 TopUsers AS (
     SELECT 
@@ -91,4 +91,4 @@ FROM
 ORDER BY 
     fs.Reputation DESC, 
     fs.PostCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

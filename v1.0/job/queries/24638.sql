@@ -21,7 +21,7 @@ SELECT
         WHEN rm.rank <= 5 THEN 'Popular Movie'
         ELSE 'Other Movie'
     END AS movie_category,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actors
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors
 FROM RankedMovies rm
 LEFT JOIN aka_name ak ON ak.person_id IN (
     SELECT DISTINCT ci.person_id 

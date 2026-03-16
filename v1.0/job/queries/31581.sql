@@ -34,7 +34,7 @@ ActorMovies AS (
         ah.person_id,
         COUNT(DISTINCT ah.title) AS movie_count,
         MAX(ah.production_year) AS last_movie_year,
-        STRING_AGG(DISTINCT ah.title, ', ') AS movie_titles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ah.title))), ', ') AS movie_titles
     FROM 
         ActorHierarchy ah
     GROUP BY 

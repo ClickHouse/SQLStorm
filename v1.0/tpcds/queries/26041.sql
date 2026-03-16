@@ -15,7 +15,7 @@ WITH AddressStats AS (
         cd_gender,
         COUNT(*) AS total_customers,
         AVG(cd_dep_count) AS avg_dep_count,
-        STRING_AGG(CAST(cd_demo_sk AS VARCHAR), ',') AS demo_sk_list
+        arrayStringConcat(groupArray(assumeNotNull(CAST(cd_demo_sk AS VARCHAR))), ',') AS demo_sk_list
     FROM 
         customer_demographics
     GROUP BY 

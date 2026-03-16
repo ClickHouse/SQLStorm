@@ -19,11 +19,11 @@ WITH UserReputation AS (
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ), CloseReasons AS (
     SELECT 
         Ph.PostId,
-        STRING_AGG(Cr.Name, ', ') AS CloseReasonNames
+        arrayStringConcat(groupArray(assumeNotNull(Cr.Name)), ', ') AS CloseReasonNames
     FROM PostHistory Ph
     JOIN CloseReasonTypes Cr ON CAST(Ph.Comment AS INTEGER) = Cr.Id
     WHERE Ph.PostHistoryTypeId = 10  
@@ -59,7 +59,7 @@ SELECT
     ps.MaxBadgeClass,
     COUNT(ps.PostId) AS TotalPosts,
     SUM(COALESCE(ps.Score, 0)) AS TotalScore,
-    STRING_AGG(ps.CloseReasonNames, '; ') AS AllCloseReasons
+    arrayStringConcat(groupArray(assumeNotNull(ps.CloseReasonNames)), '; ') AS AllCloseReasons
 FROM PostSummary ps
 GROUP BY 
     ps.DisplayName, 
@@ -72,4 +72,4 @@ HAVING
 ORDER BY 
     TotalScore DESC, 
     ps.DisplayName ASC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

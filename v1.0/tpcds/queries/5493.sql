@@ -6,7 +6,7 @@ WITH CustomerSales AS (
         AVG(ws.ws_net_paid) AS avg_order_value,
         cd.cd_gender,
         cd.cd_marital_status,
-        DATE_PART('year', cast('2002-10-01' as date)) - c.c_birth_year AS age
+        datePart('year', cast('2002-10-01' as date)) - c.c_birth_year AS age
     FROM 
         customer c
     JOIN 

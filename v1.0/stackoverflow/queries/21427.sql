@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 ClosedPosts AS (
     SELECT 
@@ -28,7 +28,7 @@ ClosedPosts AS (
         Users u ON ph.UserId = u.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
-        AND ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 PostAnalytics AS (
     SELECT 
@@ -54,7 +54,7 @@ PostAnalytics AS (
 FinalOutput AS (
     SELECT 
         pa.*,
-        (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
          FROM Tags t 
          JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%' 
          WHERE p.Id = pa.PostId) AS TagList

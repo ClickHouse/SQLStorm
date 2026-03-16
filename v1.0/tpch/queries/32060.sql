@@ -13,7 +13,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(o.o_totalprice) AS total_orders_value,
     AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price_after_discount,
-    MAX(DATE_PART('year', l.l_shipdate)) AS max_ship_year,
+    MAX(datePart('year', l.l_shipdate)) AS max_ship_year,
     COALESCE(s.s_name, 'No Supplier') AS supplier_name,
     CASE 
         WHEN COUNT(DISTINCT o.o_orderkey) > 10 THEN 'High Order'

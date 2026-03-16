@@ -50,7 +50,7 @@ SELECT
     COALESCE(tkc.keyword_count, 0) AS keyword_count,
     COALESCE(mc.cast_count, 0) AS cast_count,
     COALESCE(cmp.company_count, 0) AS company_count,
-    STRING_AGG(comp.company_names, ', ') AS registered_companies
+    arrayStringConcat(groupArray(assumeNotNull(comp.company_names)), ', ') AS registered_companies
 FROM 
     RankedMovies rm
 LEFT JOIN 
@@ -59,7 +59,7 @@ LEFT JOIN
     MovieCast mc ON rm.movie_id = mc.movie_id
 LEFT JOIN 
     Companies cmp ON rm.movie_id = cmp.movie_id
-CROSS JOIN LATERAL (
+CROSS JOIN (
     SELECT DISTINCT
         CASE 
             WHEN c.name IS NULL THEN 'Unknown Company'

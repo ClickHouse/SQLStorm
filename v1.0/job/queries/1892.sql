@@ -27,7 +27,7 @@ MoviesWithKeywords AS (
     SELECT 
         m.id AS movie_id,
         m.title,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title m
     LEFT JOIN 
@@ -49,7 +49,7 @@ FinalBenchmark AS (
     LEFT JOIN (
         SELECT 
             movie_id, 
-            STRING_AGG(CONCAT(actor_name, '(', role_name, ')'), ', ') AS roles
+            arrayStringConcat(groupArray(assumeNotNull(CONCAT(actor_name, '(', role_name, ')'))), ', ') AS roles
         FROM 
             ActorsWithRoles
         GROUP BY 

@@ -4,7 +4,7 @@ SELECT
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(p.p_retailprice) AS average_price,
     MAX(LENGTH(p.p_comment)) AS max_comment_length,
-    STRING_AGG(DISTINCT SUBSTRING(p.p_comment, 1, 10), ', ') AS short_comments,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(p.p_comment, 1, 10)))), ', ') AS short_comments,
     r.r_name AS region_name
 FROM 
     part p

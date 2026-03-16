@@ -38,11 +38,11 @@ SELECT ps.ps_partkey,
        ps.ps_comment,
        (SELECT AVG(l.l_extendedprice) 
         FROM lineitem l 
-        WHERE l.l_partkey = ps.ps_partkey AND l.l_shipdate < DATE '1998-10-01') AS avg_past_price,
+        WHERE l.l_partkey = ps.ps_partkey AND l.l_shipdate < toDate('1998-10-01')) AS avg_past_price,
        (SELECT COUNT(DISTINCT o.o_orderkey)
         FROM orders o 
         INNER JOIN lineitem l ON o.o_orderkey = l.l_orderkey 
-        WHERE l.l_partkey = ps.ps_partkey AND o.o_orderdate >= DATE '1998-10-01' - INTERVAL '1 year') AS recent_orders,
+        WHERE l.l_partkey = ps.ps_partkey AND o.o_orderdate >= toDate('1998-10-01') - INTERVAL 1 YEAR) AS recent_orders,
        COALESCE(ns.supplier_count, 0) AS supplier_count,
        p.size_category,
        CASE 

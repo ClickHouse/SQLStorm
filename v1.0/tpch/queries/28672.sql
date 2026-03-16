@@ -6,7 +6,7 @@ WITH SupplierDetails AS (
         r.r_name AS region_name,
         COUNT(DISTINCT ps.ps_partkey) AS total_parts,
         SUM(ps.ps_supplycost) AS total_supply_cost,
-        STRING_AGG(DISTINCT p.p_comment, '; ') AS comments_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS comments_list
     FROM 
         supplier s
     JOIN 
@@ -29,7 +29,7 @@ CustomerOrders AS (
         COUNT(o.o_orderkey) AS total_orders,
         SUM(o.o_totalprice) AS total_spent,
         AVG(o.o_totalprice) AS avg_order_value,
-        STRING_AGG(DISTINCT o.o_comment, '; ') AS order_comments
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(o.o_comment))), '; ') AS order_comments
     FROM 
         customer c
     JOIN 

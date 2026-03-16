@@ -43,7 +43,7 @@ LEFT JOIN SupplierDetails pd ON p.p_partkey = (
     FROM partsupp ps
     WHERE ps.ps_partkey = p.p_partkey
     ORDER BY ps.ps_supplycost DESC
-    FETCH FIRST 1 ROW ONLY
+    LIMIT 1
 )
 LEFT JOIN CustomerSales cs ON cs.total_spent > (SELECT AVG(total_spent) FROM CustomerSales)
 WHERE p.p_retailprice BETWEEN 10 AND 100

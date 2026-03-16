@@ -37,7 +37,7 @@ SELECT
     SUM(pp.Score) AS TotalScore,
     SUM(pp.ViewCount) AS TotalViews,
     AVG(pp.CommentCount) AS AvgComments,
-    STRING_AGG(DISTINCT pp.TagName, ', ') AS AssociatedTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pp.TagName))), ', ') AS AssociatedTags
 FROM UserScores u
 JOIN PopularPosts pp ON u.UserId = pp.OwnerUserId
 GROUP BY u.UserId, u.DisplayName, u.UserLevel

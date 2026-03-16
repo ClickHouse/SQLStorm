@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year')
+        p.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR)
         AND p.ViewCount > 100
 ),
 TopUsers AS (
@@ -53,7 +53,7 @@ SELECT
     SUM(COALESCE(pu.GoldBadges, 0)) AS TotalGoldBadges,
     SUM(COALESCE(pu.SilverBadges, 0)) AS TotalSilverBadges,
     SUM(COALESCE(pu.BronzeBadges, 0)) AS TotalBronzeBadges,
-    STRING_AGG(DISTINCT rp.Tags, ', ') AS DistinctTags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.Tags))), ', ') AS DistinctTags
 FROM 
     RankedPosts rp
 JOIN 

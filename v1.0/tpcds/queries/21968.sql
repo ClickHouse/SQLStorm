@@ -68,7 +68,7 @@ FROM
 JOIN 
     date_dim da ON ds.ws_sold_date_sk = da.d_date_sk
 LEFT JOIN 
-    demographic_summary dd ON da.d_date = DATE '2002-10-01' 
+    demographic_summary dd ON da.d_date = toDate('2002-10-01') 
 LEFT JOIN 
     income_bracket ib ON dd.total_dependents BETWEEN ib.ib_lower_bound AND ib.ib_upper_bound
 WHERE 

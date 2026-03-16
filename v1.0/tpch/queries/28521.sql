@@ -28,7 +28,7 @@ SELECT
     p.p_brand, 
     p.p_type,
     COUNT(pd.part_supplier_info) AS supplier_count,
-    STRING_AGG(pd.part_supplier_info, '; ') AS all_supplier_info
+    arrayStringConcat(groupArray(assumeNotNull(pd.part_supplier_info)), '; ') AS all_supplier_info
 FROM part p
 JOIN FilteredDetails pd ON p.p_partkey = pd.p_partkey
 GROUP BY 

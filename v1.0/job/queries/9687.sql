@@ -4,7 +4,7 @@ SELECT
     t.production_year,
     c.kind AS company_kind,
     COUNT(k.id) AS keyword_count,
-    STRING_AGG(k.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
 FROM 
     aka_name a
 JOIN 

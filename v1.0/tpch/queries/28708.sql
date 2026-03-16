@@ -12,12 +12,12 @@ WITH StringProcessing AS (
 AggregatedInfo AS (
     SELECT 
         p.p_partkey,
-        STRING_AGG(sp.upper_name, ', ') AS all_upper_names,
+        arrayStringConcat(groupArray(assumeNotNull(sp.upper_name)), ', ') AS all_upper_names,
         COUNT(sp.name_length) AS total_name_lengths,
         SUM(sp.name_length) AS cumulative_name_length,
-        STRING_AGG(sp.comment_preview, ', ') AS all_comment_previews,
-        STRING_AGG(sp.modified_comment, ', ') AS all_modified_comments,
-        STRING_AGG(sp.concatenated_info, '; ') AS all_concatenated_info
+        arrayStringConcat(groupArray(assumeNotNull(sp.comment_preview)), ', ') AS all_comment_previews,
+        arrayStringConcat(groupArray(assumeNotNull(sp.modified_comment)), ', ') AS all_modified_comments,
+        arrayStringConcat(groupArray(assumeNotNull(sp.concatenated_info)), '; ') AS all_concatenated_info
     FROM StringProcessing sp
     JOIN part p ON sp.p_partkey = p.p_partkey
     GROUP BY p.p_partkey

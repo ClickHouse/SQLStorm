@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
+        p.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),
@@ -36,7 +36,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
+        ph.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
 )
 SELECT 
     rp.PostId,
@@ -60,4 +60,4 @@ WHERE
     rp.PostRank = 1
 ORDER BY 
     rp.Score DESC, rp.ViewCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

@@ -33,8 +33,8 @@ WITH ranked_movies AS (
 ), movie_info_summary AS (
     SELECT 
         mi.movie_id, 
-        STRING_AGG(CASE WHEN it.info = 'rating' THEN mi.info END, ', ') AS ratings,
-        STRING_AGG(CASE WHEN it.info = 'duration' THEN mi.info END, ', ') AS durations
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN it.info = 'rating' THEN mi.info END)), ', ') AS ratings,
+        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN it.info = 'duration' THEN mi.info END)), ', ') AS durations
     FROM 
         movie_info mi
     JOIN 

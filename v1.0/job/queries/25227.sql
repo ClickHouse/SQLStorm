@@ -19,7 +19,7 @@ WITH ranked_movies AS (
 title_keywords AS (
     SELECT 
         t.id AS movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title t
     JOIN 

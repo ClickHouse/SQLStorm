@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVoteCount
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
     GROUP BY p.Id
 ),
 
@@ -50,7 +50,7 @@ PostLinkStats AS (
     SELECT 
         pl.PostId,
         COUNT(pl.RelatedPostId) AS RelatedPostCount,
-        STRING_AGG(DISTINCT lt.Name, ', ') AS LinkTypeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lt.Name))), ', ') AS LinkTypeNames
     FROM PostLinks pl
     INNER JOIN LinkTypes lt ON pl.LinkTypeId = lt.Id
     GROUP BY pl.PostId

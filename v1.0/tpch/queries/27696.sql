@@ -6,7 +6,7 @@ SELECT
     sum(l.l_quantity) AS total_quantity,
     avg(l.l_extendedprice) AS avg_price,
     count(l.l_orderkey) FILTER (WHERE l.l_returnflag = 'R') AS return_count,
-    date_part('year', o.o_orderdate) AS order_year
+    datePart('year', o.o_orderdate) AS order_year
 FROM 
     part p
 JOIN 

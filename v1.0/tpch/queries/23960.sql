@@ -25,7 +25,7 @@ LineitemStatistics AS (
            AVG(l.l_extendedprice) AS avg_price, 
            SUM(l.l_discount * l.l_extendedprice) AS total_discount
     FROM lineitem l
-    WHERE l_shipdate BETWEEN cast('1998-10-01' as date) - INTERVAL '1 year' AND cast('1998-10-01' as date)
+    WHERE l_shipdate BETWEEN cast('1998-10-01' as date) - INTERVAL 1 YEAR AND cast('1998-10-01' as date)
     GROUP BY l.l_partkey
 ),
 TopNParts AS (

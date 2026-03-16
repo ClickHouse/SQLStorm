@@ -40,7 +40,7 @@ ActorsInTopMovies AS (
 )
 SELECT 
     actor_name,
-    STRING_AGG(DISTINCT movie_title || ' (' || production_year || ')', ', ') AS movies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_title || ' (' || production_year || ')'))), ', ') AS movies,
     tk.keyword,
     tk.keyword_count
 FROM 

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.CreationDate
 ), UserBounties AS (
@@ -35,7 +35,7 @@ WITH RankedPosts AS (
         ph.PostId,
         MIN(ph.CreationDate) AS FirstClosedDate,
         COUNT(*) AS CloseCount,
-        ARRAY_AGG(DISTINCT crt.Name) AS CloseReasons
+        arrayDistinct(groupArray(assumeNotNull(crt.Name))) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

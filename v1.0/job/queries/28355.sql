@@ -5,8 +5,8 @@ WITH MovieDetails AS (
         t.production_year,
         k.keyword,
         c.kind AS company_type,
-        ARRAY_AGG(DISTINCT a.name) AS actor_names,
-        ARRAY_AGG(DISTINCT p.info) AS person_infos
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(p.info))) AS person_infos
     FROM 
         title t
     JOIN 
@@ -33,7 +33,7 @@ WITH MovieDetails AS (
 KeywordAggregation AS (
     SELECT 
         title_id,
-        STRING_AGG(DISTINCT keyword, ', ') AS aggregated_keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS aggregated_keywords
     FROM 
         MovieDetails
     GROUP BY 

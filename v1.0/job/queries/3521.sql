@@ -4,7 +4,7 @@ WITH movie_summary AS (
         m.title,
         m.production_year,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
         SUM(CASE WHEN c.role_id IS NOT NULL THEN 1 ELSE 0 END) AS has_role_count
     FROM 
         aka_title m
@@ -22,7 +22,7 @@ WITH movie_summary AS (
 movie_keywords AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

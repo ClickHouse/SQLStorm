@@ -4,7 +4,7 @@ WITH UserReputation AS (
 ), RecentPosts AS (
     SELECT Id, Title, ViewCount, CreationDate, OwnerUserId, PostTypeId, AcceptedAnswerId
     FROM Posts
-    WHERE CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ), PostsWithOwners AS (
     SELECT rp.*, ur.DisplayName AS OwnerDisplayName
     FROM RecentPosts rp

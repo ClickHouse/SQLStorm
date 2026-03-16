@@ -28,7 +28,7 @@ WHERE
 AND 
     o.o_orderstatus = 'O'
 AND 
-    l.l_shipdate >= DATE '1996-01-01'
+    l.l_shipdate >= toDate('1996-01-01')
 GROUP BY 
     s.s_name, p.p_name, r.r_name
 HAVING 

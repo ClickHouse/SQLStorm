@@ -3,7 +3,7 @@ WITH ProcessedTags AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag
     FROM 
         Posts p
     WHERE 

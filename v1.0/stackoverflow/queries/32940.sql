@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.PostTypeId
 ),
@@ -49,7 +49,7 @@ SELECT
      FROM Comments c 
      WHERE c.PostId = tp.PostId) AS CommentCount,
     (
-        SELECT STRING_AGG(b.Name, ', ')
+        SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ')
         FROM Badges b 
         WHERE b.UserId IN (SELECT OwnerUserId FROM Posts WHERE Id = tp.PostId)
     ) AS OwnerBadges
@@ -60,4 +60,4 @@ LEFT JOIN
 ORDER BY 
     tp.NetVotes DESC, 
     tp.ViewCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

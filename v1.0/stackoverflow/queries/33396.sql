@@ -25,7 +25,7 @@ PostHistoryDetails AS (
     SELECT 
         PH.PostId,
         MAX(PH.CreationDate) AS LastEditDate,
-        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryTypes
     FROM PostHistory PH
     JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     GROUP BY PH.PostId

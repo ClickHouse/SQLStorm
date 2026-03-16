@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
         AND p.ViewCount > 0
 ),
 PostBadges AS (
@@ -30,7 +30,7 @@ PostBadges AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypeNames,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypeNames,
         MAX(ph.CreationDate) AS LastHistoryDate
     FROM 
         PostHistory ph
@@ -49,7 +49,7 @@ SELECT
     COALESCE(pb.BadgeCount, 0) AS GoldBadgeCount,
     phd.HistoryTypeNames,
     CASE 
-        WHEN rp.ClosureDate < cast('2024-10-01 12:34:56' as timestamp) THEN 'Closed'
+        WHEN rp.ClosureDate < toDateTime64('2024-10-01 12:34:56', 6) THEN 'Closed'
         ELSE 'Open'
     END AS PostStatus,
     CASE

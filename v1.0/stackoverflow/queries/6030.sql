@@ -69,4 +69,4 @@ WHERE
     Reputation > 1000
 ORDER BY 
     TotalPosts DESC, TotalUpVotes DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

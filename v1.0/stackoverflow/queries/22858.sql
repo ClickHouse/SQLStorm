@@ -70,4 +70,4 @@ WHERE
 ORDER BY 
     RP.Upvotes DESC, 
     RP.CommentCount DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

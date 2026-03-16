@@ -22,7 +22,7 @@ UserStatistics AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(b.Id) AS BadgeCount,
-        SUM(CASE WHEN p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 1 ELSE 0 END) AS RecentPostCount
+        SUM(CASE WHEN p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 1 ELSE 0 END) AS RecentPostCount
     FROM 
         Users u
     LEFT JOIN 

@@ -3,8 +3,8 @@ WITH AddressCounts AS (
     SELECT ca_state,
            ca_city,
            COUNT(DISTINCT ca_address_sk) AS total_addresses,
-           STRING_AGG(ca_street_name, ', ') AS street_names,
-           STRING_AGG(ca_street_type, ', ') AS street_types
+           arrayStringConcat(groupArray(assumeNotNull(ca_street_name)), ', ') AS street_names,
+           arrayStringConcat(groupArray(assumeNotNull(ca_street_type)), ', ') AS street_types
     FROM customer_address
     GROUP BY ca_state, ca_city
 ),

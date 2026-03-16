@@ -44,7 +44,7 @@ SELECT
         WHEN rm.year_count = 1 THEN 'Cult Classic'
         ELSE 'Standard Release' 
     END AS release_category,
-    ARRAY_AGG(DISTINCT k.keyword) AS keywords
+    arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
 FROM
     ranked_movies rm
 LEFT JOIN

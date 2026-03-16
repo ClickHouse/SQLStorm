@@ -1,7 +1,7 @@
 
 WITH SupplierParts AS (
     SELECT s.s_suppkey, s.s_name, p.p_name, p.p_brand, COUNT(ps.ps_partkey) AS part_count,
-           STRING_AGG(DISTINCT p.p_type, ', ') AS types,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS types,
            AVG(ps.ps_supplycost) AS avg_supply_cost
     FROM supplier s
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey

@@ -32,7 +32,7 @@ PostLinksAggregate AS (
     SELECT
         pl.PostId,
         COUNT(pl.RelatedPostId) AS RelatedPostCount,
-        STRING_AGG(DISTINCT pt.Name, ', ' ORDER BY pt.Name) AS LinkTypeNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ' ORDER BY pt.Name) AS LinkTypeNames
     FROM
         PostLinks pl
     JOIN

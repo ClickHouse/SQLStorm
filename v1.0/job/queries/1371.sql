@@ -38,8 +38,8 @@ MovieDetails AS (
     SELECT 
         m.title,
         m.production_year,
-        string_agg(DISTINCT c.name, ', ') AS actors,
-        string_agg(DISTINCT f.company_name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.company_name))), ', ') AS companies,
         MAX(f.company_type) AS company_type
     FROM 
         TopMovies m

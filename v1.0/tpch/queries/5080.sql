@@ -17,8 +17,8 @@ JOIN
 JOIN 
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' AND 
-    o.o_orderdate < DATE '1998-01-01' AND 
+    o.o_orderdate >= toDate('1997-01-01') AND 
+    o.o_orderdate < toDate('1998-01-01') AND 
     l.l_shipmode IN ('AIR', 'LAND')
 GROUP BY 
     n.n_name

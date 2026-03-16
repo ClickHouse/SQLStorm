@@ -3,9 +3,9 @@ WITH address_summary AS (
     SELECT 
         ca_city,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
-        STRING_AGG(DISTINCT CONCAT(ca_street_name, ' ', ca_street_type), ', ') AS all_street_names,
-        STRING_AGG(DISTINCT ca_suite_number, ', ') AS all_suites,
-        STRING_AGG(DISTINCT ca_zip, ', ') AS all_zip_codes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ca_street_name, ' ', ca_street_type)))), ', ') AS all_street_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_suite_number))), ', ') AS all_suites,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_zip))), ', ') AS all_zip_codes
     FROM 
         customer_address
     WHERE 
@@ -17,7 +17,7 @@ customer_summary AS (
     SELECT 
         cd_gender,
         COUNT(DISTINCT c_customer_id) AS customer_count,
-        STRING_AGG(DISTINCT CONCAT(c_first_name, ' ', c_last_name), ', ') AS all_customers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(c_first_name, ' ', c_last_name)))), ', ') AS all_customers
     FROM 
         customer c
     JOIN 

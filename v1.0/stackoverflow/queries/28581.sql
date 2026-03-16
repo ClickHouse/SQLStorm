@@ -2,7 +2,7 @@ WITH TagStats AS (
     SELECT 
         t.TagName,
         COUNT(p.Id) AS PostCount,
-        STRING_AGG(DISTINCT p.OwnerDisplayName, ', ') AS Contributors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.OwnerDisplayName))), ', ') AS Contributors,
         MAX(p.CreationDate) AS LastPostDate,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount

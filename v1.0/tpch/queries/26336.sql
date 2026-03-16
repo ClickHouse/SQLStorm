@@ -35,7 +35,7 @@ TopSuppliers AS (
 SELECT 
     region_name,
     nation_name,
-    STRING_AGG(CONCAT(s_name, ' (Parts: ', part_count, ', Total Value: ', total_supply_value, ')'), '; ') AS top_suppliers
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(s_name, ' (Parts: ', part_count, ', Total Value: ', total_supply_value, ')'))), '; ') AS top_suppliers
 FROM 
     TopSuppliers
 GROUP BY 

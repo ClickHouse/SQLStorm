@@ -33,8 +33,8 @@ AggregatedResults AS (
         production_year,
         COUNT(DISTINCT movie_id) AS total_movies,
         COUNT(DISTINCT person_name) AS total_actors,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT company_name, ', ') AS production_companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS production_companies
     FROM 
         MovieDetails
     GROUP BY 

@@ -48,7 +48,7 @@ SELECT
     tm.production_year, 
     tm.kind, 
     tm.cast_count, 
-    STRING_AGG(CASE WHEN cd.role IS NOT NULL THEN cd.name || ' (' || cd.role || ')' ELSE 'Unknown' END, ', ') AS cast_details
+    arrayStringConcat(groupArray(assumeNotNull(CASE WHEN cd.role IS NOT NULL THEN cd.name || ' (' || cd.role || ')' ELSE 'Unknown' END)), ', ') AS cast_details
 FROM 
     TopMovies tm
 LEFT JOIN 

@@ -10,7 +10,7 @@ WITH RECURSIVE order_summary AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
+        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 ),

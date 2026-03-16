@@ -4,7 +4,7 @@ WITH address_summary AS (
         ca_state, 
         ca_city, 
         COUNT(*) AS address_count,
-        STRING_AGG(DISTINCT ca_street_name || ' ' || ca_street_type, ', ') AS street_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_name || ' ' || ca_street_type))), ', ') AS street_info
     FROM 
         customer_address
     GROUP BY 
@@ -15,8 +15,8 @@ demographics_summary AS (
     SELECT 
         cd_gender, 
         COUNT(*) AS demographic_count, 
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_statuses,
-        STRING_AGG(DISTINCT cd_credit_rating, ', ') AS credit_ratings
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_statuses,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_credit_rating))), ', ') AS credit_ratings
     FROM 
         customer_demographics
     GROUP BY 
@@ -27,7 +27,7 @@ sales_info AS (
         d.d_year, 
         SUM(ws_ext_sales_price) AS total_sales,
         COUNT(DISTINCT ws_order_number) AS total_orders,
-        STRING_AGG(DISTINCT i_product_name, ', ') AS sold_products
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i_product_name))), ', ') AS sold_products
     FROM 
         web_sales ws
     JOIN 

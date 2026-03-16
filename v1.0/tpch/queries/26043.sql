@@ -4,7 +4,7 @@ SELECT
     AVG(ps.ps_supplycost) AS average_supply_cost,
     SUM(ps.ps_availqty) AS total_avail_qty,
     MAX(l.l_discount) AS max_discount,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM 
     part p
 JOIN 

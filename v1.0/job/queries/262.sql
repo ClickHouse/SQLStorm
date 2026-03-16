@@ -2,7 +2,7 @@ WITH MovieDetails AS (
     SELECT 
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT c.person_id) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(c.person_id))) AS actors,
         COUNT(DISTINCT mc.company_id) AS company_count,
         COUNT(DISTINCT k.keyword) AS keyword_count
     FROM 
@@ -41,7 +41,7 @@ SELECT
     r.keyword_count,
     r.rank,
     (SELECT COUNT(*) FROM RankedMovies rm WHERE rm.production_year = r.production_year) AS total_movies_in_year,
-    (SELECT STRING_AGG(name, ', ') FROM name n WHERE n.id IN (SELECT UNNEST(r.actors))) AS actors_names
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(name)), ', ') FROM name n WHERE n.id IN (SELECT arrayJoin(r.actors))) AS actors_names
 FROM 
     RankedMovies r
 WHERE 

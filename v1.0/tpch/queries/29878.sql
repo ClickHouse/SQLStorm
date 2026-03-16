@@ -1,7 +1,7 @@
 SELECT 
     s.s_name AS supplier_name,
     COUNT(DISTINCT p.p_partkey) AS number_of_parts,
-    STRING_AGG(DISTINCT CONCAT('(', p.p_partkey, ') ', p.p_name), '; ') AS part_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('(', p.p_partkey, ') ', p.p_name)))), '; ') AS part_details,
     SUM(ps.ps_availqty) AS total_available_quantity,
     SUM(ps.ps_supplycost) AS total_supply_cost,
     r.r_name AS region_name

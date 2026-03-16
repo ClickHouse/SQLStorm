@@ -71,7 +71,7 @@ LEFT JOIN
         FROM customer c 
         JOIN orders o ON c.c_custkey = o.o_custkey
         JOIN lineitem l ON o.o_orderkey = l.l_orderkey 
-        WHERE l.l_shipdate > DATE '1998-10-01' - INTERVAL '1 year'
+        WHERE l.l_shipdate > toDate('1998-10-01') - INTERVAL 1 YEAR
     )
 ORDER BY 
     ar.total_order_value DESC NULLS LAST, 

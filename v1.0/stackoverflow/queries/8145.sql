@@ -29,11 +29,11 @@ RecentActivity AS (
         ua.TotalQuestions,
         ua.TotalUpVotes,
         ua.TotalDownVotes,
-        DATE_PART('day', TIMESTAMP '2024-10-01 12:34:56' - ua.LastPostDate) AS DaysSinceLastPost
+        datePart('day', toDateTime64('2024-10-01 12:34:56', 6) - ua.LastPostDate) AS DaysSinceLastPost
     FROM 
         UserActivity ua
     WHERE 
-        ua.LastPostDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        ua.LastPostDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 BadgeCounts AS (
     SELECT 
@@ -42,7 +42,7 @@ BadgeCounts AS (
     FROM 
         Badges
     WHERE 
-        Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '365 days'
+        Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 365 DAY
     GROUP BY 
         UserId
 )

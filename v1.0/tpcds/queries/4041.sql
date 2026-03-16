@@ -67,4 +67,4 @@ WHERE
     cd.return_count > 0 
 ORDER BY 
     cd.total_returned_quantity DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

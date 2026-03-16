@@ -27,7 +27,7 @@ PopularMovies AS (
 MovieInfo AS (
     SELECT 
         pm.movie_id,
-        STRING_AGG(mi.info, ', ') AS detailed_info
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), ', ') AS detailed_info
     FROM 
         PopularMovies pm
     LEFT JOIN 

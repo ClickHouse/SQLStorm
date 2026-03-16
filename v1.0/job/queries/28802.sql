@@ -3,9 +3,9 @@ WITH ranked_movies AS (
     SELECT 
         mt.title AS movie_title,
         mt.production_year,
-        STRING_AGG(DISTINCT an.name, ', ') AS alias_names,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS alias_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
         ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY mt.production_year DESC) AS rn
     FROM 
         aka_title mt
@@ -40,10 +40,10 @@ filtered_movies AS (
 SELECT 
     production_year,
     COUNT(*) AS total_movies,
-    STRING_AGG(movie_title, '; ') AS movie_titles,
-    STRING_AGG(alias_names, '; ') AS all_alias_names,
-    STRING_AGG(company_names, '; ') AS all_company_names,
-    STRING_AGG(keywords, '; ') AS all_keywords
+    arrayStringConcat(groupArray(assumeNotNull(movie_title)), '; ') AS movie_titles,
+    arrayStringConcat(groupArray(assumeNotNull(alias_names)), '; ') AS all_alias_names,
+    arrayStringConcat(groupArray(assumeNotNull(company_names)), '; ') AS all_company_names,
+    arrayStringConcat(groupArray(assumeNotNull(keywords)), '; ') AS all_keywords
 FROM 
     filtered_movies
 GROUP BY 

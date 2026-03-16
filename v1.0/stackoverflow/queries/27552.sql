@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     JOIN
         Users u ON p.OwnerUserId = u.Id
     WHERE
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 )
 
 SELECT
@@ -33,8 +33,8 @@ SELECT
         WHEN r.ViewRank <= 10 THEN 'Top 10'
         ELSE 'Other'
     END AS RankCategory,
-    STRING_AGG(pt.Name, ', ') AS PostTypeNames,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+    arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostTypeNames,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
     COUNT(ph.Id) AS EditCount
 FROM
     RankedPosts r

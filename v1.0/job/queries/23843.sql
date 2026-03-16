@@ -22,7 +22,7 @@ TopMovies AS (
 MovieGenres AS (
     SELECT 
         mt.movie_id,
-        STRING_AGG(DISTINCT g.keyword, ', ') AS genres
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(g.keyword))), ', ') AS genres
     FROM 
         movie_keyword mk
     JOIN 

@@ -4,7 +4,7 @@ WITH BasePosts AS (
         p.Id AS PostId,
         p.Title,
         p.Body,
-        string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><') AS TagsArray,
+        splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)) AS TagsArray,
         p.CreationDate,
         p.Score,
         u.DisplayName AS OwnerDisplayName,
@@ -19,7 +19,7 @@ WITH BasePosts AS (
 ),
 TagPerformance AS (
     SELECT 
-        unnest(bp.TagsArray) AS Tag,
+        arrayJoin(bp.TagsArray) AS Tag,
         count(*) AS QuestionCount,
         avg(bp.Score) AS AverageScore,
         avg(u.Reputation) AS AverageOwnerReputation
@@ -28,7 +28,7 @@ TagPerformance AS (
     JOIN 
         Users u ON bp.OwnerDisplayName = u.DisplayName
     GROUP BY 
-        unnest(bp.TagsArray)
+        arrayJoin(bp.TagsArray)
 ),
 TopTags AS (
     SELECT 

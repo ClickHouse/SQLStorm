@@ -28,7 +28,7 @@ RecentPostDetails AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+        P.CreationDate >= now64(6) - INTERVAL 30 DAY
 ),
 TaggedPostStatistics AS (
     SELECT 
@@ -39,7 +39,7 @@ TaggedPostStatistics AS (
     FROM 
         Posts P
     JOIN 
-        LATERAL (SELECT unnest(string_to_array(P.Tags, ',')) AS tag) tag ON TRUE
+        (SELECT arrayJoin(splitByString(',', P.Tags)) AS tag) tag ON TRUE
     JOIN 
         Tags PT ON tag = PT.TagName
     GROUP BY 

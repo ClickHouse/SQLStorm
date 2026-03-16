@@ -7,7 +7,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         SUM(CASE WHEN P.PostTypeId = 10 THEN 1 ELSE 0 END) AS ClosedPosts,
-        SUM(CASE WHEN P.LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 1 ELSE 0 END) AS RecentActivity
+        SUM(CASE WHEN P.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS RecentActivity
     FROM 
         Users U
     LEFT JOIN 
@@ -25,7 +25,7 @@ WITH UserActivity AS (
     FROM 
         Votes V
     WHERE 
-        V.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        V.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         V.UserId
 ), BadgeSummary AS (

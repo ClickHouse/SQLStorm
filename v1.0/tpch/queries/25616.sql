@@ -3,9 +3,9 @@ WITH StringAggregation AS (
     SELECT 
         p.p_brand,
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
         COUNT(DISTINCT c.c_custkey) AS customer_count,
-        STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
     FROM part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
@@ -18,8 +18,8 @@ WITH StringAggregation AS (
 EnhancedRegionInfo AS (
     SELECT 
         r.r_name,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nations,
-        STRING_AGG(DISTINCT p.p_type, ', ') AS product_types,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_type))), ', ') AS product_types,
         SUM(s.s_acctbal) AS total_supplier_acctbal
     FROM region r
     JOIN nation n ON r.r_regionkey = n.n_regionkey
@@ -35,7 +35,7 @@ FROM (
     SELECT 
         p.p_brand,
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
@@ -45,7 +45,7 @@ JOIN (
     SELECT 
         r.r_name,
         SUM(s.s_acctbal) AS total_supplier_acctbal,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nations
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations
     FROM region r
     JOIN nation n ON r.r_regionkey = n.n_regionkey
     JOIN supplier s ON n.n_nationkey = s.s_nationkey

@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         mt.title AS movie_title,
         mt.production_year,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        ARRAY_AGG(DISTINCT ak.name) AS actor_names
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names
     FROM 
         aka_title mt
     JOIN 
@@ -32,7 +32,7 @@ SELECT
     pm.movie_title,
     pm.production_year,
     pm.actor_count,
-    string_agg(pm.actor_names::text, ', ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(CAST(pm.actor_names AS text))), ', ') AS actors
 FROM 
     PopularMovies pm
 WHERE 

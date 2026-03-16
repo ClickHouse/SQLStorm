@@ -54,7 +54,7 @@ SELECT
     company_name,
     role_name,
     actor_count,
-    STRING_AGG(keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(keyword)), ', ') AS keywords
 FROM 
     MovieDetails
 GROUP BY 

@@ -47,6 +47,6 @@ SELECT
     END AS PostCategory
 FROM PostStatistics ps
 LEFT JOIN UserVoteCounts upc ON upc.UserId = ps.PostId
-LEFT JOIN TagPostCounts tpc ON tpc.TagId = (SELECT MIN(Id) FROM Tags WHERE TagName IN (SELECT unnest(string_to_array(ps.Title, ' '))))
-WHERE ps.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+LEFT JOIN TagPostCounts tpc ON tpc.TagId = (SELECT MIN(Id) FROM Tags WHERE TagName IN (SELECT arrayJoin(splitByString(' ', ps.Title))))
+WHERE ps.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ORDER BY ps.ViewCount DESC, ps.UpvoteCount DESC;

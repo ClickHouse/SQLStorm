@@ -14,8 +14,8 @@ WITH TotalRevenue AS (
     JOIN 
         nation ON s_nationkey = n_nationkey
     WHERE 
-        o_orderdate >= DATE '1997-01-01' AND 
-        o_orderdate < DATE '1998-01-01' AND 
+        o_orderdate >= toDate('1997-01-01') AND 
+        o_orderdate < toDate('1998-01-01') AND 
         l_returnflag = 'N'
     GROUP BY 
         n_name, o_orderdate

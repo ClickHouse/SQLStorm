@@ -10,7 +10,7 @@ WITH UserStatistics AS (
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes,
         (SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) - SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END)) AS NetVotes,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed
     FROM 
         Users u
     LEFT JOIN 
@@ -18,7 +18,7 @@ WITH UserStatistics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        LATERAL (SELECT UNNEST(string_to_array(p.Tags, '><')) AS TagName) t ON TRUE
+        (SELECT arrayJoin(splitByString('><', p.Tags)) AS TagName) t ON TRUE
     WHERE 
         u.Reputation > 100
     GROUP BY 

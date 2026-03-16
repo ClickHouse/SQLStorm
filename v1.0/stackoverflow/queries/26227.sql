@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         u.Reputation,
         ROW_NUMBER() OVER (PARTITION BY p.Tags ORDER BY p.Score DESC) AS Rank,
-        (SELECT STRING_AGG(b.Name, ', ') 
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
          FROM Badges b 
          WHERE b.UserId = p.OwnerUserId) AS OwnerBadges,
         (SELECT COUNT(DISTINCT c.Id) 

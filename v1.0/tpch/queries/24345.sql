@@ -33,7 +33,7 @@ lineitem_summary AS (
            SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
            ROW_NUMBER() OVER (PARTITION BY l.l_orderkey ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS rev_rank
     FROM lineitem l
-    WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+    WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
     GROUP BY l.l_orderkey
 ),
 revenue_by_nation AS (
@@ -55,4 +55,4 @@ FROM nation n
 LEFT JOIN nation_supplier nb ON n.n_name = nb.n_name
 LEFT JOIN revenue_by_nation rb ON n.n_name = rb.n_name
 ORDER BY n.n_name ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -10,12 +10,12 @@ WITH UserPerformance AS (
         SUM(CASE WHEN p.ViewCount IS NOT NULL THEN p.ViewCount ELSE 0 END) AS TotalViews,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownvotes,
-        AVG(EXTRACT(EPOCH FROM COALESCE(p.LastActivityDate, TIMESTAMP '2024-10-01 12:34:56') - p.CreationDate)) AS AvgResponseTime,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
+        AVG(toUnixTimestamp(COALESCE(p.LastActivityDate, toDateTime64('2024-10-01 12:34:56', 6)) - p.CreationDate)) AS AvgResponseTime,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    LEFT JOIN unnest(string_to_array(p.Tags, '>')) AS t(TagName) ON t.TagName <> ''
+    LEFT JOIN arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON t.TagName <> ''
     WHERE u.Reputation > 0
     GROUP BY u.Id, u.DisplayName, u.Reputation
 ),

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserReputation AS (
     SELECT 
@@ -28,7 +28,7 @@ UserReputation AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS TagName
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName
     FROM 
         Posts p
     WHERE 
@@ -41,7 +41,7 @@ ClosedPosts AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.PostHistoryTypeId = 10 AND ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        ph.PostHistoryTypeId = 10 AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         ph.PostId
 )
@@ -55,7 +55,7 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     ur.Reputation,
     COALESCE(cb.CloseCount, 0) AS ClosedRecently,
-    STRING_AGG(pt.TagName, ', ') AS Tags,
+    arrayStringConcat(groupArray(assumeNotNull(pt.TagName)), ', ') AS Tags,
     COUNT(DISTINCT c.Id) AS CommentCount
 FROM 
     RankedPosts rp

@@ -3,8 +3,8 @@ SELECT
     COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_avail_qty,
     SUM(ps.ps_supplycost) AS total_supply_cost,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supplied,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customers_ordered,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customers_ordered,
     CASE 
         WHEN AVG(l.l_discount) > 0.1 THEN 'High Discounts'
         WHEN AVG(l.l_discount) BETWEEN 0.05 AND 0.1 THEN 'Moderate Discounts'
@@ -28,7 +28,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     o.o_orderstatus = 'O' 
-    AND l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+    AND l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
 GROUP BY 
     p.p_name
 ORDER BY 

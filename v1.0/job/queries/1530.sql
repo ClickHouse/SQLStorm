@@ -36,7 +36,7 @@ SELECT
     rt.production_year,
     COALESCE(mc.total_companies, 0) AS company_count,
     COUNT(dc.actor_name) AS actor_count,
-    STRING_AGG(DISTINCT dc.actor_name, ', ') AS actors_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(dc.actor_name))), ', ') AS actors_list
 FROM 
     RankedTitles rt
 LEFT JOIN 

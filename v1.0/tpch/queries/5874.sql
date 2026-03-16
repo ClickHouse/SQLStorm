@@ -19,7 +19,7 @@ WITH RankedOrders AS (
     JOIN 
         supplier s ON ps.ps_suppkey = s.s_suppkey
     WHERE 
-        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
 )
 SELECT 
     r.r_name AS region_name,

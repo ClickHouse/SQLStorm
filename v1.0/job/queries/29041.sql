@@ -33,8 +33,8 @@ ActorStatistics AS (
     SELECT
         actor_name,
         COUNT(DISTINCT title_id) AS movie_count,
-        STRING_AGG(DISTINCT movie_title, ', ') AS movies,
-        STRING_AGG(DISTINCT company_name, ', ') AS production_companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_title))), ', ') AS movies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS production_companies,
         MIN(production_year) AS first_appearance
     FROM
         MovieDetails

@@ -39,7 +39,7 @@ MovieKeywords AS (
 KeywordCounts AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(mk.keyword, ', ') AS keywords_list,
+        arrayStringConcat(groupArray(assumeNotNull(mk.keyword)), ', ') AS keywords_list,
         COUNT(mk.keyword) AS keyword_count
     FROM 
         MovieKeywords mk

@@ -31,7 +31,7 @@ TopPosts AS (
 ),
 TagFrequency AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '><')) AS TagName
+        arrayJoin(splitByString('><', Tags)) AS TagName
     FROM 
         TopPosts
 ),
@@ -50,7 +50,7 @@ TopTags AS (
 SELECT 
     tt.TagName, 
     COUNT(tp.PostId) AS PostCount, 
-    ARRAY_AGG(tp.OwnerDisplayName) AS TopOwners
+    groupArray(assumeNotNull(tp.OwnerDisplayName)) AS TopOwners
 FROM 
     TopTags tt
 JOIN 

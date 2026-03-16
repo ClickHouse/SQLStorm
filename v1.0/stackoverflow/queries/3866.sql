@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score > 0
     GROUP BY 
         p.Id, u.DisplayName, p.PostTypeId
@@ -34,7 +34,7 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
+        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         b.UserId
 ),
@@ -61,7 +61,7 @@ SELECT
 FROM 
     TopRankedPosts trp
 JOIN 
-    UserReputation ur ON trp.OwnerDisplayName = ur.Id::varchar
+    UserReputation ur ON trp.OwnerDisplayName = CAST(ur.Id AS varchar)
 ORDER BY 
     trp.Score DESC, trp.CommentCount DESC
 LIMIT 10;

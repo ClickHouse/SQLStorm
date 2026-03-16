@@ -45,7 +45,7 @@ SELECT
     a.ca_state,
     a.total_customers,
     a.avg_purchase_estimate,
-    STRING_AGG(b.full_name, ', ') AS top_customers
+    arrayStringConcat(groupArray(assumeNotNull(b.full_name)), ', ') AS top_customers
 FROM 
     aggregated_data a
 LEFT JOIN 

@@ -17,7 +17,7 @@ TopUsers AS (
 PostDetails AS (
     SELECT p.Id AS PostId, p.Title, p.Body, 
            p.CreationDate, p.OwnerUserId, 
-           STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
            COUNT(DISTINCT c.Id) AS CommentCount,
            COUNT(DISTINCT v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVotes,
            COUNT(DISTINCT v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVotes,
@@ -27,7 +27,7 @@ PostDetails AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (4, 5)
-    WHERE p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+    WHERE p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
     GROUP BY p.Id, p.Title, p.Body, p.CreationDate, p.OwnerUserId
 )
 SELECT u.UserId, u.DisplayName, p.Title, 
@@ -37,4 +37,4 @@ FROM TopUsers u
 JOIN PostDetails p ON u.UserId = p.OwnerUserId
 WHERE u.ReputationRank <= 10
 ORDER BY u.Reputation DESC, p.UpVotes DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

@@ -57,7 +57,7 @@ SELECT
         WHEN ps.NetVotes BETWEEN 1 AND 10 THEN 'Warm'
         ELSE 'Cold'
     END AS PostTemperature,
-    (SELECT STRING_AGG(tag.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ') 
      FROM Tags tag 
      JOIN Posts p ON tag.ExcerptPostId = p.Id 
      WHERE p.Id = ps.PostId) AS Tags

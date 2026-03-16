@@ -62,7 +62,7 @@ OrderMetrics AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1998-10-01' - INTERVAL '1 year'
+        o.o_orderdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
     GROUP BY 
         o.o_orderkey
 )

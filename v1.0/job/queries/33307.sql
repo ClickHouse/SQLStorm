@@ -17,13 +17,13 @@ actor_info AS (
     JOIN aka_name ak ON c.person_id = ak.person_id
 ),
 movie_keywords AS (
-    SELECT m.movie_id, STRING_AGG(k.keyword, ', ') AS keywords
+    SELECT m.movie_id, arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM movie_keyword m
     JOIN keyword k ON m.keyword_id = k.id
     GROUP BY m.movie_id
 ),
 movie_company_info AS (
-    SELECT m.movie_id, STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    SELECT m.movie_id, arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
     FROM movie_companies m
     JOIN company_name cn ON m.company_id = cn.id
     GROUP BY m.movie_id

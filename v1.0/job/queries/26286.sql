@@ -15,7 +15,7 @@ WITH RankedTitles AS (
 TitleKeywords AS (
     SELECT 
         t.id AS title_id,
-        string_agg(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title t
     JOIN 

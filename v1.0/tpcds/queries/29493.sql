@@ -5,7 +5,7 @@ WITH string_benchmark AS (
         CONCAT(c.c_first_name, ' ', c.c_last_name) AS full_name,
         REPLACE(LOWER(c.c_email_address), '@', '[at]') AS modified_email,
         LENGTH(c.c_first_name) + LENGTH(c.c_last_name) AS name_length,
-        STRING_AGG(DISTINCT ca.ca_city, ', ') AS unique_cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.ca_city))), ', ') AS unique_cities
     FROM
         customer c
     JOIN
@@ -19,7 +19,7 @@ benchmark_summary AS (
         AVG(name_length) AS avg_name_length,
         COUNT(DISTINCT modified_email) AS unique_emails,
         MAX(LENGTH(full_name)) AS max_name_length,
-        STRING_AGG(DISTINCT unique_cities, '; ') AS all_cities
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(unique_cities))), '; ') AS all_cities
     FROM
         string_benchmark
 )

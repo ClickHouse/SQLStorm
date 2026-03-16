@@ -71,7 +71,7 @@ LEFT JOIN
         WHERE 
             p.p_retailprice BETWEEN 10 AND 100
         ORDER BY 
-            RANDOM() 
+            rand() 
         LIMIT 1
     )
 LEFT JOIN 

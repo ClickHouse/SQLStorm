@@ -32,7 +32,7 @@ RecentOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '12 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 )
@@ -46,7 +46,7 @@ SELECT
 FROM 
     TopSuppliers ts
 LEFT JOIN 
-    RecentOrders ro ON ts.s_suppkey = (SELECT ps.ps_suppkey FROM partsupp ps WHERE ps.ps_partkey IN (SELECT DISTINCT l.l_partkey FROM lineitem l JOIN orders o ON l.l_orderkey = o.o_orderkey WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '12 months') LIMIT 1)
+    RecentOrders ro ON ts.s_suppkey = (SELECT ps.ps_suppkey FROM partsupp ps WHERE ps.ps_partkey IN (SELECT DISTINCT l.l_partkey FROM lineitem l JOIN orders o ON l.l_orderkey = o.o_orderkey WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH) LIMIT 1)
 WHERE 
     ts.supplier_rank <= 5
 ORDER BY 

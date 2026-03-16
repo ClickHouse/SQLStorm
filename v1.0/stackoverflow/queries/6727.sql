@@ -50,4 +50,4 @@ WHERE
     U.PostCount > 0
 ORDER BY 
     U.UserRank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

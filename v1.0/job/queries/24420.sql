@@ -31,7 +31,7 @@ SELECT
     mt.title AS movie_title,
     mt.production_year,
     COUNT(DISTINCT mc.company_id) AS num_companies,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
     ROW_NUMBER() OVER (PARTITION BY ak.name ORDER BY mt.production_year) AS actor_movie_order,
     SUM(CASE WHEN mt.production_year < 2000 THEN 1 ELSE 0 END) OVER (PARTITION BY ak.name) AS pre_2000_movies
 FROM 

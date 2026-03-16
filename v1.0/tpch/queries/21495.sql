@@ -51,4 +51,4 @@ ORDER BY
     n.n_name, 
     sh.s_name, 
     ps.total_avail_qty DESC
-OFFSET 3 ROWS FETCH NEXT 5 ROWS ONLY;
+LIMIT 5 OFFSET 3;

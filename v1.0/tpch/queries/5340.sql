@@ -59,4 +59,4 @@ WHERE
     ps.total_supply_cost > 1000
 ORDER BY 
     ps.total_avail_qty DESC, cn.total_spent DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

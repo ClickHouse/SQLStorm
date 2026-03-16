@@ -83,4 +83,4 @@ WHERE
     f.performance_category = 'High Performer' 
 ORDER BY 
     f.total_sales DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

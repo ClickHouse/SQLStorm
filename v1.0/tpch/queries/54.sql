@@ -6,7 +6,7 @@ WITH TotalSales AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1998-01-01'
+        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1998-01-01')
     GROUP BY 
         l.l_orderkey
 ),
@@ -54,7 +54,7 @@ SELECT
     COALESCE(si.total_available, 0) AS available_quantity,
     COALESCE(si.avg_supply_cost, 0) AS average_cost,
     COUNT(DISTINCT h.o_orderkey) AS high_value_orders_count,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ': $', ROUND(ts.total_sales, 2)), ', ') AS suppliers_sales_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ': $', ROUND(ts.total_sales, 2))))), ', ') AS suppliers_sales_info
 FROM 
     part pv
 LEFT JOIN 

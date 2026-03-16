@@ -7,7 +7,7 @@ SELECT
     AVG(l.l_quantity) AS Average_Quantity,
     MAX(l.l_shipdate) AS Last_Ship_Date,
     MIN(l.l_shipdate) AS First_Ship_Date,
-    STRING_AGG(DISTINCT p.p_comment, '; ') AS Combined_Comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_comment))), '; ') AS Combined_Comments
 FROM
     part p
 JOIN

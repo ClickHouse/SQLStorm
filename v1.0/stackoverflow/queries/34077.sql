@@ -27,13 +27,13 @@ RecentClosedPosts AS (
     INNER JOIN PostHierarchy ph ON p.Id = ph.Id
     LEFT JOIN PostVoteInfo pvi ON p.Id = pvi.PostId
     WHERE p.ClosedDate IS NOT NULL 
-    AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+    AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 ),
 
 BadgesPerUser AS (
     SELECT u.Id AS UserId, 
            COUNT(b.Id) AS BadgeCount,
-           STRING_AGG(b.Name, ', ') AS BadgeNames
+           arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM Users u
     LEFT JOIN Badges b ON u.Id = b.UserId
     GROUP BY u.Id

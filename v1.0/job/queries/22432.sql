@@ -44,7 +44,7 @@ SELECT
     (SELECT COUNT(DISTINCT ci2.person_id)
      FROM cast_info ci2
      WHERE ci2.movie_id = m.movie_id) AS num_cast,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
 FROM MoviesWithMaxCast m
 LEFT JOIN ActorsInMaxCastMovies a ON m.title = a.title AND m.production_year = a.production_year
 LEFT JOIN movie_keyword mk ON m.movie_id = mk.movie_id

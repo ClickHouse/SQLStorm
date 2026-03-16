@@ -19,7 +19,7 @@ WITH RECURSIVE OrderHierarchy AS (
            COUNT(*) AS item_count,
            ROW_NUMBER() OVER (PARTITION BY l.l_orderkey ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS rn
     FROM lineitem l
-    WHERE l.l_shipdate >= DATE '1997-01-01' 
+    WHERE l.l_shipdate >= toDate('1997-01-01') 
     GROUP BY l.l_orderkey
 )
 SELECT r.r_name, COUNT(DISTINCT o.o_orderkey) AS total_orders,

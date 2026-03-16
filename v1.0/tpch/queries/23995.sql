@@ -29,7 +29,7 @@ SELECT
     COALESCE(SUM(CASE WHEN ss.unique_parts IS NOT NULL THEN ss.unique_parts ELSE 0 END), 0) AS total_unique_parts,
     COALESCE(SUM(cs.total_orders), 0) AS total_orders_per_region,
     AVG(cs.total_spent) AS avg_spent_per_customer,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
     PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ts.total_sales) AS median_sales
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey

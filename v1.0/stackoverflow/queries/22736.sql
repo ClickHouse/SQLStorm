@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score IS NOT NULL
 ),
 UserReputation AS (
@@ -81,7 +81,7 @@ SELECT
     f.ViewCount,
     COALESCE(f.ReputationLevel, 'Unknown') AS UserReputationLevel,
     COALESCE(f.TotalComments, 0) AS TotalComments,
-    COALESCE(f.LastEditDate, TIMESTAMP '1970-01-01 00:00:00') AS LastEditTimestamp,
+    COALESCE(f.LastEditDate, toDateTime64('1970-01-01 00:00:00', 6)) AS LastEditTimestamp,
     CASE 
         WHEN f.LastHistoryType = 10 THEN 'Closed'
         WHEN f.LastHistoryType = 4 THEN 'Edited Title'

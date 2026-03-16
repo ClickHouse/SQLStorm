@@ -40,11 +40,11 @@ FilteredPosts AS (
 QuestionTags AS (
     SELECT 
         f.PostId,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         FilteredPosts f
     JOIN 
-        UNNEST(STRING_TO_ARRAY(f.Tags, ',')) AS tagArray ON tagArray IS NOT NULL
+        arrayJoin(splitByString(',', f.Tags)) AS tagArray ON tagArray IS NOT NULL
     JOIN 
         Tags t ON t.TagName = TRIM(tagArray)
     GROUP BY 

@@ -22,7 +22,7 @@ ActorStats AS (
     SELECT 
         actor_id,
         COUNT(DISTINCT title) AS movie_count,
-        STRING_AGG(title, ', ') AS movies
+        arrayStringConcat(groupArray(assumeNotNull(title)), ', ') AS movies
     FROM 
         MovieDetails
     GROUP BY 

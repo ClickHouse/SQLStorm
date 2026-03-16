@@ -18,7 +18,7 @@ AggregateCTE AS (
     SELECT 
         movie_id,
         COUNT(DISTINCT actor_name) AS total_actors,
-        STRING_AGG(DISTINCT actor_name, ', ') AS actor_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actor_list
     FROM 
         RecursiveCTE
     GROUP BY 

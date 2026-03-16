@@ -17,7 +17,7 @@ WITH RankedTitles AS (
 ), TitleInfo AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(mii.info, ', ') AS movie_info
+        arrayStringConcat(groupArray(assumeNotNull(mii.info)), ', ') AS movie_info
     FROM movie_info mi
     JOIN movie_info_idx mii ON mi.id = mii.info_type_id
     GROUP BY mi.movie_id

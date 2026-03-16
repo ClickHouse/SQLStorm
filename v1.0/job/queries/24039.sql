@@ -26,7 +26,7 @@ ActorRoleCounts AS (
 DistinctKeywords AS (
     SELECT
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM
         movie_keyword mk
     JOIN
@@ -70,7 +70,7 @@ SELECT
         ELSE 'Keywords are present'
     END AS keyword_description,
 
-    (SELECT STRING_AGG(DISTINCT n.name, ', ')
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ')
      FROM name n
      WHERE EXISTS (
          SELECT 1 FROM cast_info ci

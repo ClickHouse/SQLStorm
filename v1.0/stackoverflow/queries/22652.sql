@@ -47,7 +47,7 @@ ClosedPosts AS (
         P.Id AS PostId, 
         COUNT(H.Id) AS CloseVoteCount,
         MAX(H.CreationDate) AS LastCloseDate,
-        STRING_AGG(DISTINCT CT.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CT.Name))), ', ') AS CloseReasons
     FROM 
         Posts P
     JOIN 

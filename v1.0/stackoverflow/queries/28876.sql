@@ -9,7 +9,7 @@ WITH StringProcessedPosts AS (
         p.CreationDate,
         COALESCE(BadgesReceived.BadgeCount, 0) AS BadgeCount,
         COUNT(DISTINCT c.Id) AS CommentCount,
-        ARRAY_LENGTH(string_to_array(p.Tags, '>'), 1) AS TagCount,
+        length(splitByString('>', p.Tags), 1) AS TagCount,
         LENGTH(p.Body) AS BodyLength,
         LENGTH(p.Title) AS TitleLength
     FROM 

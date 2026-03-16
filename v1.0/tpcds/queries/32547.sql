@@ -30,7 +30,7 @@ SELECT
     COUNT(DISTINCT t.ws_item_sk) as items_count,
     SUM(t.total_sales) as total_sales_amount,
     AVG(t.total_quantity) as avg_quantity_per_item,
-    STRING_AGG(DISTINCT i.i_product_name, ', ') AS top_products
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), ', ') AS top_products
 FROM 
     top_sales t
 JOIN 

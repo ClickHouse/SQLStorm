@@ -3,7 +3,7 @@ SELECT
     a.name AS actor_name,
     t.title AS movie_title,
     t.production_year,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     GROUP_CONCAT(DISTINCT ckt.kind) AS company_types,
     COUNT(DISTINCT ci.id) AS total_cast_members,
     COUNT(DISTINCT mci.company_id) AS total_companies
@@ -27,4 +27,4 @@ GROUP BY
     a.name, t.title, t.production_year
 ORDER BY 
     t.production_year DESC, total_cast_members DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

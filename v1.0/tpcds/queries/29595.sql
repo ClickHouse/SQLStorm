@@ -7,7 +7,7 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_web_orders,
     SUM(ws.ws_net_paid) AS total_web_spent,
     SUM(CASE WHEN ws.ws_sales_price > 50 THEN 1 ELSE 0 END) AS total_high_value_orders,
-    STRING_AGG(DISTINCT i.i_item_desc, ', ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_item_desc))), ', ') AS purchased_items,
     MAX(ws.ws_sold_date_sk) AS last_order_date
 FROM 
     customer c

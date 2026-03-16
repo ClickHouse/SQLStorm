@@ -72,8 +72,8 @@ SELECT
     dmi.movie_id,
     dmi.title,
     dmi.production_year,
-    STRING_AGG(DISTINCT dmi.actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT dmi.keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(dmi.actor_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(dmi.keyword))), ', ') AS keywords
 FROM
     DetailedMovieInfo dmi
 GROUP BY

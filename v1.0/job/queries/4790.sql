@@ -25,7 +25,7 @@ MoviesWithCompany AS (
     SELECT
         m.id AS movie_id,
         m.title,
-        STRING_AGG(DISTINCT cn.name, ', ') AS companies
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
     FROM
         aka_title m
     LEFT JOIN

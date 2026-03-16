@@ -62,7 +62,7 @@ SELECT
     COUNT(ms.title) AS movie_count,
     SUM(ms.unique_actors) AS total_unique_actors,
     AVG(ms.cast_count * 1.0) AS avg_cast_count,
-    STRING_AGG(DISTINCT ms.title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ms.title))), ', ') AS movie_titles,
     MAX(CASE WHEN ms.production_year = (SELECT MAX(production_year) FROM FilteredMovies) 
              THEN ms.unique_actors ELSE NULL END) AS peak_actors
 FROM 

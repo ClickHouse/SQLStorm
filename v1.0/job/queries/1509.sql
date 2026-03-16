@@ -27,7 +27,7 @@ MovieDetails AS (
     SELECT 
         tm.title,
         tm.production_year,
-        array_agg(DISTINCT ak.name) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actor_names,
         COUNT(DISTINCT kc.keyword) AS keyword_count
     FROM 
         TopMovies tm
@@ -47,7 +47,7 @@ MovieDetails AS (
 SELECT 
     md.title,
     md.production_year,
-    COALESCE(md.actor_names::text, 'No Actors') AS actor_names,
+    COALESCE(CAST(md.actor_names AS text), 'No Actors') AS actor_names,
     md.keyword_count
 FROM 
     MovieDetails md

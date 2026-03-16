@@ -31,7 +31,7 @@ SELECT
     mh.production_year,
     COALESCE(COUNT(DISTINCT mc.company_id), 0) AS company_count,
     AVG(CASE WHEN ci.nr_order IS NOT NULL THEN ci.nr_order ELSE 0 END) AS avg_role_order,
-    STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords,
     RANK() OVER (PARTITION BY mh.production_year ORDER BY mh.movie_title) AS title_rank
 FROM 
     MovieHierarchy mh

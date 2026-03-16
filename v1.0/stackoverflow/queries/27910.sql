@@ -5,7 +5,7 @@ WITH PostTags AS (
         p.Body,
         p.CreationDate,
         p.OwnerDisplayName,
-        STRING_AGG(t.TagName, ', ') AS Tags
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
@@ -32,7 +32,7 @@ PostHistorySummary AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditedDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
     FROM 
         PostHistory ph
     JOIN 
@@ -59,6 +59,6 @@ LEFT JOIN
 LEFT JOIN 
     PostHistorySummary ph ON pt.PostId = ph.PostId
 WHERE 
-    pt.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'  
+    pt.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY  
 ORDER BY 
     pt.CreationDate DESC;

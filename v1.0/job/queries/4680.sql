@@ -3,7 +3,7 @@ WITH movie_data AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        COALESCE(ARRAY_AGG(DISTINCT k.keyword) FILTER (WHERE k.keyword IS NOT NULL), '{}') AS keywords,
+        COALESCE(arrayDistinct(groupArray(assumeNotNull(k.keyword))) FILTER (WHERE k.keyword IS NOT NULL), '{}') AS keywords,
         COUNT(DISTINCT c.person_id) AS cast_count
     FROM 
         aka_title t
@@ -23,7 +23,7 @@ WITH movie_data AS (
 company_info AS (
     SELECT 
         mc.movie_id,
-        ARRAY_AGG(DISTINCT cn.name) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies,
         COUNT(DISTINCT mc.company_id) AS company_count
     FROM 
         movie_companies mc

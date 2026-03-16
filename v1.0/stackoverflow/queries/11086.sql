@@ -62,4 +62,4 @@ JOIN
     UserStats US ON PD.OwnerDisplayName = US.DisplayName
 ORDER BY 
     PD.CreationDate DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

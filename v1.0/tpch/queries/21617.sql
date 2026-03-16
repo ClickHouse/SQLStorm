@@ -21,7 +21,7 @@ OrderAnalysis AS (
            AVG(l.l_discount) OVER (PARTITION BY o.o_custkey) AS avg_discount
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate < cast('1998-10-01' as date) - INTERVAL '30 days'
+    WHERE l.l_shipdate < cast('1998-10-01' as date) - INTERVAL 30 DAY
 ),
 FilteredCustomers AS (
     SELECT c.c_custkey, c.c_name, SUM(o.o_totalprice) AS total_spent

@@ -74,4 +74,4 @@ WHERE
     r.return_percentage IS NOT NULL
 ORDER BY 
     r.return_percentage DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

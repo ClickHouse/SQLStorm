@@ -3,7 +3,7 @@ WITH PostTagCounts AS (
     
     SELECT 
         p.Id AS PostId,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -37,7 +37,7 @@ PostDetails AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        ARRAY_AGG(DISTINCT tt.Tag) AS Tags
+        arrayDistinct(groupArray(assumeNotNull(tt.Tag))) AS Tags
     FROM 
         Posts p
     JOIN 

@@ -57,7 +57,7 @@ SELECT
     o.o_orderkey,
     o.total_revenue,
     CASE 
-        WHEN o.last_ship_date < DATE '1998-10-01' - INTERVAL '30 days' THEN 'Old Shipment' 
+        WHEN o.last_ship_date < toDate('1998-10-01') - INTERVAL 30 DAY THEN 'Old Shipment' 
         ELSE 'Recent Shipment' 
     END AS shipment_status
 FROM 
@@ -74,4 +74,4 @@ WHERE
 ORDER BY 
     r.p_retailprice ASC, 
     o.total_revenue DESC 
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

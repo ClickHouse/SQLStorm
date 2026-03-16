@@ -53,7 +53,7 @@ FilteredTitles AS (
 ActorAnalysis AS (
     SELECT 
         pi.movie_id,
-        STRING_AGG(pi.name, ', ') AS actors,
+        arrayStringConcat(groupArray(assumeNotNull(pi.name)), ', ') AS actors,
         MAX(pi.actor_rank) AS max_rank
     FROM 
         PersonInfo pi

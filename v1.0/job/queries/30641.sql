@@ -53,7 +53,7 @@ SELECT
     tm.title,
     tm.production_year,
     tm.actor_count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
     mci.note AS production_notes
 FROM 
     TopMovies tm

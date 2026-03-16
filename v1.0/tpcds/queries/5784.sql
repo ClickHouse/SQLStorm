@@ -52,4 +52,4 @@ GROUP BY
     cd_education_status
 ORDER BY 
     total_sales_amount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

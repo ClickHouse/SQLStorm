@@ -11,7 +11,7 @@ WITH RecursiveMovieList AS (
     AND title.production_year > 2000
 ),
 RelevantKeywords AS (
-    SELECT movie_keyword.movie_id, string_agg(keyword.keyword, ', ') AS keywords
+    SELECT movie_keyword.movie_id, arrayStringConcat(groupArray(assumeNotNull(keyword.keyword)), ', ') AS keywords
     FROM movie_keyword
     JOIN keyword ON movie_keyword.keyword_id = keyword.id
     GROUP BY movie_keyword.movie_id

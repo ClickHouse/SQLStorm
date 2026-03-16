@@ -7,7 +7,7 @@ WITH TagStats AS (
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         AVG(P.Score) AS AvgScore,
         MAX(P.ViewCount) AS MaxViews,
-        STRING_AGG(DISTINCT U.DisplayName, ', ') AS ActiveUsers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS ActiveUsers
     FROM 
         Tags T
     LEFT JOIN 
@@ -44,7 +44,7 @@ ActiveQuestions AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId AND PH.PostHistoryTypeId IN (10, 11) 
     JOIN 
-        UNNEST(STRING_TO_ARRAY(P.Tags, ',')) AS TagArray ON TRUE 
+        arrayJoin(splitByString(',', P.Tags)) AS TagArray ON TRUE 
     JOIN 
         Tags T ON T.TagName = TagArray
     WHERE 
@@ -62,7 +62,7 @@ SELECT
     TS.ActiveUsers,
     COUNT(DISTINCT CP.PostId) AS ClosedPostCount,
     COUNT(DISTINCT AQ.Id) AS ActiveQuestionCount,
-    STRING_AGG(DISTINCT AQ.Title, '; ') AS RecentActiveQuestions
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(AQ.Title))), '; ') AS RecentActiveQuestions
 FROM 
     TagStats TS
 LEFT JOIN 

@@ -6,7 +6,7 @@ WITH MovieDetails AS (
         k.keyword AS movie_keyword,
         c.name AS company_name,
         ct.kind AS company_type,
-        ARRAY_AGG(DISTINCT a.name) AS cast_members
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS cast_members
     FROM
         aka_title t
     JOIN

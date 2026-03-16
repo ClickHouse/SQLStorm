@@ -45,7 +45,7 @@ SELECT ch.c_first_name,
        COALESCE(sd.total_sales, 0) AS total_sales,
        COALESCE(ar.return_count, 0) AS return_count,
        COALESCE(ar.total_return_amt, 0) AS total_return_amt,
-       DATE_PART('year', AGE(MIN(sd.first_purchase_date))) AS customer_age
+       datePart('year', AGE(MIN(sd.first_purchase_date))) AS customer_age
 FROM CustomerHierarchy ch
 LEFT JOIN SalesData sd ON ch.c_customer_sk = sd.customer_sk
 LEFT JOIN AggReturns ar ON ch.c_customer_sk = ar.sr_customer_sk

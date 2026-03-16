@@ -1,6 +1,6 @@
 WITH RECURSIVE supplier_cte AS (
     SELECT s.s_suppkey, s.s_name, s.s_acctbal, 
-           STRING_AGG(p.p_name, ', ') AS part_names
+           arrayStringConcat(groupArray(assumeNotNull(p.p_name)), ', ') AS part_names
     FROM supplier s
     LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     LEFT JOIN part p ON ps.ps_partkey = p.p_partkey

@@ -5,7 +5,7 @@ WITH PostTagCounts AS (
     FROM
         Posts p
     JOIN
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag_name ON true
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag_name ON true
     JOIN
         Tags t ON t.TagName = tag_name
     GROUP BY
@@ -29,7 +29,7 @@ PostDetails AS (
     LEFT JOIN
         PostTagCounts pc ON p.Id = pc.PostId
     WHERE
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPostStats AS (
     SELECT

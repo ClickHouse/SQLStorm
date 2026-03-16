@@ -50,4 +50,4 @@ WHERE
     a.ca_country IS NOT NULL
 ORDER BY 
     h.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

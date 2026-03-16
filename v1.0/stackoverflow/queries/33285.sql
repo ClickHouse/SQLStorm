@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.Score > 0
 ),
 MostCommentedPosts AS (
@@ -32,7 +32,7 @@ PostsWithTags AS (
     FROM 
         Posts p
     LEFT JOIN 
-        LATERAL UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS TagArray(Tag) ON TRUE
+        arrayJoin(splitByString(',', p.Tags)) AS TagArray(Tag) ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(TagArray.Tag)
     LEFT JOIN 

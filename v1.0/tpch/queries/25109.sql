@@ -3,8 +3,8 @@ SELECT
     COUNT(DISTINCT o_orderkey) AS total_orders,
     SUM(l_extendedprice * (1 - l_discount)) AS total_revenue,
     AVG(o_totalprice) AS avg_order_value,
-    STRING_AGG(DISTINCT p_type, ', ') AS types_supplied,
-    STRING_AGG(DISTINCT r_name, '; ') AS regions_served
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p_type))), ', ') AS types_supplied,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r_name))), '; ') AS regions_served
 FROM 
     supplier 
 JOIN 

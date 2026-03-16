@@ -16,7 +16,7 @@ SELECT
     SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END) AS total_returned_value,
     AVG(l.l_quantity) AS avg_quantity,
     COUNT(DISTINCT o.o_orderkey) AS orders_count,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names,
     ROW_NUMBER() OVER (PARTITION BY p.p_partkey ORDER BY SUM(l.l_extendedprice) DESC) AS rn
 FROM 
     part p
@@ -42,4 +42,4 @@ HAVING
     COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY 
     total_returned_value DESC, avg_quantity ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

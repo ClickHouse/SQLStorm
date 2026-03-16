@@ -46,7 +46,7 @@ SELECT
     COUNT(DISTINCT co.o_orderkey) AS TotalOrders,
     SUM(CASE WHEN li.l_returnflag = 'R' THEN li.l_extendedprice * (1 - li.l_discount) ELSE 0 END) AS TotalReturnedValue,
     AVG(pd.p_retailprice) AS AvgPartRetailPrice,
-    STRING_AGG(DISTINCT hs.s_name, ', ') AS HighValueSuppliers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(hs.s_name))), ', ') AS HighValueSuppliers
 FROM 
     CustomerOrders co
 LEFT JOIN 

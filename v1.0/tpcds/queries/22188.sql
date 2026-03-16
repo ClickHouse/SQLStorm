@@ -29,7 +29,7 @@ SELECT
     ca.ca_city,
     COUNT(DISTINCT c.c_customer_id) AS customer_count,
     ROUND(AVG(ws.ws_net_profit), 2) AS average_net_profit,
-    ARRAY_AGG(DISTINCT r.r_reason_desc) AS reason_descs
+    arrayDistinct(groupArray(assumeNotNull(r.r_reason_desc))) AS reason_descs
 FROM
     customer_address ca
 JOIN
@@ -50,4 +50,4 @@ HAVING
     COUNT(DISTINCT c.c_customer_id) > (SELECT COUNT(*) / 10 FROM customer)  
 ORDER BY
     average_net_profit DESC
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;

@@ -18,14 +18,14 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT
-        unnest(string_to_array(Tags, '><')) AS TagName,
+        arrayJoin(splitByString('><', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM
         Posts
     WHERE
         PostTypeId = 1
     GROUP BY
-        unnest(string_to_array(Tags, '><'))
+        arrayJoin(splitByString('><', Tags))
 ),
 TopTags AS (
     SELECT

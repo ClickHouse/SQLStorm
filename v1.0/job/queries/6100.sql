@@ -35,10 +35,10 @@ SELECT
     title_id, 
     title, 
     production_year, 
-    STRING_AGG(DISTINCT keyword, ', ') AS keywords, 
-    STRING_AGG(DISTINCT company_type, ', ') AS companies, 
-    STRING_AGG(DISTINCT actor_name, ', ') AS actors,
-    STRING_AGG(DISTINCT person_info, ', ') AS person_infos
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keyword))), ', ') AS keywords, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_type))), ', ') AS companies, 
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name))), ', ') AS actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(person_info))), ', ') AS person_infos
 FROM 
     movie_details
 GROUP BY 

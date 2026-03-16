@@ -25,7 +25,7 @@ WITH RECURSIVE SupplyChain AS (
            DENSE_RANK() OVER (PARTITION BY o.o_orderdate ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
     WHERE o.o_orderstatus = 'O'
-    AND o.o_orderdate >= DATE '1997-01-01'
+    AND o.o_orderdate >= toDate('1997-01-01')
 )
 SELECT DISTINCT p.p_name, 
                 SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue, 

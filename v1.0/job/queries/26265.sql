@@ -34,7 +34,7 @@ MovieDetails AS (
     SELECT 
         t.title AS movie_title,
         t.production_year,
-        STRING_AGG(DISTINCT p.info || ': ' || p.note, ', ') AS person_info_details,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.info || ': ' || p.note))), ', ') AS person_info_details,
         c.kind AS company_type,
         COUNT(DISTINCT mc.company_id) AS companies_involved
     FROM 

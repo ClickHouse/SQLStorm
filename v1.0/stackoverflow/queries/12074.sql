@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON u.Id = b.UserId
 WHERE 
-    p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+    p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score,
     u.DisplayName, u.Reputation

@@ -11,7 +11,7 @@ WITH SupplierSales AS (
     JOIN
         lineitem l ON l.l_partkey = ps.ps_partkey
     WHERE
-        l.l_shipdate >= DATE '1997-01-01'
+        l.l_shipdate >= toDate('1997-01-01')
     GROUP BY
         s.s_suppkey, s.s_name
 ),

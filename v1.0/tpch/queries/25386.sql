@@ -5,7 +5,7 @@ SELECT
     AVG(s.s_acctbal) AS avg_supplier_account_balance,
     r.r_name AS region_name,
     LEFT(n.n_name, 10) AS short_nation_name,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names
 FROM 
     part p
 JOIN 

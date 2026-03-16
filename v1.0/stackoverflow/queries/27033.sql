@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 ),
 TagStats AS (
     SELECT 
-        unnest(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS TagName,
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
         COUNT(*) AS PostCount,
         AVG(ViewCount) AS AverageViews
     FROM 

@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, u.DisplayName, p.PostTypeId, p.CreationDate
 ), 
@@ -44,7 +44,7 @@ SELECT
     tp.UpVotes,
     tp.DownVotes,
     SUM(b.Class) AS TotalBadgeClass,
-    ARRAY_AGG(DISTINCT b.Name) AS BadgeNames
+    arrayDistinct(groupArray(assumeNotNull(b.Name))) AS BadgeNames
 FROM 
     TopPosts tp
 LEFT JOIN 

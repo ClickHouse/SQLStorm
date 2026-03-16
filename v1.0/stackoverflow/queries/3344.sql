@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate > CURRENT_DATE - INTERVAL '1 year'
+    WHERE p.CreationDate > CURRENT_DATE - INTERVAL 1 YEAR
 )
 
 SELECT 

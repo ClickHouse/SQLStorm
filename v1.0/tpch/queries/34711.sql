@@ -1,7 +1,7 @@
 WITH RECURSIVE RecentOrders AS (
     SELECT o_orderkey, o_custkey, o_orderdate, o_orderstatus
     FROM orders
-    WHERE o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
     UNION ALL
     SELECT o.o_orderkey, o.o_custkey, o.o_orderdate, o.o_orderstatus
     FROM orders o

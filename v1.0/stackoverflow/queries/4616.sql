@@ -53,7 +53,7 @@ SELECT
     COALESCE(ru.SilverBadges, 0) AS SilverBadges,
     COALESCE(ru.BronzeBadges, 0) AS BronzeBadges,
     RANK() OVER (ORDER BY ru.Reputation DESC, ru.TotalPosts DESC) AS OverallRank,
-    ARRAY_AGG(DISTINCT p.Title) FILTER (WHERE p.OwnerUserId IS NOT NULL) AS TopPosts
+    arrayDistinct(groupArray(assumeNotNull(p.Title))) FILTER (WHERE p.OwnerUserId IS NOT NULL) AS TopPosts
 FROM RankedUsers ru
 LEFT JOIN Posts p ON ru.UserId = p.OwnerUserId
 GROUP BY ru.UserId, ru.DisplayName, ru.Reputation, ru.TotalPosts, ru.QuestionsCount, ru.AnswersCount, ru.TotalBadges, ru.GoldBadges, ru.SilverBadges, ru.BronzeBadges

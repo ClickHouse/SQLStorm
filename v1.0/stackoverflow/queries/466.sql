@@ -19,13 +19,13 @@ ClosedPosts AS (
     SELECT 
         p.OwnerUserId,
         COUNT(ph.PostId) AS TotalClosedPosts,
-        STRING_AGG(DISTINCT c.Name, ', ') AS ClosedReasonTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Name))), ', ') AS ClosedReasonTypes
     FROM 
         Posts p
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10 
     LEFT JOIN 
-        CloseReasonTypes c ON c.Id::text = ph.Comment 
+        CloseReasonTypes c ON CAST(c.Id AS text) = ph.Comment 
     GROUP BY 
         p.OwnerUserId
 )

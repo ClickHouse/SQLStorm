@@ -18,7 +18,7 @@ SupplierPartSummary AS (
         p.p_partkey,
         COUNT(ps.ps_partkey) AS total_supply,
         SUM(ps.ps_supplycost) AS total_supply_cost,
-        STRING_AGG(CONCAT(p.p_name, '(', ps.ps_availqty, ')'), ', ') AS available_parts
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(p.p_name, '(', ps.ps_availqty, ')'))), ', ') AS available_parts
     FROM 
         supplier s
     JOIN 

@@ -31,7 +31,7 @@ cast_details AS (
 info_with_keywords AS (
     SELECT 
         mi.movie_id,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         movie_info mi
     JOIN 

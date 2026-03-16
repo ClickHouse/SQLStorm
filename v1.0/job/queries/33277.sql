@@ -42,7 +42,7 @@ SELECT
     m.parent_title,
     COALESCE(cast_info.role_id, -1) AS role_id,
     COUNT(*) OVER (PARTITION BY m.movie_id) AS cast_count,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names
 FROM 
     RankedMovies m
 LEFT JOIN 

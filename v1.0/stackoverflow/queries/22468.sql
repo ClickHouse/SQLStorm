@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND
         P.Title IS NOT NULL
 ),
 UserBadges AS (
@@ -24,17 +24,17 @@ UserBadges AS (
     FROM 
         Badges B
     WHERE 
-        B.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        B.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
     GROUP BY 
         UserId
 ),
 ClosedPosts AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(CASE 
-                        WHEN PH.PostHistoryTypeId = 10 THEN 'Closed: ' || (SELECT Name FROM CloseReasonTypes WHERE Id = PH.Comment::integer)
+        arrayStringConcat(groupArray(assumeNotNull(CASE 
+                        WHEN PH.PostHistoryTypeId = 10 THEN 'Closed: ' || (SELECT Name FROM CloseReasonTypes WHERE Id = CAST(PH.Comment AS integer))
                         ELSE NULL 
-                   END, ', ') AS CloseComments
+                   END)), ', ') AS CloseComments
     FROM 
         PostHistory PH
     WHERE 

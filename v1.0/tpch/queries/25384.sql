@@ -19,7 +19,7 @@ WITH SupplierParts AS (
         COUNT(DISTINCT sp.s_suppkey) AS supplier_count,
         SUM(sp.ps_availqty) AS total_available_quantity,
         AVG(sp.ps_supplycost) AS average_supply_cost,
-        STRING_AGG(sp.supply_description, '; ') AS supplier_part_descriptions
+        arrayStringConcat(groupArray(assumeNotNull(sp.supply_description)), '; ') AS supplier_part_descriptions
     FROM 
         region r
     JOIN 

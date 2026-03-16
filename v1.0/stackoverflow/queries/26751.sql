@@ -1,14 +1,14 @@
 
 WITH TagStatistics AS (
     SELECT 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag, 
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag, 
         COUNT(DISTINCT Id) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><'))
+        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2)))
 ),
 TopTags AS (
     SELECT 
@@ -57,7 +57,7 @@ UserTagInteraction AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     JOIN 
-        TagStatistics t ON t.Tag = ANY(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'))
+        TagStatistics t ON t.Tag = ANY(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 

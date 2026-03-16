@@ -67,4 +67,4 @@ WHERE
     U.Reputation > (SELECT AVG(Reputation) FROM Users)
 ORDER BY 
     U.Reputation DESC, RP.Score DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

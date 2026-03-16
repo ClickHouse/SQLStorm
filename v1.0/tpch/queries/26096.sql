@@ -2,7 +2,7 @@ SELECT
     CONCAT(s.s_name, ' ', p.p_name) AS supplier_part_name,
     SUM(l.l_quantity) AS total_quantity,
     AVG(p.p_retailprice) AS avg_price,
-    STRING_AGG(DISTINCT c.c_name, ', ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), ', ') AS customer_names,
     r.r_name AS region_name
 FROM 
     supplier s

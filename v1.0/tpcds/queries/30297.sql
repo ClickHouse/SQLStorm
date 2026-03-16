@@ -87,4 +87,4 @@ FROM
     Sales_Summary s
 ORDER BY 
     s.total_net_profit DESC 
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

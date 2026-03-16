@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND
+        p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND
         p.Score IS NOT NULL
 ),
 PostDetails AS (
@@ -73,4 +73,4 @@ WHERE
 ORDER BY 
     pd.CommentCount DESC, 
     bc.TotalBadges DESC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

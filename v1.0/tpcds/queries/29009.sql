@@ -7,13 +7,13 @@ SELECT
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_net_paid_inc_tax) AS total_spent,
     AVG(ws.ws_net_paid) AS average_order_value,
-    STRING_AGG(DISTINCT wp.wp_url, ', ') AS visited_web_pages,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp.wp_url))), ', ') AS visited_web_pages,
     CASE
         WHEN cd.cd_gender = 'M' THEN 'Male'
         WHEN cd.cd_gender = 'F' THEN 'Female'
         ELSE 'Other'
     END AS gender,
-    EXTRACT(YEAR FROM d.d_date) AS order_year
+    toYear(d.d_date) AS order_year
 FROM 
     customer c
 JOIN 

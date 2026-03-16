@@ -21,7 +21,7 @@ SELECT c.c_name,
        SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
        AVG(l.l_quantity) AS avg_quantity,
        MAX(s.s_acctbal) AS max_supplier_acctbal,
-       STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
 FROM customer c
 LEFT JOIN orders o ON c.c_custkey = o.o_custkey
 LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey

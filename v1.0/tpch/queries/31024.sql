@@ -25,7 +25,7 @@ LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 LEFT JOIN supplier supp ON ps.ps_suppkey = supp.s_suppkey
 JOIN lineitem l ON l.l_partkey = p.p_partkey
 WHERE p.p_size > 20
-  AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+  AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
   AND l.l_returnflag IS NULL
   AND EXISTS (SELECT 1 FROM customer c WHERE c.c_nationkey = supp.s_nationkey AND c.c_acctbal > 1000)
 GROUP BY p.p_partkey, p.p_name, p.p_brand

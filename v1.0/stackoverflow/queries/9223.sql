@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.PostTypeId IN (1, 2)  
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, p.OwnerUserId
@@ -39,7 +39,7 @@ SELECT
     p.OwnerDisplayName,
     p.OwnerReputation,
     COUNT(DISTINCT b.Id) AS BadgeCount,
-    STRING_AGG(b.Name, ', ') AS Badges
+    arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges
 FROM 
     TopPosts p
 LEFT JOIN 

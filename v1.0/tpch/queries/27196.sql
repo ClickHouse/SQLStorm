@@ -6,7 +6,7 @@ SELECT
     AVG(l.l_extendedprice) AS avg_extended_price,
     MAX(l.l_discount) AS max_discount,
     MIN(l.l_tax) AS min_tax,
-    STRING_AGG(DISTINCT c.c_name, '; ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), '; ') AS customer_names,
     LEFT(p.p_comment, 20) AS short_comment,
     r.r_name AS region_name
 FROM 

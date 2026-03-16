@@ -58,4 +58,4 @@ FROM
     SalesStats ss
 ORDER BY 
     ss.total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

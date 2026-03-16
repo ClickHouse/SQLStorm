@@ -13,7 +13,7 @@ WITH RecentActivePosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
 ),
 UserReputation AS (
     SELECT 
@@ -60,7 +60,7 @@ PostAnalysis AS (
     LEFT JOIN (
         SELECT 
             ph.PostId,
-            STRING_AGG(cr.Name, ', ') AS Reason
+            arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS Reason
         FROM 
             PostHistory ph
         JOIN 
@@ -101,5 +101,4 @@ WHERE
 ORDER BY 
     pa.Reputation DESC, 
     pa.Score DESC
-OFFSET 10 ROWS 
-FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

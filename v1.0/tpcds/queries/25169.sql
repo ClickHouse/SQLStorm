@@ -3,7 +3,7 @@ WITH CustomerAddressSummary AS (
     SELECT 
         ca_state,
         COUNT(DISTINCT ca_address_id) AS unique_addresses,
-        STRING_AGG(DISTINCT ca_city, ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_city))), ', ') AS cities,
         SUM(CASE WHEN ca_suite_number IS NOT NULL THEN 1 ELSE 0 END) AS suite_count
     FROM 
         customer_address
@@ -17,7 +17,7 @@ DemographicsSummary AS (
         cd_gender,
         COUNT(*) AS total_customers,
         AVG(cd_purchase_estimate) AS avg_purchase_estimate,
-        STRING_AGG(DISTINCT cd_education_status, ', ') AS education_levels
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), ', ') AS education_levels
     FROM 
         customer_demographics
     GROUP BY 

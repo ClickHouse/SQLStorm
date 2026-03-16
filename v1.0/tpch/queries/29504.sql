@@ -21,7 +21,7 @@ SELECT
     AVG(rs.ps_supplycost) AS avg_supply_cost,
     MIN(rs.ps_supplycost) AS min_supply_cost,
     MAX(rs.ps_supplycost) AS max_supply_cost,
-    STRING_AGG(DISTINCT rs.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rs.p_name))), ', ') AS part_names
 FROM 
     RankedSuppliers rs
 JOIN 

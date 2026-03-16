@@ -31,7 +31,7 @@ Filtered_Actors AS (
 Keyword_Movies AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         aka_title m
     JOIN 
@@ -65,4 +65,4 @@ WHERE
 ORDER BY 
     fa.total_movies DESC, 
     fa.actor_name ASC
-OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 0;

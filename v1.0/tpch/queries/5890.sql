@@ -15,7 +15,7 @@ CustomerOrders AS (
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
     JOIN TopSuppliers ts ON ts.total_supply_value > 50000
-    WHERE o.o_orderdate BETWEEN cast('1998-10-01' as date) - INTERVAL '1 year' AND cast('1998-10-01' as date)
+    WHERE o.o_orderdate BETWEEN cast('1998-10-01' as date) - INTERVAL 1 YEAR AND cast('1998-10-01' as date)
 )
 SELECT co.c_custkey, co.c_name, COUNT(co.o_orderkey) AS order_count, SUM(co.o_totalprice) AS total_spent
 FROM CustomerOrders co

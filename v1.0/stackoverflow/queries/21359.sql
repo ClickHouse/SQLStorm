@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 TopPosts AS (
     SELECT 
@@ -21,7 +21,7 @@ TopPosts AS (
         rp.Score,
         COUNT(c.Id) AS CommentCount,
         COALESCE(MAX(b.Class), 0) AS HighestBadge,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
     FROM 
         RankedPosts rp
     LEFT JOIN 
@@ -31,7 +31,7 @@ TopPosts AS (
     LEFT JOIN 
         Badges b ON b.UserId = p.OwnerUserId
     LEFT JOIN 
-        LATERAL (SELECT unnest(string_to_array(p.Tags, '><')) AS TagName) t ON TRUE
+        (SELECT arrayJoin(splitByString('><', p.Tags)) AS TagName) t ON TRUE
     WHERE 
         rp.Rank <= 10
     GROUP BY 

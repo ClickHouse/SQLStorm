@@ -44,7 +44,7 @@ SELECT
     tm.company_type,
     tm.actor_name,
     tm.total_cast,
-    STRING_AGG(tm.actor_name, ', ' ORDER BY tm.actor_name) AS all_actors
+    arrayStringConcat(groupArray(assumeNotNull(tm.actor_name)), ', ' ORDER BY tm.actor_name) AS all_actors
 FROM 
     TopMovies tm
 GROUP BY 

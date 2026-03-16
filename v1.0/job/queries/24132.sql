@@ -26,7 +26,7 @@ ActorRoles AS (
 MovieCompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies,
         COUNT(DISTINCT co.country_code) AS unique_country_count
     FROM 
         movie_companies mc
@@ -69,4 +69,4 @@ WHERE
     rm.rn <= 10 
 ORDER BY 
     movie_rank, rm.production_year DESC
-FETCH FIRST 20 ROWS ONLY;
+LIMIT 20;

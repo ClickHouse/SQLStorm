@@ -7,7 +7,7 @@ WITH part_summary AS (
         p.p_type,
         SUM(ps.ps_availqty) AS total_available_qty,
         AVG(ps.ps_supplycost) AS avg_supply_cost,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS supplier_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS supplier_names
     FROM 
         part p
     JOIN 
@@ -43,6 +43,6 @@ SELECT
 FROM 
     part_summary ps
 JOIN 
-    customer_orders co ON ps.p_brand = ANY(STRING_TO_ARRAY(co.c_mktsegment, ', '))
+    customer_orders co ON ps.p_brand = ANY(splitByString(', ', co.c_mktsegment))
 ORDER BY 
     total_spent DESC, total_available_qty DESC;

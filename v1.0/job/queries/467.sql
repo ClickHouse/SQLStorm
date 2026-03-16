@@ -41,7 +41,7 @@ SELECT
     tm.title AS movie_title,
     tm.production_year,
     COUNT(DISTINCT c.person_id) AS total_cast,
-    STRING_AGG(DISTINCT pd.name, ', ') AS cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pd.name))), ', ') AS cast_names,
     SUM(CASE WHEN pd.gender = 'F' THEN 1 ELSE 0 END) AS female_cast_count,
     SUM(CASE WHEN pd.gender IS NULL THEN 1 ELSE 0 END) AS unknown_gender_count
 FROM

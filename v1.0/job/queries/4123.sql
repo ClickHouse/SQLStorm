@@ -36,7 +36,7 @@ CompanyInfo AS (
 TitleInfo AS (
     SELECT 
         mk.movie_id, 
-        STRING_AGG(m.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(m.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
         INNER JOIN keyword m ON mk.keyword_id = m.id

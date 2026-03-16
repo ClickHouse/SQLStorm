@@ -15,11 +15,11 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')  
+        AND p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)  
 ),
 TagStatistics AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '>')) AS Tag,
+        arrayJoin(splitByString('>', Tags)) AS Tag,
         COUNT(*) AS TotalPosts,
         SUM(CASE WHEN Score > 0 THEN 1 ELSE 0 END) AS UpvotedPosts,
         SUM(CASE WHEN Score < 0 THEN 1 ELSE 0 END) AS DownvotedPosts
@@ -28,7 +28,7 @@ TagStatistics AS (
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        UNNEST(string_to_array(Tags, '>')) -- Group by the Tag from the UNNEST function
+        arrayJoin(splitByString('>', Tags)) -- Group by the Tag from the UNNEST function
 ),
 PostHistoryStats AS (
     SELECT 
@@ -58,7 +58,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStatistics ts ON ts.Tag = ANY(string_to_array(rp.Tags, '>'))
+    TagStatistics ts ON ts.Tag = ANY(splitByString('>', rp.Tags))
 JOIN 
     PostHistoryStats phs ON phs.PostId = rp.PostId
 WHERE 

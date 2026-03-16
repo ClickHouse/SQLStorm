@@ -59,8 +59,8 @@ LEFT JOIN
     UserReputation ur ON rp.OwnerUserId = ur.UserId
 WHERE 
     rp.Score > 0 
-    AND (DATE '2024-10-01' - rp.CreationDate) <= INTERVAL '30 days'
+    AND (toDate('2024-10-01') - rp.CreationDate) <= INTERVAL 30 DAY
     AND (rp.CommentCount > 5 OR ur.Reputation > 1000)
 ORDER BY 
     rp.Score DESC, rp.CreationDate DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

@@ -8,19 +8,19 @@ TopPosts AS (
     SELECT P.Id, P.Title, P.ViewCount, P.Score, 
            COALESCE(PL.RelatedPostId, -1) AS RelatedPostId,
            COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
-           STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
     FROM Posts P
     LEFT JOIN PostLinks PL ON P.Id = PL.PostId
     LEFT JOIN Comments C ON P.Id = C.PostId
-    LEFT JOIN LATERAL (SELECT unnest(string_to_array(P.Tags, ',')) AS TagName) T ON TRUE
-    WHERE P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+    LEFT JOIN (SELECT arrayJoin(splitByString(',', P.Tags)) AS TagName) T ON TRUE
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY P.Id, P.Title, P.ViewCount, P.Score, PL.RelatedPostId
     HAVING COUNT(DISTINCT T.TagName) > 2
 ),
 TopUsers AS (
     SELECT Id, Reputation
     FROM UserReputation
-    WHERE Reputation > 1000 AND LastAccessDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+    WHERE Reputation > 1000 AND LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostAnalytics AS (
     SELECT TP.Title, TP.ViewCount, TP.Score,

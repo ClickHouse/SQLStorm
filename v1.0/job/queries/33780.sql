@@ -30,7 +30,7 @@ SELECT
     m.production_year AS Production_Year,
     COALESCE(c.name, 'Unknown') AS Company_Name,
     COUNT(DISTINCT ci.person_id) AS Cast_Count,
-    STRING_AGG(DISTINCT ak.name, ', ') AS Aliases,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS Aliases,
     SUM(CASE WHEN ki.keyword IS NOT NULL THEN 1 ELSE 0 END) AS Keyword_Count,
     ROW_NUMBER() OVER(PARTITION BY m.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS Rank_Per_Year
 FROM

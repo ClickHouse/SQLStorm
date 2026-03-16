@@ -3,7 +3,7 @@ SELECT
     s.s_name,
     SUM(ps.ps_availqty) AS total_available_quantity,
     COUNT(DISTINCT o.o_orderkey) AS number_of_orders,
-    STRING_AGG(DISTINCT c.c_name, '; ') AS customer_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_name))), '; ') AS customer_names,
     MAX(l.l_discount) AS highest_discount,
     MIN(l.l_extendedprice) AS lowest_price
 FROM 
@@ -21,7 +21,7 @@ JOIN
 WHERE 
     p.p_name LIKE '%widget%' 
     AND s.s_nationkey IN (SELECT n.n_nationkey FROM nation n WHERE n.n_name = 'USA')
-    AND l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year'
+    AND l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
 GROUP BY 
     p.p_name, s.s_name
 HAVING 

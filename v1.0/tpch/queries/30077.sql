@@ -12,7 +12,7 @@ RecentOrders AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_orderdate, o.o_totalprice,
            ROW_NUMBER() OVER (PARTITION BY o.o_custkey ORDER BY o.o_orderdate DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
 ),
 TopCustomers AS (
     SELECT c.c_custkey, c.c_name, SUM(o.o_totalprice) AS total_spent

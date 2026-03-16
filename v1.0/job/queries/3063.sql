@@ -18,7 +18,7 @@ MovieDetails AS (
         rm.production_year,
         COALESCE(mi.info, 'N/A') AS movie_info,
         COUNT(mc.company_id) AS company_count,
-        STRING_AGG(cn.name, ', ') AS company_names
+        arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS company_names
     FROM 
         RankedMovies rm
     LEFT JOIN 
@@ -45,5 +45,4 @@ WHERE
 ORDER BY 
     md.production_year DESC, 
     md.title ASC
-OFFSET 5 ROWS 
-FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

@@ -15,7 +15,7 @@ high_profile_movies AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        ARRAY_AGG(DISTINCT a.name) AS actor_names,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actor_names,
         COUNT(DISTINCT c.company_id) AS company_count,
         CASE 
             WHEN COUNT(DISTINCT c.company_id) = 0 THEN 'Independent'

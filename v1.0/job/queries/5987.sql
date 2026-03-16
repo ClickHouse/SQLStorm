@@ -29,8 +29,8 @@ SELECT
     tm.title, 
     tm.production_year, 
     a.name AS actor_name, 
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT cn.name, ', ') AS companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS companies
 FROM 
     TopMovies tm
 JOIN 

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
 ),
 TagStatistics AS (
     SELECT 
@@ -33,7 +33,7 @@ CloseReasonsAnalysis AS (
     SELECT 
         p.Id AS PostId,
         COUNT(ph.Id) AS CloseReasonCount,
-        STRING_AGG(DISTINCT c.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Name))), ', ') AS CloseReasons
     FROM 
         Posts p
     LEFT JOIN 

@@ -15,7 +15,7 @@ WITH ranked_movies AS (
 movie_companies_info AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(cn.name || ' (' || ct.kind || ')', ', ') AS companies
+        arrayStringConcat(groupArray(assumeNotNull(cn.name || ' (' || ct.kind || ')')), ', ') AS companies
     FROM 
         movie_companies mc
     JOIN 

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments ON Posts.Id = Comments.PostId
     WHERE 
-        Posts.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        Posts.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         Posts.Id, Users.DisplayName
 ),
@@ -27,7 +27,7 @@ RecentVotes AS (
     FROM 
         Votes
     WHERE 
-        CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
     GROUP BY 
         PostId
 ),
@@ -66,7 +66,7 @@ CombinedData AS (
     LEFT JOIN 
         RecentVotes RV ON RP.PostId = RV.PostId
     LEFT JOIN 
-        BadgesCount BC ON RP.OwnerDisplayName = BC.UserId::text
+        BadgesCount BC ON RP.OwnerDisplayName = CAST(BC.UserId AS text)
 )
 SELECT 
     PostId,

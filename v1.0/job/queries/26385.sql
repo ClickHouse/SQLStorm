@@ -17,7 +17,7 @@ SELECT
     rc.movie_id,
     rc.movie_title,
     rc.production_year,
-    STRING_AGG(rc.actor_name, ', ' ORDER BY rc.actor_order) AS actor_list
+    arrayStringConcat(groupArray(assumeNotNull(rc.actor_name)), ', ' ORDER BY rc.actor_order) AS actor_list
 FROM
     RecursiveCast rc
 GROUP BY

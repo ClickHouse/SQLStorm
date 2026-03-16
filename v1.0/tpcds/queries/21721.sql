@@ -51,7 +51,7 @@ WITH RankedSales AS (
             WHEN SUM(cs.ws_net_profit) > 500 THEN 'Moderate Earnings'
             ELSE 'Low Earnings'
         END AS earnings_category,
-        STRING_AGG(DISTINCT CONCAT('Order: ', cs.ws_order_number), '; ') as order_details
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Order: ', cs.ws_order_number)))), '; ') as order_details
     FROM 
         CombinedSales cs
     GROUP BY 

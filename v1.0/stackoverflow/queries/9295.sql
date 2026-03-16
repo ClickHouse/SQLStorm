@@ -3,7 +3,7 @@ WITH RankedPosts AS (
     SELECT p.Id AS PostID, p.OwnerUserId, p.Title, p.Score, 
            ROW_NUMBER() OVER(PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT u.Id AS UserID, u.DisplayName, u.Reputation, 

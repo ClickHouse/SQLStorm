@@ -17,7 +17,7 @@ WITH RankedMovies AS (
 MovieInfo AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(DISTINCT mi.info, ', ') AS movie_infos
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS movie_infos
     FROM 
         RankedMovies m
     LEFT JOIN 

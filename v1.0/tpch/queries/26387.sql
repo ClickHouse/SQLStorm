@@ -7,7 +7,7 @@ SELECT
     AVG(ps.ps_supplycost) AS average_supply_cost,
     MAX(ps.ps_supplycost) AS max_supply_cost,
     MIN(ps.ps_supplycost) AS min_supply_cost,
-    STRING_AGG(DISTINCT s.s_comment, '; ') AS supplier_comments
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_comment))), '; ') AS supplier_comments
 FROM 
     part p
 JOIN 

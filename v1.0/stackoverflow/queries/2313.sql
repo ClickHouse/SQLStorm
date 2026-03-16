@@ -22,7 +22,7 @@ RecentUsers AS (
     FROM 
         Users u
     WHERE 
-        u.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+        u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 )
 SELECT 
     ru.DisplayName,
@@ -33,15 +33,15 @@ SELECT
         WHEN ru.Reputation > 1000 THEN 'Experienced User'
         ELSE 'New User'
     END AS UserCategory,
-    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed
 FROM 
     RecentUsers ru
 LEFT JOIN 
     Posts p ON ru.UserId = p.OwnerUserId AND p.PostTypeId = 1
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            UNNEST(string_to_array(p.Tags, '<>')) AS TagName
+            arrayJoin(splitByString('<>', p.Tags)) AS TagName
     ) t ON true
 LEFT JOIN 
     RankedPosts rp ON p.Id = rp.Id

@@ -26,7 +26,7 @@ GenreMovies AS (
 Directors AS (
     SELECT 
         c.movie_id,
-        STRING_AGG(DISTINCT a.name, ', ') AS directors_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS directors_list
     FROM 
         cast_info AS c
     JOIN 

@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         Comments cm ON p.Id = cm.PostId
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ), TopPosts AS (
@@ -43,7 +43,7 @@ SELECT
     tp.OwnerDisplayName,
     tp.CommentCount,
     COUNT(DISTINCT b.Id) AS BadgeCount,
-    ARRAY_AGG(DISTINCT bt.Name) AS BadgeNames
+    arrayDistinct(groupArray(assumeNotNull(bt.Name))) AS BadgeNames
 FROM 
     TopPosts tp
 LEFT JOIN 

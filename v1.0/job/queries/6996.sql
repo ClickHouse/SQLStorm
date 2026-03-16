@@ -28,8 +28,8 @@ MovieDetails AS (
         m.title,
         m.production_year,
         m.kind_id,
-        STRING_AGG(DISTINCT c.name, ',' ORDER BY c.name) AS cast_names,
-        STRING_AGG(DISTINCT cn.name, ',' ORDER BY cn.name) AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ',' ORDER BY c.name) AS cast_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ',' ORDER BY cn.name) AS company_names
     FROM 
         aka_title m
     LEFT JOIN 

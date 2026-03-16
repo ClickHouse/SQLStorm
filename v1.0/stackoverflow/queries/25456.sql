@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     JOIN 
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -39,7 +39,7 @@ PostDetails AS (
         trp.ViewCount,
         trp.Score,
         trp.TagName,
-        STRING_AGG(c.Text, ' | ') AS Comments,
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS Comments,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS Upvotes
     FROM 
         TopRankedPosts trp

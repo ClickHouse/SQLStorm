@@ -33,7 +33,7 @@ RecentOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 )
 SELECT 
     p.p_name,
@@ -43,7 +43,7 @@ SELECT
     SUM(l.l_discount) AS total_discount,
     MAX(l.l_tax) AS max_tax,
     CASE 
-        WHEN MAX(l.l_shipdate) > DATE '1997-01-01' THEN 'Shipped Recently'
+        WHEN MAX(l.l_shipdate) > toDate('1997-01-01') THEN 'Shipped Recently'
         ELSE 'Shipped Long Ago'
     END AS shipping_status
 FROM 

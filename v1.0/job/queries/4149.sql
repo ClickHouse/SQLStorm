@@ -26,7 +26,7 @@ keyword_count AS (
 company_info AS (
     SELECT 
         mc.movie_id, 
-        ARRAY_AGG(DISTINCT cn.name) AS company_names
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names
     FROM 
         movie_companies mc
     JOIN 

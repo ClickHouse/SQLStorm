@@ -31,7 +31,7 @@ SELECT
     asum.total_movies,
     asum.avg_year,
     asum.latest_year,
-    STRING_AGG(DISTINCT at.movie_title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(at.movie_title))), ', ') AS movie_titles,
     COALESCE(NULLIF(SUM(CASE WHEN asum.latest_year < 2000 THEN 1 ELSE 0 END), 0), -1) AS pre_2000_movies_count,
     CASE 
         WHEN asum.total_movies = 0 THEN 'No movies available'

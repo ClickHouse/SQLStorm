@@ -35,7 +35,7 @@ PopularPosts AS (
         COUNT(V.Id) AS VoteCount
     FROM Posts P
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '30 DAY'
+    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY P.Id, P.Title, P.Score, P.ViewCount, P.OwnerUserId
     HAVING COUNT(V.Id) > 10
 ),

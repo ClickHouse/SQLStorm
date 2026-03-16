@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        STRING_AGG(t.TagName, ', ') AS Tags,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
         u.DisplayName AS OwnerDisplayName
     FROM 
@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag_name ON tag_name IS NOT NULL
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_name ON tag_name IS NOT NULL
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
@@ -29,7 +29,7 @@ TopTags AS (
     FROM 
         Posts p
     JOIN 
-        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag_name ON tag_name IS NOT NULL
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_name ON tag_name IS NOT NULL
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
@@ -43,7 +43,7 @@ TopTags AS (
 PostHistoryAggregates AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
         MIN(ph.CreationDate) AS FirstHistoryDate,
         COUNT(ph.Id) AS HistoryCount
     FROM 
@@ -70,7 +70,7 @@ FROM
 LEFT JOIN 
     PostHistoryAggregates pga ON rp.PostId = pga.PostId
 JOIN 
-    TopTags rt ON rt.TagName = ANY(STRING_TO_ARRAY(rp.Tags, ', '))
+    TopTags rt ON rt.TagName = ANY(splitByString(', ', rp.Tags))
 WHERE 
     rp.Rank <= 5 
 ORDER BY 

@@ -24,7 +24,7 @@ cast_details AS (
 movie_info_agg AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(mi.info, '; ') AS info_details,
+        arrayStringConcat(groupArray(assumeNotNull(mi.info)), '; ') AS info_details,
         COUNT(mi.note) AS note_count
     FROM 
         movie_info m

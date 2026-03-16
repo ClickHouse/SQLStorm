@@ -30,7 +30,7 @@ SELECT
     title.title AS movie_title,
     title.production_year,
     COUNT(DISTINCT ci.role_id) AS role_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     COALESCE(mc.company_count, 0) AS company_count,
     ROW_NUMBER() OVER (PARTITION BY p.id ORDER BY title.production_year DESC) AS rn
 FROM 

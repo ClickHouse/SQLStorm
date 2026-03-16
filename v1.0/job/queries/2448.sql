@@ -14,7 +14,7 @@ MoviesWithKeywords AS (
         rm.movie_id,
         rm.title,
         rm.production_year,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         RankedMovies rm
     LEFT JOIN 

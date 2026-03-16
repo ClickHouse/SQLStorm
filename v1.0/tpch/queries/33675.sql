@@ -26,7 +26,7 @@ WITH RECURSIVE OrderHierarchy AS (
         OrderHierarchy oh ON oh.o_custkey = o.o_custkey 
     WHERE 
         o.o_orderstatus IN ('F', 'C')  
-        AND o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year'  
+        AND o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR  
 ), AggregateLineItems AS (
     SELECT 
         l.l_orderkey, 

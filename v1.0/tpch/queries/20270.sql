@@ -65,4 +65,4 @@ WHERE
     (sa.total_available IS NULL OR sa.max_supply_cost < 100.00) AND 
     (od.total_line_value > 500 OR cs.c_mktsegment like '%Retail%')
 ORDER BY rp.p_retailprice DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

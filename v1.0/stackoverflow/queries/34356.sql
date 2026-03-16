@@ -24,7 +24,7 @@ PostLinksAggregated AS (
     SELECT 
         p.Id AS PostId,
         COUNT(pl.RelatedPostId) AS LinkCount,
-        STRING_AGG(DISTINCT lt.Name, ', ') AS LinkTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lt.Name))), ', ') AS LinkTypes
     FROM Posts p
     LEFT JOIN PostLinks pl ON p.Id = pl.PostId
     LEFT JOIN LinkTypes lt ON pl.LinkTypeId = lt.Id

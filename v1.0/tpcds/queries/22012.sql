@@ -62,7 +62,7 @@ FROM CombinedReturns C
 JOIN date_dim D ON D.d_date_sk = (
     SELECT MAX(d_date_sk) 
     FROM date_dim 
-    WHERE d_date <= DATE '2002-10-01'
+    WHERE d_date <= toDate('2002-10-01')
 )
 WHERE C.profit_ratio IS NOT NULL
 AND (C.combined_return_amt > 1000 OR (C.store_return_quantity IS NULL AND C.web_return_count > 5))

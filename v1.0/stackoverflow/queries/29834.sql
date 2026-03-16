@@ -39,7 +39,7 @@ SELECT
     ) AS CommentCount,
     (
         SELECT 
-            STRING_AGG(DISTINCT CONCAT(b.Name, ' (', b.Class, ')'), '; ') 
+            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(b.Name, ' (', b.Class, ')')))), '; ') 
         FROM 
             Badges b 
         WHERE 

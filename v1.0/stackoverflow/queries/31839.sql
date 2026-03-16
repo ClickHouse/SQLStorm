@@ -37,7 +37,7 @@ LatestPostStats AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.OwnerUserId
 ),
@@ -64,7 +64,7 @@ SELECT
     cu.MaxViewCount,
     cu.CommentCount,
     COUNT(DISTINCT ph.Id) AS TotalPostHistoryActions,
-    STRING_AGG(DISTINCT pht.Name, ', ') AS RecentPostHistoryTypeNames
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS RecentPostHistoryTypeNames
 FROM 
     TopUsers cu
 LEFT JOIN 

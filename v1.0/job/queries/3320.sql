@@ -18,7 +18,7 @@ WITH movie_details AS (
 directors AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(d.name, ', ' ORDER BY d.name) AS director_names
+        arrayStringConcat(groupArray(assumeNotNull(d.name)), ', ' ORDER BY d.name) AS director_names
     FROM 
         movie_companies mc
     JOIN 
@@ -31,7 +31,7 @@ directors AS (
 movies_with_keywords AS (
     SELECT 
         m.movie_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN 

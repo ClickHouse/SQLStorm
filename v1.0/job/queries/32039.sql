@@ -32,7 +32,7 @@ SELECT
     m.title AS movie_title,
     m.production_year,
     COUNT(DISTINCT c.role_id) AS role_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     CASE 
         WHEN c.nr_order IS NULL THEN 'Unknown Order'
         ELSE CAST(c.nr_order AS VARCHAR)

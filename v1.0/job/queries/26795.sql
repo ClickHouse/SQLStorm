@@ -46,7 +46,7 @@ SELECT
     tm.production_year,
     tm.cast_count,
     tm.keyword_count,
-    ARRAY_AGG(DISTINCT ca.name) AS cast_members
+    arrayDistinct(groupArray(assumeNotNull(ca.name))) AS cast_members
 FROM 
     TopMovies tm
 JOIN 

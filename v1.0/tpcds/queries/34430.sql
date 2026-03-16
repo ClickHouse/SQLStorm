@@ -59,4 +59,4 @@ WHERE
     OR (cd_marital_status = 'M' AND total_sales > 1000)
 ORDER BY 
     total_sales DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

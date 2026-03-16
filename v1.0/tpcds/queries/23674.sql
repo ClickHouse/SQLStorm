@@ -56,4 +56,4 @@ LEFT JOIN CustomerDemographics cd ON r.sr_customer_sk = cd.c_customer_sk
 WHERE (cd.cd_marital_status IS NULL OR cd.cd_marital_status <> 'D')
 AND cr.total_returns > (SELECT AVG(total_returns) FROM CustomerReturns)
 ORDER BY cr.total_return_value DESC, cr.total_returns ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

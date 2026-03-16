@@ -6,7 +6,7 @@ WITH PostStats AS (
         P.Score,
         P.ViewCount,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
-        ARRAY_AGG(DISTINCT SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2) ORDER BY SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)) AS TagsList,
+        arrayDistinct(groupArray(assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2) ORDER BY SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS TagsList,
         U.DisplayName AS OwnerDisplayName,
         U.Reputation AS OwnerReputation
     FROM 
@@ -16,7 +16,7 @@ WITH PostStats AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
     GROUP BY 
         P.Id, P.Title, P.Score, P.ViewCount, U.DisplayName, U.Reputation
 ),

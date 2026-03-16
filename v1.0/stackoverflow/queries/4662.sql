@@ -32,7 +32,7 @@ RecentEdits AS (
         PH.Comment
     FROM PostHistory PH
     WHERE PH.PostHistoryTypeId IN (4, 5, 6) 
-    AND PH.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    AND PH.CreationDate >= now64(6) - INTERVAL 30 DAY
 ),
 UserScore AS (
     SELECT 

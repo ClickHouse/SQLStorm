@@ -14,7 +14,7 @@ EnhancedCastInfo AS (
     SELECT 
         ci.movie_id,
         COUNT(DISTINCT ci.person_id) AS unique_actors,
-        STRING_AGG(DISTINCT CONCAT_WS(' ', a.name, a.surname_pcode), ', ') AS actor_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' ', a.name, a.surname_pcode)))), ', ') AS actor_list
     FROM 
         cast_info ci
     JOIN 

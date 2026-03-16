@@ -10,7 +10,7 @@ SELECT
         WHEN SUM(l.l_quantity) BETWEEN 50 AND 100 THEN 'Medium Volume'
         ELSE 'Low Volume'
     END AS volume_category,
-    STRING_AGG(DISTINCT c.c_address, ', ') AS customer_addresses
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.c_address))), ', ') AS customer_addresses
 FROM 
     part p
 JOIN 

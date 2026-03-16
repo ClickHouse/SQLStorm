@@ -4,7 +4,7 @@ SELECT
     s.s_name AS supplier_name, 
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_container, ')'), ', ') AS part_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_container, ')')))), ', ') AS part_names,
     COUNT(DISTINCT c.c_custkey) AS unique_customers
 FROM 
     region r

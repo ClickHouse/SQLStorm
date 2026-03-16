@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         COALESCE(p.Score, 0) AS Score,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.ViewCount DESC, COALESCE(p.Score, 0) DESC) AS Rank,
-        ARRAY_AGG(t.TagName) AS Tags
+        groupArray(assumeNotNull(t.TagName)) AS Tags
     FROM 
         Posts p
     LEFT JOIN 

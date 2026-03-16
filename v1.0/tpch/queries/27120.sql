@@ -17,7 +17,7 @@ PartSuppSummary AS (
 LineItemAnalysis AS (
     SELECT l.l_orderkey, COUNT(*) AS total_line_items, 
            SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-           STRING_AGG(DISTINCT l.l_shipmode, ', ' ORDER BY l.l_shipmode ASC) AS unique_ship_modes
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ' ORDER BY l.l_shipmode ASC) AS unique_ship_modes
     FROM lineitem l
     GROUP BY l.l_orderkey
 )

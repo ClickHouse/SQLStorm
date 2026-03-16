@@ -24,7 +24,7 @@ RecentPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.Id, p.OwnerUserId, p.PostTypeId, p.CreationDate, p.LastActivityDate
 ),
 TopThreePosts AS (
@@ -57,7 +57,7 @@ SELECT
         ELSE 'Established User'
     END AS UserReputationCategory,
     (SELECT COUNT(*) FROM Posts p2 WHERE p2.OwnerUserId = tp.OwnerUserId AND p2.CreationDate < tp.CreationDate) AS PostsBeforeCurrent,
-    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Tags t 
      JOIN Posts p3 ON p3.Tags LIKE '%' || t.TagName || '%' 
      WHERE p3.Id = tp.PostId) AS TagsUsed

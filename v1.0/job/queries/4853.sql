@@ -9,7 +9,7 @@ WITH rated_movies AS (
     LEFT JOIN movie_info mi ON m.id = mi.movie_id AND mi.info_type_id = (SELECT id FROM info_type WHERE info = 'rating')
     LEFT JOIN (SELECT 
                     movie_id,
-                    STRING_AGG(info, ', ') AS rating
+                    arrayStringConcat(groupArray(assumeNotNull(info)), ', ') AS rating
                 FROM movie_info 
                 WHERE info_type_id IN (SELECT id FROM info_type WHERE info LIKE '%rating%')
                 GROUP BY movie_id) r ON m.id = r.movie_id
@@ -19,7 +19,7 @@ cast_aggregates AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        STRING_AGG(DISTINCT a.name, ', ') AS cast_members
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS cast_members
     FROM cast_info c
     JOIN aka_name a ON c.person_id = a.person_id
     GROUP BY c.movie_id
@@ -27,7 +27,7 @@ cast_aggregates AS (
 keyword_summary AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
     GROUP BY mk.movie_id

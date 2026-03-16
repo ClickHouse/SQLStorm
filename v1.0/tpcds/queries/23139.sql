@@ -35,7 +35,7 @@ SELECT
     ROW_NUMBER() OVER (PARTITION BY ch.level ORDER BY COALESCE(ps.total_profit, 0) DESC) AS Profit_Rank
 FROM CustomerHierarchy ch
 LEFT JOIN PurchaseSummary ps ON ch.c_customer_sk = ps.cd_demo_sk
-LEFT JOIN StoreStats ss ON ss.s_store_sk = (SELECT s.s_store_sk FROM store s ORDER BY RANDOM() LIMIT 1)
+LEFT JOIN StoreStats ss ON ss.s_store_sk = (SELECT s.s_store_sk FROM store s ORDER BY rand() LIMIT 1)
 WHERE NOT EXISTS (
     SELECT 1 
     FROM store_returns sr 
@@ -44,4 +44,4 @@ WHERE NOT EXISTS (
 )
 GROUP BY ch.c_customer_sk, ch.c_first_name, ch.c_last_name, ch.level, ps.total_profit, ss.total_sales
 ORDER BY Customer_Name
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

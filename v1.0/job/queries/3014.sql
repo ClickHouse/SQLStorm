@@ -23,7 +23,7 @@ filtered_movies AS (
 movie_info_aggregates AS (
     SELECT 
         m.movie_id,
-        string_agg(m.info, ', ') AS movie_info_details,
+        arrayStringConcat(groupArray(assumeNotNull(m.info)), ', ') AS movie_info_details,
         MAX(CASE WHEN it.info = 'runtime' THEN m.info END) AS runtime,
         MAX(CASE WHEN it.info = 'genre' THEN m.info END) AS genre
     FROM 

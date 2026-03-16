@@ -25,7 +25,7 @@ PostStatistics AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2  
-    WHERE p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId
 ),
 RecentPostHistory AS (
@@ -35,7 +35,7 @@ RecentPostHistory AS (
         COUNT(*) AS HistoryCount,
         MAX(ph.CreationDate) AS LastEditDate
     FROM PostHistory ph
-    WHERE ph.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '3 months'
+    WHERE ph.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 3 MONTH
     GROUP BY ph.PostId, ph.PostHistoryTypeId
 )
 SELECT 

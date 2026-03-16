@@ -46,7 +46,7 @@ SELECT
         WHEN cqr.total_line_value > 1000 THEN 'High Value'
         ELSE 'Low Value'
     END AS order_value_category,
-    STRING_AGG(CONCAT(n.n_name, ' (', r.r_name, ')'), '; ') FILTER (WHERE n.n_nationkey IS NOT NULL) AS associated_nations
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(n.n_name, ' (', r.r_name, ')'))), '; ') FILTER (WHERE n.n_nationkey IS NOT NULL) AS associated_nations
 FROM complex_query cqr
 LEFT JOIN nation_regions n ON n.n_nationkey = cqr.c_custkey % 25  
 LEFT JOIN region r ON n.region_name = r.r_name

@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     FROM PostHistory ph
     JOIN CloseReasonTypes cr ON CAST(ph.Comment AS INTEGER) = cr.Id
     WHERE ph.PostHistoryTypeId = 10
-    AND ph.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
+    AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ), UserActivity AS (
     SELECT 
         u.Id AS UserId,
@@ -32,7 +32,7 @@ WITH RankedPosts AS (
 ), UserBadges AS (
     SELECT 
         b.UserId,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM Badges b
     GROUP BY b.UserId
 ), Combinations AS (

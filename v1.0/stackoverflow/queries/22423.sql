@@ -34,7 +34,7 @@ TopPosts AS (
         LEFT JOIN UserVotes uc ON p.OwnerUserId = uc.UserId
         LEFT JOIN RecursivePostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND (SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id) > 5
     GROUP BY 
         p.Id, p.Title, ph.CreationDate, uc.Upvotes, uc.Downvotes
@@ -47,7 +47,7 @@ FinalMetrics AS (
         tp.LastHistoryDate,
         CASE 
             WHEN tp.LastHistoryDate IS NULL THEN 'Never changed'
-            WHEN tp.LastHistoryDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 'Recently Active'
+            WHEN tp.LastHistoryDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Recently Active'
             ELSE 'Old Activity'
         END AS ActivityStatus
     FROM 

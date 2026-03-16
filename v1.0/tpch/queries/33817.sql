@@ -31,9 +31,9 @@ LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
 LEFT JOIN part p ON ps.ps_partkey = p.p_partkey
 LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
 WHERE l.l_returnflag = 'N'
-  AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
+  AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
 GROUP BY r.r_name, 
          r.r_regionkey
 HAVING COUNT(DISTINCT n.n_nationkey) > 1
 ORDER BY region_rank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

@@ -6,8 +6,8 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.AnswerCount,
-        COALESCE(NULLIF(ARRAY_AGG(v.VoteTypeId) FILTER (WHERE v.VoteTypeId = 2), '{}'), ARRAY[0]) AS UpvoteTypes,
-        COALESCE(NULLIF(ARRAY_AGG(v.VoteTypeId) FILTER (WHERE v.VoteTypeId = 3), '{}'), ARRAY[0]) AS DownvoteTypes,
+        COALESCE(NULLIF(groupArray(assumeNotNull(v.VoteTypeId)) FILTER (WHERE v.VoteTypeId = 2), '{}'), ARRAY[0]) AS UpvoteTypes,
+        COALESCE(NULLIF(groupArray(assumeNotNull(v.VoteTypeId)) FILTER (WHERE v.VoteTypeId = 3), '{}'), ARRAY[0]) AS DownvoteTypes,
         ROW_NUMBER() OVER (ORDER BY p.ViewCount DESC) AS ViewRank,
         ROW_NUMBER() OVER (ORDER BY p.AnswerCount DESC) AS AnswerRank
     FROM 

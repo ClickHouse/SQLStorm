@@ -32,7 +32,7 @@ SELECT
     h.production_year,
     COUNT(DISTINCT c.id) AS actor_count,
     COUNT(DISTINCT mc.company_id) AS production_company_count,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
     AVG(CASE WHEN mv.production_year IS NOT NULL THEN mv.production_year END) AS avg_production_year
 FROM
     movie_hierarchy h

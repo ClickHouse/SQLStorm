@@ -47,7 +47,7 @@ LEFT JOIN
 JOIN 
     PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
 WHERE 
-    ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'  
+    ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY  
 GROUP BY 
     trp.PostId, trp.Title, trp.Score, trp.CreationDate, trp.OwnerDisplayName, pht.Name
 ORDER BY 

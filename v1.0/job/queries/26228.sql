@@ -34,8 +34,8 @@ movie_details AS (
         tt.aka_name,
         tt.movie_title,
         tt.production_year,
-        array_agg(DISTINCT k.keyword) AS keywords,
-        array_agg(DISTINCT c.kind) AS company_types
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(c.kind))) AS company_types
     FROM 
         top_titles tt
     LEFT JOIN 

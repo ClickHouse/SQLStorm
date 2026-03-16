@@ -23,9 +23,9 @@ AggregatedData AS (
         COUNT(DISTINCT cd.cd_gender) AS distinct_genders,
         COUNT(DISTINCT cd.cd_marital_status) AS distinct_marital_status,
         COUNT(DISTINCT cd.cd_education_status) AS distinct_education_status,
-        ARRAY_AGG(DISTINCT cd.full_address) AS address_list,
-        ARRAY_AGG(DISTINCT cd.ca_city) AS city_list,
-        ARRAY_AGG(DISTINCT cd.ca_state) AS state_list
+        arrayDistinct(groupArray(assumeNotNull(cd.full_address))) AS address_list,
+        arrayDistinct(groupArray(assumeNotNull(cd.ca_city))) AS city_list,
+        arrayDistinct(groupArray(assumeNotNull(cd.ca_state))) AS state_list
     FROM 
         CustomerData cd
     GROUP BY 

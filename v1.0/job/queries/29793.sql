@@ -4,8 +4,8 @@ WITH RankedMovies AS (
         t.title,
         t.production_year,
         COUNT(DISTINCT mcc.company_id) AS production_companies,
-        ARRAY_AGG(DISTINCT c.name) AS cast_names,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY COUNT(DISTINCT mcc.company_id) DESC) AS rank
     FROM 
         aka_title t
@@ -39,8 +39,8 @@ SELECT
     trm.title,
     trm.production_year,
     trm.production_companies,
-    string_agg(DISTINCT trm.cast_names::text, ', ') AS all_cast_names,
-    string_agg(DISTINCT trm.keywords::text, ', ') AS all_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(trm.cast_names AS text)))), ', ') AS all_cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(trm.keywords AS text)))), ', ') AS all_keywords
 FROM 
     TopRankedMovies trm
 GROUP BY 

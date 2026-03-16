@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -47,7 +47,7 @@ TopPosts AS (
         rp.CreationDate,
         rp.Score,
         rp.OwnerUserId,
-        (EXTRACT(EPOCH FROM cast('2024-10-01 12:34:56' as timestamp)) - EXTRACT(EPOCH FROM rp.CreationDate)) / 86400 AS AgeInDays,
+        (toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6)) - toUnixTimestamp(rp.CreationDate)) / 86400 AS AgeInDays,
         CASE 
             WHEN phs.EditCount IS NULL THEN 0
             ELSE phs.EditCount

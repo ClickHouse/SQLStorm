@@ -34,7 +34,7 @@ SELECT
     COUNT(DISTINCT c.person_id) AS total_cast,
     SUM(CASE WHEN c.person_role_id = 1 THEN 1 ELSE 0 END) AS total_actors,
     SUM(CASE WHEN c.person_role_id = 2 THEN 1 ELSE 0 END) AS total_directors,
-    STRING_AGG(DISTINCT an.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actor_names,
     RANK() OVER (PARTITION BY mh.production_year ORDER BY mh.level DESC) AS year_rank
 FROM 
     movie_hierarchy mh

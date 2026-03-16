@@ -15,12 +15,12 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ), CloseStats AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseReasonsCount,
-        STRING_AGG(crt.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(crt.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -31,7 +31,7 @@ WITH RankedPosts AS (
         ph.PostId
 ), TopTags AS (
     SELECT 
-        UNNEST(STRING_TO_ARRAY(Tags, ',')) AS TagName
+        arrayJoin(splitByString(',', Tags)) AS TagName
     FROM 
         RankedPosts
     WHERE 
@@ -51,7 +51,7 @@ FROM
 LEFT JOIN 
     CloseStats ct ON rp.PostId = ct.PostId
 JOIN 
-    TopTags tt ON tt.TagName = ANY(STRING_TO_ARRAY(rp.Tags, ','))
+    TopTags tt ON tt.TagName = ANY(splitByString(',', rp.Tags))
 WHERE 
     rp.TagRank = 1
 ORDER BY 

@@ -37,7 +37,7 @@ SELECT ch.c_first_name, ch.c_last_name, ch.hierarchy,
        COALESCE(SUM(cc.total_sales), 0) AS grand_total_sales,
        COUNT(DISTINCT isales.i_item_sk) AS distinct_items_sold,
        AVG(CASE WHEN cc.total_sales > 0 THEN cc.total_sales ELSE NULL END) AS avg_sales_per_item,
-       STRING_AGG(DISTINCT isales.i_item_desc, ', ' ORDER BY isales.i_item_desc) AS item_descriptions
+       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(isales.i_item_desc))), ', ' ORDER BY isales.i_item_desc) AS item_descriptions
 FROM ComplexCalculation cc
 JOIN CustomerHierarchy ch ON cc.c_customer_sk = ch.c_customer_sk
 LEFT JOIN ItemSales isales ON cc.i_item_sk = isales.i_item_sk

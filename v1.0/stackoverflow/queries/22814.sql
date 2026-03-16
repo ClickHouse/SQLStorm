@@ -56,7 +56,7 @@ SELECT
     rm.AvgScore,
     rm.LatestQuestion,
     rm.UserType,
-    COALESCE(STRING_AGG(DISTINCT b.Name, ', '), 'No Badges') AS Badges
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', '), 'No Badges') AS Badges
 FROM ReflectiveMetrics rm
 LEFT JOIN Badges b ON rm.UserId = b.UserId
 GROUP BY 

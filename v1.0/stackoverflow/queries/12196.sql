@@ -4,7 +4,7 @@ SELECT
     AVG(p.Score) AS AverageScore,
     AVG(p.ViewCount) AS AverageViewCount,
     SUM(CASE WHEN p.PostTypeId = 1 THEN p.AnswerCount ELSE 0 END) AS TotalAnswers,
-    AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)) / 3600) AS AverageTimeToActivityHours
+    AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate)) / 3600) AS AverageTimeToActivityHours
 FROM 
     Posts p
 JOIN 

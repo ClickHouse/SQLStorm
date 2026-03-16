@@ -26,7 +26,7 @@ FilteredPosts AS (
     FROM 
         RecursivePostCTE
     WHERE 
-        CreationDate > DATE '2024-10-01' - INTERVAL '1 year'
+        CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR
 ),
 PostComments AS (
     SELECT 

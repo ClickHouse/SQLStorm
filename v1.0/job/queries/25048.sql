@@ -4,8 +4,8 @@ WITH RECURSIVE movie_hierarchy AS (
         mt.title,
         mt.production_year,
         mt.kind_id,
-        COALESCE(STRING_AGG(DISTINCT ca.name, ', '), '') AS cast_names,
-        COALESCE(STRING_AGG(DISTINCT cn.name, ', '), '') AS company_names
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca.name))), ', '), '') AS cast_names,
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', '), '') AS company_names
     FROM 
         aka_title mt
     LEFT JOIN 
@@ -25,7 +25,7 @@ WITH RECURSIVE movie_hierarchy AS (
 keyword_summary AS (
     SELECT 
         mt.id AS title_id,
-        STRING_AGG(k.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
     FROM 
         aka_title mt
     LEFT JOIN 

@@ -8,7 +8,7 @@ SELECT
     MAX(l.l_shipdate) AS last_ship_date,
     MIN(l.l_shipdate) AS first_ship_date,
     AVG(l.l_discount) AS average_discount,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS regions_supply,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS regions_supply,
     SUBSTRING(p.p_comment, 1, 10) AS short_comment
 FROM 
     part p

@@ -47,9 +47,9 @@ SELECT
 FROM 
     TopCustomers tc
 LEFT JOIN 
-    MonthlySales ms ON ms.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') AND ms.d_month_seq = EXTRACT(MONTH FROM DATE '2002-10-01')
+    MonthlySales ms ON ms.d_year = toYear(toDate('2002-10-01')) AND ms.d_month_seq = toMonth(toDate('2002-10-01'))
 WHERE 
     tc.total_spent > (SELECT AVG(total_spent) FROM TopCustomers) 
 ORDER BY 
     tc.total_spent DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

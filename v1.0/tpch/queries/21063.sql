@@ -25,9 +25,9 @@ RecentOrders AS (
         o.o_custkey,
         o.o_totalprice,
         RANK() OVER (ORDER BY o.o_orderdate DESC) AS order_rank,
-        EXTRACT(YEAR FROM o.o_orderdate) AS order_year
+        toYear(o.o_orderdate) AS order_year
     FROM orders o
-    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
+    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
 ),
 SupplierPartAvailability AS (
     SELECT 
@@ -50,8 +50,8 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     SUM(l.total_revenue) AS total_revenue,
     COUNT(DISTINCT ps.ps_partkey) AS unique_parts_supplied,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names,
-    ARRAY_AGG(DISTINCT n.n_name) AS supplying_nations
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names,
+    arrayDistinct(groupArray(assumeNotNull(n.n_name))) AS supplying_nations
 FROM RankedSuppliers r
 FULL OUTER JOIN HighValueCustomers h ON r.s_suppkey = h.c_custkey
 LEFT JOIN RecentOrders o ON h.c_custkey = o.o_custkey

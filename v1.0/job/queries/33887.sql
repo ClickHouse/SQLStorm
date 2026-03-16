@@ -39,7 +39,7 @@ movie_details AS (
     SELECT 
         t.title,
         t.production_year,
-        STRING_AGG(cwr.character_name || ' (' || cwr.role_name || ')', ', ') AS cast_info,
+        arrayStringConcat(groupArray(assumeNotNull(cwr.character_name || ' (' || cwr.role_name || ')')), ', ') AS cast_info,
         mh.depth AS sequel_depth
     FROM 
         title t

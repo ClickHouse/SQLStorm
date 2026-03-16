@@ -28,7 +28,7 @@ PopularQuestions AS (
     WHERE 
         p.PostTypeId = 1 
         AND p.Score IS NOT NULL
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 RecentActivities AS (
     SELECT 
@@ -83,7 +83,7 @@ SELECT
         ELSE 'Inactive User' 
     END) AS UserActivityStatus,
     (SELECT 
-        STRING_AGG(DISTINCT COALESCE(t.TagName, 'No Tags'), ', ') 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(t.TagName, 'No Tags')))), ', ') 
      FROM 
         Posts p 
      LEFT JOIN 

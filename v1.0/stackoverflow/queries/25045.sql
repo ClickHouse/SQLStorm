@@ -63,7 +63,7 @@ SELECT
         SELECT 1 FROM Votes v
         WHERE v.PostId = pd.PostId AND v.VoteTypeId = 2 
     ) AS HasUpvotes,
-    (SELECT STRING_AGG(DISTINCT bt.Name, ', ') 
+    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(bt.Name))), ', ') 
         FROM Badges b 
         JOIN Users u ON b.UserId = u.Id 
         JOIN PostHistoryTypes bt ON b.Class = bt.Id 

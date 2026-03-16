@@ -18,7 +18,7 @@ WITH RegionSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate >= DATE '1995-01-01' AND o.o_orderdate < DATE '1996-01-01'
+        o.o_orderdate >= toDate('1995-01-01') AND o.o_orderdate < toDate('1996-01-01')
     GROUP BY 
         r.r_name
 ), CustomerSegment AS (
@@ -31,7 +31,7 @@ WITH RegionSales AS (
     JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate >= DATE '1995-01-01' AND o.o_orderdate < DATE '1996-01-01'
+        o.o_orderdate >= toDate('1995-01-01') AND o.o_orderdate < toDate('1996-01-01')
     GROUP BY 
         c.c_mktsegment
 )

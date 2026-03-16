@@ -15,12 +15,12 @@ WITH TaggedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        LATERAL (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag) AS tags ON TRUE
+        (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tag) AS tags ON TRUE
     LEFT JOIN 
         Tags ts ON ts.TagName = tags.tag
     WHERE 
         pt.Name = 'Question' 
-        AND p.CreationDate >= DATE '2022-01-01'
+        AND p.CreationDate >= toDate('2022-01-01')
 ),
 TopTagCounts AS (
     SELECT 

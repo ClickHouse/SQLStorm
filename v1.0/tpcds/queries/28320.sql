@@ -3,8 +3,8 @@ WITH address_summary AS (
     SELECT 
         a.ca_country,
         COUNT(DISTINCT c.c_customer_sk) AS customer_count,
-        STRING_AGG(DISTINCT a.ca_city, ', ') AS cities,
-        STRING_AGG(DISTINCT a.ca_state, ', ') AS states
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.ca_city))), ', ') AS cities,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.ca_state))), ', ') AS states
     FROM 
         customer_address a
     JOIN 

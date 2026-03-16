@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
+        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
 ),
 UserStatistics AS (
     SELECT 
@@ -46,11 +46,11 @@ RecentChanges AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS ChangesCount,
-        STRING_AGG(CONCAT(ph.UserDisplayName, ' (', ph.EditComment, ')'), '; ') AS ChangeDetails
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.UserDisplayName, ' (', ph.EditComment, ')'))), '; ') AS ChangeDetails
     FROM 
         PostHistoryDetails ph
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL '3 months'
+        ph.CreationDate >= CURRENT_DATE - INTERVAL 3 MONTH
     GROUP BY 
         ph.PostId
 )

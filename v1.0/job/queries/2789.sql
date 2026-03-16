@@ -27,7 +27,7 @@ TopMovies AS (
         rm.title,
         rm.production_year,
         rm.actor_count,
-        STRING_AGG(mg.genre, ', ') AS genres
+        arrayStringConcat(groupArray(assumeNotNull(mg.genre)), ', ') AS genres
     FROM 
         RankedMovies rm
     LEFT JOIN 

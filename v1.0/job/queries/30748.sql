@@ -32,7 +32,7 @@ SELECT
     mh.production_year,
     COUNT(DISTINCT ci.person_id) AS cast_count,
     SUM(CASE WHEN ci.note IS NOT NULL THEN 1 ELSE 0 END) AS notes_count,
-    STRING_AGG(DISTINCT an.name, ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(an.name))), ', ') AS actor_names,
     ROW_NUMBER() OVER (PARTITION BY mh.production_year ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS rank_within_year
 FROM 
     MovieHierarchy mh

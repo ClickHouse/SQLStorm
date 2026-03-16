@@ -4,7 +4,7 @@ WITH RECURSIVE MovieCTE AS (
         mt.id AS movie_id,
         mt.title,
         mt.production_year,
-        ARRAY_AGG(DISTINCT cn.name) AS companies,
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS companies,
         COUNT(DISTINCT ci.person_id) AS cast_count
     FROM 
         aka_title AS mt
@@ -23,7 +23,7 @@ WITH RECURSIVE MovieCTE AS (
 CastRoles AS (
     SELECT 
         ci.movie_id,
-        ARRAY_AGG(DISTINCT rt.role) AS roles,
+        arrayDistinct(groupArray(assumeNotNull(rt.role))) AS roles,
         COUNT(DISTINCT ci.person_id) AS total_roles
     FROM 
         cast_info AS ci

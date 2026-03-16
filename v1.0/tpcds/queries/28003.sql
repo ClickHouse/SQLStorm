@@ -6,8 +6,8 @@ SELECT
     ca.ca_state,
     COUNT(DISTINCT ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_spent,
-    STRING_AGG(DISTINCT i.i_product_name, ', ') AS purchased_items,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), ', ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used
 FROM 
     customer AS c
 JOIN 

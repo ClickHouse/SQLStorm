@@ -6,7 +6,7 @@ SELECT
     r.role AS actor_role,
     ct.kind AS cast_type,
     COUNT(k.keyword) AS keyword_count,
-    STRING_AGG(k.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keywords
 FROM 
     aka_name a
 JOIN 

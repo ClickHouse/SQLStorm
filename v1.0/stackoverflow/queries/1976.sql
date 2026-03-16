@@ -47,7 +47,7 @@ Post_Scores AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
+        P.CreationDate >= now64(6) - INTERVAL 1 YEAR
     GROUP BY 
         P.Id, P.Title, P.Score, P.CreationDate, U.DisplayName
 ),

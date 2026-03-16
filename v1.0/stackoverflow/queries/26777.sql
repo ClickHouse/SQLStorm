@@ -1,6 +1,6 @@
 WITH TagFrequency AS (
     SELECT 
-        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS Tag,
+        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS Tag,
         COUNT(*) AS Frequency
     FROM 
         Posts
@@ -31,7 +31,7 @@ PopularQuestions AS (
     FROM 
         Posts p
     JOIN 
-        TopTags t ON t.Tag = ANY(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'))
+        TopTags t ON t.Tag = ANY(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
     WHERE 
         p.PostTypeId = 1
     ORDER BY 
@@ -44,7 +44,7 @@ SELECT
     pq.ViewCount,
     pq.AnswerCount,
     pq.CreationDate,
-    STRING_AGG(DISTINCT pq.Tag, ', ') AS Tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pq.Tag))), ', ') AS Tags
 FROM 
     PopularQuestions pq
 GROUP BY 

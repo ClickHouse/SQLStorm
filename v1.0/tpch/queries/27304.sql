@@ -8,7 +8,7 @@ SELECT
     AVG(l.l_extendedprice) AS avg_price,
     MAX(l.l_discount) AS max_discount_applied,
     MIN(l.l_tax) AS min_tax_applied,
-    STRING_AGG(DISTINCT SUBSTRING(p.p_name, 1, 10), ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(p.p_name, 1, 10)))), ', ') AS part_names
 FROM 
     region r
 JOIN 

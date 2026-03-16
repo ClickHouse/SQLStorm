@@ -8,8 +8,8 @@ WITH SalesData AS (
     FROM
         web_sales ws
     WHERE
-        ws.ws_ship_date_sk BETWEEN (SELECT MIN(d_date_sk) FROM date_dim WHERE d_date = DATE '2023-01-01')
-                                AND (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = DATE '2023-12-31')
+        ws.ws_ship_date_sk BETWEEN (SELECT MIN(d_date_sk) FROM date_dim WHERE d_date = toDate('2023-01-01'))
+                                AND (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = toDate('2023-12-31'))
     GROUP BY
         ws.ws_item_sk
 ),

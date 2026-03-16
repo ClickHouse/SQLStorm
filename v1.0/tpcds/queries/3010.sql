@@ -50,4 +50,4 @@ WHERE
 ORDER BY 
     net_sales DESC, 
     refund_percentage DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

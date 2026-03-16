@@ -7,13 +7,13 @@ WITH PostStats AS (
            SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
            SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
            MAX(ph.CreationDate) AS LastHistoryDate,
-           ARRAY_AGG(DISTINCT t.TagName) AS TagsList
+           arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsList
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    LEFT JOIN UNNEST(string_to_array(p.Tags, ',')) AS t(TagName) ON TRUE
-    WHERE p.CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
+    LEFT JOIN arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON TRUE
+    WHERE p.CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.OwnerUserId
 ),
 UserStats AS (

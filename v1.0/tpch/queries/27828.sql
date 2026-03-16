@@ -1,7 +1,7 @@
 
 SELECT 
     CONCAT(s.s_name, ' from ', n.n_name) AS supplier_info,
-    STRING_AGG(CONCAT(p.p_name, ' (', ps.ps_availqty, ' available)'), ', ' ORDER BY p.p_name) AS available_parts,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', ps.ps_availqty, ' available)'))), ', ' ORDER BY p.p_name) AS available_parts,
     SUM(ps.ps_supplycost) AS total_supply_cost,
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     MAX(o.o_orderdate) AS last_order_date

@@ -30,7 +30,7 @@ popular_keywords AS (
 movie_info_summary AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(DISTINCT mi.info, ', ') AS info_notes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), ', ') AS info_notes
     FROM 
         title m
     LEFT JOIN 

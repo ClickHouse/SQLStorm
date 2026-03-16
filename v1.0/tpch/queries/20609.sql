@@ -69,4 +69,4 @@ HAVING
     COUNT(o.o_orderkey) > 5
 ORDER BY 
     r.r_name, total_sales DESC
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 10;

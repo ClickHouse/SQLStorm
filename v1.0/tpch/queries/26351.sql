@@ -5,7 +5,7 @@ SELECT
     n.n_name AS nation_name,
     c.c_name AS customer_name,
     o.o_orderkey AS order_key,
-    STRING_AGG(DISTINCT l.l_shipmode, ', ') AS unique_ship_modes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(l.l_shipmode))), ', ') AS unique_ship_modes,
     COUNT(DISTINCT l.l_linenumber) AS line_item_count,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     CONCAT('Order Status: ', o.o_orderstatus, ', Priority: ', o.o_orderpriority) AS order_details

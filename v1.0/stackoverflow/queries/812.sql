@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserReputation AS (
     SELECT 
@@ -22,7 +22,7 @@ UserReputation AS (
         u.DisplayName,
         u.Reputation,
         CASE 
-            WHEN u.LastAccessDate < CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days' THEN 'Inactive'
+            WHEN u.LastAccessDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Inactive'
             ELSE 'Active'
         END AS UserStatus
     FROM 
@@ -31,11 +31,11 @@ UserReputation AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        STRING_AGG(t.TagName, ', ') AS Tags 
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags 
     FROM 
         Posts p
     JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag_name ON true
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_name ON true
     JOIN 
         Tags t ON t.TagName = tag_name
     GROUP BY 

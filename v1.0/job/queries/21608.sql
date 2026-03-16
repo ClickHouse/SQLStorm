@@ -34,7 +34,7 @@ MovieDetails AS (
         TM.movie_id,
         TM.title,
         TM.production_year,
-        STRING_AGG(DISTINCT CN.name, ', ') AS company_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CN.name))), ', ') AS company_names
     FROM 
         TopMovies TM
     LEFT JOIN 

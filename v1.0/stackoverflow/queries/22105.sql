@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
 ),
 TopUsers AS (
     SELECT 
@@ -30,17 +30,17 @@ TopUsers AS (
 PostHistoryTags AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         PostHistory ph
     JOIN 
         Posts p ON ph.PostId = p.Id
     LEFT JOIN 
-        UNNEST(string_to_array(p.Tags, ',')) AS tag(tagName) ON TRUE
+        arrayJoin(splitByString(',', p.Tags)) AS tag(tagName) ON TRUE
     JOIN 
         Tags t ON t.TagName = TRIM(tag.tagName)
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
     GROUP BY 
         ph.PostId
 )

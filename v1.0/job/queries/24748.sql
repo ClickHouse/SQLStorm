@@ -28,7 +28,7 @@ MovieDetails AS (
     LEFT JOIN (
         SELECT 
             movie_id,
-            STRING_AGG(cn.name, ', ') AS company_name
+            arrayStringConcat(groupArray(assumeNotNull(cn.name)), ', ') AS company_name
         FROM 
             movie_companies mc
         JOIN 
@@ -70,7 +70,7 @@ SELECT
         WHEN mi.actor_count = 0 THEN 'No Actors'
         ELSE 'Moderate Cast'
     END AS cast_type,
-    (SELECT STRING_AGG(name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(name)), ', ') 
      FROM aka_name an 
      WHERE an.person_id IN (
          SELECT ci.person_id 

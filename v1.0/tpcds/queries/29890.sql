@@ -10,7 +10,7 @@ SELECT
     cd.cd_education_status,
     COUNT(DISTINCT sr.sr_ticket_number) AS total_returns,
     AVG(COALESCE(sr.sr_return_amt, 0)) as avg_return_amount,
-    STRING_AGG(DISTINCT r.r_reason_desc, ', ') AS return_reasons
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_reason_desc))), ', ') AS return_reasons
 FROM customer c
 JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk
 JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk

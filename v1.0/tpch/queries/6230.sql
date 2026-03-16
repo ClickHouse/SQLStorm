@@ -4,7 +4,7 @@ WITH PartDetails AS (
         p.p_name,
         SUM(ps.ps_availqty) AS total_available,
         AVG(ps.ps_supplycost) AS avg_supply_cost,
-        STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers
     FROM 
         part p
     JOIN 

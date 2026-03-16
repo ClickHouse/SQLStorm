@@ -15,7 +15,7 @@ WITH CustomerStats AS (
     LEFT JOIN 
         web_sales AS ws ON c.c_customer_sk = ws.ws_bill_customer_sk
     WHERE 
-        (c.c_birth_month = EXTRACT(MONTH FROM cast('2002-10-01' as date)) OR c.c_birth_day = EXTRACT(DAY FROM cast('2002-10-01' as date)))
+        (c.c_birth_month = toMonth(cast('2002-10-01' as date)) OR c.c_birth_day = toDayOfMonth(cast('2002-10-01' as date)))
     GROUP BY 
         c.c_customer_sk, c.c_first_name, c.c_last_name, cd.cd_gender, cd.cd_marital_status
 ),
@@ -40,7 +40,7 @@ SELECT
     SUM(hpc.total_profit) AS total_sales_profit,
     COUNT(hpc.c_customer_sk) AS total_customers,
     SUM(CASE WHEN hpc.total_quantity > 5 THEN hpc.total_quantity ELSE 0 END) AS bulk_orders,
-    STRING_AGG(DISTINCT CONCAT(hpc.c_first_name, ' ', hpc.c_last_name) || ' (Profit: ' || hpc.total_profit || ')', '; ') AS high_profit_customers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(hpc.c_first_name, ' ', hpc.c_last_name) || ' (Profit: ' || hpc.total_profit || ')'))), '; ') AS high_profit_customers
 FROM 
     HighProfitCustomers AS hpc
 LEFT JOIN 

@@ -34,7 +34,7 @@ SELECT
     tu.CommentCount,
     tu.Upvotes,
     tu.Downvotes,
-    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = tu.UserId AND p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year') AS RecentPostCount,
+    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = tu.UserId AND p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR) AS RecentPostCount,
     (SELECT COUNT(*) FROM Badges b WHERE b.UserId = tu.UserId) AS BadgeCount
 FROM TopUsers tu
 WHERE tu.Rank <= 10

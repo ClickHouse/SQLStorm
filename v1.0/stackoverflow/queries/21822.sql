@@ -28,7 +28,7 @@ SELECT
         WHEN rp.ViewCount > 100 THEN 'High View Count'
         ELSE 'Moderate View Count'
     END AS ViewStatus,
-    STRING_AGG(t.TagName, ', ') AS Tags
+    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
 FROM 
     RankedPosts rp
 LEFT JOIN 
@@ -36,9 +36,9 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON u.Id = b.UserId AND b.Date = (SELECT MAX(b2.Date) FROM Badges b2 WHERE b2.UserId = u.Id)
 LEFT JOIN 
-    LATERAL (
+    (
         SELECT 
-            unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName
+            arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName
         FROM 
             Posts p
         WHERE 

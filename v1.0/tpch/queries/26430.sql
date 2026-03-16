@@ -4,7 +4,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     MAX(l.l_shipdate) AS last_shipment_date,
     MIN(l.l_shipdate) AS first_shipment_date,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS products_ordered,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS products_ordered,
     r.r_name AS region_name
 FROM 
     customer c

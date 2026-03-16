@@ -7,7 +7,7 @@ SELECT
     SUM(ws.ws_sales_price) AS total_spent,
     SUM(ws.ws_net_profit) AS total_profit,
     MAX(d.d_date) AS last_order_date,
-    STRING_AGG(DISTINCT p.p_promo_name, '; ') AS promotions_used
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), '; ') AS promotions_used
 FROM 
     customer c
 JOIN 

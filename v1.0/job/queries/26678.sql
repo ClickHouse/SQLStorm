@@ -4,7 +4,7 @@ WITH RankedTitles AS (
         a.production_year,
         a.kind_id,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        STRING_AGG(DISTINCT ak.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS actors,
         ROW_NUMBER() OVER (PARTITION BY a.kind_id ORDER BY COUNT(DISTINCT ci.person_id) DESC) AS rank_within_kind
     FROM 
         aka_title a

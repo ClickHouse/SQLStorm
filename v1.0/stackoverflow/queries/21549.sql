@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
+        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
         AND p.ViewCount IS NOT NULL
 ), 
 UserVoteStats AS (
@@ -28,11 +28,11 @@ UserVoteStats AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(DISTINCT crt.Name, ', ') AS CloseReasonNames
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS CloseReasonNames
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes crt ON ph.Comment::int = crt.Id
+        CloseReasonTypes crt ON CAST(ph.Comment AS int) = crt.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
     GROUP BY 

@@ -3,7 +3,7 @@ WITH MovieStats AS (
         a.title,
         a.production_year,
         COUNT(c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         ROW_NUMBER() OVER (PARTITION BY a.production_year ORDER BY COUNT(c.person_id) DESC) AS year_rank
     FROM
         aka_title a

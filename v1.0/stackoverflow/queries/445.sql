@@ -22,7 +22,7 @@ WITH RankedPosts AS (
     ) pc ON p.Id = pc.PostId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
+        AND p.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
 ),
 
 UserStats AS (

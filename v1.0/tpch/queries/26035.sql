@@ -3,7 +3,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     AVG(ps.ps_supplycost) AS avg_supply_cost,
     r.r_name AS region_name,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' - ', s.s_address), '; ') AS suppliers_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' - ', s.s_address)))), '; ') AS suppliers_info
 FROM 
     part p
 JOIN 

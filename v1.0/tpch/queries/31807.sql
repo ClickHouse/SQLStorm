@@ -22,7 +22,7 @@ SELECT r.r_name,
        (SELECT COUNT(DISTINCT o.o_orderkey) 
         FROM orders o 
         WHERE o.o_orderstatus = 'F' 
-          AND o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year') AS completed_orders_last_year
+          AND o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR) AS completed_orders_last_year
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey
 LEFT JOIN customer c ON n.n_nationkey = c.c_nationkey

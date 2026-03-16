@@ -24,7 +24,7 @@ FilteredAkaNames AS (
 SubqueryMovies AS (
     SELECT
         m.id AS movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM
         aka_title m
     LEFT JOIN
@@ -50,7 +50,7 @@ CastWithRoles AS (
 CompanyAndTitles AS (
     SELECT
         mc.movie_id,
-        STRING_AGG(DISTINCT co.name, ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies,
         COUNT(mci.id) AS company_count
     FROM
         movie_companies mc

@@ -85,4 +85,4 @@ WHERE
     (Upvotes - Downvotes) > 10 
 ORDER BY 
     Reputation DESC, AcceptedQuestions DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

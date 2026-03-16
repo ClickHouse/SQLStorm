@@ -29,8 +29,8 @@ JOIN nation n ON c.c_nationkey = n.n_nationkey
 LEFT JOIN partsupp ps ON l.l_partkey = ps.ps_partkey
 LEFT JOIN SupplierHierarchy sh ON ps.ps_suppkey = sh.s_suppkey
 WHERE o.o_orderstatus = 'F' 
-AND l.l_shipdate >= DATE '1997-01-01' 
-AND l.l_shipdate < DATE '1998-01-01' 
+AND l.l_shipdate >= toDate('1997-01-01') 
+AND l.l_shipdate < toDate('1998-01-01') 
 AND l.l_discount BETWEEN 0.05 AND 0.20
 GROUP BY n.n_nationkey, n.n_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 50

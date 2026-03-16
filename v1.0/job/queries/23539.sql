@@ -4,7 +4,7 @@ WITH RecursiveMovieCTE AS (
         mt.id AS movie_id,
         mt.title AS movie_title,
         mt.production_year,
-        ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY RANDOM()) AS randomized_order
+        ROW_NUMBER() OVER (PARTITION BY mt.production_year ORDER BY rand()) AS randomized_order
     FROM 
         aka_title mt
     WHERE 
@@ -28,7 +28,7 @@ ActorRolesCTE AS (
 MovieKeywordsCTE AS (
     SELECT 
         mk.movie_id,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords
     FROM 
         movie_keyword mk
     JOIN keyword k ON mk.keyword_id = k.id
@@ -60,7 +60,7 @@ SELECT
     COUNT(DISTINCT actor_name) AS total_actors,
     COUNT(DISTINCT role_name) AS unique_roles,
     MAX(actor_rank) AS highest_actor_rank,
-    STRING_AGG(DISTINCT keywords, ', ') AS all_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keywords))), ', ') AS all_keywords
 FROM 
     FinalReport
 GROUP BY 

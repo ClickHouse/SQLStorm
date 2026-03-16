@@ -44,8 +44,8 @@ PostActivity AS (
     SELECT 
         p.Id AS PostId,
         COALESCE(pc.CommentCount, 0) AS CommentCount,
-        COALESCE(pc.FirstCommentDate, DATE '1900-01-01') AS FirstCommentDate,
-        COALESCE(pc.LastCommentDate, DATE '1900-01-01') AS LastCommentDate,
+        COALESCE(pc.FirstCommentDate, toDate('1900-01-01')) AS FirstCommentDate,
+        COALESCE(pc.LastCommentDate, toDate('1900-01-01')) AS LastCommentDate,
         u.Reputation AS UserReputation,
         NULLIF(u.Reputation, 0) AS NonZeroReputation 
     FROM 

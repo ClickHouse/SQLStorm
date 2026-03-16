@@ -72,7 +72,7 @@ LEFT JOIN
 LEFT JOIN 
     Tags tt ON tt.Id = p.Id
 WHERE 
-    p.LastActivityDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
+    p.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ORDER BY 
     p.CreationDate DESC, us.TotalVotes DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

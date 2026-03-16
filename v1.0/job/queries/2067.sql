@@ -50,7 +50,7 @@ FinalResults AS (
         md.movie_id,
         md.title,
         md.production_year,
-        STRING_AGG(DISTINCT md.actor_name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_name))), ', ') AS actors,
         SUM(md.keyword_count) AS keyword_count
     FROM 
         MovieDetails md

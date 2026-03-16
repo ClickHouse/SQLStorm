@@ -8,7 +8,7 @@ WITH RecentPostActivities AS (
         ph.UserDisplayName AS LastEditor,
         ph.CreationDate AS LastEditDate,
         ph.Comment AS EditComment,
-        STRING_AGG(DISTINCT tg.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tg.TagName))), ', ') AS Tags,
         COUNT(c.Id) AS CommentCount
     FROM 
         Posts p
@@ -24,7 +24,7 @@ WITH RecentPostActivities AS (
     LEFT JOIN 
         Comments c ON c.PostId = p.Id
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, ph.UserDisplayName, ph.CreationDate, ph.Comment
 ),

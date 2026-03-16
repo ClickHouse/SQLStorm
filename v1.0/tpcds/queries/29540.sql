@@ -7,7 +7,7 @@ SELECT
     cd.cd_marital_status,
     COUNT(ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_sales,
-    STRING_AGG(DISTINCT p.p_promo_name, ', ') AS promotions_used
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used
 FROM 
     customer c
 JOIN 

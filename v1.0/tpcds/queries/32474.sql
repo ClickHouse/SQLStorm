@@ -63,4 +63,4 @@ WHERE
     ti.total_revenue > (SELECT AVG(sd.total_revenue) FROM sales_data sd)
 ORDER BY 
     ti.total_revenue DESC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

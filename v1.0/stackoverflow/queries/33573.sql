@@ -39,7 +39,7 @@ RecentPostEdits AS (
            ROW_NUMBER() OVER (PARTITION BY ph.PostId ORDER BY ph.CreationDate DESC) AS rn
     FROM PostHistory ph
     JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
-    WHERE ph.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 YEAR'
+    WHERE ph.CreationDate > now64(6) - INTERVAL 1 YEAR
 )
 SELECT uh.DisplayName, 
        uh.Reputation, 

@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     SUM(ps.ps_availqty) AS total_available_quantity,
     AVG(s.s_acctbal) AS average_supplier_balance,
-    STRING_AGG(CONCAT(s.s_name, ' (', s.s_address, ')'), '; ') AS supplier_details,
+    arrayStringConcat(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_address, ')'))), '; ') AS supplier_details,
     r.r_name AS region_name
 FROM 
     part p

@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '12 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH
 ),
 SupplierDetails AS (
     SELECT 
@@ -45,7 +45,7 @@ SELECT
     COUNT(DISTINCT l.l_orderkey) AS OrderCount,
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS Revenue,
     COALESCE(SUM(c.TotalSpent), 0) AS CustomerSpend,
-    STRING_AGG(DISTINCT r.r_name, ', ') AS RegionsServed,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_name))), ', ') AS RegionsServed,
     AVG(sd.TotalCost) AS AverageSupplierCost
 FROM 
     lineitem l

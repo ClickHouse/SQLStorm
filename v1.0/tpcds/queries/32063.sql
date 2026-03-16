@@ -69,4 +69,4 @@ WHERE
     ch.total_spent < (SELECT AVG(total_spent) FROM customer_data)  
 ORDER BY 
     ch.total_spent DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

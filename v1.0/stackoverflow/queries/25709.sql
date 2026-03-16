@@ -2,7 +2,7 @@
 WITH PostTags AS (
     SELECT 
         p.Id AS PostId,
-        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag
     FROM Posts p
     WHERE p.PostTypeId = 1  
 ),
@@ -35,7 +35,7 @@ SELECT
     COUNT(c.Id) AS TotalComments,
     COUNT(v.Id) AS TotalVotes
 FROM TopTags T
-LEFT JOIN Posts p ON T.Tag = ANY(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AND p.PostTypeId = 1
+LEFT JOIN Posts p ON T.Tag = ANY(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AND p.PostTypeId = 1
 LEFT JOIN Comments c ON p.Id = c.PostId
 LEFT JOIN Votes v ON p.Id = v.PostId
 WHERE T.TagRank <= 10 

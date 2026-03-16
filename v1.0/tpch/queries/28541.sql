@@ -22,7 +22,7 @@ SELECT
     r.nation_name,
     COUNT(*) AS total_suppliers,
     AVG(r.ps_availqty) AS avg_availability,
-    STRING_AGG(r.s_name, ', ') AS supplier_names
+    arrayStringConcat(groupArray(assumeNotNull(r.s_name)), ', ') AS supplier_names
 FROM 
     RankedSuppliers r
 WHERE 

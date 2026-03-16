@@ -3,7 +3,7 @@ WITH StringAggregates AS (
         p.p_type,
         COUNT(DISTINCT s.s_suppkey) AS supplier_count,
         SUM(ps.ps_availqty) AS total_available_quantity,
-        STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_acctbal, ')'), '; ') AS suppliers_list
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_acctbal, ')')))), '; ') AS suppliers_list
     FROM part p
     JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey

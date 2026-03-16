@@ -5,8 +5,8 @@ WITH SalesData AS (
         SUM(ws.ws_quantity) AS total_quantity,
         SUM(ws.ws_net_paid) AS total_net_paid,
         SUM(ws.ws_ext_discount_amt) AS total_discount,
-        EXTRACT(YEAR FROM d.d_date) AS sale_year,
-        EXTRACT(MONTH FROM d.d_date) AS sale_month
+        toYear(d.d_date) AS sale_year,
+        toMonth(d.d_date) AS sale_month
     FROM 
         web_sales ws
     JOIN 

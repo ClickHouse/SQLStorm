@@ -4,10 +4,10 @@ WITH TagStatistics AS (
         COUNT(DISTINCT P.Id) AS PostCount,
         SUM(P.ViewCount) AS TotalViews,
         AVG(P.Score) AS AverageScore,
-        STRING_AGG(DISTINCT U.DisplayName, ', ') AS Users,
-        STRING_AGG(DISTINCT CASE WHEN B.Class = 1 THEN B.Name END, ', ') AS GoldBadges,
-        STRING_AGG(DISTINCT CASE WHEN B.Class = 2 THEN B.Name END, ', ') AS SilverBadges,
-        STRING_AGG(DISTINCT CASE WHEN B.Class = 3 THEN B.Name END, ', ') AS BronzeBadges
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS Users,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN B.Class = 1 THEN B.Name END))), ', ') AS GoldBadges,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN B.Class = 2 THEN B.Name END))), ', ') AS SilverBadges,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN B.Class = 3 THEN B.Name END))), ', ') AS BronzeBadges
     FROM 
         Tags T
     JOIN 
@@ -17,7 +17,7 @@ WITH TagStatistics AS (
     LEFT JOIN 
         Badges B ON U.Id = B.UserId
     WHERE 
-        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
+        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY 
         T.TagName
 ),

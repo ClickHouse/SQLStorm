@@ -21,9 +21,9 @@ AggregatedData AS (
     SELECT 
         COUNT(*) AS total_customers,
         AVG(name_length) AS avg_name_length,
-        STRING_AGG(DISTINCT upper_first_name, ', ') AS unique_upper_first_names,
-        STRING_AGG(DISTINCT lower_last_name, ', ') AS unique_lower_last_names,
-        STRING_AGG(DISTINCT formatted_address, ', ') AS unique_addresses
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(upper_first_name))), ', ') AS unique_upper_first_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lower_last_name))), ', ') AS unique_lower_last_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(formatted_address))), ', ') AS unique_addresses
     FROM 
         StringData
 )

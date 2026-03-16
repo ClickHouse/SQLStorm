@@ -39,7 +39,7 @@ JOIN CustomerOrders cs ON cs.c_custkey = (
     FROM customer c
     WHERE c.c_nationkey = nr.n_nationkey
     ORDER BY c.c_acctbal DESC
-    FETCH FIRST 1 ROW ONLY
+    LIMIT 1
 )
 FULL OUTER JOIN SupplierStats ss ON ss.s_suppkey = (
     SELECT ps.ps_suppkey
@@ -53,7 +53,7 @@ FULL OUTER JOIN SupplierStats ss ON ss.s_suppkey = (
     )
     GROUP BY ps.ps_suppkey
     ORDER BY SUM(l.l_extendedprice) DESC
-    FETCH FIRST 1 ROW ONLY
+    LIMIT 1
 )
 WHERE cs.total_spent > 1000 OR ss.total_available_qty IS NULL
 ORDER BY cs.total_spent DESC, ss.avg_supply_cost ASC;

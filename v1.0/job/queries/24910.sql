@@ -36,7 +36,7 @@ SELECT
     mh.hierarchy_level,
     mh.full_path,
     COUNT(DISTINCT mc.company_id) AS production_companies_count,
-    STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
     CASE 
         WHEN mh.production_year < 2000 THEN 'Classic'
         WHEN mh.production_year BETWEEN 2000 AND 2010 THEN 'Modern'

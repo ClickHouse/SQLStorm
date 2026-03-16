@@ -13,7 +13,7 @@ ClosePostHistory AS (
         ph.PostId,
         ph.CreationDate AS CloseDate,
         ph.UserId AS CloserUserId,
-        EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - ph.CreationDate)) / 60 AS MinutesSinceClose
+        toUnixTimestamp((now64(6) - ph.CreationDate)) / 60 AS MinutesSinceClose
     FROM PostHistory ph
     WHERE ph.PostHistoryTypeId IN (10, 11)  
 ),
@@ -26,12 +26,12 @@ RecentPosts AS (
         COALESCE(p.Score, 0) AS PostScore,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM Posts p
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id AND v.VoteTypeId IN (2, 3) 
-    LEFT JOIN unnest(string_to_array(p.Tags, ',')) AS t(TagName) ON t.TagName IS NOT NULL
-    WHERE p.CreationDate > CURRENT_DATE - INTERVAL '30 days'
+    LEFT JOIN arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
+    WHERE p.CreationDate > CURRENT_DATE - INTERVAL 30 DAY
     GROUP BY p.Id, p.Title, p.ViewCount, p.Score
 ),
 

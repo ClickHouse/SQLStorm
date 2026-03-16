@@ -60,4 +60,4 @@ WHERE
 ORDER BY 
     sr.total_revenue DESC, 
     cr.region_rank ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

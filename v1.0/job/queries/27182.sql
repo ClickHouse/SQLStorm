@@ -25,7 +25,7 @@ WITH movie_details AS (
 keyword_summary AS (
     SELECT 
         m.id AS movie_id,
-        STRING_AGG(kw.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(kw.keyword)), ', ') AS keywords
     FROM 
         aka_title AS m
     JOIN 

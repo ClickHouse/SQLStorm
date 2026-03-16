@@ -13,11 +13,11 @@ WITH RankedPosts AS (
     JOIN Users u ON p.OwnerUserId = u.Id
     WHERE
         p.PostTypeId = 1 
-        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
 ),
 PopularTags AS (
     SELECT
-        unnest(string_to_array(Tags, ',')) AS TagName,
+        arrayJoin(splitByString(',', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM
         Posts
@@ -40,7 +40,7 @@ RecentEdits AS (
     JOIN Posts p ON ph.PostId = p.Id
     WHERE
         ph.PostHistoryTypeId IN (4, 5, 6) 
-        AND ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
+        AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
 ),
 FinalResults AS (
     SELECT
@@ -56,7 +56,7 @@ FinalResults AS (
         rp.Rank
     FROM
         RankedPosts rp
-    LEFT JOIN PopularTags pt ON pt.TagName = ANY(string_to_array(rp.Title, ' ')) 
+    LEFT JOIN PopularTags pt ON pt.TagName = ANY(splitByString(' ', rp.Title)) 
     LEFT JOIN RecentEdits re ON re.PostId = rp.PostId
 )
 SELECT

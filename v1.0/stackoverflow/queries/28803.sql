@@ -3,7 +3,7 @@ WITH RankedPosts AS (
         p.Id AS PostId,
         p.Title,
         p.Body,
-        STRING_AGG(t.TagName, ', ') AS Tags,
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
         p.ViewCount,
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.ViewCount DESC) AS Rank
@@ -12,11 +12,11 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        LATERAL unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag ON TRUE
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
     GROUP BY 
         p.Id, p.Title, p.Body, p.ViewCount, p.CreationDate, pt.Name
 ), 
@@ -35,7 +35,7 @@ SELECT
     tq.PostId,
     tq.Title,
     tq.ViewCount,
-    EXTRACT(DAY FROM (cast('2024-10-01 12:34:56' as timestamp) - tq.CreationDate)) AS DaysSincePosted,
+    toDayOfMonth((toDateTime64('2024-10-01 12:34:56', 6) - tq.CreationDate)) AS DaysSincePosted,
     (SELECT 
          COUNT(*) 
      FROM 
@@ -43,7 +43,7 @@ SELECT
      WHERE 
          c.PostId = tq.PostId) AS CommentCount,
     (SELECT 
-         STRING_AGG(b.Name, ', ') 
+         arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
      FROM 
          Badges b 
      JOIN 

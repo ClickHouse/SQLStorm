@@ -35,7 +35,7 @@ SELECT DISTINCT
     part.p_name AS part_name, 
     ds.discount_category,
     COALESCE(SUM(ps.ps_availqty), 0) AS total_available_quantity,
-    STRING_AGG(DISTINCT CONCAT(part.p_name, ' (', ps.ps_availqty, ')'), '; ') AS part_details,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(part.p_name, ' (', ps.ps_availqty, ')')))), '; ') AS part_details,
     CASE WHEN COUNT(DISTINCT ds.discount_category) > 1 THEN 'Varied Discounts' ELSE MIN(ds.discount_category) END AS discount_variation
 FROM region r
 LEFT JOIN nation n ON r.r_regionkey = n.n_regionkey

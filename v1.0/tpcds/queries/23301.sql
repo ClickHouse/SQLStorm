@@ -37,10 +37,10 @@ SELECT
         WHEN os.total_refunds > 0 THEN 'Refunded'
         ELSE 'Not Refunded'
     END AS refund_status,
-    STRING_AGG(CASE 
+    arrayStringConcat(groupArray(assumeNotNull(CASE 
         WHEN ot.d_dow IS NOT NULL THEN CONCAT('Sold on ', ot.d_day_name) 
         ELSE 'Sale Date Unknown' 
-    END, ', ') AS sale_dates
+    END)), ', ') AS sale_dates
 FROM outer_sales os
 JOIN date_dim d ON d.d_date_sk = os.ws_sales_price % 100
 LEFT JOIN date_dim ot ON ot.d_date_sk = (SELECT t_time_sk FROM time_dim WHERE t_hour % 2 = 0 LIMIT 1)

@@ -21,7 +21,7 @@ person_details AS (
 ),
 movie_company_info AS (
     SELECT mc.movie_id, 
-           STRING_AGG(DISTINCT co.name, ', ') AS companies_used,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(co.name))), ', ') AS companies_used,
            COUNT(DISTINCT mc.company_id) AS total_companies
     FROM movie_companies mc
     JOIN company_name co ON mc.company_id = co.id
@@ -29,7 +29,7 @@ movie_company_info AS (
 ),
 movies_with_info AS (
     SELECT m.movie_id, 
-           STRING_AGG(DISTINCT mi.info, '; ') AS movie_facts,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mi.info))), '; ') AS movie_facts,
            MAX(m.production_year) AS latest_year
     FROM movie_info mi
     JOIN aka_title m ON mi.movie_id = m.movie_id

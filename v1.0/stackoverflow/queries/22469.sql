@@ -10,14 +10,14 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND (p.Score > 0 OR p.ViewCount > 10)
 ),
 UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeList
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeList
     FROM 
         Badges b
     GROUP BY 
@@ -28,11 +28,11 @@ PostHistoryData AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         ph.CreationDate AS ChangeDate,
-        STRING_AGG(ph.Comment, '; ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS Comments
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate BETWEEN cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months' AND cast('2024-10-01 12:34:56' as timestamp)
+        ph.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH AND toDateTime64('2024-10-01 12:34:56', 6)
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId, ph.CreationDate
 ),

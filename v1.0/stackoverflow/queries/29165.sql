@@ -12,14 +12,14 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND 
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND 
         p.ViewCount > 1000
 ),
 TagStatistics AS (
     SELECT 
-        UNNEST(string_to_array(Tags, '>')) AS Tag,
+        arrayJoin(splitByString('>', Tags)) AS Tag,
         COUNT(*) AS PostCount,
-        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - CreationDate))) AS AvgAgeInSeconds
+        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - CreationDate))) AS AvgAgeInSeconds
     FROM 
         RankedPosts
     GROUP BY 
@@ -53,7 +53,7 @@ SELECT
 FROM 
     RankedPosts rs
 JOIN 
-    TagStatistics ts ON ts.Tag = ANY(string_to_array(rs.Tags, '>'))
+    TagStatistics ts ON ts.Tag = ANY(splitByString('>', rs.Tags))
 JOIN 
     UserReputation ur ON ur.UserId = rs.OwnerUserId
 WHERE 

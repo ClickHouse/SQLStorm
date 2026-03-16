@@ -37,4 +37,4 @@ WHERE
     avg_name_length > 20 
 ORDER BY 
     avg_name_length DESC
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

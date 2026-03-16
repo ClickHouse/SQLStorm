@@ -13,7 +13,7 @@ WITH ranked_titles AS (
     SELECT 
         c.movie_id,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM 
         cast_info c
     JOIN 
@@ -37,7 +37,7 @@ SELECT
     md.production_year,
     COUNT(md.title) AS movie_count,
     AVG(md.cast_count) AS average_cast_count,
-    STRING_AGG(md.actor_names, '; ') AS actors_list
+    arrayStringConcat(groupArray(assumeNotNull(md.actor_names)), '; ') AS actors_list
 FROM 
     movie_details md
 GROUP BY 

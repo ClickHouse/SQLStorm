@@ -44,4 +44,4 @@ SELECT tc.c_first_name,
 FROM top_customers tc
 JOIN address_info ai ON tc.c_customer_sk = ai.ca_address_sk
 ORDER BY tc.total_net_profit DESC, tc.total_orders DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

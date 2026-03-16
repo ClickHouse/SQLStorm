@@ -26,7 +26,7 @@ JOIN
 JOIN 
     part p ON ps.ps_partkey = p.p_partkey 
 WHERE 
-    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31' 
+    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31') 
     AND l.l_discount > 0.05 
 ORDER BY 
     name_length DESC, 

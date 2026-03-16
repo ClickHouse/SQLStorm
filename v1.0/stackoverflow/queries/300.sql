@@ -19,7 +19,7 @@ PostStats AS (
         p.Title,
         p.CreationDate,
         p.Score,
-        ARRAY_AGG(DISTINCT COALESCE(t.TagName, 'Unlabeled')) AS Tags,
+        arrayDistinct(groupArray(assumeNotNull(COALESCE(t.TagName, 'Unlabeled')))) AS Tags,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS Upvotes,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS Downvotes,
@@ -27,9 +27,9 @@ PostStats AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    LEFT JOIN LATERAL unnest(string_to_array(p.Tags, '>')) AS tag ON TRUE
+    LEFT JOIN arrayJoin(splitByString('>', p.Tags)) AS tag ON TRUE
     LEFT JOIN Tags t ON t.TagName = tag
-    WHERE p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score
 ),
 TopUsers AS (

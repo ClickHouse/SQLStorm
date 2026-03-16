@@ -27,7 +27,7 @@ PersonDetails AS (
 MovieKeywords AS (
     SELECT 
         m.id AS movie_id,
-        array_agg(k.keyword) AS keywords_list
+        groupArray(assumeNotNull(k.keyword)) AS keywords_list
     FROM 
         movie_keyword mk
     JOIN 

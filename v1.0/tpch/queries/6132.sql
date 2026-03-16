@@ -7,7 +7,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
+        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
 ),
 CustomerOrders AS (
     SELECT 
@@ -56,8 +56,8 @@ JOIN
         JOIN 
             partsupp ps ON l.l_partkey = ps.ps_partkey
         WHERE 
-            l.l_shipdate >= DATE '1996-05-01' 
-            AND l.l_shipdate < DATE '1997-05-01'
+            l.l_shipdate >= toDate('1996-05-01') 
+            AND l.l_shipdate < toDate('1997-05-01')
     )
 ORDER BY 
     co.o_totalprice DESC, 

@@ -36,5 +36,5 @@ HAVING SUM(li.l_extendedprice * (1 - li.l_discount)) > (SELECT AVG(total_revenue
     GROUP BY p.p_partkey
 ) AS avg_revenue)
 ORDER BY total_revenue DESC
-FETCH FIRST 10 ROWS ONLY
+LIMIT 10
 ;

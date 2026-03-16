@@ -4,7 +4,7 @@ WITH address_stats AS (
         ca_state,
         COUNT(*) AS total_addresses,
         AVG(LENGTH(ca_street_name)) AS avg_street_name_length,
-        STRING_AGG(DISTINCT ca_street_type, ', ') AS unique_street_types
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ca_street_type))), ', ') AS unique_street_types
     FROM 
         customer_address
     GROUP BY 
@@ -15,7 +15,7 @@ demographics_stats AS (
         cd_gender,
         COUNT(*) AS total_customers,
         AVG(cd_dep_count) AS avg_dependents,
-        STRING_AGG(DISTINCT cd_education_status, '; ') AS education_levels
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cd_education_status))), '; ') AS education_levels
     FROM 
         customer_demographics
     GROUP BY 
@@ -27,7 +27,7 @@ date_stats AS (
         COUNT(DISTINCT d_date_id) AS total_days,
         MAX(d_dom) AS max_day_of_month,
         MIN(d_dom) AS min_day_of_month,
-        STRING_AGG(DISTINCT d_day_name, ', ') AS days_of_week
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(d_day_name))), ', ') AS days_of_week
     FROM 
         date_dim
     GROUP BY 

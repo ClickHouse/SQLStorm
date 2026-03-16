@@ -27,7 +27,7 @@ all_movies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.production_year) AS year_rank
     FROM 
         title t
@@ -77,7 +77,7 @@ SELECT
         ELSE NULL 
     END AS lead_ratio,
     (SELECT MAX(year_rank) FROM all_movies WHERE production_year = ma.production_year) AS max_year_rank,
-    STRING_AGG(DISTINCT k.keyword, ', ') AS all_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS all_keywords
 FROM 
     movie_analysis ma
 LEFT JOIN 

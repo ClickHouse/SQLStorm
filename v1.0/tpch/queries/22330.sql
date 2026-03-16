@@ -70,4 +70,4 @@ WHERE
     np.total_available_qty IS NOT NULL
 ORDER BY 
     np.total_available_qty DESC, rp.price_rank
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

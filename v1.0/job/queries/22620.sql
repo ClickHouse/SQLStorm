@@ -26,7 +26,7 @@ Active_Movies AS (
     LEFT JOIN (
         SELECT
             mk.movie_id,
-            STRING_AGG(k.keyword, ', ') AS keyword_list
+            arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') AS keyword_list
         FROM
             movie_keyword mk
         INNER JOIN
@@ -91,4 +91,4 @@ WHERE
 ORDER BY
     fo.production_year DESC,
     fo.cast_count DESC
-OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
+LIMIT 10 OFFSET 5;

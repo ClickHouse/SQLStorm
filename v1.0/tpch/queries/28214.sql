@@ -7,7 +7,7 @@ SELECT
     SUM(l.l_quantity) AS total_quantity,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     MAX(l.l_extendedprice) AS max_extended_price,
-    STRING_AGG(DISTINCT l.l_shipdate::varchar, ', ') AS ship_dates,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(l.l_shipdate AS varchar)))), ', ') AS ship_dates,
     CONCAT('Part: ', p.p_name, ' supplied by ', s.s_name, ' ordered by ', c.c_name) AS order_description
 FROM 
     part p

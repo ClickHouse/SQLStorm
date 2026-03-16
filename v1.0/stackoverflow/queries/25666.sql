@@ -39,7 +39,7 @@ TopPosts AS (
 )
 SELECT 
     tp.Tags,
-    ARRAY_AGG(DISTINCT tp.Title) AS TopPostTitles,
+    arrayDistinct(groupArray(assumeNotNull(tp.Title))) AS TopPostTitles,
     COUNT(tp.PostId) AS TotalTopPosts,
     SUM(tp.CommentCount) AS TotalComments,
     AVG(tp.AverageBounty) AS OverallAverageBounty

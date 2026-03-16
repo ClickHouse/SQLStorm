@@ -12,7 +12,7 @@ JOIN
 JOIN 
     Users U ON PH.UserId = U.Id
 WHERE 
-    PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
+    PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
 GROUP BY 
     PH.PostHistoryTypeId, P.Title, P.CreationDate, U.DisplayName, PH.CreationDate
 ORDER BY 

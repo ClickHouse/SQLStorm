@@ -52,7 +52,7 @@ PopularPosts AS (
     JOIN 
         PostVoteCounts PVC ON P.Id = PVC.PostId
     WHERE 
-        P.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
+        P.CreationDate > now64(6) - INTERVAL 30 DAY
 )
 
 SELECT 
@@ -72,7 +72,7 @@ WHERE
     U.Id IN (
         SELECT DISTINCT C.UserId
         FROM Comments C
-        WHERE C.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
+        WHERE C.CreationDate > now64(6) - INTERVAL 1 YEAR
         GROUP BY C.UserId
         HAVING COUNT(*) > 10 
     )

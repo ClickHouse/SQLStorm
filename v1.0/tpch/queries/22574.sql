@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '3 years' 
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 3 YEAR 
         AND o.o_orderstatus IN ('O', 'F')
 ),
 SuppliersWithComments AS (
@@ -17,7 +17,7 @@ SuppliersWithComments AS (
         s.s_name,
         s.s_address,
         COUNT(DISTINCT p.p_partkey) AS part_count,
-        STRING_AGG(s.s_comment, '; ') AS combined_comment
+        arrayStringConcat(groupArray(assumeNotNull(s.s_comment)), '; ') AS combined_comment
     FROM 
         supplier s
     LEFT JOIN 

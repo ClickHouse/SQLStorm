@@ -18,7 +18,7 @@ MoviesWithGenres AS (
         rm.title,
         rm.production_year,
         rm.actor_count,
-        STRING_AGG(DISTINCT kw.keyword, ', ') AS keywords
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', ') AS keywords
     FROM 
         RankedMovies rm
     LEFT JOIN 

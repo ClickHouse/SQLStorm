@@ -24,9 +24,9 @@ aggregated_data AS (
         movie_id,
         title,
         production_year,
-        STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-        STRING_AGG(DISTINCT company_name, ', ') AS companies,
-        STRING_AGG(DISTINCT actor_name || ' (' || role_name || ')', ', ') AS cast_info
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_name))), ', ') AS companies,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actor_name || ' (' || role_name || ')'))), ', ') AS cast_info
     FROM movie_details
     GROUP BY movie_id, title, production_year
 )

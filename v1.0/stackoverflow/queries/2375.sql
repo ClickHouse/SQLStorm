@@ -50,7 +50,7 @@ SELECT
     u.QuestionCount,
     u.AnswerCount,
     u.UserRank,
-    (SELECT STRING_AGG(t.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
      FROM Tags t 
      WHERE t.Count > 10) AS PopularTags
 FROM UserPosts u

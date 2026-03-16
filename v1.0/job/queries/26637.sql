@@ -4,8 +4,8 @@ WITH RankedMovies AS (
         m.title AS movie_title,
         m.production_year,
         COUNT(DISTINCT c.person_id) AS cast_count,
-        ARRAY_AGG(DISTINCT a.name) AS actors,
-        ARRAY_AGG(DISTINCT k.keyword) AS keywords
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(k.keyword))) AS keywords
     FROM 
         aka_title m
     LEFT JOIN 
@@ -38,8 +38,8 @@ SELECT
     mr.movie_title,
     mr.production_year,
     mr.cast_count,
-    STRING_AGG(mr.actors::text, ', ') AS actors_list,
-    STRING_AGG(DISTINCT mr.keywords::text, ', ') AS keywords_list
+    arrayStringConcat(groupArray(assumeNotNull(CAST(mr.actors AS text))), ', ') AS actors_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(mr.keywords AS text)))), ', ') AS keywords_list
 FROM 
     MovieRankings mr
 GROUP BY 

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND P.PostTypeId = 1 
 ),
 UserVotes AS (
@@ -34,7 +34,7 @@ UserVotes AS (
 CloseReasons AS (
     SELECT 
         PH.PostId,
-        STRING_AGG(CRT.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(CRT.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 

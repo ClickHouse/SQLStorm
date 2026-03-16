@@ -18,14 +18,14 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '><')) AS TagName, 
+        arrayJoin(splitByString('><', Tags)) AS TagName, 
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        unnest(string_to_array(Tags, '><'))
+        arrayJoin(splitByString('><', Tags))
     ORDER BY 
         TagCount DESC
     LIMIT 10
@@ -61,7 +61,7 @@ FROM
 JOIN 
     PostStatistics ps ON rp.PostId = ps.PostId
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(string_to_array(rp.Tags, '><'))
+    PopularTags pt ON pt.TagName = ANY(splitByString('><', rp.Tags))
 WHERE 
     rp.OwnerPostRank = 1 
 ORDER BY 

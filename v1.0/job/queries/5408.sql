@@ -23,7 +23,7 @@ SELECT
     rm.title,
     rm.production_year,
     rm.company_name,
-    STRING_AGG(rm.keyword, ', ') AS keywords
+    arrayStringConcat(groupArray(assumeNotNull(rm.keyword)), ', ') AS keywords
 FROM 
     RankedMovies rm
 WHERE 

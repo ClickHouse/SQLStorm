@@ -36,7 +36,7 @@ SELECT
     cs.full_name,
     COUNT(DISTINCT cs.city) AS distinct_cities,
     AVG(cs.cd_purchase_estimate) AS avg_purchase_estimate,
-    STRING_AGG(cs.full_address, ', ') AS addresses
+    arrayStringConcat(groupArray(assumeNotNull(cs.full_address)), ', ') AS addresses
 FROM 
     customer_stats cs
 GROUP BY 

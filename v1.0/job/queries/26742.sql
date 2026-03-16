@@ -3,7 +3,7 @@ WITH MovieDetails AS (
         t.title AS movie_title,
         t.production_year,
         k.keyword AS movie_keyword,
-        string_agg(DISTINCT c.name, ', ') AS cast_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS cast_names
     FROM 
         aka_title t
     JOIN 
@@ -22,7 +22,7 @@ WITH MovieDetails AS (
 CompanyDetails AS (
     SELECT 
         mc.movie_id,
-        STRING_AGG(DISTINCT cn.name, ', ') AS company_names,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ') AS company_names,
         ct.kind AS company_type
     FROM 
         movie_companies mc
@@ -48,10 +48,10 @@ MovieSummary AS (
 )
 SELECT 
     production_year,
-    STRING_AGG(DISTINCT movie_title, '; ') AS titles,
-    STRING_AGG(DISTINCT movie_keyword, ', ') AS keywords,
-    STRING_AGG(DISTINCT company_names, '; ') AS associated_companies,
-    STRING_AGG(DISTINCT cast_names, '; ') AS cast_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_title))), '; ') AS titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(movie_keyword))), ', ') AS keywords,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(company_names))), '; ') AS associated_companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cast_names))), '; ') AS cast_list
 FROM 
     MovieSummary
 GROUP BY 

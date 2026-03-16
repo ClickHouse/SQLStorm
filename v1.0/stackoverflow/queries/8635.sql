@@ -12,7 +12,7 @@ WITH UserStats AS (
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Badges b ON u.Id = b.UserId
-    WHERE u.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+    WHERE u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY u.Id, u.DisplayName
 ),
 PostAnalytics AS (
@@ -28,7 +28,7 @@ PostAnalytics AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10 
-    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, pt.Name, ph.Comment
 ),
 FinalReport AS (

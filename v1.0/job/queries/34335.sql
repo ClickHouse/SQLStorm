@@ -31,7 +31,7 @@ SELECT
         WHEN mh.level IS NOT NULL THEN 1 
         ELSE 0 
     END) AS related_movies,
-    STRING_AGG(DISTINCT t.title, ', ') AS movie_titles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movie_titles,
     AVG(CASE 
         WHEN t.production_year IS NOT NULL THEN t.production_year 
         ELSE NULL 

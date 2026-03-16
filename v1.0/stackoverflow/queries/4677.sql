@@ -38,7 +38,7 @@ SELECT
     TU.DownVotes,
     TU.PostCount,
     (SELECT COUNT(*) FROM Comments C WHERE C.UserId = TU.UserId) AS CommentCount,
-    (SELECT STRING_AGG(T.TagName, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
      FROM Tags T 
      JOIN Posts P ON T.Id = P.Id 
      WHERE P.OwnerUserId = TU.UserId) AS AssociatedTags
@@ -50,4 +50,4 @@ WHERE
     B.Class = 1 OR B.Class = 2  
 ORDER BY 
     TU.Reputation DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

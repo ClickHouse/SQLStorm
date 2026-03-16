@@ -1,7 +1,7 @@
 WITH SupplierInfo AS (
     SELECT s.s_suppkey, s.s_name, r.r_name AS region_name, 
-           ARRAY_AGG(DISTINCT p.p_name) AS supplied_parts,
-           STRING_AGG(DISTINCT p.p_brand, ', ') AS brands_supplied,
+           arrayDistinct(groupArray(assumeNotNull(p.p_name))) AS supplied_parts,
+           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_brand))), ', ') AS brands_supplied,
            COUNT(DISTINCT ps.ps_partkey) AS total_parts,
            SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost
     FROM supplier s

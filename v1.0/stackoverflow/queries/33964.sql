@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
         AND p.PostTypeId IN (1, 2) 
 ),
 PostAnalysis AS (
@@ -46,7 +46,7 @@ ClosedPostHistory AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        STRING_AGG(CONCAT(ph.Comment, ' on ', ph.CreationDate), '; ') AS ClosureDetails
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.Comment, ' on ', ph.CreationDate))), '; ') AS ClosureDetails
     FROM 
         PostHistory ph
     WHERE 

@@ -18,10 +18,10 @@ SELECT
     MAX(street_type_length) AS max_street_type_length,
     MIN(street_type_length) AS min_street_type_length,
     AVG(street_type_length) AS avg_street_type_length,
-    STRING_AGG(upper_street_name, ', ') AS combined_upper_street_names,
-    STRING_AGG(lower_city, ', ') AS combined_lower_cities,
-    STRING_AGG(trimmed_suite_number, ', ') AS combined_trimmed_suites,
-    STRING_AGG(full_address, '; ') AS all_full_addresses,
+    arrayStringConcat(groupArray(assumeNotNull(upper_street_name)), ', ') AS combined_upper_street_names,
+    arrayStringConcat(groupArray(assumeNotNull(lower_city)), ', ') AS combined_lower_cities,
+    arrayStringConcat(groupArray(assumeNotNull(trimmed_suite_number)), ', ') AS combined_trimmed_suites,
+    arrayStringConcat(groupArray(assumeNotNull(full_address)), '; ') AS all_full_addresses,
     COUNT(DISTINCT country_abbr) AS distinct_country_abbr_count
 FROM 
     StringProcessingResults;

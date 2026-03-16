@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-        COALESCE(REGEXP_SUBSTR(p.Body, '<h1>(.*?)</h1>'), 'No Description Available') AS PostDescription,
+        COALESCE(regexpExtract(p.Body, '<h1>(.*?)</h1>'), 'No Description Available') AS PostDescription,
         ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.LastActivityDate DESC) AS RowNum
     FROM Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
@@ -41,4 +41,4 @@ SELECT
     fp.PostDescription
 FROM FilteredPosts fp
 ORDER BY NetVotes DESC, fp.CommentCount DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

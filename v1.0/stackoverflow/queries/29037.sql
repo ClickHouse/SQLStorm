@@ -2,11 +2,11 @@ WITH KeywordCounts AS (
     SELECT 
         P.Id AS PostId,
         COUNT(*) AS KeywordCount,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
     FROM 
         Posts P
     JOIN 
-        LATERAL unnest(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '>')) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('>', substring(P.Tags, 2, length(P.Tags)-2))) AS T(TagName) ON TRUE
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 
@@ -19,7 +19,7 @@ RecentVotes AS (
     FROM 
         Votes V
     WHERE 
-        V.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
+        V.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         V.PostId
 ),

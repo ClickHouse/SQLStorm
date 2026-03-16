@@ -4,8 +4,8 @@ WITH ranked_movies AS (
         a.title,
         a.production_year,
         COUNT(c.person_id) AS cast_count,
-        ARRAY_AGG(DISTINCT ak.name) AS known_actors,
-        STRING_AGG(DISTINCT k.keyword, ', ') AS movie_keywords,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS known_actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS movie_keywords,
         ROW_NUMBER() OVER (PARTITION BY a.production_year ORDER BY COUNT(c.person_id) DESC) AS rank
     FROM 
         aka_title a
@@ -36,9 +36,9 @@ filtered_ranked_movies AS (
 )
 SELECT 
     production_year,
-    STRING_AGG(title || ' (Cast: ' || cast_count || ', Actors: ' || 
+    arrayStringConcat(groupArray(assumeNotNull(title || ' (Cast: ' || cast_count || ', Actors: ' || 
                ARRAY_TO_STRING(known_actors, ', ') || ', Keywords: ' ||
-               movie_keywords || ')', '; ') AS movie_summary
+               movie_keywords || ')')), '; ') AS movie_summary
 FROM 
     filtered_ranked_movies
 GROUP BY 

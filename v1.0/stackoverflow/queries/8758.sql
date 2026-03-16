@@ -6,15 +6,15 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         u.DisplayName AS OwnerDisplayName,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.ViewCount DESC) AS RankByViews,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.Score DESC) AS RankByScore
+        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.ViewCount DESC) AS RankByViews,
+        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.Score DESC) AS RankByScore
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1
-        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '5 years'
+        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 5 YEAR
 ),
 TopRankedPosts AS (
     SELECT

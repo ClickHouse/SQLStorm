@@ -36,7 +36,7 @@ RelevantMovies AS (
         rm.title,
         rm.production_year,
         am.actor_count,
-        ARRAY_AGG(DISTINCT cm.company_name) AS production_companies
+        arrayDistinct(groupArray(assumeNotNull(cm.company_name))) AS production_companies
     FROM 
         RankedMovies rm
     LEFT JOIN 

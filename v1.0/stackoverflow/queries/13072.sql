@@ -46,8 +46,8 @@ SELECT
     V.DownVotes,
     PS.PostCreationDate,
     PS.LastActivityDate,
-    EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - PS.PostCreationDate)) AS AgeInSeconds,
-    EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - PS.LastActivityDate)) AS InactivityDurationInSeconds
+    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - PS.PostCreationDate)) AS AgeInSeconds,
+    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - PS.LastActivityDate)) AS InactivityDurationInSeconds
 FROM PostStatistics PS
 LEFT JOIN VoteSummary V ON PS.PostId = V.PostId
 ORDER BY PS.Score DESC, PS.ViewCount DESC

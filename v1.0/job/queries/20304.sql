@@ -55,7 +55,7 @@ filtered_actors AS (
 SELECT 
     b.production_year,
     COUNT(DISTINCT fa.actor_name) AS unique_actors,
-    STRING_AGG(DISTINCT fa.movie_title, ', ') AS movies_included
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fa.movie_title))), ', ') AS movies_included
 FROM 
     filtered_actors fa
 JOIN 

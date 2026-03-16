@@ -14,10 +14,10 @@ WITH RECURSIVE UserBadges AS (
 FrequentTags AS (
     SELECT 
         P.OwnerUserId,
-        STRING_AGG(T.TagName, ', ') AS Tags,
+        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags,
         COUNT(*) AS PostCount
     FROM Posts P
-    JOIN UNNEST(STRING_TO_ARRAY(P.Tags, '>')) AS TagList ON TRUE
+    JOIN arrayJoin(splitByString('>', P.Tags)) AS TagList ON TRUE
     JOIN Tags T ON T.TagName = TRIM(BOTH '<>' FROM TagList)
     GROUP BY P.OwnerUserId
 ),

@@ -28,7 +28,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        STRING_AGG(ct.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(ct.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -58,7 +58,7 @@ LEFT JOIN
     ClosedPosts cp ON rp.PostId = cp.PostId
 WHERE 
     rp.rn = 1
-    AND (cp.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' OR cp.CreationDate IS NULL)
+    AND (cp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR OR cp.CreationDate IS NULL)
 ORDER BY 
     rp.ViewCount DESC
 LIMIT 10;

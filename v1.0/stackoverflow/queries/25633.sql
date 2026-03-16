@@ -27,7 +27,7 @@ CommentStatistics AS (
     SELECT
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        STRING_AGG(c.Text, '; ') AS Comments
+        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS Comments
     FROM Comments c
     JOIN TopQuestions tq ON c.PostId = tq.PostId
     GROUP BY c.PostId
@@ -42,12 +42,12 @@ TaggedQuestions AS (
         tq.OwnerDisplayName,
         cs.CommentCount,
         cs.Comments,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM TopQuestions tq
     LEFT JOIN CommentStatistics cs ON tq.PostId = cs.PostId
-    LEFT JOIN LATERAL (
+    LEFT JOIN (
         SELECT 
-            unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName
+            arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
         FROM Posts p
         WHERE p.Id = tq.PostId
     ) t ON true

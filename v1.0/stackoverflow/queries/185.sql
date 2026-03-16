@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
 ),
 UserStats AS (
     SELECT 
@@ -34,7 +34,7 @@ UserStats AS (
 ),
 TopTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '>')) AS TagName, 
+        arrayJoin(splitByString('>', Tags)) AS TagName, 
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -63,7 +63,7 @@ FROM
 JOIN 
     UserStats us ON rp.OwnerUserId = us.UserId
 JOIN 
-    TopTags tt ON tt.TagName = ANY(string_to_array(rp.Title, ' '))  
+    TopTags tt ON tt.TagName = ANY(splitByString(' ', rp.Title))  
 WHERE 
     rp.PostRank = 1
 ORDER BY 

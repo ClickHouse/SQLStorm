@@ -47,4 +47,4 @@ WHERE
     AND cfn.cd_marital_status = 'S'
 ORDER BY 
     ss.total_net_profit DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

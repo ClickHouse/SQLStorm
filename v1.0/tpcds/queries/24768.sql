@@ -85,7 +85,7 @@ AggregatedReport AS (
         COUNT(DISTINCT f.c_customer_id) AS customer_count,
         SUM(f.total_sales) AS sum_sales,
         AVG(f.total_profit) AS avg_profit,
-        STRING_AGG(f.item_status, ', ') AS status_summary
+        arrayStringConcat(groupArray(assumeNotNull(f.item_status)), ', ') AS status_summary
     FROM 
         FinalReport f
     GROUP BY 

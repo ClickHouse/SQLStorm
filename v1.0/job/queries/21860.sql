@@ -3,7 +3,7 @@ WITH RankedMovies AS (
     SELECT 
         at.title,
         at.production_year,
-        ARRAY_AGG(DISTINCT ak.name) AS actors,
+        arrayDistinct(groupArray(assumeNotNull(ak.name))) AS actors,
         COALESCE(AVG(CAST(mvi.info AS NUMERIC)), 0) AS average_rating,
         ROW_NUMBER() OVER (PARTITION BY at.production_year ORDER BY COALESCE(AVG(CAST(mvi.info AS NUMERIC)), 0) DESC) AS rank
     FROM 

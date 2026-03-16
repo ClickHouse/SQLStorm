@@ -59,7 +59,7 @@ JOIN ItemPopularity ti ON ti.ws_item_sk IN (
     SELECT i_item_sk FROM item
     WHERE i_current_price < 50
 )
-JOIN TrendAnalysis ta ON ta.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
+JOIN TrendAnalysis ta ON ta.d_year = toYear(toDate('2002-10-01'))
 WHERE r.employee_rank <= 5
   AND q.total_return_quantity IS NOT NULL
 ORDER BY r.s_store_name ASC, ta.peak_profit DESC;

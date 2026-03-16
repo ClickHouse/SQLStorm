@@ -49,7 +49,7 @@ SELECT
     md.title,
     md.production_year,
     COALESCE(md.actor_count, 0) AS actor_count,
-    ARRAY_AGG(DISTINCT md.company_name) AS companies,
+    arrayDistinct(groupArray(assumeNotNull(md.company_name))) AS companies,
     CASE 
         WHEN md.production_year > 2000 THEN 'Modern Era'
         WHEN md.production_year BETWEEN 1980 AND 2000 THEN 'Late 20th Century'

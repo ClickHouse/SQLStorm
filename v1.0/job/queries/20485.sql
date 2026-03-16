@@ -4,7 +4,7 @@ WITH MovieData AS (
         t.id AS title_id,
         t.title,
         t.production_year,
-        STRING_AGG(DISTINCT a.name, ', ') AS actors,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actors,
         COUNT(DISTINCT kc.keyword) AS keyword_count,
         SUM(CASE WHEN mc.note IS NOT NULL THEN 1 ELSE 0 END) AS company_count,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.production_year DESC, t.title) AS rn

@@ -32,7 +32,7 @@ AggregatedInfo AS (
     SELECT 
         m.movie_id,
         COUNT(DISTINCT ci.id) AS cast_count,
-        STRING_AGG(DISTINCT a.name, ', ') AS actor_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ', ') AS actor_names
     FROM 
         MovieHierarchy m
         LEFT JOIN complete_cast cc ON m.movie_id = cc.movie_id

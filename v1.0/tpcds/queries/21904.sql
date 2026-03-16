@@ -51,4 +51,4 @@ FULL OUTER JOIN promotional_performance pp ON pp.total_revenue > 10000
 WHERE (ca.cd_gender IS NOT NULL OR pp.p_promo_name IS NOT NULL)
 AND (cs.shipping_type IS NOT NULL OR cs.total_quantity < 500)
 ORDER BY cs.total_sales DESC NULLS LAST, ca.customer_count DESC NULLS FIRST
-FETCH FIRST 100 ROWS ONLY;
+LIMIT 100;

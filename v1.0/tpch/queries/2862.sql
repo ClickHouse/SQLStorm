@@ -43,7 +43,7 @@ JOIN
 LEFT JOIN 
     TopSuppliers ts ON l.l_suppkey = ts.s_suppkey
 WHERE 
-    o.o_orderdate >= DATE '1997-01-01' AND 
+    o.o_orderdate >= toDate('1997-01-01') AND 
     (o.o_orderstatus = 'F' OR o.o_orderstatus = 'P') 
 GROUP BY 
     c.c_name, ts.supplier_rank

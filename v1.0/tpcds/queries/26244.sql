@@ -17,7 +17,7 @@ WITH string_benchmark AS (
         COUNT(*) AS address_count,
         MAX(zip_length) AS max_zip_length,
         MIN(zip_length) AS min_zip_length,
-        STRING_AGG(street_abbreviation, ', ') AS all_streets
+        arrayStringConcat(groupArray(assumeNotNull(street_abbreviation)), ', ') AS all_streets
     FROM string_benchmark
     GROUP BY city_lower
 )

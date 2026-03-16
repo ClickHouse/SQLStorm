@@ -4,7 +4,7 @@ WITH UserBadges AS (
         U.Id AS UserId,
         U.DisplayName,
         COUNT(B.Id) AS BadgeCount,
-        STRING_AGG(B.Name, ', ') AS Badges
+        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS Badges
     FROM 
         Users U
     LEFT JOIN 
@@ -21,7 +21,7 @@ PostDetails AS (
         U.DisplayName AS OwnerDisplayName,
         U.Reputation AS OwnerReputation,
         COUNT(C.Id) AS CommentCount,
-        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags,
         P.Body
     FROM 
         Posts P
@@ -30,7 +30,7 @@ PostDetails AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
-        UNNEST(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><')) AS tag_name ON TRUE
+        arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2))) AS tag_name ON TRUE
     LEFT JOIN 
         Tags T ON tag_name = T.TagName
     WHERE 

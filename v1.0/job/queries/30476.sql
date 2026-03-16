@@ -27,9 +27,9 @@ MovieDetails AS (
         m.id AS movie_id,
         m.title,
         m.production_year,
-        ARRAY_AGG(DISTINCT c.name) AS cast_names,
+        arrayDistinct(groupArray(assumeNotNull(c.name))) AS cast_names,
         COUNT(DISTINCT kw.keyword) AS keyword_count,
-        ARRAY_AGG(DISTINCT cn.name) AS company_names
+        arrayDistinct(groupArray(assumeNotNull(cn.name))) AS company_names
     FROM
         aka_title m
     LEFT JOIN

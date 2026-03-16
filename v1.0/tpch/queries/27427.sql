@@ -50,7 +50,7 @@ SELECT
     COUNT(DISTINCT ol.l_orderkey) AS total_orders,
     AVG(co.total_spent) AS avg_spent,
     p.supplier_name,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS products_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS products_supplied
 FROM 
     CustomerOrderDetails co
 JOIN 

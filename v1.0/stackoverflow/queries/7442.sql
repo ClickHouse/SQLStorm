@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         COUNT(c.Id) AS CommentCount,
         RANK() OVER (ORDER BY p.Score DESC, p.ViewCount DESC) AS RankScore,
-        STRING_AGG(t.TagName, ', ') AS TagsList
+        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
     FROM 
         Posts p
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
-        p.CreationDate > CURRENT_DATE - INTERVAL '1 year' AND 
+        p.CreationDate > CURRENT_DATE - INTERVAL 1 YEAR AND 
         p.PostTypeId = 1
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount

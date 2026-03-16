@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - interval '1 year'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
         AND p.Score IS NOT NULL
 ),
 TopPosts AS (
@@ -31,7 +31,7 @@ SELECT
     tp.OwnerReputation,
     (SELECT AVG(ViewCount)
      FROM Posts
-     WHERE CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - interval '1 year') AS AvgViews,
+     WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AS AvgViews,
     COALESCE((SELECT COUNT(DISTINCT c.Id)
               FROM Comments c
               WHERE c.PostId IN (SELECT PostId FROM TopPosts)), 0) AS TotalComments,

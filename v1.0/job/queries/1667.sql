@@ -27,7 +27,7 @@ WITH ranked_movies AS (
         tm.title,
         tm.production_year,
         mi.info AS movie_info,
-        COALESCE(string_agg(DISTINCT kw.keyword, ', '), 'No Keywords') AS keywords
+        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(kw.keyword))), ', '), 'No Keywords') AS keywords
     FROM 
         top_movies tm
     LEFT JOIN 

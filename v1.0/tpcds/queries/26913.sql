@@ -43,7 +43,7 @@ AggregatedData AS (
         cd_gender,
         COUNT(*) AS count_customers,
         AVG(address_length) AS avg_address_length,
-        STRING_AGG(marital_status, ', ') AS marital_status_summary
+        arrayStringConcat(groupArray(assumeNotNull(marital_status)), ', ') AS marital_status_summary
     FROM 
         StringProcessedInfo
     GROUP BY 

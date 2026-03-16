@@ -9,13 +9,13 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         u.DisplayName AS OwnerDisplayName,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.ViewCount DESC) AS RankByViews,
-        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '>')) AS tag ON TRUE
+        arrayJoin(splitByString('>', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON tag = t.TagName
     WHERE 
@@ -28,7 +28,7 @@ RecentPostHistory AS (
         ph.PostId,
         MAX(ph.CreationDate) AS LastEdited,
         COUNT(*) AS EditCount,
-        STRING_AGG(CONCAT(ph.UserDisplayName, ': ', ph.Comment), ' | ') AS EditComments
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.UserDisplayName, ': ', ph.Comment))), ' | ') AS EditComments
     FROM 
         PostHistory ph
     WHERE 
@@ -40,7 +40,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS ClosedDate,
-        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

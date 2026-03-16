@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '2 years' 
+        p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR 
         AND p.Score IS NOT NULL
 ),
 UserPostStats AS (
@@ -31,7 +31,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditedDate,
-        STRING_AGG(CONCAT(ph.Comment, ' (', ph.CreationDate, ')'), ', ') AS EditComments
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.Comment, ' (', ph.CreationDate, ')'))), ', ') AS EditComments
     FROM 
         PostHistory ph
     WHERE 

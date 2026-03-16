@@ -3,7 +3,7 @@ SELECT
     p.p_name AS part_name, 
     COUNT(DISTINCT o.o_orderkey) AS order_count, 
     MAX(ps.ps_supplycost) AS max_supply_cost, 
-    STRING_AGG(DISTINCT n.n_name, ', ') AS nations_supplied
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nations_supplied
 FROM 
     supplier s
 JOIN 

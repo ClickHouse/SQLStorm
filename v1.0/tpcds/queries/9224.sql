@@ -6,7 +6,7 @@ WITH customer_data AS (
         cd.cd_gender,
         cd.cd_marital_status,
         cd.cd_purchase_estimate,
-        DATE_PART('year', cast('2002-10-01' as date)) - c.c_birth_year AS age,
+        datePart('year', cast('2002-10-01' as date)) - c.c_birth_year AS age,
         ca.ca_state,
         COUNT(ws.ws_order_number) AS total_orders,
         SUM(ws.ws_net_paid) AS total_spent

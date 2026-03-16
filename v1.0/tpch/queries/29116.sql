@@ -28,7 +28,7 @@ SELECT
     r.r_name,
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(o.o_totalprice) AS total_revenue,
-    STRING_AGG(DISTINCT CONCAT(p.p_name, ' (', p.p_retailprice, ')'), '; ') AS product_details
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(p.p_name, ' (', p.p_retailprice, ')')))), '; ') AS product_details
 FROM 
     region r 
 JOIN 

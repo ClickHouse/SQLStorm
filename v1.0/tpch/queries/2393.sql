@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
+        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
 ),
 SupplierInfo AS (
     SELECT 
@@ -56,4 +56,4 @@ HAVING
     COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY 
     TotalRevenue DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

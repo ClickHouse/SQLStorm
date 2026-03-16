@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
 ),
 PostStatistics AS (
     SELECT 
@@ -27,7 +27,7 @@ PostStatistics AS (
         SUM(rp.UpVoteCount) AS TotalUpVotes,
         SUM(rp.DownVoteCount) AS TotalDownVotes,
         AVG(rp.Score) AS AvgScore,
-        STRING_AGG(DISTINCT rp.Title, '; ') AS PostTitles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.Title))), '; ') AS PostTitles,
         SUM(CASE 
             WHEN rp.CommentCount > 0 THEN 1 
             ELSE 0 
@@ -40,7 +40,7 @@ PostStatistics AS (
 UserBadges AS (
     SELECT 
         u.Id AS UserId,
-        ARRAY_AGG(b.Name) AS BadgeNames,
+        groupArray(assumeNotNull(b.Name)) AS BadgeNames,
         COUNT(b.Id) AS BadgeCount
     FROM 
         Users u
@@ -80,4 +80,4 @@ WHERE
     f.TotalPosts > 10
 ORDER BY 
     f.AvgScore DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

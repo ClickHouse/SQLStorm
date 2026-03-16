@@ -5,7 +5,7 @@ SELECT
     d.d_date AS order_date,
     SUM(ws.ws_sales_price) AS total_spent,
     COUNT(ws.ws_order_number) AS order_count,
-    STRING_AGG(DISTINCT i.i_product_name, ', ') AS purchased_items,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.i_product_name))), ', ') AS purchased_items,
     cd.cd_gender,
     cd.cd_marital_status
 FROM 

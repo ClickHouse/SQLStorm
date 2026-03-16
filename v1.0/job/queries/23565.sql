@@ -47,7 +47,7 @@ SELECT
         WHEN md.actor_count IS NOT NULL AND md.actor_count > 10 THEN 'Popular Cast'
         ELSE 'Less Popular Cast'
     END AS cast_popularity,
-    (SELECT STRING_AGG(name, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(name)), ', ') 
      FROM aka_name 
      WHERE person_id IN (SELECT DISTINCT person_id FROM cast_info WHERE movie_id = md.movie_id)) AS lead_actors
 FROM 

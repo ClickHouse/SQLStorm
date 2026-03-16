@@ -33,9 +33,9 @@ TopRankedMovies AS (
 SELECT 
     t.movie_title,
     COUNT(cc.id) AS total_cast,
-    STRING_AGG(DISTINCT n.name, ', ') AS cast_members,
-    STRING_AGG(DISTINCT CONCAT(co.name, ' - ', ct.kind), '; ') AS companies_involved,
-    STRING_AGG(DISTINCT p.info, ', ') AS additional_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.name))), ', ') AS cast_members,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(co.name, ' - ', ct.kind)))), '; ') AS companies_involved,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.info))), ', ') AS additional_info
 FROM 
     TopRankedMovies t
 LEFT JOIN 

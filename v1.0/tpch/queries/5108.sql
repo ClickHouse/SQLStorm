@@ -49,7 +49,7 @@ SELECT
     od.customer_name, 
     SUM(od.ps_supplycost * od.o_totalprice) AS total_cost,
     COUNT(DISTINCT ts.s_suppkey) AS supplier_count,
-    STRING_AGG(DISTINCT ts.s_name, ', ') AS supplier_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ts.s_name))), ', ') AS supplier_names
 FROM OrderDetails od
 JOIN TopSuppliers ts ON od.ps_supplycost < ts.s_acctbal
 GROUP BY od.o_orderkey, od.o_orderdate, od.customer_name

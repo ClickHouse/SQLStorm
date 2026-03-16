@@ -46,6 +46,6 @@ FROM
 JOIN 
     PostHistory ph ON tp.PostId = ph.PostId
 WHERE 
-    ph.CreationDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' AND TIMESTAMP '2024-10-01 12:34:56'
+    ph.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY AND toDateTime64('2024-10-01 12:34:56', 6)
 ORDER BY 
     tp.Score DESC, tp.ViewCount DESC;

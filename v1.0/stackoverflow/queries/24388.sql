@@ -30,7 +30,7 @@ RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
+        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 ),
 PostDetails AS (
     SELECT 
@@ -70,7 +70,7 @@ PostActivity AS (
     LEFT JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '60 days')
+        ph.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 60 DAY)
 )
 
 SELECT 
@@ -92,4 +92,4 @@ WHERE
 ORDER BY 
     pd.ViewCount DESC,
     pd.OwnerReputation DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

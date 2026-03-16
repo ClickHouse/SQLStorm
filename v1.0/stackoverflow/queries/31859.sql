@@ -59,7 +59,7 @@ SELECT
     c.TotalScore,
     c.AvgViewCount,
     CASE 
-        WHEN c.LastPostDate IS NOT NULL THEN DATE '2024-10-01' - c.LastPostDate 
+        WHEN c.LastPostDate IS NOT NULL THEN toDate('2024-10-01') - c.LastPostDate 
         ELSE NULL 
     END AS DaysSinceLastPost
 FROM 

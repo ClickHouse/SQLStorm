@@ -38,7 +38,7 @@ SELECT
         WHEN ac.actor_count BETWEEN 5 AND 10 THEN 'Medium Cast'
         ELSE 'Small Cast'
     END AS cast_size,
-    (SELECT STRING_AGG(k.keyword, ', ') 
+    (SELECT arrayStringConcat(groupArray(assumeNotNull(k.keyword)), ', ') 
      FROM movie_keyword mk 
      JOIN keyword k ON mk.keyword_id = k.id 
      WHERE mk.movie_id = rm.movie_id) AS keywords

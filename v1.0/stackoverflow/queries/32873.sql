@@ -14,7 +14,7 @@ UserBadges AS (
     SELECT 
         b.UserId, 
         COUNT(*) AS BadgeCount, 
-        STRING_AGG(b.Name, ', ') AS BadgeNames,
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
         MAX(b.Date) AS LastBadgeDate
     FROM 
         Badges b
@@ -31,7 +31,7 @@ RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
     GROUP BY 
         p.OwnerUserId
 ),

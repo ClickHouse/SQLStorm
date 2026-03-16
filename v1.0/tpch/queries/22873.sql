@@ -48,4 +48,4 @@ WHERE p.p_brand IS NOT NULL
 GROUP BY p.p_partkey, p.p_name, p.p_mfgr
 HAVING COUNT(DISTINCT l.l_orderkey) > 2 OR MAX(l.l_discount) IS NULL
 ORDER BY revenue_category DESC, total_orders ASC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

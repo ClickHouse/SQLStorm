@@ -26,7 +26,7 @@ HighValueOrders AS (
         o.o_totalprice > (
             SELECT AVG(o2.o_totalprice)
             FROM orders o2 
-            WHERE o2.o_orderdate >= DATE '1996-01-01'
+            WHERE o2.o_orderdate >= toDate('1996-01-01')
         )
     GROUP BY 
         o.o_orderkey, o.o_totalprice, o.o_orderdate
@@ -54,7 +54,7 @@ LEFT JOIN
 JOIN 
     RankedSuppliers rs ON s.s_suppkey = rs.s_suppkey AND rs.rank_within_nation = 1
 WHERE 
-    l.l_shipdate >= TIMESTAMP '1998-10-01 12:34:56' - INTERVAL '1 year' AND
+    l.l_shipdate >= toDateTime64('1998-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND
     l.l_returnflag = 'N' AND
     o.o_orderstatus = 'O' AND
     ps.ps_availqty IS NOT NULL

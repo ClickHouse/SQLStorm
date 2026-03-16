@@ -3,7 +3,7 @@ SELECT
     CONCAT(s.s_name, ' (', n.n_name, ')') AS supplier_info,
     COUNT(DISTINCT o.o_orderkey) AS order_count,
     AVG(l.l_extendedprice) AS avg_price,
-    STRING_AGG(l.l_comment, '; ') AS comments
+    arrayStringConcat(groupArray(assumeNotNull(l.l_comment)), '; ') AS comments
 FROM 
     part p
 JOIN 

@@ -39,7 +39,7 @@ SELECT
         WHEN t.total_sales IS NULL THEN 'No sales'
         ELSE 'Sales exist'
     END AS sales_condition,
-    STRING_AGG(DISTINCT p.p_mfgr, ', ') AS manufacturers
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_mfgr))), ', ') AS manufacturers
 FROM 
     TopSales t
 LEFT JOIN 

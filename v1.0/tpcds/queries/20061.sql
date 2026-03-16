@@ -63,4 +63,4 @@ WHERE
 ORDER BY 
     f.sales_status, f.net_sales_after_returns DESC
 LIMIT 100
-OFFSET (SELECT COUNT(*) FROM FinalSales) * RANDOM();
+OFFSET (SELECT COUNT(*) FROM FinalSales) * rand();

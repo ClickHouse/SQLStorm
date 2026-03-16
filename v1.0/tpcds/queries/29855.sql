@@ -5,7 +5,7 @@ SELECT
     ca.ca_state,
     COUNT(ws.ws_order_number) AS total_orders,
     SUM(ws.ws_sales_price) AS total_spent,
-    STRING_AGG(DISTINCT wp.wp_url, ', ') AS visited_web_pages
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(wp.wp_url))), ', ') AS visited_web_pages
 FROM 
     customer c
 JOIN 

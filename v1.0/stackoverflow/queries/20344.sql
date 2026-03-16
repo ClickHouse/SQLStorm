@@ -13,7 +13,7 @@ WITH RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
+        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
 ),
 PostMetrics AS (
     SELECT 
@@ -39,7 +39,7 @@ PostMetrics AS (
 ClosedPostReasons AS (
     SELECT 
         ph.PostId,
-        STRING_AGG(cr.Name, ', ') AS CloseReasons
+        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -73,4 +73,4 @@ WHERE
 ORDER BY 
     pm.Score DESC,
     pm.CreationDate ASC
-FETCH FIRST 50 ROWS ONLY;
+LIMIT 50;

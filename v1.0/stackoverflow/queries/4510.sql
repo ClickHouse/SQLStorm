@@ -23,7 +23,7 @@ PostDetails AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
+    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score
 ),
 TopPosts AS (
@@ -57,4 +57,4 @@ JOIN Users u ON tp.PostId = u.Id
 JOIN UserReputation ur ON u.Id = ur.Id
 WHERE ur.ReputationCategory = 'High'
 ORDER BY tp.Score DESC
-FETCH FIRST 10 ROWS ONLY;
+LIMIT 10;

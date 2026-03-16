@@ -49,7 +49,7 @@ SELECT
     ta.movie_title,
     ta.production_year,
     COUNT(i.actor_info) AS info_count,
-    STRING_AGG(DISTINCT i.associated_keyword, ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(i.associated_keyword))), ', ') AS keywords
 FROM 
     TopActors ta
 LEFT JOIN 

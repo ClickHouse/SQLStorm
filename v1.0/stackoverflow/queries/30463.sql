@@ -35,7 +35,7 @@ SELECT u.DisplayName,
        phs.RevisionCount,
        phs.CloseReopenCount,
        CASE 
-           WHEN up.LatestPostDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days') THEN 'Active'
+           WHEN up.LatestPostDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) THEN 'Active'
            ELSE 'Inactive'
        END AS ActivityStatus
 FROM UserPostActivity up

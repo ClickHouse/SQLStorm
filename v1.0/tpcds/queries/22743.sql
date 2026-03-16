@@ -42,7 +42,7 @@ SELECT
     MAX(ts.total_returned_quantity) AS max_returned_quantity,
     MIN(ts.total_return_amount) AS min_return_amount,
     COUNT(DISTINCT cs.c_customer_sk) AS unique_customers,
-    STRING_AGG(DISTINCT CASE WHEN cs.total_orders > 5 THEN 'Frequent Buyer' ELSE 'Occasional Buyer' END, ', ') AS customer_type
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN cs.total_orders > 5 THEN 'Frequent Buyer' ELSE 'Occasional Buyer' END))), ', ') AS customer_type
 FROM 
     customer_address ca
 LEFT JOIN 

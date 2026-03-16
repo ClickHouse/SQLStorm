@@ -1,7 +1,7 @@
 
 WITH TagStats AS (
     SELECT 
-        TRIM(UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><'))) AS Tag,
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS Tag,
         COUNT(*) AS PostCount,
         SUM(ViewCount) AS TotalViews,
         AVG(Score) AS AverageScore
@@ -10,7 +10,7 @@ WITH TagStats AS (
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        TRIM(UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')))
+        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))))
 ),
 UserBadges AS (
     SELECT 
@@ -42,7 +42,7 @@ PostAnalytics AS (
     JOIN 
         PostTypes PT ON P.PostTypeId = PT.Id
     WHERE 
-        P.LastActivityDate >= DATE '2024-10-01' - INTERVAL '30 days'
+        P.LastActivityDate >= toDate('2024-10-01') - INTERVAL 30 DAY
 )
 SELECT 
     P.Title,

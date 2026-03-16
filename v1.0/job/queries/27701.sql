@@ -23,7 +23,7 @@ WITH MovieCast AS (
 KeywordData AS (
     SELECT 
         movie_id,
-        STRING_AGG(keyword.keyword, ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(keyword.keyword)), ', ') AS keywords
     FROM 
         movie_keyword
     JOIN 
@@ -34,7 +34,7 @@ KeywordData AS (
 CompanyData AS (
     SELECT 
         movie_id,
-        STRING_AGG(company_name.name, ', ') AS companies
+        arrayStringConcat(groupArray(assumeNotNull(company_name.name)), ', ') AS companies
     FROM 
         movie_companies
     JOIN 

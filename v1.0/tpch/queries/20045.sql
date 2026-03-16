@@ -20,7 +20,7 @@ WITH RegionalSales AS (
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
         o.o_orderstatus = 'O'
-        AND l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1996-01-01'
+        AND l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1996-01-01')
     GROUP BY 
         n.n_name
 ),

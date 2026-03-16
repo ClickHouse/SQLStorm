@@ -3,7 +3,7 @@ SELECT
     p.p_name,
     COUNT(DISTINCT ps.ps_suppkey) AS unique_suppliers,
     SUM(ps.ps_availqty) AS total_avail_qty,
-    STRING_AGG(DISTINCT CONCAT(s.s_name, ' (', s.s_phone, ')'), ', ') AS supplier_info
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(s.s_name, ' (', s.s_phone, ')')))), ', ') AS supplier_info
 FROM 
     part p
 JOIN 

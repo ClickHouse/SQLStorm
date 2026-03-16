@@ -31,7 +31,7 @@ PostHistoryStats AS (
         ph.PostId,
         COUNT(ph.Id) AS HistoryCount,
         MAX(ph.CreationDate) AS LastHistoryDate,
-        STRING_AGG(DISTINCT pht.Name, ', ') AS ChangeTypes
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS ChangeTypes
     FROM 
         PostHistory ph
     JOIN 

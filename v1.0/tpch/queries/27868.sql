@@ -7,7 +7,7 @@ WITH PartStats AS (
         p.p_container,
         COUNT(DISTINCT ps.ps_suppkey) AS supplier_count,
         SUM(ps.ps_supplycost) AS total_supply_cost,
-        STRING_AGG(s.s_name, ', ') AS supplier_names
+        arrayStringConcat(groupArray(assumeNotNull(s.s_name)), ', ') AS supplier_names
     FROM 
         part p
     JOIN 
@@ -22,7 +22,7 @@ RegionData AS (
         r.r_regionkey,
         r.r_name,
         COUNT(DISTINCT n.n_nationkey) AS nation_count,
-        STRING_AGG(DISTINCT n.n_name, ', ') AS nation_names
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(n.n_name))), ', ') AS nation_names
     FROM 
         region r
     JOIN 

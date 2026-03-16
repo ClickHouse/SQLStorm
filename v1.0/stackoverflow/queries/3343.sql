@@ -16,14 +16,14 @@ WITH UserPostStats AS (
 ),
 PopularTags AS (
     SELECT 
-        unnest(string_to_array(Tags, '<>')) AS TagName,
+        arrayJoin(splitByString('<>', Tags)) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         Tags IS NOT NULL
     GROUP BY 
-        unnest(string_to_array(Tags, '<>'))
+        arrayJoin(splitByString('<>', Tags))
     ORDER BY 
         TagCount DESC
     LIMIT 10
@@ -32,7 +32,7 @@ UserWithBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        STRING_AGG(b.Name, ', ') AS BadgeNames
+        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 

@@ -3,7 +3,7 @@ WITH movie_stats AS (
         t.id AS movie_id,
         t.title,
         COUNT(DISTINCT c.person_id) AS total_cast_members,
-        ARRAY_AGG(DISTINCT a.name) AS unique_actors,
+        arrayDistinct(groupArray(assumeNotNull(a.name))) AS unique_actors,
         COUNT(DISTINCT k.keyword) AS related_keywords
     FROM 
         aka_title AS t

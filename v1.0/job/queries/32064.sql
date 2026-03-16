@@ -53,7 +53,7 @@ SELECT
     f.title,
     f.production_year,
     COALESCE(SUM(mk.id), 0) AS keyword_count,
-    STRING_AGG(DISTINCT c.name, ', ') AS company_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.name))), ', ') AS company_names
 FROM 
     FilteredMovies f
 LEFT JOIN 

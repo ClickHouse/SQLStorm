@@ -45,11 +45,11 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON b.UserId = ph.PostId  
 WHERE 
-    ph.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
+    ph.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
 GROUP BY 
     ph.PostId, ph.Title, ph.PostTypeId, ph.ParentId, ph.CreationDate, ph.Level
 HAVING 
     COUNT(DISTINCT c.Id) > 0 OR COUNT(DISTINCT v.Id) > 0
 ORDER BY 
     ph.Level, CommentCount DESC, ph.Title
-OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;
+LIMIT 20 OFFSET 10;

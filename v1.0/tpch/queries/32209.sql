@@ -35,7 +35,7 @@ SELECT
     COUNT(DISTINCT n.n_nationkey) AS nation_count,
     SUM(CASE WHEN o.o_orderstatus = 'F' THEN o.o_totalprice ELSE 0 END) AS finished_order_total,
     AVG(o.o_totalprice) AS average_order_value,
-    STRING_AGG(DISTINCT s.s_name, ', ') AS suppliers,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(s.s_name))), ', ') AS suppliers,
     ROW_NUMBER() OVER (PARTITION BY r.r_name ORDER BY AVG(o.o_totalprice) DESC) AS rank
 FROM 
     region r

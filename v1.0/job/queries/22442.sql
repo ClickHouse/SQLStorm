@@ -48,7 +48,7 @@ MovieDetails AS (
     SELECT 
         mh.movie_id,
         mh.title,
-        STRING_AGG(DISTINCT ak.name, ', ') AS top_cast,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS top_cast,
         COALESCE(mi.info, 'N/A') AS additional_info,
         COUNT(DISTINCT kw.keyword) AS keyword_count
     FROM 

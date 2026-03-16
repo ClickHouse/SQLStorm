@@ -4,7 +4,7 @@ WITH ProcessedTags AS (
         p.Id AS PostId,
         p.Title,
         p.CreationDate,
-        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag
+        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -86,7 +86,7 @@ JOIN
 JOIN 
     (SELECT 
          at.Tag,
-         ARRAY_AGG(DISTINCT au.DisplayName) AS Users 
+         arrayDistinct(groupArray(assumeNotNull(au.DisplayName))) AS Users 
      FROM 
          ProcessedTags at
      JOIN 

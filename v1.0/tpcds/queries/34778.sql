@@ -18,7 +18,7 @@ customer_sales AS (
         c.c_customer_sk,
         COUNT(DISTINCT ws.ws_order_number) AS total_orders,
         SUM(ws.ws_net_paid_inc_tax) AS total_spent,
-        STRING_AGG(CONCAT(c.c_first_name, ' ', c.c_last_name), ', ') AS full_names
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(c.c_first_name, ' ', c.c_last_name))), ', ') AS full_names
     FROM 
         customer c
     JOIN 

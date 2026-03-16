@@ -7,7 +7,7 @@ SELECT
         WHEN l.l_returnflag = 'R' THEN l.l_quantity 
         ELSE 0 
     END) AS total_returned_quantity,
-    STRING_AGG(DISTINCT p.p_name, ', ') AS part_names
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_name))), ', ') AS part_names
 FROM 
     supplier s
 JOIN 

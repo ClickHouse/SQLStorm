@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         p.ParentId,
-        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.Score DESC, p.ViewCount DESC) AS RankInYear,
+        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.Score DESC, p.ViewCount DESC) AS RankInYear,
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotesCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotesCount
@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL '5 years'  
+        p.CreationDate >= CURRENT_DATE - INTERVAL 5 YEAR  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.ParentId
 ),

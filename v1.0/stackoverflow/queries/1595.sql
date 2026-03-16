@@ -60,4 +60,4 @@ WHERE
     UR.ReputationRank <= 10
 ORDER BY 
     UR.Reputation DESC
-FETCH FIRST 5 ROWS ONLY;
+LIMIT 5;
