@@ -46,4 +46,4 @@ WHERE
     cs.total_profit > 10000 
 ORDER BY 
     cs.total_profit DESC, ws.total_profit ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

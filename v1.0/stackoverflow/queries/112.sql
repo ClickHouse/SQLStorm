@@ -7,7 +7,7 @@ WITH UserStats AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotesCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotesCount,
         COUNT(DISTINCT p.Id) AS PostsCount,
-        AVG(COALESCE(toUnixTimestamp((now64(6) - p.CreationDate)), 0)) AS AvgPostAgeInSeconds
+        AVG(COALESCE(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate)), 0)) AS AvgPostAgeInSeconds
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Votes v ON p.Id = v.PostId

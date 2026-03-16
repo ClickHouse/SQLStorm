@@ -26,7 +26,7 @@ WITH RankedPosts AS (
                 arrayJoin(splitByString('<>', p.Tags)) AS TagName
         ) t ON TRUE
     WHERE 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR AND
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' AND
         p.PostTypeId = 1 
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, p.Score, u.DisplayName

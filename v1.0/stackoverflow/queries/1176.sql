@@ -17,7 +17,7 @@ WITH UserActivity AS (
         Votes V ON P.Id = V.PostId
     WHERE 
         U.Reputation IS NOT NULL AND 
-        U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        U.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation
 ),
@@ -42,7 +42,7 @@ RecentActivity AS (
     JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         P.OwnerUserId
 )

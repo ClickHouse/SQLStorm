@@ -60,4 +60,4 @@ FULL OUTER JOIN
     HighSpendingCustomers hc ON hs.s_suppkey = hc.c_custkey
 ORDER BY 
     revenue_spent_ratio DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

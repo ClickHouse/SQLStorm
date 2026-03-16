@@ -46,4 +46,4 @@ JOIN
     UserSummary us ON us.UserId = u.Id
 ORDER BY 
     ps.CreationDate DESC
-LIMIT 100;  -- Using standard SQL for limiting rows
+FETCH FIRST 100 ROWS ONLY;  -- Using standard SQL for limiting rows

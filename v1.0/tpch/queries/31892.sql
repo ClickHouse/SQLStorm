@@ -4,7 +4,7 @@ WITH RECURSIVE OrderHierarchy AS (
            ROW_NUMBER() OVER (PARTITION BY c.c_custkey ORDER BY o.o_orderdate) AS order_rank
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
 ),
 PartSupplierAggregation AS (
     SELECT ps.ps_partkey, SUM(ps.ps_availqty) AS total_available_qty, 

@@ -42,7 +42,7 @@ LEFT JOIN
 LEFT JOIN 
     UserBadges UB ON UP.Id = UB.UserId
 WHERE 
-    UP.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    UP.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     AND (UB.GoldBadges > 0 OR UB.SilverBadges > 1 OR UB.BronzeBadges > 2)
 ORDER BY 
     UB.GoldBadges DESC, 

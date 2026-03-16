@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - interval '1 year'
 ),
 UserBadges AS (
     SELECT 
@@ -51,4 +51,4 @@ WHERE
 ORDER BY 
     ub.BadgeCount DESC, 
     u.Reputation DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

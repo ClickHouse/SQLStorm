@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR)
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 year')
 ),
 TopUsers AS (
     SELECT 
@@ -44,7 +44,7 @@ PostHistories AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 6 MONTH)
+        ph.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '6 months')
 ),
 EligiblePosts AS (
     SELECT 

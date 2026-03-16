@@ -47,4 +47,4 @@ FROM
     CustomerInfo
 ORDER BY 
     total_spent DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

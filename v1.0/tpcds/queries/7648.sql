@@ -43,4 +43,4 @@ LEFT JOIN
     WarehouseSales w ON cs.total_orders > 5
 ORDER BY 
     combined_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -9,7 +9,7 @@ WITH RankedPosts AS (
            ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS Rank
     FROM Posts p
     JOIN PostTypes pt ON p.PostTypeId = pt.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
       AND p.Score > 0
 ),
 SelectedPosts AS (

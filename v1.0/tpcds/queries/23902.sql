@@ -63,4 +63,4 @@ WHERE
 ORDER BY 
     sd.store_net_sales DESC,
     hs.total_sales DESC
-LIMIT 25;
+FETCH FIRST 25 ROWS ONLY;

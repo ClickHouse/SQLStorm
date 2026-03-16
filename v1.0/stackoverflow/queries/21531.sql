@@ -63,4 +63,4 @@ FROM TopUsers tu
 LEFT JOIN AggregatePostStats aps ON tu.UserId = aps.OwnerUserId
 WHERE tu.BadgeCount >= 0 OR tu.Reputation >= 1000
 ORDER BY tu.Reputation DESC, tu.DisplayName
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

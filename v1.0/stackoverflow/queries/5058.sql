@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= DATE_TRUNC('year', CAST('2024-10-01' AS date)) 
+        p.CreationDate >= DATE_TRUNC('year', '2024-10-01'::date) 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName, p.PostTypeId
 ),

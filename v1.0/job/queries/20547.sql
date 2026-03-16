@@ -41,11 +41,12 @@ SELECT
         ELSE 'Small Cast'
     END AS cast_size_category,
     CASE 
-        WHEN toYear(cast('2024-10-01' as date)) - tm.production_year <= 3 THEN 'Recent Release'
+        WHEN EXTRACT(YEAR FROM cast('2024-10-01' as date)) - tm.production_year <= 3 THEN 'Recent Release'
         ELSE 'Classic'
     END AS age_category
 FROM top_movies tm
 LEFT JOIN related_keywords rk ON tm.movie_id = rk.movie_id
 WHERE tm.rn <= 5
 ORDER BY tm.production_year DESC, tm.cast_count DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS
+FETCH NEXT 10 ROWS ONLY;

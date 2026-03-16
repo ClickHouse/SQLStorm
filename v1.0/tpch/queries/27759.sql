@@ -22,8 +22,8 @@ JOIN
     nation N ON S.s_nationkey = N.n_nationkey
 WHERE 
     P.p_brand LIKE 'Brand#%'
-    AND L.l_shipdate >= toDate('1997-01-01')
-    AND L.l_shipdate < toDate('1998-01-01')
+    AND L.l_shipdate >= DATE '1997-01-01'
+    AND L.l_shipdate < DATE '1998-01-01'
 GROUP BY 
     S.s_name, N.n_name, S.s_comment
 ORDER BY 

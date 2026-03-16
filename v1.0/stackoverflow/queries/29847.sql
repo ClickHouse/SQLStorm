@@ -29,7 +29,7 @@ RecentActivity AS (
     LEFT JOIN 
         Users u ON u.Id = c.UserId
     WHERE 
-        p.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.LastActivityDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.CreationDate
 )

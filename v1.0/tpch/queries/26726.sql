@@ -28,7 +28,7 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey 
 WHERE 
-    l.l_shipdate > toDate('1997-01-01') 
+    l.l_shipdate > DATE '1997-01-01' 
     AND n.n_regionkey IN (SELECT r_regionkey FROM region WHERE r_name = 'Europe') 
 GROUP BY 
     p.p_partkey, 

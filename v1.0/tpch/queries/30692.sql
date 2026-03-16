@@ -33,7 +33,7 @@ OrderAggregation AS (
     JOIN
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE
-        l.l_shipdate BETWEEN cast('1998-10-01' as date) - INTERVAL 6 MONTH AND cast('1998-10-01' as date)
+        l.l_shipdate BETWEEN cast('1998-10-01' as date) - INTERVAL '6 months' AND cast('1998-10-01' as date)
     GROUP BY
         o.o_orderkey
 ),

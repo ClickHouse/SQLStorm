@@ -31,7 +31,7 @@ SELECT
     COUNT(DISTINCT c.movie_id) AS number_of_movies,
     arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') AS movie_titles,
     SUM(CASE WHEN t.production_year < 2010 THEN 1 ELSE 0 END) AS movies_before_2010,
-    AVG(CAST(p.info AS FLOAT)) FILTER (WHERE p.info_type_id = 1) AS avg_age_of_actors, 
+    AVG(p.info::FLOAT) FILTER (WHERE p.info_type_id = 1) AS avg_age_of_actors, 
 
     CASE 
         WHEN COUNT(DISTINCT c.movie_id) = 0 THEN 'No Movies'

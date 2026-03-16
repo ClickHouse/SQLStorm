@@ -41,11 +41,11 @@ SELECT
     END AS spending_category,
     (SELECT COUNT(*)
      FROM store_sales ss
-     WHERE ss.ss_customer_sk = e.c_customer_sk AND ss.ss_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = toDate('2002-10-01') - INTERVAL 30 DAY)) AS returns_last_30_days
+     WHERE ss.ss_customer_sk = e.c_customer_sk AND ss.ss_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = DATE '2002-10-01' - INTERVAL '30 days')) AS returns_last_30_days
 FROM 
     enriched_sales e
 WHERE 
     e.total_sales IS NOT NULL 
 ORDER BY 
     e.sales_rank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

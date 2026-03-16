@@ -51,7 +51,7 @@ LEFT JOIN
 JOIN 
     RankedSuppliers ss ON ss.rank = 1 
 WHERE 
-    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     c.c_name, ss.s_name, sp.total_available
 ORDER BY 

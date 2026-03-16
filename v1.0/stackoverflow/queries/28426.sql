@@ -48,7 +48,7 @@ HighReputationUsers AS (
     JOIN 
         RecentActivity ra ON ua.UserId = ra.UserId
     WHERE 
-        ra.LastActiveDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        ra.LastActiveDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
     ORDER BY 
         ua.Reputation DESC
 )

@@ -39,4 +39,4 @@ HAVING
 ORDER BY 
     revenue_rank,
     total_revenue DESC
-LIMIT 10
+FETCH FIRST 10 ROWS ONLY

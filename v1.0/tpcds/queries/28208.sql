@@ -59,4 +59,4 @@ WHERE
     ci.ca_city IN (SELECT ca_city FROM Top10Cities)
 ORDER BY 
     sd.total_revenue DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

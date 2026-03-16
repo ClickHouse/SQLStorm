@@ -4,7 +4,7 @@ WITH movie_details AS (
         m.id AS movie_id,
         m.title AS movie_title,
         m.production_year,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.role_id AS TEXT)))), ',') AS role_ids,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.role_id::TEXT))), ',') AS role_ids,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.name))), ',') AS cast_names
     FROM 
         aka_title m

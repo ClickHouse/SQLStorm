@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 90 DAY
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '90 days'
         AND p.PostTypeId IN (1, 2)
 ),
 TopRankedPosts AS (

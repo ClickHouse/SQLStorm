@@ -55,4 +55,4 @@ WHERE
     AND COALESCE(ss.total_sales, 0) > 1000
 ORDER BY 
     ss.total_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

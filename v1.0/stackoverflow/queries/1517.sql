@@ -57,4 +57,4 @@ WHERE
     AND (ub.GoldBadges > 0 OR ub.SilverBadges > 0 OR ub.BronzeBadges > 0)
 ORDER BY 
     rp.CreationDate DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

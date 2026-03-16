@@ -79,4 +79,4 @@ WHERE
     fm.avg_roles > 1
 ORDER BY 
     fm.avg_roles DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

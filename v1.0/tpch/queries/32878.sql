@@ -2,7 +2,7 @@
 WITH RECURSIVE OrderDates AS (
     SELECT o_orderkey, o_orderdate, ROW_NUMBER() OVER (ORDER BY o_orderdate) AS rn
     FROM orders
-    WHERE o_orderdate >= toDate('1995-01-01')
+    WHERE o_orderdate >= DATE '1995-01-01'
 ),
 SupplierMetrics AS (
     SELECT s.s_suppkey, SUM(ps.ps_supplycost) AS total_cost, COUNT(DISTINCT ps.ps_partkey) AS part_count

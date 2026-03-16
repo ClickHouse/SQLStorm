@@ -20,7 +20,7 @@ RecentPosts AS (
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS Rank
     FROM Posts P
     INNER JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year')
 ),
 PostHistoryRecent AS (
     SELECT 

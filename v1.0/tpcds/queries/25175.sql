@@ -49,4 +49,4 @@ SELECT
 FROM JoinedData
 WHERE cd_purchase_estimate > 1000 
 ORDER BY cd_purchase_estimate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

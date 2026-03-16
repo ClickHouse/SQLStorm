@@ -11,7 +11,7 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01')
+        o.o_orderdate >= DATE '1996-01-01'
 ),
 SupplierRegionStats AS (
     SELECT 
@@ -38,7 +38,7 @@ OrderLineStats AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
+        l.l_shipdate >= DATE '1998-10-01' - INTERVAL '1 year'
     GROUP BY 
         l.l_orderkey
 )
@@ -62,7 +62,7 @@ LEFT JOIN
         SELECT n.n_nationkey 
         FROM nation n 
         WHERE n.n_name = sr.nation
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     )
 LEFT JOIN 
     OrderLineStats ol ON oo.o_orderkey = ol.l_orderkey

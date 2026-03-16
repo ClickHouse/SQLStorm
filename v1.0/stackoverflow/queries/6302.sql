@@ -10,12 +10,12 @@ WITH RankedPosts AS (
         p.CommentCount,
         (SELECT COUNT(DISTINCT ph.PostHistoryTypeId) 
          FROM PostHistory ph 
-         WHERE ph.PostId = p.Id AND ph.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR) AS HistoryCount,
+         WHERE ph.PostId = p.Id AND ph.CreationDate >= CURRENT_DATE - INTERVAL '1 year') AS HistoryCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
+        p.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
 ),
 TopPosts AS (
     SELECT 

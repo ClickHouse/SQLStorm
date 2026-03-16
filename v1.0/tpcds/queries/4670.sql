@@ -46,4 +46,4 @@ FROM CustomerInfo ci
 LEFT JOIN SalesSummary ss ON ci.c_customer_sk = ss.cs_item_sk
 WHERE ss.total_sold >= 100 AND (ci.cd_gender = 'F' OR ci.cd_marital_status = 'M')
 ORDER BY ss.total_sales_amount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

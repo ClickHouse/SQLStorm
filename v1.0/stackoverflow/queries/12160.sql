@@ -15,7 +15,7 @@ WITH PostStats AS (
         LEFT JOIN Votes V ON P.Id = V.PostId
         LEFT JOIN Badges B ON P.OwnerUserId = B.UserId
     WHERE 
-        P.CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR  
+        P.CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'  
     GROUP BY 
         P.Id, P.Title, P.CreationDate
 ),
@@ -32,7 +32,7 @@ UserStats AS (
         LEFT JOIN Posts P ON U.Id = P.OwnerUserId
         LEFT JOIN Badges B ON U.Id = B.UserId
     WHERE 
-        U.CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR  
+        U.CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'  
     GROUP BY 
         U.Id, U.DisplayName
 )

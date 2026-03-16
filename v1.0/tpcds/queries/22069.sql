@@ -66,4 +66,4 @@ SELECT
 FROM final_output fo
 WHERE fo.page_count > 0
 ORDER BY fo.total_sales_price DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

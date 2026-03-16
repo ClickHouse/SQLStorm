@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01')
+        o.o_orderdate >= DATE '1996-01-01'
 ),
 FilteredLineItems AS (
     SELECT 
@@ -18,7 +18,7 @@ FilteredLineItems AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate < toDate('1998-10-01') AND l.l_returnflag = 'N'
+        l.l_shipdate < DATE '1998-10-01' AND l.l_returnflag = 'N'
     GROUP BY 
         l.l_orderkey
 ),

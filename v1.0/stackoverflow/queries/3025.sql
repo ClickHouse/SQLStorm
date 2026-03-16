@@ -58,7 +58,7 @@ PostsDetails AS (
             PostId
     ) ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
 )
 SELECT 
     us.UserId,
@@ -83,4 +83,4 @@ WHERE
     us.Ranking < 50
 ORDER BY 
     us.Upvotes DESC, ub.BadgeCount DESC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

@@ -1,7 +1,7 @@
 SELECT
     SUM(l_extendedprice * (1 - l_discount)) AS revenue,
     n_name,
-    toYear(o_orderdate) AS year
+    extract(YEAR FROM o_orderdate) AS year
 FROM
     customer
 JOIN
@@ -13,7 +13,7 @@ JOIN
 JOIN
     nation ON s_nationkey = n_nationkey
 WHERE
-    o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1996-12-31')
+    o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
     AND n_name LIKE 'N%'
 GROUP BY
     n_name, year

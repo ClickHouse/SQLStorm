@@ -50,4 +50,4 @@ WHERE
 ORDER BY 
     rp.Score DESC, 
     rp.CreationDate ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

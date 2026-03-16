@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         arrayJoin(splitByString('><', P.Tags)) AS T(TagName) ON TRUE
     WHERE 
-        P.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY 
+        P.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days' 
     GROUP BY 
         P.Id, P.Title, P.Body, P.CreationDate, P.ViewCount
 ),

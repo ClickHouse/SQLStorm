@@ -28,7 +28,7 @@ ClosedPosts AS (
         PostHistory ph
     WHERE 
         ph.PostHistoryTypeId IN (10, 11)  
-        AND ph.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
+        AND ph.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
 ), 
 PostDetails AS (
     SELECT 
@@ -42,7 +42,7 @@ PostDetails AS (
         Posts p
         LEFT JOIN Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 6 MONTH)
+        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '6 months')
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.AcceptedAnswerId
 ), 

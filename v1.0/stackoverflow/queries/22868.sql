@@ -81,7 +81,7 @@ LEFT JOIN
 WHERE 
     EXISTS (SELECT 1 
             FROM Comments c 
-            WHERE c.PostId = tp.PostId AND c.CreationDate >= (now64(6) - INTERVAL 30 DAY))
+            WHERE c.PostId = tp.PostId AND c.CreationDate >= (CURRENT_TIMESTAMP - INTERVAL '30 days'))
 ORDER BY 
     tp.Score DESC, ra.LastActivityDate DESC
 LIMIT 100;

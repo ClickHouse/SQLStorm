@@ -46,4 +46,4 @@ WHERE
     (ci.cd_marital_status = 'M' OR ci.cd_marital_status IS NULL)
     AND (cs.total_web_sales > 0 OR cs.total_catalog_sales > 0 OR cs.total_store_sales > 0)
 ORDER BY total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

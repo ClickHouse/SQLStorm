@@ -66,4 +66,4 @@ FROM ItemHierarchy ih
 JOIN TopSales ts ON ih.i_item_sk = ts.ws_item_sk
 JOIN FilteredCustomers fc ON fc.total_orders > 5
 ORDER BY ts.total_profit DESC, fc.total_spent DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

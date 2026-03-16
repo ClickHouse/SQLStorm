@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 /* Questions */
-        AND p.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR)
+        AND p.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year')
 ),
 FilteredPosts AS (
     SELECT 

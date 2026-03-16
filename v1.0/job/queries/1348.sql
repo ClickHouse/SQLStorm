@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ROW_NUMBER() OVER (PARTITION BY toYear(cast('2024-10-01' as date)) - t.production_year ORDER BY t.production_year DESC) AS year_rank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM cast('2024-10-01' as date)) - t.production_year ORDER BY t.production_year DESC) AS year_rank
     FROM 
         aka_title t
     WHERE 

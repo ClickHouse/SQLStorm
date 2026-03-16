@@ -17,8 +17,8 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate >= toDate('1993-07-01')
-    AND o.o_orderdate < toDate('1993-07-01') + INTERVAL 3 MONTH
+    o.o_orderdate >= DATE '1993-07-01'
+    AND o.o_orderdate < DATE '1993-07-01' + INTERVAL '3 month'
 GROUP BY 
     n.n_name
 ORDER BY 

@@ -64,4 +64,4 @@ WHERE
 ORDER BY 
     aos.customer_count DESC, 
     aos.max_purchase_estimate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

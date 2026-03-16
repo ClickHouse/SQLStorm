@@ -18,7 +18,7 @@ PostStats AS (
         MIN(P.CreationDate) OVER (PARTITION BY P.OwnerUserId) AS FirstPostDate,
         P.OwnerUserId
     FROM Posts P
-    WHERE P.CreationDate >= now64(6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
 ),
 ClosedPosts AS (
     SELECT 

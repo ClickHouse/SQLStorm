@@ -31,11 +31,11 @@ RecentActivity AS (
          FROM PostHistory h 
          JOIN Users u ON h.UserId = u.Id 
          WHERE h.PostId = p.Id 
-         AND h.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)) AS RecentEdits,
+         AND h.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')) AS RecentEdits,
         (SELECT COUNT(*) 
          FROM Comments c 
          WHERE c.PostId = p.Id 
-         AND c.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)) AS RecentCommentCount
+         AND c.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')) AS RecentCommentCount
     FROM 
         Posts p
     WHERE 

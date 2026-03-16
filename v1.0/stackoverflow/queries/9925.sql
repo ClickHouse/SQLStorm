@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         u.Reputation AS OwnerReputation,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpVotes,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3) AS DownVotes,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') FROM Tags t WHERE t.Id IN (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)CAST() AS int)[]))) AS TagsList
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') FROM Tags t WHERE t.Id IN (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))::int[]))) AS TagsList
     FROM 
         Posts p
     JOIN 
@@ -22,7 +22,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
         AND p.Score > 10
         AND p.ViewCount > 100
 )

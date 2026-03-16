@@ -9,8 +9,8 @@ WITH ranked_orders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01')
-        AND o.o_orderdate < toDate('1997-10-01')
+        o.o_orderdate >= DATE '1997-01-01'
+        AND o.o_orderdate < DATE '1997-10-01'
     GROUP BY 
         o.o_orderkey, o.o_orderstatus
 ),
@@ -66,6 +66,6 @@ LEFT JOIN
 LEFT JOIN 
     growth_rate go ON go.n_name = r.r_name
 LEFT JOIN 
-    ranked_orders ro ON ro.o_orderkey = (SELECT o_orderkey FROM ranked_orders WHERE sales_rank = 1 LIMIT 1)
+    ranked_orders ro ON ro.o_orderkey = (SELECT o_orderkey FROM ranked_orders WHERE sales_rank = 1 FETCH FIRST 1 ROW ONLY)
 ORDER BY 
     r.r_name, si.s_name, ro.total_sales DESC NULLS LAST;

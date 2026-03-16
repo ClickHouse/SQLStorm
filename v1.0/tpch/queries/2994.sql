@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01')
+        o.o_orderdate >= DATE '1997-01-01'
 ),
 
 SupplierSummary AS (
@@ -33,7 +33,7 @@ OrderDetails AS (
     FROM 
         lineitem li
     WHERE 
-        li.l_shipdate >= toDate('1997-01-01')
+        li.l_shipdate >= DATE '1997-01-01'
     GROUP BY 
         li.l_orderkey
 )

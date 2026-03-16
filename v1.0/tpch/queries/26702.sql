@@ -22,8 +22,8 @@ JOIN
     part p ON l.l_partkey = p.p_partkey
 WHERE 
     r.r_name LIKE 'Asia%' 
-    AND o.o_orderdate >= toDate('1996-01-01') 
-    AND o.o_orderdate < toDate('1997-01-01')
+    AND o.o_orderdate >= DATE '1996-01-01' 
+    AND o.o_orderdate < DATE '1997-01-01'
 GROUP BY 
     c.c_name, s.s_name, r.r_name
 ORDER BY 

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 PopularUsers AS (
     SELECT 
@@ -59,7 +59,7 @@ MergedInfo AS (
 SELECT 
     mi.PostId,
     mi.Title,
-    COALESCE(CAST(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - mi.CreationDate)) / 3600 AS INT), 0) AS AgeInHours,
+    COALESCE(CAST(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - mi.CreationDate)) / 3600 AS INT), 0) AS AgeInHours,
     mi.ViewCount,
     mi.Score,
     mi.RankScore,

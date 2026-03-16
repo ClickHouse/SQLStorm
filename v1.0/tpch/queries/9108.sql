@@ -2,7 +2,7 @@ WITH RecentOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, c.c_mktsegment
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1996-01-01'
 ),
 SupplierStats AS (
     SELECT ps.ps_partkey, ps.ps_suppkey, SUM(ps.ps_availqty) AS total_available_qty, AVG(ps.ps_supplycost) AS avg_supply_cost

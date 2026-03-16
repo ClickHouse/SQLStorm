@@ -57,4 +57,4 @@ FROM
 ORDER BY 
     mwc.production_year DESC, 
     mwc.actor_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

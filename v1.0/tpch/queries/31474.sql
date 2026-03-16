@@ -22,9 +22,9 @@ LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 LEFT JOIN supplier s ON l.l_suppkey = s.s_suppkey
 LEFT JOIN nation n ON s.s_nationkey = n.n_nationkey
 LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
-WHERE l.l_shipdate >= toDate('1997-01-01') 
+WHERE l.l_shipdate >= DATE '1997-01-01' 
 AND (l.l_returnflag = 'Y' OR l.l_shipmode = 'AIR')
 GROUP BY c.c_name, r.r_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000
 ORDER BY sales_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

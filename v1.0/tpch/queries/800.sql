@@ -78,6 +78,6 @@ JOIN
     TopCustomers tc ON ol.o_orderstatus = 'F'
 WHERE 
     t.s_acctbal IS NOT NULL
-    AND ol.o_orderdate >= toDate('1997-01-01')
+    AND ol.o_orderdate >= DATE '1997-01-01'
 ORDER BY 
     Supplier_Nation, Revenue DESC;

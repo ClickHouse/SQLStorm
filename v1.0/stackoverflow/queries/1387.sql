@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 TopUsers AS (
     SELECT 
@@ -39,7 +39,7 @@ ClosedPostDetails AS (
     WHERE 
         pht.Name ILIKE 'Post Closed'
     AND 
-        ph.CreationDate > cast('2024-10-01' as date) - INTERVAL 6 MONTH
+        ph.CreationDate > cast('2024-10-01' as date) - INTERVAL '6 months'
 ),
 PostAnswers AS (
     SELECT 

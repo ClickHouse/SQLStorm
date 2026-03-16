@@ -44,7 +44,7 @@ ActivePosts AS (
         END AS HasAcceptedAnswer
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.LastActivityDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    WHERE p.LastActivityDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
     GROUP BY p.Id, p.Title, p.CreationDate, p.AcceptedAnswerId
 ),
 PostHistoryDetails AS (

@@ -48,4 +48,4 @@ WHERE
     ss.total_revenue > 1000
 ORDER BY 
     ss.total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

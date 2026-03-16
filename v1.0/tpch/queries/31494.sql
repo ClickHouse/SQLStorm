@@ -56,4 +56,4 @@ WHERE
     total_sales IS NOT NULL
 ORDER BY 
     sales_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

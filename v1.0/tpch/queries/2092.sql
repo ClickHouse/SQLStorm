@@ -7,8 +7,8 @@ WITH RankedOrders AS (
     FROM 
         orders
     WHERE
-        o_orderdate >= toDate('1996-01-01') 
-        AND o_orderdate < toDate('1997-01-01')
+        o_orderdate >= DATE '1996-01-01' 
+        AND o_orderdate < DATE '1997-01-01'
 ),
 SupplierInfo AS (
     SELECT 

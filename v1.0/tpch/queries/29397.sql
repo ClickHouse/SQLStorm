@@ -13,7 +13,7 @@ JOIN customer c ON o.o_custkey = c.c_custkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey
 WHERE c.c_mktsegment = 'BUILDING' 
-  AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+  AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY s.s_name, r.r_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 10
 ORDER BY total_revenue DESC;

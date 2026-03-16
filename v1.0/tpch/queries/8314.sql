@@ -12,7 +12,7 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
+        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
 ), CustomerNation AS (
     SELECT 
         n.n_name AS nation_name,
@@ -50,7 +50,7 @@ WITH RankedOrders AS (
                 part p 
             WHERE 
                 p.p_retailprice = (SELECT MAX(p2.p_retailprice) FROM part p2)
-            LIMIT 1
+            FETCH FIRST 1 ROW ONLY
         )
     GROUP BY 
         cn.nation_name, cn.total_orders, cn.total_revenue

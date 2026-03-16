@@ -71,4 +71,4 @@ LEFT JOIN
     StoreSalesSummary ss ON cd.total_spent > 5000
 ORDER BY 
     cd.total_spent DESC, ss.total_revenue DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

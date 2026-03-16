@@ -34,4 +34,4 @@ GROUP BY
     p.p_name, s.s_name, r.r_name 
 ORDER BY 
     total_revenue DESC, total_quantity DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
     GROUP BY 
         p.Id
 ),
@@ -42,7 +42,7 @@ SELECT
     COUNT(DISTINCT tp.PostID) AS TotalPosts,
     SUM(tp.ViewCount) AS TotalViews,
     AVG(tp.Score) AS AverageScore,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(tp.PostTypeNames AS text)))), ', ') AS PostTypes,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.PostTypeNames::text))), ', ') AS PostTypes,
     arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.Tags))), ', ') AS AllTags
 FROM 
     TopPosts tp

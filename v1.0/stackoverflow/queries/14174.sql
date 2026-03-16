@@ -7,7 +7,7 @@ SELECT
     AVG(p.ViewCount) AS AvgViewCount,
     AVG(p.AnswerCount) AS AvgAnswerCount,
     AVG(p.CommentCount) AS AvgCommentCount,
-    AVG(toUnixTimestamp((now64(6) - p.CreationDate))) AS AvgPostAgeInSeconds,
+    AVG(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate))) AS AvgPostAgeInSeconds,
     COUNT(DISTINCT p.OwnerUserId) AS DistinctUsersContributed,
     SUM(CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS TotalAcceptedAnswers
 FROM 

@@ -46,4 +46,4 @@ CROSS JOIN
     customer_demographics_summary d
 ORDER BY 
     s.total_sales_amount DESC, d.total_customers DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

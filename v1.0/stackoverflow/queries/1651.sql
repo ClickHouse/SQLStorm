@@ -7,7 +7,7 @@ WITH RankedPosts AS (
            ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 AggregateVotes AS (
     SELECT PostId, 
@@ -41,6 +41,6 @@ SELECT tp.PostId,
            ELSE 'Low Rated'
        END AS RatingCategory
 FROM TopPosts tp
-WHERE (tp.Score > 0 OR (tp.OwnerName IS NOT NULL AND tp.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH))
+WHERE (tp.Score > 0 OR (tp.OwnerName IS NOT NULL AND tp.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'))
 ORDER BY NetVotes DESC, tp.CreationDate DESC
 LIMIT 100;

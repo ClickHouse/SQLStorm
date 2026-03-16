@@ -77,4 +77,4 @@ WHERE F.Score > (
     FROM TopPosts 
 )
 ORDER BY F.Score DESC, F.CommentCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

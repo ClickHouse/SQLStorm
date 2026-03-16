@@ -7,12 +7,12 @@ WITH TopUsers AS (
 ), UserPostCounts AS (
     SELECT OwnerUserId, COUNT(*) AS PostCount
     FROM Posts
-    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE CreationDate >= cast('2024-10-01' as date) - interval '1 year'
     GROUP BY OwnerUserId
 ), UserBadges AS (
     SELECT UserId, COUNT(*) AS BadgeCount
     FROM Badges
-    WHERE Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE Date >= cast('2024-10-01' as date) - interval '1 year'
     GROUP BY UserId
 ), UserScores AS (
     SELECT u.Id AS UserId, u.DisplayName, COALESCE(UPC.PostCount, 0) AS PostCount, COALESCE(UB.BadgeCount, 0) AS BadgeCount

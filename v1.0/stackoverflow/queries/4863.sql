@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ), 
 ClosedPosts AS (
     SELECT 
@@ -20,7 +20,7 @@ ClosedPosts AS (
     FROM 
         PostHistory PH
     JOIN 
-        CloseReasonTypes CRT ON CAST(PH.Comment AS int) = CRT.Id
+        CloseReasonTypes CRT ON PH.Comment::int = CRT.Id
     WHERE 
         PH.PostHistoryTypeId IN (10, 11) 
 ), 

@@ -56,7 +56,7 @@ JOIN
 JOIN 
     CustomerOrderStats cs ON cs.c_custkey = o.o_custkey
 WHERE 
-    l.l_shipdate >= toDate('1997-01-01')
+    l.l_shipdate >= DATE '1997-01-01'
 GROUP BY 
     r.r_name, ns.n_name, s.s_name
 ORDER BY 

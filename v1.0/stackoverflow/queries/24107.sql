@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.Title, p.PostTypeId
 ),
@@ -38,7 +38,7 @@ PostStats AS (
         tp.DownVotes,
         (CASE 
             WHEN tp.UpVotes + tp.DownVotes = 0 THEN NULL 
-            ELSE ROUND((CAST(tp.UpVotes AS decimal) / NULLIF(tp.UpVotes + tp.DownVotes, 0)) * 100, 2) 
+            ELSE ROUND((tp.UpVotes::decimal / NULLIF(tp.UpVotes + tp.DownVotes, 0)) * 100, 2) 
          END) AS ApprovalRate
     FROM 
         TopPosts tp

@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '1 year'
         AND p.ViewCount > 10
 ),
 UserReputation AS (
@@ -49,9 +49,9 @@ ClosedPosts AS (
     JOIN 
         PostHistory h ON p.Id = h.PostId AND h.PostHistoryTypeId = 10
     LEFT JOIN 
-        CloseReasonTypes cr ON CAST(h.Comment AS INTEGER) = cr.Id
+        CloseReasonTypes cr ON h.Comment::INTEGER = cr.Id
     WHERE 
-        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 6 MONTH 
+        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '6 months' 
     GROUP BY 
         p.Id
 )

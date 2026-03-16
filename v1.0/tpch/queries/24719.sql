@@ -24,7 +24,7 @@ OrderStats AS (
            SUM(CASE WHEN l.l_discount > 0.1 THEN l.l_extendedprice * (1 - l.l_discount) ELSE l.l_extendedprice END) AS NetRevenue
     FROM orders o
     LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE toYear(o.o_orderdate) = 1997
+    WHERE EXTRACT(YEAR FROM o.o_orderdate) = 1997
     GROUP BY o.o_orderkey
 )
 SELECT 

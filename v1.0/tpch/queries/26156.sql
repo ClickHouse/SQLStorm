@@ -16,7 +16,7 @@ JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     p.p_comment LIKE '%red%' 
-    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     SUBSTRING(p.p_name, 1, 10), 
     CONCAT(REPLACE(s.s_name, 'Supplier', 'Sup'), ' - ', s.s_phone)

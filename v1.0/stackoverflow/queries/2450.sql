@@ -43,7 +43,7 @@ LEFT JOIN
     RankedPosts rp ON u.Id = rp.OwnerUserId
 WHERE 
     us.Reputation > 1000
-    AND (rp.Score IS NULL OR rp.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    AND (rp.Score IS NULL OR rp.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')
 ORDER BY 
     us.Reputation DESC, 
     us.QuestionCount DESC

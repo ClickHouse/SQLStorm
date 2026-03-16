@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON t.ExcerptPostId = p.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
         AND p.ViewCount IS NOT NULL 
         AND p.Score IS NOT NULL
     GROUP BY 
@@ -60,7 +60,7 @@ PostHistoryDetails AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
 )
 SELECT 
     ps.PostId,
@@ -85,7 +85,7 @@ WHERE
     AND EXISTS (
         SELECT 1 
         FROM Votes v 
-        WHERE v.PostId = ps.PostId AND v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        WHERE v.PostId = ps.PostId AND v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
         GROUP BY v.PostId 
         HAVING COUNT(v.Id) >= 3
     )

@@ -70,4 +70,4 @@ HAVING
     COUNT(DISTINCT fo.o_orderkey) > 0
 ORDER BY 
     total_acctbal DESC, r.r_name
-LIMIT 5 OFFSET 1;
+OFFSET 1 ROWS FETCH NEXT 5 ROWS ONLY;

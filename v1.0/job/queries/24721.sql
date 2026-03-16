@@ -10,7 +10,7 @@ WITH RankedMovies AS (
         aka_title t
     WHERE 
         t.title IS NOT NULL
-        AND t.production_year BETWEEN 1990 AND toYear(toDate('2024-10-01'))
+        AND t.production_year BETWEEN 1990 AND EXTRACT(YEAR FROM DATE '2024-10-01')
 ),
 FilteredCast AS (
     SELECT 

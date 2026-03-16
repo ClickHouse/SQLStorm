@@ -56,4 +56,4 @@ FROM
     PostStatistics p
 ORDER BY 
     p.Rank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

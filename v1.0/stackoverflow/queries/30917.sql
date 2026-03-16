@@ -42,12 +42,12 @@ RecentPosts AS (
         FROM 
             Comments
         WHERE 
-            CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+            CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
         GROUP BY 
             PostId
     ) C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 60 DAY
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '60 days'
 ),
 PostHistorySummary AS (
     SELECT 

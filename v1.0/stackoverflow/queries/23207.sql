@@ -23,9 +23,9 @@ RecentPosts AS (
             C.Id AS CommentId,
             C.PostId
         FROM Comments C
-        WHERE C.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        WHERE C.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     ) AS C ON P.Id = C.PostId
-    WHERE P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH) 
+    WHERE P.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months') 
     GROUP BY P.Id, P.OwnerUserId, P.PostTypeId, P.CreationDate, P.Title, P.Tags
 ),
 UserPostStats AS (

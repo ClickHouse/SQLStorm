@@ -17,7 +17,7 @@ RecentEdits AS (
     FROM PostHistory PH
     JOIN Users U ON PH.UserId = U.Id
     WHERE PH.PostHistoryTypeId IN (4, 5)
-    AND PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    AND PH.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
 )
 SELECT 
     U.DisplayName AS UserName,

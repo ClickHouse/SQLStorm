@@ -42,4 +42,4 @@ GROUP BY
     i.i_item_id, rp.total_return_qty, rp.total_return_amt
 ORDER BY 
     total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

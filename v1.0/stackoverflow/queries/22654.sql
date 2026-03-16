@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '2 years'
 ),
 UserActivity AS (
     SELECT 
@@ -64,7 +64,7 @@ SELECT
         WHEN phd.PostHistoryTypeId = 12 THEN 'Deleted'
         ELSE 'Active'
     END AS Status,
-    (p.ViewCount * 1.0) / NULLIF((toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate) / 3600), 0) AS ViewsPerHour
+    (p.ViewCount * 1.0) / NULLIF((toUnixTimestamp(CAST('2024-10-01 12:34:56' AS timestamp) - p.CreationDate) / 3600), 0) AS ViewsPerHour
 FROM 
     RankedPosts p
 JOIN 

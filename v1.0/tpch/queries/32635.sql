@@ -16,7 +16,7 @@ AggregatedSales AS (
         AVG(l.l_quantity) AS avg_quantity
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
     GROUP BY o.o_orderkey
 ),
 TopRegions AS (

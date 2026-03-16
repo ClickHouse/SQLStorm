@@ -20,7 +20,7 @@ RecentActivity AS (
         COUNT(*) AS RecentPostActivity,
         MAX(CreationDate) AS LastActivityDate
     FROM Posts
-    WHERE CreationDate >= now64(6) - INTERVAL 1 MONTH
+    WHERE CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 MONTH'
     GROUP BY OwnerUserId
 ),
 CombinedData AS (
@@ -52,4 +52,4 @@ SELECT
 FROM CombinedData
 WHERE TotalPosts > 0
 ORDER BY TotalScore DESC, TotalViews DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

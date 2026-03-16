@@ -36,7 +36,7 @@ LEFT JOIN (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         P.OwnerUserId
 ) RPC ON U.Id = RPC.OwnerUserId
@@ -54,4 +54,4 @@ WHERE
 ORDER BY 
     U.DisplayName,
     RP.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

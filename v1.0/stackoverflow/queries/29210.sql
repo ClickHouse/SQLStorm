@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Tags t ON POSITION(CONCAT('<', t.TagName, '>') IN p.Tags) > 0
     WHERE
         p.PostTypeId = 1  
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.Body, U.DisplayName
 ),

@@ -62,4 +62,4 @@ HAVING
     SUM(od.total_order_value) IS NOT NULL
 ORDER BY
     region_name, nation_name, total_order_value_sum DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -34,7 +34,7 @@ PostDetails AS (
     JOIN 
         Tags T ON P.Tags LIKE CONCAT('%', T.TagName, '%')
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 TopPosts AS (
     SELECT 

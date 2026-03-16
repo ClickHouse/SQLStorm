@@ -1,12 +1,12 @@
 WITH MonthlySales AS (
     SELECT 
-        toMonth(o.o_orderdate) AS month,
+        EXTRACT(MONTH FROM o.o_orderdate) AS month,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,
         COUNT(DISTINCT o.o_custkey) AS unique_customers
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE o.o_orderstatus = 'F'
-    GROUP BY toMonth(o.o_orderdate)
+    GROUP BY EXTRACT(MONTH FROM o.o_orderdate)
 ),
 SupplierStats AS (
     SELECT 
@@ -44,8 +44,8 @@ SELECT
     COALESCE(t.s_name, 'No Supplier') AS supplier_name,
     ll.* 
 FROM RankedSales r
-LEFT JOIN TopSuppliers t ON r.month = toMonth(cast('1998-10-01' as date)) AND t.part_count IS NOT NULL
-FULL OUTER JOIN lineitem ll ON r.month = toMonth(ll.l_shipdate)
+LEFT JOIN TopSuppliers t ON r.month = EXTRACT(MONTH FROM cast('1998-10-01' as date)) AND t.part_count IS NOT NULL
+FULL OUTER JOIN lineitem ll ON r.month = EXTRACT(MONTH FROM ll.l_shipdate)
 WHERE 
     (ll.l_returnflag IS NULL OR ll.l_returnflag <> 'R')
     AND (ll.l_discount IS NOT NULL AND ll.l_discount > 0.05)

@@ -24,7 +24,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     p.p_name LIKE '%widget%'
-    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     AND s.s_acctbal > 1000.00
 GROUP BY 
     p.p_name, s.s_name, r.r_name

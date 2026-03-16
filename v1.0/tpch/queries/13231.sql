@@ -22,4 +22,4 @@ HAVING
     SUM(l.l_quantity) > 100
 ORDER BY 
     revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

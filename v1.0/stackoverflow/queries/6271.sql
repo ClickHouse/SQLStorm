@@ -13,7 +13,7 @@ ActivePosts AS (
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY P.Id, P.OwnerUserId, P.ViewCount, P.CreationDate, P.LastActivityDate
 ),
 TopUsers AS (

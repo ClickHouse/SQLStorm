@@ -19,7 +19,7 @@ JOIN
 JOIN
     supplier s ON ps.ps_suppkey = s.s_suppkey
 WHERE
-    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     AND s.s_acctbal > 1000.00
 GROUP BY
     n.n_name, r.r_name

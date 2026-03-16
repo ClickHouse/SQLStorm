@@ -16,7 +16,7 @@ WITH RECURSIVE RecentPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId, u.DisplayName
 ), TopUsers AS (
@@ -42,7 +42,7 @@ WITH RECURSIVE RecentPosts AS (
     JOIN 
         PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10
     JOIN 
-        CloseReasonTypes c ON CAST(ph.Comment AS INTEGER) = c.Id
+        CloseReasonTypes c ON ph.Comment::INTEGER = c.Id
 ), PostStatistics AS (
     
     SELECT 

@@ -45,4 +45,4 @@ SELECT
 FROM HighValueCustomers hvc
 JOIN WarehouseStats ws ON hvc.total_sales > ws.average_profit
 ORDER BY hvc.total_sales DESC, ws.total_items_sold DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders
     WHERE 
-        o_orderdate >= toDate('1996-01-01')
+        o_orderdate >= DATE '1996-01-01'
 ), CustomerRevenue AS (
     SELECT 
         c.c_custkey,

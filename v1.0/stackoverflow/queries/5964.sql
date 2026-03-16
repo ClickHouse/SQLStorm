@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Comments C ON P.Id = C.PostId
     WHERE
-        P.CreationDate >= now64(6) - INTERVAL 30 DAY
+        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY
         P.Id, U.DisplayName, P.Title, P.CreationDate, P.Score, P.ViewCount
 ),

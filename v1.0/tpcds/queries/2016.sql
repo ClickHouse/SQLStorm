@@ -23,7 +23,7 @@ recent_returns AS (
         cr.cr_returned_date_sk IN (
             SELECT d.d_date_sk
             FROM date_dim d
-            WHERE d.d_date >= toDate('2002-10-01') - INTERVAL 30 DAY
+            WHERE d.d_date >= DATE '2002-10-01' - INTERVAL '30 days'
         )
     GROUP BY
         cr.cr_item_sk
@@ -62,4 +62,4 @@ WHERE
     total_quantity_sold > 0
 ORDER BY
     total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

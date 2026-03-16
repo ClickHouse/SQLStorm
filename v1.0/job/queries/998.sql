@@ -66,4 +66,4 @@ WHERE
     AND r.production_year BETWEEN 2000 AND 2020
 ORDER BY 
     r.rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

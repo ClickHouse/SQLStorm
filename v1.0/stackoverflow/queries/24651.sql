@@ -42,7 +42,7 @@ LEFT JOIN (
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         PH.UserId
 ) PHT ON RU.UserId = PHT.UserId

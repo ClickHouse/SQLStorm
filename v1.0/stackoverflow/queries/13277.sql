@@ -5,7 +5,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositiveScoreCount,
         AVG(p.ViewCount) AS AverageViewCount,
         SUM(CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswerCount,
-        SUM(CASE WHEN p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 1 ELSE 0 END) AS OldPostCount
+        SUM(CASE WHEN p.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 1 ELSE 0 END) AS OldPostCount
     FROM 
         Users u
     LEFT JOIN 

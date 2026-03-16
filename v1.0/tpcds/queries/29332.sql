@@ -50,6 +50,6 @@ SELECT
     END AS Revenue_Category
 FROM AddressDetails ca
 JOIN CustomerAggregates cu ON cu.c_customer_sk = ca.ca_address_sk
-JOIN DateStatistics da ON da.d_year = toYear(toDate('2002-10-01'))  
+JOIN DateStatistics da ON da.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')  
 WHERE ca.ca_state = 'CA'  
 ORDER BY da.Total_Sales DESC, cu.Full_Name;

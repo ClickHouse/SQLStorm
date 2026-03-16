@@ -7,7 +7,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(p.ViewCount) AS TotalViews,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) ) AS AvgPostAgeInSeconds
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) ) AS AvgPostAgeInSeconds
     FROM 
         Users u
     LEFT JOIN 
@@ -51,7 +51,7 @@ PostEngagement AS (
     LEFT JOIN 
         PostLinks pl ON p.Id = pl.PostId
     WHERE 
-        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        p.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
     GROUP BY 
         p.OwnerUserId
 )

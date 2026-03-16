@@ -25,7 +25,7 @@ CloseReasons AS (
         ph.Comment AS CloseReason,
         COUNT(ph.Id) AS CloseReasonCount,
         SUM(COALESCE(p.ViewCount, 0)) AS TotalViews,
-        SUM(CASE WHEN CAST(ph.CreationDate AS DATE) = toDate('2024-10-01') THEN 1 ELSE 0 END) AS TodayCount
+        SUM(CASE WHEN CAST(ph.CreationDate AS DATE) = DATE '2024-10-01' THEN 1 ELSE 0 END) AS TodayCount
     FROM 
         PostHistory ph
     JOIN 

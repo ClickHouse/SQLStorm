@@ -12,7 +12,7 @@ PostStats AS (
     SUM(CASE WHEN PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
     AVG(ViewCount) AS AvgViews
     FROM Posts
-    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 YEAR'
     GROUP BY OwnerUserId
 ),
 
@@ -36,7 +36,7 @@ SELECT ui.UserId, ui.DisplayName, ui.Reputation,
                  JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%' 
                  WHERE p.OwnerUserId = ui.UserId), 'No Tags') AS TagsUsed,
        CASE WHEN ui.BadgeCount > 0 THEN 'Active' ELSE 'Inactive' END AS UserStatus,
-       CASE WHEN u.LastAccessDate < cast('2024-10-01' as date) - INTERVAL 6 MONTH THEN 'Inactive'
+       CASE WHEN u.LastAccessDate < cast('2024-10-01' as date) - INTERVAL '6 MONTH' THEN 'Inactive'
             ELSE 'Active' END AS LastActivityStatus
 FROM UserInteraction ui
 JOIN Users u ON ui.UserId = u.Id

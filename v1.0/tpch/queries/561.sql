@@ -25,7 +25,7 @@ NationalDiversity AS (
 ),
 YearlyOrderStats AS (
     SELECT 
-        toYear(o.o_orderdate) AS order_year, 
+        EXTRACT(YEAR FROM o.o_orderdate) AS order_year, 
         COUNT(DISTINCT o.o_orderkey) AS total_orders, 
         AVG(o.o_totalprice) AS avg_order_value
     FROM 
@@ -33,7 +33,7 @@ YearlyOrderStats AS (
     WHERE 
         o.o_orderstatus = 'F'
     GROUP BY 
-        toYear(o.o_orderdate)
+        EXTRACT(YEAR FROM o.o_orderdate)
 )
 SELECT 
     r.r_name AS region_name,
@@ -51,7 +51,7 @@ LEFT JOIN
 LEFT JOIN 
     SupplierRevenue sr ON nd.supplier_count > 0
 LEFT JOIN 
-    YearlyOrderStats os ON os.order_year = toYear(cast('1998-10-01' as date))
+    YearlyOrderStats os ON os.order_year = EXTRACT(YEAR FROM cast('1998-10-01' as date))
 WHERE 
     r.r_name LIKE '%East%'
     OR (nd.supplier_count IS NULL AND sr.total_revenue IS NULL)

@@ -17,7 +17,7 @@ JOIN
 JOIN
     part p ON ps.ps_partkey = p.p_partkey
 WHERE
-    o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     AND s.s_acctbal > 1000.00
 GROUP BY
     p.p_name, s.s_name

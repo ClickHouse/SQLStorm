@@ -69,4 +69,4 @@ JOIN AddressInfo A ON A.ca_address_sk = (SELECT c_current_addr_sk FROM customer 
 JOIN NullHandling N ON N.c_customer_sk = (SELECT MAX(c_customer_sk) FROM customer)
 WHERE (S.total_net_profit IS NOT NULL OR D.total_returned_amount >= 100)
 ORDER BY S.total_net_profit DESC, D.total_returned_quantity ASC
-LIMIT 100 OFFSET 50;
+OFFSET 50 ROWS FETCH NEXT 100 ROWS ONLY;

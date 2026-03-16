@@ -21,4 +21,4 @@ GROUP BY
     ca.ca_city, ca.ca_state, ca.ca_street_number, ca.ca_street_name, ca.ca_street_type
 ORDER BY 
     total_customers DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

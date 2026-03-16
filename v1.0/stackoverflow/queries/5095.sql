@@ -20,7 +20,7 @@ WITH UserStats AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        U.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        U.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation
 ),
@@ -57,4 +57,4 @@ LEFT JOIN
     BadgeStats BS ON US.UserId = BS.UserId
 ORDER BY 
     US.Reputation DESC, US.PostCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

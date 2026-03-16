@@ -28,7 +28,7 @@ JOIN
     PostTypes pt ON p.PostTypeId = pt.Id
 WHERE 
     u.Reputation > 1000
-    AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 GROUP BY 
     u.Id, u.DisplayName, u.Reputation, p.Title, p.CreationDate, p.Score, p.ViewCount, ht.Name, ph.CreationDate
 ORDER BY 

@@ -27,7 +27,7 @@ ClosedPosts AS (
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS CloseReasons,
         MIN(ph.CreationDate) AS FirstClosedDate
     FROM PostHistory ph
-    JOIN CloseReasonTypes crt ON ph.Comment = CAST(crt.Id AS text)
+    JOIN CloseReasonTypes crt ON ph.Comment = crt.Id::text
     WHERE ph.PostHistoryTypeId IN (10, 11)
     GROUP BY ph.PostId
 ),
@@ -41,7 +41,7 @@ PostAnalytics AS (
         ps.UpVoteCount,
         ps.DownVoteCount,
         COALESCE(clp.CloseReasons, 'No Reasons') AS CloseReasons,
-        COALESCE(CAST(clp.FirstClosedDate AS text), 'Open') AS PostStatus,
+        COALESCE(clp.FirstClosedDate::text, 'Open') AS PostStatus,
         RANK() OVER (PARTITION BY CASE WHEN clp.CloseReasons IS NOT NULL THEN 1 ELSE 0 END 
                      ORDER BY ps.UpVoteCount DESC) AS VoteRank
     FROM PostStats ps

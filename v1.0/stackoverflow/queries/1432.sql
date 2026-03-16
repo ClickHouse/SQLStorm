@@ -59,4 +59,4 @@ WHERE
     ups.TotalPosts > 10
 ORDER BY 
     ups.AverageScore DESC, pt.TagCount DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

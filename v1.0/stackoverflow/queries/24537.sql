@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ), 
 UserStats AS (
     SELECT 
@@ -68,4 +68,4 @@ WHERE
     rp.Rank <= 3 
 ORDER BY 
     rp.CreationDate DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

@@ -49,7 +49,7 @@ RecentMovies AS (
     JOIN 
         cast_info ci ON t.id = ci.movie_id
     WHERE 
-        t.production_year >= toYear(CURRENT_DATE) - 5
+        t.production_year >= EXTRACT(YEAR FROM CURRENT_DATE) - 5
     GROUP BY 
         t.title, t.production_year
 )

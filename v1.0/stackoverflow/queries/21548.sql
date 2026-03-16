@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes vt ON p.Id = vt.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 PostHistoryCTE AS (
     SELECT 
@@ -73,4 +73,4 @@ WHERE
     rp.RankByScore <= 5
 ORDER BY 
     rp.Score DESC, rp.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

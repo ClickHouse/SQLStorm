@@ -31,7 +31,7 @@ RecentLineItems AS (
         COUNT(*) AS LineItemCount,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS TotalLineItemValue
     FROM lineitem l
-    WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
+    WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 days'
     GROUP BY l.l_orderkey
 )
 SELECT 

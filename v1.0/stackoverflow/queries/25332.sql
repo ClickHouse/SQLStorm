@@ -20,10 +20,10 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     LEFT JOIN 
-        Tags t ON t.Id = ANY(splitByString(',', SUBSTRING(p.Tags FROM '\\[(.*?)\\]')CAST() AS int)[])  
+        Tags t ON t.Id = ANY(splitByString(',', SUBSTRING(p.Tags FROM '\\[(.*?)\\]'))::int[])  
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.Body, p.Score, p.CreationDate
     HAVING 

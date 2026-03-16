@@ -64,4 +64,4 @@ WHERE
 ORDER BY 
     t.BadgeCount DESC, 
     u.Reputation DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

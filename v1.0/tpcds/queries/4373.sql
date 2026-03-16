@@ -53,4 +53,4 @@ WHERE
     AND (SELECT COUNT(*) FROM customer WHERE c_current_cdemo_sk IS NOT NULL) > 100
 ORDER BY 
     SalesRank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

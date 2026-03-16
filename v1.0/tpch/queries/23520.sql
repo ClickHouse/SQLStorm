@@ -30,7 +30,7 @@ WITH RankedParts AS (
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
         AVG(l.l_tax) AS average_tax
     FROM lineitem l
-    WHERE l.l_shipdate BETWEEN toDate('1998-10-01') - INTERVAL 1 YEAR AND toDate('1998-10-01')
+    WHERE l.l_shipdate BETWEEN DATE '1998-10-01' - INTERVAL '1 year' AND DATE '1998-10-01'
     GROUP BY l.l_partkey
 )
 SELECT 
@@ -46,4 +46,4 @@ LEFT JOIN RegionSupplier rs ON rp.p_partkey % 10 = rs.r_regionkey
 LEFT JOIN CustomerOrders co ON co.c_custkey = rp.p_partkey
 LEFT JOIN LineItemSummary lis ON lis.l_partkey = rp.p_partkey
 ORDER BY rp.p_retailprice DESC, rp.p_name ASC
-LIMIT 100
+FETCH FIRST 100 ROWS ONLY

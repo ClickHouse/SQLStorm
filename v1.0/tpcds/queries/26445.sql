@@ -63,4 +63,4 @@ JOIN
     Sales_Summary s ON TRUE 
 ORDER BY 
     a.address_count DESC, d.demographic_count DESC, s.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

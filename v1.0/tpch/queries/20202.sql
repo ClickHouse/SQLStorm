@@ -25,7 +25,7 @@ HighValueOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate < o.o_orderdate + INTERVAL 30 DAY
+        l.l_shipdate < o.o_orderdate + INTERVAL '30 day'
     GROUP BY 
         o.o_orderkey, o.o_custkey
 ),

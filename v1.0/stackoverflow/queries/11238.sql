@@ -37,4 +37,4 @@ FROM
     UserActivity UA
 ORDER BY 
     UA.TotalPosts DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

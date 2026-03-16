@@ -42,7 +42,7 @@ SELECT
     rp.Downvotes,
     CASE 
         WHEN rp.AnswerCount > 0 THEN 'Answered'
-        WHEN rp.LastActivityDate <= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN 'Inactive'
+        WHEN rp.LastActivityDate <= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' THEN 'Inactive'
         ELSE 'Open'
     END AS PostStatus
 FROM 

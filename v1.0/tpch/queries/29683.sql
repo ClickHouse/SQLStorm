@@ -15,7 +15,7 @@ JOIN
 JOIN 
     lineitem l ON ps.ps_partkey = l.l_partkey
 WHERE 
-    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     p.p_partkey, p.p_name, p.p_retailprice, p.p_comment
 HAVING 

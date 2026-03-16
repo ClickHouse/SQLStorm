@@ -55,5 +55,5 @@ LEFT JOIN TagUsage tu ON tu.TagName IN (
     WHERE p.OwnerUserId = u.Id
 ) 
 LEFT JOIN UserPostStats ups ON u.Id = ups.UserId
-WHERE u.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR
+WHERE u.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '1 year'
 ORDER BY u.DisplayName;

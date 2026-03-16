@@ -24,7 +24,7 @@ LEFT JOIN
     Tags t ON t.ExcerptPostId = p.Id OR t.WikiPostId = p.Id
 WHERE 
     p.PostTypeId IN (1, 2) AND 
-    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.DisplayName
 ORDER BY 

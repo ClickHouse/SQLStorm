@@ -9,7 +9,7 @@ WITH RECURSIVE UserReputation AS (
            COALESCE((SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2), 0) AS UpVotes
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ), HotTopics AS (
     SELECT Tags, COUNT(*) AS TopicCount
     FROM Posts

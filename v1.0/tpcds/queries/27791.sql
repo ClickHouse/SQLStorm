@@ -40,5 +40,5 @@ SELECT
     s.total_profit
 FROM address_stats a
 JOIN customer_stats c ON a.ca_state = 'CA' 
-JOIN sales_summary s ON s.d_year = toYear(cast('2002-10-01' as date))
+JOIN sales_summary s ON s.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
 ORDER BY a.unique_addresses DESC, c.customer_count DESC, s.total_sales DESC;

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (8, 9) 
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
 ),
 ClosedPosts AS (
     SELECT 
@@ -20,7 +20,7 @@ ClosedPosts AS (
         COUNT(ph.Id) AS CloseCount,
         STRING_AGG(DISTINCT crt.Name) AS CloseReasons
     FROM PostHistory ph
-    JOIN CloseReasonTypes crt ON CAST(ph.Comment AS int) = crt.Id 
+    JOIN CloseReasonTypes crt ON ph.Comment::int = crt.Id 
     WHERE ph.PostHistoryTypeId = 10 
     GROUP BY ph.PostId
 ),

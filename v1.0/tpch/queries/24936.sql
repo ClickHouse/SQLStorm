@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
+        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
 ),
 SupplierParts AS (
     SELECT 
@@ -57,7 +57,7 @@ SELECT
 FROM 
     RankedOrders r
 LEFT JOIN 
-    CustomerOrderStats cs ON cs.TotalSpent > 1000 AND cs.LastOrderDate >= CURRENT_DATE - INTERVAL 30 DAY
+    CustomerOrderStats cs ON cs.TotalSpent > 1000 AND cs.LastOrderDate >= CURRENT_DATE - INTERVAL '30 days'
 JOIN 
     lineitem l ON r.o_orderkey = l.l_orderkey
 FULL OUTER JOIN 

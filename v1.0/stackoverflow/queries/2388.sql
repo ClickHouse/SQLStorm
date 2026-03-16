@@ -26,7 +26,7 @@ UserBadges AS (
         B.UserId,
         COUNT(B.Id) AS BadgeCount,
         SUM(CASE WHEN B.Class = 1 THEN 1 ELSE 0 END) AS GoldBadges,
-        COALESCE(MAX(B.Date), toDate('1900-01-01')) AS LastBadgeDate
+        COALESCE(MAX(B.Date), DATE '1900-01-01') AS LastBadgeDate
     FROM 
         Badges B
     GROUP BY 
@@ -80,7 +80,7 @@ JOIN
 JOIN 
     ActivePosts AP ON U.UserId = AP.OwnerUserId
 WHERE 
-    AP.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    AP.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ORDER BY 
     U.Reputation DESC, 
     PS.TotalScore DESC

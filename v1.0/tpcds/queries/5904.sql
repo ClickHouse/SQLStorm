@@ -31,4 +31,4 @@ GROUP BY
     c.c_customer_id, c.c_first_name, c.c_last_name, d.d_year, d.d_month_seq, ca.ca_state
 ORDER BY 
     total_net_paid DESC, order_count DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -57,4 +57,4 @@ JOIN income_summary i ON i.hd_income_band_sk = (
 WHERE r.total_web_sales > 1000
 OR (r.total_catalog_sales > 500 AND r.total_store_sales IS NULL)
 ORDER BY r.web_sales_rank, r.catalog_sales_rank, r.store_sales_rank
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

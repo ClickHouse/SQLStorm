@@ -61,4 +61,4 @@ WHERE
 ORDER BY 
     rm.production_year DESC, 
     pd.actor_name ASC
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;

@@ -29,7 +29,7 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= (cast('2024-10-01' as date) - INTERVAL 30 DAY) 
+        b.Date >= (cast('2024-10-01' as date) - INTERVAL '30 days') 
     GROUP BY 
         b.UserId
 ),

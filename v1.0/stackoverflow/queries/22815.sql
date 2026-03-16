@@ -21,7 +21,7 @@ PostSummary AS (
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
     FROM Posts P
     LEFT JOIN Tags T ON P.Tags LIKE '%' || T.TagName || '%'
-    WHERE P.CreationDate >= now64(6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY P.OwnerUserId
 ),
 ClosedPostHistory AS (
@@ -30,7 +30,7 @@ ClosedPostHistory AS (
         COUNT(PH.Id) AS ClosedPostCount,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CPR.Name))), ', ') AS CloseReasons
     FROM PostHistory PH
-    JOIN CloseReasonTypes CPR ON PH.Comment = CAST(CPR.Id AS TEXT)
+    JOIN CloseReasonTypes CPR ON PH.Comment = CPR.Id::TEXT
     WHERE PH.PostHistoryTypeId IN (10, 11) 
     GROUP BY PH.UserId
 ),

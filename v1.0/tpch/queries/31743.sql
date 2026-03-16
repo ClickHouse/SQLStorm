@@ -14,7 +14,7 @@ WITH RECURSIVE SalesCTE AS (
         lineitem li ON o.o_orderkey = li.l_orderkey
     WHERE 
         o.o_orderstatus IN ('F', 'S') 
-        AND li.l_shipdate >= toDate('1997-01-01')
+        AND li.l_shipdate >= DATE '1997-01-01'
     GROUP BY 
         c.c_custkey, c.c_name, o.o_orderkey, o.o_orderdate
 ),

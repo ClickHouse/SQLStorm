@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, u.DisplayName
 ),
@@ -80,4 +80,4 @@ HAVING
     COUNT(DISTINCT ph.Id) > 0 OR COALESCE(pwz.CommentCount, 0) > 0
 ORDER BY 
     pwv.NetVotes DESC, pwv.CreationDate ASC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

@@ -30,9 +30,9 @@ SELECT U.DisplayName,
        COALESCE(
            (SELECT COUNT(*) 
             FROM Posts PO 
-            WHERE PO.OwnerUserId = U.Id AND PO.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR), 
+            WHERE PO.OwnerUserId = U.Id AND PO.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'), 
            0) AS RecentPostsCount
 FROM Users U
 JOIN CombinedRanks R ON U.Id = R.UserId
-WHERE U.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+WHERE U.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ORDER BY R.Reputation DESC, R.TotalViews DESC;

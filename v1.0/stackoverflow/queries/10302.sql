@@ -23,7 +23,7 @@ LEFT JOIN
 LEFT JOIN 
     Tags t ON t.TagName = TRIM(tag_name)
 WHERE 
-    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 GROUP BY 
     p.Id, p.Title, p.CreationDate, u.Id, u.DisplayName
 ORDER BY 

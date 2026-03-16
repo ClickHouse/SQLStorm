@@ -22,7 +22,7 @@ RecentOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
+        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '30 days'
 ),
 SupplierDetails AS (
     SELECT 

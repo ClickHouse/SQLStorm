@@ -36,7 +36,7 @@ UsersVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         v.PostId
 )
@@ -62,6 +62,6 @@ LEFT JOIN
 WHERE 
     rp.Rank <= 5
     AND rp.Score > 0
-    AND (cp.CloseCount IS NULL OR cp.LastCloseDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY)
+    AND (cp.CloseCount IS NULL OR cp.LastCloseDate >= cast('2024-10-01' as date) - INTERVAL '30 days')
 ORDER BY 
     rp.Score DESC, rp.CreationDate ASC;

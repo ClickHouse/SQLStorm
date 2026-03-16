@@ -47,4 +47,4 @@ WHERE
     )
 ORDER BY
     a.total_net_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

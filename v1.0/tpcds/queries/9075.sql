@@ -63,4 +63,4 @@ JOIN
     SalesPeriod sp ON sp.total_net_profit > 10000
 ORDER BY 
     cs.total_sales DESC
-LIMIT 1000;
+FETCH FIRST 1000 ROWS ONLY;

@@ -7,7 +7,7 @@ WITH UserStatistics AS (
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(COALESCE(P.Score, 0)) AS TotalScore,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - U.CreationDate)) / 3600) AS AvgAccountAgeHours
+        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - U.CreationDate)) / 3600) AS AvgAccountAgeHours
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     GROUP BY U.Id, U.DisplayName, U.Reputation
@@ -21,7 +21,7 @@ RecentPostHistory AS (
         COUNT(*) OVER (PARTITION BY PH.PostId ORDER BY PH.CreationDate) AS EditCount,
         ROW_NUMBER() OVER (PARTITION BY PH.PostId ORDER BY PH.CreationDate DESC) AS RecentEditRank
     FROM PostHistory PH
-    WHERE PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
 UserRecentActivity AS (
     SELECT 
@@ -53,4 +53,4 @@ SELECT
 FROM UserStatistics U
 LEFT JOIN UserRecentActivity RA ON U.UserId = RA.UserId
 ORDER BY U.Reputation DESC, U.TotalPosts DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

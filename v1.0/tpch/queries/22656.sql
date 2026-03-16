@@ -53,4 +53,4 @@ HAVING
     COUNT(DISTINCT n.n_nationkey) > 1 AND SUM(s.s_acctbal) > 5000
 ORDER BY 
     total_acct_bal DESC
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;

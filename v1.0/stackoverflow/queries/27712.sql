@@ -44,7 +44,7 @@ RecentPosts AS (
         (SELECT PostId, COUNT(*) AS CommentCount 
          FROM Comments GROUP BY PostId) CNT ON CNT.PostId = P.Id
     WHERE 
-        P.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
+        P.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
     ORDER BY 
         P.CreationDate DESC
 )

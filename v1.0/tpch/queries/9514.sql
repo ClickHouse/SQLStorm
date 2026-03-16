@@ -7,7 +7,7 @@ WITH RankedOrders AS (
         ROW_NUMBER() OVER (PARTITION BY o.o_orderkey ORDER BY o.o_orderdate DESC) AS order_rank
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1997-12-31')
+    WHERE o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1997-12-31'
     GROUP BY o.o_orderkey, o.o_orderdate, o.o_totalprice
 ),
 HighValueOrders AS (

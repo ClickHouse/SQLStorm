@@ -56,4 +56,4 @@ WHERE
     (ub.GoldBadges > 0 OR ub.SilverBadges > 1 OR ub.BronzeBadges > 2)
 ORDER BY 
     rp.Score DESC NULLS LAST
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 UserEngagement AS (
     SELECT 
@@ -43,7 +43,7 @@ PostHistoryWithReason AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
         AND ph.PostHistoryTypeId IN (10, 11)
 )
 SELECT 

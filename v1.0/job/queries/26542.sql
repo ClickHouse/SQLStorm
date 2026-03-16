@@ -31,7 +31,7 @@ SELECT
     m.title,
     m.production_year,
     m.cast_count,
-    arrayStringConcat(groupArray(assumeNotNull(CAST(m.cast_names AS text))), ', ') AS all_cast_names,
+    arrayStringConcat(groupArray(assumeNotNull(m.cast_names::text)), ', ') AS all_cast_names,
     k.keyword AS movie_keyword,
     t.kind AS movie_kind
 FROM 

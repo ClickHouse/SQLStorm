@@ -13,8 +13,8 @@ WITH RecursiveSales AS (
 ),
 MonthlySales AS (
     SELECT 
-        toYear(dd.d_date) AS sales_year,
-        toMonth(dd.d_date) AS sales_month,
+        EXTRACT(YEAR FROM dd.d_date) AS sales_year,
+        EXTRACT(MONTH FROM dd.d_date) AS sales_month,
         SUM(rs.total_sales) AS monthly_total_sales
     FROM date_dim dd
     JOIN RecursiveSales rs ON dd.d_date_sk IN (
@@ -22,7 +22,7 @@ MonthlySales AS (
         FROM web_sales ws 
         WHERE ws.ws_bill_customer_sk = rs.c_customer_sk
     ) 
-    GROUP BY toYear(dd.d_date), toMonth(dd.d_date)
+    GROUP BY EXTRACT(YEAR FROM dd.d_date), EXTRACT(MONTH FROM dd.d_date)
     ORDER BY sales_year, sales_month
 ),
 RankedSales AS (

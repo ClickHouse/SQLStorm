@@ -24,7 +24,7 @@ JOIN
 WHERE 
     p.p_comment LIKE '%special%' 
     AND s.s_comment NOT LIKE '%bad supplier%' 
-    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31') 
+    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31' 
 GROUP BY 
     p.p_name, s.s_name 
 HAVING 

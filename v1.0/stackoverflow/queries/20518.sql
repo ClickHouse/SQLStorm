@@ -47,7 +47,7 @@ RecentPosts AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 )

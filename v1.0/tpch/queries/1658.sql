@@ -6,7 +6,7 @@ WITH CTE_Orders AS (
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS order_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
     GROUP BY o.o_orderkey, o.o_orderdate
 ),
 CTE_Suppliers AS (

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON t.WikiPostId = p.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ), UserReputation AS (
@@ -22,7 +22,7 @@ WITH RankedPosts AS (
         u.DisplayName,
         u.Reputation,
         COALESCE(b.ID, 0) AS BadgeCount,
-        COALESCE(b.Date, toDate('1900-01-01')) AS LastBadgeDate
+        COALESCE(b.Date, DATE '1900-01-01') AS LastBadgeDate
     FROM 
         Users u
     LEFT JOIN 
@@ -40,7 +40,7 @@ WITH RankedPosts AS (
     JOIN 
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE 
-        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         v.PostId
 )

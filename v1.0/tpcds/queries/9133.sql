@@ -13,7 +13,7 @@ WITH CustomerPurchases AS (
     JOIN web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk
     JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
     JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
-    WHERE toYear(d.d_date) = 2023
+    WHERE EXTRACT(YEAR FROM d.d_date) = 2023
     GROUP BY c.c_customer_sk, c.c_first_name, c.c_last_name, cd.cd_gender, d.d_date
 ), RankedPurchases AS (
     SELECT 

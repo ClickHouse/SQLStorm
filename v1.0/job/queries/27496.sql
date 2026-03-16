@@ -52,4 +52,4 @@ ORDER BY
     production_year DESC, 
     keyword_count DESC, 
     gender_count ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

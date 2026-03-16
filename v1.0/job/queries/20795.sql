@@ -61,7 +61,7 @@ RecentMovies AS (
 SELECT 
     rm.rank_per_year,
     rm.title,
-    COALESCE(CAST(rm.production_year AS text), 'Unknown') AS production_year,
+    COALESCE(rm.production_year::text, 'Unknown') AS production_year,
     hm.movie_category,
     hm.category_rank
 FROM 

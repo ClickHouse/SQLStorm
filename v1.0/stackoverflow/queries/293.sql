@@ -27,8 +27,8 @@ PostStats AS (
 RecentActivity AS (
     SELECT 
         U.Id AS UserId,
-        COUNT(CASE WHEN C.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) THEN 1 END) AS RecentComments,
-        COUNT(CASE WHEN V.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) THEN 1 END) AS RecentVotes
+        COUNT(CASE WHEN C.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days') THEN 1 END) AS RecentComments,
+        COUNT(CASE WHEN V.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days') THEN 1 END) AS RecentVotes
     FROM 
         Users U
         LEFT JOIN Comments C ON U.Id = C.UserId

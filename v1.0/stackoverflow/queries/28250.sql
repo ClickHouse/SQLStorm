@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tagId ON tagId IS NOT NULL
     LEFT JOIN
-        Tags t ON CAST(t.Id AS varchar) = tagId
+        Tags t ON t.Id::varchar = tagId
     WHERE 
         p.PostTypeId = 1  
     GROUP BY 
@@ -65,7 +65,7 @@ JOIN
 JOIN 
     PostHistoryDetails hd ON rp.PostId = hd.PostId
 ARRAY JOIN rp.Tags AS tagWHERE 
-    rp.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    rp.LastActivityDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
 GROUP BY 
     rp.PostId, rp.Title, rp.CreationDate, rp.LastActivityDate, 
     rp.Score, rp.CommentCount, pv.UpVotes, pv.DownVotes, 

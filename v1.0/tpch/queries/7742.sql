@@ -11,7 +11,7 @@ WITH ranked_orders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
+        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
 ), supplier_parts AS (
     SELECT 
         ps.ps_partkey,
@@ -49,6 +49,6 @@ JOIN
 JOIN 
     supplier_parts sp ON l.l_partkey = sp.ps_partkey
 WHERE 
-    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 ORDER BY 
     h.o_orderdate, h.o_totalprice DESC;

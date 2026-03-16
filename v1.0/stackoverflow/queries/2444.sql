@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId, p.CreationDate, p.Score
 ),
@@ -26,7 +26,7 @@ ActiveUsers AS (
         Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        u.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY 
         u.Id, u.DisplayName
 )

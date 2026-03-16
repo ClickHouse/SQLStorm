@@ -44,4 +44,4 @@ HAVING
     COUNT(sd.ws_sales_price) > 1
 ORDER BY 
     total_sales_amount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

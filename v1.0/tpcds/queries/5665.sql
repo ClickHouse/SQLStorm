@@ -63,4 +63,4 @@ WHERE
     f.return_rate > 10
 ORDER BY 
     f.return_rate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

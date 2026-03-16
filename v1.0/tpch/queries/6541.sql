@@ -6,7 +6,7 @@ WITH RankedOrders AS (
         o.o_totalprice,
         c.c_name AS customer_name,
         c.c_acctbal,
-        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS order_rank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS order_rank
     FROM 
         orders o
     JOIN 

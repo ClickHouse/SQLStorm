@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR) 
+        p.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year') 
         AND p.Score IS NOT NULL
 ),
 PostDetail AS (

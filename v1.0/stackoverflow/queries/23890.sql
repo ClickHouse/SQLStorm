@@ -24,7 +24,7 @@ WITH RankedPosts AS (
     ) cmt ON p.Id = cmt.PostId
     LEFT JOIN Badges b ON b.UserId = p.OwnerUserId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ), 
 AggregatedData AS (
     SELECT 

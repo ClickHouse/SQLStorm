@@ -34,7 +34,7 @@ UserActivity AS (
     SELECT 
         u.Id AS UserId,
         u.DisplayName,
-        SUM(p.ViewCount) FILTER (WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL 30 DAY) AS RecentViews,
+        SUM(p.ViewCount) FILTER (WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days') AS RecentViews,
         COUNT(b.Id) AS BadgeCount,
         COALESCE(MAX(p.LastActivityDate), DATE('1900-01-01')) AS LastActivityDate
     FROM 

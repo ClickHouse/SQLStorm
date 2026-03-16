@@ -18,7 +18,7 @@ TotalSales AS (
     SELECT p.p_partkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales
     FROM part p
     JOIN lineitem l ON p.p_partkey = l.l_partkey
-    WHERE l.l_shipdate >= toDate('1996-01-01')
+    WHERE l.l_shipdate >= DATE '1996-01-01'
     GROUP BY p.p_partkey
 ),
 RegionSales AS (
@@ -38,7 +38,7 @@ FROM region r
 LEFT JOIN CustomerOrders cs ON cs.c_custkey IN (
     SELECT DISTINCT o.o_custkey 
     FROM orders o 
-    WHERE o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    WHERE o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 )
 LEFT JOIN RegionSales rs ON r.r_name = rs.r_name
 LEFT JOIN SupplierHierarchy sh ON r.r_regionkey = sh.s_nationkey

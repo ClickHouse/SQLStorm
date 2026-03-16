@@ -31,7 +31,7 @@ OrdersWithDetails AS (
     JOIN 
         region r ON n.n_regionkey = r.r_regionkey 
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01')
+        o.o_orderdate >= DATE '1997-01-01'
 ) 
 SELECT 
     p.part_info, 

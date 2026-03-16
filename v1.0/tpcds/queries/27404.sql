@@ -47,7 +47,7 @@ DetailedInfo AS (
     JOIN 
         CustomerCounts cc ON 1 = 1 
     LEFT JOIN 
-        SalesStats ss ON ss.year = toYear(toDate('2002-10-01'))  
+        SalesStats ss ON ss.year = EXTRACT(YEAR FROM DATE '2002-10-01')  
     LEFT JOIN 
         customer_address a ON a.ca_state = ac.ca_state AND a.ca_city = ac.ca_city
 )

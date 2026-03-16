@@ -32,4 +32,4 @@ WHERE
     (i.total_inventory - s.total_quantity) > 0
 ORDER BY 
     s.total_quantity DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

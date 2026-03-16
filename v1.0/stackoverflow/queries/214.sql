@@ -18,7 +18,7 @@ RecentPosts AS (
     FROM Posts P
     LEFT JOIN Comments C ON C.PostId = P.Id
     LEFT JOIN Posts A ON A.ParentId = P.Id AND A.PostTypeId = 2
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY P.Id
 ),
 TopPostComments AS (
@@ -37,7 +37,7 @@ TopPostComments AS (
             PH.PostId,
             CT.Name AS CloseReason
         FROM PostHistory PH
-        JOIN CloseReasonTypes CT ON CAST(PH.Comment AS int) = CT.Id
+        JOIN CloseReasonTypes CT ON PH.Comment::int = CT.Id
         WHERE PH.PostHistoryTypeId = 10
     ) H ON H.PostId = RP.PostId
     INNER JOIN UserReputation UR ON UR.UserId = RP.OwnerUserId

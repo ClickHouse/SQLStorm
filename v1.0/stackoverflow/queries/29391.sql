@@ -18,7 +18,7 @@ FrequentTags AS (
     FROM 
         Tags T
     JOIN 
-        Posts P ON T.Id = ANY(splitByString('><', P.TagsCAST() AS int)[])
+        Posts P ON T.Id = ANY(splitByString('><', P.Tags)::int[])
     GROUP BY 
         T.TagName
     HAVING 
@@ -39,7 +39,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        U.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        U.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation
     HAVING 

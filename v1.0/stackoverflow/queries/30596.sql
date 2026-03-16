@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
 ),
 UserBadges AS (
     SELECT 
@@ -45,7 +45,7 @@ RecentUserPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 3 MONTH
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '3 month'
     GROUP BY 
         p.OwnerUserId
 )

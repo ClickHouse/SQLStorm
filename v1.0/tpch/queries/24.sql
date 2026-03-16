@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
+        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
 ),
 SupplierStats AS (
     SELECT 
@@ -46,7 +46,7 @@ OrderDetails AS (
     JOIN 
         part p ON lo.l_partkey = p.p_partkey
     WHERE 
-        lo.l_shipdate BETWEEN toDate('1997-06-01') AND toDate('1997-06-30')
+        lo.l_shipdate BETWEEN DATE '1997-06-01' AND DATE '1997-06-30'
 )
 SELECT 
     rs.o_orderkey AS order_key,

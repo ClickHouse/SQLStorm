@@ -59,7 +59,7 @@ SELECT
     COALESCE(VS.Upvotes, 0) AS TotalUpvotes,
     COALESCE(VS.Downvotes, 0) AS TotalDownvotes,
     CASE 
-        WHEN QS.CreationDate <= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Stale' 
+        WHEN QS.CreationDate <= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 'Stale' 
         ELSE 'Fresh' 
     END AS QuestionAge,
     RANK() OVER (PARTITION BY U.Id ORDER BY U.Reputation DESC) AS ReputationRank

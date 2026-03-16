@@ -7,7 +7,7 @@ WITH RECURSIVE Sales_CTE AS (
         ws_sold_date_sk,
         ROW_NUMBER() OVER (PARTITION BY ws_item_sk ORDER BY SUM(ws_net_paid) DESC) AS rnk
     FROM web_sales
-    WHERE ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = toDate('2002-10-01') - INTERVAL 30 DAY)
+    WHERE ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = DATE '2002-10-01' - INTERVAL '30 days')
     GROUP BY ws_item_sk, ws_sold_date_sk
 ),
 Top_Sales AS (

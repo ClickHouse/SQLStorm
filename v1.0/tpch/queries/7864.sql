@@ -3,7 +3,7 @@ WITH RankedOrders AS (
            RANK() OVER (PARTITION BY o.o_orderdate ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    WHERE o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 ),
 EnhancedLineItems AS (
     SELECT l.*, 
@@ -12,7 +12,7 @@ EnhancedLineItems AS (
     FROM lineitem l
     JOIN partsupp ps ON l.l_partkey = ps.ps_partkey 
     JOIN part p ON ps.ps_partkey = p.p_partkey
-    WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year'
 ),
 SummaryData AS (
     SELECT ro.o_orderkey, ro.o_orderdate, ro.o_totalprice, ro.c_name, ro.c_acctbal,

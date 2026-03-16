@@ -71,4 +71,4 @@ LEFT JOIN
     sales_summary ss ON cd.c_customer_sk = ss.customer_sk
 ORDER BY 
     cd.cd_purchase_estimate DESC, cd.full_name ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

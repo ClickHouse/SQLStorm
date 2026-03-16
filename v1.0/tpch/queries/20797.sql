@@ -23,7 +23,7 @@ CustomerOrders AS (
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
     WHERE c.c_acctbal > 0
-      AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+      AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 )
 SELECT DISTINCT 
     rp.p_name, 

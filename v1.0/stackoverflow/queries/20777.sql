@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 TopRankedPosts AS (
     SELECT 
@@ -49,7 +49,7 @@ PostHistories AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
     AND 
         ph.PostHistoryTypeId IN (10, 12, 13)  
 )
@@ -73,4 +73,4 @@ WHERE
     tp.UpVoteCount > tp.DownVoteCount
 ORDER BY 
     tp.Score DESC, tp.ViewCount DESC, ph.CreationDate DESC NULLS LAST
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

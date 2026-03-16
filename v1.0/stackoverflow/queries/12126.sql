@@ -28,4 +28,4 @@ WHERE
 GROUP BY 
     p.Id, p.Title, p.CreationDate, u.DisplayName, u.Reputation
 ORDER BY 
-    p.Score DESC, p.CreationDate DESC;
+    any(p.Score) DESC, p.CreationDate DESC;

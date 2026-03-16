@@ -42,4 +42,4 @@ HAVING
     OR SUM(l.l_extendedprice * (1 - l.l_discount)) IS NULL
 ORDER BY 
     total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

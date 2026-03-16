@@ -10,8 +10,8 @@ JOIN
 JOIN 
     nation n ON c.c_nationkey = n.n_nationkey 
 WHERE 
-    l.l_shipdate >= toDate('1996-01-01') 
-    AND l.l_shipdate < toDate('1996-12-31') 
+    l.l_shipdate >= DATE '1996-01-01' 
+    AND l.l_shipdate < DATE '1996-12-31' 
     AND n.n_regionkey = (SELECT r.r_regionkey FROM region r WHERE r.r_name = 'EUROPE')
 GROUP BY 
     n.n_name 

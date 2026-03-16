@@ -52,7 +52,7 @@ SELECT
     END AS AcceptedAnswers,
     COALESCE((SELECT COUNT(*) FROM Comments C WHERE C.UserId = RU.UserId), 0) AS TotalComments,
     CASE 
-        WHEN RU.LastPostDate IS NOT NULL AND RU.LastPostDate < CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR THEN 'Inactive for over a year'
+        WHEN RU.LastPostDate IS NOT NULL AND RU.LastPostDate < '2024-10-01 12:34:56'::timestamp - INTERVAL '1 YEAR' THEN 'Inactive for over a year'
         ELSE 'Active'
     END AS ActivityStatus
 FROM 

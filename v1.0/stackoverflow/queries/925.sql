@@ -42,5 +42,5 @@ LEFT JOIN UserBadges ub ON u.Id = ub.UserId
 LEFT JOIN PostStatistics ps ON u.Id = ps.OwnerUserId
 LEFT JOIN RecentActivity ra ON u.Id = ra.OwnerUserId
 WHERE (ps.QuestionCount > 5 OR ps.AnswerCount > 10)
-AND ra.LastActivityDate > CURRENT_DATE - INTERVAL 6 MONTH
+AND ra.LastActivityDate > CURRENT_DATE - INTERVAL '6 months'
 ORDER BY ps.TotalScore DESC, u.DisplayName ASC;

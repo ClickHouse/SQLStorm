@@ -23,7 +23,7 @@ WITH StringBenchmark AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR  
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'  
     GROUP BY 
         p.Id, u.DisplayName, ph.UserDisplayName, ph.CreationDate, p.Title, p.Body, p.Tags, 
         p.CreationDate, p.AcceptedAnswerId, pt.Name

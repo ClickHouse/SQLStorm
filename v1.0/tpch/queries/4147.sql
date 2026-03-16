@@ -52,7 +52,7 @@ LEFT JOIN
             WHERE p.p_size > 10
         ) 
         ORDER BY ps.ps_supplycost 
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     )
 ORDER BY 
     sd.s_acctbal DESC, total_revenue DESC;

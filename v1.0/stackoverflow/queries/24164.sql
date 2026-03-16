@@ -40,7 +40,7 @@ WITH UserVoteStats AS (
             ELSE 'Open' 
         END AS PostStatus
     FROM Posts p
-    WHERE p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
 ), UserEngagement AS (
     SELECT 
         u.Id AS UserId,

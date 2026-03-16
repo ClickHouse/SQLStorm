@@ -38,7 +38,7 @@ LEFT JOIN SupplierHierarchy sh ON c.c_nationkey = sh.s_nationkey
 LEFT JOIN SupplierParts sp ON l.l_partkey = sp.ps_partkey AND l.l_suppkey = sp.ps_suppkey
 LEFT JOIN supplier s ON sp.ps_suppkey = s.s_suppkey
 JOIN RichCustomers rc ON c.c_custkey = rc.c_custkey
-WHERE l.l_shipdate > toDate('1996-01-01')
+WHERE l.l_shipdate > DATE '1996-01-01'
 AND l.l_returnflag = 'N'
 GROUP BY r.r_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > (

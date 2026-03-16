@@ -23,7 +23,7 @@ WITH RankedPosts AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     WHERE 
         p.Score IS NOT NULL 
-        AND p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        AND p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
 ),
 CloseReasons AS (
     SELECT 

@@ -28,6 +28,6 @@ SELECT
     ts.s_suppkey AS top_supplier_key
 FROM CustomerOrders co
 CROSS JOIN TopSuppliers ts
-WHERE co.o_orderdate >= toDate('1996-01-01')
+WHERE co.o_orderdate >= DATE '1996-01-01'
 ORDER BY co.o_totalprice DESC, co.o_orderdate ASC
 LIMIT 10;

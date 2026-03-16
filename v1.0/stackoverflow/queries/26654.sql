@@ -57,7 +57,7 @@ FinalBenchmark AS (
 )
 SELECT 
     *,
-    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - CreationDate)) AS AgeInSeconds
+    toUnixTimestamp((CAST('2024-10-01 12:34:56' AS TIMESTAMP) - CreationDate)) AS AgeInSeconds
 FROM 
     FinalBenchmark
 ORDER BY 

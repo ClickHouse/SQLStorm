@@ -49,4 +49,4 @@ FROM
     LEFT JOIN promotion_effectiveness AS pe ON cs.c_customer_sk = pe.promo_order_count
 ORDER BY 
     cs.total_revenue DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

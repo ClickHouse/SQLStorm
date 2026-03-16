@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
         AND p.Score IS NOT NULL
 ),
 TopUsers AS (
@@ -51,7 +51,7 @@ PostHistoryStats AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
+        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '3 months'
     GROUP BY 
         ph.PostId
 )
@@ -81,7 +81,7 @@ LEFT JOIN
 WHERE 
     (th.TotalScore > 500 OR r.RankScore = 1)
     AND p.CreationDate IS NOT NULL
-    AND (p.ClosedDate IS NULL OR p.ClosedDate <= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
+    AND (p.ClosedDate IS NULL OR p.ClosedDate <= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month')
 ORDER BY 
     p.CreationDate DESC
 LIMIT 100

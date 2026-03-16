@@ -83,4 +83,5 @@ WHERE
     fs.Reputation > 100
 ORDER BY 
     fs.ReputationRank, fs.TotalScore DESC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS
+FETCH NEXT 10 ROWS ONLY;

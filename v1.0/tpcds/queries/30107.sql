@@ -55,4 +55,4 @@ WHERE
     ms.d_year >= 2020
 ORDER BY 
     ms.d_year DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -68,4 +68,4 @@ HAVING
     COUNT(DISTINCT cd.cd_demo_sk) > 5
 ORDER BY 
     ts.total_sales_price DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

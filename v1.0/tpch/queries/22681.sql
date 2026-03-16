@@ -47,4 +47,4 @@ HAVING
     SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000
 ORDER BY 
     total_revenue DESC, c.c_name ASC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

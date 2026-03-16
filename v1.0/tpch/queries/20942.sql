@@ -63,4 +63,5 @@ HAVING
     COUNT(DISTINCT o.o_orderkey) > 10 OR AVG(s.s_acctbal) > 10000
 ORDER BY 
     total_orders DESC, ns.n_name ASC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS
+FETCH NEXT 10 ROWS ONLY;

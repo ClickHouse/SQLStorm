@@ -71,4 +71,4 @@ LEFT JOIN
 ORDER BY 
     u.TotalVotes DESC, 
     p.ViewCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -32,7 +32,7 @@ PostStats AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.LastActivityDate >= now64(6) - INTERVAL 1 YEAR
+        P.LastActivityDate >= CURRENT_TIMESTAMP - INTERVAL '1 YEAR'
     GROUP BY 
         P.Id, P.Title, P.ViewCount, P.Score, A.AcceptedAnswerId
 )
@@ -56,4 +56,4 @@ JOIN
     PostStats P ON U.UserId = P.AcceptedAnswerId
 ORDER BY 
     U.Reputation DESC, P.ViewCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

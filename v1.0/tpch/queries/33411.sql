@@ -6,7 +6,7 @@ WITH RECURSIVE order_hierarchy AS (
            o.o_orderpriority,
            1 AS depth
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
     
     UNION ALL
     

@@ -53,7 +53,7 @@ FinalStats AS (
         PostStats ps ON u.Id = ps.OwnerUserId
     WHERE 
         u.Reputation > 100 AND
-        u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        u.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 )
 SELECT 
     DisplayName,

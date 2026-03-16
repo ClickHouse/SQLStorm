@@ -31,4 +31,4 @@ WHERE p.p_size BETWEEN 5 AND 15
 GROUP BY p.p_name, p.p_retailprice
 HAVING SUM(ps.ps_availqty) > 100
 ORDER BY TotalAvailable DESC, p.p_name ASC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

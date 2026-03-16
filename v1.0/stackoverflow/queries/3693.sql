@@ -54,4 +54,4 @@ FROM UserActivity ua
 WHERE ua.TotalPosts > 5
   AND ua.Reputation > 100
 ORDER BY ua.UserRank, ua.Reputation DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

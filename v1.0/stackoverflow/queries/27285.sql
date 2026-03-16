@@ -46,7 +46,7 @@ SELECT
     fp.OwnerName,
     fp.AnswerCount,
     fp.CommentCount,
-    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - fp.CreationDate)) / 3600 AS AgeInHours
+    toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - fp.CreationDate)) / 3600 AS AgeInHours
 FROM 
     FilteredPosts fp
 ORDER BY 

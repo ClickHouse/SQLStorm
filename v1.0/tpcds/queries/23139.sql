@@ -44,4 +44,4 @@ WHERE NOT EXISTS (
 )
 GROUP BY ch.c_customer_sk, ch.c_first_name, ch.c_last_name, ch.level, ps.total_profit, ss.total_sales
 ORDER BY Customer_Name
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

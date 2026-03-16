@@ -61,7 +61,7 @@ PostAnalytics AS (
     LEFT JOIN 
         UsersWithBadges u ON p.OwnerUserId = u.UserId
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
         AND (p.Score > 0 OR ph.EditCount > 5)
 )
 

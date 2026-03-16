@@ -69,4 +69,4 @@ HAVING
     SUM(l.l_extendedprice * (1 - l.l_discount)) > 1000
 ORDER BY 
     r.r_name, total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

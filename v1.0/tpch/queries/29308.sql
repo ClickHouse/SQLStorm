@@ -51,4 +51,4 @@ FROM
     FinalOutput
 WHERE 
     supplier_status = 'Multiple Suppliers'
-LIMIT 10;  -- Changed LIMIT to standard SQL syntax
+FETCH FIRST 10 ROWS ONLY;  -- Changed LIMIT to standard SQL syntax

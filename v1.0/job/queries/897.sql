@@ -19,7 +19,7 @@ top_movies AS (
         movie_id, 
         title, 
         production_year,
-        CAST(cast_count AS FLOAT) / NULLIF(toYear(toDate('2024-10-01')) - production_year + 1, 0) AS avg_cast_per_year
+        CAST(cast_count AS FLOAT) / NULLIF(EXTRACT(YEAR FROM DATE '2024-10-01') - production_year + 1, 0) AS avg_cast_per_year
     FROM 
         movie_years
     WHERE 

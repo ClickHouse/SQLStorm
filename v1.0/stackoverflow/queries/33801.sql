@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND 
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' AND 
         p.Score > 0
 ),
 RecentBadges AS (
@@ -22,7 +22,7 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
     GROUP BY 
         b.UserId
 ),
@@ -34,7 +34,7 @@ UserActivity AS (
         COALESCE(rb.BadgeCount, 0) AS RecentBadgeCount,
         COALESCE(rb.BadgeNames, 'None') AS RecentBadges,
         (SELECT COUNT(*) FROM Comments c WHERE c.UserId = u.Id) AS CommentTotal,
-        (SELECT COUNT(*) FROM Votes v WHERE v.UserId = u.Id AND v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AS VoteTotal
+        (SELECT COUNT(*) FROM Votes v WHERE v.UserId = u.Id AND v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') AS VoteTotal
     FROM 
         Users u
     LEFT JOIN 

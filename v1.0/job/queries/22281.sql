@@ -70,4 +70,4 @@ ORDER BY
     t.production_year DESC,
     company_summary DESC,
     actor_name
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

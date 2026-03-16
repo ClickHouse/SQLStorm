@@ -34,7 +34,7 @@ LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 LEFT JOIN FilteredParts p ON l.l_partkey = p.p_partkey
 LEFT JOIN AvgSupplyCost ac ON p.p_partkey = ac.ps_partkey
 LEFT JOIN SupplierHierarchy sh ON c.c_nationkey = sh.s_nationkey
-WHERE c.c_acctbal IS NOT NULL AND (o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR OR o.o_orderstatus IS NULL)
+WHERE c.c_acctbal IS NOT NULL AND (o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year' OR o.o_orderstatus IS NULL)
 GROUP BY c.c_custkey, c.c_name, n.n_name
 HAVING SUM(COALESCE(l.l_extendedprice, 0)) > 10000.00
 ORDER BY total_filled_order DESC, c.c_name ASC;

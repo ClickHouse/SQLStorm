@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+        P.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
         AND P.Score > 0
 ),
 

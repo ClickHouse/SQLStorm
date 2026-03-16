@@ -48,9 +48,9 @@ SELECT tu.DisplayName,
        tu.AnswerCount, 
        tu.QuestionCount, 
        tu.LastActivity,
-       (toDateTime64('2024-10-01 12:34:56', 6) - tu.LastActivity) AS DaysSinceLastActivity,
+       (TIMESTAMP '2024-10-01 12:34:56' - tu.LastActivity) AS DaysSinceLastActivity,
        COALESCE(ph.Id, 0) AS HasChildPost,
-       CASE WHEN tu.LastActivity < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Inactive' ELSE 'Active' END AS ActivityStatus
+       CASE WHEN tu.LastActivity < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 'Inactive' ELSE 'Active' END AS ActivityStatus
 FROM TopUsers tu
 LEFT JOIN PostHierarchy ph ON tu.UserId = ph.Id
 WHERE tu.Rank <= 10 

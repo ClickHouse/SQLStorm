@@ -18,7 +18,7 @@ JOIN
 JOIN
     part p ON ps.ps_partkey = p.p_partkey
 WHERE
-    l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1997-10-01')
+    l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1997-10-01'
     AND p.p_brand = 'Brand#23'
     AND c.c_mktsegment = 'BUILDING'
 GROUP BY

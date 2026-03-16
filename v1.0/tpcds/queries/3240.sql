@@ -54,4 +54,4 @@ WHERE
     OR (c.total_web_sales > 5000 AND c.total_store_sales > 5000)
 ORDER BY 
     c.sales_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

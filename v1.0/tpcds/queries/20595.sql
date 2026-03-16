@@ -24,7 +24,7 @@ heaviest_items AS (
 ),
 average_customer_age AS (
     SELECT 
-        AVG(toYear(CURRENT_DATE) - c.c_birth_year) AS avg_age
+        AVG(EXTRACT(YEAR FROM CURRENT_DATE) - c.c_birth_year) AS avg_age
     FROM 
         customer c
     WHERE 

@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, pt.Name
 )
@@ -42,4 +42,4 @@ WHERE
 ORDER BY 
     NetScore DESC,
     rp.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

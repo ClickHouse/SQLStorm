@@ -61,7 +61,7 @@ SELECT
     WHEN PP.UserPostRank BETWEEN 2 AND 5 THEN 'Notable Contributor'
     ELSE 'Regular Contributor' 
   END AS ContributorStatus,
-  datePart('day', toDateTime64('2024-10-01 12:34:56', 6) - PP.CreationDate) AS DaysSincePosted,
+  datePart('day', TIMESTAMP '2024-10-01 12:34:56' - PP.CreationDate) AS DaysSincePosted,
   CASE 
     WHEN PP.UpVotes - PP.DownVotes > 50 THEN 'Highly Upvoted'
     WHEN PP.UpVotes < PP.DownVotes THEN 'More Downvotes Than Upvotes'

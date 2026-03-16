@@ -42,7 +42,7 @@ SELECT
     END AS customer_status
 FROM address_info ai
 FULL OUTER JOIN sales_data sd ON ai.ca_address_sk = sd.ss_item_sk
-FULL OUTER JOIN daily_sales ds ON ds.d_date = toDate('2002-10-01')
+FULL OUTER JOIN daily_sales ds ON ds.d_date = DATE '2002-10-01'
 WHERE (COALESCE(sd.total_sales, 0) > 1000 OR ds.daily_sales > 5000)
 AND (ai.customer_count IS NULL OR ai.customer_count > 5)
 ORDER BY total_sales DESC, ai.full_address

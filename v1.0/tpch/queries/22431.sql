@@ -80,7 +80,7 @@ LEFT JOIN
         SELECT o2.o_orderkey 
         FROM orders o2 
         WHERE o2.o_orderstatus = 'O' 
-        AND o2.o_orderdate BETWEEN toDate('1993-01-01') AND toDate('1993-12-31')
+        AND o2.o_orderdate BETWEEN DATE '1993-01-01' AND DATE '1993-12-31'
     )
 WHERE 
     r.r_comment IS NOT NULL OR r.r_comment LIKE '%excellent%'

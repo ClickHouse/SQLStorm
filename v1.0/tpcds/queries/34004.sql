@@ -53,4 +53,4 @@ WHERE
     sc.sales_rank = 1
 ORDER BY 
     sc.net_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

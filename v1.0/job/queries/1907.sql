@@ -39,7 +39,7 @@ movie_details AS (
     SELECT 
         a.title, 
         a.production_year, 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(act.person_id AS TEXT)))), ', ') AS actor_ids,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(act.person_id::TEXT))), ', ') AS actor_ids,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(comp.company_name))), ', ') AS companies,
         RANK() OVER (ORDER BY a.production_year DESC) AS year_rank
     FROM 

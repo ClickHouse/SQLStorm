@@ -52,7 +52,7 @@ LEFT JOIN
 LEFT JOIN 
     SupplierStats ss ON l.l_suppkey = ss.s_suppkey
 WHERE 
-    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     AND l.l_returnflag = 'N'
     AND c.rank <= 10
 GROUP BY 

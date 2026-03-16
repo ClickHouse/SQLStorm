@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON p.OwnerUserId = U.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ), 
 
 AnsweredPosts AS (
@@ -43,7 +43,7 @@ RecentPostHistory AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
+        ph.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
 )
 
 SELECT 

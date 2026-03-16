@@ -50,4 +50,4 @@ FROM
     CustomerSummary cs
 ORDER BY 
     return_to_sales_ratio DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -33,7 +33,7 @@ ActiveUsers AS (
     JOIN 
         UserBadges AS ub ON u.Id = ub.user_id
     WHERE 
-        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        u.LastAccessDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
         AND u.Reputation > 100
 ),
 TopPosts AS (

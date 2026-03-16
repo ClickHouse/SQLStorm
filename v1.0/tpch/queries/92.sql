@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01')
+        o.o_orderdate >= DATE '1996-01-01'
 ),
 SupplierParts AS (
     SELECT 
@@ -52,7 +52,7 @@ GROUP BY
     p.p_partkey, p.p_name, p.p_brand, r.r_name
 HAVING 
     COUNT(DISTINCT o.o_orderkey) > 5 AND 
-    MAX(o.o_orderdate) >= toDate('1997-01-01')
+    MAX(o.o_orderdate) >= DATE '1997-01-01'
 ORDER BY 
     total_revenue DESC, 
     recent_order_rank;

@@ -59,4 +59,4 @@ WHERE
     ca.ca_state IS NOT NULL
 ORDER BY 
     r.rank_by_gender, total_spent DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -60,4 +60,4 @@ LEFT JOIN
     RecentEdits re ON aq.PostId = re.PostId
 ORDER BY 
     aq.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

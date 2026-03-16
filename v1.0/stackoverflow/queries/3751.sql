@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title
 ),
@@ -64,6 +64,6 @@ LEFT JOIN
     UserEngagement ue ON u.Id = ue.UserId
 WHERE 
     rp.CommentRank <= 10
-    AND (cb.LastClosedDate IS NULL OR cb.LastClosedDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
+    AND (cb.LastClosedDate IS NULL OR cb.LastClosedDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months')
 ORDER BY 
     rp.CommentCount DESC, rp.UpVotes DESC;

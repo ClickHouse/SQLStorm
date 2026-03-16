@@ -70,4 +70,4 @@ WHERE
     f.items_sold > 0
 ORDER BY 
     f.sales_amount DESC NULLS LAST
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

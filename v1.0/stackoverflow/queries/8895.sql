@@ -8,8 +8,8 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.CommentCount,
         u.DisplayName AS OwnerDisplayName,
-        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.Score DESC) AS RankByScore,
-        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.ViewCount DESC) AS RankByViews
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.Score DESC) AS RankByScore,
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.ViewCount DESC) AS RankByViews
     FROM 
         Posts p
     JOIN 

@@ -29,7 +29,7 @@ MovieDetails AS (
         COALESCE(cc.distinct_roles, 0) AS distinct_roles,
         COALESCE(cc.avg_order, 0) AS avg_order,
         CASE 
-            WHEN t.production_year IS NOT NULL THEN toYear(cast('2024-10-01' as date)) - t.production_year 
+            WHEN t.production_year IS NOT NULL THEN EXTRACT(YEAR FROM cast('2024-10-01' as date)) - t.production_year 
             ELSE NULL 
         END AS age_of_movie
     FROM 
@@ -66,4 +66,5 @@ WHERE
     AND (md.total_cast > 10 OR md.distinct_roles > 5)
 ORDER BY 
     md.production_year DESC, md.total_cast DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS
+FETCH NEXT 10 ROWS ONLY;

@@ -7,7 +7,7 @@ WITH UserStats AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(CASE WHEN p.PostTypeId IN (10, 11) THEN 1 ELSE 0 END) AS ClosedPosts,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.CreationDate))/86400) AS AccountAgeInDays
+        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - u.CreationDate))/86400) AS AccountAgeInDays
     FROM 
         Users u
     LEFT JOIN 

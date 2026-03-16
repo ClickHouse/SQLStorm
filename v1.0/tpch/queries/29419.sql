@@ -22,7 +22,7 @@ JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     p.p_name LIKE '%widget%' 
-    AND o.o_orderdate >= toDate('1995-01-01')
+    AND o.o_orderdate >= DATE '1995-01-01'
 GROUP BY 
     p.p_name, r.r_name, p.p_comment
 HAVING 

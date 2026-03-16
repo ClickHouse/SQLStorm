@@ -31,7 +31,7 @@ TagPostStats AS (
             WHEN p.PostTypeId = 2 THEN 1 
             ELSE 0 END) AS TotalAnswers
     FROM Tags t
-    LEFT JOIN Posts p ON t.Id = ANY(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)CAST() AS int)[])
+    LEFT JOIN Posts p ON t.Id = ANY(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))::int[])
     GROUP BY t.Id, t.TagName
 ),
 UserBadgesStats AS (

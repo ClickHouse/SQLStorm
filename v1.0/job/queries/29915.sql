@@ -31,7 +31,7 @@ SELECT
     tm.title,
     tm.production_year,
     tm.num_cast,
-    arrayStringConcat(groupArray(assumeNotNull(CAST(tm.actor_names AS text))), ', ') AS all_actors
+    arrayStringConcat(groupArray(assumeNotNull(tm.actor_names::text)), ', ') AS all_actors
 FROM 
     TopMovies tm
 GROUP BY 

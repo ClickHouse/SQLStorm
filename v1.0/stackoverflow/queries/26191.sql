@@ -24,7 +24,7 @@ WITH FilteredPosts AS (
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
         p.PostTypeId = 1 /* Questions only */
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, u.DisplayName, u.Reputation, ph.CreationDate
 ),

@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, u.DisplayName, pt.Name
 ),
@@ -36,7 +36,7 @@ MostActiveUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        u.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 
         u.Id, u.DisplayName
     HAVING 
@@ -49,7 +49,7 @@ PostHistorySummary AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
     GROUP BY 
         ph.PostId
 )

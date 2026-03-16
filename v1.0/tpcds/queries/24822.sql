@@ -84,4 +84,4 @@ GROUP BY
 ORDER BY 
     cs.sales_rank NULLS LAST, 
     c.c_last_name
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

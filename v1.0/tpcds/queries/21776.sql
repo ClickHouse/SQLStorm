@@ -51,4 +51,4 @@ FULL OUTER JOIN promotion_summary ps ON sd.ws_item_sk = ps.p_promo_sk
 WHERE (sd.total_sales > 0 OR sd.total_profit IS NOT NULL)
   AND (ps.promo_order_count IS NULL OR ps.promo_order_count > 5)
 ORDER BY ct.lvl DESC, sd.total_profit DESC NULLS LAST
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

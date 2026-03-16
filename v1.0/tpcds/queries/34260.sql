@@ -56,7 +56,7 @@ SELECT
     (report.total_sales - report.total_return_amount) AS net_sales,
     (CASE
         WHEN report.num_transactions = 0 THEN 0
-        ELSE ROUND((CAST(report.return_count AS FLOAT) / report.num_transactions) * 100, 2)
+        ELSE ROUND((report.return_count::FLOAT / report.num_transactions) * 100, 2)
      END) AS return_percentage
 FROM
     ConsolidatedReports report

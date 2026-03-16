@@ -39,4 +39,4 @@ WHERE
     LENGTH(part_detail) > 20
 ORDER BY 
     part_length DESC, customer_name ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -33,7 +33,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= now64(6) - INTERVAL 30 DAY
+        v.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY 
         v.UserId
 )

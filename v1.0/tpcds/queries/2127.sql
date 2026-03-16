@@ -46,7 +46,7 @@ SELECT
     COALESCE(isales.total_sales, 0) AS total_sales,
     CASE 
         WHEN COALESCE(isales.total_sales, 0) = 0 THEN NULL
-        ELSE (COALESCE(tr.total_return_quantity, 0) / CAST(isales.total_sales AS decimal)) * 100
+        ELSE (COALESCE(tr.total_return_quantity, 0) / isales.total_sales::decimal) * 100
     END AS return_percentage
 FROM item i
 LEFT JOIN TotalReturns tr ON i.i_item_sk = tr.item_sk

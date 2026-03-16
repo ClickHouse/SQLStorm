@@ -58,4 +58,4 @@ ORDER BY
     total_web_sales_quantity DESC, 
     total_web_sales_revenue DESC, 
     i.i_item_id
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

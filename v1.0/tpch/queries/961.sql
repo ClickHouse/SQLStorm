@@ -59,7 +59,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_retailprice < 100
-    AND lt.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND lt.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     p.p_name, r.r_name
 ORDER BY 

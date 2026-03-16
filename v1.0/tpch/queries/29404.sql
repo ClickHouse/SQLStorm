@@ -22,7 +22,7 @@ JOIN
 WHERE
     part.p_type LIKE '%plastic%'
 AND
-    orders.o_orderdate >= toDate('1997-01-01')
+    orders.o_orderdate >= DATE '1997-01-01'
 GROUP BY
     short_name, supplier_details
 HAVING

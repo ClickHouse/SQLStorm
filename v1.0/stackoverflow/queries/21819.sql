@@ -23,7 +23,7 @@ PostEngagement AS (
         p.Id AS PostId,
         p.Title,
         p.CreationDate,
-        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 3600 AS AgeInHours,
+        toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) / 3600 AS AgeInHours,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.UserId) AS UniqueVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,

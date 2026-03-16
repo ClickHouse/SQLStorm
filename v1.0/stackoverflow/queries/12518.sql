@@ -17,7 +17,7 @@ WITH PostStatistics AS (
     LEFT JOIN 
         Votes ON Posts.Id = Votes.PostId
     WHERE 
-        Posts.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        Posts.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         Posts.Id, Posts.Title, Posts.CreationDate, Posts.ViewCount, Posts.Score
 ),

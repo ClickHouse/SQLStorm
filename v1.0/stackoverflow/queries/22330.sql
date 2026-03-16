@@ -41,7 +41,7 @@ ClosedPosts AS (
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     LEFT JOIN Users r ON ph.UserId = r.Id
     WHERE pht.Name = 'Post Closed' 
-          AND ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+          AND ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ), 
 RankedPosts AS (
     SELECT 

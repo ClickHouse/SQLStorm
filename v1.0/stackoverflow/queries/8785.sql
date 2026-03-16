@@ -35,4 +35,4 @@ SELECT
 FROM UserScoreData usd
 LEFT JOIN UserBadgeCount ubc ON usd.UserId = ubc.UserId
 ORDER BY usd.TotalScore DESC, usd.Reputation DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

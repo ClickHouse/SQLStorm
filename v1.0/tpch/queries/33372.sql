@@ -25,9 +25,9 @@ JOIN part p ON ps.ps_partkey = p.p_partkey
 JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
 LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
-WHERE o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+WHERE o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
   AND l.l_returnflag = 'R'
   AND (l.l_discount < 0.05 OR l.l_discount IS NULL)
 GROUP BY n.n_name
 ORDER BY total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

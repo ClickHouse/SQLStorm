@@ -7,7 +7,7 @@ WITH UserBadges AS (
 ), PopularPosts AS (
     SELECT OwnerUserId, COUNT(*) AS PostsCreated, SUM(ViewCount) AS TotalViews
     FROM Posts
-    WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY OwnerUserId
 ), UserEngagement AS (
     SELECT U.Id AS UserId, U.DisplayName, COALESCE(UB.BadgeCount, 0) AS BadgeCount,

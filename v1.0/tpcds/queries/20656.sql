@@ -65,4 +65,4 @@ WHERE
     AND (item.total_sales IS NULL OR item.total_sales > 500)
 ORDER BY 
     item.total_sales DESC, dem.customer_count DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

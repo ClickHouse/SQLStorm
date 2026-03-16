@@ -62,4 +62,4 @@ WHERE p.p_retailprice BETWEEN 20 AND (
     SELECT AVG(p2.p_retailprice) * 1.1 FROM part p2 WHERE p2.p_size IS NOT NULL
 ) AND p.p_comment NOT LIKE '%obsolete%'
 ORDER BY p.p_partkey DESC, total_supply_cost DESC
-LIMIT 50 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;

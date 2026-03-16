@@ -28,7 +28,7 @@ PersonData AS (
     SELECT 
         p.id AS person_id,
         p.name AS person_name,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ci.movie_id AS text)))), ',') AS movie_ids,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ci.movie_id::text))), ',') AS movie_ids,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rt.role))), ',') AS roles
     FROM 
         name p

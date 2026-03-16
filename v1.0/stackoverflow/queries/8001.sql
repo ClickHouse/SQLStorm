@@ -51,6 +51,6 @@ JOIN
     PostTypes pt ON p.PostTypeId = pt.Id
 WHERE 
     tu.Rank <= 10 AND 
-    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
 ORDER BY 
     tu.Rank;

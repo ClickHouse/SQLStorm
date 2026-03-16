@@ -24,7 +24,7 @@ WITH RECURSIVE SalesCTE AS (
     JOIN
         orders o ON sc.c_custkey = o.o_custkey
     WHERE
-        o.o_orderdate >= toDate('1998-10-01') - INTERVAL 1 MONTH
+        o.o_orderdate >= DATE '1998-10-01' - INTERVAL '1 month'
     GROUP BY
         sc.c_custkey, sc.c_name, sc.depth
 ),
@@ -68,7 +68,7 @@ JOIN
 LEFT JOIN 
     RankedCustomers rc ON c.c_custkey = rc.c_custkey
 WHERE 
-    l.l_shipdate >= toDate('1997-01-01') AND 
+    l.l_shipdate >= DATE '1997-01-01' AND 
     (l.l_returnflag = 'N' OR l.l_returnflag IS NULL)
 GROUP BY 
     s.s_name, p.p_name, r.r_name, c.c_name, c.c_acctbal, rc.rank

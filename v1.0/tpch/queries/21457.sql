@@ -61,4 +61,4 @@ GROUP BY
     n.n_name
 ORDER BY 
     top_customer_count DESC NULLS LAST
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

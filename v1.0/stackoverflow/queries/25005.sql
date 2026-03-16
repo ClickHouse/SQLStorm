@@ -76,4 +76,4 @@ FROM
     PostDetails pd
 ORDER BY 
     pd.Upvotes DESC, pd.AnswerCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

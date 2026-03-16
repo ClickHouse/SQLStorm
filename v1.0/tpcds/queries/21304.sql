@@ -45,4 +45,4 @@ WHERE inv.last_inventory_date >= sd.ws_sold_date_sk
 AND ci.rank <= 5
 AND (ci.hd_income_band_sk IS NOT NULL OR ci.hd_buy_potential LIKE '%High%')
 ORDER BY price_rank, cs.ws_sales_price DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

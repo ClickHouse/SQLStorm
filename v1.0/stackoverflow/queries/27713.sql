@@ -67,8 +67,8 @@ SELECT
     TitleBodyTagEdits,
     CloseVotes,
     ReopenVotes,
-    ROUND(COALESCE(CAST(TotalPosts AS DECIMAL) / NULLIF(QuestionsPosted, 0), 0), 2) AS PostToQuestionRatio,
-    ROUND(COALESCE(CAST(AnswersPosted AS DECIMAL) / NULLIF(QuestionsPosted, 0), 0), 2) AS AnswerToQuestionRatio
+    ROUND(COALESCE(TotalPosts::DECIMAL / NULLIF(QuestionsPosted, 0), 0), 2) AS PostToQuestionRatio,
+    ROUND(COALESCE(AnswersPosted::DECIMAL / NULLIF(QuestionsPosted, 0), 0), 2) AS AnswerToQuestionRatio
 FROM 
     UserStatistics
 ORDER BY 

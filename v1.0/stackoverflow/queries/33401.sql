@@ -80,4 +80,4 @@ WHERE
 ORDER BY 
     UserReputation.TotalScore DESC, 
     RecursiveTagStats.TotalViews DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

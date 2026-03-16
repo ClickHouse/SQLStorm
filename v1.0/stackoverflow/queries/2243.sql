@@ -43,7 +43,7 @@ PostDetails AS (
     LEFT JOIN 
         Comments CI ON P.Id = CI.PostId
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 DAY'
     GROUP BY 
         P.Id, P.Title, P.CreationDate
 )

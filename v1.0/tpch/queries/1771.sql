@@ -18,7 +18,7 @@ HighValueOrders AS (
         l.l_orderkey,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_value
     FROM lineitem l
-    WHERE l.l_shipdate >= toDate('1997-01-01')
+    WHERE l.l_shipdate >= DATE '1997-01-01'
     GROUP BY l.l_orderkey
     HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 100000
 )

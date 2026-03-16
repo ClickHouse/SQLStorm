@@ -22,7 +22,7 @@ JOIN
     region R ON N.n_regionkey = R.r_regionkey
 WHERE 
     C.c_mktsegment = 'BUILDING'
-    AND L.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND L.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     SUP.s_name, R.r_name
 HAVING 

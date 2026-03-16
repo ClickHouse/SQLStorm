@@ -5,7 +5,7 @@ WITH UserStats AS (
         COUNT(DISTINCT P.Id) AS PostCount,
         SUM(CASE WHEN P.Score IS NOT NULL THEN P.Score ELSE 0 END) AS TotalScore,
         SUM(CASE WHEN P.ViewCount IS NOT NULL THEN P.ViewCount ELSE 0 END) AS TotalViews,
-        AVG(CASE WHEN P.CreationDate IS NOT NULL THEN toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.CreationDate)) / 3600 ELSE NULL END) AS AvgPostAgeHours
+        AVG(CASE WHEN P.CreationDate IS NOT NULL THEN toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - P.CreationDate)) / 3600 ELSE NULL END) AS AvgPostAgeHours
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     WHERE U.Reputation > 1000

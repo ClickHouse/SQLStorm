@@ -52,7 +52,7 @@ SELECT
     us.TotalBadges,
     us.VoteScore,
     COALESCE(cp.CloseReason, 'Not Closed') AS CloseReason,
-    COALESCE(CAST(cp.CreationDate AS TEXT), 'N/A') AS CloseDate,
+    COALESCE(cp.CreationDate::TEXT, 'N/A') AS CloseDate,
     rp.CommentCount,
     CASE 
         WHEN rp.UserPostRank = 1 THEN 'Latest'
@@ -69,4 +69,4 @@ WHERE
     us.Reputation > 100 
 ORDER BY 
     us.Reputation DESC, rp.CommentCount DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

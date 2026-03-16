@@ -19,7 +19,7 @@ PostAggregation AS (
         AVG(P.Score) AS AverageScore,
         MAX(P.CreationDate) AS LatestPostDate
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY P.OwnerUserId
 ),
 RecentComments AS (
@@ -27,7 +27,7 @@ RecentComments AS (
         C.UserId,
         COUNT(C.Id) AS CommentCount
     FROM Comments C
-    WHERE C.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE C.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY C.UserId
 ),
 UserPostBadge AS (

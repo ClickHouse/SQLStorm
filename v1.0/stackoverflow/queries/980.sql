@@ -50,7 +50,7 @@ FROM
 LEFT JOIN 
     PostHistory PH ON T.UserId = PH.UserId
 WHERE 
-    PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 GROUP BY 
     T.UserId, T.DisplayName, T.Reputation, T.PostCount, T.Questions, T.Answers, T.AvgBounty
 HAVING 

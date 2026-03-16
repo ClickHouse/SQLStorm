@@ -70,4 +70,4 @@ WHERE
     (cr.total_sales - cr.total_return_amt) > 1000
 ORDER BY 
     cr.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

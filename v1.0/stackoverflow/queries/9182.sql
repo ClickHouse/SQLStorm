@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score
 ),
 TopPosts AS (

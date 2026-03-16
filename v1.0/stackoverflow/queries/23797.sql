@@ -32,7 +32,7 @@ RecentPosts AS (
         pt.Name AS PostTypeName
     FROM Posts p
     JOIN PostTypes pt ON p.PostTypeId = pt.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 PostScore AS (
     SELECT

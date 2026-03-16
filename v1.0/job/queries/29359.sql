@@ -25,7 +25,7 @@ WITH MovieDetails AS (
     JOIN 
         aka_name a ON ca.person_id = a.person_id
     WHERE 
-        t.production_year >= toYear(cast('2024-10-01' as date)) - 10
+        t.production_year >= EXTRACT(YEAR FROM cast('2024-10-01' as date)) - 10
         AND (t.title ILIKE '%adventure%' OR a.name ILIKE '%Smith%')
 )
 

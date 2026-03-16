@@ -33,7 +33,7 @@ SELECT
     u.DisplayName AS UserName,
     COUNT(DISTINCT ph.Id) AS TotalPosts,
     COUNT(DISTINCT CASE WHEN ph.AcceptedAnswerId IS NOT NULL THEN ph.AcceptedAnswerId END) AS AcceptedAnswers,
-    AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - ph.CreationDate)) / 3600) AS AvgAgeInHours,
+    AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - ph.CreationDate)) / 3600) AS AvgAgeInHours,
     arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
     COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
     COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes
@@ -51,7 +51,7 @@ GROUP BY
     u.Id, u.DisplayName
 HAVING 
     COUNT(DISTINCT ph.Id) > 1 
-    AND AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - ph.CreationDate)) / 3600) < 24
+    AND AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - ph.CreationDate)) / 3600) < 24
 ORDER BY 
     TotalPosts DESC
 LIMIT 10;

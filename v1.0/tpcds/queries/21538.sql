@@ -39,4 +39,4 @@ WHERE c.sales_rank = 1
     AND (c.total_store_sales IS NOT NULL OR c.total_web_sales IS NOT NULL)
     AND c.c_first_name IS NOT NULL
 ORDER BY total_store_sales + total_web_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

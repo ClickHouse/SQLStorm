@@ -22,7 +22,7 @@ RecentPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
 ClosedPosts AS (
     SELECT 
@@ -34,7 +34,7 @@ ClosedPosts AS (
     JOIN 
         PostHistoryTypes H ON PH.PostHistoryTypeId = H.Id
     WHERE 
-        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY AND 
+        PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' AND 
         H.Name = 'Post Closed'
 )
 SELECT 

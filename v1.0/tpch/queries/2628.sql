@@ -69,7 +69,7 @@ JOIN
     OrderSummary os ON os.o_orderkey IN (
         SELECT o.o_orderkey 
         FROM orders o 
-        WHERE o.o_orderstatus = 'O' AND o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 30 DAY
+        WHERE o.o_orderstatus = 'O' AND o.o_orderdate > cast('1998-10-01' as date) - interval '30 days'
     )
 JOIN 
     SupplierPartCost spc ON spc.ps_partkey = p.p_partkey

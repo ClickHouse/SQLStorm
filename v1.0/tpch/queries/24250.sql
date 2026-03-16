@@ -57,7 +57,7 @@ SELECT
     cd.p_name,
     cd.supplier_name,
     COALESCE(cd.line_count, 0) AS total_lines,
-    COALESCE(cd.latest_ship, toDate('1900-01-01')) AS last_shipping_date,
+    COALESCE(cd.latest_ship, DATE '1900-01-01') AS last_shipping_date,
     CASE 
         WHEN COALESCE(cd.line_count, 0) > 0 THEN 'Active Order'
         ELSE 'No Active Order'

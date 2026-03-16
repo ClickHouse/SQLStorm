@@ -48,7 +48,7 @@ TopPosts AS (
     JOIN 
         TagStats ST ON P.Tags LIKE '%' || ST.TagName || '%'
     WHERE 
-        P.LastActivityDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
+        P.LastActivityDate > cast('2024-10-01' as date) - INTERVAL '30 days'
     ORDER BY 
         P.ViewCount DESC, 
         H.EditCount DESC

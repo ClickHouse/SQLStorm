@@ -30,7 +30,7 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= CURRENT_DATE - INTERVAL 1 YEAR
+        b.Date >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         b.UserId
 ),

@@ -26,7 +26,7 @@ WITH RankedPosts AS (
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
         p.PostTypeId = 1
-        AND p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        AND p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.Tags, p.OwnerUserId
 )

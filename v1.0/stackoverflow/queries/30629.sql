@@ -8,7 +8,7 @@ WITH RECURSIVE UserReputation AS (
            p.ViewCount, p.Score,
            ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RecentPostRank
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ), PostVoteSummary AS (
     SELECT v.PostId, 
            SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,

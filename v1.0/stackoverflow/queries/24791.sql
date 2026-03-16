@@ -47,7 +47,7 @@ RecentEdits AS (
     SELECT 
         ph.PostId,
         COUNT(ph.Id) AS EditCount,
-        MAX(CASE WHEN ph.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) THEN 1 ELSE 0 END) AS RecentlyEdited
+        MAX(CASE WHEN ph.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days') THEN 1 ELSE 0 END) AS RecentlyEdited
     FROM PostHistory ph
     GROUP BY ph.PostId
 )
@@ -71,7 +71,7 @@ LEFT JOIN RecentEdits re ON re.PostId IN (
     SELECT p.Id 
     FROM Posts p 
     WHERE p.OwnerUserId = tu.UserId 
-    AND p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 365 DAY)
+    AND p.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '365 days')
 )
 WHERE tu.RankGroup <= 5
 ORDER BY tu.Reputation DESC, pt.PostCount DESC;

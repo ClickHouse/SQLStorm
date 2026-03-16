@@ -44,4 +44,4 @@ WHERE cc.ranking <= 10
 GROUP BY cc.c_customer_id, cc.cd_gender, cc.cd_marital_status, cc.cd_purchase_estimate
 HAVING SUM(cs.total_quantity) > 0
 ORDER BY profit_loss DESC, item_count DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

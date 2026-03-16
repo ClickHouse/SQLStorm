@@ -68,4 +68,4 @@ FROM
     FinalOutput fo
 ORDER BY 
     fo.total_order_cost DESC NULLS LAST
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;

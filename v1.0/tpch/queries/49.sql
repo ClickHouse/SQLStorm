@@ -16,7 +16,7 @@ TotalSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
+        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
     GROUP BY 
         l.l_suppkey
 ),
@@ -65,4 +65,4 @@ WHERE
     fr.sales_status = 'High'
 ORDER BY 
     fr.total_sales DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

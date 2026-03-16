@@ -47,7 +47,7 @@ DiscountedSales AS (
     FROM SalesData s
     JOIN CustomerDemographics c ON s.customer_sk = c.cd_demo_sk
     JOIN CustomerAddress a ON s.customer_sk = a.ca_address_sk
-    JOIN DateDim d ON d.d_date = toDate('2002-10-01')
+    JOIN DateDim d ON d.d_date = DATE '2002-10-01'
 )
 SELECT ds.customer_sk,
        SUM(ds.discounted_sales) AS total_discounted_sales,
@@ -60,4 +60,4 @@ SELECT ds.customer_sk,
 FROM DiscountedSales ds
 GROUP BY ds.customer_sk, ds.cd_gender, ds.cd_marital_status, ds.cd_education_status, ds.cd_purchase_estimate, ds.full_address
 ORDER BY total_discounted_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

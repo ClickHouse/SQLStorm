@@ -18,7 +18,7 @@ RecentActivity AS (
         COUNT(*) AS RecentActions,
         MAX(CreationDate) AS LastActionDate
     FROM PostHistory
-    WHERE CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY UserId
 ),
 QualifiedUsers AS (
@@ -43,7 +43,7 @@ SELECT
     q.AvgPostScore,
     CASE 
         WHEN q.LastActionDate IS NULL THEN 'No Recent Activity'
-        WHEN q.LastActionDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 14 DAY THEN 'Inactive'
+        WHEN q.LastActionDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '14 days' THEN 'Inactive'
         ELSE 'Active'
     END AS ActivityStatus,
     arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Tags))), ', ') AS TagsUsed

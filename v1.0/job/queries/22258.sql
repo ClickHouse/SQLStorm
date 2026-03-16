@@ -25,7 +25,7 @@ MoviesWithInfo AS (
     FROM 
         RankedMovies rm
     LEFT JOIN 
-        movie_info mi ON rm.cast_count > (SELECT AVG(cast_countCAST() AS FLOAT) FROM RankedMovies)
+        movie_info mi ON rm.cast_count > (SELECT AVG(cast_count)::FLOAT FROM RankedMovies)
         AND rm.production_year = mi.movie_id
 )
 SELECT

@@ -26,7 +26,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_size BETWEEN 10 AND 20
-    AND l.l_shipdate >= toDate('1997-01-01')
+    AND l.l_shipdate >= DATE '1997-01-01'
 GROUP BY 
     p.p_type, p.p_name, p.p_comment, r.r_name, n.n_name
 ORDER BY 

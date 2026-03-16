@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         (SELECT arrayJoin(splitByString('>', p.Tags)) AS TagName) t ON true
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         p.Id
 ),
@@ -32,7 +32,7 @@ RecentUserEngagement AS (
     FROM 
         Users u
     LEFT JOIN 
-        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 

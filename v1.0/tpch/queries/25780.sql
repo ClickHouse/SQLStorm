@@ -23,9 +23,9 @@ JOIN
 WHERE 
     r.r_name LIKE 'Asia%' 
     AND l.l_shipmode IN ('AIR', 'RAIL') 
-    AND o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
+    AND o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
 GROUP BY 
     s.s_name, n.n_name, r.r_name, s.s_comment
 ORDER BY 
     total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

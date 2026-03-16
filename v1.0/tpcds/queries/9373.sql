@@ -44,6 +44,6 @@ SELECT
     d.d_month_seq,
     d.d_year
 FROM sales_summary s
-JOIN date_dim d ON d.d_date = toDate('2002-10-01')
+JOIN date_dim d ON d.d_date = DATE '2002-10-01'
 ORDER BY s.total_spent DESC
 LIMIT 10;

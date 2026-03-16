@@ -48,4 +48,4 @@ JOIN
     actor_counts ac ON md.movie_title = ac.movie_title
 ORDER BY 
     md.production_year DESC, ac.actor_count DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

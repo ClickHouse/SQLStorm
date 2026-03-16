@@ -3,7 +3,7 @@ WITH recent_orders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, c.c_nationkey
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
 ),
 supplier_summary AS (
     SELECT s.s_nationkey, COUNT(DISTINCT ps.ps_suppkey) AS supplier_count, SUM(ps.ps_supplycost) AS total_supply_cost

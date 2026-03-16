@@ -36,10 +36,10 @@ SELECT
     hs.total_spent,
     CASE 
         WHEN sp.parts_supplied IS NULL THEN 'No Parts Provided'
-        ELSE CAST(sp.parts_supplied AS text)
+        ELSE sp.parts_supplied::text
     END AS parts_supplied,
     COALESCE(sp.total_supply_cost, 0) AS total_supply_cost
 FROM HighSpenders hs
 LEFT JOIN SupplierParts sp ON hs.total_orders = sp.parts_supplied
 ORDER BY hs.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -40,4 +40,4 @@ LEFT JOIN CompanyCounts cc ON rm.movie_id = cc.movie_id
 LEFT JOIN CastRoles cr ON rm.movie_id = cr.movie_id
 WHERE rm.rn <= 10 AND (cc.company_count IS NOT NULL OR cr.roles IS NOT NULL)
 ORDER BY rm.production_year DESC, rm.movie_id
-LIMIT 20 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY;

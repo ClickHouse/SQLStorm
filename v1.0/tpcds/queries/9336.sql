@@ -60,4 +60,4 @@ LEFT JOIN
     promotion_summary ps ON ps.promo_sales > 5000
 ORDER BY 
     ss.total_sales DESC, cs.total_spent DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

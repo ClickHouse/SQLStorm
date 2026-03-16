@@ -62,4 +62,4 @@ HAVING
 ORDER BY 
     td.production_year DESC, 
     td.total_actors DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

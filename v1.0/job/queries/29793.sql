@@ -39,8 +39,8 @@ SELECT
     trm.title,
     trm.production_year,
     trm.production_companies,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(trm.cast_names AS text)))), ', ') AS all_cast_names,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(trm.keywords AS text)))), ', ') AS all_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(trm.cast_names::text))), ', ') AS all_cast_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(trm.keywords::text))), ', ') AS all_keywords
 FROM 
     TopRankedMovies trm
 GROUP BY 

@@ -83,7 +83,7 @@ FROM
 WHERE 
     cm.actor_count > 2 
     AND cm.category = 'Episode'
-    AND cm.production_year >= (toYear(CURRENT_DATE) - 10)
+    AND cm.production_year >= (EXTRACT(YEAR FROM CURRENT_DATE) - 10)
 
 ORDER BY 
     cm.production_year DESC, cm.movie_title ASC;

@@ -60,4 +60,4 @@ JOIN
     potential_customers p ON p.total_spent >= (SELECT AVG(total_profit) FROM annual_sales)
 ORDER BY 
     a.d_year, customer_value DESC, rank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

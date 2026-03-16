@@ -66,6 +66,6 @@ JOIN
 JOIN 
     FilteredSuppliers s ON s.s_nationkey = (SELECT n.n_nationkey FROM nation n WHERE n.n_name = 'USA')
 WHERE 
-    fo.o_orderdate > CURRENT_DATE - INTERVAL 1 YEAR
+    fo.o_orderdate > CURRENT_DATE - INTERVAL '1 year'
 ORDER BY 
     c.total_spent DESC, fo.o_orderdate DESC;

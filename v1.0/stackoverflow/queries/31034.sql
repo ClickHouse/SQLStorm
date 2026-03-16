@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS RowNum,
         COUNT(*) OVER (PARTITION BY p.OwnerUserId) AS TotalPosts
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 PostStatistics AS (
     SELECT 
@@ -48,7 +48,7 @@ SELECT
     phs.LastEditTime,
     CASE 
         WHEN ps.PostCount > 5 THEN 'Active User' 
-        WHEN ps.LastPostDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH THEN 'Recent Contributor'
+        WHEN ps.LastPostDate >= cast('2024-10-01' as date) - INTERVAL '6 months' THEN 'Recent Contributor'
         ELSE 'Inactive User' 
     END AS UserStatus
 FROM Users u

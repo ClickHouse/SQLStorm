@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId, p.CreationDate
 ),
@@ -65,4 +65,5 @@ WHERE
     rp.CommentCount > 0
 ORDER BY 
     PostScore DESC, rp.CreationDate DESC
-LIMIT 10 OFFSET 20;
+OFFSET 20 ROWS
+FETCH NEXT 10 ROWS ONLY;

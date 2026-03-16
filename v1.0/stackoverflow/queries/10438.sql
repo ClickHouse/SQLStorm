@@ -20,7 +20,7 @@ SELECT
     TotalPosts,
     TotalComments,
     AvgViewCount,
-    ROUND((CAST(TotalComments AS decimal) / NULLIF(TotalPosts, 0)), 2) AS AvgCommentsPerPost
+    ROUND((TotalComments::decimal / NULLIF(TotalPosts, 0)), 2) AS AvgCommentsPerPost
 FROM 
     PostMetrics
 ORDER BY 

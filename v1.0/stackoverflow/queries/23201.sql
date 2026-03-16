@@ -10,7 +10,7 @@ WITH RecentActivity AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
 ),
 UserStats AS (
     SELECT 
@@ -19,8 +19,8 @@ UserStats AS (
         u.Reputation,
         COUNT(b.Id) AS BadgeCount,
         SUM(CASE WHEN b.Class = 1 THEN 1 ELSE 0 END) AS GoldBadges,
-        COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 AND v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH THEN 1 ELSE 0 END), 0) AS RecentUpVotes,
-        COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 AND v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH THEN 1 ELSE 0 END), 0) AS RecentDownVotes
+        COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 AND v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 MONTH' THEN 1 ELSE 0 END), 0) AS RecentUpVotes,
+        COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 AND v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 MONTH' THEN 1 ELSE 0 END), 0) AS RecentDownVotes
     FROM 
         Users u
     LEFT JOIN 

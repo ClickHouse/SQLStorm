@@ -19,5 +19,5 @@ WHERE
 GROUP BY 
     p.Id, p.Title, u.DisplayName
 ORDER BY 
-    p.CreationDate DESC
+    any(p.CreationDate) DESC
 LIMIT 10;

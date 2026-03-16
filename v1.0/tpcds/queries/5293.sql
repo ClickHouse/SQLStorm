@@ -45,4 +45,4 @@ FROM CustomerCounts AS cc
 JOIN SalesData AS sd ON cc.customer_count > 1000
 LEFT JOIN StoreSalesData AS ssd ON sd.total_sales > 10000
 ORDER BY cc.ca_state, sd.d_year, sd.d_month_seq, ssd.total_store_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

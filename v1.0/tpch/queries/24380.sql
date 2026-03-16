@@ -26,8 +26,8 @@ HighValueOrders AS (
     HAVING SUM(l_extendedprice * (1 - l_discount)) > 10000
 ),
 QuarterlyRevenue AS (
-    SELECT toYear(o_orderdate) AS order_year,
-           toQuarter(o_orderdate) AS order_quarter,
+    SELECT EXTRACT(YEAR FROM o_orderdate) AS order_year,
+           EXTRACT(QUARTER FROM o_orderdate) AS order_quarter,
            SUM(o_totalprice) AS total_revenue
     FROM orders o
     WHERE o_orderstatus IN ('O', 'F')

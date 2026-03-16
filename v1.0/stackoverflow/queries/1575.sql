@@ -39,7 +39,7 @@ RecentPosts AS (
             ), 0) AS CommentCount
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= now64(6) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
 )
 SELECT 
     tu.UserId, 

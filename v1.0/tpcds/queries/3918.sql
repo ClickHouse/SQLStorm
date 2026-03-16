@@ -55,4 +55,4 @@ JOIN
     TopProducts tp ON co.total_spent > 1000 AND co.order_count > 5
 ORDER BY 
     co.total_spent DESC, tp.total_net_profit DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

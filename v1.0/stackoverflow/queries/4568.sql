@@ -18,7 +18,7 @@ PopularTags AS (
         SUM(p.ViewCount) AS TotalViews
     FROM Tags t
     JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%'
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY t.TagName
     ORDER BY PostCount DESC
     LIMIT 10

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST(CAST('2024-10-01' AS DATE) - INTERVAL 30 DAY AS DATE)
+        p.CreationDate >= CAST(CAST('2024-10-01' AS DATE) - INTERVAL '30 days' AS DATE)
         AND p.PostTypeId IN (1, 2)
 ),
 UserReputation AS (

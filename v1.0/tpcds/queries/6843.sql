@@ -56,4 +56,4 @@ JOIN
     inventory_summary isq ON ss.ws_item_sk = isq.inv_item_sk
 ORDER BY 
     ss.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

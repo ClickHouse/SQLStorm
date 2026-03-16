@@ -7,7 +7,7 @@ WITH RecursiveUserBadges AS (
         DENSE_RANK() OVER (PARTITION BY U.Id ORDER BY B.Date DESC) AS BadgeRank
     FROM Users U
     JOIN Badges B ON U.Id = B.UserId
-    WHERE B.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE B.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 TopUsers AS (
     SELECT 

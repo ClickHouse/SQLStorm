@@ -29,7 +29,7 @@ PostMetrics AS (
     LEFT JOIN 
         (SELECT PostId, COUNT(*) AS RevisionCount FROM PostHistory GROUP BY PostId) ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate > CURRENT_DATE - INTERVAL 30 DAY
+        p.CreationDate > CURRENT_DATE - INTERVAL '30 days'
 ),
 TopUsers AS (
     SELECT 

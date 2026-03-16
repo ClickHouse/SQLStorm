@@ -19,7 +19,7 @@ RecentActivity AS (
     SELECT 
         ua.Id AS UserId,
         COUNT(c.Id) AS CommentCount,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate) / 3600)) AS AvgPostAgeInHours
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate) / 3600)) AS AvgPostAgeInHours
     FROM Users ua
     LEFT JOIN Comments c ON ua.Id = c.UserId
     LEFT JOIN Posts p ON ua.Id = p.OwnerUserId

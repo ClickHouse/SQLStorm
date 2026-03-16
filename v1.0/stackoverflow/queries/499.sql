@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 
 ActiveUsers AS (
@@ -27,7 +27,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        u.LastAccessDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 
         u.Id, u.DisplayName
 ),

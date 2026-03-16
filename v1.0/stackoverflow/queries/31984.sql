@@ -49,7 +49,7 @@ ClosedPosts AS (
         Users u ON ph.UserId = u.Id
     WHERE
         ph.PostHistoryTypeId = 10 
-        AND ph.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        AND ph.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
 ),
 RecentClosedPosts AS (
     SELECT

@@ -32,7 +32,7 @@ PopularTags AS (
         t.TagName,
         COUNT(p.Id) AS PostCount
     FROM Tags t
-    LEFT JOIN Posts p ON t.Id = CAST(p.Tags AS integer)
+    LEFT JOIN Posts p ON t.Id = p.Tags::integer
     GROUP BY t.TagName
     ORDER BY PostCount DESC
     LIMIT 10

@@ -59,7 +59,7 @@ LEFT JOIN
 LEFT JOIN 
     Store_Sales_CTE SSC ON i.i_item_sk = SSC.ss_item_sk
 LEFT JOIN 
-    Date_Stats DS ON DS.d_year = toYear(toDate('2002-10-01'))
+    Date_Stats DS ON DS.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
 LEFT JOIN 
     Promotions P ON i.i_item_sk = P.p_item_sk
 WHERE 
@@ -67,4 +67,4 @@ WHERE
     AND (COALESCE(SC.total_quantity, 0) > 100 OR COALESCE(SSC.store_quantity, 0) > 100)
 ORDER BY 
     total_net_profit_combined DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

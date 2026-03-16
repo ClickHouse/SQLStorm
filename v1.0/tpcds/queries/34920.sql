@@ -56,4 +56,4 @@ HAVING
     SUM(ws.ws_net_profit) > (SELECT AVG(ws2.ws_net_profit) FROM web_sales ws2 WHERE ws2.ws_sold_date_sk >= 20200101)
 ORDER BY 
     total_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

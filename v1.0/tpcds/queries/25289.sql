@@ -8,7 +8,7 @@ WITH CustomerStats AS (
         cd.cd_gender,
         cd.cd_marital_status,
         cd.cd_education_status,
-        toHour(toDateTime64('2002-10-01 12:34:56', 6)) AS current_hour,
+        EXTRACT(HOUR FROM TIMESTAMP '2002-10-01 12:34:56') AS current_hour,
         (SELECT COUNT(*)
          FROM store_sales ss
          WHERE ss.ss_customer_sk = c.c_customer_sk) AS purchase_count,

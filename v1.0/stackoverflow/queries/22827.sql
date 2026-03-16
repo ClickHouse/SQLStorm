@@ -76,5 +76,5 @@ FROM
     CombinedData cd
 ORDER BY 
     cd.TotalVotes DESC, cd.CreationDate DESC
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;
 

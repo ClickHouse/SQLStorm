@@ -7,7 +7,7 @@ WITH RECURSIVE OrderHierarchy AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01')
+        o.o_orderdate >= DATE '1997-01-01'
   
     UNION ALL
 
@@ -36,7 +36,7 @@ AggregatedData AS (
     LEFT JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY 
         c.c_nationkey
 )

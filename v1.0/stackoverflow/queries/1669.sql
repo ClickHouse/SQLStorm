@@ -35,4 +35,4 @@ FROM UserPostStats UPS
 LEFT JOIN QuestionHistory QH ON UPS.TotalQuestions = QH.ClosedCount
 WHERE UPS.TotalQuestions > 10
 ORDER BY UPS.TotalScore DESC, ActivePosts DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

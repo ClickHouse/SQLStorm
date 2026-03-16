@@ -43,10 +43,10 @@ aggregated_data AS (
 SELECT 
     ad.title,
     ad.production_year,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ad.actors AS text)))), ', ') AS actor_names,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ad.roles AS text)))), ', ') AS cast_roles,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ad.additional_info AS text)))), ', ') AS person_information,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ad.keywords AS text)))), ', ') AS movie_keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ad.actors::text))), ', ') AS actor_names,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ad.roles::text))), ', ') AS cast_roles,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ad.additional_info::text))), ', ') AS person_information,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ad.keywords::text))), ', ') AS movie_keywords
 FROM 
     aggregated_data ad
 GROUP BY 

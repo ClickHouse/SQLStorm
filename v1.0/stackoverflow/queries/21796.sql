@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
     GROUP BY 
         p.Id
 ),
@@ -87,4 +87,4 @@ WHERE
     ))
 ORDER BY 
     EngagementType, LatestEdit DESC
-LIMIT 50 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;

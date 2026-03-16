@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         a.id AS aka_id,
         m.title,
         m.production_year,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.person_id AS TEXT)))), ', ') AS cast_ids, 
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.person_id::TEXT))), ', ') AS cast_ids, 
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         ROW_NUMBER() OVER (PARTITION BY m.production_year ORDER BY COUNT(c.id) DESC) AS rank
     FROM 

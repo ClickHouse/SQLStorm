@@ -52,4 +52,4 @@ WHERE
     (cd.cd_marital_status = 'M' OR cd.cd_dep_count > 2)
 ORDER BY 
     s.Total_Sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

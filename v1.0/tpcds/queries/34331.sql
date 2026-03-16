@@ -48,4 +48,4 @@ WHERE
     (p.avg_profit IS NOT NULL OR p.customer_count > 0)
 ORDER BY 
     p.hd_income_band_sk, s.d_year DESC
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;

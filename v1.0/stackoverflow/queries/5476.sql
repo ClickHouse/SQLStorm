@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' AND
         p.PostTypeId IN (1, 2) 
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, u.DisplayName
@@ -29,7 +29,7 @@ PopularTags AS (
     FROM 
         Posts
     WHERE 
-        CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         Tag
     ORDER BY 

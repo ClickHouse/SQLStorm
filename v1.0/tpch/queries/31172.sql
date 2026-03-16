@@ -8,7 +8,7 @@ WITH RECURSIVE OrderHierarchy AS (
         1 AS order_level
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1996-01-01'
     
     UNION ALL
     
@@ -39,7 +39,7 @@ PartSales AS (
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales
     FROM part p
     JOIN lineitem l ON p.p_partkey = l.l_partkey
-    WHERE l.l_shipdate >= toDate('1997-01-01')
+    WHERE l.l_shipdate >= DATE '1997-01-01'
     GROUP BY p.p_partkey
 )
 SELECT 

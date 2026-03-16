@@ -24,7 +24,7 @@ PostEngagement AS (
         p.Title,
         p.Score,
         p.ViewCount,
-        datePart('day', toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate) AS AgeInDays,
+        datePart('day', TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate) AS AgeInDays,
         COUNT(DISTINCT c.Id) AS CommentCount, 
         p.AcceptedAnswerId IS NOT NULL AS HasAcceptedAnswer
     FROM 
@@ -41,7 +41,7 @@ ClosedPostReasons AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes crt ON CAST(ph.Comment AS INTEGER) = crt.Id
+        CloseReasonTypes crt ON ph.Comment::INTEGER = crt.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11)
     GROUP BY 

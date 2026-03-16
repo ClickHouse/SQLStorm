@@ -40,7 +40,7 @@ HighValueOrders AS (
     LEFT JOIN 
         LineItemDetails l ON co.o_orderkey = l.l_orderkey
     WHERE 
-        co.o_orderdate >= toDate('1996-01-01')
+        co.o_orderdate >= DATE '1996-01-01'
 )
 SELECT 
     r.r_name AS region_name,

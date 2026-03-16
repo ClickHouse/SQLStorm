@@ -75,7 +75,7 @@ LEFT JOIN
 LEFT JOIN 
     InventoryStock ist ON li.l_partkey = ist.p_partkey
 WHERE 
-    li.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1997-12-31')
+    li.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1997-12-31'
 AND 
     COALESCE(ist.stock_quantity, 0) > (
         SELECT 

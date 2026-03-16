@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01') 
+        o.o_orderdate >= DATE '1997-01-01' 
         AND o.o_orderstatus IN ('O', 'F')
 ), SupplierParts AS (
     SELECT 
@@ -35,7 +35,7 @@ WITH RankedOrders AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN toDate('1997-02-01') AND toDate('1997-03-01')
+        l.l_shipdate BETWEEN DATE '1997-02-01' AND DATE '1997-03-01'
 ), CustomerNations AS (
     SELECT 
         c.c_custkey,

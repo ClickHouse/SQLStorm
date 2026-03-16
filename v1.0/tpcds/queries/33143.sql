@@ -51,4 +51,4 @@ WHERE
         AND p.p_discount_active = 'Y'
     )
 ORDER BY overall_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

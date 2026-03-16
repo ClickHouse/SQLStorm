@@ -44,4 +44,4 @@ WHERE
     (COALESCE(ts.TotalSales, 0) - COALESCE(cr.TotalReturns, 0) > 100 OR i.i_color IS NULL)
 ORDER BY
     NetSales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

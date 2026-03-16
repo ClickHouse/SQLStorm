@@ -59,4 +59,4 @@ WHERE
 ORDER BY 
     rt.production_year DESC, 
     rt.aka_name
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

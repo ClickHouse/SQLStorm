@@ -17,7 +17,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         PostTypes pts ON p.PostTypeId = pts.Id
     WHERE 
-        p.CreationDate > CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate > CURRENT_DATE - INTERVAL '1 year'
 ),
 PopularPosts AS (
     SELECT 

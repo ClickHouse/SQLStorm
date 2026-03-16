@@ -69,4 +69,4 @@ JOIN
     AddressCount ac ON fa.full_name IS NOT NULL
 ORDER BY
     fa.total_profit DESC, fa.total_orders DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

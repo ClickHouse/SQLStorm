@@ -50,4 +50,4 @@ FROM HighRevenueOrders hro
 LEFT JOIN FilteredSupply fs ON fs.total_available IS NOT NULL
 GROUP BY hro.r_name
 ORDER BY available_supplies DESC
-LIMIT 5 OFFSET 1;
+OFFSET 1 ROWS FETCH NEXT 5 ROWS ONLY;

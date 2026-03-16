@@ -52,4 +52,4 @@ GROUP BY
     ADD.full_street_address, ADD.ca_city, ADD.ca_state, ADD.ca_zip, CUST.full_customer_name, CUST.cd_gender, CUST.cd_marital_status
 ORDER BY 
     total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

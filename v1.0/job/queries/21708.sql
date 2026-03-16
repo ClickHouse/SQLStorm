@@ -43,5 +43,5 @@ LEFT JOIN TopActors ta ON rm.movie_id IN (
     SELECT movie_id FROM cast_info WHERE person_id = ta.person_id
 )
 WHERE rm.production_year >= 2000 
-AND rm.production_year <= toYear(toDate('2024-10-01'))
+AND rm.production_year <= EXTRACT(YEAR FROM DATE '2024-10-01')
 ORDER BY rm.production_year, rm.title;

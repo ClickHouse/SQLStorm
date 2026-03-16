@@ -21,7 +21,7 @@ RecentCloseHistory AS (
     FROM PostHistory PH
     JOIN PostHistoryTypes HT ON PH.PostHistoryTypeId = HT.Id
     WHERE HT.Name IN ('Post Closed', 'Post Reopened')
-    AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    AND PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 UserBadgeStats AS (
     SELECT UserId, 

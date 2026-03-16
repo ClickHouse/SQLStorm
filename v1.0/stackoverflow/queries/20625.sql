@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     JOIN
         Users u ON p.OwnerUserId = u.Id
     WHERE
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
         AND p.PostTypeId = 1 
 ),
 TopRankedPosts AS (
@@ -45,7 +45,7 @@ PostHistoryInfo AS (
     FROM
         PostHistory ph
     LEFT JOIN
-        CloseReasonTypes cht ON CAST(ph.Comment AS int) = cht.Id AND ph.PostHistoryTypeId = 10
+        CloseReasonTypes cht ON ph.Comment::int = cht.Id AND ph.PostHistoryTypeId = 10
     GROUP BY
         ph.PostId
 )

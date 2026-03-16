@@ -63,4 +63,4 @@ WHERE o.o_orderdate BETWEEN '1997-01-01' AND '1997-12-31'
 ORDER BY 
     r.r_name, 
     o.o_totalprice DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

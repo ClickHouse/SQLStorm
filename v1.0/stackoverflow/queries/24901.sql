@@ -20,14 +20,14 @@ WITH RankedPosts AS (
          GROUP BY PostId) v ON p.Id = v.PostId
     WHERE 
         p.ViewCount > 100 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        AND p.CreationDate >= cast('2024-10-01' as date) - interval '1 year'
 ),
 
 SubqueryPostStats AS (
     SELECT 
         PostId,
         SUM(ViewCount) AS TotalViews,
-        COUNT(CASE WHEN (CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY AND toDateTime64('2024-10-01 12:34:56', 6)) THEN 1 END) AS RecentActivityCount
+        COUNT(CASE WHEN (CreationDate BETWEEN cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' AND cast('2024-10-01 12:34:56' as timestamp)) THEN 1 END) AS RecentActivityCount
     FROM 
         RankedPosts
     GROUP BY 
@@ -43,7 +43,7 @@ PostHistorySummary AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
+        ph.CreationDate >= cast('2024-10-01' as date) - interval '1 month'
     GROUP BY 
         ph.PostId, ph.UserId
 )

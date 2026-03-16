@@ -29,4 +29,4 @@ FROM
     StringProcessing
 ORDER BY 
     email_length DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

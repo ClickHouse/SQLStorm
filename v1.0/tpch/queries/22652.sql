@@ -7,7 +7,7 @@ WITH RankedOrders AS (
         o.o_orderdate,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rnk
     FROM orders o
-    WHERE o.o_orderdate < toDate('1998-10-01')
+    WHERE o.o_orderdate < DATE '1998-10-01'
 ),
 CustomerSummary AS (
     SELECT 
@@ -51,4 +51,4 @@ AND (r.r_name IS NOT NULL OR s.s_name LIKE '%inc%')
 GROUP BY p.p_partkey, p.p_name, p.p_mfgr, pss.total_avail_cost, cs.total_spent, r.r_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY total_supplied_cost DESC, customer_total_spent ASC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

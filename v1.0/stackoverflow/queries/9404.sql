@@ -12,7 +12,7 @@ WITH PostActivity AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= toDate('2022-01-01')
+    WHERE p.CreationDate >= DATE '2022-01-01'
     GROUP BY p.Id, p.Title, p.CreationDate, p.LastActivityDate
 ),
 TopPosts AS (

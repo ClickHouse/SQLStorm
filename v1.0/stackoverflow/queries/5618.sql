@@ -22,7 +22,7 @@ RecentPostHistories AS (
     FROM PostHistory ph
     JOIN Posts p ON ph.PostId = p.Id
     WHERE ph.PostHistoryTypeId IN (10, 11, 12, 13) 
-      AND ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+      AND ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ),
 PostTags AS (
     SELECT p.Id AS PostId,

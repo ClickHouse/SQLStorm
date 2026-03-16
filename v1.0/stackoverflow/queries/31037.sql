@@ -39,7 +39,7 @@ SELECT
     COALESCE((SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2), 0) AS UpvoteCount,
     COALESCE((SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3), 0) AS DownvoteCount,
     CASE 
-        WHEN p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Older Post'
+        WHEN p.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' THEN 'Older Post'
         ELSE 'Recent Post'
     END AS PostAge,
     RANK() OVER (PARTITION BY any(p.Tags) ORDER BY p.Score DESC) AS ScoreRank,

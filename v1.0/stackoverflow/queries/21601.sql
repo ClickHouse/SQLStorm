@@ -18,7 +18,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         PostLinks bl ON p.Id = bl.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.PostTypeId
 ), 
@@ -66,4 +66,4 @@ WHERE
 ORDER BY 
     pr.Rank, 
     pr.UpVotes DESC NULLS LAST
-LIMIT 100;
+FETCH NEXT 100 ROWS ONLY;

@@ -23,7 +23,7 @@ TotalSales AS (
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
         o.o_orderstatus = 'O' 
-        AND l.l_shipdate >= toDate('1996-01-01')
+        AND l.l_shipdate >= DATE '1996-01-01'
     GROUP BY 
         l.l_suppkey
 ),

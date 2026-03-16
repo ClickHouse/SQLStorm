@@ -26,7 +26,7 @@ PostDetails AS (
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY P.Id, P.Title, P.CreationDate, P.Score, P.OwnerUserId
 ),
 PostMetrics AS (
@@ -62,4 +62,4 @@ SELECT
     OwnerBronzeBadges
 FROM PostMetrics
 ORDER BY Score DESC, CreationDate DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

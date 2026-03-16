@@ -52,4 +52,4 @@ JOIN
     MostActiveUsers au ON rp.UniqueVoters > 5 AND rp.Rank = 1
 ORDER BY 
     rp.Score DESC, rp.ViewCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

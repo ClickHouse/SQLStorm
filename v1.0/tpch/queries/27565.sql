@@ -24,7 +24,7 @@ JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     p.p_name LIKE 'Super%'
-    AND o.o_orderdate >= toDate('1997-01-01')
+    AND o.o_orderdate >= DATE '1997-01-01'
     AND o.o_orderstatus = 'O'
 GROUP BY 
     p.p_partkey, p.p_name, s.s_name, n.n_name, r.r_name

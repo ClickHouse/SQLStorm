@@ -74,4 +74,4 @@ WHERE
 ORDER BY 
     total_net_profit DESC,
     net_gain DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

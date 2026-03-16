@@ -50,7 +50,7 @@ LEFT JOIN
 LEFT JOIN
     CustomerDemographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
 LEFT JOIN
-    RankedReturns rr ON rr.sr_returned_date_sk = (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = toDate('2002-10-01'))
+    RankedReturns rr ON rr.sr_returned_date_sk = (SELECT MAX(d_date_sk) FROM date_dim WHERE d_date = DATE '2002-10-01')
 LEFT JOIN
     TopStores ts ON ts.s_store_sk = (SELECT s_store_sk FROM store ORDER BY s_store_sk LIMIT 1)
 WHERE
@@ -61,4 +61,4 @@ AND COALESCE(cd.cd_marital_status, 'U') <> 'S'
 ORDER BY
     rr.total_return_amt DESC,
     ts.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

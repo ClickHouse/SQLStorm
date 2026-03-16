@@ -58,4 +58,4 @@ FROM highvalue_customers hc
 LEFT JOIN top_items ti ON hc.total_spent > 500
 WHERE hc.total_orders > 5 AND hc.cd_marital_status IS NOT NULL
 ORDER BY hc.total_spent DESC, ti.total_net_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

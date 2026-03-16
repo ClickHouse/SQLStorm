@@ -11,7 +11,7 @@ RecentPostCounts AS (
         P.OwnerUserId,
         COUNT(P.Id) AS PostCount
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY P.OwnerUserId
 ),
 TopUsers AS (
@@ -32,7 +32,7 @@ PostDetails AS (
         (SELECT COUNT(*) FROM Votes V WHERE V.PostId = P.Id AND V.VoteTypeId = 2) AS UpVoteCount, 
         (SELECT COUNT(*) FROM Votes V WHERE V.PostId = P.Id AND V.VoteTypeId = 3) AS DownVoteCount 
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 PostSummary AS (
     SELECT 
@@ -87,4 +87,4 @@ SELECT
     END AS ContributorBadge
 FROM UserPostRankings UPR
 ORDER BY UPR.PopularityRank
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

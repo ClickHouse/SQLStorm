@@ -10,8 +10,8 @@ JOIN
 JOIN
     nation ON customer.c_nationkey = nation.n_nationkey
 WHERE
-    orders.o_orderdate >= toDate('1996-01-01')
-    AND orders.o_orderdate < toDate('1997-01-01')
+    orders.o_orderdate >= DATE '1996-01-01'
+    AND orders.o_orderdate < DATE '1997-01-01'
 GROUP BY
     n_name
 ORDER BY

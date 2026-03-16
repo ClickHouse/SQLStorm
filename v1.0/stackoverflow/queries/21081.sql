@@ -5,7 +5,7 @@ WITH UserEngagement AS (
         u.DisplayName,
         SUM(v.BountyAmount) AS TotalBounty,
         COUNT(DISTINCT p.Id) AS TotalPosts,
-        AVG(toUnixTimestamp((COALESCE(c.CreationDate, toDateTime64('2024-10-01 12:34:56', 6)) - p.CreationDate))) AS AvgResponseTime
+        AVG(toUnixTimestamp((COALESCE(c.CreationDate, TIMESTAMP '2024-10-01 12:34:56') - p.CreationDate))) AS AvgResponseTime
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (8, 9)  
@@ -20,7 +20,7 @@ PostStats AS (
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT ph.Id) AS EditHistory,
         p.CreationDate,
-        toUnixTimestamp((COALESCE(p.ClosedDate, toDateTime64('2024-10-01 12:34:56', 6)) - p.CreationDate)) AS ActiveDuration
+        toUnixTimestamp((COALESCE(p.ClosedDate, TIMESTAMP '2024-10-01 12:34:56') - p.CreationDate)) AS ActiveDuration
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (4, 5)  

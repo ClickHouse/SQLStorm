@@ -13,7 +13,7 @@ WITH RecentActivePosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 UserReputation AS (
     SELECT 
@@ -101,4 +101,5 @@ WHERE
 ORDER BY 
     pa.Reputation DESC, 
     pa.Score DESC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS 
+FETCH NEXT 20 ROWS ONLY;

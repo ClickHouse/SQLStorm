@@ -29,8 +29,8 @@ SalesDetails AS (
         ws.ws_item_sk,
         SUM(ws.ws_quantity) AS total_quantity_sold,
         SUM(ws.ws_net_profit) AS total_net_profit,
-        toMonth(d.d_date) AS sale_month,
-        toYear(d.d_date) AS sale_year
+        EXTRACT(MONTH FROM d.d_date) AS sale_month,
+        EXTRACT(YEAR FROM d.d_date) AS sale_year
     FROM 
         web_sales ws
     JOIN 

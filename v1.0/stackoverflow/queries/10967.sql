@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory ph ON p.Id = ph.PostId
 WHERE 
-    p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+    p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.ViewCount
 ORDER BY 

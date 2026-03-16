@@ -2,7 +2,7 @@
 WITH RankedSales AS (
     SELECT 
         ws.ws_sold_date_sk,
-        toYear(d.d_date) AS sales_year,
+        EXTRACT(YEAR FROM d.d_date) AS sales_year,
         ws.ws_item_sk,
         ws.ws_quantity,
         ws.ws_sales_price,

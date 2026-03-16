@@ -11,7 +11,7 @@ SELECT
     arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
     u.DisplayName AS OwnerDisplayName,
     
-    toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6)) AS BenchmarkStartTime
+    toUnixTimestamp(TIMESTAMP '2024-10-01 12:34:56') AS BenchmarkStartTime
 FROM 
     Posts p
 JOIN 

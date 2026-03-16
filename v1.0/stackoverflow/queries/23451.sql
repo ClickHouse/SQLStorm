@@ -14,11 +14,11 @@ ActiveUserPosts AS (
         p.OwnerUserId,
         p.PostTypeId,
         p.CreationDate,
-        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 3600 AS AgeInHours,
+        toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) / 3600 AS AgeInHours,
         COUNT(c.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
     GROUP BY p.Id, p.OwnerUserId, p.PostTypeId, p.CreationDate
 ),
 UserPostMetrics AS (

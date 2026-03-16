@@ -5,8 +5,8 @@ WITH TotalRevenue AS (
     FROM 
         lineitem
     WHERE 
-        l_shipdate >= toDate('1996-01-01') AND 
-        l_shipdate < toDate('1996-12-31')
+        l_shipdate >= DATE '1996-01-01' AND 
+        l_shipdate < DATE '1996-12-31'
     GROUP BY 
         l_orderkey
 )

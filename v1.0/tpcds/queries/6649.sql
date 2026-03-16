@@ -50,4 +50,4 @@ JOIN
 ORDER BY 
     di.d_date DESC, 
     ti.total_revenue DESC 
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

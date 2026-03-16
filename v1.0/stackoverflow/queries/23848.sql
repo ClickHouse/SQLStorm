@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AND
+        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') AND
         p.Score > 0
 ),
 TopUserVotes AS (
@@ -58,11 +58,11 @@ LEFT JOIN
                                        FROM Users u
                                        WHERE u.Reputation = (SELECT MAX(Reputation)
                                                              FROM Users
-                                                             WHERE LastAccessDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH))
+                                                             WHERE LastAccessDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month'))
                                        LIMIT 1)
 WHERE
     rp.Rank <= 3
 ORDER BY
     rp.Score DESC,
     rp.ViewCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

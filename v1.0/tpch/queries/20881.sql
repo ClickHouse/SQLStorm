@@ -85,4 +85,4 @@ LEFT JOIN
     )
 ORDER BY 
     fs.total_orders DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

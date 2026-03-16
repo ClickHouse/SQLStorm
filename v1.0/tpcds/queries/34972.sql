@@ -59,4 +59,4 @@ FROM final_results fh
 LEFT JOIN item_hierarchy ih ON fh.total_spent BETWEEN ih.i_current_price * 0.8 AND ih.i_current_price * 1.2
 WHERE fh.order_count > 0
 ORDER BY fh.total_spent DESC, fh.c_last_name, fh.c_first_name
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

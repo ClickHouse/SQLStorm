@@ -19,7 +19,7 @@ RecentPosts AS (
         p.PostTypeId,
         (SELECT COUNT(*) FROM RankedComments rc WHERE rc.PostId = p.Id AND rc.CommentRank <= 5) AS RecentCommentCount
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
 ),
 TopTags AS (
     SELECT 

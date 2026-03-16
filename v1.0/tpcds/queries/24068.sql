@@ -67,4 +67,4 @@ WHERE
     OR (swr.revenue_category = 'No Revenue' AND sct.store_total_sales IS NULL)
 ORDER BY 
     swr.total_sales DESC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

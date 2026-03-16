@@ -9,7 +9,7 @@ WITH UserStats AS (
         SUM(COALESCE(p.ViewCount, 0)) AS TotalViews,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownvotes,
-        toYear(AGE(u.CreationDate)) AS AccountAge,
+        EXTRACT(YEAR FROM AGE(u.CreationDate)) AS AccountAge,
         CASE 
             WHEN COUNT(DISTINCT p.Id) > 10 THEN 'High Contributor'
             WHEN COUNT(DISTINCT p.Id) BETWEEN 5 AND 10 THEN 'Moderate Contributor'

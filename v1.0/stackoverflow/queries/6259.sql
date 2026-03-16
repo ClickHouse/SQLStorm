@@ -29,7 +29,7 @@ ActiveUsers AS (
     FROM Users u
     JOIN UserWithBadges ub ON u.Id = ub.UserId
     JOIN PostStats ps ON u.Id = ps.OwnerUserId
-    WHERE u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE u.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 )
 SELECT 
     au.DisplayName,

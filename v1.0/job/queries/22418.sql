@@ -70,4 +70,4 @@ WHERE
     rm.title_rank <= 5 
 ORDER BY 
     rm.production_year, rm.title, cd.nr_order
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

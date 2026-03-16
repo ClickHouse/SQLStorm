@@ -61,4 +61,4 @@ FinalReport AS (
 )
 SELECT * FROM FinalReport
 WHERE unique_customers > 100
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -22,4 +22,4 @@ GROUP BY
     s.s_name
 ORDER BY 
     total_parts DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

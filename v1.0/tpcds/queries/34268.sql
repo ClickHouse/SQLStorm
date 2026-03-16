@@ -24,7 +24,7 @@ recent_dates AS (
     SELECT 
         d.d_date
     FROM date_dim AS d
-    WHERE d.d_date >= (SELECT MAX(d1.d_date) FROM date_dim AS d1) - INTERVAL 30 DAY
+    WHERE d.d_date >= (SELECT MAX(d1.d_date) FROM date_dim AS d1) - INTERVAL '30 days'
 )
 SELECT 
     tc.c_first_name,

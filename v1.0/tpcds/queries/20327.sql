@@ -72,4 +72,4 @@ WHERE
     (a.ca_country IS NOT NULL OR r.cd_gender IS NULL)
 ORDER BY 
     r.cd_gender DESC, cs.net_after_returns DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

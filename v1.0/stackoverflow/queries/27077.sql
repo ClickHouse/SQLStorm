@@ -39,8 +39,8 @@ ActivitySummary AS (
         P.OwnerUserId,
         COUNT(DISTINCT P.Id) AS TotalPosts,
         COUNT(DISTINCT C.Id) AS TotalComments,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.CreationDate)CAST() AS FLOAT)) AS AveragePostAgeInSeconds,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - C.CreationDate)CAST() AS FLOAT)) AS AverageCommentAgeInSeconds
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - P.CreationDate))::FLOAT) AS AveragePostAgeInSeconds,
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - C.CreationDate))::FLOAT) AS AverageCommentAgeInSeconds
     FROM 
         Posts P
     LEFT JOIN 

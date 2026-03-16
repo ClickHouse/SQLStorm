@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ), 
 HighScorePosts AS (
     SELECT 
@@ -77,7 +77,7 @@ SELECT
     jps.DownVotes,
     CASE 
         WHEN jps.UpVotes + jps.DownVotes = 0 THEN NULL 
-        ELSE ROUND((CAST(jps.UpVotes AS DECIMAL) / (jps.UpVotes + jps.DownVotes)) * 100, 2) 
+        ELSE ROUND((jps.UpVotes::DECIMAL / (jps.UpVotes + jps.DownVotes)) * 100, 2) 
     END AS VotePercentage,
     CASE 
         WHEN jps.Score >= 100 THEN 'Hot'

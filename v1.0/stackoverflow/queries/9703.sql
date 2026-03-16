@@ -11,7 +11,7 @@ WITH UserStats AS (
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE U.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY U.Id
 ), BadgeStats AS (
     SELECT 

@@ -70,6 +70,6 @@ WHERE ur.Reputation > (SELECT AVG(Reputation) FROM Users)
   AND pd.ViewCount > (
       SELECT AVG(ViewCount) 
       FROM Posts 
-      WHERE CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+      WHERE CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year' 
   )
 ORDER BY ur.Reputation DESC, pd.ViewCount DESC;

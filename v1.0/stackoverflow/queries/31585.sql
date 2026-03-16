@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 RecentVotes AS (
     SELECT 
@@ -27,7 +27,7 @@ RecentVotes AS (
     FROM 
         Votes
     WHERE 
-        CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 
         PostId
 ),
@@ -43,7 +43,7 @@ PostsWithHistory AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
+        p.LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '3 months'
         AND ph.PostHistoryTypeId IN (10, 12)  
 )
 SELECT 

@@ -4,13 +4,13 @@ WITH ranked_orders AS (
         o.o_orderkey,
         o.o_orderdate,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-        RANK() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
+        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
     FROM
         orders o
     JOIN
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE
-        o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
+        o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
     GROUP BY
         o.o_orderkey, o.o_orderdate
 ),
@@ -26,7 +26,7 @@ top_customers AS (
     JOIN
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE
-        o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
+        o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
     GROUP BY
         c.c_custkey, c.c_name
     ORDER BY

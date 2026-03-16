@@ -3,11 +3,11 @@ WITH RankedOrders AS (
         o.o_orderkey,
         o.o_orderdate,
         o.o_totalprice,
-        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) as rank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) as rank
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
+        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
 ),
 TopOrderDetails AS (
     SELECT 

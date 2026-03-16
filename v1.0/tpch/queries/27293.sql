@@ -41,4 +41,4 @@ WHERE
     combined_length > 20
 ORDER BY 
     combined_length DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -6,7 +6,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS Upvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS Downvotes,
-        COUNT(DISTINCT CASE WHEN p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN p.Id END) AS RecentPostsCount,
+        COUNT(DISTINCT CASE WHEN p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN p.Id END) AS RecentPostsCount,
         MAX(u.Reputation) AS MaxReputation
     FROM 
         Users u

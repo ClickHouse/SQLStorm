@@ -6,7 +6,7 @@ WITH RankedOrders AS (
         o.o_totalprice,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_orderdate DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
 ),
 SupplierSummary AS (
     SELECT 
@@ -27,7 +27,7 @@ OrderLines AS (
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
         COUNT(*) AS line_count
     FROM lineitem l
-    WHERE l.l_shipdate < toDate('1998-10-01')
+    WHERE l.l_shipdate < DATE '1998-10-01'
     GROUP BY l.l_orderkey
     HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 50000
 )

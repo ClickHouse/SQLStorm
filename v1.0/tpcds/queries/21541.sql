@@ -72,4 +72,4 @@ WHERE
 ORDER BY 
     fs.sales_category, 
     total_quantity DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

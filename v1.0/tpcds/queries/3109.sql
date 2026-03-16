@@ -64,7 +64,7 @@ SELECT
     cd_marital_status,
     cd_purchase_estimate,
     CASE 
-        WHEN total_sales > 0 THEN ROUND((CAST(total_returns AS numeric) / total_orders) * 100, 2)
+        WHEN total_sales > 0 THEN ROUND((total_returns::numeric / total_orders) * 100, 2)
         ELSE 0 
     END AS return_rate_percentage
 FROM 

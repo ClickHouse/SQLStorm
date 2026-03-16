@@ -56,7 +56,7 @@ INNER JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    l.l_shipdate >= toDate('1996-01-01') AND l.l_shipdate <= toDate('1997-12-31')
+    l.l_shipdate >= DATE '1996-01-01' AND l.l_shipdate <= DATE '1997-12-31'
 GROUP BY 
     p.p_name, rs.s_name, hsc.spending_category, n.n_name
 HAVING 

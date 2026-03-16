@@ -48,7 +48,7 @@ FROM
 LEFT JOIN 
     aka_name AS ak ON p.person_id = ak.person_id
 LEFT JOIN 
-    RankedTitles AS r ON r.rn = 1 AND r.production_year = toYear(cast('2024-10-01' as date))
+    RankedTitles AS r ON r.rn = 1 AND r.production_year = EXTRACT(YEAR FROM cast('2024-10-01' as date))
 LEFT JOIN 
     PersonWithMostMovies AS pwm ON pwm.person_id = p.person_id
 WHERE 

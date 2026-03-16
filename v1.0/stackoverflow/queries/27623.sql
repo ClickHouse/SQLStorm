@@ -15,7 +15,7 @@ WITH TagStatistics AS (
     LEFT JOIN 
         Badges b ON b.UserId = p.OwnerUserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         t.TagName
 ),
@@ -29,7 +29,7 @@ ClosedPosts AS (
     JOIN 
         CloseReasonTypes ctr ON ph.PostHistoryTypeId IN (10, 11) 
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         ph.PostId
 ),

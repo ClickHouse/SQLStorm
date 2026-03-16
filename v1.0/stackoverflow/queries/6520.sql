@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year' 
         AND p.PostTypeId IN (1, 2)
     GROUP BY 
         p.Id, p.Title, u.DisplayName, p.Score, p.CreationDate

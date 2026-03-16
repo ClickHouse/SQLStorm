@@ -48,7 +48,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        ph.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 YEAR'
 )
 SELECT 
     rp.PostId,

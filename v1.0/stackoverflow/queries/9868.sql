@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     Tags t ON tag = t.TagName
 WHERE 
-    u.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR
+    u.CreationDate > DATE '2024-10-01' - INTERVAL '1 year'
 GROUP BY 
     u.Id, u.DisplayName, u.Reputation
 HAVING 

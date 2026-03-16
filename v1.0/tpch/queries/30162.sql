@@ -13,7 +13,7 @@ SalesData AS (
     SELECT c.c_custkey, c.c_name, SUM(o.o_totalprice) AS total_sales
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1996-01-01'
     GROUP BY c.c_custkey, c.c_name
 ),
 PartStock AS (
@@ -41,4 +41,4 @@ JOIN SupplierHierarchy ch ON ch.s_suppkey = ra.p_partkey
 WHERE ra.total_stock > 10
 AND (ca.total_sales IS NULL OR ca.total_sales > 1000)
 ORDER BY ch.level, ra.price_rank, ca.sales_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

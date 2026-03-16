@@ -55,5 +55,5 @@ SELECT
     (SELECT COUNT(*) FROM Users u WHERE u.Reputation > ui.Reputation) AS HigherReputationCount
 FROM UserInteractions ui
 JOIN TopPosts tp ON ui.PostCount > 5 AND tp.Ranking <= 10
-WHERE tp.LastActivityDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+WHERE tp.LastActivityDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
 ORDER BY ui.Reputation DESC, tp.Upvotes DESC;

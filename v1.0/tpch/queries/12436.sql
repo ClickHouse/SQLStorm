@@ -5,7 +5,7 @@ JOIN customer c ON o.o_custkey = c.c_custkey
 JOIN supplier s ON l.l_suppkey = s.s_suppkey
 JOIN partsupp ps ON l.l_partkey = ps.ps_partkey AND s.s_suppkey = ps.ps_suppkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
-WHERE o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1996-12-31')
+WHERE o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1996-12-31'
 GROUP BY n.n_name
 ORDER BY total_revenue DESC
 LIMIT 10;

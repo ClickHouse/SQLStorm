@@ -23,7 +23,7 @@ LineItemDetails AS (
         COUNT(DISTINCT l.l_partkey) AS unique_parts_count,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM lineitem l
-    WHERE l.l_shipdate >= toDate('1996-01-01')
+    WHERE l.l_shipdate >= DATE '1996-01-01'
     GROUP BY l.l_orderkey
 ),
 NationRegion AS (

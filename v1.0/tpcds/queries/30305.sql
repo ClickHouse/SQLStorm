@@ -49,7 +49,7 @@ high_value_customers AS (
     FROM 
         customer_summary cs
     JOIN 
-        monthly_sales ms ON toYear(toDate('2002-10-01')) = ms.d_year
+        monthly_sales ms ON EXTRACT(YEAR FROM DATE '2002-10-01') = ms.d_year
     WHERE 
         cs.total_spent > (SELECT AVG(total_spent) FROM customer_summary)
 )
@@ -67,4 +67,4 @@ WHERE
     c.c_birth_year IS NOT NULL
 ORDER BY 
     total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

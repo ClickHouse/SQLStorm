@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS RelatedTags
     FROM Posts p
     LEFT JOIN Tags t ON t.ExcerptPostId = p.Id
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 365 DAY
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '365 days'
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount
 ), UserVoteInfo AS (
     SELECT 
@@ -58,6 +58,6 @@ WHERE (ups.Reputation > 100 OR ups.QuestionCount > 5)
       SELECT 1
       FROM Comments c
       WHERE c.PostId = rp.PostId
-      AND c.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+      AND c.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
   )
 ORDER BY ups.Reputation DESC, rp.Score DESC;

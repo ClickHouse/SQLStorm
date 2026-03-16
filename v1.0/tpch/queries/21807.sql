@@ -68,4 +68,4 @@ GROUP BY
     n.n_name
 ORDER BY 
     total_supplier_balance DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

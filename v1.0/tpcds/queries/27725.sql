@@ -30,7 +30,7 @@ WITH ranked_customers AS (
     FROM 
         web_sales ws
     WHERE 
-        ws.ws_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_year = toYear(cast('2002-10-01' as date)) AND d.d_month_seq = toMonth(cast('2002-10-01' as date)))
+        ws.ws_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) AND d.d_month_seq = EXTRACT(MONTH FROM cast('2002-10-01' as date)))
     GROUP BY 
         ws.ws_sold_date_sk
 )

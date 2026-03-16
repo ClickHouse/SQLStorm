@@ -11,7 +11,7 @@ WITH RECURSIVE RegionalSales AS (
     LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     LEFT JOIN part p ON ps.ps_partkey = p.p_partkey
     LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
-    WHERE l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    WHERE l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     GROUP BY r.r_regionkey, r.r_name
 ),
 TopSales AS (

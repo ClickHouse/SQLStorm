@@ -29,7 +29,7 @@ LEFT JOIN
      GROUP BY 
          PostId) v ON p.Id = v.PostId
 WHERE 
-    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
+    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
 ORDER BY 
     p.CreationDate DESC
 LIMIT 100;

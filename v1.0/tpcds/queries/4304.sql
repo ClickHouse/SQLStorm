@@ -49,7 +49,7 @@ SELECT
 FROM 
     top_customers tc
 LEFT JOIN 
-    sales_summary ss ON ss.d_year = toYear(cast('2002-10-01' as date)) 
+    sales_summary ss ON ss.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) 
 WHERE 
     tc.profit_rank <= 10
 ORDER BY 

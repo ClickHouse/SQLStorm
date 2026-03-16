@@ -15,7 +15,7 @@ WITH PostStats AS (
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
     LEFT JOIN Tags T ON T.ExcerptPostId = P.Id
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY P.Id, U.DisplayName, U.Reputation
 ),
 UserStats AS (

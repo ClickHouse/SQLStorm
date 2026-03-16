@@ -45,7 +45,7 @@ LEFT JOIN
 JOIN 
     TopCustomers nc ON s.s_nationkey = nc.c_custkey
 WHERE 
-    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     AND (p.p_retailprice > 100 OR p.p_container IS NULL)
 GROUP BY 
     p.p_name, p.p_brand, p.p_retailprice, r.r_name, nc.total_orders, nc.total_spent

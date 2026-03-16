@@ -20,7 +20,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_size > 10 
-    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY 
     p.p_name, s.s_name, r.r_name, p.p_comment
 HAVING 

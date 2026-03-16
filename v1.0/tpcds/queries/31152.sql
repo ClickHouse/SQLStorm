@@ -12,7 +12,7 @@ WITH RECURSIVE revenue_trend AS (
            rt.total_revenue * 1.05 AS total_revenue, 
            rt.rn + 1
     FROM revenue_trend rt
-    JOIN date_dim d2 ON rt.rn + 1 = toDayOfMonth(d2.d_date)
+    JOIN date_dim d2 ON rt.rn + 1 = EXTRACT(DAY FROM d2.d_date)
     WHERE rt.rn < 30
 ),
 customer_summary AS (

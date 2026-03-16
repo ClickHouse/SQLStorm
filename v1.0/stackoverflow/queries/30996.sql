@@ -30,7 +30,7 @@ ClosedPosts AS (
         COUNT(PH.Id) AS CloseCount,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CR.Name))), ', ') AS CloseReasons
     FROM PostHistory PH
-    JOIN CloseReasonTypes CR ON PH.Comment = CAST(CR.Id AS text)
+    JOIN CloseReasonTypes CR ON PH.Comment = CR.Id::text
     WHERE PH.PostHistoryTypeId = 10
     GROUP BY PH.PostId
 )

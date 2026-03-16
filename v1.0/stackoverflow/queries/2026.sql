@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL 5 YEAR
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL '5 years'
 ),
 UserReputation AS (
     SELECT 

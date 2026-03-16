@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.ViewCount DESC) AS RN,
         COALESCE(u.DisplayName, '[Deleted User]') AS OwnerName,
         CASE 
-            WHEN p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Legacy'
+            WHEN p.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR' THEN 'Legacy'
             ELSE 'Recent'
         END AS PostAge
     FROM 

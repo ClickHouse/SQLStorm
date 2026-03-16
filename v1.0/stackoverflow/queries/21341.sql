@@ -24,7 +24,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON TRIM(tag) = t.TagName
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' 
         AND p.Score IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId
@@ -75,7 +75,7 @@ SELECT
     qp.BadgeCount,
     qp.TagList,
     qp.CloseReason,
-    COALESCE(toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - qp.CloseDate), 0) AS TimeSinceClose
+    COALESCE(toUnixTimestamp(TIMESTAMP '2024-10-01 12:34:56' - qp.CloseDate), 0) AS TimeSinceClose
 FROM 
     QualifiedPosts qp
 ORDER BY 

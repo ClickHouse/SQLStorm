@@ -59,7 +59,7 @@ SELECT
     p.UpVotes,
     p.DownVotes,
     p.CreationDate,
-    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) AS AgeInSeconds
+    toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) AS AgeInSeconds
 FROM 
     FilteredPosts p
 ORDER BY 

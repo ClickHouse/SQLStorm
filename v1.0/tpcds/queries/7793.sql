@@ -17,7 +17,7 @@ WITH CustomerOrders AS (
     FROM TopCustomers tc
     JOIN customer_demographics cd ON tc.customer_id = cd.cd_demo_sk
 ), MonthlySales AS (
-    SELECT toMonth(dd.d_date) AS sales_month, SUM(ws.ws_ext_sales_price) AS monthly_sales
+    SELECT EXTRACT(MONTH FROM dd.d_date) AS sales_month, SUM(ws.ws_ext_sales_price) AS monthly_sales
     FROM web_sales ws
     JOIN date_dim dd ON ws.ws_sold_date_sk = dd.d_date_sk
     WHERE dd.d_year = 2023

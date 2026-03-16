@@ -25,7 +25,7 @@ RecentPosts AS (
         p.Tags,
         ROW_NUMBER() OVER (ORDER BY p.CreationDate DESC) AS RecentRank
     FROM Posts p
-    WHERE p.CreationDate > CURRENT_DATE - INTERVAL 30 DAY
+    WHERE p.CreationDate > CURRENT_DATE - INTERVAL '30 days'
 ),
 UserBadges AS (
     SELECT

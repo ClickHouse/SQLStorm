@@ -18,7 +18,7 @@ PostStats AS (
         COUNT(CASE WHEN P.PostTypeId = 1 THEN 1 END) AS TotalQuestions,
         COUNT(CASE WHEN P.PostTypeId = 2 THEN 1 END) AS TotalAnswers,
         SUM(P.Score) AS TotalScore,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.CreationDate))) AS AvgPostAgeSeconds
+        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - P.CreationDate))) AS AvgPostAgeSeconds
     FROM Posts P
     GROUP BY P.OwnerUserId
 ),

@@ -39,7 +39,7 @@ WITH RankedPosts AS (
     JOIN 
         UserReputations ur ON rp.OwnerUserId = ur.UserId
     WHERE 
-        rp.CreationDate >= now64(6) - INTERVAL 30 DAY
+        rp.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
 )
 SELECT 
     rp.PostId,

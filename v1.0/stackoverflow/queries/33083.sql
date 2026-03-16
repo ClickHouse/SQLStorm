@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 UserStatistics AS (
     SELECT 
@@ -50,7 +50,7 @@ RecentChanges AS (
     FROM 
         PostHistoryDetails ph
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL 3 MONTH
+        ph.CreationDate >= CURRENT_DATE - INTERVAL '3 months'
     GROUP BY 
         ph.PostId
 )

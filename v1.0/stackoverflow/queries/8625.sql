@@ -9,7 +9,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN c.Id IS NOT NULL THEN 1 ELSE 0 END) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.CreationDate)) / (60 * 60 * 24)) AS AvgAccountAgeDays
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - u.CreationDate)) / (60 * 60 * 24)) AS AvgAccountAgeDays
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Comments c ON p.Id = c.PostId

@@ -17,7 +17,7 @@ WITH RankedSuppliers AS (
         COALESCE(NULLIF(l.l_discount, 0), 0.01) AS effective_discount,
         ROW_NUMBER() OVER (PARTITION BY l.l_orderkey ORDER BY l.l_linenumber) AS item_number
     FROM lineitem l
-    WHERE l.l_shipdate < toDate('1998-10-01')
+    WHERE l.l_shipdate < DATE '1998-10-01'
 ), CustomerOrders AS (
     SELECT 
         c.c_custkey,

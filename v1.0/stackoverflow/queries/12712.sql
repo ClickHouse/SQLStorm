@@ -49,4 +49,4 @@ LEFT JOIN
     BadgeStats bs ON us.UserId = bs.UserId
 ORDER BY 
     us.Reputation DESC, us.PostCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

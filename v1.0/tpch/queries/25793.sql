@@ -27,7 +27,7 @@ OrderDetails AS (
         o.o_custkey, 
         o.o_orderstatus, 
         o.o_totalprice,
-        toYear(o.o_orderdate) AS order_year,
+        EXTRACT(YEAR FROM o.o_orderdate) AS order_year,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_value
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey

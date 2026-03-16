@@ -30,7 +30,7 @@ TopUsers AS (
 RecentActivity AS (
     SELECT 
         U.DisplayName,
-        COUNT(CASE WHEN P.LastActivityDate >= now64(6) - INTERVAL 30 DAY THEN 1 END) AS RecentActivityCount,
+        COUNT(CASE WHEN P.LastActivityDate >= current_timestamp - INTERVAL '30 days' THEN 1 END) AS RecentActivityCount,
         SUM(CASE WHEN P.ViewCount > 100 THEN 1 ELSE 0 END) AS PopularPostsCount
     FROM 
         Users AS U

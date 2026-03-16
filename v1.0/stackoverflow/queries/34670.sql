@@ -28,7 +28,7 @@ UserActivity AS (
         u.DisplayName, 
         COUNT(p.Id) AS PostCount, 
         SUM(co.Score) AS CommentScore, 
-        SUM(CASE WHEN co.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) THEN 1 ELSE 0 END) AS RecentComments,
+        SUM(CASE WHEN co.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days') THEN 1 ELSE 0 END) AS RecentComments,
         RANK() OVER (PARTITION BY u.Id ORDER BY COUNT(V.Id) DESC) AS VoteRank
     FROM 
         Users u

@@ -54,4 +54,4 @@ FULL OUTER JOIN AggregatedInventory ai ON co.c_custkey = ai.s_suppkey
 WHERE (co.customer_rank <= 10 OR ai.total_inventory_value IS NULL)
 AND (co.total_spent IS NOT NULL OR ai.total_inventory_value IS NOT NULL)
 ORDER BY co.total_spent DESC NULLS LAST, ai.total_inventory_value ASC NULLS FIRST
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

@@ -44,7 +44,7 @@ LEFT JOIN CustomerOrders c_order ON li.l_orderkey = c_order.o_orderkey
 LEFT JOIN supplier tr ON li.l_suppkey = tr.s_suppkey
 JOIN NationRegion nr ON tr.s_nationkey = nr.supplier_count
 LEFT JOIN TopSuppliers nt ON tr.s_suppkey = nt.s_suppkey
-WHERE li.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+WHERE li.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     tr.s_name, 
     c_order.c_name, 

@@ -38,7 +38,7 @@ CloseReasons AS (
     FROM 
         PostHistory ph 
     JOIN 
-        CloseReasonTypes cr ON ph.Comment = CAST(cr.Id AS TEXT) 
+        CloseReasonTypes cr ON ph.Comment = cr.Id::TEXT 
     WHERE 
         ph.PostHistoryTypeId IN (10, 11) 
 )
@@ -67,7 +67,7 @@ LEFT JOIN
     CloseReasons cr ON rp.PostId = cr.PostId
 WHERE 
     ur.Reputation >= (SELECT AVG(Reputation) FROM Users) 
-    AND rp.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    AND rp.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
 ORDER BY 
     rp.Score DESC, 
     ur.Reputation DESC;

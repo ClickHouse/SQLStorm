@@ -49,7 +49,7 @@ FROM customer c
 LEFT JOIN customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk
 LEFT JOIN FilteredReturns r ON r.sr_item_sk = c.c_customer_sk
 LEFT JOIN RankedSales rs ON rs.ws_order_number = c.c_customer_sk
-LEFT JOIN DailySales d ON d.sale_date = CURRENT_DATE - INTERVAL 1 DAY
+LEFT JOIN DailySales d ON d.sale_date = CURRENT_DATE - INTERVAL '1 day'
 WHERE ca.ca_state IS NOT NULL
 GROUP BY ca.ca_city, ca.ca_state
 HAVING COUNT(DISTINCT c.c_customer_sk) > 10

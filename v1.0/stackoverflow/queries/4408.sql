@@ -19,7 +19,7 @@ RecentPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes vote ON p.Id = vote.PostId
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ),
 PostMetrics AS (

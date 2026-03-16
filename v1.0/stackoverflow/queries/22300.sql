@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users ut ON p.OwnerUserId = ut.Id
     WHERE 
-        p.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND toDateTime64('2024-10-01 12:34:56', 6)
+        p.CreationDate BETWEEN cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' AND cast('2024-10-01 12:34:56' as timestamp)
         AND p.PostTypeId = 1 
 ),
 PostStats AS (
@@ -51,7 +51,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
     GROUP BY 
         ph.PostId, ph.UserId, ph.CreationDate
 )
@@ -65,7 +65,7 @@ SELECT
     COALESCE(ub.BadgeCount, 0) AS TotalBadges,
     COALESCE(ph.PostHistoryTypes, 'No History') AS RecentPostHistory,
     CASE 
-        WHEN COALESCE(ph.LastHistoryDate, toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH 
+        WHEN COALESCE(ph.LastHistoryDate, cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months' 
         THEN 'Inactive'
         ELSE 'Active'
     END AS ActivityStatus

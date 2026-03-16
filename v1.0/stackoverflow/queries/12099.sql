@@ -9,7 +9,7 @@ WITH PostStats AS (
         MAX(p.LastActivityDate) AS LastActivityDate,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-        toUnixTimestamp((now64(6) - any(p.CreationDate))) AS PostAgeInSeconds
+        toUnixTimestamp((CURRENT_TIMESTAMP - any(p.CreationDate))) AS PostAgeInSeconds
     FROM 
         Posts p
     LEFT JOIN 

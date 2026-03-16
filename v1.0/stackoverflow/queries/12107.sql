@@ -8,7 +8,7 @@ WITH PostStats AS (
         AVG(p.AnswerCount) AS AvgAnswerCount,
         AVG(p.CommentCount) AS AvgCommentCount,
         AVG(p.FavoriteCount) AS AvgFavoriteCount,
-        AVG(CAST(p.CreationDate AS timestamp) - CAST(p.LastActivityDate AS timestamp)) AS AvgPostAge 
+        AVG(p.CreationDate::timestamp - p.LastActivityDate::timestamp) AS AvgPostAge 
     FROM 
         Posts p
     GROUP BY 

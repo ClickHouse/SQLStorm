@@ -86,4 +86,4 @@ FROM
     FinalReport f
 ORDER BY 
     f.NetVotes DESC, f.Score DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

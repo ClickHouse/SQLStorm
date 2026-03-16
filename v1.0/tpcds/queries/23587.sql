@@ -62,4 +62,4 @@ LEFT JOIN web_sales ws ON it.i_item_sk = ws.ws_item_sk
 GROUP BY it.i_item_id, it.i_item_desc, sb.total_orders, sb.avg_price, sb.total_revenue, sb.sale_category
 HAVING SUM(CASE WHEN ws_bill_customer_sk IS NULL THEN 1 ELSE 0 END) = 0
 ORDER BY sb.total_revenue DESC, it.i_item_desc
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

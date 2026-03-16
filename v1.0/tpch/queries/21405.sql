@@ -24,7 +24,7 @@ filtered_orders AS (
     JOIN
         customer c ON o.o_custkey = c.c_custkey
     WHERE
-        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
         AND o.o_totalprice > 1000
 ),
 total_sales AS (
@@ -70,4 +70,4 @@ WHERE
 ORDER BY
     total_sales DESC,
     ps.p_name 
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

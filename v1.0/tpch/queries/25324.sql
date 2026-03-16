@@ -28,7 +28,7 @@ JOIN
 WHERE 
     p.p_size > 10 AND
     s.s_acctbal > 500 AND
-    o.o_orderdate >= toDate('1997-01-01') AND
+    o.o_orderdate >= DATE '1997-01-01' AND
     o.o_orderstatus = 'O'
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey

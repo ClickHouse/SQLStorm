@@ -30,7 +30,7 @@ LineItemAggregated AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= CURRENT_DATE - INTERVAL 30 DAY
+        l.l_shipdate >= CURRENT_DATE - INTERVAL '30 DAY'
     GROUP BY 
         l.l_orderkey
 )

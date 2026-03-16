@@ -31,7 +31,7 @@ TagStats AS (
     SELECT 
         arrayJoin(splitByString('><', Tags)) AS TagName,
         COUNT(*) AS PostCount,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - CreationDate))) AS AvgTimeSinceLastPost
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - CreationDate))) AS AvgTimeSinceLastPost
     FROM 
         Posts
     WHERE 

@@ -26,7 +26,7 @@ HighValueOrders AS (
     SELECT o.o_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate >= toDate('1996-01-01')
+    WHERE l.l_shipdate >= DATE '1996-01-01'
     GROUP BY o.o_orderkey
     HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 1000
 )

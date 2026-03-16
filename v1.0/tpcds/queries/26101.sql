@@ -35,7 +35,7 @@ SELECT
 FROM 
     AddressAggregates a
 JOIN 
-    date_dim d ON toYear(d.d_date) = toYear(toDate('2002-10-01'))
+    date_dim d ON EXTRACT(YEAR FROM d.d_date) = EXTRACT(YEAR FROM DATE '2002-10-01')
 LEFT JOIN 
     web_sales ws ON ws.ws_ship_date_sk = d.d_date_sk
 GROUP BY 

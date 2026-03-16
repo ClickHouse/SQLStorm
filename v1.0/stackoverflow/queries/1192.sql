@@ -40,7 +40,7 @@ RecentEdits AS (
         PostHistory H
     WHERE 
         H.PostHistoryTypeId IN (4, 5, 6) 
-        AND H.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        AND H.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
 )
 SELECT 
     PS.DisplayName AS UserName,

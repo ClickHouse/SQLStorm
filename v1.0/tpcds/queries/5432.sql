@@ -1,7 +1,7 @@
 WITH sales_summary AS (
     SELECT 
-        toYear(d.d_date) AS sales_year,
-        toMonth(d.d_date) AS sales_month,
+        EXTRACT(YEAR FROM d.d_date) AS sales_year,
+        EXTRACT(MONTH FROM d.d_date) AS sales_month,
         SUM(ws.ws_quantity) AS total_units_sold,
         SUM(ws.ws_net_profit) AS total_net_profit,
         COUNT(DISTINCT ws.ws_order_number) AS total_orders
@@ -20,7 +20,7 @@ WITH sales_summary AS (
         AND (cd.cd_marital_status = 'M' AND cd.cd_gender = 'F') 
         AND ca.ca_state = 'CA'
     GROUP BY 
-        toYear(d.d_date), toMonth(d.d_date)
+        EXTRACT(YEAR FROM d.d_date), EXTRACT(MONTH FROM d.d_date)
 ),
 promotion_details AS (
     SELECT 
@@ -56,7 +56,7 @@ SELECT
 FROM 
     sales_summary ss
 JOIN 
-    promotion_details pp ON ss.sales_month = toMonth(cast('2002-10-01' as date))
+    promotion_details pp ON ss.sales_month = EXTRACT(MONTH FROM cast('2002-10-01' as date))
 JOIN 
     warehouse_performance wp ON wp.total_profit > 1000
 ORDER BY 

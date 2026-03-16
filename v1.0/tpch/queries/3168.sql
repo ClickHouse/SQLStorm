@@ -14,7 +14,7 @@ WITH SupplierSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+        l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     GROUP BY 
         s.s_suppkey, s.s_name
 ),

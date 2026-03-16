@@ -52,4 +52,5 @@ HAVING
     SUM(rs.ws_net_profit) IS NOT NULL
 ORDER BY 
     avg_cumulative_profit DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS
+FETCH NEXT 10 ROWS ONLY;

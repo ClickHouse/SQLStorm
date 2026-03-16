@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '1 year'
         AND p.Score IS NOT NULL
 ),
 UserBadges AS (

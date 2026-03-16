@@ -24,7 +24,7 @@ RecentPosts AS (
         COUNT(c.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL 1 MONTH
+    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL '1 month'
     GROUP BY p.Id, p.OwnerUserId, p.Title, p.CreationDate
 ),
 

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.OwnerUserId, p.Title, p.Score, p.CreationDate
 ),
@@ -28,7 +28,7 @@ TopUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName
     HAVING 

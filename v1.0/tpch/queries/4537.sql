@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate > CURRENT_DATE - INTERVAL 6 MONTH
+        o.o_orderdate > CURRENT_DATE - INTERVAL '6 months'
 ),
 SupplierSummary AS (
     SELECT 
@@ -61,4 +61,5 @@ AND
 ORDER BY 
     cs.total_spent DESC,
     ss.total_cost ASC
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS
+FETCH NEXT 5 ROWS ONLY;

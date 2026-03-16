@@ -12,7 +12,7 @@ PostStats AS (
            SUM(COALESCE(ViewCount, 0)) AS TotalViews,
            AVG(COALESCE(Score, 0)) AS AverageScore
     FROM Posts
-    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY OwnerUserId
 ),
 ClosedPosts AS (

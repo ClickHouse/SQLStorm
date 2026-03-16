@@ -14,8 +14,8 @@ WITH RankedOrders AS (
     JOIN 
         nation n ON c.c_nationkey = n.n_nationkey
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01') 
-        AND o.o_orderdate < toDate('1997-01-01')
+        o.o_orderdate >= DATE '1996-01-01' 
+        AND o.o_orderdate < DATE '1997-01-01'
 ),
 FilteredLineItems AS (
     SELECT 
@@ -24,7 +24,7 @@ FilteredLineItems AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+        l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
         AND l.l_returnflag = 'N'
     GROUP BY 
         l.l_orderkey

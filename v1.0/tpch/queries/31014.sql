@@ -17,7 +17,7 @@ ranked_orders AS (
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate,
            RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rank_order
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1996-01-01'
 ),
 aggregated_lineitems AS (
     SELECT li.l_orderkey, SUM(li.l_extendedprice * (1 - li.l_discount)) AS revenue,

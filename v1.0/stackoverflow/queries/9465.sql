@@ -7,7 +7,7 @@ WITH UserActivity AS (
         SUM(COALESCE(p.Score, 0)) AS TotalScore,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
-        AVG(toUnixTimestamp((COALESCE(p.LastActivityDate, toDateTime64('2024-10-01 12:34:56', 6)) - p.CreationDate))) AS AvgPostAgeSeconds
+        AVG(toUnixTimestamp((COALESCE(p.LastActivityDate, TIMESTAMP '2024-10-01 12:34:56') - p.CreationDate))) AS AvgPostAgeSeconds
     FROM 
         Users u
     LEFT JOIN 

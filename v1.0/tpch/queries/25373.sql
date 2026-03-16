@@ -23,7 +23,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     s.s_comment LIKE '%quality%'
-    AND o.o_orderdate >= toDate('1997-01-01')
+    AND o.o_orderdate >= DATE '1997-01-01'
 GROUP BY 
     s.s_name, r.r_name, n.n_name
 ORDER BY 

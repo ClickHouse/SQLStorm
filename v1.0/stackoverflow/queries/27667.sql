@@ -27,7 +27,7 @@ RecentPosts AS (
     JOIN 
         Tags T ON POSITION(T.TagName IN P.Tags) > 0
     WHERE 
-        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
     GROUP BY 
         P.Id,
         P.Title,

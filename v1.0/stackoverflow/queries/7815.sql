@@ -24,7 +24,7 @@ RecentActivity AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY p.OwnerDisplayName
 ) 
 SELECT t.Owner, 

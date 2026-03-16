@@ -38,7 +38,7 @@ RecentPostHistory AS (
         ROW_NUMBER() OVER (PARTITION BY ph.PostId ORDER BY ph.CreationDate DESC) AS RecentEdit
     FROM PostHistory ph
     JOIN Posts p ON ph.PostId = p.Id
-    WHERE ph.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    WHERE ph.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
 )
 SELECT 
     tu.DisplayName,

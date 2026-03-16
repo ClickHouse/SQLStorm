@@ -24,7 +24,7 @@ RecentUserActivity AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(DISTINCT p.Id) AS QuestionCount,
-        SUM(CASE WHEN p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS RecentActivityCount,
+        SUM(CASE WHEN p.LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 1 ELSE 0 END) AS RecentActivityCount,
         AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgPostAge
     FROM
         Users u

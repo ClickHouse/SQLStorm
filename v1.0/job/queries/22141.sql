@@ -4,7 +4,7 @@ WITH RankedMovies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        ROW_NUMBER() OVER (PARTITION BY toYear(CURRENT_DATE) - t.production_year ORDER BY t.production_year DESC) AS rank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM CURRENT_DATE) - t.production_year ORDER BY t.production_year DESC) AS rank
     FROM 
         aka_title t
     WHERE 

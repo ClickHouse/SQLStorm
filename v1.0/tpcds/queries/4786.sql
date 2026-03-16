@@ -44,4 +44,4 @@ GROUP BY
     cd.cd_gender, cd.cd_marital_status, cd.cd_education_status
 ORDER BY 
     total_returns DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

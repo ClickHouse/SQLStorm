@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 RecentBadges AS (
     SELECT 
@@ -21,7 +21,7 @@ RecentBadges AS (
     JOIN 
         Users u ON b.UserId = u.Id
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
+        b.Date >= cast('2024-10-01' as date) - INTERVAL '6 months'
     GROUP BY 
         u.Id, b.Name
 ),
@@ -35,7 +35,7 @@ ClosedPosts AS (
     JOIN 
         PostHistory ph ON p.Id = ph.PostId
     JOIN 
-        CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
+        CloseReasonTypes cr ON ph.Comment::int = cr.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11)
     GROUP BY 

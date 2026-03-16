@@ -45,7 +45,7 @@ WITH UserReputation AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY AND P.ViewCount > 0
+        P.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days' AND P.ViewCount > 0
 )
 
 SELECT 

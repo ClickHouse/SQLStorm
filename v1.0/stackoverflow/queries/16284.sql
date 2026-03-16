@@ -16,5 +16,5 @@ WHERE
 GROUP BY
     p.Id, p.Title, p.Score, u.DisplayName
 ORDER BY
-    p.CreationDate DESC
-LIMIT 10;
+    any(p.CreationDate) DESC
+FETCH FIRST 10 ROWS ONLY;

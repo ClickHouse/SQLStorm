@@ -24,4 +24,4 @@ GROUP BY
     p.p_name, p.p_mfgr, p.p_brand, p.p_comment
 ORDER BY 
     supplier_count DESC, total_available_quantity ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

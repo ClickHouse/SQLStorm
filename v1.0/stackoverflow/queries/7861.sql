@@ -21,7 +21,7 @@ PostStatistics AS (
 ActiveUserPosts AS (
     SELECT 
         p.OwnerUserId,
-        COUNT(CASE WHEN p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 END) AS RecentPostCount
+        COUNT(CASE WHEN p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 1 END) AS RecentPostCount
     FROM Posts p
     WHERE p.OwnerUserId IS NOT NULL
     GROUP BY p.OwnerUserId

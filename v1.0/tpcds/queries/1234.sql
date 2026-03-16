@@ -55,4 +55,4 @@ WHERE
     (ss.total_profit IS NOT NULL OR ic.total_quantity > 0 OR pa.promo_count > 0)
 ORDER BY 
     total_profit DESC, total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

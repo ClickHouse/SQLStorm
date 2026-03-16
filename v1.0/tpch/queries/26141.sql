@@ -58,4 +58,4 @@ FROM
 WHERE 
     supply_details_length > 50 
     AND customer_order_details_length > 50
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

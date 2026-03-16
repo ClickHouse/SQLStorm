@@ -70,7 +70,7 @@ LEFT JOIN
     ClosedPosts PC ON PWT.PostId = PC.PostId
 WHERE 
     PC.LastClosedDate IS NULL 
-    OR PC.LastClosedDate < CURRENT_DATE - INTERVAL 1 YEAR
+    OR PC.LastClosedDate < CURRENT_DATE - INTERVAL '1 year'
 ORDER BY 
     R.Reputation DESC, 
     PVS.UpVotes DESC

@@ -55,7 +55,7 @@ FROM
 LEFT JOIN 
     FilteredSuppliers S ON R.high_priority_orders > 0
 LEFT JOIN 
-    RankedOrders RO ON RO.o_orderkey IN (SELECT o.o_orderkey FROM orders o WHERE o.o_orderdate >= toDate('1997-01-01'))
+    RankedOrders RO ON RO.o_orderkey IN (SELECT o.o_orderkey FROM orders o WHERE o.o_orderdate >= DATE '1997-01-01')
 ORDER BY 
     R.avg_order_value DESC, 
     S.supplied_parts DESC, 

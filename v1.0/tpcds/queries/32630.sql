@@ -50,4 +50,4 @@ LEFT JOIN store st ON st.s_store_sk = (
 WHERE i.i_current_price > 20.00
 GROUP BY s.ws_item_sk
 ORDER BY total_net_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

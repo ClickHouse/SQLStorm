@@ -25,7 +25,7 @@ JOIN
 WHERE
     l.l_shipmode LIKE '%AIR%'
     AND l.l_returnflag = 'N'
-    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY
     s.s_name, p.p_name, r.r_name, p.p_type, p.p_container
 ORDER BY

@@ -56,4 +56,4 @@ WHERE
     os.total_revenue > 10000
 ORDER BY 
     os.total_revenue DESC, os.o_orderdate ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

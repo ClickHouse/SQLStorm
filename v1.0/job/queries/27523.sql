@@ -33,7 +33,7 @@ SELECT
     sm.movie_id,
     sm.title,
     sm.production_year,
-    arrayStringConcat(groupArray(assumeNotNull(CAST(sm.actors AS text))), ', ') AS actor_list,
+    arrayStringConcat(groupArray(assumeNotNull(sm.actors::text)), ', ') AS actor_list,
     sm.keyword_count
 FROM 
     SelectedMovies sm

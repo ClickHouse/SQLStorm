@@ -33,7 +33,7 @@ PostDetails AS (
     LEFT JOIN 
         Users ct ON ct.Id = p.LastEditorUserId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         p.Id, b.Name, t.TagName
 ),
@@ -81,7 +81,7 @@ FROM
     IntegratedStats
 WHERE 
     Score > 10 
-    AND CreationDate <= (cast('2024-10-01' as date) - INTERVAL 6 MONTH)
+    AND CreationDate <= (cast('2024-10-01' as date) - INTERVAL '6 months')
     AND (CommentCount IS NULL OR CommentCount > 5)
 ORDER BY 
     Score DESC, CreationDate ASC;

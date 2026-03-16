@@ -53,4 +53,4 @@ LEFT JOIN
 ORDER BY 
     sales.total_sales DESC, 
     tc.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

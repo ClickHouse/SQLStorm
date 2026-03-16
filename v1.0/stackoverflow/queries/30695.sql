@@ -11,7 +11,7 @@ RecentPosts AS (
     FROM Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON c.PostId = p.Id
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
     GROUP BY p.Id, u.DisplayName, p.Title, p.CreationDate, p.ViewCount, p.Score
 ),
 PopularTags AS (

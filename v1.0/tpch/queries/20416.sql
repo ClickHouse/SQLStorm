@@ -25,7 +25,7 @@ FilteredOrders AS (
         orders o
     WHERE 
         o.o_totalprice IS NOT NULL 
-        AND o.o_orderdate >= NOW() - INTERVAL 30 DAY
+        AND o.o_orderdate >= NOW() - INTERVAL '30 DAY'
 ),
 HighValueCustomers AS (
     SELECT 

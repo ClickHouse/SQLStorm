@@ -53,7 +53,7 @@ LineItemAnalysis AS (
     FROM 
         lineitem li
     WHERE 
-        li.l_shipdate >= toDate('1997-01-01')
+        li.l_shipdate >= DATE '1997-01-01'
     GROUP BY 
         li.l_orderkey
 )

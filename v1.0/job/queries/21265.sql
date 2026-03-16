@@ -78,4 +78,4 @@ FROM movie_hierarchy mh
 LEFT JOIN cast_with_ratings c ON mh.movie_id = c.movie_id
 WHERE mh.production_year BETWEEN 1990 AND 2023
 ORDER BY mh.production_year DESC, c.actor_order
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

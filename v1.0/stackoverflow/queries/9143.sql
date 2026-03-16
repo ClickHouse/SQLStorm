@@ -21,7 +21,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         p.Id, u.DisplayName, pt.Name, p.Title, p.CreationDate, p.ViewCount
 ),

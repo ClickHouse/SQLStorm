@@ -69,7 +69,7 @@ JOIN
 JOIN 
     UserStatistics ur ON u.Id = ur.UserId
 WHERE 
-    p.CreationDate >= toDate('2022-01-01')  
+    p.CreationDate >= DATE '2022-01-01'  
 GROUP BY 
     p.Id, p.Title, p.Body, p.ViewCount, pt.TagCount, ur.UserId, ur.DisplayName, ur.GoldBadges, ur.SilverBadges, ur.BronzeBadges
 ORDER BY 

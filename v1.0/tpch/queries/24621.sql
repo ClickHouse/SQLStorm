@@ -54,4 +54,4 @@ HAVING SUM(f.total_revenue) > (
     SELECT AVG(total_revenue) FROM FilteredOrders
 )
 ORDER BY unique_customers DESC, avg_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

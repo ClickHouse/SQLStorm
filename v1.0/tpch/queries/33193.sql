@@ -40,7 +40,7 @@ high_value_orders AS (
         o.o_orderkey,
         o.o_totalprice,
         o.o_orderdate,
-        RANK() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS price_rank
+        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS price_rank
     FROM 
         orders o
     WHERE 
@@ -84,6 +84,6 @@ FROM
     final_report f
 WHERE 
     f.total_availqty > (SELECT AVG(total_availqty) FROM part_availability)
-    AND f.o_orderdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
+    AND f.o_orderdate >= DATE '1998-10-01' - INTERVAL '1 year'
 ORDER BY 
     f.o_orderdate DESC NULLS LAST;

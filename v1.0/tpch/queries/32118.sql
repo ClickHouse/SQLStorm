@@ -36,7 +36,7 @@ LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
 LEFT JOIN part p ON ps.ps_partkey = p.p_partkey
 LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
 LEFT JOIN orders o ON l.l_orderkey = o.o_orderkey
-WHERE o.o_orderstatus = 'O' AND l.l_shipdate >= toDate('1997-01-01')
+WHERE o.o_orderstatus = 'O' AND l.l_shipdate >= DATE '1997-01-01'
 GROUP BY n.n_name, n.n_nationkey
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > (
     SELECT AVG(total_revenue) FROM (

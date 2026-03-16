@@ -10,8 +10,8 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01')
-        AND o.o_orderdate < toDate('1996-12-31')
+        o.o_orderdate >= DATE '1996-01-01'
+        AND o.o_orderdate < DATE '1996-12-31'
 ),
 TopSegments AS (
     SELECT 
@@ -54,7 +54,7 @@ JOIN
 JOIN 
     region r ON r.r_regionkey = n.n_regionkey
 WHERE 
-    l.l_shipdate >= toDate('1996-01-01')
-    AND l.l_shipdate < toDate('1996-12-31')
+    l.l_shipdate >= DATE '1996-01-01'
+    AND l.l_shipdate < DATE '1996-12-31'
 ORDER BY 
     ts.TotalRevenue DESC;

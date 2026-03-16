@@ -69,4 +69,4 @@ WHERE
     fr.total_returns IS NOT NULL
 ORDER BY
     fr.sales_category DESC, fr.safe_sales_price DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

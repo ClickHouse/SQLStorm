@@ -30,8 +30,8 @@ LEFT JOIN
     partsupp ps ON p.p_partkey = ps.ps_partkey
 WHERE 
     (l.l_returnflag = 'N' OR l.l_returnflag IS NULL)
-    AND l.l_shipdate >= toDate('1996-01-01')
-    AND l.l_shipdate < toDate('1997-01-01')
+    AND l.l_shipdate >= DATE '1996-01-01'
+    AND l.l_shipdate < DATE '1997-01-01'
     AND o.o_orderstatus IN ('O', 'F')
     AND EXISTS (
         SELECT 1 FROM customer c 

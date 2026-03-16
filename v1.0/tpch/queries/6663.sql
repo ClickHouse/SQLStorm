@@ -7,7 +7,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1995-01-01') AND o.o_orderdate < toDate('2000-01-01')
+        o.o_orderdate >= DATE '1995-01-01' AND o.o_orderdate < DATE '2000-01-01'
 ),
 TopOrders AS (
     SELECT 

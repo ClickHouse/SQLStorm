@@ -61,4 +61,4 @@ WHERE
 ORDER BY 
     HVC.total_sales DESC, 
     HVC.c_last_name ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

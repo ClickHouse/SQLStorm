@@ -18,7 +18,7 @@ WITH RankedPosts AS (
          FROM Comments 
          GROUP BY PostId) c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= timestamp '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 TopPosts AS (
     SELECT 
@@ -42,7 +42,7 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        b.Date >= timestamp '2024-10-01 12:34:56' - INTERVAL '6 months'
     GROUP BY 
         b.UserId, b.Name
 ),

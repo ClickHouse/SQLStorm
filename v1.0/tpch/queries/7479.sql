@@ -10,8 +10,8 @@ WITH AggregatedSales AS (
     JOIN lineitem l ON p.p_partkey = l.l_partkey
     JOIN orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01') AND 
-        o.o_orderdate < toDate('1997-01-01') AND 
+        o.o_orderdate >= DATE '1996-01-01' AND 
+        o.o_orderdate < DATE '1997-01-01' AND 
         s.s_nationkey IN (SELECT n.n_nationkey FROM nation n WHERE n.n_regionkey = (SELECT r.r_regionkey FROM region r WHERE r.r_name = 'ASIA'))
     GROUP BY s.s_suppkey, s.s_name
 ),

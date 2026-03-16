@@ -12,7 +12,7 @@ WITH RecursivePostDetails AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserActivity AS (
     SELECT 
@@ -56,7 +56,7 @@ PostInteraction AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH AND toDateTime64('2024-10-01 12:34:56', 6)
+        p.CreationDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months' AND TIMESTAMP '2024-10-01 12:34:56'
     GROUP BY 
         p.Id, p.Title
 )

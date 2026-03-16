@@ -49,4 +49,4 @@ FROM sales_and_returns sa
 GROUP BY sa.ws_item_sk, sa.total_sales, sa.total_returns, sa.total_return_amt, sa.net_sales
 HAVING COUNT(sa.ws_item_sk) > 1 OR SUM(sa.total_sales) IS NULL
 ORDER BY performance_category, net_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

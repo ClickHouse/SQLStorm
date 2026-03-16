@@ -52,4 +52,4 @@ WHERE
     ps.total_available < 100
 ORDER BY 
     avg_supply_value DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -58,4 +58,4 @@ FROM processed_customers pc
 LEFT JOIN categorized_sales cs ON pc.c_customer_sk = cs.customer_id
 WHERE pc.rn <= 5 AND (pc.cd_marital_status IS NULL OR pc.cd_marital_status <> 'S')
 ORDER BY pc.cd_purchase_estimate DESC, pc.c_last_name
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

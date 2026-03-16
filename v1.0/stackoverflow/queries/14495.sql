@@ -4,7 +4,7 @@ SELECT
     u.DisplayName,
     u.Reputation,
     COUNT(b.Id) AS BadgeCount,
-    AVG(toUnixTimestamp(now64(6) - u.CreationDate) / 60) AS AverageAccountAgeInMinutes
+    AVG(toUnixTimestamp(CURRENT_TIMESTAMP - u.CreationDate) / 60) AS AverageAccountAgeInMinutes
 FROM 
     Users u
 LEFT JOIN 

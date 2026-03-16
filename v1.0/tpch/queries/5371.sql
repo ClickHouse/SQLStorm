@@ -3,7 +3,7 @@ WITH RankedOrders AS (
     SELECT o.o_orderkey, o.o_orderstatus, o.o_totalprice, o.o_orderdate, 
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rnk
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
 ), 
 HighValueCustomers AS (
     SELECT c.c_custkey, c.c_name, SUM(o.o_totalprice) AS total_spent

@@ -17,7 +17,7 @@ RecentPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 9
-    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount
 ),
 PostMetrics AS (
@@ -57,4 +57,4 @@ SELECT
 FROM PostMetrics pm
 WHERE pm.UserReputation > 1000
 ORDER BY pm.ViewCount DESC, pm.CommentCount DESC
-LIMIT 50 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;

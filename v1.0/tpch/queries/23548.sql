@@ -50,7 +50,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS customer_count,
     SUM(m.ps_availqty) AS total_available_quantity,
     MAX(COALESCE(l.l_discount, 0)) AS max_discount_applied,
-    (SELECT COUNT(*) FROM orders o2 WHERE o2.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')) AS orders_count_1995,
+    (SELECT COUNT(*) FROM orders o2 WHERE o2.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31') AS orders_count_1995,
     ROW_NUMBER() OVER (PARTITION BY r.r_regionkey ORDER BY SUM(m.ps_supplycost) DESC) AS row_num
 FROM 
     RankedSuppliers s

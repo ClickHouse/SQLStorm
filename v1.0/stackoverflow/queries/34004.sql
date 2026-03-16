@@ -23,7 +23,7 @@ RecentBadges AS (
     FROM
         Badges B
     WHERE
-        B.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        B.Date >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY
         B.UserId
 ),
@@ -47,7 +47,7 @@ ActiveUsers AS (
     FROM 
         Users
     WHERE 
-        LastAccessDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        LastAccessDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 AggregateVotes AS (
     SELECT 

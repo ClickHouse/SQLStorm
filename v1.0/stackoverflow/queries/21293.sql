@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         arrayJoin(splitByString('><', trim(both '{}' FROM p.Tags))) AS t(TagName) ON true
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, p.ViewCount, p.OwnerUserId
 ),

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
         AND p.PostTypeId IN (1, 2) 
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score
@@ -50,6 +50,6 @@ LEFT JOIN
 LEFT JOIN 
     PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
 WHERE 
-    ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ORDER BY 
     t.Score DESC, t.ViewCount DESC, u.Reputation DESC;

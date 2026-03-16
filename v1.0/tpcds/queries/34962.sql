@@ -42,7 +42,7 @@ SELECT
      END) AS sales_category
 FROM CustomerHierarchy ch
 JOIN AddressInfo ai ON ai.customer_count > 10
-JOIN RankedSales r ON r.d_year = toYear(cast('2002-10-01' as date))
+JOIN RankedSales r ON r.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
 WHERE ai.ca_state IS NOT NULL
   AND (r.total_sales > 10000 OR r.order_count > 50)
 ORDER BY sales_category, total_sales DESC;

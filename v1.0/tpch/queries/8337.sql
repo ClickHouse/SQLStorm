@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate > toDate('1998-10-01') - INTERVAL 1 YEAR
+        o.o_orderdate > DATE '1998-10-01' - INTERVAL '1 year'
 ),
 CustomerOrders AS (
     SELECT 

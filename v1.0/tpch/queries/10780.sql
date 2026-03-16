@@ -16,8 +16,8 @@ JOIN
 JOIN 
     nation ON s_nationkey = n_nationkey 
 WHERE 
-    o_orderdate >= toDate('1995-01-01') 
-    AND o_orderdate < toDate('1995-04-01') 
+    o_orderdate >= DATE '1995-01-01' 
+    AND o_orderdate < DATE '1995-04-01' 
     AND p_brand = 'Brand#45' 
 GROUP BY 
     n_name 

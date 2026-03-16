@@ -2,7 +2,7 @@
 WITH RECURSIVE order_hierarchy AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, o.o_orderstatus, o.o_shippriority, 0 AS level
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
       AND o.o_orderstatus = 'O'
     
     UNION ALL
@@ -37,7 +37,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     r.r_name, n.n_name, s.s_name
 HAVING 

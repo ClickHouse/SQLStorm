@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId
 ),
@@ -37,7 +37,7 @@ PostHistoryAggregates AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= now64(6) - INTERVAL 2 YEAR
+        ph.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '2 years'
     GROUP BY 
         ph.PostId
 )

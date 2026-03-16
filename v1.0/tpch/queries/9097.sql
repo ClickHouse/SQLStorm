@@ -4,7 +4,7 @@ WITH SupplierSales AS (
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     JOIN lineitem l ON ps.ps_partkey = l.l_partkey
     JOIN orders o ON l.l_orderkey = o.o_orderkey
-    WHERE o.o_orderdate >= toDate('1995-01-01') AND o.o_orderdate < toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1995-01-01' AND o.o_orderdate < DATE '1996-01-01'
     GROUP BY s.s_suppkey, s.s_name
 ),
 CustomerSales AS (
@@ -12,7 +12,7 @@ CustomerSales AS (
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= toDate('1995-01-01') AND o.o_orderdate < toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1995-01-01' AND o.o_orderdate < DATE '1996-01-01'
     GROUP BY c.c_custkey, c.c_name
 ),
 TopSuppliers AS (

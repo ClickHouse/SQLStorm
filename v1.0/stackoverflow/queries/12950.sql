@@ -51,4 +51,4 @@ LEFT JOIN
     PostHistorySummary phs ON ps.PostId = phs.PostId
 ORDER BY 
     ps.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

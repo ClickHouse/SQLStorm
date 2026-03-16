@@ -65,4 +65,4 @@ WHERE
 ORDER BY 
     cd.c_last_name, 
     sr.ws_sales_price DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

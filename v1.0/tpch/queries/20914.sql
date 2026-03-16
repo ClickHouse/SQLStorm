@@ -52,7 +52,7 @@ LineItemAggregates AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate <= toDate('1998-10-01')
+        l.l_shipdate <= DATE '1998-10-01'
     GROUP BY 
         l.l_orderkey
 )

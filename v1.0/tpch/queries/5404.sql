@@ -59,4 +59,4 @@ JOIN
 ORDER BY 
     tc.total_order_value DESC, 
     ts.total_supply_cost DESC
-LIMIT 5;
+FETCH FIRST 5 ROWS ONLY;

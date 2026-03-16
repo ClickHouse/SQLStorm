@@ -63,7 +63,7 @@ ActivePosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.LastActivityDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        p.LastActivityDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId, p.OwnerUserId
 )

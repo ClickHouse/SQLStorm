@@ -22,7 +22,7 @@ WITH PostAnalytics AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDate('2022-01-01') 
+        p.CreationDate >= DATE '2022-01-01' 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId, u.Reputation
 )

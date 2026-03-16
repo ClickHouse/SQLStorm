@@ -11,7 +11,7 @@ WITH PostScores AS (
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Badges b ON p.OwnerUserId = b.UserId
-    WHERE p.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR)
+    WHERE p.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year')
     GROUP BY p.Id, p.OwnerUserId
 ),
 UserStatistics AS (

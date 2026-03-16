@@ -56,7 +56,7 @@ SELECT
     END AS sales_category
 FROM AddressHierarchy ah
 LEFT JOIN CustomerStats cs ON ah.ca_city = 'San Francisco'
-JOIN SalesSummary ss ON ss.d_year = toYear(cast('2002-10-01' as date))
+JOIN SalesSummary ss ON ss.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
 CROSS JOIN ReturnData rd
 WHERE ah.level = 1
 ORDER BY ah.ca_city, ah.ca_state;

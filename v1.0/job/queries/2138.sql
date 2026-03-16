@@ -62,4 +62,4 @@ WHERE
 ORDER BY 
     md.production_year DESC, 
     md.cast_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

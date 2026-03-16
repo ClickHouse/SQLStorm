@@ -41,7 +41,7 @@ RecentBadges AS (
     FROM 
         Badges B
     WHERE 
-        B.Date > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        B.Date > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY 
         B.UserId
 )
@@ -56,7 +56,7 @@ SELECT
     (SELECT arrayStringConcat(groupArray(assumeNotNull(CAST(PH.UserDisplayName AS VARCHAR))), ', ') 
      FROM PostHistory PH 
      WHERE PH.UserId = TU.UserId 
-     AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AS RecentEditors
+     AND PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') AS RecentEditors
 FROM 
     TopUsers TU
 LEFT JOIN 

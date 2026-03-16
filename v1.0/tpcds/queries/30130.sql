@@ -41,7 +41,7 @@ SELECT
 FROM customer_address ca
 LEFT JOIN customer c ON ca.ca_address_sk = c.c_current_addr_sk
 LEFT JOIN customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
-INNER JOIN sales_summary ss ON ss.ws_sold_date_sk = toYear(toDate('2002-10-01'))
+INNER JOIN sales_summary ss ON ss.ws_sold_date_sk = EXTRACT(YEAR FROM DATE '2002-10-01')
 LEFT JOIN (SELECT i_item_sk, SUM(i_current_price) AS current_price FROM item_hierarchy GROUP BY i_item_sk) i ON 1=1
 LEFT JOIN inventory_summary inv ON inv.inv_warehouse_sk = 1
 WHERE ca.ca_state = 'CA'

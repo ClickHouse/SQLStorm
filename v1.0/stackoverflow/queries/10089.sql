@@ -20,7 +20,7 @@ WITH PostMetrics AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR  
+        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'  
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score, P.AnswerCount, U.DisplayName
 )

@@ -11,7 +11,7 @@ ranked_orders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice,
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1996-01-01'
 ),
 supplier_summary AS (
     SELECT s.s_nationkey, SUM(ps.ps_availqty) AS total_avail_qty,
@@ -29,7 +29,7 @@ FROM lineitem lo
 JOIN ranked_orders o ON lo.l_orderkey = o.o_orderkey
 JOIN supplier_summary s ON s.s_nationkey = (SELECT n_nationkey FROM nation WHERE n_name = 'GERMANY')
 JOIN nation_hierarchy n ON n.n_nationkey = s.s_nationkey
-WHERE lo.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+WHERE lo.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY n.n_name, s.total_avail_qty, s.total_supply_cost, s.supplier_count, o.order_rank
 HAVING SUM(lo.l_extendedprice * (1 - lo.l_discount)) > 10000
 ORDER BY total_revenue DESC NULLS LAST;

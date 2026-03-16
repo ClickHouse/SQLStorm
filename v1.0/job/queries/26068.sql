@@ -52,4 +52,4 @@ JOIN
     actor_roles ar ON md.actor_name = ar.actor_name
 ORDER BY 
     md.production_year DESC, ar.movie_count DESC
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;

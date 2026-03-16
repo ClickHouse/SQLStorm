@@ -63,4 +63,4 @@ JOIN
     customer_sales cs ON cd.c_customer_sk = cs.c_customer_sk
 ORDER BY 
     cs.total_sales DESC
-LIMIT 5;
+FETCH FIRST 5 ROWS ONLY;

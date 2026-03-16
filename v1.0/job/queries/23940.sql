@@ -62,4 +62,4 @@ FROM movies_with_keywords mwk
 LEFT JOIN distinct_producer_info dp ON mwk.title_id = dp.movie_id
 WHERE mwk.cast_size_category <> 'Small Cast'
 ORDER BY mwk.production_year DESC, mwk.cast_count DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

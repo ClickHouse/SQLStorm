@@ -56,4 +56,5 @@ WHERE
 ORDER BY 
     cr.total_store_return_amt DESC, 
     inventory_status ASC 
-LIMIT 50 OFFSET 0;
+OFFSET 0 ROWS
+FETCH NEXT 50 ROWS ONLY;

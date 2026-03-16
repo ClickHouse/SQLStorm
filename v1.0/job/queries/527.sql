@@ -48,4 +48,4 @@ WHERE
 ORDER BY 
     fm.production_year DESC, 
     fm.cast_count DESC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

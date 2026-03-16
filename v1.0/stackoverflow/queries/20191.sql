@@ -53,9 +53,9 @@ FROM
     PostDetails PD
 WHERE 
     PD.UserReputation > 200
-    AND PD.PostCreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    AND PD.PostCreationDate > (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')
     AND (PD.UpVoteCount - PD.DownVoteCount) > 1
 ORDER BY 
     PD.PostCreationDate DESC, 
     NetVoteCount DESC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

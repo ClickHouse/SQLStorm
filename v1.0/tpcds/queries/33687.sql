@@ -2,7 +2,7 @@
 WITH RECURSIVE item_hierarchy AS (
     SELECT i_item_sk, i_item_desc, i_current_price, i_rec_start_date, i_rec_end_date, i_item_id, 1 AS level
     FROM item
-    WHERE i_rec_end_date > toDate('2002-10-01')
+    WHERE i_rec_end_date > DATE '2002-10-01'
     UNION ALL
     SELECT i.i_item_sk, i.i_item_desc, i.i_current_price * 0.9 AS i_current_price, i.i_rec_start_date, i.i_rec_end_date, i.i_item_id, ih.level + 1
     FROM item i
@@ -35,4 +35,4 @@ WHERE ws.ws_sold_date_sk IN (
 GROUP BY c.c_customer_id, c.c_first_name, c.c_last_name, ca.ca_city
 HAVING COUNT(DISTINCT ws.ws_order_number) > 1
 ORDER BY total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

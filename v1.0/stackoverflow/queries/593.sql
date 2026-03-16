@@ -15,7 +15,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate > (toDate('2024-10-01') - INTERVAL 30 DAY)
+        p.CreationDate > (DATE '2024-10-01' - INTERVAL '30 days')
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.DisplayName
 ),

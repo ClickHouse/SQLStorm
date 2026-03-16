@@ -31,7 +31,7 @@ PostMetrics AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH 
+        P.CreationDate >= CURRENT_DATE - INTERVAL '6 months' 
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount, P.AnswerCount
 ),

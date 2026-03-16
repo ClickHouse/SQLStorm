@@ -25,7 +25,7 @@ SELECT
     TU.BadgeCount,
     COALESCE(PH.Comment, 'No Comments') AS LastPostComment,
     CASE 
-        WHEN U.LastAccessDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Inactive'
+        WHEN U.LastAccessDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Inactive'
         ELSE 'Active'
     END AS UserStatus
 FROM TopUsers TU

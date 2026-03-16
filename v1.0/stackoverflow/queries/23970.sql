@@ -56,7 +56,7 @@ SELECT
         ELSE 'No closed posts'
     END AS PostCloseStatus,
     CASE
-        WHEN ru.TotalPosts > 0 THEN ROUND((ru.TotalScore / ru.TotalPostsCAST() AS decimal), 2)
+        WHEN ru.TotalPosts > 0 THEN ROUND((ru.TotalScore / ru.TotalPosts)::decimal, 2)
         ELSE 0
     END AS AverageScorePerPost
 FROM RankedUsers ru

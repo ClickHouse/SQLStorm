@@ -44,4 +44,4 @@ LEFT JOIN (
 GROUP BY ca.ca_city
 HAVING SUM(fs.high_value_sales) > 10
 ORDER BY avg_profit DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

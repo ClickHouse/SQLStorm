@@ -22,7 +22,7 @@ OrderSummary AS (
         o.o_orderdate,
         COUNT(l.l_orderkey) AS LineCount,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS TotalRevenue,
-        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS OrderRank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS OrderRank
     FROM 
         orders o
     LEFT JOIN 

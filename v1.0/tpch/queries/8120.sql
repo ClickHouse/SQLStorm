@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
+        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
 ),
 SupplierPartCosts AS (
     SELECT 
@@ -44,7 +44,7 @@ INNER JOIN
 LEFT JOIN 
     SupplierPartCosts spc ON lo.l_partkey = spc.ps_partkey
 WHERE 
-    lo.l_shipdate >= toDate('1997-03-01') AND lo.l_shipdate < toDate('1997-03-31')
+    lo.l_shipdate >= DATE '1997-03-01' AND lo.l_shipdate < DATE '1997-03-31'
 GROUP BY 
     r.r_name, n.n_name
 HAVING 

@@ -25,7 +25,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 WHERE 
-    p.CreationDate >= toDate('2020-01-01') AND p.CreationDate < toDate('2023-01-01')  
+    p.CreationDate >= DATE '2020-01-01' AND p.CreationDate < DATE '2023-01-01'  
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount, p.CommentCount, p.FavoriteCount, 
     u.DisplayName, u.Reputation, ph.PostHistoryTypeId, ph.CreationDate

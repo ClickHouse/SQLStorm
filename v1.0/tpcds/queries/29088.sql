@@ -49,4 +49,4 @@ FROM
     customer_demo cd
 ORDER BY 
     cd.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

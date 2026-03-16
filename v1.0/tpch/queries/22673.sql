@@ -36,7 +36,7 @@ filtered_orders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
 )
 SELECT 
     rp.p_partkey,
@@ -59,4 +59,4 @@ WHERE
     AND (fo.order_sequence <= 10 OR fo.o_orderkey IS NULL)
 ORDER BY 
     rp.p_partkey, sa.s_name, fo.o_orderdate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

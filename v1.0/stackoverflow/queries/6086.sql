@@ -30,7 +30,7 @@ PostDetails AS (
         c.CreationDate AS LastCommentDate
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
 ),
 UserPostEngagement AS (
     SELECT

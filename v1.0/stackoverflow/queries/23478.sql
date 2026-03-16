@@ -27,7 +27,7 @@ PostsWithReputation AS (
     LEFT JOIN UserReputation ur ON p.OwnerUserId = ur.UserId
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, ur.Reputation, ur.ReputationGroup
 ),
 PostHistoryWithTags AS (
@@ -39,7 +39,7 @@ PostHistoryWithTags AS (
     FROM PostHistory ph
     JOIN Posts p ON ph.PostId = p.Id
     LEFT JOIN Tags t ON t.WikiPostId = p.Id
-    WHERE ph.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
+    WHERE ph.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
     GROUP BY ph.PostId
 )
 SELECT 

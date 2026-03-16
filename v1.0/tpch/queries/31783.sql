@@ -33,11 +33,11 @@ LEFT JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE
     n.n_regionkey IN (SELECT r_regionkey FROM region WHERE r_name LIKE '%Asia%')
-    AND (l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31'))
+    AND (l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31')
 GROUP BY
     n.n_nationkey, p.p_partkey, n.n_name, p.p_name
 HAVING
     SUM(l.l_quantity) > 100
 ORDER BY
     nation_name, total_quantity DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

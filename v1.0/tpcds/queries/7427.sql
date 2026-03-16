@@ -1,8 +1,8 @@
 
 WITH MonthlySales AS (
     SELECT 
-        toMonth(d.d_date) AS SalesMonth,
-        toYear(d.d_date) AS SalesYear,
+        EXTRACT(MONTH FROM d.d_date) AS SalesMonth,
+        EXTRACT(YEAR FROM d.d_date) AS SalesYear,
         SUM(ws.ws_ext_sales_price) AS TotalSales,
         COUNT(DISTINCT ws.ws_order_number) AS TotalOrders,
         AVG(ws.ws_net_paid) AS AvgOrderValue
@@ -11,7 +11,7 @@ WITH MonthlySales AS (
     JOIN 
         date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
     GROUP BY 
-        toMonth(d.d_date), toYear(d.d_date)
+        EXTRACT(MONTH FROM d.d_date), EXTRACT(YEAR FROM d.d_date)
 ),
 TopCustomers AS (
     SELECT 

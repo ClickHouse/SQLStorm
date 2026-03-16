@@ -59,4 +59,4 @@ WHERE
     (COALESCE(ts.total_revenue, 0) > 1000 OR COALESCE(cr.return_count, 0) > 0)
 ORDER BY 
     total_sales_revenue DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -20,7 +20,7 @@ PostVoteSummary AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         P.OwnerUserId
 ),
@@ -59,7 +59,7 @@ SELECT
     U.UpVotes,
     U.DownVotes,
     CASE 
-        WHEN U.TotalVotes > 0 THEN ROUND((CAST(U.UpVotes AS decimal) / U.TotalVotes) * 100, 2) 
+        WHEN U.TotalVotes > 0 THEN ROUND((U.UpVotes::decimal / U.TotalVotes) * 100, 2) 
         ELSE NULL 
     END AS UpvotePercentage,
     CASE 

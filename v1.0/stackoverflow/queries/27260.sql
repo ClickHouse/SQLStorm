@@ -26,7 +26,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, users.DisplayName, pt.Name, p.Title, p.Body, p.Tags, p.CreationDate, p.ViewCount
 ),

@@ -10,7 +10,7 @@ WITH OrderSummaries AS (
     JOIN customer c ON o.o_custkey = c.c_custkey
     JOIN nation n ON c.c_nationkey = n.n_nationkey
     JOIN region r ON n.n_regionkey = r.r_regionkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
     GROUP BY o.o_orderkey, o.o_orderdate, r.r_name
 ),
 SupplierSummary AS (

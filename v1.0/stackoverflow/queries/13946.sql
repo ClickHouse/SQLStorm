@@ -16,7 +16,7 @@ WITH UserPerformance AS (
 AveragePostAge AS (
     SELECT 
         u.Id AS UserId,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate))/86400) AS AveragePostAgeInDays
+        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate))/86400) AS AveragePostAgeInDays
     FROM Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
     GROUP BY u.Id

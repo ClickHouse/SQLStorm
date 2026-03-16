@@ -20,7 +20,7 @@ PostEngagement AS (
     FROM Posts P
     LEFT JOIN Comments C ON C.PostId = P.Id
     LEFT JOIN Votes V ON V.PostId = P.Id
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY P.Id
 ),
 TopPosts AS (

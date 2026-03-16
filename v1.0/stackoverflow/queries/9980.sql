@@ -23,7 +23,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(tag_name)
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score, p.AnswerCount
 ),
@@ -76,4 +76,4 @@ FROM
     CombinedStats
 ORDER BY 
     ViewCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

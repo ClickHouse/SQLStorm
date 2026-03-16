@@ -64,4 +64,4 @@ WHERE
     AND (rp.ViewCount > 100 OR rp.CommentCount > 5)
 ORDER BY 
     rp.ViewCount DESC, rp.CommentCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

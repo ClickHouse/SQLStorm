@@ -54,4 +54,4 @@ SELECT tc.c_customer_sk,
 FROM top_customers tc
 LEFT JOIN income_band ib ON tc.total_profit BETWEEN ib.ib_lower_bound AND ib.ib_upper_bound
 ORDER BY tc.total_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

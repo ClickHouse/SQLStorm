@@ -24,7 +24,7 @@ JOIN
 WHERE 
     p.p_size > 10 
     AND c.c_mktsegment = 'BUILDING'
-    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey, o.o_orderdate, p.p_comment
 ORDER BY 

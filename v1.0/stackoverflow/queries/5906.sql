@@ -54,4 +54,4 @@ JOIN
     TopUsers tu ON tu.TotalBounty > 10
 ORDER BY 
     rp.PostRank, tu.TotalBounty DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

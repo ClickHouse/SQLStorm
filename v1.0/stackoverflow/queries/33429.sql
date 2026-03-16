@@ -36,7 +36,7 @@ PostStatistics AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
         COUNT(DISTINCT CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.Id END) AS CloseCount,
         p.CreationDate,
-        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 86400 AS AgeInDays
+        toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) / 86400 AS AgeInDays
     FROM 
         Posts p
     LEFT JOIN 

@@ -35,7 +35,7 @@ FilteredOrders AS (
         orders o
     WHERE 
         o.o_totalprice > 1000 AND 
-        (o.o_orderdate < toDate('1998-10-01') - INTERVAL 1 YEAR 
+        (o.o_orderdate < DATE '1998-10-01' - INTERVAL '1 year' 
           OR o.o_orderstatus IN ('F', 'O'))
 )
 SELECT 

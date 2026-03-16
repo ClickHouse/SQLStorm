@@ -24,7 +24,7 @@ WITH RankedPosts AS (
             PostId
     ) vote_count ON p.Id = vote_count.PostId
     WHERE 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
 ),
 RecentUsers AS (
     SELECT 
@@ -36,7 +36,7 @@ RecentUsers AS (
     FROM 
         Users u
     WHERE 
-        u.CreationDate >= toDate('2024-10-01') - INTERVAL 6 MONTH
+        u.CreationDate >= DATE '2024-10-01' - INTERVAL '6 months'
 ),
 PostHistoryDetails AS (
     SELECT 

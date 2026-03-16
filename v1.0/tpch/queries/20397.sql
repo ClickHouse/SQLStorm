@@ -50,4 +50,4 @@ WHERE s.total_extended_price IS NOT NULL
 GROUP BY s.short_comment
 HAVING COUNT(DISTINCT s.o_orderkey) > 1
 ORDER BY s.short_comment ASC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

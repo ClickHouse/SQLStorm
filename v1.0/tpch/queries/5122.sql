@@ -47,4 +47,4 @@ HAVING
     SUM(o.o_totalprice) > 100000
 ORDER BY 
     total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -68,7 +68,7 @@ LEFT JOIN
 GROUP BY 
     r.n_name
 HAVING 
-    MAX(o.o_orderdate) < cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    MAX(o.o_orderdate) < cast('1998-10-01' as date) - INTERVAL '1 year'
 ORDER BY 
     customer_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -41,8 +41,8 @@ EmailSelector AS (
     FROM 
         customer c
     WHERE 
-        c.c_birth_month = toMonth(toDate('2002-10-01')) 
-        AND c.c_birth_day = toDayOfMonth(toDate('2002-10-01'))
+        c.c_birth_month = EXTRACT(MONTH FROM DATE '2002-10-01') 
+        AND c.c_birth_day = EXTRACT(DAY FROM DATE '2002-10-01')
         AND c.c_email_address IS NOT NULL
 )
 SELECT 

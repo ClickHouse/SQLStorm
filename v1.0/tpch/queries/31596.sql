@@ -28,9 +28,9 @@ SELECT
     sa.total_available,
     oh.level, 
     CASE WHEN sa.total_available IS NULL THEN 'Out of Stock' ELSE 'In Stock' END AS availability_status,
-    CONCAT('Order ', oh.o_orderkey, ' of toDate(', oh.o_orderdate) AS order_description
+    CONCAT('Order ', oh.o_orderkey, ' of date ', oh.o_orderdate) AS order_description
 FROM OrderHierarchy oh
 LEFT JOIN OrderSummary os ON oh.o_orderkey = os.l_orderkey
 LEFT JOIN SupplierAvailability sa ON os.item_count = sa.ps_partkey
-WHERE os.total_price > 1000 AND oh.o_orderdate < cast(')1998-10-01' as date)
+WHERE os.total_price > 1000 AND oh.o_orderdate < cast('1998-10-01' as date)
 ORDER BY oh.o_orderdate DESC, oh.o_orderkey;

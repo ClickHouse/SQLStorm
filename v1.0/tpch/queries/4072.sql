@@ -51,4 +51,4 @@ WHERE
     AND s.s_acctbal IS NOT NULL
 ORDER BY 
     cd.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

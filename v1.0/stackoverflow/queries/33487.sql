@@ -26,7 +26,7 @@ RecentBadges AS (
     FROM
         Badges b
     WHERE
-        b.Date > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        b.Date > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
     GROUP BY
         b.UserId
 ),
@@ -73,7 +73,7 @@ LEFT JOIN
     PostHistorySummary phs ON tu.UserId IN (SELECT OwnerUserId FROM Posts WHERE Id = phs.PostId)
 WHERE
     tu.UserRank <= 10
-    AND (tu.LastPostDate BETWEEN (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) AND toDateTime64('2024-10-01 12:34:56', 6) OR tu.BadgeNames IS NOT NULL)
+    AND (tu.LastPostDate BETWEEN (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days') AND TIMESTAMP '2024-10-01 12:34:56' OR tu.BadgeNames IS NOT NULL)
 ORDER BY
     tu.PostCount DESC,
     tu.UpVoteCount DESC;

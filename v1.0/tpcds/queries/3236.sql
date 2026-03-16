@@ -16,7 +16,7 @@ WITH RankedSales AS (
         ) AND ws.ws_sold_date_sk > (
             SELECT MAX(d.d_date_sk)
             FROM date_dim d
-            WHERE d.d_year = toYear(cast('2002-10-01' as date)) - 1
+            WHERE d.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) - 1
         )
     GROUP BY
         ws.ws_item_sk
@@ -33,11 +33,11 @@ StoreSalesSummary AS (
         ss.ss_sold_date_sk BETWEEN (
             SELECT MIN(d.d_date_sk)
             FROM date_dim d
-            WHERE d.d_year = toYear(cast('2002-10-01' as date)) - 1
+            WHERE d.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) - 1
         ) AND (
             SELECT MAX(d.d_date_sk)
             FROM date_dim d
-            WHERE d.d_year = toYear(cast('2002-10-01' as date))
+            WHERE d.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
         )
     GROUP BY
         ss.ss_store_sk

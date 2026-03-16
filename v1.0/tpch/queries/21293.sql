@@ -9,7 +9,7 @@ WITH RankedOrders AS (
         orders o
     WHERE 
         o.o_orderstatus IN ('O', 'F') AND 
-        toMonth(o.o_orderdate) BETWEEN 1 AND 6
+        EXTRACT(MONTH FROM o.o_orderdate) BETWEEN 1 AND 6
 ),
 SupplierSales AS (
     SELECT 
@@ -27,7 +27,7 @@ SupplierSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        l.l_shipdate > toDate('1998-10-01') - INTERVAL 90 DAY
+        l.l_shipdate > DATE '1998-10-01' - INTERVAL '90 days'
     GROUP BY 
         s.s_suppkey
 ),

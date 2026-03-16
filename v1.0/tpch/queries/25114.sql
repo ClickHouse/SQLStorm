@@ -55,4 +55,4 @@ SELECT
     ROUND(ai.adjusted_length, 2) AS avg_adjusted_length
 FROM AggregatedInfo ai
 ORDER BY ai.total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 PostScoreAnalysis AS (
     SELECT 
@@ -61,7 +61,7 @@ LEFT JOIN
     AcceptedAnswerInfo sa ON rp.PostId = sa.QuestionId
 WHERE 
     (rp.ViewCount > 100 OR psa.CommentCount > 5)
-    AND (rp.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH OR sa.AcceptedAnswerId IS NOT NULL)
+    AND (rp.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months' OR sa.AcceptedAnswerId IS NOT NULL)
 ORDER BY 
     rp.UserPostRank DESC, 
     psa.AdjustedScore DESC NULLS LAST

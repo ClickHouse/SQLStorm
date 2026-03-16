@@ -40,4 +40,4 @@ FROM
     UserScores
 ORDER BY 
     Score DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

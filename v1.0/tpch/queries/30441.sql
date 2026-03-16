@@ -9,7 +9,7 @@ WITH RECURSIVE OrderHierarchy AS (
         orders o
     WHERE 
         o.o_orderstatus = 'O' AND 
-        o.o_orderdate >= toDate('1997-01-01') 
+        o.o_orderdate >= DATE '1997-01-01' 
     UNION ALL
     SELECT 
         o.o_orderkey,

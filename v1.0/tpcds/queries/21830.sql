@@ -79,4 +79,4 @@ WHERE
     )
 ORDER BY 
     cs.total_sales DESC, cs.total_orders ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

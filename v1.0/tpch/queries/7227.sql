@@ -64,7 +64,7 @@ JOIN
         FROM partsupp ps 
         WHERE ps.ps_partkey = od.l_partkey
         ORDER BY ps.ps_supplycost ASC 
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     )
 JOIN 
     HighValueParts hp ON od.l_partkey = hp.ps_partkey

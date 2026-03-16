@@ -50,7 +50,7 @@ SELECT
     location_details,
     record_date,
     COUNT(*) OVER (PARTITION BY adjusted_purchase_estimate) AS customer_count_by_estimate,
-    AVG(adjusted_purchase_estimate) OVER (PARTITION BY toYear(record_date)) AS average_estimate_by_year,
+    AVG(adjusted_purchase_estimate) OVER (PARTITION BY EXTRACT(YEAR FROM record_date)) AS average_estimate_by_year,
     SUM(adjusted_purchase_estimate) OVER () AS total_estimated_purchases
 FROM 
     AggregatedData

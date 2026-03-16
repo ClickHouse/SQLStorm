@@ -51,7 +51,7 @@ SELECT
         WHEN EXISTS (
             SELECT 1 
             FROM Posts p
-            WHERE p.OwnerUserId = ur.UserId AND p.CreationDate < CURRENT_DATE - INTERVAL 6 MONTH
+            WHERE p.OwnerUserId = ur.UserId AND p.CreationDate < CURRENT_DATE - INTERVAL '6 MONTH'
         ) THEN 'Has Older Posts'
         ELSE 'No Older Posts'
     END AS OldPostsFlag

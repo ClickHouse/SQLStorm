@@ -52,4 +52,4 @@ WHERE
     ca.ca_state IN ('NY', 'CA')
 ORDER BY 
     ts.TotalSalesQuantity DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

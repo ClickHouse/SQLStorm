@@ -33,7 +33,7 @@ RecentPosts AS (
         CreationDate,
         ROW_NUMBER() OVER (PARTITION BY OwnerUserId ORDER BY CreationDate DESC) AS rn
     FROM Posts
-    WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
 ),
 PostViewCount AS (
     SELECT 

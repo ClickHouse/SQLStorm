@@ -36,8 +36,8 @@ FrequentOrders AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate >= toDate('1996-01-01') 
-        AND l.l_shipdate <= toDate('1996-12-31')
+        l.l_shipdate >= DATE '1996-01-01' 
+        AND l.l_shipdate <= DATE '1996-12-31'
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 ),

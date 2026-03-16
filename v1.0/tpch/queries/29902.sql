@@ -26,8 +26,8 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_retailprice BETWEEN 10.00 AND 100.00
-    AND l.l_shipdate >= toDate('1997-01-01') 
-    AND l.l_shipdate < toDate('1998-01-01')
+    AND l.l_shipdate >= DATE '1997-01-01' 
+    AND l.l_shipdate < DATE '1998-01-01'
 GROUP BY 
     p.p_name, s.s_name, c.c_name, p.p_size, r.r_name
 HAVING 

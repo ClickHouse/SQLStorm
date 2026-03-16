@@ -21,7 +21,7 @@ WITH RECURSIVE OrderHierarchy AS (
     JOIN 
         OrderHierarchy oh ON o.o_custkey = (SELECT c.c_custkey FROM customer c WHERE c.c_nationkey = (SELECT n.n_nationkey FROM nation n WHERE n.n_name = 'USA'))
     WHERE 
-        o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
+        o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year'
 )
 SELECT 
     p.p_name,

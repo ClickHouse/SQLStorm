@@ -43,11 +43,11 @@ SELECT
     ms.cast_count,
     ms.info_count,
     CASE 
-        WHEN ms.latest_year IS NOT NULL THEN CAST(ms.latest_year AS VARCHAR) 
+        WHEN ms.latest_year IS NOT NULL THEN ms.latest_year::VARCHAR 
         ELSE 'No Movies' 
     END AS latest_release,
     CASE 
-        WHEN ms.earliest_year IS NOT NULL THEN CAST(ms.earliest_year AS VARCHAR) 
+        WHEN ms.earliest_year IS NOT NULL THEN ms.earliest_year::VARCHAR 
         ELSE 'No Movies' 
     END AS oldest_release
 FROM 

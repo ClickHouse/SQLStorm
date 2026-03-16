@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= now64(6) - INTERVAL 2 YEAR
+        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '2 years'
         AND P.Score IS NOT NULL
     GROUP BY 
         P.Id, P.Title, P.Score, U.DisplayName
@@ -28,10 +28,10 @@ ClosedPosts AS (
     FROM 
         PostHistory PH
     JOIN 
-        CloseReasonTypes CRT ON (CAST(PH.Comment AS json)->>'CloseReasonId'CAST() AS int) = CRT.Id
+        CloseReasonTypes CRT ON (PH.Comment::json->>'CloseReasonId')::int = CRT.Id
     WHERE 
         PH.PostHistoryTypeId = 10 
-        AND PH.CreationDate >= now64(6) - INTERVAL 6 MONTH
+        AND PH.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '6 months'
 ),
 
 TopUsers AS (

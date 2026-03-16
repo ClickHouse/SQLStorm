@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
 ),
 TopRankedPosts AS (
     SELECT 
@@ -35,7 +35,7 @@ PopularTags AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
     GROUP BY 
         Tag
     ORDER BY 

@@ -38,4 +38,4 @@ FROM
     address_stats a
 ORDER BY
     a.address_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

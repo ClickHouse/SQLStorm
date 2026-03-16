@@ -33,4 +33,4 @@ JOIN nation n ON n.n_nationkey = (SELECT n2.n_nationkey FROM nation n2
 GROUP BY p.p_partkey, p.p_name, p.p_brand, p.p_retailprice, n.n_nationkey
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 1000.00
 ORDER BY p.p_partkey ASC, total_returned_quantity DESC
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;

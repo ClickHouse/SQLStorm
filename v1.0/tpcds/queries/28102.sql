@@ -70,4 +70,4 @@ FROM
 ORDER BY 
     total_purchase_estimate DESC, 
     total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

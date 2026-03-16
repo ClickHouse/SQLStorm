@@ -11,7 +11,7 @@ WITH RecentPosts AS (
     FROM Posts P
     LEFT JOIN Users U ON P.OwnerUserId = U.Id
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY P.Id, P.Title, U.DisplayName, P.CreationDate, P.Score, P.ViewCount, P.OwnerUserId
 )
 , PostVoteData AS (
@@ -43,4 +43,4 @@ FROM RecentPosts RP
 LEFT JOIN PostVoteData PVD ON RP.PostId = PVD.PostId
 WHERE RP.RowNum = 1
 ORDER BY RP.Score DESC, RP.CommentCount DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
         AND p.Score IS NOT NULL
 ),
 HighlyVotedPosts AS (

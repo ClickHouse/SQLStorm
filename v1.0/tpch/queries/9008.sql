@@ -20,7 +20,7 @@ RecentOrders AS (
     FROM 
         orders 
     WHERE 
-        o_orderdate >= toDate('1997-01-01')
+        o_orderdate >= DATE '1997-01-01'
     GROUP BY 
         o_custkey
 )

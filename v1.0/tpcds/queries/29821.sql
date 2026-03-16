@@ -62,4 +62,4 @@ WHERE
     sd.total_profit IS NOT NULL OR sd.total_profit IS NULL
 ORDER BY 
     total_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

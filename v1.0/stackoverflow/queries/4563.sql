@@ -66,4 +66,4 @@ WHERE
     (s.PostCount > 5 OR s.TotalBadgeClass > 1)
 ORDER BY 
     p.Score DESC, p.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

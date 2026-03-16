@@ -27,4 +27,4 @@ GROUP BY
     p.p_partkey, r.r_name, n.n_name, s.s_name, p.p_name, p.p_mfgr, p.p_comment
 ORDER BY 
     total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -2,7 +2,7 @@
 WITH RECURSIVE item_hierarchy AS (
     SELECT i_item_sk, i_item_id, i_item_desc, i_current_price, i_wholesale_cost, 1 AS level
     FROM item
-    WHERE i_rec_start_date <= toDate('2002-10-01') AND i_rec_end_date >= toDate('2002-10-01')
+    WHERE i_rec_start_date <= DATE '2002-10-01' AND i_rec_end_date >= DATE '2002-10-01'
     UNION ALL
     SELECT i.i_item_sk, i.i_item_id, CONCAT(ih.i_item_desc, ' > ', i.i_item_desc) AS i_item_desc, 
            i.i_current_price, i.i_wholesale_cost, ih.level + 1

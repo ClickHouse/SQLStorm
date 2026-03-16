@@ -13,7 +13,7 @@ WITH RecentPostStats AS (
         Users U ON P.OwnerUserId = U.Id
     WHERE 
         P.PostTypeId = 1 
-        AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        AND P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
 AnswerStatistics AS (
     SELECT 
@@ -73,7 +73,7 @@ FROM
 LEFT JOIN 
     ClosedPosts C ON Q.PostId = C.ClosedPostId
 WHERE 
-    (C.ClosedPostId IS NULL OR C.ClosedDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY)
+    (C.ClosedPostId IS NULL OR C.ClosedDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days')
 ORDER BY 
     Q.Score DESC,
     Q.CreationDate ASC;

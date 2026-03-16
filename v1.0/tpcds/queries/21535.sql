@@ -49,5 +49,5 @@ SELECT
 FROM HighReturnCustomers hrc
 LEFT JOIN SalesData sd ON sd.ws_bill_customer_sk = hrc.sr_customer_sk
 ORDER BY return_percentage DESC, hrc.total_returned_amount DESC, hrc.unique_returns DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;
 

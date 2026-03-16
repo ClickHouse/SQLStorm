@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR 
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' 
         AND p.PostTypeId = 1 
 ),
 UserActivity AS (
@@ -31,7 +31,7 @@ UserActivity AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        u.CreationDate < toDate('2024-10-01') - INTERVAL 2 YEAR 
+        u.CreationDate < DATE '2024-10-01' - INTERVAL '2 years' 
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -45,7 +45,7 @@ PostHistoryAggregate AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= toDate('2024-10-01') - INTERVAL 6 MONTH 
+        ph.CreationDate >= DATE '2024-10-01' - INTERVAL '6 months' 
     GROUP BY 
         ph.PostId
 )

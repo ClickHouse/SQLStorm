@@ -43,11 +43,11 @@ FROM
 LEFT JOIN 
     SalesCTE s ON d.d_date_sk = s.ws_sold_date_sk
 LEFT JOIN 
-    Demographics demo ON d.d_year = toYear(toDate('2002-10-01')) 
+    Demographics demo ON d.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') 
 LEFT JOIN 
     NullCheck n ON n.ca_state = 'CA'
 WHERE 
     d.d_year IN (SELECT DISTINCT d_year FROM date_dim WHERE d_current_year = '1')
 ORDER BY 
     d.d_date
-LIMIT 1000;
+FETCH FIRST 1000 ROWS ONLY;

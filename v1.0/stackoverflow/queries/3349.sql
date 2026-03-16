@@ -29,7 +29,7 @@ PostAnalytics AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 TopUsers AS (
     SELECT 
@@ -59,4 +59,4 @@ WHERE
     PA.rn = 1
 ORDER BY 
     U.Reputation DESC, PA.Score DESC
-LIMIT 15; -- Standardized LIMIT
+FETCH FIRST 15 ROWS ONLY; -- Standardized LIMIT

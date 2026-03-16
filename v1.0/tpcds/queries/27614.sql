@@ -55,7 +55,7 @@ FinalAggregation AS (
     JOIN 
         CustomerDemographics c ON c.customer_count > 50
     JOIN 
-        DateMetrics d ON d.d_year = toYear(cast('2002-10-01' as date)) 
+        DateMetrics d ON d.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) 
     JOIN 
         WarehouseInfo w ON a.ca_city = w.w_city
     WHERE 

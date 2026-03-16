@@ -42,7 +42,7 @@ SELECT
     f.title,
     f.production_year,
     f.total_cast,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(mt.linked_movie_id AS TEXT)))), ', ') AS linked_movies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(mt.linked_movie_id::TEXT))), ', ') AS linked_movies
 FROM
     FilteredMovies f
 LEFT JOIN

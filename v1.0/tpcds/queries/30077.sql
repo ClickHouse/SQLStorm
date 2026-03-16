@@ -69,4 +69,4 @@ WHERE
     AND (ts.total_quantity IS NOT NULL OR ts.total_quantity > 0)
 ORDER BY 
     net_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

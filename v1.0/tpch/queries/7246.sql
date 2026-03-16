@@ -6,7 +6,7 @@ WITH RankedOrders AS (
         o.o_orderstatus,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rank_order
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
 ),
 TopSuppliers AS (
     SELECT 
@@ -31,7 +31,7 @@ JOIN customer c ON n.n_nationkey = c.c_nationkey
 JOIN orders o ON c.c_custkey = o.o_custkey
 JOIN lineitem lo ON o.o_orderkey = lo.l_orderkey
 WHERE 
-    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     AND o.o_orderstatus = 'F'
     AND o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2)
 GROUP BY r.r_name

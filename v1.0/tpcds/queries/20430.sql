@@ -55,4 +55,4 @@ HAVING
     COUNT(DISTINCT c.c_customer_sk) > 10
 ORDER BY 
     total_web_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

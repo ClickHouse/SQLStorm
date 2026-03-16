@@ -35,4 +35,4 @@ AND ps.ps_availqty > 0
 GROUP BY n.n_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 10
 ORDER BY total_revenue DESC
-LIMIT 5;
+FETCH FIRST 5 ROWS ONLY;

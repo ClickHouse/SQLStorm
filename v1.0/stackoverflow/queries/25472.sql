@@ -22,7 +22,7 @@ WITH PostDetails AS (
                                                 FROM PostHistory ph2 
                                                 WHERE ph2.PostId = P.Id) 
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
         AND P.PostTypeId = 1 
 ),
 
@@ -33,7 +33,7 @@ TagUsage AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
         AND P.PostTypeId = 1
     GROUP BY 
         TagName

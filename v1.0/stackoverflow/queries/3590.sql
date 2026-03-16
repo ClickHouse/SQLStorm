@@ -20,7 +20,7 @@ RecentPosts AS (
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
-    WHERE p.CreationDate >= now64(6) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
 )
 SELECT 
     us.DisplayName,

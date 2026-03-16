@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON u.Id = b.UserId
 WHERE 
-    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH 
+    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month' 
 GROUP BY 
     p.Id, u.Id
 ORDER BY 

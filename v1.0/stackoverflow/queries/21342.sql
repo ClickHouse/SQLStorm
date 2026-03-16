@@ -48,7 +48,7 @@ SELECT
     COALESCE(VS.UpVotes, 0) AS UpVotes,
     COALESCE(VS.DownVotes, 0) AS DownVotes,
     CASE 
-        WHEN COALESCE(PS.FirstPostDate, toDateTime64('2024-10-01 12:34:56', 6)) > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        WHEN COALESCE(PS.FirstPostDate, cast('2024-10-01 12:34:56' as timestamp)) > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
         THEN 'Active'
         ELSE 'Inactive' 
     END AS UserActivityStatus,

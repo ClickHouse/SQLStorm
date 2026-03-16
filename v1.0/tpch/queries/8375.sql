@@ -15,7 +15,7 @@ OrderDetails AS (
     SELECT o.o_orderkey, o.o_orderdate, SUM(l.l_extendedprice * (1 - l.l_discount)) AS order_total
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate BETWEEN toDate('1994-01-01') AND toDate('1996-12-31')
+    WHERE o.o_orderdate BETWEEN DATE '1994-01-01' AND DATE '1996-12-31'
     GROUP BY o.o_orderkey, o.o_orderdate
 )
 SELECT ns.n_name, ns.nation_cost, od.order_total, COUNT(DISTINCT od.o_orderkey) AS total_orders

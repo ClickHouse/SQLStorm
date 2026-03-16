@@ -62,4 +62,4 @@ HAVING
     SUM(ts.total_quantity_sold) > 100
 ORDER BY 
     total_quantity_sold DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

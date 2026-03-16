@@ -7,7 +7,7 @@ HighValueOrders AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_totalprice,
            RANK() OVER (ORDER BY o.o_totalprice DESC) AS price_rank
     FROM orders o
-    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= DATE '1997-01-01'
 ),
 CustomerOrderSummary AS (
     SELECT c.c_custkey, c.c_name, COALESCE(SUM(lo.l_extendedprice * (1 - lo.l_discount)), 0) AS total_spent,
@@ -32,4 +32,4 @@ JOIN part p ON l.l_partkey = p.p_partkey
 WHERE cs.total_spent > 5000.00
   AND l.l_returnflag = 'N'
 ORDER BY cs.total_spent DESC, hs.s_acctbal ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

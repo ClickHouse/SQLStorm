@@ -52,4 +52,4 @@ WHERE
     AND (i.i_item_desc LIKE '%special%' OR i.i_item_desc IS NULL)
 ORDER BY 
     return_rate DESC NULLS LAST
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

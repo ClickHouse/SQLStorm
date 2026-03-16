@@ -42,7 +42,7 @@ PostDetails AS (
     FROM Posts p
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10
     LEFT JOIN PostTypes pt ON p.PostTypeId = pt.Id
-    WHERE p.CreationDate >= NOW() - INTERVAL 1 MONTH
+    WHERE p.CreationDate >= NOW() - INTERVAL '1 month'
 )
 SELECT 
     tu.DisplayName,

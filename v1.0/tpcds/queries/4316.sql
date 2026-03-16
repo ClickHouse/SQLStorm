@@ -58,7 +58,7 @@ FinalResults AS (
         c.spending_rank <= 10
 )
 SELECT 
-    toYear(cast('2002-10-01' as date)) AS report_year,
+    EXTRACT(YEAR FROM cast('2002-10-01' as date)) AS report_year,
     f.c_first_name,
     f.c_last_name,
     f.total_quantity,

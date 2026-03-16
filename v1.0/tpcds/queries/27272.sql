@@ -44,4 +44,4 @@ FROM
     FilteredData
 ORDER BY 
     total_sales DESC, name_length ASC 
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

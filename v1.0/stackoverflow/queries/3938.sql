@@ -16,7 +16,7 @@ RecentPosts AS (
         DENSE_RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    WHERE p.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
 ),
 ClosedPosts AS (
     SELECT 
@@ -68,6 +68,6 @@ SELECT
          WHEN cd.UserReputation BETWEEN 500 AND 1000 THEN 'Moderately Reputed' 
          ELSE 'Needs Attention' END AS ReputationStatus
 FROM CombiningData cd
-WHERE cd.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY)
+WHERE cd.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days')
 ORDER BY cd.UserReputation DESC, cd.ViewCount DESC
 LIMIT 100;

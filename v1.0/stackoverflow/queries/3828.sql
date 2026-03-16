@@ -6,7 +6,7 @@ WITH UserEngagement AS (
         COUNT(DISTINCT p.Id) AS TotalPosts,
         SUM(COALESCE(p.ViewCount, 0)) AS TotalViews,
         SUM(CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswers,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate) / 3600.0) ) AS AvgPostAgeInHours
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate) / 3600.0) ) AS AvgPostAgeInHours
     FROM 
         Users u
     LEFT JOIN 

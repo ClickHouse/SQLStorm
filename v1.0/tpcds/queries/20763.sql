@@ -66,4 +66,4 @@ WHERE
     si.distinct_items_sold IS NOT NULL
 ORDER BY 
     sales_category, si.s_store_name
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

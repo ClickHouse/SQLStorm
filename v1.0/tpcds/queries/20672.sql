@@ -15,7 +15,7 @@ WITH ActiveCustomers AS (
     LEFT JOIN 
         household_demographics hd ON c.c_current_hdemo_sk = hd.hd_demo_sk
     WHERE 
-        c.c_birth_year > (toYear(DATE('2002-10-01')) - 30) OR c.c_birth_year IS NULL
+        c.c_birth_year > (EXTRACT(YEAR FROM DATE('2002-10-01')) - 30) OR c.c_birth_year IS NULL
 ),
 RecentSales AS (
     SELECT 
@@ -28,7 +28,7 @@ RecentSales AS (
     JOIN 
         date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
     WHERE 
-        d.d_year = (toYear(DATE('2002-10-01')) - 1)
+        d.d_year = (EXTRACT(YEAR FROM DATE('2002-10-01')) - 1)
         AND d.d_moy BETWEEN 6 AND 8
     GROUP BY 
         ws.ws_item_sk, ws.ws_sold_date_sk

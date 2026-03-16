@@ -5,7 +5,7 @@ WITH RevenueCTE AS (
         COUNT(DISTINCT o_orderkey) AS order_count
     FROM lineitem
     JOIN orders ON l_orderkey = o_orderkey
-    WHERE l_shipdate >= toDate('1997-01-01') 
+    WHERE l_shipdate >= DATE '1997-01-01' 
     GROUP BY l_partkey
 ),
 SupplierCTE AS (

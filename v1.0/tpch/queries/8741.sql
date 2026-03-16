@@ -3,7 +3,7 @@ WITH RankedOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 
            RANK() OVER (PARTITION BY o.o_orderdate ORDER BY o.o_totalprice DESC) AS price_rank
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate <= toDate('1997-12-31')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate <= DATE '1997-12-31'
 ),
 SupplierRegionData AS (
     SELECT s.s_suppkey, s.s_name, n.n_name AS supplier_nation, 

@@ -43,4 +43,4 @@ LEFT JOIN ClosedPostStats cps ON u.Id = cps.UserId
 LEFT JOIN BadgesSummary bs ON u.Id = bs.UserId
 WHERE u.Reputation > (SELECT AVG(Reputation) FROM Users)
 ORDER BY u.Reputation DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

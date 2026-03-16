@@ -35,7 +35,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     WHERE 
-        PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         PH.PostId
 ),
@@ -47,7 +47,7 @@ SuspiciousPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.LastActivityDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        p.LastActivityDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
         AND p.Score < 0
 )
 SELECT 

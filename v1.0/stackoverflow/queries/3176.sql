@@ -37,7 +37,7 @@ RecentPostStats AS (
     FROM
         Posts P
     WHERE
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 )
 SELECT
     U.DisplayName,
@@ -61,4 +61,4 @@ WHERE
     U.Reputation > 1000
 ORDER BY
     UR.Reputation DESC NULLS LAST
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

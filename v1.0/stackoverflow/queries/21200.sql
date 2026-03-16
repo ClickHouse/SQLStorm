@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR) 
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 YEAR') 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.PostTypeId
 ), RecentBadges AS (
@@ -23,7 +23,7 @@ WITH RankedPosts AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 MONTH)
+        b.Date >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 MONTH')
     GROUP BY 
         b.UserId, b.Name
 ), ActiveUsers AS (
@@ -63,4 +63,4 @@ WHERE
     rp.Rank <= 10
 ORDER BY 
     rp.NetScore DESC, au.RecentBadges DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

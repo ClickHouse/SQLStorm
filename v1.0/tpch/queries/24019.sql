@@ -1,17 +1,17 @@
 
 WITH RECURSIVE MonthlySales AS (
     SELECT
-        toYear(o_orderdate) AS year,
-        toMonth(o_orderdate) AS month,
+        EXTRACT(YEAR FROM o_orderdate) AS year,
+        EXTRACT(MONTH FROM o_orderdate) AS month,
         SUM(l_extendedprice * (1 - l_discount)) AS total_sales
     FROM
         orders AS o
     JOIN
         lineitem AS l ON o.o_orderkey = l.l_orderkey
     WHERE
-        o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH
+        o_orderdate >= CURRENT_DATE - INTERVAL '12 months'
     GROUP BY
-        toYear(o_orderdate), toMonth(o_orderdate)
+        EXTRACT(YEAR FROM o_orderdate), EXTRACT(MONTH FROM o_orderdate)
 ),
 SupplierPerformance AS (
     SELECT
@@ -40,7 +40,7 @@ TopRegions AS (
     JOIN
         orders AS o ON l.l_orderkey = o.o_orderkey
     WHERE
-        l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+        l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     GROUP BY
         n.n_regionkey
     HAVING
@@ -68,7 +68,7 @@ LEFT JOIN
 LEFT JOIN
     SupplierPerformance AS sp ON sp.part_count > 10 
 LEFT JOIN
-    SalesGrowth AS pg ON pg.year = toYear(CURRENT_DATE) AND pg.month = toMonth(CURRENT_DATE)
+    SalesGrowth AS pg ON pg.year = EXTRACT(YEAR FROM CURRENT_DATE) AND pg.month = EXTRACT(MONTH FROM CURRENT_DATE)
 WHERE
     r.r_name IS NOT NULL
 ORDER BY

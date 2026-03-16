@@ -18,7 +18,7 @@ WITH RankedOrders AS (
     JOIN 
         supplier s ON ps.ps_suppkey = s.s_suppkey
     WHERE 
-        toYear(o.o_orderdate) = 1997
+        EXTRACT(YEAR FROM o.o_orderdate) = 1997
 ),
 TopOrders AS (
     SELECT 

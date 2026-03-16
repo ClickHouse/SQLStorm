@@ -8,7 +8,7 @@ WITH UserPostStats AS (
         COUNT(DISTINCT CASE WHEN p.PostTypeId = 2 THEN p.Id END) AS TotalAnswers,
         SUM(p.Score) AS TotalScore,
         SUM(p.ViewCount) AS TotalViews,
-        AVG(toUnixTimestamp((now64(6) - p.CreationDate)) / 86400) AS AvgPostAge,
+        AVG(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate)) / 86400) AS AvgPostAge,
         SUM(COALESCE(c.CommentCount, 0)) AS TotalComments
     FROM 
         Users u

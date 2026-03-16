@@ -26,7 +26,7 @@ WITH UserActivity AS (
     FROM 
         Posts
     WHERE 
-        CreationDate >= now64(6) - INTERVAL 1 YEAR
+        CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         TagName
 ), PostStatistics AS (

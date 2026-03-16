@@ -20,7 +20,7 @@ LEFT JOIN
 LEFT JOIN 
     Posts a ON p.Id = a.ParentId
 WHERE 
-    p.CreationDate >= toDate('2020-01-01')  
+    p.CreationDate >= DATE '2020-01-01'  
 GROUP BY 
     p.Id, p.Title, p.Body, p.CreationDate, u.DisplayName, u.Reputation
 ORDER BY 

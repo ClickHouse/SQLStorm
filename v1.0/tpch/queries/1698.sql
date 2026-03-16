@@ -20,7 +20,7 @@ LEFT JOIN RankedSuppliers rs ON rs.s_suppkey = (
     JOIN part p ON ps.ps_partkey = p.p_partkey 
     WHERE p.p_size > 10
     AND p.p_retailprice < (SELECT AVG(p2.p_retailprice) FROM part p2 WHERE p2.p_type = p.p_type)
-    LIMIT 1
+    FETCH FIRST 1 ROW ONLY
 )
 GROUP BY c.c_name
 HAVING SUM(o.o_totalprice) > (

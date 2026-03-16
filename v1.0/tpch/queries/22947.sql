@@ -10,7 +10,7 @@ WITH RegionalSales AS (
     JOIN customer c ON o.o_custkey = c.c_custkey
     JOIN nation n ON c.c_nationkey = n.n_nationkey
     JOIN region r ON n.n_regionkey = r.r_regionkey
-    WHERE l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
+    WHERE l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
     GROUP BY r.r_regionkey, r.r_name
 ),
 TopRegions AS (

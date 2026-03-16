@@ -25,7 +25,7 @@ JOIN
 WHERE 
     CHAR_LENGTH(P.p_name) > 10
     AND S.s_acctbal > 1000
-    AND L.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND L.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     P.p_partkey, P.p_name, S.s_name, C.c_name, P.p_comment
 HAVING 

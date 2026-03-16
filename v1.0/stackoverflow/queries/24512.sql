@@ -1,7 +1,7 @@
 WITH ActiveUsers AS (
     SELECT Id, Reputation, DisplayName, 
            ROW_NUMBER() OVER (ORDER BY Reputation DESC) AS Rank,
-           COUNT(DISTINCT CASE WHEN CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN Id END) AS RecentActivity
+           COUNT(DISTINCT CASE WHEN CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN Id END) AS RecentActivity
     FROM Users
     GROUP BY Id, Reputation, DisplayName
     HAVING SUM(UpVotes) > 100 OR SUM(DownVotes) < 20
@@ -17,7 +17,7 @@ PostDetails AS (
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
     GROUP BY P.Id, P.PostTypeId, P.AcceptedAnswerId, P.OwnerUserId, 
              P.Score, P.ViewCount, P.Title, P.CreationDate
 ),
@@ -47,4 +47,4 @@ WHERE A.RecentActivity > 0
 GROUP BY A.Id, A.DisplayName, A.Reputation
 HAVING AVG(FP.PostScore) > 10
 ORDER BY A.Reputation DESC, ActivePostCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

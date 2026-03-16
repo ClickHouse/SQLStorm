@@ -62,6 +62,6 @@ JOIN
 JOIN 
     OrderDetails od ON li.l_orderkey = od.o_orderkey
 WHERE 
-    od.o_orderdate >= toDate('1997-01-01')
+    od.o_orderdate >= DATE '1997-01-01'
 ORDER BY 
     sd.s_name, pd.p_name, od.o_orderdate DESC;

@@ -36,6 +36,6 @@ AND (EXISTS (SELECT 1 FROM customer c2 WHERE c2.c_custkey = o.o_custkey AND c2.c
       OR NOT EXISTS (SELECT 1 FROM lineitem l2 WHERE l2.l_orderkey = o.o_orderkey AND l2.l_returnflag = 'R'))
 GROUP BY p.p_partkey, p.p_name, n.n_name, st.level, pt.total_supply_cost
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 
-    (SELECT AVG(l1.l_extendedprice) FROM lineitem l1 WHERE l1.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31'))
+    (SELECT AVG(l1.l_extendedprice) FROM lineitem l1 WHERE l1.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31')
 ORDER BY revenue_rank, revenue DESC
 LIMIT 100;

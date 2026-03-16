@@ -54,7 +54,7 @@ LEFT JOIN (
     FROM 
         Posts
     WHERE 
-        CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+        CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
     GROUP BY 
         OwnerUserId
 ) p ON u.Id = p.OwnerUserId
@@ -106,7 +106,7 @@ LEFT JOIN (
     LIMIT 1
 )
 WHERE 
-    (u.LastAccessDate >= toDate('2024-10-01') - INTERVAL 30 DAY OR u.Reputation > 2000)
+    (u.LastAccessDate >= DATE '2024-10-01' - INTERVAL '30 days' OR u.Reputation > 2000)
 GROUP BY 
     u.Id, u.DisplayName, b.BadgeCount, p.PostCount, pc.CommentCount
 HAVING 

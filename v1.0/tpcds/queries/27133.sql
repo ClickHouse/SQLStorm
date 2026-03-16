@@ -19,12 +19,12 @@ CustomerCount AS (
 ),
 SalesData AS (
     SELECT 
-        toYear(d_date) AS sales_year,
+        EXTRACT(YEAR FROM d_date) AS sales_year,
         SUM(ws_ext_sales_price) AS total_sales,
         COUNT(DISTINCT ws_order_number) AS total_orders
     FROM web_sales
     JOIN date_dim ON ws_sold_date_sk = d_date_sk
-    GROUP BY toYear(d_date)
+    GROUP BY EXTRACT(YEAR FROM d_date)
 )
 SELECT 
     a.ca_state,

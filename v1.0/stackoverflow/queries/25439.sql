@@ -68,4 +68,4 @@ LEFT JOIN
 ORDER BY 
     ta.TotalViews DESC, 
     ta.TotalScore DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

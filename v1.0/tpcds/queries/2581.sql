@@ -56,4 +56,4 @@ WHERE
     ca.ca_country IS NOT NULL
 ORDER BY 
     ss.total_net_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -55,4 +55,4 @@ WHERE
     AND i.i_current_price IS NOT NULL
 ORDER BY 
     ls.total_sales DESC, i.i_item_id
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

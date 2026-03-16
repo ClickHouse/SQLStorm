@@ -39,7 +39,7 @@ FilteredMovies AS (
 )
 SELECT 
     fm.title,
-    COALESCE(CAST(fm.production_year AS VARCHAR), 'Unknown Year') AS production_year,
+    COALESCE(fm.production_year::VARCHAR, 'Unknown Year') AS production_year,
     COALESCE(fm.cast_names, 'No Cast Available') AS cast_names,
     CASE 
         WHEN fm.total_cast IS NOT NULL AND fm.total_cast > 0 THEN 'Active Cast'

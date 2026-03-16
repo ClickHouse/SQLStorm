@@ -11,7 +11,7 @@ WITH RankedOrders AS (
         o.o_totalprice > (
             SELECT AVG(o2.o_totalprice) 
             FROM orders o2 
-            WHERE o2.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+            WHERE o2.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
         )
 ), RecentLineItems AS (
     SELECT 
@@ -29,7 +29,7 @@ WITH RankedOrders AS (
     FROM 
         lineitem li
     WHERE 
-        li.l_shipdate > cast('1998-10-01' as date) - INTERVAL 30 DAY 
+        li.l_shipdate > cast('1998-10-01' as date) - INTERVAL '30 days' 
         AND li.l_discount > 0.05
 ), SupplierSales AS (
     SELECT 
@@ -77,4 +77,4 @@ WHERE
          AND r.o_orderdate < cast('1998-10-01' as date))
 ORDER BY 
     r.o_totalprice DESC NULLS LAST
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

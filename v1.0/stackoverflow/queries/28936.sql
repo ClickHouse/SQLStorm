@@ -53,7 +53,7 @@ ClosedPostDetails AS (
 SELECT 
     cpd.PostId,
     cpd.Title,
-    toYear(cpd.CreationDate) AS CreationYear,
+    EXTRACT(YEAR FROM cpd.CreationDate) AS CreationYear,
     cpd.UpVotes,
     cpd.DownVotes,
     cpd.TagCount,

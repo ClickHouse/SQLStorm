@@ -59,7 +59,7 @@ HighlightedPosts AS (
     FROM 
         PostActivity pa
     WHERE 
-        pa.CreationDate > CURRENT_DATE - INTERVAL 30 DAY
+        pa.CreationDate > CURRENT_DATE - INTERVAL '30 days'
 )
 SELECT 
     tu.UserId,

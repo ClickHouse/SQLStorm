@@ -60,7 +60,7 @@ SELECT
     SUM(spd.ps_supplycost) AS total_supply_cost,
     AVG(spd.ps_availqty) AS avg_avail_qty,
     arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(spd.p_name))), ', ') AS supplier_parts,
-    (SELECT COUNT(*) FROM HighValueOrders hvo WHERE hvo.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')) AS high_value_orders_in_year
+    (SELECT COUNT(*) FROM HighValueOrders hvo WHERE hvo.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31') AS high_value_orders_in_year
 FROM 
     RankedSuppliers r
 LEFT JOIN 

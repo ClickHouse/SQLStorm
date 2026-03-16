@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS PostRank
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 UserReputation AS (
     SELECT 
@@ -33,7 +33,7 @@ PostHistoryDetails AS (
         COUNT(*) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11)) AS Closures
     FROM PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
-    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
+    WHERE ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years'
     GROUP BY ph.PostId
 )
 SELECT 

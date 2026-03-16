@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     WHERE 
         p.PostTypeId = 1 
       AND 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
 ),
 TopRepliedToPosts AS (
     SELECT 

@@ -14,7 +14,7 @@ WITH FilteredPosts AS (
     INNER JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
         AND p.PostTypeId = 1 
         AND p.Body IS NOT NULL
 ),

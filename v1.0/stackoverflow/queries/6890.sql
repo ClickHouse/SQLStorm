@@ -31,7 +31,7 @@ RecentPostMetrics AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > NOW() - INTERVAL 30 DAY
+        p.CreationDate > NOW() - INTERVAL '30 days'
     GROUP BY 
         p.OwnerUserId
 )

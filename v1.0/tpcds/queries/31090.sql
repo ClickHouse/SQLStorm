@@ -44,7 +44,7 @@ recent_sales AS (
     JOIN 
         date_dim dd ON ws.ws_sold_date_sk = dd.d_date_sk
     WHERE 
-        dd.d_date >= toDate('2002-10-01') - INTERVAL 30 DAY
+        dd.d_date >= DATE '2002-10-01' - INTERVAL '30 day'
     GROUP BY 
         ws.ws_sold_date_sk
 ),

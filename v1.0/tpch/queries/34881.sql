@@ -47,7 +47,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     AND (p.p_retailprice > 100 OR ps.ps_availqty < 50)
     AND (s.s_comment IS NULL OR s.s_comment NOT LIKE '%urgent%')
 GROUP BY 
@@ -56,4 +56,4 @@ HAVING
     COUNT(DISTINCT c.c_custkey) > 10
 ORDER BY 
     revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

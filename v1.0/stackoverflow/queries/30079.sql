@@ -36,7 +36,7 @@ RecentPosts AS (
     FROM 
         RecursivePostStats ps
     WHERE 
-        ps.CreationDate >= now64(6) - INTERVAL 30 DAY
+        ps.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
 ),
 ActiveUsers AS (
     SELECT 

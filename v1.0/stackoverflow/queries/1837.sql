@@ -44,4 +44,4 @@ LEFT JOIN UserBadges ub ON u.UserId = ub.UserId
 LEFT JOIN TopAnsweredQuestions taq ON taq.Rank = 1
 WHERE u.Reputation IS NOT NULL
 ORDER BY u.Reputation DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

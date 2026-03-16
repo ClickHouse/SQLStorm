@@ -32,7 +32,7 @@ WITH RankedPosts AS (
             PostId
     ) co ON p.Id = co.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 FilteredPosts AS (
     SELECT 
@@ -79,7 +79,7 @@ FROM
 LEFT JOIN 
     Votes v ON us.UserId = v.UserId
 WHERE 
-    v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH  
+    v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'  
 GROUP BY 
     us.UserId, us.DisplayName, us.Reputation, us.TotalComments, us.TotalFavorites, us.TotalPosts
 ORDER BY 

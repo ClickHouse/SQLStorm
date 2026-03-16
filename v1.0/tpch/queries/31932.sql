@@ -3,7 +3,7 @@ WITH RECURSIVE OrderHierarchy AS (
            ROW_NUMBER() OVER (PARTITION BY o.o_orderkey ORDER BY o.o_orderdate DESC) AS rn
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
+    WHERE o.o_orderdate >= (cast('1998-10-01' as date) - INTERVAL '1 year')
 ),
 SupplierMetrics AS (
     SELECT ps.ps_partkey, SUM(ps.ps_availqty) AS total_available, 

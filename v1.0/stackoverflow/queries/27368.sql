@@ -41,4 +41,4 @@ SELECT
     fp.PostDescription
 FROM FilteredPosts fp
 ORDER BY NetVotes DESC, fp.CommentCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

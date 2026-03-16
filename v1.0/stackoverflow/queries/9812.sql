@@ -67,4 +67,4 @@ LEFT JOIN
     PostActivity pa ON us.UserId = pa.OwnerUserId
 ORDER BY 
     us.Reputation DESC, us.TotalPosts DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

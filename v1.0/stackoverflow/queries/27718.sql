@@ -39,7 +39,7 @@ RecentPostHistory AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 )
 SELECT 
     rp.PostId,

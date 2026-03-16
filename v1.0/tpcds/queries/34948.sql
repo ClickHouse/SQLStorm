@@ -60,4 +60,4 @@ GROUP BY
     ca.ca_city, ca.ca_state
 ORDER BY 
     total_customers DESC, total_net_profit DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

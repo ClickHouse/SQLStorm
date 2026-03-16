@@ -22,7 +22,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         arrayJoin(splitByString('><', p.Tags)) AS t(TagName) ON TRUE
     WHERE 
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL 30 DAY
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName, t.TagName
 ),

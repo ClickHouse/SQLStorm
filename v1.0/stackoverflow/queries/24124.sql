@@ -65,7 +65,7 @@ RecentClosures AS (
         Users u ON ph.UserId = u.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
-        AND ph.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
+        AND ph.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 ClosedPostCounts AS (
     SELECT 

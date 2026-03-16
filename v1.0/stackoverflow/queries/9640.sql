@@ -17,7 +17,7 @@ UserPosts AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY p.OwnerUserId
 ),
 ActiveUsers AS (

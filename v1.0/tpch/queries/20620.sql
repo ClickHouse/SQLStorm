@@ -73,4 +73,4 @@ GROUP BY
     r.r_name
 ORDER BY 
     total_order_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

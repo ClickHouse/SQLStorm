@@ -41,4 +41,4 @@ INNER JOIN RelevantSuppliers rs ON pp.supplier_count > 1
 WHERE pp.avail_qty > (SELECT AVG(avail_qty) FROM PostProcessing) 
   AND (pp.p_retailprice - pp.total_spent) < 1000
 ORDER BY pp.total_spent DESC, pp.p_retailprice DESC
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
         AND p.PostTypeId IN (1, 2)
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName

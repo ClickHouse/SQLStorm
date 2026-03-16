@@ -31,7 +31,7 @@ RecentQuestions AS (
     FROM 
         RankedPosts rp
     WHERE 
-        rp.Rank = 1 AND rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        rp.Rank = 1 AND rp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
 ),
 KeywordTagCount AS (
     SELECT 

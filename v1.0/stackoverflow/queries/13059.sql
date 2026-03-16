@@ -20,9 +20,9 @@ LEFT JOIN
 LEFT JOIN 
     Votes V ON P.Id = V.PostId
 WHERE 
-    P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+    P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 GROUP BY 
     P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score, P.AnswerCount, P.CommentCount, U.DisplayName, U.Reputation
 ORDER BY 
     TotalVotes DESC, P.Score DESC 
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

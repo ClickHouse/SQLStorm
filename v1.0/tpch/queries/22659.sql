@@ -18,7 +18,7 @@ FilteredOrders AS (
                ELSE 'Unknown'
            END AS order_status_desc
     FROM orders o
-    WHERE o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1998-10-01')
+    WHERE o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1998-10-01'
 ),
 AvgTotalPrice AS (
     SELECT AVG(o_totalprice) AS avg_price

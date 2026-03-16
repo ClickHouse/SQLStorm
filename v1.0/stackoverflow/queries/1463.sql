@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId AND b.Class = 1
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
         AND p.AnswerCount > 0 
         AND p.Score > 10
 ),
@@ -27,7 +27,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
+        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
     GROUP BY 
         v.PostId
 )

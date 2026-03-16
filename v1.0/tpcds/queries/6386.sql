@@ -53,4 +53,4 @@ JOIN
     SalesWithDemographics AS sdb ON cs.total_sales < 5000
 ORDER BY 
     cs.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

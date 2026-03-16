@@ -4,7 +4,7 @@ WITH RankedOrders AS (
         o.o_orderkey,
         o.o_orderdate,
         o.o_totalprice,
-        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS OrderRank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS OrderRank
     FROM 
         orders o
     WHERE 

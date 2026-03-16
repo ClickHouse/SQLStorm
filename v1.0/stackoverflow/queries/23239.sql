@@ -28,7 +28,7 @@ WITH UserProfileStats AS (
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ), UserBadges AS (
     SELECT 
         B.UserId,
@@ -38,7 +38,7 @@ WITH UserProfileStats AS (
     FROM 
         Badges B
     WHERE 
-        B.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        B.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         B.UserId
 ), UserComments AS (

@@ -48,7 +48,7 @@ LEFT JOIN
     movie_info mi ON m.id = mi.movie_id 
 
 WHERE 
-    m.production_year >= toYear(toDate('2024-10-01')) - 10
+    m.production_year >= EXTRACT(YEAR FROM DATE '2024-10-01') - 10
 GROUP BY 
     m.title, a.name
 ORDER BY 

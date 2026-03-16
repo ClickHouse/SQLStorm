@@ -65,7 +65,7 @@ FROM
 JOIN 
     UserPostStats UPS ON U.DisplayName = UPS.UserName
 WHERE 
-    U.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+    U.LastAccessDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
 ORDER BY 
     UPS.NetScore DESC, U.Reputation DESC
 LIMIT 10;

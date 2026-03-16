@@ -74,4 +74,4 @@ GROUP BY
     up.AnswerCount, up.TotalScore, up.AvgViewCount, up.BadgeCount
 ORDER BY 
     up.Reputation DESC, up.TotalScore DESC, up.PostCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

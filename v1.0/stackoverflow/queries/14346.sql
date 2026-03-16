@@ -13,7 +13,7 @@ WITH PostStatistics AS (
     LEFT JOIN 
         Comments ON Posts.Id = Comments.PostId
     WHERE 
-        Posts.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        Posts.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY 
         Posts.Id, Posts.PostTypeId
 ),

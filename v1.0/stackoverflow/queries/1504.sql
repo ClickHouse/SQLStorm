@@ -17,7 +17,7 @@ RecentPosts AS (
         U.DisplayName AS OwnerDisplayName
     FROM Posts P
     LEFT JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
+    WHERE P.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
 ),
 ClosedPosts AS (
     SELECT 

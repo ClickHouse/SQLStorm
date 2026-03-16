@@ -58,7 +58,7 @@ JOIN
 LEFT JOIN
     customer c ON oh.o_orderkey = c.c_custkey  
 WHERE 
-    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')  
+    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'  
     AND (c.c_acctbal IS NOT NULL AND c.c_acctbal > 0)
 GROUP BY 
     rh.r_name

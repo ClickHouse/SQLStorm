@@ -69,7 +69,7 @@ SELECT
 FROM 
     HighReturnCustomers hrc
 JOIN 
-    SalesReturnRatio d ON d.d_date = cast('2002-10-01' as date) - INTERVAL 1 DAY 
+    SalesReturnRatio d ON d.d_date = cast('2002-10-01' as date) - INTERVAL '1 DAY' 
 WHERE 
     d.return_ratio IS NOT NULL AND
     d.return_ratio > 0.1

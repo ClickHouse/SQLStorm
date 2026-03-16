@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankScore,
         COALESCE(c.UserId, -1) AS MostRecentCommentUserId,
-        COALESCE(c.CreationDate, CAST('1900-01-01' AS timestamp)) AS RecentCommentDate
+        COALESCE(c.CreationDate, '1900-01-01'::timestamp) AS RecentCommentDate
     FROM 
         Posts p
     LEFT JOIN 

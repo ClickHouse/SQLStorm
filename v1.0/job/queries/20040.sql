@@ -92,4 +92,4 @@ WHERE
 ORDER BY 
     tm.production_year DESC, 
     tm.title ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

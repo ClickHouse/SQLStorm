@@ -85,4 +85,4 @@ WHERE
 ORDER BY
     hvc.total_spent DESC NULLS LAST, 
     sd.total_profit DESC NULLS LAST
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

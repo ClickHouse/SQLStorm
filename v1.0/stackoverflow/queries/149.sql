@@ -45,7 +45,7 @@ SELECT
         WHEN ru.CommentCount > 50 THEN 'Active Commentator'
         ELSE 'Regular User'
     END AS UserType,
-    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = ru.UserId AND p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)) AS RecentPostsCount
+    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = ru.UserId AND p.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')) AS RecentPostsCount
 FROM 
     RankedUsers ru
 WHERE 

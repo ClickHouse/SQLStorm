@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.PostTypeId, p.AcceptedAnswerId
 ),
@@ -63,7 +63,7 @@ ClosedPosts AS (
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
-        AND ph.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
+        AND ph.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')
 )
 
 SELECT 

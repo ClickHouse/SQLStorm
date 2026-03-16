@@ -61,4 +61,4 @@ WHERE
 ORDER BY 
     cus.total_spent DESC, 
     r.s_acctbal DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

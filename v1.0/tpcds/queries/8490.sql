@@ -54,4 +54,4 @@ FROM
     FetchedItems f
 ORDER BY 
     f.total_web_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

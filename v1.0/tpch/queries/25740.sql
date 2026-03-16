@@ -23,7 +23,7 @@ JOIN
 WHERE 
     p.p_retailprice > 100.00
 AND 
-    o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY 
     Short_Name, Supplier_Name, Customer_Region
 HAVING 

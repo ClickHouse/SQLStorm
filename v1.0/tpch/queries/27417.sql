@@ -26,7 +26,7 @@ JOIN
 WHERE 
     p.p_type LIKE 'BRASS%' 
     AND s.s_acctbal > (SELECT AVG(s2.s_acctbal) FROM supplier s2)
-    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     p.p_name, s.s_name, r.r_name, n.n_name
 HAVING 

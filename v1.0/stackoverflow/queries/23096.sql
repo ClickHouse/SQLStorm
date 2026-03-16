@@ -79,4 +79,5 @@ WHERE
     AND U.Reputation > (SELECT AVG(Reputation) FROM Users)
 ORDER BY 
     U.TotalUpvotes DESC, U.DisplayName
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS
+FETCH NEXT 5 ROWS ONLY;

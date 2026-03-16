@@ -42,7 +42,7 @@ RankedPosts AS (
     FROM 
         PostInfo PI
     WHERE 
-        PI.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        PI.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
 )
 SELECT 
     U.DisplayName AS UserName,

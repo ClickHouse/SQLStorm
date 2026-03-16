@@ -39,7 +39,7 @@ MonthlySales AS (
     JOIN 
         date_dim dd ON ws.ws_ship_date_sk = dd.d_date_sk
     WHERE 
-        dd.d_year = toYear(toDate('2002-10-01'))
+        dd.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
     GROUP BY 
         d_month_seq
 ),
@@ -66,7 +66,7 @@ FROM
 LEFT JOIN 
     customer c ON ca.ca_address_sk = c.c_current_addr_sk
 LEFT JOIN 
-    MonthlySales m ON toMonth(toDate('2002-10-01')) = m.month
+    MonthlySales m ON EXTRACT(MONTH FROM DATE '2002-10-01') = m.month
 LEFT JOIN 
     HighValueCustomers hvc ON c.c_customer_sk = hvc.c_customer_sk
 LEFT JOIN 

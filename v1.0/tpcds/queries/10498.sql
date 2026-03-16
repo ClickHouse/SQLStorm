@@ -17,4 +17,4 @@ HAVING
     SUM(ws.ws_net_profit) > 1000
 ORDER BY 
     total_net_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

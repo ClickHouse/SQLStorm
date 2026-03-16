@@ -7,7 +7,7 @@ WITH ranked_orders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1996-12-31')
+        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1996-12-31'
 ),
 top_customers AS (
     SELECT 
@@ -39,7 +39,7 @@ details AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        l.l_shipdate >= toDate('1996-01-01') AND l.l_shipdate < toDate('1996-12-31')
+        l.l_shipdate >= DATE '1996-01-01' AND l.l_shipdate < DATE '1996-12-31'
     GROUP BY 
         c.c_name, o.o_orderkey, o.o_orderdate
 )

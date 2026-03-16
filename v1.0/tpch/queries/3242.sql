@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH
+        o.o_orderdate >= CURRENT_DATE - INTERVAL '12 months'
 ),
 SupplierParts AS (
     SELECT 
@@ -39,7 +39,7 @@ NationalCustomerSales AS (
     JOIN 
         nation n ON c.c_nationkey = n.n_nationkey
     WHERE 
-        l.l_shipdate BETWEEN CURRENT_DATE - INTERVAL 30 DAY AND CURRENT_DATE
+        l.l_shipdate BETWEEN CURRENT_DATE - INTERVAL '30 days' AND CURRENT_DATE
     GROUP BY 
         n.n_name
 )

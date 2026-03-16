@@ -72,4 +72,4 @@ FROM
     FinalStats f
 ORDER BY 
     ReputationRank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

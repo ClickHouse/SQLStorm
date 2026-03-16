@@ -59,4 +59,4 @@ JOIN
     sales_summary ss ON cs.total_orders > 0
 ORDER BY 
     cs.total_sales DESC, ss.total_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
         AND p.Score > 0
 ),
 RecentUsers AS (
@@ -18,7 +18,7 @@ RecentUsers AS (
         u.Id AS UserId,
         u.DisplayName,
         u.Reputation,
-        (SELECT COUNT(*) FROM Posts pp WHERE pp.OwnerUserId = u.Id AND pp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH) AS RecentPostsCount
+        (SELECT COUNT(*) FROM Posts pp WHERE pp.OwnerUserId = u.Id AND pp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months') AS RecentPostsCount
     FROM 
         Users u
     WHERE 

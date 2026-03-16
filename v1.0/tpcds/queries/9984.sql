@@ -14,7 +14,7 @@ WITH CustomerSales AS (
     JOIN 
         customer_demographics cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
     WHERE 
-        ss.ss_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date >= toDate('2001-01-01'))
+        ss.ss_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date >= DATE '2001-01-01')
     GROUP BY 
         c.c_customer_id, cd.cd_gender, cd.cd_credit_rating, cd.cd_education_status, customer_age
 ),

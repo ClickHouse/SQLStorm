@@ -30,4 +30,4 @@ WHERE r.r_name = 'ASIA'
       AND os.total_spent > 10000 
       AND pd.total_quantity >= 50
 ORDER BY os.total_spent DESC, pd.total_quantity DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

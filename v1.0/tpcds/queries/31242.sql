@@ -82,4 +82,4 @@ GROUP BY
     c.c_customer_id, cs.total_profit, cs.order_count, a.ca_city, a.ca_state, a.ca_country, a.ca_zip
 ORDER BY 
     cs.total_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

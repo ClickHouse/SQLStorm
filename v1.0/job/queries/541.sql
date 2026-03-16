@@ -49,4 +49,4 @@ WHERE
 ORDER BY 
     mwac.production_year DESC, 
     mwac.actor_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -42,7 +42,7 @@ SELECT t.yearly_sales, t.total_orders,
        COALESCE(ms.missed_items, 0) AS missed_sales_count,
        ca.purchase_count, ca.avg_spent
 FROM purchase_trends t
-LEFT JOIN top_sales ts ON t.d_year = toYear(CURRENT_DATE)
+LEFT JOIN top_sales ts ON t.d_year = EXTRACT(YEAR FROM CURRENT_DATE)
 LEFT JOIN missed_sales ms ON ts.ss_store_sk = ms.ss_store_sk
 LEFT JOIN customer_analysis ca ON ca.c_customer_sk = (SELECT MAX(c_customer_sk) FROM customer)
 ORDER BY t.yearly_sales DESC;

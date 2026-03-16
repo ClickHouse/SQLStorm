@@ -73,7 +73,7 @@ CombinedStats AS (
     JOIN 
         TopUsers tu ON u.Id = tu.UserId
     WHERE 
-        (p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR)
+        (p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year')
         AND (u.Reputation BETWEEN 100 AND 10000 OR u.Location IS NOT NULL)
 )
 SELECT 

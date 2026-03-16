@@ -70,4 +70,4 @@ JOIN
     HighValueCustomers hvc ON s.total_orders > 5
 ORDER BY 
     s.total_sales DESC, hvc.total_catalog_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -15,7 +15,7 @@ WITH TagAggregation AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDate('2023-10-01')
+        p.CreationDate >= DATE '2023-10-01'
     GROUP BY 
         MainTag
 ), 

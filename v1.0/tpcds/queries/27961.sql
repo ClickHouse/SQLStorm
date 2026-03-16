@@ -10,7 +10,7 @@ WITH customer_data AS (
         ca.ca_country,
         COUNT(DISTINCT ws.ws_order_number) AS total_orders,
         SUM(ws.ws_net_paid) AS total_spent,
-        AVG(toYear((cast('2002-10-01' as date) - c.c_birth_year))) AS age
+        AVG(EXTRACT(YEAR FROM (cast('2002-10-01' as date) - c.c_birth_year))) AS age
     FROM 
         customer c
     JOIN 

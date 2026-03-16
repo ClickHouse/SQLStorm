@@ -4,7 +4,7 @@ WITH RECURSIVE SalesCTE AS (
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') 
+    WHERE o.o_orderdate >= DATE '1997-01-01' 
     GROUP BY c.c_custkey, c.c_name, o.o_orderkey, o.o_orderdate
 
     UNION ALL
@@ -14,7 +14,7 @@ WITH RECURSIVE SalesCTE AS (
     JOIN orders o ON c.c_custkey = o.o_custkey
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
     JOIN SalesCTE s ON s.c_custkey = c.c_custkey AND s.o_orderkey < o.o_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
     GROUP BY c.c_custkey, c.c_name, o.o_orderkey, o.o_orderdate, s.total_sales
 ),
 

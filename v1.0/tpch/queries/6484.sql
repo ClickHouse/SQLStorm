@@ -47,7 +47,7 @@ JOIN
 JOIN 
     TopSuppliers ts ON ps.ps_suppkey = ts.s_suppkey
 WHERE 
-    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 ORDER BY 
     ts.total_supply_cost DESC, o.o_totalprice DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

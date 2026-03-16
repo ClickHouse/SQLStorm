@@ -33,7 +33,7 @@ RecentClosedPosts AS (
         Users U ON PH.UserId = U.Id
     WHERE
         PH.PostHistoryTypeId = 10 
-        AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        AND PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - interval '30 days'
 ),
 TopContributors AS (
     SELECT

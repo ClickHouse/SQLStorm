@@ -42,7 +42,7 @@ FROM ExtendedPartInfo eo
 LEFT JOIN lineitem lo ON lo.l_partkey = eo.p_partkey
 JOIN SupplierStats ss ON ss.s_suppkey = lo.l_suppkey
 WHERE eo.Adjusted_Price > 50.00
-AND lo.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+AND lo.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY eo.p_name, eo.Brand, ss.total_cost
 HAVING COUNT(DISTINCT lo.l_orderkey) > 10
 ORDER BY Total_Sales DESC

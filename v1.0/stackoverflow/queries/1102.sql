@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 UserStatistics AS (
     SELECT 
@@ -24,7 +24,7 @@ UserStatistics AS (
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate < cast('2024-10-01' as date) - INTERVAL 1 MONTH
+        u.CreationDate < cast('2024-10-01' as date) - INTERVAL '1 month'
     GROUP BY 
         u.Id, u.DisplayName
 ),

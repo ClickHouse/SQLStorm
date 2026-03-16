@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON TRUE
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.CreationDate, p.Score, p.ViewCount
 ), 

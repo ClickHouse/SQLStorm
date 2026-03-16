@@ -70,7 +70,7 @@ SELECT
             PostHistory PH 
         WHERE 
             PH.UserId = U.UserId
-            AND PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+            AND PH.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days' 
             AND PH.PostHistoryTypeId IN (10, 11, 12) 
     ) AS RecentPostStatusUpdates
 FROM 

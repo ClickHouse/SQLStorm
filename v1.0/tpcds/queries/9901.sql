@@ -28,15 +28,15 @@ TopCustomers AS (
 ),
 SalesByMonth AS (
     SELECT 
-        toYear(d.d_date) AS sales_year,
-        toMonth(d.d_date) AS sales_month,
+        EXTRACT(YEAR FROM d.d_date) AS sales_year,
+        EXTRACT(MONTH FROM d.d_date) AS sales_month,
         SUM(ws.ws_ext_sales_price) AS monthly_sales
     FROM 
         web_sales ws
     JOIN 
         date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
     GROUP BY 
-        toYear(d.d_date), toMonth(d.d_date)
+        EXTRACT(YEAR FROM d.d_date), EXTRACT(MONTH FROM d.d_date)
 ),
 CombinedSales AS (
     SELECT 

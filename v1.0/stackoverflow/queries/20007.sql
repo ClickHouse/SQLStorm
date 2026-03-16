@@ -46,7 +46,7 @@ RankedUsers AS (
         ups.QuestionCount,
         ups.AnswerCount,
         COALESCE(cps.ClosedPostCount, 0) AS ClosedPostCount,
-        COALESCE(cps.LastClosedPostDate, toDate('1970-01-01')) AS LastClosedPostDate,
+        COALESCE(cps.LastClosedPostDate, DATE '1970-01-01') AS LastClosedPostDate,
         bst.BadgeCount,
         bst.BadgeNames,
         ROW_NUMBER() OVER (ORDER BY ups.TotalScore DESC, ups.PostCount DESC) AS UserRank

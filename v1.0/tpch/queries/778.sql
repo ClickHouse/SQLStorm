@@ -18,8 +18,8 @@ WITH RegionalSales AS (
     LEFT JOIN 
         orders o ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate >= toDate('1997-01-01')
-        AND l.l_shipdate < toDate('1997-10-01')
+        l.l_shipdate >= DATE '1997-01-01'
+        AND l.l_shipdate < DATE '1997-10-01'
         AND p.p_brand IN ('BrandA', 'BrandB')
     GROUP BY 
         r.r_name

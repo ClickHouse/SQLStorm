@@ -20,7 +20,7 @@ WITH PostSummary AS (
     LEFT JOIN
         PostLinks I ON P.Id = I.PostId
     WHERE
-        P.CreationDate >= toDate('2023-01-01')
+        P.CreationDate >= DATE '2023-01-01'
     GROUP BY
         P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score, U.DisplayName
 ),

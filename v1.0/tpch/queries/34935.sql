@@ -13,7 +13,7 @@ OrderSummary AS (
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS rank
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
     GROUP BY o.o_orderkey, o.o_orderstatus
 ),
 SupplierPerformance AS (
@@ -34,4 +34,4 @@ WHERE n.n_regionkey IN (SELECT r.r_regionkey FROM region r WHERE r.r_name LIKE '
 GROUP BY n.n_name
 HAVING COALESCE(SUM(os.total_sales), 0) > 50000
 ORDER BY total_sales DESC, n.n_name
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

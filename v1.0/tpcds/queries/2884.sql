@@ -55,4 +55,4 @@ WHERE
     hpc.total_net_profit IS NOT NULL
 ORDER BY 
     hpc.total_net_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

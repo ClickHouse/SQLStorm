@@ -73,7 +73,7 @@ JOIN
         WHERE l.l_orderkey IN (
             SELECT o.o_orderkey
             FROM orders o
-            WHERE o.o_orderdate > toDate('1998-10-01') - INTERVAL 30 DAY
+            WHERE o.o_orderdate > DATE '1998-10-01' - INTERVAL '30 days'
             AND o.o_totalprice > 1000
         )
     )

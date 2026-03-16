@@ -25,7 +25,7 @@ JOIN lineitem l ON l.l_orderkey = o.o_orderkey
 JOIN part p ON l.l_partkey = p.p_partkey
 LEFT JOIN SupplierHierarchy sh ON s.s_suppkey = sh.s_suppkey
 WHERE r.r_name LIKE '%Europe%'
-    AND l.l_shipdate >= toDate('1997-01-01')
+    AND l.l_shipdate >= DATE '1997-01-01'
     AND (p.p_size IS NULL OR p.p_size > 10)
 GROUP BY n.n_name
 HAVING SUM(l.l_discount) > 50

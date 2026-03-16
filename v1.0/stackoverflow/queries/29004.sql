@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 RecentActivity AS (
     SELECT 
         PostId,
-        COUNT(CASE WHEN p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 END) AS RecentCommentCount,
+        COUNT(CASE WHEN p.LastActivityDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 1 END) AS RecentCommentCount,
         COUNT(CASE WHEN p.ClosedDate IS NOT NULL THEN 1 END) AS CloseCount
     FROM 
         Posts p

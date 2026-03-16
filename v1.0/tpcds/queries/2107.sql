@@ -69,7 +69,7 @@ final_report AS (
     LEFT JOIN 
         income_distribution id ON cs.c_current_cdemo_sk = id.hd_income_band_sk
     LEFT JOIN 
-        sales_by_time st ON st.d_year = toYear(CAST('2002-10-01' AS DATE))
+        sales_by_time st ON st.d_year = EXTRACT(YEAR FROM CAST('2002-10-01' AS DATE))
     WHERE 
         cs.total_sales > 500
 )

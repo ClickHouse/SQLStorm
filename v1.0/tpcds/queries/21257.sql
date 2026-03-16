@@ -68,4 +68,4 @@ WHERE
     AND (hvc.total_spent * 1.25) > (SELECT MAX(total_spent * 0.75) FROM HighValueCustomers)
 ORDER BY
     hvc.total_spent DESC, isum.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

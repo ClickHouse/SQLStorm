@@ -58,4 +58,4 @@ WHERE
     sales_difference > 0
 ORDER BY 
     ranking
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

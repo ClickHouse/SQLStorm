@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Votes v ON v.PostId = p.Id
     WHERE
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId
 ),

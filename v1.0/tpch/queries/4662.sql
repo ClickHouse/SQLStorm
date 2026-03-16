@@ -12,8 +12,8 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01') 
-        AND o.o_orderdate < toDate('1998-01-01')
+        o.o_orderdate >= DATE '1997-01-01' 
+        AND o.o_orderdate < DATE '1998-01-01'
 ),
 SupplierCosts AS (
     SELECT 
@@ -33,8 +33,8 @@ LineitemAnalysis AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= toDate('1997-01-01') 
-        AND l.l_shipdate < toDate('1998-01-01')
+        l.l_shipdate >= DATE '1997-01-01' 
+        AND l.l_shipdate < DATE '1998-01-01'
     GROUP BY 
         l.l_orderkey
 )
@@ -60,4 +60,4 @@ WHERE
     o.order_rank <= 5
 ORDER BY 
     o.o_orderdate DESC, o.o_totalprice DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

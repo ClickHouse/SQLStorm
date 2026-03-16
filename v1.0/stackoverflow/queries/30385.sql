@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 UserStats AS (
     SELECT 
@@ -43,7 +43,7 @@ RecentActivity AS (
     FROM 
         Posts p
     WHERE 
-        p.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     ORDER BY 
         p.LastActivityDate DESC
 ),

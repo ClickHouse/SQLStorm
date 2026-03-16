@@ -53,7 +53,7 @@ SELECT
     rp.Score,
     rp.Tags,
     COALESCE(rc.Text, 'No comments') AS RecentComment,
-    COALESCE(CAST(rc.CreationDate AS TEXT), 'N/A') AS CommentDate
+    COALESCE(rc.CreationDate::TEXT, 'N/A') AS CommentDate
 FROM 
     UserReputation up
 JOIN 

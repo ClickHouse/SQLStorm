@@ -29,7 +29,7 @@ TopCustomers AS (
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
         o.o_orderstatus = 'O' AND 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH
+        o.o_orderdate >= CURRENT_DATE - INTERVAL '12 months'
     GROUP BY 
         c.c_custkey, c.c_name
 ),

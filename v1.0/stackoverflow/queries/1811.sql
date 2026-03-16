@@ -22,7 +22,7 @@ PostStats AS (
         P.AnswerCount,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RecentPostRank
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
 UserSummary AS (
     SELECT 
@@ -49,7 +49,7 @@ SELECT
     END AS ReputationTier,
     CASE 
         WHEN US.TotalViews IS NULL THEN 'No Views Yet'
-        ELSE CAST(US.TotalViews AS TEXT) || ' Views'
+        ELSE US.TotalViews::TEXT || ' Views'
     END AS ViewsInfo
 FROM UserSummary US
 ORDER BY US.TotalBountySpent DESC NULLS LAST, US.Reputation DESC;

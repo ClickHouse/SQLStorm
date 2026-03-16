@@ -19,7 +19,7 @@ JOIN
 WHERE 
     p.p_name LIKE 'Cog%'
     AND l.l_returnflag = 'R' 
-    AND l.l_shipdate >= toDate('1996-01-01')
+    AND l.l_shipdate >= DATE '1996-01-01'
 GROUP BY 
     s.s_name, n.n_name, n.n_nationkey
 ORDER BY 

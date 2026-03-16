@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.PostTypeId, p.CreationDate, p.ViewCount
 ),
@@ -31,7 +31,7 @@ UserVoteSummary AS (
     LEFT JOIN 
         Votes v ON u.Id = v.UserId
     WHERE 
-        u.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
+        u.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
     GROUP BY 
         u.Id, u.DisplayName
 )

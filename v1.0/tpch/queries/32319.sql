@@ -10,7 +10,7 @@ OrderStats AS (
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderpriority, 
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 1 MONTH
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '1 month'
 ), 
 SupplierLineItems AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS net_revenue

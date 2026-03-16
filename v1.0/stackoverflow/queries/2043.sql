@@ -33,7 +33,7 @@ RecentVotes AS (
         ROW_NUMBER() OVER (PARTITION BY V.PostId ORDER BY V.CreationDate DESC) AS RecentVoteRank
     FROM Votes V
     JOIN VoteTypes vt ON V.VoteTypeId = vt.Id
-    WHERE V.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    WHERE V.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
 )
 
 SELECT 

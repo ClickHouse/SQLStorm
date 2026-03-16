@@ -7,14 +7,14 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.CreationDate,
         u.DisplayName AS OwnerUser,
-        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.ViewCount DESC) AS RankYearly
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.ViewCount DESC) AS RankYearly
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= DATE('2024-10-01') - INTERVAL 5 YEAR
+        AND p.CreationDate >= DATE('2024-10-01') - INTERVAL '5 years'
 ),
 PopularTags AS (
     SELECT 

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 
 PostComments AS (
@@ -55,6 +55,6 @@ LEFT JOIN
     PostHistories ph ON rp.PostId = ph.PostId
 WHERE 
     rp.PostRank <= 5
-    AND (ph.LastClosedDate IS NULL OR ph.LastClosedDate < cast('2024-10-01' as date) - INTERVAL 30 DAY)
+    AND (ph.LastClosedDate IS NULL OR ph.LastClosedDate < cast('2024-10-01' as date) - INTERVAL '30 days')
 ORDER BY 
     rp.Score DESC, rp.ViewCount DESC;

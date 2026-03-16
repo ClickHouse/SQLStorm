@@ -50,7 +50,7 @@ RecentActivity AS (
     SELECT 
         p.Id AS PostId,
         COUNT(c.Id) AS CommentCount,
-        (toDateTime64('2024-10-01 12:34:56', 6) - MAX(c.CreationDate)) AS DaysSinceLastComment
+        (TIMESTAMP '2024-10-01 12:34:56' - MAX(c.CreationDate)) AS DaysSinceLastComment
     FROM 
         Posts p
     LEFT JOIN 
@@ -76,7 +76,7 @@ SELECT
     ra.DaysSinceLastComment,
     CASE 
         WHEN ra.DaysSinceLastComment IS NULL THEN 'No Comments Yet' 
-        WHEN ra.DaysSinceLastComment < INTERVAL 30 DAY THEN 'Recently Active'
+        WHEN ra.DaysSinceLastComment < INTERVAL '30 days' THEN 'Recently Active'
         ELSE 'Stale Post'
     END AS ActivityStatus,
     CASE 

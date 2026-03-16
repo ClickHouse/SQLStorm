@@ -24,7 +24,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON POSITION(',' || t.TagName || ',' IN ',' || p.Tags || ',') > 0
     WHERE 
-        p.CreationDate >= toDate('2023-01-01') 
+        p.CreationDate >= DATE '2023-01-01' 
         AND p.Score IS NOT NULL
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.Body, p.CreationDate, p.ViewCount, pt.Name

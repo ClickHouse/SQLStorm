@@ -14,7 +14,7 @@ WITH RECURSIVE sales_hierarchy AS (
 filtered_customers AS (
     SELECT c.c_customer_id, c.c_first_name, c.c_last_name, d.d_date, 
            SUM(ws_ext_sales_price) AS total_sales,
-           RANK() OVER (PARTITION BY toYear(d.d_date) ORDER BY SUM(ws_ext_sales_price) DESC) AS sales_rank
+           RANK() OVER (PARTITION BY EXTRACT(YEAR FROM d.d_date) ORDER BY SUM(ws_ext_sales_price) DESC) AS sales_rank
     FROM customer c
     JOIN web_sales ws ON c.c_customer_sk = ws.ws_ship_customer_sk
     JOIN date_dim d ON ws.ws_sold_date_sk = d.d_date_sk

@@ -18,7 +18,7 @@ RecentPostActivity AS (
            COUNT(*) AS RecentPosts,
            MAX(P.CreationDate) AS LastPostDate
     FROM Posts P
-    WHERE P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    WHERE P.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
     GROUP BY P.OwnerUserId
 ),
 AverageScores AS (
@@ -30,7 +30,7 @@ AverageScores AS (
 ActiveUsers AS (
     SELECT UA.*, 
            COALESCE(RPA.RecentPosts, 0) AS RecentPosts,
-           COALESCE(RPA.LastPostDate, CAST('1970-01-01' AS DATE)) AS LastPostDate,
+           COALESCE(RPA.LastPostDate, '1970-01-01'::DATE) AS LastPostDate,
            COALESCE(AScores.AvgScore, 0) AS AvgScore
     FROM UserActivity UA
     LEFT JOIN RecentPostActivity RPA ON UA.UserId = RPA.OwnerUserId

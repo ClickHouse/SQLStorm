@@ -83,4 +83,4 @@ WHERE
     f.net_sales > (SELECT AVG(net_sales) FROM final_report)
 ORDER BY 
     f.net_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -62,4 +62,4 @@ WHERE
     (sr.total_returns > 0 OR sr.total_quantity > 100)
 ORDER BY 
     sr.total_net_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

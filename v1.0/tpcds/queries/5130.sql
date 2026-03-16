@@ -41,7 +41,7 @@ SELECT
     total_sales_quantity,
     total_sales_profit,
     CASE 
-        WHEN total_sales_quantity > 0 THEN (CAST(total_returns AS decimal) / total_sales_quantity) * 100 
+        WHEN total_sales_quantity > 0 THEN (total_returns::decimal / total_sales_quantity) * 100 
         ELSE 0 
     END AS return_rate_percentage
 FROM

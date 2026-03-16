@@ -44,4 +44,4 @@ LEFT JOIN OrderStats os ON os.o_totalprice = (SELECT MAX(o_totalprice) FROM Orde
 INNER JOIN CustomerNation cn ON cn.order_count = (SELECT MAX(order_count) FROM CustomerNation)
 WHERE p.p_size BETWEEN 1 AND 100
 ORDER BY p.p_partkey, sale_status DESC NULLS LAST
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

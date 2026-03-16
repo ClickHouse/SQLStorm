@@ -23,11 +23,11 @@ WHERE p.p_size BETWEEN 1 AND 30
       SELECT 1
       FROM orders o
       WHERE o.o_orderkey = l.l_orderkey
-        AND o.o_orderdate >= toDate('1996-01-01')
+        AND o.o_orderdate >= DATE '1996-01-01'
         AND o.o_orderstatus IN ('O', 'F')
   )
 GROUP BY p.p_partkey, p.p_name, p.p_retailprice
 HAVING SUM(ps.ps_availqty) > 100
    AND MAX(p.p_retailprice) BETWEEN 10.00 AND 100.00
 ORDER BY supplier_count DESC, discounted_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

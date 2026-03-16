@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id AND v.VoteTypeId = 8  
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 365 DAY 
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '365 days' 
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, pt.Name
 ),

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 
 PostHistoryDetails AS (
@@ -27,7 +27,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes cht ON ph.PostHistoryTypeId = cht.Id
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND
+        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND
         cht.Id IN (1, 4, 10) 
     GROUP BY 
         ph.PostId
@@ -87,4 +87,4 @@ FROM
     FinalReport
 ORDER BY 
     Score DESC, ViewCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

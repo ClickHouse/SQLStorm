@@ -33,8 +33,8 @@ SELECT
     rm.title,
     rm.production_year,
     rm.keyword_count,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(rm.cast_names AS text)))), ', ') AS full_cast,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(rm.company_names AS text)))), ', ') AS production_companies
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.cast_names::text))), ', ') AS full_cast,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rm.company_names::text))), ', ') AS production_companies
 FROM 
     RankedMovies rm
 JOIN 

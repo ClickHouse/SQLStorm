@@ -18,7 +18,7 @@ RecentPosts AS (
         P.Score,
         RANK() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RecentPostRank
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 366 DAY
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '366 days'
 ),
 ClosedPosts AS (
     SELECT 
@@ -62,7 +62,7 @@ LEFT JOIN (
 LEFT JOIN ClosedPosts CP ON U.Id = CP.UserId
 WHERE 
     U.Reputation > 500 
-    AND U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    AND U.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 GROUP BY U.DisplayName
 HAVING COUNT(DISTINCT CP.PostId) > 0
 ORDER BY U.DisplayName;

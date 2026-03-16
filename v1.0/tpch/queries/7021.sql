@@ -17,7 +17,7 @@ WITH HistoricalData AS (
     JOIN 
         nation n ON s.s_nationkey = n.n_nationkey
     WHERE 
-        o.o_orderdate BETWEEN toDate('1994-01-01') AND toDate('1995-01-01')
+        o.o_orderdate BETWEEN DATE '1994-01-01' AND DATE '1995-01-01'
     GROUP BY 
         customer_name, nation_name
 ),

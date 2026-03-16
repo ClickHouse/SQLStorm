@@ -66,7 +66,7 @@ SELECT
         WHEN fm.total_actors > 10 THEN 'Ensemble Cast' 
         ELSE 'Standard Cast' 
     END AS cast_type,
-    ROUND((toYear(cast('2024-10-01' as date)) - fm.production_year) * 1.0 / NULLIF(toYear(cast('2024-10-01' as date)) - 2000, 0), 2) AS age_factor 
+    ROUND((EXTRACT(YEAR FROM cast('2024-10-01' as date)) - fm.production_year) * 1.0 / NULLIF(EXTRACT(YEAR FROM cast('2024-10-01' as date)) - 2000, 0), 2) AS age_factor 
 FROM 
     FilteredMovies AS fm
 LEFT JOIN 

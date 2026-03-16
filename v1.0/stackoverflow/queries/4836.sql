@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 UserBadges AS (
     SELECT 
@@ -78,6 +78,6 @@ SELECT
 FROM 
     FinalResults
 WHERE 
-    (LastClosedTime IS NULL OR LastClosedTime < CURRENT_DATE - INTERVAL 6 MONTH)
+    (LastClosedTime IS NULL OR LastClosedTime < CURRENT_DATE - INTERVAL '6 months')
 ORDER BY 
     Score DESC;

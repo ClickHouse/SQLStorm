@@ -64,4 +64,4 @@ WHERE UA.TotalPosts > (
 )
 OR UA.GoldBadges > 2
 ORDER BY UA.TotalPosts DESC, R.Reputation DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

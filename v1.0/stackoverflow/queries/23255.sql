@@ -24,7 +24,7 @@ PostStats AS (
     FROM Posts P
     LEFT JOIN Comments C ON C.PostId = P.Id
     LEFT JOIN Votes V ON V.PostId = P.Id AND V.VoteTypeId IN (8, 9) 
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
     GROUP BY P.Id, P.Title, P.CreationDate, P.OwnerUserId, P.Score
 ),
 PostHistoryAggregates AS (

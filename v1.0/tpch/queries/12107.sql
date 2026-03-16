@@ -15,8 +15,8 @@ JOIN
 JOIN 
     orders ON l_orderkey = o_orderkey 
 WHERE 
-    o_orderdate >= toDate('1996-01-01') 
-    AND o_orderdate < toDate('1997-01-01') 
+    o_orderdate >= DATE '1996-01-01' 
+    AND o_orderdate < DATE '1997-01-01' 
 GROUP BY 
     n_nationkey, n_name 
 ORDER BY 

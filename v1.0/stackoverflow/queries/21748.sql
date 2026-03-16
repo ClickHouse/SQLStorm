@@ -12,11 +12,11 @@ WITH UserActivity AS (
     FROM 
         Users u
     LEFT JOIN 
-        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     LEFT JOIN 
-        Comments c ON u.Id = c.UserId AND c.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        Comments c ON u.Id = c.UserId AND c.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     LEFT JOIN 
-        Votes v ON u.Id = v.UserId AND v.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        Votes v ON u.Id = v.UserId AND v.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     GROUP BY 
@@ -50,7 +50,7 @@ SELECT
     (SELECT COUNT(DISTINCT ph.Id) 
      FROM PostHistory ph 
      JOIN Posts pp ON ph.PostId = pp.Id 
-     WHERE pp.OwnerUserId = tu.UserId AND ph.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)) AS RecentEdits,
+     WHERE pp.OwnerUserId = tu.UserId AND ph.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')) AS RecentEdits,
     (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tg.TagName))), ', ') 
      FROM Posts p 
      JOIN Tags tg ON p.Tags LIKE '%' || tg.TagName || '%' 

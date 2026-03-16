@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 TopUsers AS (
     SELECT 
@@ -33,7 +33,7 @@ TopUsers AS (
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR AND toDateTime64('2024-10-01 12:34:56', 6)
+        u.CreationDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 years' AND TIMESTAMP '2024-10-01 12:34:56'
     GROUP BY 
         u.Id, u.DisplayName
 )

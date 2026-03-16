@@ -29,7 +29,7 @@ PostRankings AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 ClosedPosts AS (
     SELECT 
@@ -71,7 +71,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON b.UserId = u.Id
 LEFT JOIN 
-    Posts p ON p.OwnerUserId = u.Id AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 60 DAY
+    Posts p ON p.OwnerUserId = u.Id AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '60 days'
 WHERE 
     u.Reputation IS NOT NULL 
     AND u.Location IS NOT NULL

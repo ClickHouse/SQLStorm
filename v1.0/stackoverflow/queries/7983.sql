@@ -30,7 +30,7 @@ PostStats AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(p.ViewCount) AS TotalViews
     FROM Posts p
-    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY p.OwnerUserId
 )
 SELECT 

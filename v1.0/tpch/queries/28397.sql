@@ -32,4 +32,4 @@ WHERE sp.ps_availqty > 0
   AND co.o_orderstatus = 'O'
   AND pd.total_quantity > 10
 ORDER BY sp.p_brand, sp.p_name, co.o_orderdate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

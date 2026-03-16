@@ -22,11 +22,11 @@ sales_summary AS (
         SUM(ss_ext_sales_price) AS total_sales,
         COUNT(ss_ticket_number) AS total_transactions,
         COUNT(DISTINCT ss_customer_sk) AS unique_customers,
-        toMonth(cast('2002-10-01' as date)) AS current_month
+        EXTRACT(MONTH FROM cast('2002-10-01' as date)) AS current_month
     FROM 
         store_sales 
     WHERE 
-        ss_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL 30 DAY)
+        ss_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL '30 days')
 )
 SELECT 
     ci.full_name,

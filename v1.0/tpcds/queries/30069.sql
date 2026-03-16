@@ -54,4 +54,4 @@ HAVING
     SUM(ss.ss_net_paid_inc_tax) > 1000
 ORDER BY 
     total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

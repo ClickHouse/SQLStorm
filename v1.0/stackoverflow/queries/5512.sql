@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.CreationDate DESC) AS Rank
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 TopPosts AS (
     SELECT 

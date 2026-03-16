@@ -5,7 +5,7 @@ WITH RecentVotes AS (
         COUNT(CASE WHEN v.VoteTypeId = 3 THEN 1 END) AS DownVotes,
         COUNT(CASE WHEN v.VoteTypeId IN (6, 7) THEN 1 END) AS CloseReopenVotes
     FROM Votes v
-    WHERE v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY v.PostId
 ),
 PostAnalytics AS (

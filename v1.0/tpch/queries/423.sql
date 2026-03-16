@@ -31,7 +31,7 @@ FROM lineitem l
 JOIN orders o ON l.l_orderkey = o.o_orderkey
 JOIN HighSpendingCustomers c ON o.o_custkey = c.c_custkey
 JOIN TopSuppliers s ON l.l_suppkey = s.s_suppkey
-WHERE o.o_orderdate >= toDate('1997-01-01')
+WHERE o.o_orderdate >= DATE '1997-01-01'
   AND o.o_orderstatus = 'O'
 GROUP BY s.s_name, c.c_name
 HAVING COUNT(o.o_orderkey) >= 5

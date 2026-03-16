@@ -11,7 +11,7 @@ WITH RegionalSales AS (
     JOIN nation ON s_nationkey = n_nationkey
     JOIN region ON n_regionkey = r_regionkey
     WHERE
-        o_orderdate >= toDate('1996-01-01') AND o_orderdate < toDate('1997-01-01')
+        o_orderdate >= DATE '1996-01-01' AND o_orderdate < DATE '1997-01-01'
     GROUP BY
         r_name
 ),

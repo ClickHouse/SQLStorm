@@ -49,7 +49,7 @@ UserActivity AS (
     JOIN 
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE 
-        v.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        v.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         v.UserId
 )

@@ -34,7 +34,7 @@ RecentOrders AS (
         LEFT JOIN customer c ON ro.o_orderkey = c.c_custkey  
     WHERE 
         ro.rn = 1 
-        AND ro.o_orderdate >= toDate('1998-10-01') - INTERVAL 1 MONTH
+        AND ro.o_orderdate >= DATE '1998-10-01' - INTERVAL '1 month'
 )
 SELECT 
     r.r_name,
@@ -51,7 +51,7 @@ FROM
     LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
     LEFT JOIN RecentOrders ro ON o.o_orderkey = ro.o_orderkey
 WHERE 
-    li.l_shipdate >= toDate('1997-01-01')
+    li.l_shipdate >= DATE '1997-01-01'
     AND (li.l_returnflag = 'N' OR li.l_returnflag IS NULL)
 GROUP BY 
     r.r_name,
@@ -68,4 +68,4 @@ HAVING
     )
 ORDER BY 
     total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

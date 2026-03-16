@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
         AND p.PostTypeId IN (1, 2) 
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, p.ViewCount, u.DisplayName

@@ -23,4 +23,4 @@ JOIN part_supplier ps ON sn.s_suppkey = ps.p_partkey
 GROUP BY sn.nation_name, ps.p_name
 HAVING SUM(ps.ps_availqty) > 100
 ORDER BY total_supply_cost DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

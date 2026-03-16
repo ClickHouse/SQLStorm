@@ -71,7 +71,7 @@ LEFT JOIN
 LEFT JOIN 
     ClosedPosts C ON P.PostId = C.PostId
 WHERE 
-    (U.Reputation > 100 OR U.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)) 
+    (U.Reputation > 100 OR U.CreationDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')) 
     AND P.RecentPostRow <= 5
 ORDER BY 
     U.Reputation DESC, 

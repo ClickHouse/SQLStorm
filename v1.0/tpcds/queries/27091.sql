@@ -20,12 +20,12 @@ WITH customer_summary AS (
 age_distribution AS (
     SELECT 
         CASE 
-            WHEN toYear(CURRENT_DATE) - c_birth_year < 18 THEN 'Under 18'
-            WHEN toYear(CURRENT_DATE) - c_birth_year BETWEEN 18 AND 25 THEN '18-25'
-            WHEN toYear(CURRENT_DATE) - c_birth_year BETWEEN 26 AND 35 THEN '26-35'
-            WHEN toYear(CURRENT_DATE) - c_birth_year BETWEEN 36 AND 45 THEN '36-45'
-            WHEN toYear(CURRENT_DATE) - c_birth_year BETWEEN 46 AND 55 THEN '46-55'
-            WHEN toYear(CURRENT_DATE) - c_birth_year BETWEEN 56 AND 65 THEN '56-65'
+            WHEN EXTRACT(YEAR FROM CURRENT_DATE) - c_birth_year < 18 THEN 'Under 18'
+            WHEN EXTRACT(YEAR FROM CURRENT_DATE) - c_birth_year BETWEEN 18 AND 25 THEN '18-25'
+            WHEN EXTRACT(YEAR FROM CURRENT_DATE) - c_birth_year BETWEEN 26 AND 35 THEN '26-35'
+            WHEN EXTRACT(YEAR FROM CURRENT_DATE) - c_birth_year BETWEEN 36 AND 45 THEN '36-45'
+            WHEN EXTRACT(YEAR FROM CURRENT_DATE) - c_birth_year BETWEEN 46 AND 55 THEN '46-55'
+            WHEN EXTRACT(YEAR FROM CURRENT_DATE) - c_birth_year BETWEEN 56 AND 65 THEN '56-65'
             ELSE '66 and over'
         END AS age_group,
         COUNT(*) AS customer_count
@@ -45,12 +45,12 @@ SELECT
     ad.customer_count AS customers_in_age_group
 FROM customer_summary cs
 JOIN age_distribution ad ON ad.age_group = CASE 
-                                              WHEN toYear(CURRENT_DATE) - cs.c_birth_year < 18 THEN 'Under 18'
-                                              WHEN toYear(CURRENT_DATE) - cs.c_birth_year BETWEEN 18 AND 25 THEN '18-25'
-                                              WHEN toYear(CURRENT_DATE) - cs.c_birth_year BETWEEN 26 AND 35 THEN '26-35'
-                                              WHEN toYear(CURRENT_DATE) - cs.c_birth_year BETWEEN 36 AND 45 THEN '36-45'
-                                              WHEN toYear(CURRENT_DATE) - cs.c_birth_year BETWEEN 46 AND 55 THEN '46-55'
-                                              WHEN toYear(CURRENT_DATE) - cs.c_birth_year BETWEEN 56 AND 65 THEN '56-65'
+                                              WHEN EXTRACT(YEAR FROM CURRENT_DATE) - cs.c_birth_year < 18 THEN 'Under 18'
+                                              WHEN EXTRACT(YEAR FROM CURRENT_DATE) - cs.c_birth_year BETWEEN 18 AND 25 THEN '18-25'
+                                              WHEN EXTRACT(YEAR FROM CURRENT_DATE) - cs.c_birth_year BETWEEN 26 AND 35 THEN '26-35'
+                                              WHEN EXTRACT(YEAR FROM CURRENT_DATE) - cs.c_birth_year BETWEEN 36 AND 45 THEN '36-45'
+                                              WHEN EXTRACT(YEAR FROM CURRENT_DATE) - cs.c_birth_year BETWEEN 46 AND 55 THEN '46-55'
+                                              WHEN EXTRACT(YEAR FROM CURRENT_DATE) - cs.c_birth_year BETWEEN 56 AND 65 THEN '56-65'
                                               ELSE '66 and over'
                                           END
 ORDER BY cs.total_net_profit DESC, cs.full_name;

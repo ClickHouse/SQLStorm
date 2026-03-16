@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 
 TagStatistics AS (
@@ -28,7 +28,7 @@ TagStatistics AS (
     JOIN 
         Posts p ON p.Tags LIKE CONCAT('%<', t.TagName, '>%') 
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
     GROUP BY 
         t.TagName
 ),
@@ -63,7 +63,7 @@ RecentComments AS (
     JOIN 
         Users u ON c.UserId = u.Id
     WHERE 
-        c.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
+        c.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' 
 )
 
 SELECT 

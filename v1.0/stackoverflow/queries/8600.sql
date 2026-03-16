@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 TagStatistics AS (
     SELECT
@@ -51,7 +51,7 @@ RecentPostHistory AS (
     JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 7 DAY
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '7 days'
     ORDER BY 
         ph.CreationDate DESC
 )

@@ -17,7 +17,7 @@ PostStatistics AS (
         AVG(P.Score) AS AvgScore
     FROM Posts P
     LEFT JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY P.OwnerUserId
 ),
 ClosedPosts AS (
@@ -61,6 +61,6 @@ FROM Users U
 LEFT JOIN UserBadges UB ON U.Id = UB.UserId
 LEFT JOIN PostStatistics PS ON U.Id = PS.OwnerUserId
 LEFT JOIN ClosedPosts CP ON PS.OwnerUserId = CP.PostId
-WHERE U.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
+WHERE U.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years'
 ORDER BY U.Reputation DESC
 LIMIT 100;

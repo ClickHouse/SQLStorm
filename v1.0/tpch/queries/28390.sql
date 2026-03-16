@@ -22,7 +22,7 @@ JOIN
 WHERE 
     c.c_mktsegment = 'BUILDING'
     AND s.s_comment LIKE '%reliable%'
-    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     s.s_suppkey, s.s_name, c.c_custkey, c.c_name, c.c_acctbal, s.s_nationkey
 ORDER BY 

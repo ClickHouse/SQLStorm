@@ -49,4 +49,4 @@ LEFT JOIN web_sales ws ON ah.c_customer_sk = ws.ws_bill_customer_sk
 GROUP BY ah.c_first_name, ah.c_last_name, rs.price_category, rs.sales_rank, cp.promotion_count
 HAVING COALESCE(SUM(ws.ws_quantity), 0) > 5 OR (COALESCE(cp.promotion_count, 0) > 2 AND rs.sales_rank <= 3)
 ORDER BY total_quantity DESC, customer_name
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

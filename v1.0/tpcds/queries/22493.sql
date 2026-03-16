@@ -62,4 +62,4 @@ AND
 ORDER BY 
     total_return_amt DESC,
     full_name ASC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

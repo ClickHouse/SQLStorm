@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank
     FROM Posts p
-    WHERE p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
+    WHERE p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
 ),
 TopPosts AS (
     SELECT PostId, Title, Score, ViewCount

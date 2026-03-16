@@ -48,7 +48,7 @@ SELECT
     COALESCE(PH.HistoryCount, 0) AS PostHistoryCount,
     COALESCE(PH.Comments, '') AS UserComments,
     COUNT(DISTINCT CP.PostId) AS ClosedPostCount,
-    SUM(CASE WHEN CP.CloseDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS RecentlyClosedPosts
+    SUM(CASE WHEN CP.CloseDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '30 days' THEN 1 ELSE 0 END) AS RecentlyClosedPosts
 FROM RankedUsers RU
 LEFT JOIN PostHistoryAggregates PH ON RU.UserId = PH.UserId
 LEFT JOIN ClosedPosts CP ON RU.UserId = CP.OwnerUserId

@@ -4,7 +4,7 @@ WITH RECURSIVE OrderCTE AS (
            ROW_NUMBER() OVER (PARTITION BY c.c_nationkey ORDER BY o.o_totalprice DESC) AS rank_order
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
 ), 
 SupplierCTE AS (
     SELECT ps.ps_partkey, ps.ps_suppkey, SUM(ps.ps_availqty) AS total_availqty,
@@ -39,7 +39,7 @@ FROM part p
 LEFT JOIN FilteredOrders f ON p.p_partkey = f.o_orderkey
 LEFT JOIN SupplierCTE s ON p.p_partkey = s.ps_partkey
 WHERE p.p_retailprice > 100.00 
-  AND toMonth(toDate('1998-10-01')) = 10
+  AND EXTRACT(MONTH FROM DATE '1998-10-01') = 10
   AND s.total_availqty IS NOT NULL
 ORDER BY part_rank
 LIMIT 50;

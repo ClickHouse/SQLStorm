@@ -7,7 +7,7 @@ WITH sales_summary AS (
         AVG(store_sales.ss_quantity) AS avg_quantity_per_transaction,
         MAX(store_sales.ss_sales_price) AS max_sale_price,
         MIN(store_sales.ss_sales_price) AS min_sale_price,
-        toYear(date_dim.d_date) AS sales_year
+        EXTRACT(YEAR FROM date_dim.d_date) AS sales_year
     FROM 
         store_sales
     JOIN 

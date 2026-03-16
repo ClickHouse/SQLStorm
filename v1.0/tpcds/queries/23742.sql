@@ -51,4 +51,4 @@ AND EXISTS (
     HAVING COUNT(cs.cs_order_number) > 5
 )
 ORDER BY ea.featured_price DESC, total_returns ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

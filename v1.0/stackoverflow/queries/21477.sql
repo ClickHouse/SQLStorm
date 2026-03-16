@@ -73,4 +73,4 @@ WHERE
     AND (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rp.PostId AND v.VoteTypeId = 2) > 1 
 ORDER BY 
     us.TotalUpVotes DESC, us.DisplayName ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

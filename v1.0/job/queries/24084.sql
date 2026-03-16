@@ -63,5 +63,5 @@ ORDER BY
     rt.production_year DESC, 
     info_quality, 
     rt.title
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;
 

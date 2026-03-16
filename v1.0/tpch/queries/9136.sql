@@ -9,7 +9,7 @@ WITH RankedSuppliers AS (
     SELECT o.o_orderkey, o.o_orderdate, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderstatus = 'F' AND l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1997-12-31')
+    WHERE o.o_orderstatus = 'F' AND l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1997-12-31'
     GROUP BY o.o_orderkey, o.o_orderdate
 ), SupplierContribution AS (
     SELECT rs.s_suppkey, oss.total_revenue, COUNT(*) AS order_count

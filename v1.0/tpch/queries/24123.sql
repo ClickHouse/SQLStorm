@@ -47,4 +47,4 @@ WHERE p.p_retailprice BETWEEN 100.00 AND 500.00
 AND COALESCE(ss.avg_cost, 0) < (SELECT AVG(ps_supplycost) FROM partsupp)
 OR (p.p_comment LIKE '%fragile%' AND ss.supplier_count < 5)
 ORDER BY price_rank, cs.total_spent DESC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

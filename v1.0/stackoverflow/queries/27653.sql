@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         Tags t ON t.TagName = tag_name
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR  
+        AND p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'  
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate
     ORDER BY 
@@ -40,7 +40,7 @@ RecentActivities AS (
     JOIN 
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
-        ph.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 MONTH  
+        ph.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 month'  
         AND ph.PostId IN (SELECT PostId FROM RankedPosts)
 )
 SELECT 

@@ -22,7 +22,7 @@ JOIN
 WHERE 
     p.p_retailprice BETWEEN 10.00 AND 100.00
     AND c.c_mktsegment = 'BUILDING'
-    AND l.l_shipdate >= toDate('1997-01-01')
+    AND l.l_shipdate >= DATE '1997-01-01'
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey
 ORDER BY 

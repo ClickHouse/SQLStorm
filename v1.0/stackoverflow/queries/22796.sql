@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
       AND P.Score > 0
 ),
 TopUsers AS (
@@ -70,4 +70,4 @@ WHERE
 ORDER BY 
     RP.Score DESC, 
     TU.TotalReputation DESC NULLS LAST
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

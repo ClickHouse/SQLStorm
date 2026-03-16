@@ -58,4 +58,4 @@ LEFT JOIN HighValueCustomers h ON f.c_customer_sk = h.c_customer_sk
 CROSS JOIN (SELECT DISTINCT i_category FROM item) AS ch
 WHERE f.sales_rank <= 50
 ORDER BY f.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

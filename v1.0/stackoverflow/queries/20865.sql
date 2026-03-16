@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > CURRENT_DATE - INTERVAL 5 YEAR
+        p.CreationDate > CURRENT_DATE - INTERVAL '5 years'
 ),
 UserVoteStats AS (
     SELECT 

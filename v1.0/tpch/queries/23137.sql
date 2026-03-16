@@ -24,10 +24,10 @@ RecentOrders AS (
         o.o_orderkey,
         o.o_totalprice,
         o.o_orderdate,
-        toYear(o.o_orderdate) AS order_year
+        EXTRACT(YEAR FROM o.o_orderdate) AS order_year
     FROM orders o
     WHERE o.o_orderstatus = 'O'
-      AND o.o_orderdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
+      AND o.o_orderdate >= DATE '1998-10-01' - INTERVAL '1 year'
 ),
 HighValueLineItems AS (
     SELECT 

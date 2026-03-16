@@ -48,4 +48,4 @@ GROUP BY
     sd.cd_marital_status
 ORDER BY 
     total_sales_value DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

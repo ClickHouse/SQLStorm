@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR
+        AND p.CreationDate > DATE '2024-10-01' - INTERVAL '1 year'
 ),
 TagStatistics AS (
     SELECT 

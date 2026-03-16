@@ -8,7 +8,7 @@ WITH RankedTags AS (
     JOIN 
         (SELECT arrayJoin(splitByString('><', substring(Posts.Tags, 2, length(Posts.Tags) - 2))) AS TagName) AS Tags ON true 
     WHERE 
-        Posts.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        Posts.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY 
         Tags.TagName 
     HAVING 
@@ -68,7 +68,7 @@ PostInsights AS (
     LEFT JOIN 
         UserEngagement ON UserEngagement.UserId = Posts.OwnerUserId 
     WHERE 
-        Posts.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        Posts.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
 )
 SELECT 
     PostInsights.*, 

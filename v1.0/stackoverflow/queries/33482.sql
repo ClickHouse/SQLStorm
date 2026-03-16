@@ -37,7 +37,7 @@ PostHistoryRecords AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId
 ),

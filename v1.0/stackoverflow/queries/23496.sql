@@ -56,5 +56,5 @@ LEFT JOIN PostSummary ps ON u.Id = ps.OwnerUserId
 LEFT JOIN VoteCounts vcs ON u.Id = vcs.UserId
 WHERE u.Reputation > 1000 AND (COALESCE(ubs.TotalBadges, 0) > 2 OR COALESCE(ps.TotalPosts, 0) > 5)
 ORDER BY Rank, u.DisplayName
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
 

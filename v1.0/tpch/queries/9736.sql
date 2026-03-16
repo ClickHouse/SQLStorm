@@ -46,7 +46,7 @@ JOIN
 JOIN 
     lineitem l ON l.l_orderkey = o.o_orderkey
 WHERE 
-    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     ts.s_name
 ORDER BY 

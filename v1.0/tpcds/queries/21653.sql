@@ -79,4 +79,4 @@ WHERE
 ORDER BY 
     total_sales DESC,
     ci.c_customer_sk ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

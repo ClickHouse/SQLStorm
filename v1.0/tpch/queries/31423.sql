@@ -19,7 +19,7 @@ WITH RECURSIVE RegionSales AS (
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
         o.o_orderstatus = 'F' 
-        AND l.l_shipdate >= toDate('1997-01-01')
+        AND l.l_shipdate >= DATE '1997-01-01'
     GROUP BY 
         r.r_name
     UNION ALL
@@ -33,7 +33,7 @@ WITH RECURSIVE RegionSales AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate > toDate('1998-10-01') - INTERVAL 1 YEAR
+        l.l_shipdate > DATE '1998-10-01' - INTERVAL '1 year'
     GROUP BY 
         RS.region_name
 ),

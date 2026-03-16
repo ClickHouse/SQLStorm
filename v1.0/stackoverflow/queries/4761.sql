@@ -64,6 +64,6 @@ FROM
 WHERE 
     u.Rank <= 10 
     AND u.TotalViews IS NOT NULL
-    AND u.LastPostDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    AND u.LastPostDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ORDER BY 
     u.Rank;

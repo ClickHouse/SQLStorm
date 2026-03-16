@@ -46,7 +46,7 @@ ActivePosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) AND
+        P.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days') AND
         P.ViewCount > 100
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score

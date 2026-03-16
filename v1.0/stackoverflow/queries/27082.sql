@@ -61,7 +61,7 @@ SELECT
 FROM 
     RatedPosts rp
 WHERE 
-    rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+    rp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
 ORDER BY 
     rp.VoteScore DESC, 
     rp.CreationDate DESC

@@ -44,7 +44,7 @@ SELECT
     COALESCE(CRA.CloseReasons, 'None') AS CloseReasons,
     COALESCE(PLS.LinkCount, 0) AS TotalLinks,
     PLS.LastLinkDate,
-    toYear(AGE(UA.LastPostDate)) AS YearsSinceLastPost,
+    EXTRACT(YEAR FROM AGE(UA.LastPostDate)) AS YearsSinceLastPost,
     CASE 
         WHEN UA.Reputation > 2000 THEN 'High Reputation'
         WHEN UA.Reputation > 1000 THEN 'Medium Reputation'

@@ -19,7 +19,7 @@ WITH RankedPosts AS (
         Badges b ON u.Id = b.UserId
     WHERE 
         p.PostTypeId = 1 AND
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.ViewCount, p.CreationDate, p.Score
 ),

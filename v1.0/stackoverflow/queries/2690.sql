@@ -17,7 +17,7 @@ PostDetails AS (
     JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL 90 DAY
+    WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL '90 days'
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.DisplayName
 ),
 PostHistorySummary AS (

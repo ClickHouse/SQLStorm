@@ -6,7 +6,7 @@ WITH RankedVotes AS (
            ROW_NUMBER() OVER(PARTITION BY p.Id ORDER BY COUNT(v.Id) DESC) AS Rank
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY p.Id, v.VoteTypeId
 ),
 TopPosts AS (
@@ -34,6 +34,6 @@ SELECT tp.Title,
        tp.CommentCount, 
        tp.BadgeCount, 
        tp.ViewCount, 
-       toYear(tp.CreationDate) AS CreationYear
+       EXTRACT(YEAR FROM tp.CreationDate) AS CreationYear
 FROM TopPosts tp
 ORDER BY tp.Upvotes DESC, tp.CreationDate DESC;

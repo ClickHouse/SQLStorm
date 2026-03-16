@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (10, 11) 
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 YEAR' 
         AND p.ViewCount IS NOT NULL
 ),
 TopRankedPosts AS (

@@ -54,4 +54,4 @@ WHERE
     AND (cs.num_actors IS NOT NULL OR ki.keywords IS NOT NULL)
 ORDER BY 
     rm.year_rank, cs.num_actors DESC NULLS LAST, rm.title
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

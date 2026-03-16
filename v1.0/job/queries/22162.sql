@@ -45,7 +45,7 @@ ranked_movies AS (
         mi.synopsis,
         mi.budget,
         mi.revenue,
-        RANK() OVER (ORDER BY COALESCE(CAST(mi.revenue AS numeric), 0) DESC) AS revenue_rank
+        RANK() OVER (ORDER BY COALESCE(mi.revenue::numeric, 0) DESC) AS revenue_rank
     FROM 
         aka_title m
     LEFT JOIN 

@@ -17,7 +17,7 @@ TopPosts AS (
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 PostVotes AS (
     SELECT 
@@ -81,4 +81,4 @@ SELECT
 FROM FinalPostAnalytics fpa
 WHERE fpa.UpVotes - fpa.DownVotes > 10
 ORDER BY fpa.OverallRank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

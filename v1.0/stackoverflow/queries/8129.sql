@@ -36,7 +36,7 @@ ActivePosts AS (
     JOIN 
         RankedUsers R ON U.Id = R.UserId
     WHERE 
-        P.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        P.LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ),
 PostInteraction AS (
     SELECT 

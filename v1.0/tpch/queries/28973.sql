@@ -26,7 +26,7 @@ JOIN
 WHERE 
     p.p_size BETWEEN 1 AND 20
     AND s.s_acctbal > 1000.00
-    AND l.l_shipdate >= toDate('1997-01-01')
+    AND l.l_shipdate >= DATE '1997-01-01'
 GROUP BY 
     p.p_partkey, 
     p.p_name, 

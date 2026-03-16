@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
         AND P.Score > 10
 ), 
 UserStatistics AS (

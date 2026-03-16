@@ -15,7 +15,7 @@ WITH movie_actors AS (
 highest_rated_movies AS (
     SELECT 
         m.id AS movie_id, 
-        AVG(CAST(r.rating AS FLOAT)) AS avg_rating
+        AVG(r.rating::FLOAT) AS avg_rating
     FROM 
         movie_info m
     LEFT JOIN (

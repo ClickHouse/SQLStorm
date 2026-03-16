@@ -45,7 +45,7 @@ RecentActivities AS (
         Posts p
     JOIN PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 365 DAY
+        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '365 days'
     GROUP BY 
         p.Id
 ),

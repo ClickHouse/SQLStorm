@@ -10,7 +10,7 @@ WITH UserBadges AS (
 ), PopularPosts AS (
     SELECT P.Id, P.Title, P.Score, P.ViewCount, P.OwnerUserId, ROW_NUMBER() OVER(ORDER BY P.Score DESC) AS Rank
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR'
     AND P.PostTypeId = 1
 ), PostWithVoteCounts AS (
     SELECT P.Id, P.Title, COALESCE(V.UpVotes, 0) AS UpVotes, COALESCE(V.DownVotes, 0) AS DownVotes

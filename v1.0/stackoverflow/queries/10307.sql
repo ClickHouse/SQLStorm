@@ -22,7 +22,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes V ON P.Id = V.PostId
 WHERE 
-    P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
+    P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'  
 GROUP BY 
     P.Id, P.Title, P.CreationDate, U.DisplayName, P.Score, P.ViewCount, P.AnswerCount, P.FavoriteCount, P.LastActivityDate
 ORDER BY 

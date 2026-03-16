@@ -47,4 +47,4 @@ LEFT JOIN
     household_demographics ci ON hvc.c_customer_sk = ci.hd_demo_sk
 ORDER BY 
     hvc.total_sales DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

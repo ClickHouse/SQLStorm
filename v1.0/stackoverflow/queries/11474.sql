@@ -25,8 +25,8 @@ WITH Benchmark AS (
 )
 SELECT 
     *,
-    toUnixTimestamp((now64(6) - CreationDate)) AS AgeInSeconds,
-    toUnixTimestamp((now64(6) - LastEditDate)) AS TimeSinceLastEditInSeconds
+    toUnixTimestamp((CURRENT_TIMESTAMP - CreationDate)) AS AgeInSeconds,
+    toUnixTimestamp((CURRENT_TIMESTAMP - LastEditDate)) AS TimeSinceLastEditInSeconds
 FROM 
     Benchmark
 ORDER BY 

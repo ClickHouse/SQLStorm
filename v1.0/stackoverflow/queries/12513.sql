@@ -34,7 +34,7 @@ WITH UserActivity AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 )
 SELECT 
     UA.UserId,

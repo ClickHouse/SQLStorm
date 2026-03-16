@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
+        o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 SupplierStats AS (
     SELECT 
@@ -63,7 +63,7 @@ LEFT JOIN
 LEFT JOIN 
     SupplierStats ss ON ss.ps_partkey = p.p_partkey
 WHERE 
-    l.l_shipdate >= CURRENT_DATE - INTERVAL 6 MONTH
+    l.l_shipdate >= CURRENT_DATE - INTERVAL '6 months'
     AND o.o_orderstatus = 'O'
 GROUP BY 
     p.p_name, p.p_brand, r.r_name, cs.total_orders, cs.total_spent, ss.total_available_qty, ss.avg_supply_cost

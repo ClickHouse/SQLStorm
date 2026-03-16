@@ -22,7 +22,7 @@ TopSuppliers AS (
 FilteredOrders AS (
     SELECT DISTINCT o.o_orderkey, o.o_totalprice, o.o_orderdate
     FROM orders o
-    WHERE o.o_totalprice IS NOT NULL AND o.o_orderdate < (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
+    WHERE o.o_totalprice IS NOT NULL AND o.o_orderdate < (cast('1998-10-01' as date) - INTERVAL '1 year')
       AND o.o_orderstatus IN ('F', 'P')
 ),
 AggregatedLineItems AS (

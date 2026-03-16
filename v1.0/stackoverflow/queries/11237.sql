@@ -19,7 +19,7 @@ WITH PostMetrics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY  
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'  
     GROUP BY 
         p.Id, u.DisplayName
 ),

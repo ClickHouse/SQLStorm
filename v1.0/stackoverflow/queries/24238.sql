@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR) 
+        AND p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year') 
 ),
 UserStats AS (
     SELECT 
@@ -75,4 +75,5 @@ WHERE
     Reputation > 100 
 ORDER BY 
     Reputation DESC, QuestionCount DESC, PositiveScoreCount DESC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS
+FETCH NEXT 10 ROWS ONLY;

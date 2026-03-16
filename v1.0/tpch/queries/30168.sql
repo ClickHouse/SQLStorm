@@ -35,7 +35,7 @@ WITH RECURSIVE RegionSales AS (
     JOIN 
         lineitem l ON p.p_partkey = l.l_partkey
     WHERE
-        l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 6 MONTH
+        l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '6 months'
     GROUP BY 
         r.r_name
 ),

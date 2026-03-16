@@ -45,4 +45,4 @@ WHERE
     AND (cd.cd_marital_status = 'M' OR cd.cd_marital_status IS NULL)
 ORDER BY 
     rs.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

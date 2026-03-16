@@ -36,7 +36,7 @@ PostsWithComments AS (
         MAX(CASE WHEN c.UserId IS NOT NULL THEN c.Text ELSE NULL END) AS LastCommentText
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY p.Id, p.Title
 )
 SELECT 

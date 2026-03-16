@@ -52,4 +52,4 @@ LEFT JOIN SalesData sd ON rc.c_customer_sk = sd.ws_item_sk
 LEFT JOIN ItemDetails id ON sd.ws_item_sk = id.i_item_sk
 WHERE id.total_inventory > 0 OR sd.total_quantity IS NOT NULL
 ORDER BY rc.cd_gender, sd.total_revenue DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

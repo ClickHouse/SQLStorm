@@ -64,4 +64,4 @@ WHERE
     cs.TotalSpent IS NOT NULL
 ORDER BY 
     cs.TotalSpent DESC, cs.c_name ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

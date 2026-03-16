@@ -53,4 +53,4 @@ FROM AggregateCustomerData a
 JOIN BestSellingItems b ON a.c_customer_sk = b.i_item_sk
 WHERE a.return_rank <= 5
 ORDER BY a.total_return_amt DESC, b.ranking
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

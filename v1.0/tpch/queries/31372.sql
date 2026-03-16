@@ -39,7 +39,7 @@ LEFT JOIN avg_price ap ON l.l_partkey = ap.p_partkey
 JOIN nations n ON c.c_nationkey = n.n_nationkey
 LEFT JOIN supplier_hierarchy sh ON c.c_nationkey = sh.s_nationkey
 WHERE o.o_orderstatus = 'F'
-AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY c.c_name, o.o_orderkey, n.n_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > (SELECT AVG(revenue) FROM (
     SELECT SUM(l_extendedprice * (1 - l_discount)) AS revenue

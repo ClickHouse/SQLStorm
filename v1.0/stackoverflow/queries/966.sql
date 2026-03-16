@@ -22,7 +22,7 @@ WITH RankedPosts AS (
             PostId
     ) v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     ORDER BY 
         p.Score DESC
 ),
@@ -72,6 +72,6 @@ GROUP BY
     up.UserId, up.DisplayName
 HAVING 
     COUNT(DISTINCT rp.PostId) > 0 
-    AND MAX(rp.CreationDate) < now64(6) - INTERVAL 30 DAY
+    AND MAX(rp.CreationDate) < CURRENT_TIMESTAMP - INTERVAL '30 days'
 ORDER BY 
     AllTimeUpvotes DESC, TotalPosts DESC;

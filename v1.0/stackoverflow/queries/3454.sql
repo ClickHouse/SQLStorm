@@ -31,7 +31,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         v.PostId
 ),
@@ -66,4 +66,4 @@ WHERE
     rp.Rank = 1 /* Get the most recent question for each user */
 ORDER BY 
     rp.ViewCount DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

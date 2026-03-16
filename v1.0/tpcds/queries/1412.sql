@@ -69,4 +69,4 @@ WHERE
     AND (cd_gender IS NOT NULL OR cd_marital_status IS NOT NULL)
 ORDER BY 
     total_return_quantity DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

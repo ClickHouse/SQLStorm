@@ -5,7 +5,7 @@ WITH Movie_Stats AS (
         mt.title,
         MAX(ci.nr_order) AS max_cast_order,
         COUNT(DISTINCT ci.person_id) AS total_cast,
-        AVG(CASE WHEN mt.production_year IS NOT NULL THEN toYear(toDate('2024-10-01')) - mt.production_year ELSE NULL END) AS age_of_movie
+        AVG(CASE WHEN mt.production_year IS NOT NULL THEN EXTRACT(YEAR FROM DATE '2024-10-01') - mt.production_year ELSE NULL END) AS age_of_movie
     FROM
         aka_title mt
     LEFT JOIN

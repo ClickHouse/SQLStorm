@@ -69,4 +69,4 @@ GROUP BY
     B.GoldBadges, B.SilverBadges, B.BronzeBadges
 ORDER BY 
     U.TotalPosts DESC, U.AvgPostScore DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -8,7 +8,7 @@ PopularPosts AS (
     SELECT Id, PostTypeId, OwnerUserId, Score, ViewCount, 
            RANK() OVER (PARTITION BY PostTypeId ORDER BY Score DESC) AS PopularityRank
     FROM Posts
-    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 
 CommentsCount AS (
@@ -21,7 +21,7 @@ CloseReasons AS (
     SELECT ph.PostId, 
            arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasonNames
     FROM PostHistory ph
-    JOIN CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
+    JOIN CloseReasonTypes cr ON ph.Comment::int = cr.Id
     WHERE ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY ph.PostId
 )

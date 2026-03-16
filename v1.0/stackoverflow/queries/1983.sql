@@ -9,7 +9,7 @@ WITH UserActivity AS (
         SUM(COALESCE(CASE WHEN v.VoteTypeId = 3 THEN 1 END, 0)) AS DownVotes,
         ROW_NUMBER() OVER (ORDER BY COUNT(DISTINCT p.Id) DESC) AS Rank
     FROM Users u
-    LEFT JOIN Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    LEFT JOIN Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     LEFT JOIN Votes v ON p.Id = v.PostId
     GROUP BY u.Id, u.DisplayName
 ),
@@ -18,7 +18,7 @@ PopularTags AS (
         arrayJoin(splitByString(',', p.Tags)) AS Tag,
         COUNT(p.Id) AS TagCount
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY Tag
     ORDER BY TagCount DESC
     LIMIT 10

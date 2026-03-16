@@ -20,7 +20,7 @@ TotalRevenue AS (
     SELECT o.o_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderstatus = 'F' AND l.l_shipdate < cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    WHERE o.o_orderstatus = 'F' AND l.l_shipdate < cast('1998-10-01' as date) - INTERVAL '1 year'
     GROUP BY o.o_orderkey
 ),
 RankedOrders AS (

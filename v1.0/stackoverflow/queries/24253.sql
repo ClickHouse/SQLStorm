@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 365 DAY
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '365 DAYS'
 ),
 UserWithBadges AS (
     SELECT 

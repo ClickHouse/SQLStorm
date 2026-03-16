@@ -30,7 +30,7 @@ ActiveUsers AS (
     FROM 
         UserPostStats
     WHERE 
-        LastPostDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
+        LastPostDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')
 )
 SELECT 
     U.DisplayName,

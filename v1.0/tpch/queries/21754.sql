@@ -37,7 +37,7 @@ LEFT JOIN FilteredNations ns ON ns.n_nationkey = n.n_nationkey
 LEFT JOIN HighValueOrders oi ON oi.o_orderkey IN (
     SELECT o.o_orderkey
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
 )
 LEFT JOIN lineitem l ON oi.o_orderkey = l.l_orderkey
 WHERE r.r_name IS NOT NULL AND ns.n_name IS NOT NULL

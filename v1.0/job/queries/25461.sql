@@ -62,4 +62,4 @@ WHERE
     production_year >= 2000
 ORDER BY 
     num_roles DESC, production_year DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

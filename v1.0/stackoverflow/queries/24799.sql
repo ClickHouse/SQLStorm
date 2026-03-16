@@ -6,7 +6,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT p.Id) AS TotalPosts,
         COALESCE(SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END), 0) AS TotalAnswers,
         COALESCE(SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END), 0) AS TotalQuestions,
-        COALESCE(SUM(CASE WHEN p.LastActivityDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) THEN 1 ELSE 0 END), 0) AS RecentActivity
+        COALESCE(SUM(CASE WHEN p.LastActivityDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') THEN 1 ELSE 0 END), 0) AS RecentActivity
     FROM 
         Users u
     LEFT JOIN 
@@ -23,7 +23,7 @@ TopPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.Score > 0 AND p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
+        p.Score > 0 AND p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')
 ),
 PostStatistics AS (
     SELECT 
@@ -85,4 +85,4 @@ WHERE
 ORDER BY 
     md.TotalPosts DESC,
     md.TotalAnswers DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

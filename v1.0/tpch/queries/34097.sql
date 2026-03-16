@@ -63,7 +63,7 @@ LEFT JOIN
     partitioned_revenue pr ON cr.total_orders = (
         SELECT COUNT(*) 
         FROM orders o 
-        WHERE o.o_orderdate <= toDate('1998-10-01')
+        WHERE o.o_orderdate <= DATE '1998-10-01'
     )
 LEFT JOIN 
     ranked_suppliers rs ON cr.total_spent > (SELECT AVG(total_spent) FROM customer_orders)
@@ -72,4 +72,4 @@ WHERE
 ORDER BY 
     cr.total_spent DESC, 
     rs.supplier_rank ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

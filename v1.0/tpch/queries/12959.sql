@@ -14,7 +14,7 @@ JOIN
 JOIN 
     orders ON lineitem.l_orderkey = orders.o_orderkey 
 WHERE 
-    o_orderdate >= toDate('1995-01-01') AND o_orderdate < toDate('1996-01-01') 
+    o_orderdate >= DATE '1995-01-01' AND o_orderdate < DATE '1996-01-01' 
 GROUP BY 
     n_name 
 ORDER BY 

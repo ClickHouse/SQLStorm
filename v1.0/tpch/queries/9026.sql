@@ -50,8 +50,8 @@ JOIN
 JOIN 
     TopSuppliers ts ON ps.ps_suppkey = ts.s_suppkey
 WHERE 
-    o.o_orderdate >= toDate('1996-01-01') 
-    AND o.o_orderdate < toDate('1997-01-01')
+    o.o_orderdate >= DATE '1996-01-01' 
+    AND o.o_orderdate < DATE '1997-01-01'
 GROUP BY 
     c.c_custkey, c.c_name, o.o_orderkey, o.o_orderdate, ts.s_name
 ORDER BY 

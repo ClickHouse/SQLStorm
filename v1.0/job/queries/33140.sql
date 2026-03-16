@@ -53,7 +53,7 @@ LEFT JOIN
 WHERE
     dm.production_year IS NOT NULL
 AND
-    toYear(cast('2024-10-01' as date)) - dm.production_year < 10  
+    EXTRACT(YEAR FROM cast('2024-10-01' as date)) - dm.production_year < 10  
 GROUP BY
     dm.production_year, dm.title, mh.level
 ORDER BY

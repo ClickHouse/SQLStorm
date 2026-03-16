@@ -7,7 +7,7 @@ WITH RankedOrders AS (
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rn_status,
         DENSE_RANK() OVER (ORDER BY o.o_orderdate ASC) AS dr_orderdate
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
       AND o.o_totalprice IS NOT NULL
 ),
 FilteredLineItems AS (

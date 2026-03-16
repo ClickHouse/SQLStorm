@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 
 UserMetrics AS (
@@ -88,4 +88,4 @@ WHERE
 ORDER BY 
     h.Score DESC, 
     h.Reputation DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

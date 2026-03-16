@@ -7,8 +7,8 @@ WITH RankedOrders AS (
         o.o_shippriority,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01') 
-      AND o.o_orderdate < toDate('1998-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' 
+      AND o.o_orderdate < DATE '1998-01-01'
 ),
 FilteredLineItems AS (
     SELECT 
@@ -16,7 +16,7 @@ FilteredLineItems AS (
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS net_revenue
     FROM lineitem l
     WHERE l.l_returnflag = 'N'
-      AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+      AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY l.l_orderkey
 ),
 SuppliersWithDiscounts AS (

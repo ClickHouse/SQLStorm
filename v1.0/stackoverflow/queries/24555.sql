@@ -46,7 +46,7 @@ PostDetail AS (
             PostId
     ) C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR OR P.Score > 100
+        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year' OR P.Score > 100
 ),
 RankedPosts AS (
     SELECT 

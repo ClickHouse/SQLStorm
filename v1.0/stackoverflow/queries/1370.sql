@@ -68,4 +68,4 @@ FROM
 ORDER BY 
     asu.TotalUpvotes DESC, 
     asu.TotalPosts DESC 
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

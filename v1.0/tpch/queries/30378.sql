@@ -28,8 +28,9 @@ LEFT JOIN region r ON s.s_nationkey = r.r_regionkey
 LEFT JOIN nation n ON s.s_nationkey = n.n_nationkey
 WHERE p.p_retailprice IS NOT NULL
   AND (s.s_acctbal > 0 OR s.s_comment LIKE '%high%')
-  AND (o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31') OR o.o_orderstatus = 'F')
+  AND (o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31' OR o.o_orderstatus = 'F')
 GROUP BY p.p_partkey, p.p_name
 HAVING COALESCE(SUM(l.l_extendedprice * (1 - l.l_discount)), 0) > 10000
 ORDER BY total_revenue DESC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS
+FETCH NEXT 10 ROWS ONLY;

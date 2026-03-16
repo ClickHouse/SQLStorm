@@ -21,7 +21,7 @@ JOIN
     lineitem l ON p.p_partkey = l.l_partkey
 WHERE 
     p.p_size BETWEEN 10 AND 20
-    AND l.l_shipdate > toDate('1998-10-01') - INTERVAL 1 YEAR
+    AND l.l_shipdate > DATE '1998-10-01' - INTERVAL '1 year'
 GROUP BY 
     p.p_partkey, short_part_name, comment_length, r.r_name
 HAVING 

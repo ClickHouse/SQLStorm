@@ -62,6 +62,6 @@ FROM PopularUsers PU
 LEFT JOIN Badges B ON PU.UserId = B.UserId
 LEFT JOIN Votes V ON PU.UserId = V.UserId
 WHERE (B.Class = 1 OR B.Class = 2) 
-  AND (V.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY OR V.Id IS NULL) 
+  AND (V.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' OR V.Id IS NULL) 
 ORDER BY PU.Ranking
 LIMIT 10;

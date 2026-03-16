@@ -41,7 +41,7 @@ JOIN
 JOIN 
     TopSuppliers ts ON ps.ps_suppkey = ts.s_suppkey
 WHERE 
-    o.o_orderdate >= toDate('1994-01-01') AND o.o_orderdate < toDate('1995-01-01')
+    o.o_orderdate >= DATE '1994-01-01' AND o.o_orderdate < DATE '1995-01-01'
 GROUP BY 
     ps.ps_partkey, p.p_name, ts.nation_name
 HAVING 

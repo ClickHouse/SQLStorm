@@ -15,7 +15,7 @@ WITH SupplierSales AS (
     JOIN
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE
-        o.o_orderdate < cast('1998-10-01' as date) - INTERVAL 1 YEAR
+        o.o_orderdate < cast('1998-10-01' as date) - INTERVAL '1 year'
     GROUP BY
         s.s_suppkey, s.s_name
 ),

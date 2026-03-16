@@ -47,8 +47,8 @@ JOIN
 LEFT JOIN 
     SupplierHierarchy sh ON n.n_nationkey = sh.s_nationkey
 WHERE 
-    o.o_orderdate >= toDate('1997-01-01') AND 
-    o.o_orderdate < toDate('1998-01-01') AND 
+    o.o_orderdate >= DATE '1997-01-01' AND 
+    o.o_orderdate < DATE '1998-01-01' AND 
     (l.l_returnflag = 'R' OR l.l_returnflag IS NULL)
 GROUP BY 
     n.n_name

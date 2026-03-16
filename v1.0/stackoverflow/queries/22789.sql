@@ -13,7 +13,7 @@ WITH RankedPosts AS (
             WHERE v.PostId = p.Id AND v.VoteTypeId = 2
         ), 0) AS UpVotesCount
     FROM Posts p
-    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
+    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
 ), 
 PopularPosts AS (
     SELECT 

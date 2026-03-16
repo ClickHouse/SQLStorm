@@ -45,4 +45,4 @@ JOIN
     web_page s ON sd.ws_web_page_sk = s.wp_web_page_sk
 ORDER BY 
     sd.total_net_paid DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

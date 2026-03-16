@@ -32,7 +32,7 @@ SELECT
     tu.TotalPosts,
     tu.TotalQuestions,
     tu.TotalAnswers,
-    toYear(age(tu.LastPostDate)) AS YearsSinceLastPost,
+    EXTRACT(YEAR FROM age(tu.LastPostDate)) AS YearsSinceLastPost,
     CASE 
         WHEN tu.TotalQuestions > tu.TotalAnswers THEN 'Questions Dominant'
         WHEN tu.TotalAnswers > tu.TotalQuestions THEN 'Answers Dominant'

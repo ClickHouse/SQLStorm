@@ -84,4 +84,4 @@ HAVING
     AVG(f.keyword_count) > 0 OR COUNT(f.role_name) > 2
 ORDER BY 
     f.production_year DESC, f.movie_title
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -57,4 +57,4 @@ JOIN
     PostStats P ON U.UserId = P.PostId
 ORDER BY 
     U.Reputation DESC, P.ViewCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

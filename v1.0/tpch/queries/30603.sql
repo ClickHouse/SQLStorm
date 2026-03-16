@@ -4,7 +4,7 @@ WITH RECURSIVE order_hierarchy AS (
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
     JOIN supplier s ON c.c_nationkey = s.s_nationkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
     UNION ALL
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate, oh.s_nationkey, oh.level + 1
     FROM orders o

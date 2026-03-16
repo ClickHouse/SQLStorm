@@ -12,7 +12,7 @@ AvgOrderPrices AS (
     SELECT o.o_custkey, AVG(l.l_extendedprice * (1 - l.l_discount)) AS avg_price
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderstatus = 'F' AND l.l_shipdate > toDate('1996-01-01')
+    WHERE o.o_orderstatus = 'F' AND l.l_shipdate > DATE '1996-01-01'
     GROUP BY o.o_custkey
 ),
 TotalParts AS (

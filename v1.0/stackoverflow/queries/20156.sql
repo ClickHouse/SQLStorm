@@ -17,7 +17,7 @@ WITH UserStats AS (
         Badges B ON U.Id = B.UserId
     WHERE
         U.Reputation >= 100 AND
-        U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        U.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         U.Id, U.DisplayName
 ),
@@ -42,7 +42,7 @@ PopularTags AS (
     JOIN 
         Tags ON P.Tags LIKE CONCAT('%', Tags.TagName, '%')
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         Tags.TagName
     HAVING 
@@ -65,4 +65,5 @@ LEFT JOIN
     PopularTags PT ON TU.UpVotes > (SELECT AVG(UpVotes) FROM TopUsers)
 ORDER BY 
     TU.UserRank
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS
+FETCH NEXT 10 ROWS ONLY;

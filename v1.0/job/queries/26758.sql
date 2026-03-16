@@ -5,7 +5,7 @@ WITH MovieDetails AS (
         t.title,
         t.production_year,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ak.name))), ', ') AS aka_names,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.person_role_id AS text)))), ', ') AS cast_roles,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.person_role_id::text))), ', ') AS cast_roles,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         COUNT(DISTINCT c.person_id) AS total_cast
     FROM 

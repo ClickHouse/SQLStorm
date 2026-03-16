@@ -20,8 +20,8 @@ WITH customer_summary AS (
 ),
 seasonal_sales AS (
     SELECT
-        toYear(dd.d_date) AS sale_year,
-        toMonth(dd.d_date) AS sale_month,
+        EXTRACT(YEAR FROM dd.d_date) AS sale_year,
+        EXTRACT(MONTH FROM dd.d_date) AS sale_month,
         SUM(ws.ws_ext_sales_price) AS monthly_sales
     FROM
         date_dim dd
@@ -57,7 +57,7 @@ SELECT
 FROM
     customer_summary cs
 LEFT JOIN ranked_sales r ON cs.c_customer_sk = r.c_customer_sk
-LEFT JOIN seasonal_sales ss ON toYear(cast('2002-10-01' as date)) = ss.sale_year
+LEFT JOIN seasonal_sales ss ON EXTRACT(YEAR FROM cast('2002-10-01' as date)) = ss.sale_year
 WHERE
     cs.cd_gender = 'F' AND cs.total_sales IS NOT NULL
 ORDER BY

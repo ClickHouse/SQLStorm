@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
 ),
@@ -56,7 +56,7 @@ FROM
 LEFT JOIN 
     Posts p ON tu.UserId = p.OwnerUserId
 LEFT JOIN 
-    Tags t ON t.Id = ANY(splitByString(',', p.TagsCAST() AS int)[])
+    Tags t ON t.Id = ANY(splitByString(',', p.Tags)::int[])
 WHERE 
     tu.TotalComments >= 5
 GROUP BY 

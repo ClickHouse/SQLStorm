@@ -62,4 +62,4 @@ FROM
     FinalReport fr
 ORDER BY 
     fr.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

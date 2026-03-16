@@ -19,7 +19,7 @@ LEFT JOIN
 LEFT JOIN 
     Comments c ON p.Id = c.PostId
 WHERE 
-    p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+    p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 GROUP BY 
     p.Id, p.Title, p.CreationDate, u.Id, u.DisplayName, u.Reputation
 ORDER BY 

@@ -2,7 +2,7 @@ WITH RECURSIVE top_customers AS (
     SELECT c.c_custkey, c.c_name, SUM(o.o_totalprice) AS total_spent
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
     GROUP BY c.c_custkey, c.c_name
     ORDER BY total_spent DESC
     LIMIT 10
@@ -18,7 +18,7 @@ customer_purchase AS (
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
     GROUP BY c.c_custkey, c.c_name
 )
 SELECT tc.c_name, tc.total_spent, cp.order_count, cp.total_revenue, ps.p_name, ps.total_available

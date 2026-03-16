@@ -60,4 +60,4 @@ JOIN
     PostStats p ON u.UserId = p.AcceptedAnswerId
 ORDER BY 
     u.Reputation DESC, p.Score DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

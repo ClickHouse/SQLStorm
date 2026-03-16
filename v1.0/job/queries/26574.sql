@@ -32,7 +32,7 @@ SELECT
     pm.movie_title,
     pm.production_year,
     pm.actor_count,
-    arrayStringConcat(groupArray(assumeNotNull(CAST(pm.actor_names AS text))), ', ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(pm.actor_names::text)), ', ') AS actors
 FROM 
     PopularMovies pm
 WHERE 

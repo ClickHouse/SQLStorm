@@ -68,4 +68,4 @@ WHERE
 ORDER BY 
     fo.production_year DESC, 
     fo.total_cast DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -6,7 +6,7 @@ WITH TotalSales AS (
     FROM 
         lineitem
     WHERE 
-        l_shipdate > toDate('1997-01-01')
+        l_shipdate > DATE '1997-01-01'
     GROUP BY 
         l_partkey, l_orderkey
 ),

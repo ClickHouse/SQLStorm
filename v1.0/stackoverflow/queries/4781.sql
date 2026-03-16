@@ -50,6 +50,6 @@ LEFT JOIN Posts P ON U.Id = P.OwnerUserId
 LEFT JOIN PostVoteCounts PVC ON P.Id = PVC.PostId
 LEFT JOIN ClosedPostInfo CPI ON P.Id = CPI.PostId
 WHERE (UPS.QuestionCount > 0 OR UPS.AnswerCount > 0)
-AND (CPI.LastClosedDate IS NULL OR CPI.LastClosedDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+AND (CPI.LastClosedDate IS NULL OR CPI.LastClosedDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
 ORDER BY UPS.TotalPosts DESC, PVC.UpVotes DESC
 LIMIT 100;

@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, pt.Name
 ), 
@@ -37,7 +37,7 @@ PostHistoryDetails AS (
         PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
     WHERE 
         (PHT.Id IN (10, 11) OR ph.Comment IS NOT NULL) 
-        AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND ph.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 )
 
 SELECT 

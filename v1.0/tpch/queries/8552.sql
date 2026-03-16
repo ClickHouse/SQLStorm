@@ -8,7 +8,7 @@ WITH top_nations AS (
     JOIN orders o ON l.l_orderkey = o.o_orderkey
     GROUP BY n.n_name
     ORDER BY total_revenue DESC
-    LIMIT 5
+    FETCH FIRST 5 ROWS ONLY
 ), part_details AS (
     SELECT p.p_name, p.p_brand, p.p_type, SUM(ps.ps_availqty) AS total_available
     FROM part p

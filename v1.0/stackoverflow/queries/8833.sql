@@ -56,4 +56,4 @@ WHERE
     Reputation > 1000
 ORDER BY 
     ReputationRank, PostCountRank, CommentCountRank
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score > 0
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 TopUsers AS (
     SELECT 
@@ -37,7 +37,7 @@ RecentComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        c.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
     GROUP BY 
         c.PostId
 ),

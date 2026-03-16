@@ -66,4 +66,4 @@ WHERE
     AND (md.company_count IS NOT NULL OR md.role_count IS NOT NULL)
 ORDER BY 
     md.production_year DESC, md.title ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

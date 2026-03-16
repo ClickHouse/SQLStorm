@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
+        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 MONTH'
 ),
 SupplierAvgCost AS (
     SELECT 
@@ -31,7 +31,7 @@ TopPartSales AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= toDate('1997-01-01')
+        l.l_shipdate >= DATE '1997-01-01'
     GROUP BY 
         l.l_partkey
     HAVING 
@@ -45,7 +45,7 @@ RecentClaims AS (
         lineitem l
     WHERE 
         l.l_returnflag = 'R'
-        AND l.l_shipdate >= CURRENT_DATE - INTERVAL 1 YEAR
+        AND l.l_shipdate >= CURRENT_DATE - INTERVAL '1 YEAR'
     GROUP BY 
         l.l_orderkey
     HAVING 

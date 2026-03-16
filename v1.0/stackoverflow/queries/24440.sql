@@ -45,7 +45,7 @@ SELECT
   p.AcceptedAnswer,
   COALESCE(c.UserId, 0) AS ClosedByUserId,
   COALESCE(c.Comment, 'No closure comment') AS ClosureComment,
-  COALESCE(CAST(c.CreationDate AS TEXT), 'Not Closed') AS ClosureDate,
+  COALESCE(c.CreationDate::TEXT, 'Not Closed') AS ClosureDate,
   CASE
     WHEN c.CommentRank IS NOT NULL THEN 'Closed'
     ELSE 'Open'

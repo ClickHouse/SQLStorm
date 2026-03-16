@@ -69,4 +69,4 @@ WHERE
     rm.rn <= 10 
 ORDER BY 
     movie_rank, rm.production_year DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

@@ -1,5 +1,5 @@
 SELECT 
-    p.Title,
+    any(p.Title),
     u.DisplayName AS OwnerDisplayName,
     COUNT(c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
@@ -17,5 +17,5 @@ WHERE
 GROUP BY 
     p.Id, u.DisplayName
 ORDER BY 
-    p.CreationDate DESC
+    any(p.CreationDate) DESC
 LIMIT 10;

@@ -28,4 +28,4 @@ SELECT ad.c_custkey, ad.c_name, ad.TotalSupplierCost,
 FROM AggregatedData ad
 WHERE ad.TotalSupplierCost > 1000000
 ORDER BY ad.TotalOrderValue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -12,7 +12,7 @@ WITH FilteredPosts AS (
     JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS t(TagName) ON TRUE
-    WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL 3 MONTH
+    WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL '3 months'
       AND p.ViewCount > 100
     GROUP BY p.Id, p.Title, p.Body, p.CreationDate, u.DisplayName
 ),
@@ -25,7 +25,7 @@ RelevantHistories AS (
            pt.Name AS PostHistoryTypeName
     FROM PostHistory ph
     JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
-    WHERE ph.CreationDate >= DATE('2024-10-01') - INTERVAL 1 MONTH
+    WHERE ph.CreationDate >= DATE('2024-10-01') - INTERVAL '1 month'
       AND ph.PostHistoryTypeId IN (10, 11, 24)  
 )
 

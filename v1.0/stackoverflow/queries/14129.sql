@@ -25,7 +25,7 @@ LEFT JOIN
     PostHistory PH ON P.Id = PH.PostId
 WHERE 
     P.PostTypeId = 1 
-    AND P.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+    AND P.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
 GROUP BY 
     P.Id, P.Title, P.Body, P.CreationDate, U.DisplayName, P.Score, P.ViewCount, B.Name
 ORDER BY 

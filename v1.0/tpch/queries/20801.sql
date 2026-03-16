@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01')
+        o.o_orderdate >= DATE '1996-01-01'
 ),
 SupplierPartInfo AS (
     SELECT 
@@ -34,7 +34,7 @@ TotalLineItemProfit AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1997-01-01')
+        l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1997-01-01'
     GROUP BY 
         l.l_orderkey
 ),

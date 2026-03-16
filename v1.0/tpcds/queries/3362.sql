@@ -65,4 +65,4 @@ GROUP BY
     ci.income_rank
 ORDER BY 
     net_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

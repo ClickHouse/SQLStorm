@@ -9,7 +9,7 @@ WITH RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 UserBadges AS (
     SELECT 
@@ -97,4 +97,4 @@ WHERE
     rp.PostRank = 1
 ORDER BY 
     rp.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

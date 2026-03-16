@@ -35,7 +35,7 @@ PostAnalytics AS (
     LEFT JOIN UserBadges badges ON P.OwnerUserId = badges.UserId
     LEFT JOIN Votes V ON P.Id = V.PostId
     LEFT JOIN VoteTypes VT ON V.VoteTypeId = VT.Id
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score, tags.TagCount, tags.AllTags, badges.BadgeCount, badges.BadgeList
 )
 SELECT 

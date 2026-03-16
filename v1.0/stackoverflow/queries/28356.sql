@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON U.Id = P.OwnerUserId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.Tags, U.DisplayName, P.CreationDate, P.PostTypeId
 ),
@@ -46,7 +46,7 @@ DailyTrendingTags AS (
     JOIN 
         Posts P ON P.Tags LIKE '%' || T.TagName || '%'
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 7 DAY
+        P.CreationDate >= CURRENT_DATE - INTERVAL '7 days'
     GROUP BY 
         T.TagName, CAST(P.CreationDate AS DATE)
 ),

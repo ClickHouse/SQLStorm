@@ -42,4 +42,4 @@ SELECT
 FROM summarized_data sd
 WHERE sd.total_demographics > 0
 ORDER BY sd.total_demographics DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

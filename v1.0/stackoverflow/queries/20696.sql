@@ -43,7 +43,7 @@ TopPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id 
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
         AND P.Score IS NOT NULL
 ),
 RecentComments AS (

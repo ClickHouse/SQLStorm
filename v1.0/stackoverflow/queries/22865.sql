@@ -27,7 +27,7 @@ PopularPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
         AND p.PostTypeId = 1
     GROUP BY 
         p.Id, p.OwnerUserId, p.Title, p.CreationDate, p.Score
@@ -44,7 +44,7 @@ RecentPostHistory AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 60 DAY
+        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '60 days'
 ),
 TopTags AS (
     SELECT 
@@ -84,7 +84,7 @@ LEFT JOIN
 LEFT JOIN 
     Tags tt ON pl.RelatedPostId = tt.WikiPostId
 WHERE 
-    (rph.CreationDate IS NULL OR rph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY)
+    (rph.CreationDate IS NULL OR rph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days')
 ORDER BY 
     ur.Reputation DESC,
     pp.CommentCount DESC,

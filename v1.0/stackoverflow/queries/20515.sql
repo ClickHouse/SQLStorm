@@ -78,4 +78,4 @@ WHERE
     rp.rank <= 5
 ORDER BY
     rp.ViewCount DESC, rp.Score DESC
-LIMIT 1000;
+FETCH FIRST 1000 ROWS ONLY;

@@ -28,7 +28,7 @@ PostStatistics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.OwnerUserId, p.PostTypeId
 ),
@@ -61,7 +61,7 @@ LEFT JOIN
     BadgesEarned be ON u.Id = be.UserId
 WHERE 
     uReputation.Reputation IS NOT NULL
-    AND (u.CreationDate > CURRENT_DATE - INTERVAL 2 YEAR OR uReputation.Reputation > 500)
+    AND (u.CreationDate > CURRENT_DATE - INTERVAL '2 year' OR uReputation.Reputation > 500)
 ORDER BY 
     uReputation.Reputation DESC, ps.CommentCount DESC, ps.UpVoteCount DESC
 LIMIT 50 OFFSET 50;

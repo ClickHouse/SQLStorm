@@ -35,7 +35,7 @@ RecentPosts AS (
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate > CURRENT_DATE - INTERVAL 30 DAY
+    WHERE P.CreationDate > CURRENT_DATE - INTERVAL '30 days'
     GROUP BY P.Id, P.Title, P.CreationDate, U.DisplayName, P.Score
 )
 SELECT T.DisplayName, 

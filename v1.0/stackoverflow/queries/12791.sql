@@ -25,7 +25,7 @@ WITH PostStats AS (
          GROUP BY 
              PostId) AS voteType ON p.Id = voteType.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.LastActivityDate, p.Score, p.ViewCount
 )

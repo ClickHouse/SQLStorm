@@ -19,7 +19,7 @@ WITH PostStats AS (
     LEFT JOIN 
         arrayJoin(splitByString('><', P.Tags)) AS T(TagName) ON TRUE
     WHERE 
-        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.Score, P.ViewCount, P.CreationDate
 ),

@@ -65,6 +65,6 @@ LEFT JOIN
 LEFT JOIN 
     high_value_customers hvc ON c.c_customer_sk = hvc.c_customer_sk
 LEFT JOIN 
-    monthly_sales ms ON ms.d_year = toYear(toDate('2002-10-01'))
+    monthly_sales ms ON ms.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
 ORDER BY 
     c.c_first_name, c.c_last_name;

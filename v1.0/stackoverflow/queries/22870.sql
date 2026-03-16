@@ -100,7 +100,7 @@ SELECT
         WHEN fm.LastCommentDate IS NULL THEN 'Comments Not Available'
         ELSE 
             CASE 
-                WHEN fm.LastCommentDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Recent Activity'
+                WHEN fm.LastCommentDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 'Recent Activity'
                 ELSE 'Older Activity'
             END
     END AS ActivityRecency

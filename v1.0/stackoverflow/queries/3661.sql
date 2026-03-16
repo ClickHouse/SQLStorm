@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
         AND p.PostTypeId = 1 
 ),
 RecentUsers AS (
@@ -27,7 +27,7 @@ RecentUsers AS (
     FROM 
         Users u
     WHERE 
-        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        u.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
 ),
 ClosedPosts AS (
     SELECT 
@@ -60,6 +60,6 @@ LEFT JOIN
     ClosedPosts cp ON rp.Id = cp.PostId
 WHERE 
     (u.UpVotes - u.DownVotes) > 100
-    OR (cp.LastClosedDate IS NOT NULL AND cp.LastClosedDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
+    OR (cp.LastClosedDate IS NOT NULL AND cp.LastClosedDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month')
 ORDER BY 
     u.Reputation DESC, rp.ViewCount DESC;

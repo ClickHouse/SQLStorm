@@ -60,4 +60,4 @@ WHERE
 ORDER BY 
     cs.total_sales DESC,
     cs.total_returns ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

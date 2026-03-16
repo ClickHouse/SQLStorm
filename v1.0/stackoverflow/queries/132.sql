@@ -15,7 +15,7 @@ PostAggregates AS (
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         AVG(P.Score) AS AvgScore
     FROM Posts P 
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY P.OwnerUserId
 ),
 RecentPostHistory AS (
@@ -26,7 +26,7 @@ RecentPostHistory AS (
         PH.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY PH.PostId ORDER BY PH.CreationDate DESC) AS RecentChange
     FROM PostHistory PH
-    WHERE PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 )
 SELECT 
     U.DisplayName,
@@ -48,4 +48,4 @@ LEFT JOIN CloseReasonTypes CRT ON CAST(PH.Comment AS INTEGER) = CRT.Id
 WHERE U.Reputation > 1000
 GROUP BY U.DisplayName, U.Reputation, PA.TotalPosts, PA.Questions, PA.Answers, PA.AvgScore, PT.Name, CRT.Name
 ORDER BY U.Reputation DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

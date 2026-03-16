@@ -19,7 +19,7 @@ JOIN
     nation n ON s.s_nationkey = n.n_nationkey 
 WHERE 
     p.p_type LIKE '%BRASS%' 
-    AND l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31') 
+    AND l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31' 
 GROUP BY 
     p.p_name, s.s_name, n.n_name, p.p_comment
 HAVING 

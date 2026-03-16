@@ -27,4 +27,4 @@ HAVING
     SUM(l.l_quantity) > 100
 ORDER BY 
     total_returned_quantity DESC, avg_fulfilled_price ASC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

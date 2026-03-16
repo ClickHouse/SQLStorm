@@ -12,8 +12,8 @@ FROM
     JOIN lineitem l ON l.l_partkey = p.p_partkey
     JOIN orders o ON o.o_orderkey = l.l_orderkey
 WHERE 
-    l.l_shipdate >= toDate('1997-01-01')
-    AND l.l_shipdate < toDate('1997-12-31')
+    l.l_shipdate >= DATE '1997-01-01'
+    AND l.l_shipdate < DATE '1997-12-31'
     AND n.n_name = 'USA'
 GROUP BY 
     r.r_name

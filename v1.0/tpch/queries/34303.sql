@@ -56,4 +56,4 @@ HAVING
     COUNT(DISTINCT s.s_suppkey) > 0
 ORDER BY 
     discounted_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

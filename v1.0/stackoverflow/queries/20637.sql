@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3) AS DownVoteCount,
         LEAD(p.CreationDate) OVER (ORDER BY p.CreationDate) AS NextPostDate
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 RecentComments AS (
     SELECT 
@@ -46,16 +46,16 @@ SELECT
     cp.CloseReason,
     CASE 
         WHEN rp.NextPostDate IS NULL THEN 'No following posts'
-        WHEN rp.NextPostDate < toDateTime64('2024-10-01 12:34:56', 6) THEN 'Post followed by another'
+        WHEN rp.NextPostDate < cast('2024-10-01 12:34:56' as timestamp) THEN 'Post followed by another'
         ELSE 'Post is last in the timeline'
     END AS PostStatus,
     CASE 
         WHEN rp.ViewCount IS NULL THEN 'Data not available'
-        ELSE (rp.ViewCount / NULLIF(rp.CommentCount, 0)CAST() AS text) || ' views per comment'
+        ELSE (rp.ViewCount / NULLIF(rp.CommentCount, 0))::text || ' views per comment'
     END AS ViewsPerComment
 FROM RankedPosts rp
 LEFT JOIN RecentComments rc ON rp.PostId = rc.CommentedPostId
 LEFT JOIN ClosedPosts cp ON rp.PostId = cp.PostId
 WHERE rp.Rank <= 5
 ORDER BY rp.ViewCount DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

@@ -34,9 +34,9 @@ SELECT
             (Upvotes - Downvotes) / PostCount 
         ELSE 0 
     END AS VoteRatio,
-    CAST(QuestionCount AS float) / NULLIF(PostCount, 0) AS QuestionRatio,
-    CAST(AnswerCount AS float) / NULLIF(PostCount, 0) AS AnswerRatio,
-    CAST(WikiCount AS float) / NULLIF(PostCount, 0) AS WikiRatio
+    QuestionCount::float / NULLIF(PostCount, 0) AS QuestionRatio,
+    AnswerCount::float / NULLIF(PostCount, 0) AS AnswerRatio,
+    WikiCount::float / NULLIF(PostCount, 0) AS WikiRatio
 FROM 
     UserReputation
 ORDER BY 

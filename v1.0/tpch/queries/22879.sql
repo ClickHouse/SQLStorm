@@ -43,7 +43,7 @@ combined_details AS (
     LEFT JOIN supplier_summary ss ON n.n_nationkey = ss.s_suppkey
     JOIN ranked_orders o ON o.o_orderkey IN (SELECT l.l_orderkey 
                                                 FROM lineitem l 
-                                                WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR)
+                                                WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year')
     LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey
     GROUP BY r.r_name, n.n_name, ss.total_supply_cost
 )

@@ -49,7 +49,7 @@ SELECT
         Posts p 
      WHERE 
         p.OwnerUserId = tu.UserId AND 
-        p.CreationDate >= now64(6) - INTERVAL 1 MONTH) AS RecentPosts,
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 month') AS RecentPosts,
     (SELECT 
         AVG(v.BountyAmount) 
      FROM 

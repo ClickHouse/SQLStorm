@@ -5,7 +5,7 @@ SELECT
     SUM(ws.ws_net_paid) AS total_sales,
     AVG(LENGTH(c.c_first_name) + LENGTH(c.c_last_name)) AS avg_customer_name_length,
     arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(ws.ws_ship_mode_sk AS VARCHAR)))), ', ') AS used_ship_modes,
-    MAX(toYear(d.d_date)) AS max_sales_year
+    MAX(EXTRACT(YEAR FROM d.d_date)) AS max_sales_year
 FROM 
     customer_address ca
 JOIN 

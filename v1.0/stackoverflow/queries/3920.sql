@@ -67,7 +67,7 @@ JOIN
     RankedPosts rp ON ups.UserId = (SELECT p.OwnerUserId FROM Posts p WHERE p.Id = rp.PostId)
 WHERE 
     ups.UserRank <= 10 
-    AND (rp.LastEditDate IS NULL OR rp.LastEditDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR))
+    AND (rp.LastEditDate IS NULL OR rp.LastEditDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'))
 ORDER BY 
     ups.PostCount DESC, 
     rp.EditRank;

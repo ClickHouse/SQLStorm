@@ -60,6 +60,6 @@ SELECT
         ELSE 'Loss'
     END AS profit_status
 FROM ReturningCustomerStats AS rcs
-LEFT JOIN SalesYear AS sy ON sy.d_year = toYear(toDate('2002-10-01'))
+LEFT JOIN SalesYear AS sy ON sy.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
 ORDER BY rcs.total_return_amount DESC
 LIMIT 100;

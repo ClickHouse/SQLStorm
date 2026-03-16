@@ -54,4 +54,4 @@ AND EXISTS (
     AND l.l_discount > 0.1
 )
 ORDER BY ps.total_availqty DESC, ts.total_orders DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -37,7 +37,7 @@ OrdersInfo AS (
         o.o_orderkey,
         o.o_custkey,
         o.o_orderdate,
-        toMonth(o.o_orderdate) AS order_month,
+        EXTRACT(MONTH FROM o.o_orderdate) AS order_month,
         CASE 
             WHEN o.o_orderstatus = 'O' THEN 'Open' 
             ELSE 'Closed' 

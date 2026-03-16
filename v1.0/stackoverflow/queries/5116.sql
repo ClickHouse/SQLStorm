@@ -41,7 +41,7 @@ ActivePosts AS (
         COALESCE(P.AnswerCount, 0) AS AnswerCount,
         COALESCE(P.CommentCount, 0) AS CommentCount
     FROM Posts P
-    WHERE P.LastActivityDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) 
+    WHERE P.LastActivityDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days') 
 )
 SELECT 
     TC.DisplayName,

@@ -58,4 +58,4 @@ WHERE
     ur.TotalBadges > 0 OR ur.TotalBounties > 0
 ORDER BY 
     u.Reputation DESC, rp.Score DESC
-LIMIT 50 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;

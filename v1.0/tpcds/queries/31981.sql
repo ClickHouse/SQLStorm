@@ -48,4 +48,4 @@ WHERE
     (COALESCE(ca.total_spent, 0) > 100 OR COALESCE(ca.total_orders, 0) > 10)
 ORDER BY 
     total_spent DESC, total_orders DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

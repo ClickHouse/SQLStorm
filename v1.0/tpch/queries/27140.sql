@@ -40,4 +40,4 @@ GROUP BY
     fp.full_description, fp.supplier_costs
 ORDER BY 
     total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

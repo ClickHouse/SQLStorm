@@ -14,7 +14,7 @@ WITH RankedPosts AS (
          FROM Votes v 
          WHERE v.PostId = p.Id AND v.VoteTypeId = 3) AS Downvotes
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 YEAR'
 ),
 ActiveUsers AS (
     SELECT 

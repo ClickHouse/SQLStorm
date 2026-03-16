@@ -16,7 +16,7 @@ WITH RankedReturns AS (
             SELECT 1 
             FROM customer c 
             WHERE c.c_customer_sk = cr.cr_returning_customer_sk 
-            AND c.c_birth_month = toMonth(toDate('2002-10-01')) 
+            AND c.c_birth_month = EXTRACT(MONTH FROM DATE '2002-10-01') 
             AND (c.c_preferred_cust_flag = 'Y' OR c.c_email_address IS NULL)
         )
 ),
@@ -31,7 +31,7 @@ ItemSales AS (
         ws.ws_sold_date_sk IN (
             SELECT d.d_date_sk 
             FROM date_dim d 
-            WHERE d.d_year = toYear(toDate('2002-10-01')) 
+            WHERE d.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') 
             AND d.d_moy BETWEEN 1 AND 6
         )
     GROUP BY 

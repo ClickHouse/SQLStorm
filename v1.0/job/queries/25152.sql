@@ -52,7 +52,7 @@ SELECT
     mwk.title,
     mwk.production_year,
     mwk.cast_count,
-    arrayStringConcat(groupArray(assumeNotNull(CAST(mwk.keywords AS varchar))), ', ') AS all_keywords
+    arrayStringConcat(groupArray(assumeNotNull(mwk.keywords::varchar)), ', ') AS all_keywords
 FROM 
     MoviesWithKeywords mwk
 GROUP BY 

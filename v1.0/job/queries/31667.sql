@@ -19,7 +19,7 @@ MovieDetails AS (
         mt.production_year,
         COUNT(DISTINCT ci.person_id) AS actor_count,
         arrayDistinct(groupArray(assumeNotNull(an.name))) AS actors,
-        AVG(COALESCE(mi.info, '0'CAST() AS float)) AS average_rating, 
+        AVG(COALESCE(mi.info, '0')::float) AS average_rating, 
         mt.id AS movie_id
     FROM aka_title mt
     JOIN cast_info ci ON mt.id = ci.movie_id

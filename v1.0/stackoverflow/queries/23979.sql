@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score IS NOT NULL
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 UserBadges AS (
     SELECT 
@@ -66,7 +66,7 @@ SELECT
             SELECT 1 
             FROM Posts x 
             WHERE x.OwnerUserId = u.Id 
-            AND x.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+            AND x.CreationDate < CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months'
         ) THEN 'Has Legacy Posts'
         ELSE 'No Legacy Posts'
     END AS LegacyPostStatus

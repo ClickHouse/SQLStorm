@@ -34,4 +34,4 @@ WHERE r.r_name IS NOT NULL
 GROUP BY r.r_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY total_customers DESC, r.r_name
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;

@@ -84,8 +84,8 @@ LEFT JOIN
     UserBadges ub ON u.Id = ub.UserId
 WHERE 
     u.Reputation BETWEEN 1000 AND 10000
-    AND u.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
-    AND (u.LastAccessDate IS NULL OR u.LastAccessDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY))
+    AND u.CreationDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
+    AND (u.LastAccessDate IS NULL OR u.LastAccessDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'))
 ORDER BY 
     u.Reputation DESC, u.DisplayName
 LIMIT 50;

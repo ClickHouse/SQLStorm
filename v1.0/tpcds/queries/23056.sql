@@ -47,4 +47,4 @@ HAVING
     AND COUNT(DISTINCT hp.ws_order_number) > 1
 ORDER BY 
     TotalAdjustedProfit DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -51,4 +51,4 @@ JOIN CombinedAddress ca ON cd.c_customer_sk = ca.ca_address_sk
 LEFT JOIN RecentSales rs ON cd.c_customer_sk = rs.ws_bill_customer_sk
 WHERE cd.cd_purchase_estimate > 1000
 ORDER BY rs.TotalSpent DESC, rs.LastPurchaseDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

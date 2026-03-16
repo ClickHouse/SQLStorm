@@ -35,7 +35,7 @@ SELECT
         WHEN rc.shipping_count IS NULL THEN 'Not Shipped'
         ELSE 'Shipped'
     END AS shipping_status,
-    toYear(cast('2002-10-01' as date)) - (SELECT MIN(d_year) FROM date_dim WHERE d_date_sk IN 
+    EXTRACT(YEAR FROM cast('2002-10-01' as date)) - (SELECT MIN(d_year) FROM date_dim WHERE d_date_sk IN 
         (SELECT DISTINCT ws_sold_date_sk FROM web_sales)) AS age_of_first_sale
 FROM 
     ItemDetails id
@@ -57,4 +57,4 @@ WHERE
 ORDER BY 
     id.i_category, 
     total_sales DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

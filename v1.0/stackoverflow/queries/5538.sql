@@ -38,5 +38,5 @@ FROM TopUsers TU
 LEFT JOIN Badges B ON TU.UserId = B.UserId
 LEFT JOIN PostHistoryTypes T ON B.Class = T.Id
 WHERE TU.ReputationRank <= 10
-  AND B.Date >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+  AND B.Date >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
 ORDER BY TU.Reputation DESC, BadgeRank;

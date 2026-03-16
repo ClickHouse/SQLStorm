@@ -19,17 +19,17 @@ WITH PostStats AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY  
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'  
     GROUP BY 
         P.Id, U.Reputation
 )
 
 SELECT 
     *,
-    ROUND((CAST(ViewCount AS decimal) / NULLIF(VoteCount, 0)), 2) AS ViewsPerVote,
-    ROUND((CAST(ViewCount AS decimal) / NULLIF(CommentCount, 0)), 2) AS ViewsPerComment,
-    ROUND((CAST(Score AS decimal) / NULLIF(CommentCount, 0)), 2) AS ScorePerComment,
-    ROUND((CAST(Score AS decimal) / NULLIF(VoteCount, 0)), 2) AS ScorePerVote
+    ROUND((ViewCount::decimal / NULLIF(VoteCount, 0)), 2) AS ViewsPerVote,
+    ROUND((ViewCount::decimal / NULLIF(CommentCount, 0)), 2) AS ViewsPerComment,
+    ROUND((Score::decimal / NULLIF(CommentCount, 0)), 2) AS ScorePerComment,
+    ROUND((Score::decimal / NULLIF(VoteCount, 0)), 2) AS ScorePerVote
 FROM 
     PostStats
 ORDER BY 

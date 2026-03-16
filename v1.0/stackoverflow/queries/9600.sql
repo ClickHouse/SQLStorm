@@ -47,7 +47,7 @@ PostDetails AS (
     LEFT JOIN 
         arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.CreationDate, p.Score, pt.Name
 )

@@ -16,7 +16,7 @@ WITH RECURSIVE SupplierHierarchy AS (
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate, 
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
 ), SupplierPart AS (
     SELECT ps.ps_partkey, ps.ps_suppkey, p.p_name, p.p_retailprice, ps.ps_availqty, 
            COALESCE(ps.ps_availqty, 0) AS adjusted_qty
@@ -26,7 +26,7 @@ WITH RECURSIVE SupplierHierarchy AS (
 ), HighVolumeLineItems AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_value
     FROM lineitem l
-    WHERE l.l_shipdate > toDate('1998-10-01') - INTERVAL 30 DAY
+    WHERE l.l_shipdate > DATE '1998-10-01' - INTERVAL '30 days'
     GROUP BY l.l_orderkey
     HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000
 )

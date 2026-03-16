@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
         AND P.Score IS NOT NULL
 ),
 CloseReasons AS (
@@ -22,7 +22,7 @@ CloseReasons AS (
     FROM 
         PostHistory PH
     LEFT JOIN 
-        CloseReasonTypes C ON PH.Comment = CAST(C.Id AS text)
+        CloseReasonTypes C ON PH.Comment = C.Id::text
     WHERE 
         PH.PostHistoryTypeId IN (10, 11)  
 ),
@@ -59,7 +59,7 @@ FROM
 LEFT JOIN 
     CloseReasons CR ON RP.PostId = CR.PostId
 LEFT JOIN 
-    UserActivity UA ON RP.OwnerName = CAST(UA.UserId AS text)
+    UserActivity UA ON RP.OwnerName = UA.UserId::text
 WHERE 
     RP.RankByScore <= 5 
 ORDER BY 

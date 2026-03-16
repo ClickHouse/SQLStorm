@@ -19,7 +19,7 @@ PostStatistics AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY p.Id, p.OwnerUserId
 ),
 ClosedPosts AS (
@@ -29,7 +29,7 @@ ClosedPosts AS (
         MIN(ph.CreationDate) AS ClosedOn,
         COUNT(DISTINCT ph.UserId) FILTER (WHERE ph.PostHistoryTypeId = 10) AS UniqueCloseVoters
     FROM PostHistory ph
-    JOIN CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
+    JOIN CloseReasonTypes cr ON ph.Comment::int = cr.Id
     WHERE ph.PostHistoryTypeId = 10
     GROUP BY ph.PostId
 ),
@@ -73,7 +73,7 @@ SELECT
         ELSE 'Not Closed'
     END AS ClosureStatus,
     CASE 
-        WHEN gm.LastActivity < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Stale'
+        WHEN gm.LastActivity < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 'Stale'
         ELSE 'Active'
     END AS ActivityStatus
 FROM GranularMetrics gm

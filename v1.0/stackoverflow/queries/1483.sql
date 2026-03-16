@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
 ),
@@ -52,10 +52,10 @@ SELECT
     ur.DisplayName AS AuthorDisplayName,
     ur.Reputation AS AuthorReputation,
     COALESCE(phs.CloseReopenCount, 0) AS CloseReopenCount,
-    AGE(toDateTime64('2024-10-01 12:34:56', 6), phs.FirstEditDate) AS DurationSinceFirstEdit,
+    AGE(TIMESTAMP '2024-10-01 12:34:56', phs.FirstEditDate) AS DurationSinceFirstEdit,
     CASE 
         WHEN phs.LastEditDate IS NULL THEN 'No Edits'
-        ELSE CONCAT('Edited ', toDayOfMonth(AGE(toDateTime64('2024-10-01 12:34:56', 6), phs.LastEditDate)), ' days ago')
+        ELSE CONCAT('Edited ', EXTRACT(DAY FROM AGE(TIMESTAMP '2024-10-01 12:34:56', phs.LastEditDate)), ' days ago')
     END AS EditStatus
 FROM 
     RankedPosts rp

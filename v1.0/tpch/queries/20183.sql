@@ -9,7 +9,7 @@ WITH RankedOrders AS (
         o_orderpriority,
         ROW_NUMBER() OVER (PARTITION BY o_custkey ORDER BY o_totalprice DESC) AS order_rank
     FROM orders
-    WHERE o_orderdate > CURRENT_DATE - INTERVAL 1 YEAR
+    WHERE o_orderdate > CURRENT_DATE - INTERVAL '1 year'
 ),
 SupplierStats AS (
     SELECT 

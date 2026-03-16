@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
 ), AggregatedData AS (
     SELECT 
         PostTypeId,

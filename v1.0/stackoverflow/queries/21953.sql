@@ -23,7 +23,7 @@ CombinedPostHistory AS (
     JOIN 
         PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     WHERE 
-        PH.CreationDate > cast('2024-10-01' as date) - INTERVAL 90 DAY
+        PH.CreationDate > cast('2024-10-01' as date) - INTERVAL '90 days'
     GROUP BY 
         PH.PostId, PH.UserId, PHT.Name
 ),
@@ -48,7 +48,7 @@ FinalData AS (
     LEFT JOIN 
         Tags T ON P.Tags LIKE '%' || T.TagName || '%'
     WHERE 
-        P.CreationDate <= cast('2024-10-01' as date) - INTERVAL 30 DAY 
+        P.CreationDate <= cast('2024-10-01' as date) - INTERVAL '30 days' 
         AND (P.Score > 5 OR P.ViewCount > 1000)
         AND (CPH.ChangeCount IS NULL OR CPH.ChangeCount < 10)
     ORDER BY 
@@ -73,4 +73,4 @@ FROM
     FinalData FD
 WHERE 
     EXISTS (SELECT 1 FROM Badges B WHERE B.UserId = FD.LastChangeUserId AND B.Class = 1)
-    AND FD.LastChangeDate >= cast('2024-10-01' as date) - INTERVAL 60 DAY;
+    AND FD.LastChangeDate >= cast('2024-10-01' as date) - INTERVAL '60 days';

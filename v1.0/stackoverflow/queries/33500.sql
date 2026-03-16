@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         LEFT JOIN Users u ON p.OwnerUserId = u.Id
         LEFT JOIN Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL '1' YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1' YEAR
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.Reputation
 ),
@@ -32,7 +32,7 @@ RecentActivities AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL '2' MONTH
+        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2' MONTH
 ),
 PostLinksSummary AS (
     SELECT 

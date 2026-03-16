@@ -6,7 +6,7 @@ WITH SalesData AS (
         c.c_birth_year,
         ca.ca_state,
         CASE 
-            WHEN c.c_birth_year IS NOT NULL THEN toYear(cast('2002-10-01' as date)) - c.c_birth_year 
+            WHEN c.c_birth_year IS NOT NULL THEN EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c.c_birth_year 
             ELSE NULL 
         END AS age,
         d.d_year,

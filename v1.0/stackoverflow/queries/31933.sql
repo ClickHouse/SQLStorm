@@ -28,7 +28,7 @@ PostDetails AS (
     LEFT JOIN 
         RecursivePostHistory ph ON p.Id = ph.PostId AND ph.rn = 1
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ), 
 BadgesSummary AS (
     SELECT 

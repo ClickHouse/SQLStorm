@@ -48,4 +48,4 @@ WHERE
     i.i_brand IS NOT NULL
 ORDER BY 
     sales_percentage DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

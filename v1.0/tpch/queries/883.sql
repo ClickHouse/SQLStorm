@@ -6,7 +6,7 @@ WITH RankedOrders AS (
         o.o_totalprice,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) as order_rank
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1996-01-01'
 ),
 SupplierDetails AS (
     SELECT 
@@ -42,7 +42,7 @@ LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 JOIN TopSuppliers ts ON l.l_suppkey = ts.s_suppkey
 WHERE r.r_name IS NOT NULL 
 AND o.o_orderstatus IN ('O', 'F')
-AND o.o_orderdate >= toDate('1996-01-01')
+AND o.o_orderdate >= DATE '1996-01-01'
 GROUP BY r.r_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 10
 ORDER BY total_orders DESC;

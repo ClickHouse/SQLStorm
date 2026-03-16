@@ -16,7 +16,7 @@ RecentPostStats AS (
         SUM(P.Score) AS TotalScore,
         AVG(P.ViewCount) AS AvgViews
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY P.OwnerUserId
 ),
 TopUsers AS (
@@ -48,6 +48,6 @@ SELECT
     R.AvgViews
 FROM TopUsers U
 JOIN RecentPostStats R ON U.Id = R.OwnerUserId
-LEFT JOIN PostHistory PH ON PH.UserId = U.Id AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+LEFT JOIN PostHistory PH ON PH.UserId = U.Id AND PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 WHERE R.TotalPosts > 0
 ORDER BY U.BadgeCount DESC, R.TotalScore DESC;

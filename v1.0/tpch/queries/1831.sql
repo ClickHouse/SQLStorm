@@ -18,7 +18,7 @@ TotalSales AS (
     FROM
         lineitem l
     WHERE
-        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1998-01-01')
+        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1998-01-01'
     GROUP BY
         l.l_partkey
 ),
@@ -51,4 +51,4 @@ WHERE
     AND ap.revenue > (SELECT AVG(revenue) FROM AggregatedParts)
 ORDER BY
     ap.revenue DESC
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;

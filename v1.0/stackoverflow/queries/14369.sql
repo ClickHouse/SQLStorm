@@ -20,7 +20,7 @@ PostStats AS (
         COUNT(p.Id) AS PostCount,
         SUM(COALESCE(p.Score, 0)) AS TotalScore,
         SUM(COALESCE(p.ViewCount, 0)) AS TotalViews,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 60) AS AvgPostAgeInMinutes
+        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) / 60) AS AvgPostAgeInMinutes
     FROM 
         Posts p
     GROUP BY 

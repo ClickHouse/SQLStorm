@@ -39,7 +39,7 @@ RecentPostVotes AS (
     JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 1 MONTH
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 month'
     GROUP BY 
         p.Id, p.OwnerUserId, v.VoteTypeId
 ),

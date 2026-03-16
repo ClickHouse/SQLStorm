@@ -36,7 +36,7 @@ SELECT
     COALESCE(PHT.Name, 'No History') AS RecentActionType,
     COUNT(PH.Id) AS ActionCount
 FROM TopUsers TU
-LEFT JOIN PostHistory PH ON PH.UserId = TU.UserId AND PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+LEFT JOIN PostHistory PH ON PH.UserId = TU.UserId AND PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 LEFT JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
 GROUP BY TU.UserId, TU.DisplayName, TU.Reputation, TU.TotalPosts, TU.TotalQuestions, TU.TotalAnswers, PHT.Name
 ORDER BY TU.Reputation DESC, ActionCount DESC

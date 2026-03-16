@@ -58,7 +58,7 @@ LEFT JOIN
     PostCloseReasons pcr ON p.Id = pcr.PostId
 WHERE 
     (ru.PostCount > 5 OR ub.GoldCount > 0)
-    AND (p.LastActivityDate IS NULL OR p.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    AND (p.LastActivityDate IS NULL OR p.LastActivityDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
 ORDER BY 
     ru.ViewRank,
     ru.PostCount DESC;

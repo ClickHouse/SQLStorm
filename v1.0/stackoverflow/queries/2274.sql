@@ -14,7 +14,7 @@ PostDetails AS (
         p.Score,
         p.ViewCount,
         COALESCE(NULLIF(p.AcceptedAnswerId, -1), 0) AS HasAcceptedAnswer,
-        toYear(p.CreationDate) AS PostYear,
+        EXTRACT(YEAR FROM p.CreationDate) AS PostYear,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVotes,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVotes
     FROM Posts p
@@ -74,7 +74,7 @@ SELECT
     0 AS ViewCount,
     0 AS UpVotes,
     0 AS DownVotes,
-    toDateTime64('2024-10-01 12:34:56', 6) AS LastRevisionDate,
+    CAST('2024-10-01 12:34:56' AS TIMESTAMP) AS LastRevisionDate,
     AVG(ur.Reputation) AS AvgReputation,
     NULL AS ReputationRank,
     'N/A' AS UserLevel

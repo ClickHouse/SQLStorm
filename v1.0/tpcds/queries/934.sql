@@ -54,4 +54,4 @@ HAVING
     SUM(fs.net_gain_loss) > 1000
 ORDER BY
     total_net_gain_loss DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

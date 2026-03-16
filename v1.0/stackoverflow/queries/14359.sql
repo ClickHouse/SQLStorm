@@ -7,7 +7,7 @@ WITH PostStatistics AS (
         COUNT(v.Id) AS VoteCount,
         AVG(v.BountyAmount) AS AverageBounty,
         COUNT(DISTINCT b.Id) AS BadgeCount,
-        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) AS PostAgeInSeconds
+        toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) AS PostAgeInSeconds
     FROM 
         Posts p
     LEFT JOIN 

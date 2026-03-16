@@ -24,9 +24,9 @@ LEFT OUTER JOIN partsupp PS ON FP.p_partkey = PS.ps_partkey
 LEFT OUTER JOIN RankedSuppliers FS ON PS.ps_suppkey = FS.s_suppkey
 LEFT OUTER JOIN lineitem L ON PS.ps_partkey = L.l_partkey
 LEFT OUTER JOIN orders O ON L.l_orderkey = O.o_orderkey
-WHERE O.o_orderdate >= toDate('1996-01-01') 
+WHERE O.o_orderdate >= DATE '1996-01-01' 
       AND (O.o_orderstatus = 'F' OR O.o_orderstatus IS NULL)
 GROUP BY FP.part_size_category
 HAVING SUM(L.l_quantity) IS NOT NULL
 ORDER BY total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

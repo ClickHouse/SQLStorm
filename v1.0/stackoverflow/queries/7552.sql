@@ -57,7 +57,7 @@ SELECT
     pd.CommentCount,
     pd.UpVoteCount,
     pd.DownVoteCount,
-    toYear(pd.CreationDate) AS PostYear,
+    EXTRACT(YEAR FROM pd.CreationDate) AS PostYear,
     CASE 
         WHEN pd.Score >= 100 THEN 'High'
         WHEN pd.Score BETWEEN 50 AND 99 THEN 'Medium'

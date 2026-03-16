@@ -63,7 +63,7 @@ LEFT JOIN
         FROM customer c 
         WHERE c.c_nationkey = n.n_nationkey 
         ORDER BY c.c_acctbal DESC
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     )
 LEFT JOIN 
     SupplierStats ss ON ss.nation = n.n_name

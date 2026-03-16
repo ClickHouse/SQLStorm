@@ -16,7 +16,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate > (now64(6) - INTERVAL 1 YEAR) 
+        p.CreationDate > (CURRENT_TIMESTAMP - INTERVAL '1 year') 
         AND p.PostTypeId IN (1, 2)  
     GROUP BY 
         p.Id, p.Title, p.PostTypeId

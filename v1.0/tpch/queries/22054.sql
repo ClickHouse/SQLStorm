@@ -64,4 +64,4 @@ WHERE
 ORDER BY 
     cd.total_quantity DESC NULLS LAST,
     supplier_name ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

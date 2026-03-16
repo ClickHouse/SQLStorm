@@ -14,7 +14,7 @@ OrderSummary AS (
            SUM(CASE WHEN li.l_returnflag = 'R' THEN 1 ELSE 0 END) AS return_count
     FROM orders o
     JOIN lineitem li ON o.o_orderkey = li.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
     GROUP BY o.o_orderkey, o.o_orderdate, o.o_totalprice, li.l_partkey, li.l_quantity
 ),
 FinalReport AS (

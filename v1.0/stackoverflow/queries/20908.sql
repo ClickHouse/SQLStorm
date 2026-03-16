@@ -41,7 +41,7 @@ ActivePosts AS (
     LEFT JOIN Posts ah ON p.AcceptedAnswerId = ah.Id
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id
-    WHERE p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE p.LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY p.Id, ah.Id
 )
 SELECT 
@@ -68,4 +68,4 @@ LEFT JOIN ActivePosts ap ON ap.OwnerUserId = u.Id
 GROUP BY u.Id, u.DisplayName, u.Reputation, u.CreationDate, 
          aps.TotalPosts, aps.Questions, aps.Answers, aps.TotalScore
 ORDER BY u.Reputation DESC, ActivePostsCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -60,4 +60,4 @@ WHERE
     )
 ORDER BY 
     total_sales_revenue DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

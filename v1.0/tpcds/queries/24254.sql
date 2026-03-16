@@ -48,4 +48,4 @@ FULL OUTER JOIN StoreInfo si ON hpc.total_orders = si.total_quantity_sold
 WHERE (hpc.total_profit IS NOT NULL OR si.total_net_profit IS NOT NULL)
   AND (si.total_quantity_sold > 10 OR hpc.total_orders IS NULL)
 ORDER BY hpc.total_profit DESC, si.total_net_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) OVER (PARTITION BY p.Id), 0) AS DownVotes
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
 )
 SELECT 
     rp.Id,

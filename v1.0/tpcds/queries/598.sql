@@ -45,7 +45,7 @@ SELECT
     s.total_net_profit - s.total_return_net_loss AS net_profit_after_returns,
     CASE 
         WHEN s.total_quantity = 0 THEN NULL 
-        ELSE ROUND((s.total_returned_quantity / NULLIF(s.total_quantity, 0, CAST() AS decimal)) * 100, 2) 
+        ELSE ROUND((s.total_returned_quantity / NULLIF(s.total_quantity, 0)::decimal) * 100, 2) 
     END AS return_percentage,
     CONCAT('Item ', s.ws_item_sk, ' has ', s.total_returned_quantity, ' returns') AS return_summary
 FROM 

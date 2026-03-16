@@ -63,7 +63,7 @@ SELECT
         WHERE 
             pH.PostId = pst.PostId 
             AND pH.PostHistoryTypeId IN (10, 11) 
-            AND pH.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
+            AND pH.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
     ) AS RecentCloseOrReopenCount,
     RANK() OVER (PARTITION BY pst.PostId ORDER BY COALESCE(uVS.UpVotes, 0) DESC) AS RankByUpVotes
 FROM 
@@ -75,7 +75,7 @@ LEFT JOIN
 LEFT JOIN 
     RecursivePostHistory ph ON pst.PostId = ph.PostId
 WHERE 
-    (toHour(ph.CreationDate) % 2 = 0 OR ph.Comment IS NOT NULL)
+    (EXTRACT(HOUR FROM ph.CreationDate) % 2 = 0 OR ph.Comment IS NOT NULL)
     AND (pst.TotalUpVotes - pst.TotalDownVotes > 0 OR pst.CommentCount > 5)
 ORDER BY 
     pst.TotalUpVotes DESC, 

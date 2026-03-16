@@ -21,7 +21,7 @@ JOIN
     region R ON N.n_regionkey = R.r_regionkey
 WHERE 
     P.p_brand LIKE 'Brand#%'
-    AND O.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
+    AND O.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
 GROUP BY 
     P.p_name, R.r_name, S.s_name
 HAVING 

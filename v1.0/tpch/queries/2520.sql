@@ -74,7 +74,7 @@ JOIN
 JOIN 
     ProductPerformance pp ON ps.ps_partkey = pp.p_partkey
 WHERE 
-    l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR 
+    l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year' 
     AND cs.num_orders > 5
 GROUP BY 
     n.n_name, s.s_name, pp.order_count, pp.avg_price, pp.total_discount, cs.total_spent

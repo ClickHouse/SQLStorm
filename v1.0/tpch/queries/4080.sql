@@ -39,7 +39,7 @@ LEFT JOIN
 LEFT JOIN 
     RankedParts rp ON l.l_partkey = rp.p_partkey AND rp.price_rank = 1
 WHERE 
-    o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     AND c.c_acctbal > 500
 GROUP BY 
     c.c_name, o.o_orderkey, sd.s_name, rp.p_name, rp.p_retailprice, sd.available_parts

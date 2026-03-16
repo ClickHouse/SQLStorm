@@ -10,7 +10,7 @@ WITH RECURSIVE TopSuppliers AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, c.c_name, ROW_NUMBER() OVER (PARTITION BY c.c_nationkey ORDER BY o.o_orderdate DESC) as rn
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 MONTH
+    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 month'
 ), SupplierStats AS (
     SELECT p.p_partkey, p.p_name, COUNT(DISTINCT ps.ps_suppkey) AS unique_suppliers, AVG(ps.ps_supplycost) AS avg_supply_cost
     FROM part p

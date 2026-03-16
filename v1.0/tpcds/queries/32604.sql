@@ -8,7 +8,7 @@ WITH RECURSIVE sales_summary AS (
     FROM 
         catalog_sales
     WHERE 
-        cs_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = DATE('2002-10-01') - INTERVAL 30 DAY)
+        cs_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = DATE('2002-10-01') - INTERVAL '30 days')
     GROUP BY 
         cs_item_sk, cs_order_number
     UNION ALL
@@ -20,7 +20,7 @@ WITH RECURSIVE sales_summary AS (
     FROM 
         web_sales
     WHERE 
-        ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = DATE('2002-10-01') - INTERVAL 30 DAY)
+        ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = DATE('2002-10-01') - INTERVAL '30 days')
     GROUP BY 
         ws_item_sk, ws_order_number
 ),

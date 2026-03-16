@@ -46,4 +46,4 @@ FULL OUTER JOIN Demographics d ON cs.c_current_cdemo_sk = d.cd_demo_sk
 WHERE (cs.total_web_sales > 1000 OR cs.total_catalog_sales > 1000)
   AND (d.cd_gender = 'F' AND d.cd_marital_status IS NOT NULL)
 ORDER BY sales_difference DESC
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;

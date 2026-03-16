@@ -25,7 +25,7 @@ CustomerOrders AS (
     SELECT c.c_custkey, c.c_name, SUM(o.o_totalprice) AS total_spent
     FROM customer c
     LEFT JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') OR o.o_orderdate IS NULL
+    WHERE o.o_orderdate >= DATE '1997-01-01' OR o.o_orderdate IS NULL
     GROUP BY c.c_custkey, c.c_name
 ),
 CombinedInfo AS (

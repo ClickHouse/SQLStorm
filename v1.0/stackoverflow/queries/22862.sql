@@ -25,7 +25,7 @@ RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        p.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
     GROUP BY 
         p.Id, p.Title, p.CreationDate, pt.Name, u.DisplayName
 ),
@@ -81,6 +81,6 @@ FROM
     FinalData
 WHERE 
     (UpVotes - DownVotes) > 10
-    OR (CommentCount > 5 AND LastModified > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY))
+    OR (CommentCount > 5 AND LastModified > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days'))
 ORDER BY 
     CreationDate DESC;

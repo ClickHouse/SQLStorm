@@ -28,8 +28,8 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     r.r_name LIKE 'Europe%'
-    AND o.o_orderdate >= toDate('1997-01-01')
-    AND o.o_orderdate < toDate('1998-01-01')
+    AND o.o_orderdate >= DATE '1997-01-01'
+    AND o.o_orderdate < DATE '1998-01-01'
 GROUP BY 
     p.p_name, s.s_name, c.c_name, n.n_name, p.p_comment
 ORDER BY 

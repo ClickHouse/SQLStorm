@@ -12,7 +12,7 @@ WITH RECURSIVE sales_hierarchy AS (
     JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01')
+        o.o_orderdate >= DATE '1996-01-01'
 ), 
 part_supplier AS (
     SELECT 
@@ -58,7 +58,7 @@ LEFT JOIN
 LEFT JOIN 
     customer c ON rh.c_custkey = c.c_custkey
 WHERE 
-    rh.o_orderdate >= toDate('1996-01-01')
+    rh.o_orderdate >= DATE '1996-01-01'
 GROUP BY 
     c.c_custkey, c.c_name
 HAVING 

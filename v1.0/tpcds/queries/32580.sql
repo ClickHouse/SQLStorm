@@ -62,4 +62,4 @@ WHERE
 ORDER BY 
     tc.total_return_amount DESC, 
     bs.total_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

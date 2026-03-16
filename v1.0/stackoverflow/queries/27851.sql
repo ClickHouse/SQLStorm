@@ -83,4 +83,4 @@ WHERE
     pd.CommentCount >= 5 
 ORDER BY 
     pd.UpVotes DESC, pd.ViewCount DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

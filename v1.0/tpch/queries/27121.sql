@@ -31,7 +31,7 @@ OrderInfo AS (
         o.o_orderkey, 
         o.o_totalprice, 
         o.o_orderstatus, 
-        toYear(o.o_orderdate) AS order_year
+        EXTRACT(YEAR FROM o.o_orderdate) AS order_year
     FROM 
         orders o
 )

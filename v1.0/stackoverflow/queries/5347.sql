@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= toDate('2023-10-01')
+        AND p.CreationDate >= DATE '2023-10-01'
 ),
 UserEngagement AS (
     SELECT 

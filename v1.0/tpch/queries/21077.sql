@@ -39,7 +39,7 @@ LEFT JOIN SupplierStats ss ON s.s_suppkey = ss.s_suppkey
 LEFT JOIN AggregatedOrderStats aos ON aos.o_orderkey IN (
     SELECT o.o_orderkey 
     FROM orders o 
-    WHERE o.o_orderstatus = 'F' AND o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    WHERE o.o_orderstatus = 'F' AND o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
 )
 LEFT JOIN CustomerHierarchy ch ON ch.c_nationkey = n.n_nationkey
 WHERE r.r_name LIKE '%East%'

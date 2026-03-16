@@ -25,13 +25,13 @@ SalesStats AS (
         SUM(ws_net_profit) AS total_net_profit,
         SUM(ws_sales_price) AS total_sales_price,
         COUNT(DISTINCT ws_order_number) AS total_orders,
-        toYear(d_date) AS sale_year
+        EXTRACT(YEAR FROM d_date) AS sale_year
     FROM 
         web_sales
     JOIN 
         date_dim ON ws_sold_date_sk = d_date_sk
     GROUP BY 
-        toYear(d_date)
+        EXTRACT(YEAR FROM d_date)
 ),
 FinalStats AS (
     SELECT 

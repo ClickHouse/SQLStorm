@@ -18,7 +18,7 @@ JOIN
 JOIN 
     region ON nation.n_regionkey = region.r_regionkey 
 WHERE 
-    orders.o_orderdate >= toDate('1997-01-01') AND orders.o_orderdate < toDate('1997-12-31')
+    orders.o_orderdate >= DATE '1997-01-01' AND orders.o_orderdate < DATE '1997-12-31'
 GROUP BY 
     region.r_name, nation.n_name, supplier.s_name
 ORDER BY 

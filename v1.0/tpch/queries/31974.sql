@@ -13,7 +13,7 @@ RecentOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, c.c_mktsegment
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= toDate('1998-10-01') - INTERVAL 6 MONTH
+    WHERE o.o_orderdate >= DATE '1998-10-01' - INTERVAL '6 months'
 ),
 AggregateLineItems AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales
@@ -39,4 +39,4 @@ JOIN nation n ON s.s_nationkey = n.n_nationkey
 WHERE n.n_regionkey IN (SELECT r.r_regionkey FROM region r WHERE r.r_comment LIKE '%supply%')
 GROUP BY s.s_suppkey, s.s_name, s.s_nationkey
 ORDER BY total_order_value DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

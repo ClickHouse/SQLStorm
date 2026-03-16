@@ -46,7 +46,7 @@ RecentActivity AS (
     SELECT 
         post.OwnerUserId,
         COUNT(DISTINCT post.Id) AS TotalPosts,
-        COUNT(CASE WHEN post.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 END) AS RecentPosts,
+        COUNT(CASE WHEN post.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days' THEN 1 END) AS RecentPosts,
         AVG(v.BountyAmount) AS AvgBountyAmount
     FROM 
         Posts post

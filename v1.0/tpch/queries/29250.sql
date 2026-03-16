@@ -22,8 +22,8 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     p.p_type LIKE '%BRASS%'
-    AND o.o_orderdate >= toDate('1997-01-01')
-    AND o.o_orderdate < toDate('1997-12-31')
+    AND o.o_orderdate >= DATE '1997-01-01'
+    AND o.o_orderdate < DATE '1997-12-31'
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderdate, p.p_comment
 ORDER BY 

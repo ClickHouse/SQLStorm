@@ -47,7 +47,7 @@ MovieDetails AS (
 SELECT 
     md.title,
     md.production_year,
-    COALESCE(CAST(md.actor_names AS text), 'No Actors') AS actor_names,
+    COALESCE(md.actor_names::text, 'No Actors') AS actor_names,
     md.keyword_count
 FROM 
     MovieDetails md

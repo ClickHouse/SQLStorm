@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON t.WikiPostId = p.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 YEAR' 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount, p.CommentCount, p.PostTypeId
 ),

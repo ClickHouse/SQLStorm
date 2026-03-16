@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         arrayJoin(splitByString('> <', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS t (TagName) ON TRUE
     WHERE
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY
         p.Id, p.Title, p.ViewCount, p.CreationDate, p.PostTypeId
 ),
@@ -71,7 +71,7 @@ SELECT
     END AS ViewCountReport,
     CASE
         WHEN ps.CommentCount = 0 THEN 'No Comments'
-        ELSE CAST(ps.CommentCount AS TEXT)
+        ELSE ps.CommentCount::TEXT
     END AS CommentActivityReport,
     COALESCE(ps.Tags, 'No Tags') AS TagsSummary,
     CASE

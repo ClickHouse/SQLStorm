@@ -35,7 +35,7 @@ UserPosts AS (
         COUNT(P.Id) AS TotalPosts,
         COUNT(CASE WHEN P.PostTypeId = 1 THEN 1 END) AS Questions,
         COUNT(CASE WHEN P.PostTypeId = 2 THEN 1 END) AS Answers,
-        COUNT(CASE WHEN P.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY THEN 1 END) AS RecentActivity
+        COUNT(CASE WHEN P.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL '30 days' THEN 1 END) AS RecentActivity
     FROM 
         Posts P
     GROUP BY 

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY
+        P.CreationDate >= CURRENT_DATE - INTERVAL '30 days'
 ),
 TopPosts AS (
     SELECT 
@@ -56,7 +56,7 @@ SELECT
     (COALESCE(PVS.UpVotes, 0) - COALESCE(PVS.DownVotes, 0)) AS NetVotes,
     CASE 
         WHEN COALESCE(PVS.UpVotes, 0) + COALESCE(PVS.DownVotes, 0) > 0 
-        THEN COALESCE(PVS.UpVotes, 0, CAST() AS FLOAT) / (COALESCE(PVS.UpVotes, 0) + COALESCE(PVS.DownVotes, 0)) * 100 
+        THEN COALESCE(PVS.UpVotes, 0)::FLOAT / (COALESCE(PVS.UpVotes, 0) + COALESCE(PVS.DownVotes, 0)) * 100 
         ELSE NULL 
     END AS VotePercentage
 FROM 

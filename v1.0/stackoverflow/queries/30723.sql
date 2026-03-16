@@ -71,7 +71,7 @@ LEFT JOIN
     ModifiedPosts MP ON RP.PostId = MP.PostId
 WHERE 
     RP.Score > 10
-    AND RP.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    AND RP.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ORDER BY 
     RP.Score DESC,
     RP.ViewCount DESC;

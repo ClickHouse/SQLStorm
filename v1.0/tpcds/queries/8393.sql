@@ -54,4 +54,4 @@ JOIN sales_summary ws ON cs.c_customer_sk = (
 JOIN warehouse_summary wh ON ws.w_warehouse_id = wh.w_warehouse_id
 WHERE cs.total_profit > 1000
 ORDER BY cs.total_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

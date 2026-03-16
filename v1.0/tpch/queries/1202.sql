@@ -39,4 +39,4 @@ SELECT f.c_custkey, f.c_name, f.total_orders,
        CASE WHEN f.total_spent IS NULL THEN 'No Spending' ELSE 'Active Customer' END AS customer_status
 FROM FinalStats f
 ORDER BY f.total_orders DESC, total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

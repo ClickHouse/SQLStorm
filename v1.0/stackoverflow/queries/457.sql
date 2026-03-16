@@ -59,4 +59,4 @@ WHERE
 ORDER BY 
     rp.Score DESC,
     rp.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

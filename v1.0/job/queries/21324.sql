@@ -72,4 +72,4 @@ ORDER BY
     fm.production_year DESC, 
     fm.total_actors DESC, 
     fm.max_roles ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

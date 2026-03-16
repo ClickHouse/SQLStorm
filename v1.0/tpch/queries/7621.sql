@@ -34,6 +34,6 @@ FROM customer c
 JOIN orders o ON c.c_custkey = o.o_custkey
 JOIN lineitem oi ON o.o_orderkey = oi.l_orderkey
 JOIN BestSuppliers bs ON oi.l_suppkey = bs.s_suppkey
-WHERE o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+WHERE o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 AND oi.l_quantity > 10
 ORDER BY c.c_custkey, o.o_orderdate, oi.l_partkey;

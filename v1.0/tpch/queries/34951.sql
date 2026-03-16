@@ -31,8 +31,8 @@ FROM nation_stats ns
 JOIN supplier_hierarchy sh ON ns.n_nationkey = sh.s_nationkey
 JOIN order_info oi ON oi.o_totalprice > ns.avg_acctbal
 WHERE ns.supplier_count > 5
-  AND toYear(oi.o_orderdate) = 1997
+  AND EXTRACT(YEAR FROM oi.o_orderdate) = 1997
 GROUP BY ns.n_name, ns.supplier_count, ns.avg_acctbal, oi.total_lineitem_value
 HAVING AVG(oi.total_lineitem_value) > 5000
 ORDER BY ns.n_name ASC, order_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

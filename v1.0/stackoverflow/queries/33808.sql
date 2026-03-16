@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 TopPosts AS (
     SELECT 
@@ -55,8 +55,8 @@ FinalResults AS (
         tp.OwnerDisplayName,
         COALESCE(pv.NetVoteScore, 0) AS NetVoteScore,
         CASE 
-            WHEN tp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'New'
-            WHEN tp.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY AND tp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 60 DAY THEN 'Moderate'
+            WHEN tp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 'New'
+            WHEN tp.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' AND tp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '60 days' THEN 'Moderate'
             ELSE 'Old'
         END AS PostAgeCategory
     FROM 

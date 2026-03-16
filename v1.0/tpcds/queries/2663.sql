@@ -12,7 +12,7 @@ WITH SalesData AS (
         I.i_item_desc,
         CASE 
             WHEN C.c_birth_year IS NULL THEN 'Unknown'
-            ELSE CAST((toYear(toDate('2002-10-01')) - C.c_birth_year) AS VARCHAR)
+            ELSE CAST((EXTRACT(YEAR FROM DATE '2002-10-01') - C.c_birth_year) AS VARCHAR)
         END AS age,
         ROW_NUMBER() OVER (PARTITION BY ws.ws_order_number ORDER BY ws.ws_net_profit DESC) AS rn
     FROM web_sales ws

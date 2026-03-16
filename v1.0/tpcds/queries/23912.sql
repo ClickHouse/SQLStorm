@@ -25,7 +25,7 @@ WITH RECURSIVE AddressHierarchy AS (
 SELECT 
     c.c_customer_id,
     COUNT(DISTINCT ca.ca_address_id) AS unique_addresses,
-    AVG(datePart('year', AGE(toDateTime64('2002-10-01 12:34:56', 6), d.d_date))) AS avg_customer_age,
+    AVG(datePart('year', AGE(cast('2002-10-01 12:34:56' as timestamp), d.d_date))) AS avg_customer_age,
     SUM(ws.ws_net_profit) AS total_net_profit,
     MAX(CASE 
         WHEN cd.cd_gender = 'M' THEN 'Male'

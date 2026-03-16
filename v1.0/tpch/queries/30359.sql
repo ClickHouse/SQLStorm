@@ -19,7 +19,7 @@ TopRegions AS (
     JOIN nation n ON r.r_regionkey = n.n_regionkey
     JOIN customer c ON n.n_nationkey = c.c_nationkey
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderstatus = 'F' AND o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderstatus = 'F' AND o.o_orderdate >= DATE '1997-01-01'
     GROUP BY r.r_name
     ORDER BY total_sales DESC
     LIMIT 5

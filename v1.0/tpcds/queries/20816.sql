@@ -68,4 +68,4 @@ SELECT
 FROM CombinedStats c
 WHERE c.customer_rank <= 10
 ORDER BY c.total_spent DESC
-LIMIT 5 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY;

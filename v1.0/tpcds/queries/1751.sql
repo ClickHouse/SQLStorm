@@ -47,4 +47,4 @@ SELECT
 FROM item_details id
 WHERE id.net_profit_after_returns <> 0
 ORDER BY id.net_profit_after_returns DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

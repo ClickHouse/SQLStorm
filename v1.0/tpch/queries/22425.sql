@@ -8,8 +8,8 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01') 
-        AND o.o_orderdate < toDate('1998-01-01')
+        o.o_orderdate >= DATE '1997-01-01' 
+        AND o.o_orderdate < DATE '1998-01-01'
 ), OrderLineItems AS (
     SELECT 
         l.l_orderkey,
@@ -19,7 +19,7 @@ WITH RankedOrders AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+        l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY 
         l.l_orderkey
 ), CustomerOrders AS (

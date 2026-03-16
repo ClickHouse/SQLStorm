@@ -38,6 +38,6 @@ JOIN lineitem lp ON o.o_orderkey = lp.l_orderkey
 JOIN RankedParts rp ON lp.l_partkey = rp.p_partkey AND rp.rank = 1
 JOIN QualifiedRegions qr ON qr.r_regionkey = (SELECT n.n_regionkey FROM nation n WHERE n.n_nationkey = c.c_nationkey)
 JOIN TopSuppliers ts ON ts.s_suppkey = lp.l_suppkey
-WHERE o.o_orderdate >= toDate('1996-01-01') 
+WHERE o.o_orderdate >= DATE '1996-01-01' 
 AND o.o_orderstatus = 'O'
 ORDER BY o.o_orderdate DESC, rp.total_cost DESC;

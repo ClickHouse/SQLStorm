@@ -40,8 +40,8 @@ LEFT JOIN TopRegions AS tr ON s.s_suppkey IN (
     WHERE s.s_acctbal IS NOT NULL AND s.s_acctbal < (SELECT MAX(s_acctbal) FROM supplier) 
 )
 WHERE li.l_returnflag = 'N' 
-      AND li.l_shipdate >= toDate('1997-01-01') 
-      AND li.l_shipdate < toDate('1998-01-01')
+      AND li.l_shipdate >= DATE '1997-01-01' 
+      AND li.l_shipdate < DATE '1998-01-01'
 GROUP BY p.p_name
 HAVING COUNT(DISTINCT s.s_suppkey) > 0 
        AND (SUM(li.l_extendedprice * (1 - li.l_discount)) IS NOT NULL 

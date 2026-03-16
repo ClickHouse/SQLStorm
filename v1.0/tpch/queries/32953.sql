@@ -30,7 +30,7 @@ WHERE EXISTS (
     WHERE PS.ps_partkey = L.l_partkey
       AND PS.ps_availqty > 0
 )
-AND L.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+AND L.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY C.c_custkey, C.c_name, R.r_name, C.c_nationkey
 HAVING SUM(L.l_extendedprice * (1 - L.l_discount)) > 10000
 ORDER BY total_revenue DESC, R.r_name

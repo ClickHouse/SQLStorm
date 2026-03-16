@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id 
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 BadgesWithCounts AS (
     SELECT 
@@ -29,7 +29,7 @@ BadgesWithCounts AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.Comment, ': ', CAST(ph.CreationDate AS TEXT)))), ' | ') AS HistoryComments,
+        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.Comment, ': ', ph.CreationDate::TEXT))), ' | ') AS HistoryComments,
         COUNT(ph.Id) AS HistoryCount
     FROM 
         PostHistory ph
@@ -69,4 +69,4 @@ WHERE
 ORDER BY 
     rp.ViewCount DESC, 
     rp.Score DESC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

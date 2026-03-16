@@ -34,7 +34,7 @@ PopularPosts AS (
         ROW_NUMBER() OVER (ORDER BY P.Score DESC, P.ViewCount DESC) AS PostRank
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate >= now64(6) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount
 )
 

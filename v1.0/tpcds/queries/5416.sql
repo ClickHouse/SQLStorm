@@ -61,4 +61,4 @@ JOIN
     sales_summary ss ON ss.total_sold_quantity > 5000
 ORDER BY 
     cs.total_net_profit DESC, ss.total_sales_profit ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

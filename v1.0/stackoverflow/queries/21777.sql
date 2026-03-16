@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         END AS ScoreCategory
     FROM Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
         AND p.Score IS NOT NULL
 ),
 PostInteractions AS (
@@ -28,7 +28,7 @@ PostInteractions AS (
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id AND v.VoteTypeId IN (2, 3) 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
     GROUP BY p.Id
 ),
 FinalResults AS (

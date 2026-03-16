@@ -23,7 +23,7 @@ PostDetails AS (
         P.ViewCount,
         RANK() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate >= now64(6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
 ),
 TopPosts AS (
     SELECT 

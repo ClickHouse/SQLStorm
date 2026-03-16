@@ -19,7 +19,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     s.s_acctbal > 0 AND
-    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY 
     s.s_name, p.p_name
 ORDER BY 

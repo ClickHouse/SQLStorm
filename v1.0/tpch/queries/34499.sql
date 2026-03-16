@@ -15,7 +15,7 @@ OrderDetails AS (
         COUNT(DISTINCT o.o_orderkey) AS order_count
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate >= toDate('1997-01-01')  
+    WHERE l.l_shipdate >= DATE '1997-01-01'  
     GROUP BY o.o_custkey
 ),
 RegionalSales AS (

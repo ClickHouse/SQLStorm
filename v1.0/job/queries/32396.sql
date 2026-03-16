@@ -57,7 +57,7 @@ FinalResults AS (
 
 SELECT fr.movie_title,
        fr.actor_name,
-       COALESCE(CAST(fr.production_year AS TEXT), 'Unknown') AS production_year,
+       COALESCE(fr.production_year::TEXT, 'Unknown') AS production_year,
        COALESCE(fr.keywords, 'No Keywords') AS keywords,
        CASE 
            WHEN fr.keywords IS NULL OR fr.keywords = '' THEN 'No Keywords Available'

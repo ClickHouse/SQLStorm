@@ -47,4 +47,4 @@ WHERE
     AND ca.ca_state IN ('CA', 'NY')
 ORDER BY 
     total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

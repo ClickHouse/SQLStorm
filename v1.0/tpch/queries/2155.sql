@@ -16,7 +16,7 @@ WITH TopSuppliers AS (
 RecentOrders AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_totalprice, o.o_orderdate, o.o_orderstatus
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 90 DAY
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '90 days'
 ),
 OrderDetails AS (
     SELECT lo.l_orderkey, lo.l_partkey, lo.l_suppkey, lo.l_quantity, lo.l_extendedprice, lo.l_discount,

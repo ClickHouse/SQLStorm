@@ -37,4 +37,4 @@ JOIN FilteredParts FP ON ps.ps_partkey = FP.p_partkey
 WHERE (R.rnk IS NULL OR R.rnk > 3)
   AND (ps.ps_availqty < 0 OR ps.ps_supplycost BETWEEN 10.00 AND 500.00)
 ORDER BY supplier_status, FP.price_category DESC, ps.ps_supplycost ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -9,7 +9,7 @@ WITH RecursivePostAnalytics AS (
         COALESCE(c.CommentCount, 0) AS TotalComments,
         COALESCE(pv.ViewCount, 0) AS TotalViews,
         CASE 
-            WHEN p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Old Post'
+            WHEN p.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' THEN 'Old Post'
             ELSE 'Recent Post'
         END AS PostAge,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank

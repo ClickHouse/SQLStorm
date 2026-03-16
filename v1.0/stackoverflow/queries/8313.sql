@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score > 0 
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
+        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '3 months'
 ),
 UserActivity AS (
     SELECT 

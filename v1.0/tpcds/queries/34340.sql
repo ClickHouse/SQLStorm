@@ -46,4 +46,4 @@ GROUP BY
     s.c_first_name, s.c_last_name, s.sales_level
 ORDER BY 
     s.sales_level, sales_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

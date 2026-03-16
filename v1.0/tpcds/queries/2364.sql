@@ -53,4 +53,4 @@ WHERE
 ORDER BY 
     net_quantity_sold DESC, 
     last_sales_price DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

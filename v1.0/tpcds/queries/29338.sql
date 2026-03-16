@@ -48,4 +48,4 @@ WHERE
     total_sales > 0
 ORDER BY
     total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

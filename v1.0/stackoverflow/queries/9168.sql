@@ -60,4 +60,4 @@ WHERE
     U.Reputation > 1000
 ORDER BY 
     U.Reputation DESC, P.ViewCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

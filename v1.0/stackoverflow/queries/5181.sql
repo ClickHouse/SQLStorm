@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         Badges b ON u.Id = b.UserId
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.DisplayName
 ),

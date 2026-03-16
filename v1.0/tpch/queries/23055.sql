@@ -65,4 +65,4 @@ WHERE
     (co.order_count > 0 OR co.total_orders IS NULL)
 ORDER BY 
     co.total_orders DESC
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;

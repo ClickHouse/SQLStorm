@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 AND /* Only questions */
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR /* Questions from the last year */
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' /* Questions from the last year */
 ),
 PopularTags AS (
     SELECT 
@@ -56,7 +56,7 @@ PostsWithBadge AS (
     WHERE 
         p.PostTypeId = 1 /* Only questions */
         AND b.Class = 1 /* Only Gold badges */
-        AND b.Date >= CURRENT_DATE - INTERVAL 1 YEAR /* Received last year */
+        AND b.Date >= CURRENT_DATE - INTERVAL '1 year' /* Received last year */
 )
 SELECT 
     rp.PostId,

@@ -35,7 +35,7 @@ OrderedStats AS (
     JOIN 
         lineitem li ON o.o_orderkey = li.l_orderkey
     WHERE 
-        li.l_shipdate >= toDate('1997-01-01') AND li.l_shipdate < toDate('1997-10-01')
+        li.l_shipdate >= DATE '1997-01-01' AND li.l_shipdate < DATE '1997-10-01'
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 )
@@ -65,4 +65,4 @@ HAVING
     COUNT(DISTINCT co.c_custkey) > 5
 ORDER BY 
     total_supplier_cost DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

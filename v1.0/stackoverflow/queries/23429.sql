@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId IN (1, 2) 
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserReputation AS (
     SELECT 
@@ -62,7 +62,7 @@ SELECT
     (SELECT COUNT(*) 
      FROM Comments c 
      WHERE c.PostId = rp.PostId 
-     AND c.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH) AS RecentComments
+     AND c.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month') AS RecentComments
 FROM 
     UserReputation up
 JOIN 

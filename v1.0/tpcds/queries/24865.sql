@@ -4,7 +4,7 @@ WITH RECURSIVE price_calculation AS (
         i.i_item_sk,
         i.i_item_desc,
         i.i_current_price,
-        (i.i_current_price * (1 - COALESCE(AVG(CAST(pr.p_discount_active AS int))/100, 0))) AS adjusted_price,
+        (i.i_current_price * (1 - COALESCE(AVG(pr.p_discount_active::int)/100, 0))) AS adjusted_price,
         ROW_NUMBER() OVER (PARTITION BY i.i_category ORDER BY i.i_current_price DESC) AS price_rank
     FROM 
         item i

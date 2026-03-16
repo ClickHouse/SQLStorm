@@ -24,7 +24,7 @@ RankedOrders AS (
             FROM 
                 orders o2 
             WHERE 
-                o2.o_orderdate >= toDate('1997-01-01')
+                o2.o_orderdate >= DATE '1997-01-01'
         )
 ),
 SupplierStats AS (

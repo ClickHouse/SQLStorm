@@ -22,7 +22,7 @@ OrderSummary AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate >= CURRENT_DATE - INTERVAL 6 MONTH
+        l.l_shipdate >= CURRENT_DATE - INTERVAL '6 months'
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 ),

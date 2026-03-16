@@ -52,4 +52,4 @@ WHERE
 ORDER BY 
     id.total_returned DESC, 
     rs.ws_sales_price DESC
-LIMIT 100
+FETCH FIRST 100 ROWS ONLY

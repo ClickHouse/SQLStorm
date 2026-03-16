@@ -41,7 +41,7 @@ BadgeCounts AS (
     JOIN 
         Users u ON b.UserId = u.Id
     WHERE 
-        b.Date > toDate('2024-10-01') - INTERVAL 1 YEAR 
+        b.Date > DATE '2024-10-01' - INTERVAL '1 year' 
     GROUP BY 
         u.Id
 )

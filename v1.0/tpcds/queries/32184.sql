@@ -57,4 +57,4 @@ FROM final_summary f
 JOIN customer_info ci ON ci.rank <= 10
 WHERE f.total_revenue > 1000
 ORDER BY f.sale_date, f.net_revenue DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

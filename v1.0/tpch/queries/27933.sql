@@ -21,7 +21,7 @@ JOIN
     nation n ON c.c_nationkey = n.n_nationkey
 WHERE
     p.p_brand NOT LIKE 'Brand%'
-    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     AND l.l_returnflag = 'N'
 GROUP BY
     p.p_name, p.p_brand, p.p_type, s.s_name, c.c_name, n.n_name

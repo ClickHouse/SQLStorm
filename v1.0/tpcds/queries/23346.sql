@@ -57,4 +57,4 @@ AND
     fm.ws_sales_price IS NOT NULL
 ORDER BY 
     sales_rank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

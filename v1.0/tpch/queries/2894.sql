@@ -57,7 +57,7 @@ LEFT JOIN supplier S ON NF.n_nationkey = S.s_nationkey
 LEFT JOIN SupplierDetails SD ON S.s_suppkey = SD.s_suppkey
 LEFT JOIN lineitem LI ON SD.s_suppkey = LI.l_suppkey
 LEFT JOIN HighValueCustomers CUST ON CUST.c_custkey = LI.l_orderkey
-WHERE LI.l_shipdate >= toDate('1997-01-01')
+WHERE LI.l_shipdate >= DATE '1997-01-01'
     AND (SD.s_acctbal IS NULL OR SD.s_acctbal > 100.00)
 GROUP BY NF.n_name, SD.s_name, CUST.total_spent, CUST.order_count
 ORDER BY total_revenue DESC;

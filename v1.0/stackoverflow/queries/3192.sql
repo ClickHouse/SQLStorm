@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '90 days' 
         AND p.Score IS NOT NULL 
     GROUP BY 
         p.Id, p.Title, p.Score, u.DisplayName, p.PostTypeId
@@ -30,7 +30,7 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 365 DAY
+        b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '365 days'
     GROUP BY 
         b.UserId
 )

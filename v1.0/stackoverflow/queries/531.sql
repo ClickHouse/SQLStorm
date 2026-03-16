@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 UserBadges AS (
     SELECT 
@@ -33,7 +33,7 @@ CloseReasons AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON CAST(ph.Comment AS jsonb) ->> 'CloseReasonId' = CAST(cr.Id AS text)
+        CloseReasonTypes cr ON ph.Comment::jsonb ->> 'CloseReasonId' = cr.Id::text
     WHERE 
         ph.PostHistoryTypeId = 10 
     GROUP BY 

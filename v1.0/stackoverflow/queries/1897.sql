@@ -19,7 +19,7 @@ WITH UserStats AS (
         Badges b ON u.Id = b.UserId
     WHERE 
         u.Reputation > 1000 
-        AND u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND u.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation, u.CreationDate
 ),
@@ -33,7 +33,7 @@ TopPosts AS (
         Posts p 
     WHERE 
         p.ViewCount > 100 
-        AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        AND p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 )
 SELECT 
     us.DisplayName,

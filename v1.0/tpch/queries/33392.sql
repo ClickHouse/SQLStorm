@@ -1,7 +1,7 @@
 WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_orderdate, o.o_totalprice, 1 AS level
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
     
     UNION ALL
     
@@ -24,7 +24,7 @@ LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 LEFT JOIN partsupp ps ON l.l_partkey = ps.ps_partkey
 LEFT JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
 WHERE s.s_acctbal > (SELECT AVG(s2.s_acctbal) FROM supplier s2)
-AND l.l_shipdate BETWEEN o.o_orderdate AND o.o_orderdate + INTERVAL 30 DAY
+AND l.l_shipdate BETWEEN o.o_orderdate AND o.o_orderdate + INTERVAL '30 days'
 GROUP BY c.c_name, c.c_nationkey
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 1000
 ORDER BY total_revenue DESC

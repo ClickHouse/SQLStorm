@@ -43,7 +43,7 @@ SELECT
     tp.CommentCount,
     tp.UpVoteCount,
     tp.DownVoteCount,
-    COALESCE(ROUND((CAST(tp.UpVoteCount AS decimal) / NULLIF((tp.UpVoteCount + tp.DownVoteCount), 0)) * 100, 2), 0) AS UpVotePercentage
+    COALESCE(ROUND((tp.UpVoteCount::decimal / NULLIF((tp.UpVoteCount + tp.DownVoteCount), 0)) * 100, 2), 0) AS UpVotePercentage
 FROM 
     TopPosts tp
 ORDER BY 

@@ -32,7 +32,7 @@ PopularPosts AS (
         P.AnswerCount,
         RANK() OVER (ORDER BY P.Score DESC, P.AnswerCount DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
 )
 SELECT 
     US.UserId,
@@ -55,4 +55,4 @@ LEFT JOIN PopularPosts PP ON PP.PostId IN (
 )
 WHERE US.Reputation > 1000
 ORDER BY US.Reputation DESC, PP.Score DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

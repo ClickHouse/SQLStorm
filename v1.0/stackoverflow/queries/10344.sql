@@ -23,7 +23,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges B ON U.Id = B.UserId
 WHERE 
-    P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+    P.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
 GROUP BY 
     P.Id, P.Title, P.ViewCount, P.Score, P.CreationDate, U.DisplayName, U.Reputation
 ORDER BY 

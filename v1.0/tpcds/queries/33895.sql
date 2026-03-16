@@ -77,4 +77,4 @@ WHERE
     h.orders_count > 5
 ORDER BY 
     h.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

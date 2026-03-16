@@ -67,6 +67,6 @@ FROM
 LEFT JOIN 
     RecursiveTagCounts RTC ON RTC.TagName IN (SELECT value FROM arrayJoin(splitByString(' ', cp.Title)) AS value)  
 WHERE 
-    cp.LastClosedDate >= CURRENT_DATE - INTERVAL 30 DAY  
+    cp.LastClosedDate >= CURRENT_DATE - INTERVAL '30 days'  
 ORDER BY 
     cp.LastClosedDate DESC;

@@ -11,8 +11,8 @@ WITH RECURSIVE PriceSummary AS (
     JOIN 
         lineitem l ON p.p_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate >= toDate('1996-01-01') 
-        AND l.l_shipdate < toDate('1997-01-01')
+        l.l_shipdate >= DATE '1996-01-01' 
+        AND l.l_shipdate < DATE '1997-01-01'
     GROUP BY 
         p.p_partkey, 
         p.p_name
@@ -62,4 +62,4 @@ WHERE
 ORDER BY 
     price_summary DESC,
     total_balance ASC 
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

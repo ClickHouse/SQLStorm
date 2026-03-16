@@ -58,4 +58,4 @@ JOIN
     UserStats us ON ps.PostId = us.UserId
 ORDER BY 
     ps.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

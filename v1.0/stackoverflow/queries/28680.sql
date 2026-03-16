@@ -54,8 +54,8 @@ SELECT
     TotalViews,
     TotalUpVotes,
     TotalDownVotes,
-    ROUND(CAST(TotalUpVotes AS DECIMAL) / NULLIF(PostCount, 0), 2) AS AvgUpVotesPerPost,
-    ROUND(CAST(TotalDownVotes AS DECIMAL) / NULLIF(PostCount, 0), 2) AS AvgDownVotesPerPost
+    ROUND(TotalUpVotes::DECIMAL / NULLIF(PostCount, 0), 2) AS AvgUpVotesPerPost,
+    ROUND(TotalDownVotes::DECIMAL / NULLIF(PostCount, 0), 2) AS AvgDownVotesPerPost
 FROM 
     AggregateStats 
 ORDER BY 

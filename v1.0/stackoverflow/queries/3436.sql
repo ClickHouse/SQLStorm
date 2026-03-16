@@ -23,9 +23,9 @@ RecentActivities AS (
         COUNT(C.Id) AS RecentComments,
         COUNT(DISTINCT H.Id) AS PostEdits
     FROM Users U
-    LEFT JOIN Posts P ON U.Id = P.OwnerUserId AND P.CreationDate >= now64(6) - INTERVAL 30 DAY
-    LEFT JOIN Comments C ON P.Id = C.PostId AND C.CreationDate >= now64(6) - INTERVAL 30 DAY
-    LEFT JOIN PostHistory H ON P.Id = H.PostId AND H.CreationDate >= now64(6) - INTERVAL 30 DAY
+    LEFT JOIN Posts P ON U.Id = P.OwnerUserId AND P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    LEFT JOIN Comments C ON P.Id = C.PostId AND C.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    LEFT JOIN PostHistory H ON P.Id = H.PostId AND H.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
     WHERE U.Reputation > 0
     GROUP BY U.Id, U.DisplayName
 ),
@@ -65,4 +65,4 @@ SELECT
 FROM RankedUserEngagement
 WHERE TotalComments > 10
 ORDER BY TotalViews DESC, TotalUpvotes DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

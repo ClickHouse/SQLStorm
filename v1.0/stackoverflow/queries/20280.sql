@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (toDate('2024-10-01') - INTERVAL 2 YEAR)
+        p.CreationDate >= (DATE '2024-10-01' - INTERVAL '2 years')
 ),
 UserVoteSummary AS (
     SELECT 

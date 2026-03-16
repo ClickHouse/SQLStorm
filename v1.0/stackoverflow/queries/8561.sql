@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
         AND p.Score > 0
 ),
 UserVoteStats AS (
@@ -25,7 +25,7 @@ UserVoteStats AS (
     JOIN 
         Posts p ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         v.UserId
 ),

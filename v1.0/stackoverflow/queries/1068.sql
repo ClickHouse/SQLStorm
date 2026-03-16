@@ -10,7 +10,7 @@ WITH RecentPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS OwnerRank
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.OwnerUserId
 ),
 UserStatistics AS (
@@ -48,7 +48,7 @@ WHERE up.Reputation > 1000
       SELECT 1 FROM Votes v 
       WHERE v.PostId = rp.PostId 
         AND v.VoteTypeId = 2  
-        AND v.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 WEEK
+        AND v.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 week'
   )
 ORDER BY up.Reputation DESC, rp.Score DESC
 LIMIT 50;

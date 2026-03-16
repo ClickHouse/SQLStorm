@@ -30,7 +30,7 @@ LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey
 LEFT JOIN lineitem l ON s.s_suppkey = l.l_suppkey
 LEFT JOIN ranked_sales r_sales ON n.n_nationkey = r_sales.n_nationkey
 WHERE r.r_name LIKE '%Australia%'
-  AND (l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31') OR l.l_returnflag IS NULL)
+  AND (l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31' OR l.l_returnflag IS NULL)
 GROUP BY r.r_name
 HAVING SUM(l.l_quantity) > 1000
    OR MAX(r_sales.total_sales) IS NULL

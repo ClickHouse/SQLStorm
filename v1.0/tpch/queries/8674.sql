@@ -3,7 +3,7 @@ WITH TotalSales AS (
         l.l_orderkey,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS sales
     FROM lineitem l
-    WHERE l.l_shipdate >= toDate('1998-01-01') AND l.l_shipdate < toDate('1999-01-01')
+    WHERE l.l_shipdate >= DATE '1998-01-01' AND l.l_shipdate < DATE '1999-01-01'
     GROUP BY l.l_orderkey
 ),
 CustomerSales AS (

@@ -49,7 +49,7 @@ JOIN lineitem l ON s.s_suppkey = l.l_suppkey
 JOIN orders o ON l.l_orderkey = o.o_orderkey
 LEFT JOIN HighValueCustomer hvc ON o.o_custkey = hvc.c_custkey
 LEFT JOIN NationsWithFlags nh ON s.s_nationkey = nh.n_nationkey
-WHERE o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+WHERE o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY s.s_name, hvc.total_spent, nh.low_supply_count
 HAVING AVG(l.l_quantity) > 15 AND COUNT(DISTINCT o.o_orderkey) > 50
 ORDER BY total_orders DESC;

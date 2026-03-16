@@ -6,12 +6,12 @@ WITH RankedPosts AS (
         P.CreationDate,
         P.Score,
         P.ViewCount,
-        ROW_NUMBER() OVER (PARTITION BY P.PostTypeId ORDER BY P.Score DESC) AS Rank,
+        ROW_NUMBER() OVER (PARTITION BY any(P.PostTypeId) ORDER BY P.Score DESC) AS Rank,
         COUNT(CASE WHEN V.VoteTypeId = 2 THEN 1 END) AS UpVoteCount,
         COUNT(CASE WHEN V.VoteTypeId = 3 THEN 1 END) AS DownVoteCount
     FROM Posts P
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount
 ),
 PostWithBestAnswer AS (

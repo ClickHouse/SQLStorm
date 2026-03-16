@@ -8,7 +8,7 @@ WITH RankedOrders AS (
         orders o
     WHERE 
         o.o_orderstatus = 'O' AND 
-        o.o_orderdate >= toDate('1997-01-01')
+        o.o_orderdate >= DATE '1997-01-01'
 ),
 TotalLineItem AS (
     SELECT 
@@ -70,4 +70,4 @@ WHERE
 ORDER BY 
     r.o_orderdate DESC, 
     total_revenue DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

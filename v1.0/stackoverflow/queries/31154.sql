@@ -55,8 +55,8 @@ FilteredPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (10, 11)
-    LEFT JOIN CloseReasonTypes ct ON CAST(ph.Comment AS integer) = ct.Id
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+    LEFT JOIN CloseReasonTypes ct ON ph.Comment::integer = ct.Id
+    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year' 
 )
 
 SELECT 

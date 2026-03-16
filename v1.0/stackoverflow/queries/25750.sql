@@ -16,7 +16,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Users u ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.Tags, p.CreationDate
 ),
@@ -31,7 +31,7 @@ PostDetails AS (
         rp.LastVoteDate,
         CASE 
             WHEN rp.AnswerCount > 5 THEN 'Hot'
-            WHEN rp.LastVoteDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 DAY THEN 'Trending'
+            WHEN rp.LastVoteDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 days' THEN 'Trending'
             ELSE 'Regular' 
         END AS PostStatus
     FROM 

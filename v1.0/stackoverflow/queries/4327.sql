@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
 ),
 UserStats AS (
     SELECT 
@@ -60,4 +60,4 @@ WHERE
     rp.Rank = 1
 ORDER BY 
     up.TotalPosts DESC, rp.Score DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

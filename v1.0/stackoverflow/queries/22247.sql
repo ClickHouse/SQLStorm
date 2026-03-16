@@ -28,7 +28,7 @@ PostsWithHistory AS (
         PostHistory PH ON P.Id = PH.PostId 
         AND PH.PostHistoryTypeId IN (10, 11) 
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 YEAR'
 ),
 PostStatistics AS (
     SELECT 
@@ -42,7 +42,7 @@ PostStatistics AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString(CAST(',' AS text), P.Tags)) AS TagName) Tags ON TRUE
+        (SELECT arrayJoin(splitByString(','::text, P.Tags)) AS TagName) Tags ON TRUE
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 

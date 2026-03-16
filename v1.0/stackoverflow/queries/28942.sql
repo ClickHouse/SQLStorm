@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR 
+        AND p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' 
 ),
 TagUsage AS (
     SELECT 
@@ -40,7 +40,7 @@ LEFT JOIN
 JOIN 
     TagUsage tu ON tu.TagName = ANY(splitByString('><', TRIM(BOTH '<>' FROM p.Tags)))
 WHERE 
-    p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+    p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
 GROUP BY 
     u.Id, u.DisplayName
 HAVING 

@@ -17,7 +17,7 @@ WITH RECURSIVE RegionSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        l.l_shipdate BETWEEN toDate('1997-01-01') AND cast('1998-10-01' as date)
+        l.l_shipdate BETWEEN DATE '1997-01-01' AND cast('1998-10-01' as date)
     GROUP BY 
         r.r_name
     
@@ -41,7 +41,7 @@ WITH RECURSIVE RegionSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        l.l_shipdate BETWEEN toDate('1997-01-01') AND cast('1998-10-01' as date)
+        l.l_shipdate BETWEEN DATE '1997-01-01' AND cast('1998-10-01' as date)
     AND
         o.o_orderpriority = 'HIGH'
     GROUP BY 

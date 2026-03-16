@@ -30,7 +30,7 @@ customer_orders AS (
         orders o ON c.c_custkey = o.o_custkey
     WHERE
         c.c_acctbal > 500.00 AND
-        o.o_orderdate >= toDate('1997-01-01')
+        o.o_orderdate >= DATE '1997-01-01'
 )
 SELECT
     ps.p_name,

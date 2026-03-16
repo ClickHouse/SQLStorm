@@ -61,9 +61,9 @@ LEFT JOIN
 LEFT JOIN 
     AggregatedVotes av ON rp.PostId = av.PostId
 WHERE 
-    rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    rp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     AND (ph.EditCount IS NULL OR ph.EditCount > 0) 
 ORDER BY 
     rp.Score DESC,
     rp.ViewCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

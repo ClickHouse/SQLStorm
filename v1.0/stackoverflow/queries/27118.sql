@@ -5,7 +5,7 @@ WITH RecursiveTagCount AS (
     FROM 
         Tags
     JOIN 
-        Posts ON Tags.Id = ANY(splitByString('><', substring(Posts.Tags, 2, length(Posts.Tags)-2)CAST() AS int)[])
+        Posts ON Tags.Id = ANY(splitByString('><', substring(Posts.Tags, 2, length(Posts.Tags)-2))::int[])
     GROUP BY 
         Tags.TagName
 ), 

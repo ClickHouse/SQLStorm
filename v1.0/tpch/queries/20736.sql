@@ -68,4 +68,4 @@ GROUP BY
     n.n_name
 ORDER BY 
     nation_revenue DESC, avg_high_value_order ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

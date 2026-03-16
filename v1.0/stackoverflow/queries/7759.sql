@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 YEAR'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName, p.PostTypeId
 )

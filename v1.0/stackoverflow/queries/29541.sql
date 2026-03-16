@@ -61,4 +61,4 @@ FROM
 ORDER BY 
     fp.UpVotes DESC, 
     fp.AnswerCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

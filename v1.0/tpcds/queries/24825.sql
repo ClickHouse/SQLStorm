@@ -67,4 +67,4 @@ WHERE
 ORDER BY 
     c.c_last_name ASC, 
     c.c_first_name ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -2,13 +2,13 @@
 WITH UserReputation AS (
     SELECT Id, Reputation, DisplayName, CreationDate,
            RANK() OVER (ORDER BY Reputation DESC) AS ReputationRank,
-           DENSE_RANK() OVER (PARTITION BY toYear(CreationDate), toMonth(CreationDate) ORDER BY Reputation DESC) AS MonthlyReputationRank
+           DENSE_RANK() OVER (PARTITION BY EXTRACT(YEAR FROM CreationDate), EXTRACT(MONTH FROM CreationDate) ORDER BY Reputation DESC) AS MonthlyReputationRank
     FROM Users
 ),
 TopPosters AS (
     SELECT OwnerUserId, COUNT(Id) AS PostCount
     FROM Posts
-    WHERE CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
+    WHERE CreationDate >= CURRENT_DATE - INTERVAL '6 months'
     GROUP BY OwnerUserId
     HAVING COUNT(Id) > 10
 ),
@@ -18,7 +18,7 @@ PopularTags AS (
     JOIN Posts ON Posts.Tags LIKE '%' || Tags.TagName || '%'
     GROUP BY Tags.TagName
     ORDER BY PostCount DESC
-    LIMIT 5
+    FETCH FIRST 5 ROWS ONLY
 ),
 PostActivity AS (
     SELECT P.Id AS PostId, P.Title, 

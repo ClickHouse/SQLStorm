@@ -54,4 +54,4 @@ LEFT JOIN
     RecentReturns AS rr ON fc.c_customer_sk = rr.wr_returning_customer_sk
 ORDER BY 
     fc.sales_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -22,7 +22,7 @@ LEFT JOIN
             arrayJoin(splitByString('<>', p.Tags)) AS TagName
     ) t ON true
 WHERE 
-    p.CreationDate >= toDate('2023-01-01') 
+    p.CreationDate >= DATE '2023-01-01' 
 GROUP BY 
     p.Id, p.Title, p.CreationDate, u.DisplayName
 ORDER BY 

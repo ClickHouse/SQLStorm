@@ -30,11 +30,11 @@ MovieDetails AS (
     FROM 
         TopMovies t
     LEFT JOIN 
-        movie_keyword mk ON t.title = CAST(mk.movie_id AS text)
+        movie_keyword mk ON t.title = mk.movie_id::text
     LEFT JOIN 
         keyword k ON mk.keyword_id = k.id
     LEFT JOIN 
-        movie_companies mc ON t.title = CAST(mc.movie_id AS text)
+        movie_companies mc ON t.title = mc.movie_id::text
     LEFT JOIN 
         company_name co ON mc.company_id = co.id
     GROUP BY 

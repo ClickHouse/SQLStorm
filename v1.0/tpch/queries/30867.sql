@@ -28,8 +28,8 @@ FROM part p
 LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
 LEFT JOIN ranked_orders ro ON l.l_orderkey = ro.o_orderkey
 LEFT JOIN supplier_hierarchy sh ON l.l_suppkey = sh.s_suppkey
-WHERE p.p_retailprice > 50 AND l.l_shipdate >= toDate('1997-01-01')
+WHERE p.p_retailprice > 50 AND l.l_shipdate >= DATE '1997-01-01'
 GROUP BY p.p_partkey, p.p_name, p.p_mfgr
 HAVING COUNT(DISTINCT l.l_orderkey) > 5
 ORDER BY total_sales DESC, p.p_partkey
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;

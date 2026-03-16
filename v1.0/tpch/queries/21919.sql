@@ -59,7 +59,7 @@ LEFT JOIN
     FrequentCustomers fc ON fc.c_custkey = l.l_orderkey
 WHERE 
     EXISTS (SELECT 1 FROM FilteredSuppliers fs WHERE fs.s_suppkey = s.s_suppkey)
-    AND l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    AND l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
 GROUP BY 
     r.r_name
 HAVING 

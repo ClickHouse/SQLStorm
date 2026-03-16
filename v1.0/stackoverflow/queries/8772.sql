@@ -3,7 +3,7 @@ WITH RecentPosts AS (
            U.Reputation, U.DisplayName, P.Tags, P.LastActivityDate
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
       AND P.PostTypeId = 1
 ),
 TopUsers AS (

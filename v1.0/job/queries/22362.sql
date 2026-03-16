@@ -87,7 +87,7 @@ FROM
 JOIN 
     ActorRoleCounts arc ON ta.actor_id = arc.person_id
 JOIN 
-    TopMovies tm ON arc.movie_count > 3 AND tm.production_year = toYear(toDate('2024-10-01')) - 5
+    TopMovies tm ON arc.movie_count > 3 AND tm.production_year = EXTRACT(YEAR FROM DATE '2024-10-01') - 5
 WHERE 
     ta.name IS NOT NULL
 ORDER BY 

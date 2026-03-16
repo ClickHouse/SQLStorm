@@ -21,7 +21,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY)
+        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '90 days')
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName
 ),
@@ -58,4 +58,4 @@ WHERE
     ps.CloseCount = 0
 ORDER BY 
     ps.NetScore DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

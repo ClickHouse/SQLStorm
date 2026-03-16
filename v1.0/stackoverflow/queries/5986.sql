@@ -22,7 +22,7 @@ ActiveBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        b.Date >= cast('2024-10-01' as date) - INTERVAL '1 year' 
     GROUP BY 
         b.UserId
 ),

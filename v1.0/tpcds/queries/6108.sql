@@ -43,4 +43,4 @@ SELECT
 FROM top_sales ts
 LEFT JOIN item ON ts.ws_item_sk = item.i_item_sk
 ORDER BY ts.total_net_paid DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -23,7 +23,7 @@ ActiveUsers AS (
     FROM 
         Users U
     WHERE 
-        U.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        U.LastAccessDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ),
 PostTypesCount AS (
     SELECT 
@@ -73,4 +73,4 @@ AND
 ORDER BY 
     PS.Score DESC,
     PS.ViewCount DESC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

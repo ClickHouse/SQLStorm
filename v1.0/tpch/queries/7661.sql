@@ -27,5 +27,5 @@ JOIN customer c ON o.o_custkey = c.c_custkey
 JOIN lineitem li ON o.o_orderkey = li.l_orderkey
 JOIN TopSuppliers ts ON li.l_suppkey = ts.suppkey
 WHERE ts.rank <= 3
-  AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+  AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 ORDER BY c.c_name, o.o_orderkey, ts.total_supply_cost DESC;

@@ -17,7 +17,7 @@ OrderAnalysis AS (
         o.o_orderkey,
         o.o_orderdate,
         o.o_totalprice,
-        RANK() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS yearly_rank
+        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS yearly_rank
     FROM 
         orders o
     WHERE 

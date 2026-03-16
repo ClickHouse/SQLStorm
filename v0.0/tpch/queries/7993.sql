@@ -10,7 +10,7 @@ from
 		select
 			n1.n_name as supp_nation,
 			n2.n_name as cust_nation,
-			toYear(l_shipdate) as l_year,
+			extract(year from l_shipdate) as l_year,
 			l_extendedprice * (1 - l_discount) as volume
 		from
 			supplier,
@@ -29,7 +29,7 @@ from
 				(n1.n_name = 'VIETNAM' and n2.n_name = 'BRAZIL')
 				or (n1.n_name = 'BRAZIL' and n2.n_name = 'VIETNAM')
 			)
-			and l_shipdate between toDate('1995-01-01') and toDate('1996-12-31')
+			and l_shipdate between date '1995-01-01' and date '1996-12-31'
 	) as shipping
 group by
 	supp_nation,

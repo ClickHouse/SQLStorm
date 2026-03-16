@@ -39,4 +39,4 @@ WHERE EXISTS (
 )
 AND fo.net_revenue - (SELECT AVG(net_revenue) FROM filtered_orders) > 10.00
 ORDER BY fo.net_revenue DESC, fo.o_orderdate ASC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

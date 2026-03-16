@@ -46,7 +46,7 @@ SELECT
     tu.DisplayName,
     tu.PostCount,
     COALESCE(tu.BadgeNames, 'No badges') AS BadgeNames,
-    (SELECT COUNT(*) FROM Posts p2 WHERE p2.OwnerUserId = tu.UserId AND p2.CreationDate > now64(6) - INTERVAL 30 DAY) AS RecentPosts,
+    (SELECT COUNT(*) FROM Posts p2 WHERE p2.OwnerUserId = tu.UserId AND p2.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days') AS RecentPosts,
     (SELECT COUNT(*) FROM Comments c WHERE c.UserId = tu.UserId) AS TotalComments
 FROM 
     TopUsers tu

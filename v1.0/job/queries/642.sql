@@ -40,7 +40,7 @@ SELECT
          AVG(y.years_active)
      FROM 
          (SELECT 
-             (toYear(toDate('2024-10-01')) - toYear(CAST(pi.info AS date))) AS years_active
+             (EXTRACT(YEAR FROM DATE '2024-10-01') - EXTRACT(YEAR FROM pi.info::date)) AS years_active
           FROM 
              person_info pi
           WHERE 

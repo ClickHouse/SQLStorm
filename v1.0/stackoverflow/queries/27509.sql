@@ -71,7 +71,7 @@ JOIN
 JOIN 
     CTE_TopTags tt ON tt.Tag = ANY(splitByString(',', cp.Tags))
 WHERE 
-    cp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    cp.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ORDER BY 
     cp.VoteCount DESC, 
     cp.CreationDate DESC;

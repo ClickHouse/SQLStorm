@@ -51,4 +51,4 @@ SELECT
 FROM FinalReport f
 WHERE f.total_sales_value IS NOT NULL
 ORDER BY f.net_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

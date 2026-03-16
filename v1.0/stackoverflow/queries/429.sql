@@ -3,7 +3,7 @@ WITH RecentPosts AS (
     SELECT p.Id, p.Title, p.CreationDate, p.OwnerUserId,
            ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
 ), 
 UserActivity AS (
     SELECT u.Id AS UserId,
@@ -21,7 +21,7 @@ ClosedPosts AS (
     FROM Posts p
     JOIN PostHistory ph ON p.Id = ph.PostId
     WHERE ph.PostHistoryTypeId = 10
-          AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 12 MONTH
+          AND ph.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '12 months'
 ), 
 TopUsers AS (
     SELECT ua.UserId, 

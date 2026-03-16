@@ -8,7 +8,7 @@ WITH RecursivePostStats AS (
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-        toUnixTimestamp(COALESCE(p.ClosedDate, toDateTime64('2024-10-01 12:34:56', 6)) - p.CreationDate) / 60 AS MinutesActive,
+        toUnixTimestamp(COALESCE(p.ClosedDate, TIMESTAMP '2024-10-01 12:34:56') - p.CreationDate) / 60 AS MinutesActive,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM 
         Posts p
@@ -17,7 +17,7 @@ WITH RecursivePostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.OwnerUserId, p.PostTypeId, p.AcceptedAnswerId
 ),

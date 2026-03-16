@@ -26,7 +26,7 @@ ActiveUsers AS (
                                         END 
                                         ORDER BY um.PostCount DESC) AS ActivityRank
     FROM UserMetrics um
-    WHERE um.LastPostDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE um.LastPostDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
 ),
 BadgeData AS (
     SELECT 
@@ -64,4 +64,4 @@ SELECT
 FROM FinalMetrics f
 WHERE f.ReputationRank <= 10
 ORDER BY f.Reputation DESC, f.ActivityRank ASC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

@@ -26,7 +26,7 @@ RecentPosts AS (
     LEFT JOIN 
         Votes ON Posts.Id = Votes.PostId
     WHERE 
-        Posts.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        Posts.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 )
 SELECT 
     U.DisplayName,

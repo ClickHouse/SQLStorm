@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 
 ActiveUsers AS (
@@ -29,7 +29,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate < cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        u.CreationDate < cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         u.Id
 ),
@@ -44,7 +44,7 @@ UserComments AS (
     JOIN 
         Posts p ON c.PostId = p.Id
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 6 MONTH
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '6 months'
     GROUP BY 
         c.UserId
 )

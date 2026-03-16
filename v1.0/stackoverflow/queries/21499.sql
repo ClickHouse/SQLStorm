@@ -57,7 +57,7 @@ SELECT
     MAX(CASE WHEN ph.PostHistoryTypeId = 11 THEN 1 ELSE 0 END) AS IsReopened,
     MAX(CASE WHEN ph.PostHistoryTypeId = 12 THEN 1 ELSE 0 END) AS IsDeleted,
     rp.CommentCount,
-    toDayOfWeek(rp.CreationDate) AS DayOfWeek,
+    EXTRACT(DOW FROM rp.CreationDate) AS DayOfWeek,
     CASE 
         WHEN rp.ViewCount > 1000 THEN 'High Views' 
         WHEN rp.ViewCount BETWEEN 500 AND 1000 THEN 'Medium Views' 

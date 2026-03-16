@@ -6,7 +6,7 @@ TopPosts AS (
     SELECT p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, u.DisplayName AS OwnerDisplayName
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     ORDER BY p.Score DESC
     LIMIT 5
 ),
@@ -15,7 +15,7 @@ RecentPostHistory AS (
            COUNT(*) AS EditCount, MIN(ph.CreationDate) AS FirstEditDate
     FROM PostHistory ph
     JOIN Posts p ON ph.PostId = p.Id
-    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
     GROUP BY ph.PostId, p.Title, p.CreationDate, p.OwnerDisplayName, p.ViewCount, p.Score
 ),
 BadgeCounts AS (

@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 ),
 
 SupplierDetails AS (
@@ -50,7 +50,7 @@ PopularItems AS (
     FROM 
         lineitem li
     WHERE 
-        li.l_shipdate >= toDate('1997-10-01')
+        li.l_shipdate >= DATE '1997-10-01'
     GROUP BY 
         li.l_partkey
     HAVING 

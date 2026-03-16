@@ -30,7 +30,7 @@ ClosedPostDetails AS (
     FROM PostHistory PH
     JOIN Posts P ON PH.PostId = P.Id
     WHERE PH.PostHistoryTypeId = 10 
-    AND PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH 
+    AND PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months' 
 )
 SELECT 
     PVS.PostId,

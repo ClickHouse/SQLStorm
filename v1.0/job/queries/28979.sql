@@ -38,8 +38,8 @@ SELECT
     title,
     production_year,
     actor_count,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(actors AS text)))), ', ') AS actor_list,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(keywords AS text)))), ', ') AS keyword_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(actors::text))), ', ') AS actor_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(keywords::text))), ', ') AS keyword_list
 FROM 
     FilteredMovies
 GROUP BY 

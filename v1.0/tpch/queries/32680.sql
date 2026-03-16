@@ -37,4 +37,4 @@ AND EXISTS (
 GROUP BY p.p_partkey, p.p_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 2000
 ORDER BY total_revenue DESC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

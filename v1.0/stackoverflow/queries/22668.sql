@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR AND
+        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year' AND
         p.ViewCount IS NOT NULL
 ),
 UserBadges AS (
@@ -42,7 +42,7 @@ ActiveUsers AS (
     LEFT JOIN 
         UserBadges ub ON u.Id = ub.UserId
     WHERE 
-        u.LastAccessDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
+        u.LastAccessDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
 ),
 FilteredPosts AS (
     SELECT 

@@ -60,4 +60,4 @@ WHERE
     AND (c.c_birth_month + c.c_birth_day) % 2 = 0
 ORDER BY 
     Total_Returns DESC, High_Value_Sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

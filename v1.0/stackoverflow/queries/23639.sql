@@ -6,12 +6,12 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.OwnerUserId,
         p.PostTypeId,
-        COALESCE((SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id AND c.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY), 0) AS RecentCommentCount,
+        COALESCE((SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id AND c.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days'), 0) AS RecentCommentCount,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS RankByCreation
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ),
 
 UserStats AS (

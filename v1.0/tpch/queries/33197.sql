@@ -17,8 +17,8 @@ EligibleOrders AS (
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') 
-      AND o.o_orderdate < toDate('1997-10-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' 
+      AND o.o_orderdate < DATE '1997-10-01'
     GROUP BY o.o_orderkey, o.o_orderdate, o.o_totalprice
     HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000
 ),
@@ -49,4 +49,4 @@ FROM NationsInfo nh
 JOIN TopSuppliers th ON nh.order_count > 0
 WHERE nh.total_spending IS NOT NULL
 ORDER BY nh.total_spending DESC, ranking
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

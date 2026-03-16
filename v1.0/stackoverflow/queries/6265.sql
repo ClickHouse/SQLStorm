@@ -21,12 +21,12 @@ WITH RankedPosts AS (
         FROM 
             Badges
         WHERE 
-            Date >= CURRENT_DATE - INTERVAL 1 YEAR
+            Date >= CURRENT_DATE - INTERVAL '1 year'
         GROUP BY 
             UserId
     ) pm ON p.OwnerUserId = pm.UserId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '30 days' 
         AND p.PostTypeId IN (1, 2) 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, pm.BadgeCount, p.OwnerUserId

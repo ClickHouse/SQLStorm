@@ -74,4 +74,4 @@ WHERE
     ua.TotalUpVotes > ua.TotalDownVotes
 ORDER BY 
     ua.TotalPosts DESC, ua.TotalUpVotes DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

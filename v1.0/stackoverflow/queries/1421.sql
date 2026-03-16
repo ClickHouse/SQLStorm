@@ -46,7 +46,8 @@ AND
     EXISTS (SELECT 1 FROM PostHistory PH 
             WHERE PH.PostId = P.Id 
             AND PH.PostHistoryTypeId IN (10, 12) 
-            AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+            AND PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
 ORDER BY 
     T.Score DESC
-LIMIT 5 OFFSET 5;
+OFFSET 5 ROWS
+FETCH NEXT 5 ROWS ONLY;

@@ -17,7 +17,7 @@ WITH processed_customer_info AS (
         c.c_birth_month,
         c.c_birth_day,
         c.c_birth_year,
-        (toYear(toDate('2002-10-01')) - c.c_birth_year) AS age
+        (EXTRACT(YEAR FROM DATE '2002-10-01') - c.c_birth_year) AS age
     FROM 
         customer c
     JOIN 

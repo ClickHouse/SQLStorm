@@ -57,7 +57,7 @@ PostPerformance AS (
     JOIN 
         UserStats us ON p.OwnerUserId = us.UserId
     WHERE 
-        ps.LastActivityDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        ps.LastActivityDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
 )
 SELECT 
     p.PostId,

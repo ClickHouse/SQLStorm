@@ -25,4 +25,4 @@ HAVING
     SUM(ws.ws_ext_sales_price) > 500
 ORDER BY 
     total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

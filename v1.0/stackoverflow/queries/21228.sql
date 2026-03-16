@@ -57,7 +57,7 @@ RecentResponses AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE
         p.PostTypeId = 2 
-        AND p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH) 
+        AND p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month') 
 )
 SELECT 
     t.UserId,

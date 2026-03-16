@@ -7,7 +7,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01')
+        o.o_orderdate >= DATE '1996-01-01'
 ),
 SupplierPart AS (
     SELECT 
@@ -43,7 +43,7 @@ HighValueOrders AS (
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
         o.o_orderstatus = 'O' AND
-        l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
+        l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         l.l_orderkey, o.o_orderstatus
 )

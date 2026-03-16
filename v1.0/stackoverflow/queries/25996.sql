@@ -64,4 +64,4 @@ ORDER BY
     U.Reputation DESC,
     U.BadgeCount DESC,
     U.TotalPosts DESC
-LIMIT 50 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;

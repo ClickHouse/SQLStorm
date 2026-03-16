@@ -32,7 +32,7 @@ LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
 LEFT JOIN supplier s ON l.l_suppkey = s.s_suppkey
 LEFT JOIN nation n ON s.s_nationkey = n.n_nationkey
 LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
-WHERE l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+WHERE l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 AND p.p_size BETWEEN 10 AND 30
 AND EXISTS (
     SELECT 1 FROM high_value_customers hvc
@@ -40,7 +40,7 @@ AND EXISTS (
         SELECT o.o_custkey
         FROM ranked_orders o
         WHERE o.o_orderkey = l.l_orderkey
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     )
 )
 GROUP BY p.p_partkey, p.p_name, r.r_name

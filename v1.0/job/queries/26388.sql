@@ -58,4 +58,4 @@ WHERE
     rm.cast_count >= 5
 ORDER BY 
     rm.movie_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

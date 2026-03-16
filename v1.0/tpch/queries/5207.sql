@@ -46,7 +46,7 @@ order_details AS (
     FROM
         lineitem l
     WHERE
-        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1998-01-01')
+        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1998-01-01'
     GROUP BY
         l.l_orderkey
 )
@@ -68,4 +68,4 @@ GROUP BY
     oo.o_orderkey, oo.o_orderdate, oo.o_totalprice, oo.c_name, oo.n_name
 ORDER BY
     total_revenue DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

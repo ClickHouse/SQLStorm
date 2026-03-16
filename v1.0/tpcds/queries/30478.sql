@@ -43,4 +43,4 @@ FROM SalesData sd
 JOIN warehouse wh ON sd.w_warehouse_id = wh.w_warehouse_id
 LEFT JOIN HighValueCustomers hvc ON sd.total_profit > 5000
 ORDER BY sd.total_profit DESC, hvc.rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

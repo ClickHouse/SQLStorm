@@ -15,7 +15,7 @@ WITH PostActivity AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR AND p.PostTypeId = 1  
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' AND p.PostTypeId = 1  
     GROUP BY p.Id, p.Title, u.DisplayName, p.CreationDate, p.LastActivityDate, p.ViewCount
 ),
 PostRanked AS (

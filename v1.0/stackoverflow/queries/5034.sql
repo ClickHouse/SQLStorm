@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
         AND p.ViewCount > 100
         AND p.PostTypeId IN (1, 2)  
 ),

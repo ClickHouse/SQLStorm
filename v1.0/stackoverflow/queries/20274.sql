@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR)
+        p.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year')
 ),
 UserReputationHistory AS (
     SELECT 
@@ -26,7 +26,7 @@ UserReputationHistory AS (
     FROM 
         Users u
     WHERE 
-        u.CreationDate < toDate('2024-10-01')
+        u.CreationDate < DATE '2024-10-01'
 ),
 FilteredPosts AS (
     SELECT 
@@ -80,4 +80,4 @@ GROUP BY
     fp.ReputationCategory
 ORDER BY 
     fp.ViewCount DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

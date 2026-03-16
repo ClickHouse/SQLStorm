@@ -38,4 +38,4 @@ SELECT
 FROM TopCustomers AS tc
 JOIN SalesByItem AS sbi ON tc.total_sales > sbi.catalog_sales
 ORDER BY tc.c_customer_id, total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

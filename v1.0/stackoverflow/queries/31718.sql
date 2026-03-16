@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR' 
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, u.DisplayName
 ), 
@@ -29,7 +29,7 @@ RecentActivities AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
+        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '3 MONTH'
 )
 SELECT 
     rp.PostId,
@@ -42,7 +42,7 @@ SELECT
         ELSE 'Inactive'
     END AS ActivityStatus,
     rp.VoteCount,
-    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - rp.CreationDate)) AS DaysSinceCreated
+    toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - rp.CreationDate)) AS DaysSinceCreated
 FROM 
     RankedPosts rp
 LEFT JOIN 

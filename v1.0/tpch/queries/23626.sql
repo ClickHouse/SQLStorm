@@ -41,7 +41,7 @@ FROM
 WHERE 
     p.p_retailprice BETWEEN 10 AND 100
     AND n.n_name IS NOT NULL
-    AND l.l_shipdate >= toDate('1995-01-01') 
+    AND l.l_shipdate >= DATE '1995-01-01' 
     AND (l.l_comment LIKE '%urgent%' OR l.l_comment LIKE '%immediate%')
 GROUP BY 
     n.n_name, p.p_name, ps.ps_availqty
@@ -49,4 +49,4 @@ HAVING
     COUNT(DISTINCT hbc.c_custkey) > 0
 ORDER BY 
     total_sales DESC, p.p_name ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -63,6 +63,6 @@ FROM
 LEFT JOIN 
     TopTags tt ON pd.Tags LIKE '%' || tt.TagName || '%'
 WHERE 
-    pd.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+    pd.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 YEAR' 
 ORDER BY 
     pd.Upvotes DESC, pd.CommentCount DESC, pd.CreationDate DESC;

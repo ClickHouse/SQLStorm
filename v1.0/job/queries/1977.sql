@@ -52,4 +52,4 @@ WHERE
     mwg.production_year >= 2000
 ORDER BY 
     mwg.production_year DESC, mwg.actor_count DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

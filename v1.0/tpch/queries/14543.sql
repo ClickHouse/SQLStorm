@@ -13,7 +13,7 @@ JOIN
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
     n.n_name = 'FRANCE' 
-    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     p.p_name
 ORDER BY 

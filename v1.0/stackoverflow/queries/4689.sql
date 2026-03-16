@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.CreationDate, p.Score
 ),
@@ -64,7 +64,7 @@ SELECT
 FROM 
     TopPosts tp
 JOIN
-    TopUsers tu ON tp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY  
+    TopUsers tu ON tp.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'  
 WHERE 
     EXISTS (
         SELECT 1

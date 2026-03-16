@@ -14,7 +14,7 @@ PostAggregate AS (
         SUM(ViewCount) AS TotalViews,
         AVG(Score) AS AverageScore
     FROM Posts
-    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY OwnerUserId
 ),
 TopUsers AS (

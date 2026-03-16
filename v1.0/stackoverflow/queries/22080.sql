@@ -47,7 +47,7 @@ SuspiciousBadges AS (
         Badges b ON u.Id = b.UserId
     WHERE 
         b.Class = 3 AND 
-        b.Date < (now64(6) - INTERVAL 1 YEAR)
+        b.Date < (CURRENT_TIMESTAMP - INTERVAL '1 year')
     GROUP BY 
         u.Id
 )

@@ -10,7 +10,7 @@ WITH MarketShare AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1997-12-31')
+        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1997-12-31'
     GROUP BY 
         c.c_mktsegment
 ),

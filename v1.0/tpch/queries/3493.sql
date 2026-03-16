@@ -54,7 +54,7 @@ LEFT JOIN
 LEFT JOIN 
     CustomerSpending cs ON o.o_custkey = cs.c_custkey
 WHERE 
-    (l.l_shipdate IS NOT NULL AND l.l_shipdate < toDate('1998-10-01'))
+    (l.l_shipdate IS NOT NULL AND l.l_shipdate < DATE '1998-10-01')
     OR (l.l_shipdate IS NULL AND l.l_returnflag = 'R')
 GROUP BY 
     p.p_partkey,

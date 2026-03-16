@@ -16,7 +16,7 @@ CustomerOrders AS (
     WHERE o.o_orderstatus = 'F' AND o.o_totalprice > (
         SELECT AVG(o2.o_totalprice)
         FROM orders o2
-        WHERE o2.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+        WHERE o2.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
     )
 ),
 PartSupplierStats AS (

@@ -4,7 +4,7 @@ WITH PostStats AS (
         COUNT(p.Id) AS TotalPosts,
         SUM(p.ViewCount) AS TotalViews,
         AVG(p.Score) AS AvgScore,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 3600) AS AvgAgeHours
+        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) / 3600) AS AvgAgeHours
     FROM 
         Posts p
     JOIN 

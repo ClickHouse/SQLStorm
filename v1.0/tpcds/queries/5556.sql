@@ -34,4 +34,4 @@ FROM customer_sales cs
 JOIN customer_demographics cd ON cs.c_customer_sk = cd.cd_demo_sk
 WHERE cs.total_sales > 1000
 ORDER BY cs.total_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

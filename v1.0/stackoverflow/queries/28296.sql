@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     WHERE
         P.PostTypeId = 1 
         AND P.Score > 10 
-        AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        AND P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
 ),
 AggregatedData AS (
     SELECT 

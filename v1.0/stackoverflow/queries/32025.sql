@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
         AND p.PostTypeId = 1
 ),
 UserActivity AS (
@@ -26,7 +26,7 @@ UserActivity AS (
         Votes v ON u.Id = v.UserId
     WHERE 
         u.Reputation > 1000 
-        AND u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR 
+        AND u.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years' 
     GROUP BY 
         u.Id, u.DisplayName
 ),

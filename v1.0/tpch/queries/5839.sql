@@ -57,4 +57,4 @@ WHERE
     rs.total_revenue > 1000000
 ORDER BY 
     profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

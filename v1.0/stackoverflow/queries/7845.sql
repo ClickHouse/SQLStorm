@@ -22,7 +22,7 @@ PopularPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
+        P.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
     GROUP BY 
         P.Id, P.Title, P.Score, P.ViewCount, P.OwnerUserId
 ),
@@ -33,7 +33,7 @@ UserPostCounts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+        P.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
     GROUP BY 
         P.OwnerUserId
 ),
@@ -44,7 +44,7 @@ RecentVotes AS (
     FROM 
         Votes V
     WHERE 
-        V.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
+        V.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
     GROUP BY 
         V.PostId
 )

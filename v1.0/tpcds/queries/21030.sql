@@ -73,4 +73,4 @@ WHERE
 ORDER BY 
     COALESCE(r.total_return_amount, 0) DESC,
     ci.c_last_name ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

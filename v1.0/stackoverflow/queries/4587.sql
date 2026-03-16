@@ -11,7 +11,7 @@ WITH UserReputation AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
     GROUP BY p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ), AcceptedAnswers AS (
     SELECT p.Id AS AnswerId, p.AcceptedAnswerId, 
@@ -45,4 +45,4 @@ LEFT JOIN PostLinksSummary pls ON pls.PostId = rp.PostId
 WHERE u.Reputation > 1000 AND 
       (rp.UpvoteCount - rp.DownvoteCount) > 10
 ORDER BY u.Reputation DESC, rp.CreationDate DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

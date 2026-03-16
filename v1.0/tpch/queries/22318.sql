@@ -70,4 +70,4 @@ GROUP BY
 ORDER BY 
     total_part_avail DESC, 
     nh.active_customers ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

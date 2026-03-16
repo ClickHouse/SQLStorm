@@ -34,7 +34,7 @@ RecentPostHistory AS (
         P.Name AS PostHistoryType
     FROM PostHistory ph
     JOIN PostHistoryTypes P ON ph.PostHistoryTypeId = P.Id
-    WHERE ph.CreationDate > now64(6) - INTERVAL 30 DAY 
+    WHERE ph.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days' 
     ORDER BY ph.CreationDate DESC
     LIMIT 10
 )

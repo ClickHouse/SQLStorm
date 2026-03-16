@@ -6,7 +6,7 @@ WITH ActiveUsers AS (
     FROM Users u
     LEFT JOIN Votes v ON u.Id = v.UserId AND v.VoteTypeId IN (8, 9) 
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
-    WHERE u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE u.LastAccessDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY u.Id, u.DisplayName, u.Reputation, u.CreationDate
 ),
 PostStats AS (
@@ -17,7 +17,7 @@ PostStats AS (
     FROM Posts p 
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    WHERE p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY p.Id, p.Title, p.Score, p.ViewCount, p.AcceptedAnswerId
 ),
 TopUsers AS (
@@ -37,4 +37,4 @@ FROM TopUsers tu
 JOIN TopPosts tp ON tu.TotalPosts > 10
 WHERE tu.UserRank <= 10 AND tp.PostRank <= 20
 ORDER BY tu.Reputation DESC, tp.ViewCount DESC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

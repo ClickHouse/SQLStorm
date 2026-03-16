@@ -45,7 +45,7 @@ SELECT
     f.cd_gender,
     COALESCE(f.total_profit, 0) AS total_profit,
     COALESCE(f.order_count, 0) AS order_count,
-    CONCAT('Total Profit: $', COALESCE(f.total_profit, 0, CAST() AS TEXT)) AS profit_description
+    CONCAT('Total Profit: $', COALESCE(f.total_profit, 0)::TEXT) AS profit_description
 FROM 
     full_data f
 ORDER BY 

@@ -69,7 +69,7 @@ JOIN ActiveUsers au ON ur.UserId = au.UserId
 WHERE 
     ur.Reputation > (SELECT AVG(Reputation) FROM Users) 
     AND ur.PostCount > 3
-    AND (ur.LastAccessDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) OR ur.Views > 100)
+    AND (ur.LastAccessDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days') OR ur.Views > 100)
 ORDER BY 
     ur.Reputation DESC, 
     au.TotalCommentScore DESC

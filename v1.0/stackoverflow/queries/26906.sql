@@ -20,7 +20,7 @@ WITH TaggedPosts AS (
         Tags ts ON ts.TagName = tags.tag
     WHERE 
         pt.Name = 'Question' 
-        AND p.CreationDate >= toDate('2022-01-01')
+        AND p.CreationDate >= DATE '2022-01-01'
 ),
 TopTagCounts AS (
     SELECT 

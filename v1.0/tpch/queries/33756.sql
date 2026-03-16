@@ -39,8 +39,8 @@ FULL OUTER JOIN supplier s ON l.l_suppkey = s.s_suppkey
 LEFT JOIN supplier_hierarchy sh ON s.s_suppkey = sh.s_suppkey
 LEFT JOIN customer_sales c ON o.o_custkey = c.c_custkey
 JOIN high_value_nations cn ON s.s_nationkey = cn.n_nationkey
-WHERE l.l_shipdate >= toDate('1997-01-01')
+WHERE l.l_shipdate >= DATE '1997-01-01'
 GROUP BY p.p_name, sh.s_name, c.total_spent, cn.n_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000
 ORDER BY total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

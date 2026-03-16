@@ -20,7 +20,7 @@ WITH PostSummary AS (
     JOIN PostHistory PH ON P.Id = PH.PostId
     JOIN PostTypes PT ON P.PostTypeId = PT.Id
     LEFT JOIN Tags T ON POSITION('|' || T.TagName || '|' IN '|' || P.Tags || '|') > 0
-    WHERE P.CreationDate >= CURRENT_DATE - INTERVAL 5 YEAR 
+    WHERE P.CreationDate >= CURRENT_DATE - INTERVAL '5 years' 
     GROUP BY P.Id, P.Title, P.Body, P.CreationDate, U.DisplayName, P.ViewCount, P.AnswerCount, P.CommentCount, P.Score, P.Tags, PH.CreationDate, PT.Name
 ),
 VoteSummary AS (

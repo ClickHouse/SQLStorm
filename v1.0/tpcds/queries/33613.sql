@@ -80,4 +80,4 @@ WHERE
     AND (sa.total_quantity IS NULL OR sa.total_quantity > 10)
 ORDER BY 
     sales_rank, combined_net_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

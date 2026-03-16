@@ -48,4 +48,4 @@ SELECT
 FROM overall_stats o
 WHERE o.avg_profit_per_customer IS NOT NULL 
 ORDER BY profit_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

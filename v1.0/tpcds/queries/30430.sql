@@ -16,7 +16,7 @@ Recent_Transactions AS (
     SELECT ss.ss_customer_sk, ss.ss_item_sk, ss.ss_net_profit, d.d_date
     FROM store_sales ss
     JOIN date_dim d ON ss.ss_sold_date_sk = d.d_date_sk
-    WHERE d.d_date >= cast('2002-10-01' as date) - INTERVAL 30 DAY
+    WHERE d.d_date >= cast('2002-10-01' as date) - INTERVAL '30 days'
 ),
 Top_Items AS (
     SELECT ws.ws_item_sk, SUM(ws.ws_quantity) AS total_quantity_sold,

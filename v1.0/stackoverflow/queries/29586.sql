@@ -21,7 +21,7 @@ MostActiveUsers AS (
     JOIN 
         Posts P ON U.Id = P.OwnerUserId
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         U.Id, U.DisplayName
     ORDER BY 

@@ -40,4 +40,4 @@ SELECT
 FROM customer_stats cs
 LEFT JOIN state_sales ss ON cs.ca_state = ss.ca_state
 ORDER BY cs.customer_count DESC, total_sales_in_state DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

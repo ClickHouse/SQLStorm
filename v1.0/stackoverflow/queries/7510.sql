@@ -59,4 +59,4 @@ LEFT JOIN
     PostHistoryStats phs ON us.UserId = phs.UserId
 ORDER BY 
     us.TotalPosts DESC, us.TotalUpvotes DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -62,4 +62,4 @@ SELECT
 FROM FinalReport f
 WHERE f.discount_percentage IS NOT NULL
 ORDER BY f.discount_percentage DESC, f.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

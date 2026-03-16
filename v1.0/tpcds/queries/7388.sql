@@ -65,4 +65,4 @@ WHERE
     avg_web_sales > 1000 AND avg_catalog_sales > 500
 ORDER BY 
     avg_store_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -43,4 +43,4 @@ HAVING
     SUM(a.total_quantity) > (SELECT AVG(total_quantity) FROM AggSales)
 ORDER BY 
     total_profit DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

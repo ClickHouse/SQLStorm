@@ -65,4 +65,4 @@ JOIN
 ORDER BY 
     TU.Reputation DESC, 
     TT.PostCount DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

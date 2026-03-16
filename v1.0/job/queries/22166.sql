@@ -68,7 +68,7 @@ LEFT JOIN (
 ) am ON am.movie_id = rm.movie_id
 LEFT JOIN CompanyMovieJoin cm ON cm.movie_id = rm.movie_id
 WHERE 
-    rm.production_year BETWEEN 1980 AND toYear(cast('2024-10-01' as date))
+    rm.production_year BETWEEN 1980 AND EXTRACT(YEAR FROM cast('2024-10-01' as date))
 ORDER BY 
     rm.production_year DESC, 
     rm.title ASC;

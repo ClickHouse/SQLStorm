@@ -27,7 +27,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON b.UserId = u.Id
 WHERE 
-    p.CreationDate >= toDate('2023-01-01') AND p.CreationDate < toDate('2024-01-01')
+    p.CreationDate >= DATE '2023-01-01' AND p.CreationDate < DATE '2024-01-01'
 GROUP BY 
     p.Id, p.Title, u.DisplayName, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount, p.CommentCount
 ORDER BY 

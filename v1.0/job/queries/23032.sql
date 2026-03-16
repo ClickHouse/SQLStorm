@@ -40,4 +40,4 @@ LEFT JOIN ActorRoles ar ON rt.id IN (SELECT ci.movie_id FROM cast_info ci WHERE 
 WHERE rt.year_rank <= 5
   AND (crm.total_movies > 1 OR crm.total_movies IS NULL)
 ORDER BY rt.production_year DESC, rt.title
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

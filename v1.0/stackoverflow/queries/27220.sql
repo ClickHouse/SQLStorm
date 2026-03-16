@@ -39,7 +39,7 @@ PostEngagement AS (
     LEFT JOIN
         Votes v ON p.Id = v.PostId
     WHERE
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR  
+        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'  
     GROUP BY
         p.Id, p.Title
 )

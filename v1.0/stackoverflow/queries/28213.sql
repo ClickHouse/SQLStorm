@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag(TagName)
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) 
+        AND p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days') 
     GROUP BY 
         p.Id, p.Title, u.DisplayName, p.CreationDate, p.ViewCount, p.Score
 ),
@@ -52,4 +52,4 @@ JOIN
         RankedPosts) stats ON TRUE
 ORDER BY 
     tp.OverallRank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

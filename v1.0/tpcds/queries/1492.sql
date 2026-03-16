@@ -66,4 +66,4 @@ ORDER BY
     cs.total_sales DESC, 
     i.total_quantity_sold DESC, 
     ss.d_month_seq
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

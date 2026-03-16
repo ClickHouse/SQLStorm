@@ -87,4 +87,4 @@ WHERE
     f.total_avail_qty > 50
 ORDER BY
     f.total_avail_qty DESC, f.max_order_value DESC
-LIMIT 15 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 15 ROWS ONLY;

@@ -6,9 +6,9 @@ WITH SupplierParts AS (
         p.p_brand AS part_brand,
         ps.ps_supplycost AS supply_cost,
         ps.ps_availqty AS available_quantity,
-        CONCAT(CAST(toYear(CURRENT_DATE) AS VARCHAR), '-', 
-               LPAD(CAST(toMonth(CURRENT_DATE) AS VARCHAR), 2, '0'), '-', 
-               LPAD(CAST(toDayOfMonth(CURRENT_DATE) AS VARCHAR), 2, '0')) AS as_of_date
+        CONCAT(CAST(EXTRACT(YEAR FROM CURRENT_DATE) AS VARCHAR), '-', 
+               LPAD(CAST(EXTRACT(MONTH FROM CURRENT_DATE) AS VARCHAR), 2, '0'), '-', 
+               LPAD(CAST(EXTRACT(DAY FROM CURRENT_DATE) AS VARCHAR), 2, '0')) AS as_of_date
     FROM 
         supplier s
     JOIN 

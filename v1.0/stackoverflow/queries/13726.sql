@@ -39,4 +39,4 @@ FROM
     Benchmark
 ORDER BY 
     Rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

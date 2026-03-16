@@ -10,7 +10,7 @@ WITH UserPerformance AS (
         SUM(CASE WHEN p.ViewCount IS NOT NULL THEN p.ViewCount ELSE 0 END) AS TotalViews,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownvotes,
-        AVG(toUnixTimestamp(COALESCE(p.LastActivityDate, toDateTime64('2024-10-01 12:34:56', 6)) - p.CreationDate)) AS AvgResponseTime,
+        AVG(toUnixTimestamp(COALESCE(p.LastActivityDate, TIMESTAMP '2024-10-01 12:34:56') - p.CreationDate)) AS AvgResponseTime,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId

@@ -56,4 +56,4 @@ JOIN
     CustomerStats cs ON hs.total_net_profit > 1000
 ORDER BY 
     hs.total_net_profit DESC, cs.customer_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

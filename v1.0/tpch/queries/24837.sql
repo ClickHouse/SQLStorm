@@ -21,7 +21,7 @@ WITH RegionSales AS (
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
         o.o_orderstatus IN ('O', 'F') 
-        AND l.l_shipdate > CURRENT_DATE - INTERVAL 6 MONTH
+        AND l.l_shipdate > CURRENT_DATE - INTERVAL '6 month'
     GROUP BY 
         r.r_regionkey, r.r_name
 ), RankedSales AS (

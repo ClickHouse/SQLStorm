@@ -36,8 +36,8 @@ SELECT
     tm.title,
     tm.production_year,
     tm.cast_count,
-    arrayStringConcat(groupArray(assumeNotNull(CAST(tm.cast_names AS text))), ', ') AS cast,
-    arrayStringConcat(groupArray(assumeNotNull(CAST(tm.keywords AS text))), ', ') AS movie_keywords
+    arrayStringConcat(groupArray(assumeNotNull(tm.cast_names::text)), ', ') AS cast,
+    arrayStringConcat(groupArray(assumeNotNull(tm.keywords::text)), ', ') AS movie_keywords
 FROM 
     TopMovies tm
 WHERE 

@@ -22,7 +22,7 @@ UserActivity AS (
                 WHEN v.VoteTypeId IN (2, 3) THEN 1 
                 ELSE 0 END) AS VoteCount,
         COUNT(b.Id) AS BadgeCount,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.CreationDate)) / 3600) AS AvgAccountAgeHours
+        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - u.CreationDate)) / 3600) AS AvgAccountAgeHours
     FROM 
         Users u
     LEFT JOIN 

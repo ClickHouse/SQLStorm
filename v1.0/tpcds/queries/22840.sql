@@ -39,4 +39,4 @@ LEFT JOIN sales_data sd ON hvc.c_customer_sk = sd.ws_sold_date_sk
 WHERE (hvc.value_category = 'High' AND sd.total_quantity > 100)
    OR (hvc.value_category = 'Low' AND sd.max_profit IS NULL)
 ORDER BY hvc.total_sales DESC, hvc.c_last_name ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

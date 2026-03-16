@@ -50,4 +50,4 @@ SELECT
     END AS income_category
 FROM income_distribution id
 ORDER BY id.avg_net_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

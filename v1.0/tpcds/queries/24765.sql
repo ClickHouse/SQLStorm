@@ -52,4 +52,4 @@ FULL OUTER JOIN customer_details cdl ON cd.hd_income_band_sk = cdl.hd_income_ban
 WHERE (cdl.hd_buy_potential IS NULL OR cdl.hd_buy_potential LIKE 'High%')
    AND (cd.c_birth_country IS NOT NULL OR hvc.total_web_profit IS NULL)
 ORDER BY profit_rank ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -36,7 +36,7 @@ complex_calculation AS (
     FROM customer c
     LEFT JOIN sales_summary ss ON c.c_customer_sk = ss.ws_item_sk
     LEFT JOIN customer_returns cr ON c.c_customer_sk = cr.sr_customer_sk
-    WHERE (c.c_birth_year IS NOT NULL AND toYear(toDate('2002-10-01')) - c.c_birth_year > 18)
+    WHERE (c.c_birth_year IS NOT NULL AND EXTRACT(YEAR FROM DATE '2002-10-01') - c.c_birth_year > 18)
       AND (COALESCE(ss.total_sales, 0) - COALESCE(cr.total_return_amount, 0) > 0 OR cr.total_returns IS NOT NULL)
 )
 SELECT 

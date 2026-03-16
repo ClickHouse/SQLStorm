@@ -39,7 +39,7 @@ TopPosts AS (
         pm.Tags,
         ROW_NUMBER() OVER (ORDER BY pm.Score DESC, pm.ViewCount DESC) AS Rank
     FROM PostMeta pm
-    WHERE pm.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE pm.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 )
 SELECT
     us.UserId,

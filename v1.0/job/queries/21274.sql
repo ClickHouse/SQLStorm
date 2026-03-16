@@ -32,7 +32,7 @@ qualified_actors AS (
         ma.person_id, a.name
     HAVING 
         COUNT(*) > 5 AND 
-        MAX(ma.production_year) <= toYear(toDate('2024-10-01')) - 5
+        MAX(ma.production_year) <= EXTRACT(YEAR FROM DATE '2024-10-01') - 5
 ),
 notable_movies AS (
     SELECT 

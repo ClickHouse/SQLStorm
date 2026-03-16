@@ -46,7 +46,7 @@ SELECT
         ELSE 'Normal Performance'
     END AS performance_category
 FROM ItemDetails itd
-LEFT JOIN HighReturnItems r ON itd.i_item_id = CAST(r.sr_item_sk AS TEXT)
-LEFT JOIN SalesData sd ON itd.i_item_id = CAST(sd.ws_item_sk AS TEXT)
+LEFT JOIN HighReturnItems r ON itd.i_item_id = r.sr_item_sk::TEXT
+LEFT JOIN SalesData sd ON itd.i_item_id = sd.ws_item_sk::TEXT
 ORDER BY total_returns DESC, total_profit DESC
 LIMIT 25;

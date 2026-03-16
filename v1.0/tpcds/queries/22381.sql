@@ -8,7 +8,7 @@ WITH RECURSIVE customer_hierarchy AS (
     FROM 
         customer c
     WHERE 
-        c.c_birth_month = COALESCE(NULLIF(toMonth(cast('2002-10-01' as date)), 0), 1)
+        c.c_birth_month = COALESCE(NULLIF(EXTRACT(MONTH FROM cast('2002-10-01' as date)), 0), 1)
 
     UNION ALL
 

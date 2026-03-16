@@ -23,7 +23,7 @@ ClosedPostStatistics AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes ctr ON CAST(ph.Comment AS integer) = ctr.Id
+        CloseReasonTypes ctr ON ph.Comment::integer = ctr.Id
     WHERE 
         ph.PostHistoryTypeId = 10  
     GROUP BY 

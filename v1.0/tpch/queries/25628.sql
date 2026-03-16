@@ -37,7 +37,7 @@ recent_orders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-31')
+        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-31'
 )
 SELECT 
     f.p_name,

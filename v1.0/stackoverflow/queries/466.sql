@@ -25,7 +25,7 @@ ClosedPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10 
     LEFT JOIN 
-        CloseReasonTypes c ON CAST(c.Id AS text) = ph.Comment 
+        CloseReasonTypes c ON c.Id::text = ph.Comment 
     GROUP BY 
         p.OwnerUserId
 )

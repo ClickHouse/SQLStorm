@@ -63,4 +63,4 @@ WHERE
     ad.ca_state = 'CA'
 ORDER BY
     da.d_year DESC, ci.cd_purchase_estimate DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

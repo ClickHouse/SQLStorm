@@ -38,7 +38,7 @@ JOIN TopSuppliers s ON ps.ps_suppkey = s.s_suppkey
 JOIN customer c ON c.c_custkey = l.l_orderkey
 LEFT JOIN nation n ON n.n_nationkey = c.c_nationkey
 LEFT JOIN region r ON r.r_regionkey = n.n_regionkey
-WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 AND c.c_acctbal IS NOT NULL
 GROUP BY p.p_partkey, p.p_name, c.c_name, s.s_name, r.r_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000

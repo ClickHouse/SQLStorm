@@ -68,7 +68,7 @@ FROM
 JOIN 
     address_details ad ON h.c_customer_id = ad.ca_address_id
 LEFT JOIN 
-    monthly_sales ms ON ms.d_year = toYear(toDate('2002-10-01'))
+    monthly_sales ms ON ms.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
 WHERE 
     h.spending_rank <= 10
 ORDER BY 

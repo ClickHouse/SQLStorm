@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '1 year'
 ),
 RecentPosts AS (
     SELECT 
@@ -18,7 +18,7 @@ RecentPosts AS (
         rp.Title,
         rp.Score,
         rp.ViewCount,
-        COALESCE(ph.CreationDate, toDateTime64('1900-01-01', 6)) AS LastHistoryDate,
+        COALESCE(ph.CreationDate, CAST('1900-01-01' AS TIMESTAMP)) AS LastHistoryDate,
         CASE 
             WHEN ph.Comment IS NULL THEN 'No comments'
             ELSE ph.Comment

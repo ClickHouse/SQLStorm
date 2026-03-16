@@ -4,7 +4,7 @@ WITH RecentOrders AS (
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY o.o_orderkey, o.o_orderdate, c.c_nationkey
 ),
 NationSummary AS (

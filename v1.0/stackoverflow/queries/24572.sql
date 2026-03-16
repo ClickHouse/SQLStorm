@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
         AND p.ViewCount > 0
 ),
 PostBadges AS (
@@ -49,7 +49,7 @@ SELECT
     COALESCE(pb.BadgeCount, 0) AS GoldBadgeCount,
     phd.HistoryTypeNames,
     CASE 
-        WHEN rp.ClosureDate < toDateTime64('2024-10-01 12:34:56', 6) THEN 'Closed'
+        WHEN rp.ClosureDate < cast('2024-10-01 12:34:56' as timestamp) THEN 'Closed'
         ELSE 'Open'
     END AS PostStatus,
     CASE

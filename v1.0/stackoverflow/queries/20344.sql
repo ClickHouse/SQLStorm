@@ -13,7 +13,7 @@ WITH RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ),
 PostMetrics AS (
     SELECT 
@@ -73,4 +73,4 @@ WHERE
 ORDER BY 
     pm.Score DESC,
     pm.CreationDate ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

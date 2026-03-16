@@ -76,4 +76,4 @@ SELECT
 FROM final_benchmark fb
 WHERE fb.valid_year >= (SELECT AVG(valid_year) FROM final_benchmark)
 ORDER BY fb.valid_year DESC, fb.movie_id ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

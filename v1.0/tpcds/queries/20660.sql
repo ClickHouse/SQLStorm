@@ -76,4 +76,4 @@ WHERE
 ORDER BY
     f.rank_profit ASC,
     f.unique_customers DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

@@ -79,7 +79,7 @@ SELECT
 FROM 
     AggregatedInfo ag 
 WHERE 
-    (toYear(toDate('2024-10-01')) - ag.production_year) <= 10
+    (EXTRACT(YEAR FROM DATE '2024-10-01') - ag.production_year) <= 10
     AND ag.rank <= 100
 ORDER BY 
     ag.production_year DESC,

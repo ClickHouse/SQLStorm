@@ -47,7 +47,7 @@ SELECT
     dg.total_sales
 FROM detailed_addresses da
 JOIN gender_income_analysis gia ON da.ca_state = 'CA'
-JOIN date_group dg ON dg.d_month_seq = toMonth(toDate('2002-10-01'))
+JOIN date_group dg ON dg.d_month_seq = EXTRACT(MONTH FROM DATE '2002-10-01')
 WHERE da.county_count > 5
 ORDER BY gia.customer_count DESC, dg.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

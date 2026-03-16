@@ -60,4 +60,4 @@ WHERE
 ORDER BY 
     p.p_retailprice DESC, 
     total_order_value NULLS LAST
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

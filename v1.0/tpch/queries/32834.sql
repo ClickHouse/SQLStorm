@@ -32,7 +32,7 @@ LEFT JOIN nation n ON s.s_nationkey = n.n_nationkey
 LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
 WHERE p.p_size >= 10 
     AND r.r_name IS NOT NULL
-    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY p.p_partkey, p.p_name, p.p_mfgr, r.r_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000
 ORDER BY total_sales DESC

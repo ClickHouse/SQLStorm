@@ -43,5 +43,5 @@ FROM HighValueCustomers hvc
 LEFT JOIN SupplierParts sp ON hvc.total_spent > sp.avg_supply_cost
 WHERE sp.total_available IS NOT NULL
 ORDER BY hvc.total_spent DESC, sp.total_available DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;
 

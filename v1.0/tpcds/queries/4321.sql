@@ -62,4 +62,4 @@ JOIN
     customer_categories cc ON hc.c_customer_sk = cc.c_customer_sk
 ORDER BY 
     tier_level, hc.total_spent DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

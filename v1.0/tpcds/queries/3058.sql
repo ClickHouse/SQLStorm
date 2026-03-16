@@ -69,4 +69,4 @@ JOIN
     CustomerAddress ca ON ca.ca_city LIKE '%town%'
 ORDER BY 
     hi.max_sales_price DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

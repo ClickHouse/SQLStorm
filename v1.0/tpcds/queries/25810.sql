@@ -7,7 +7,7 @@ SELECT
     SUM(ws.ws_sales_price) AS total_spent,
     STRING_AGG(DISTINCT p.p_promo_name) AS promotions_used,
     CASE
-        WHEN c.c_birth_month = toMonth(CAST('2002-10-01' AS DATE)) THEN 'Birthday this month'
+        WHEN c.c_birth_month = EXTRACT(MONTH FROM CAST('2002-10-01' AS DATE)) THEN 'Birthday this month'
         ELSE 'No birthday this month'
     END AS birthday_status
 FROM 

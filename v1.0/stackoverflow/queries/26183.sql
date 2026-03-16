@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         p.Tags,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
         COALESCE(u.DisplayName, 'Community User') AS OwnerDisplayName,
-        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) AS AgeInSeconds
+        toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) AS AgeInSeconds
     FROM 
         Posts p
     LEFT JOIN 
@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId 
     WHERE 
-        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        p.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
     AND 
         (p.Body ILIKE '%performance%' OR p.Title ILIKE '%performance%')
 ),

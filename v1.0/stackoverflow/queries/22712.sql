@@ -81,4 +81,4 @@ WHERE
     AND ur.ReputationLevel IN ('Experienced', 'Elite')
 ORDER BY 
     ur.Reputation DESC, ps.NetVotes DESC
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;

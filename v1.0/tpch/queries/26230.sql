@@ -46,6 +46,6 @@ JOIN
     CustomerOrderDetails cod ON psd.ps_supplycost < cod.o_totalprice
 WHERE 
     TRIM(psd.combined_name) LIKE '%chain%' 
-    AND toYear(cod.o_orderdate) = 1997
+    AND EXTRACT(YEAR FROM cod.o_orderdate) = 1997
 ORDER BY 
     psd.ps_supplycost DESC, cod.o_totalprice ASC;

@@ -6,7 +6,7 @@ WITH UserActivity AS (
         COUNT(p.Id) AS PostCount,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
-        AVG(toUnixTimestamp((now64(6) - p.CreationDate)) / 60) AS AvgPostAgeInMinutes
+        AVG(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate)) / 60) AS AvgPostAgeInMinutes
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     GROUP BY u.Id, u.DisplayName

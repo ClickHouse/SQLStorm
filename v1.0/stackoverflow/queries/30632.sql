@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
 ), 
 
 RecentVotes AS (
@@ -24,7 +24,7 @@ RecentVotes AS (
     FROM 
         Votes
     WHERE 
-        CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH 
+        CreationDate >= CURRENT_DATE - INTERVAL '6 months' 
     GROUP BY 
         PostId
 ),

@@ -19,7 +19,7 @@ RecentPosts AS (
         LEAD(P.CreationDate) OVER (ORDER BY P.CreationDate DESC) AS NextCreationDate,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS Rn
     FROM Posts P
-    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
 ),
 ClosedPosts AS (
     SELECT 

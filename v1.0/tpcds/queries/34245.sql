@@ -61,4 +61,4 @@ JOIN
                                              LIMIT 1) 
 ORDER BY 
     sd.ss_store_sk, sd.total_net_paid DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

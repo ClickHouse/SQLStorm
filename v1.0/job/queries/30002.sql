@@ -52,4 +52,4 @@ HAVING
     COUNT(DISTINCT mh.movie_id) > 2
 ORDER BY 
     avg_actor_name_length DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

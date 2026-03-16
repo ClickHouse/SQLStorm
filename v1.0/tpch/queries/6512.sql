@@ -13,7 +13,7 @@ WITH ranked_orders AS (
     JOIN 
         nation n ON c.c_nationkey = n.n_nationkey
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1996-12-31')
+        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1996-12-31'
 ), high_value_orders AS (
     SELECT 
         o.o_orderkey, 

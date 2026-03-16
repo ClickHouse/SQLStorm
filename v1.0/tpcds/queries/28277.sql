@@ -34,4 +34,4 @@ JOIN
     CustomerDemographicStats C ON A.address_count > C.demographic_count
 ORDER BY 
     A.address_count DESC, C.demographic_count ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

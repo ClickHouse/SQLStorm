@@ -73,4 +73,4 @@ JOIN
     SalesSummary ss ON ad.ca_city = ss.ca_city AND ad.ca_state = ss.ca_state
 ORDER BY
     cd.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

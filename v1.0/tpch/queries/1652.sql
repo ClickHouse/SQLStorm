@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
+        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
 ), PartSupplier AS (
     SELECT 
         ps.ps_partkey,
@@ -41,7 +41,7 @@ WITH RankedOrders AS (
     FROM 
         lineitem lo
     WHERE 
-        lo.l_shipdate >= toDate('1997-06-01')
+        lo.l_shipdate >= DATE '1997-06-01'
     GROUP BY 
         lo.l_orderkey
 )

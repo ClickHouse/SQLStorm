@@ -2,7 +2,7 @@ WITH PostCounts AS (
     SELECT 
         p.PostTypeId,
         COUNT(*) AS TotalPosts,
-        SUM(CASE WHEN p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN 1 ELSE 0 END) AS RecentPosts
+        SUM(CASE WHEN p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month' THEN 1 ELSE 0 END) AS RecentPosts
     FROM 
         Posts p
     GROUP BY 
@@ -13,7 +13,7 @@ UserActivity AS (
         u.Id AS UserId,
         u.Reputation,
         COUNT(DISTINCT p.Id) AS TotalPosts,
-        SUM(CASE WHEN p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN 1 ELSE 0 END) AS RecentPosts
+        SUM(CASE WHEN p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month' THEN 1 ELSE 0 END) AS RecentPosts
     FROM 
         Users u
     LEFT JOIN 

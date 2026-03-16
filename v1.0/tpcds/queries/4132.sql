@@ -60,4 +60,4 @@ WHERE
     AND (rs.order_count > 5 OR rs.avg_discount IS NOT NULL)
 ORDER BY 
     rs.sales_rank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

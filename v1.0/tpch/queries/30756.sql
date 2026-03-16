@@ -10,7 +10,7 @@ WITH RECURSIVE SupplierHierarchy AS (
 ),
 MonthlyOrders AS (
     SELECT 
-        toMonth(o.o_orderdate) AS month,
+        EXTRACT(MONTH FROM o.o_orderdate) AS month,
         COUNT(o.o_orderkey) AS order_count,
         SUM(o.o_totalprice) AS total_revenue
     FROM orders o
@@ -35,8 +35,8 @@ SELECT
 FROM nation n
 JOIN region r ON n.n_regionkey = r.r_regionkey
 LEFT JOIN SupplierStats ss ON n.n_nationkey = ss.s_suppkey
-LEFT JOIN MonthlyOrders mh ON mh.month = toMonth(cast('1998-10-01' as date))
+LEFT JOIN MonthlyOrders mh ON mh.month = EXTRACT(MONTH FROM cast('1998-10-01' as date))
 WHERE ss.total_available_qty > 100 
     OR mh.order_count > 50
 ORDER BY n.n_name, r.r_name
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

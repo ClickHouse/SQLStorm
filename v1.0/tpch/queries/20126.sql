@@ -53,7 +53,7 @@ LEFT JOIN
         JOIN 
             orders o ON c.c_custkey = o.o_custkey
         WHERE 
-            o.o_totalprice > (SELECT AVG(o1.o_totalprice) FROM orders o1 WHERE o1.o_orderdate < toDate('1998-10-01') - INTERVAL 1 YEAR)
+            o.o_totalprice > (SELECT AVG(o1.o_totalprice) FROM orders o1 WHERE o1.o_orderdate < DATE '1998-10-01' - INTERVAL '1 year')
     )
 GROUP BY 
     r.r_name 

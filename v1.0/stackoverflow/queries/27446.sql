@@ -13,7 +13,7 @@ WITH RecentPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN arrayJoin(splitByString('><', p.Tags)) AS t(TagName) ON TRUE
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
     GROUP BY p.Id
 ),
 PopularTags AS (

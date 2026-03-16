@@ -53,4 +53,4 @@ FROM
     TopPosts tp
 ORDER BY 
     tp.ViewCount DESC
-LIMIT 10; 
+FETCH FIRST 10 ROWS ONLY; 

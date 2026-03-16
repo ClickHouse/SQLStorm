@@ -13,7 +13,7 @@ UserMetrics AS (
     SELECT 
         COUNT(*) AS TotalUsers,
         AVG(Reputation) AS AvgReputation,
-        COUNT(DISTINCT CASE WHEN LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN Id END) AS ActiveUsersLast30Days
+        COUNT(DISTINCT CASE WHEN LastAccessDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN Id END) AS ActiveUsersLast30Days
     FROM 
         Users
 ),

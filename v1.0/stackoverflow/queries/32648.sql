@@ -9,7 +9,7 @@ WITH RECURSIVE UserActivity AS (
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE U.CreationDate <= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE U.CreationDate <= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY U.Id, U.DisplayName, U.Reputation
 ),
 PostMetrics AS (
@@ -26,7 +26,7 @@ PostMetrics AS (
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
     LEFT JOIN PostHistory PH ON P.Id = PH.PostId AND PH.PostHistoryTypeId IN (4, 5)
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
     GROUP BY P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score
 ),
 UserPostSummary AS (

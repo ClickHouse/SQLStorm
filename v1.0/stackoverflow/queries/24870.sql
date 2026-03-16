@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 UserBadges AS (
     SELECT 
@@ -23,7 +23,7 @@ UserBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR AND
+        b.Date >= cast('2024-10-01' as date) - INTERVAL '1 year' AND
         b.Class = 1 
     GROUP BY 
         b.UserId

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
         AND P.Score IS NOT NULL 
         AND P.PostTypeId IN (1, 2)  
 ),
@@ -36,7 +36,7 @@ PostHistoryDetails AS (
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
+        PH.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
     GROUP BY 
         PH.PostId
 )

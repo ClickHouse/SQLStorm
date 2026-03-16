@@ -52,4 +52,4 @@ JOIN
     customer_summary cs ON cs.total_spent > 1000
 ORDER BY 
     ss.total_sales DESC, cs.total_spent DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

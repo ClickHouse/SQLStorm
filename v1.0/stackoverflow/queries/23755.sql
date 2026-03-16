@@ -22,7 +22,7 @@ TopPosts AS (
         END AS AnswerStatus,
         RANK() OVER (ORDER BY p.Score DESC, p.ViewCount DESC) AS PostRank
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     AND p.PostTypeId = 1 
 ),
 UserPostAnalytics AS (

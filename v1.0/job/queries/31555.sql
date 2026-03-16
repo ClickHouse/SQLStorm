@@ -66,4 +66,4 @@ ORDER BY
     mh.production_year DESC, 
     mh.movie_id, 
     cd.actor_order
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

@@ -63,7 +63,7 @@ LEFT JOIN
     CustomerOrderSummary co ON r.c_name = co.c_name
 WHERE 
     (p.AvgSupplyCost < 100.00 OR p.p_retailprice > 50.00) 
-    AND r.o_orderdate >= toDate('1997-01-01')
+    AND r.o_orderdate >= DATE '1997-01-01'
 ORDER BY 
     r.o_orderdate DESC, 
     r.o_orderkey;

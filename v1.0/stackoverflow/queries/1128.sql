@@ -55,4 +55,4 @@ WHERE
 ORDER BY 
     up.Reputation DESC, 
     rp.ScoreRank ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

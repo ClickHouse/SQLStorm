@@ -65,4 +65,4 @@ HAVING
     (mh.production_year BETWEEN 2000 AND 2023 OR mh.production_year IS NULL)
 ORDER BY 
     rm.movie_rank
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

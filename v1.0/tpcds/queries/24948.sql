@@ -50,4 +50,4 @@ SELECT f.c_first_name, f.c_last_name, f.cd_gender,
        f.web_sales || ' & ' || COALESCE(CAST(f.total_quantity AS VARCHAR), 'N/A') AS sales_and_quantity
 FROM final_output f
 ORDER BY f.web_sales DESC, f.total_quantity DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

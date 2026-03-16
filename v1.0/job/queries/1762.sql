@@ -43,7 +43,7 @@ FilteredMovies AS (
 MovieKeywords AS (
     SELECT 
         mk.movie_id,
-        arrayStringConcat(groupArray(assumeNotNull(CAST(mk.keyword_id AS text))), ', ') AS keywords
+        arrayStringConcat(groupArray(assumeNotNull(mk.keyword_id::text)), ', ') AS keywords
     FROM 
         movie_keyword mk
     GROUP BY 

@@ -55,7 +55,7 @@ sales_summary AS (
     FROM 
         enriched_customer_data cs
     LEFT JOIN 
-        monthly_sales ms ON ms.d_year = toYear(toDate('2002-10-01')) AND ms.d_month_seq = toMonth(toDate('2002-10-01'))
+        monthly_sales ms ON ms.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') AND ms.d_month_seq = EXTRACT(MONTH FROM DATE '2002-10-01')
     LEFT JOIN 
         city_sales city ON city.ca_city = cs.ca_city
 )

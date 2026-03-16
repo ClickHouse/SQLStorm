@@ -17,7 +17,7 @@ WITH RecentUserActivity AS (
     LEFT JOIN 
         Votes v ON v.UserId = u.Id
     WHERE 
-        u.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        u.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName
 ), UserBadges AS (

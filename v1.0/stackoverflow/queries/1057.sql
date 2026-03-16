@@ -20,7 +20,7 @@ RecentPosts AS (
     FROM Posts P
     LEFT JOIN Users U ON P.OwnerUserId = U.Id
     LEFT JOIN Comments CM ON P.Id = CM.PostId
-    WHERE P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score, U.DisplayName, P.AcceptedAnswerId
 ),
 AcceptedAnswers AS (
@@ -41,7 +41,7 @@ PostHistoryDetails AS (
         PH.CreationDate
     FROM PostHistory PH
     JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
-    WHERE PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE PH.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 )
 SELECT 
     RP.PostId,

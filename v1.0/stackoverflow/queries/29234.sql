@@ -15,7 +15,7 @@ WITH TagStats AS (
     LEFT JOIN 
         Votes AS v ON v.PostId = p.Id AND v.VoteTypeId IN (8, 9) 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
     GROUP BY 
         t.TagName
 ),

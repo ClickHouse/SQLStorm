@@ -36,11 +36,11 @@ ActivePosts AS (
          FROM 
             Posts 
          WHERE 
-            CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+            CreationDate >= CURRENT_DATE - INTERVAL '1 year'
          GROUP BY 
             PostId) AP ON P.Id = AP.PostId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
+        P.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score, AP.AnnualScore
 ),

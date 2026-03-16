@@ -35,4 +35,4 @@ WHERE cs.avg_order_value > (SELECT AVG(avg_order_value) FROM CustomerStats)
    OR rc.combined_comments IS NOT NULL
 ORDER BY cs.c_name ASC NULLS LAST
 OFFSET (SELECT COUNT(*) FROM CustomerStats) ROWS
-LIMIT 10;
+FETCH NEXT 10 ROWS ONLY;

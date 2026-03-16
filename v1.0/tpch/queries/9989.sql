@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
     JOIN lineitem li ON o.o_orderkey = li.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
     GROUP BY o.o_orderkey, c.c_mktsegment, c.c_custkey
 ),
 TopRevenue AS (

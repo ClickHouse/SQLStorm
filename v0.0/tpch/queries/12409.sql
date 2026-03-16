@@ -15,7 +15,7 @@ select
 from
 	lineitem
 where
-	l_shipdate <= toDate('1998-12-01') - interval '93' day
+	l_shipdate <= date '1998-12-01' - interval '93' day
 group by
 	l_returnflag,
 	l_linestatus

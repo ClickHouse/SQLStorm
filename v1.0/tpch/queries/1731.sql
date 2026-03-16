@@ -43,7 +43,7 @@ LEFT JOIN
     top_suppliers AS tso ON tso.s_suppkey = l.l_suppkey
 WHERE 
     p.p_retailprice BETWEEN 10 AND 100
-    AND l.l_shipdate >= toDate('1997-01-01')
+    AND l.l_shipdate >= DATE '1997-01-01'
 GROUP BY 
     p.p_partkey, p.p_name, tso.total_parts, tso.total_available_quantity
 HAVING 

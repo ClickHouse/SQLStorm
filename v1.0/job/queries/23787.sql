@@ -72,4 +72,4 @@ LEFT JOIN
     MovieKeywords mk ON tm.movie_id = mk.movie_id
 ORDER BY 
     tm.company_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

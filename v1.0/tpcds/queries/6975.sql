@@ -67,4 +67,4 @@ JOIN
     )
 ORDER BY 
     tsi.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

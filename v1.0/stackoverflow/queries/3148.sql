@@ -15,7 +15,7 @@ WITH UserActivity AS (
         Votes V ON P.Id = V.PostId
     WHERE 
         U.Reputation > 1000 
-        AND U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND U.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         U.Id, U.DisplayName
 ),
@@ -29,7 +29,7 @@ RecentPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 )
 SELECT 
     UA.UserId,

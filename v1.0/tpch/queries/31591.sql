@@ -11,7 +11,7 @@ WITH RECURSIVE SupplierHierarchy AS (
 Recent_orders AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_totalprice, o.o_orderdate, ROW_NUMBER() OVER (PARTITION BY o.o_custkey ORDER BY o.o_orderdate DESC) as rn
     FROM orders o
-    WHERE o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
+    WHERE o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL '1 year')
 ),
 LineItemSummary AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue

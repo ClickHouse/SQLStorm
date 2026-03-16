@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        p.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
         AND p.PostTypeId = 1  
 ),
 UserBadges AS (
@@ -38,7 +38,7 @@ UserDetails AS (
         u.Reputation,
         ub.BadgeCount,
         CASE 
-            WHEN u.LastAccessDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH) THEN 'Inactive'
+            WHEN u.LastAccessDate < (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months') THEN 'Inactive'
             ELSE 'Active'
         END AS Status
     FROM 

@@ -26,7 +26,7 @@ SELECT U.DisplayName,
 FROM TopUsers U
 JOIN Comments C ON U.UserId = C.UserId
 JOIN PostHistory PH ON C.PostId = PH.PostId
-WHERE PH.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY AND toDateTime64('2024-10-01 12:34:56', 6)
+WHERE PH.CreationDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' AND TIMESTAMP '2024-10-01 12:34:56'
 GROUP BY U.DisplayName, U.TotalScore, U.Upvotes, U.Downvotes, U.ScoreRank
 ORDER BY U.ScoreRank
 LIMIT 10;

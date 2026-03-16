@@ -23,7 +23,7 @@ PostActivity AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH OR PH.PostHistoryTypeId IN (10, 11) 
+        PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months' OR PH.PostHistoryTypeId IN (10, 11) 
     GROUP BY 
         P.OwnerUserId
 ), 
@@ -37,7 +37,7 @@ UserPerformance AS (
         PA.AverageScore,
         CASE 
             WHEN PA.LastPostActivity IS NULL THEN NULL 
-            ELSE datePart('day', toDateTime64('2024-10-01 12:34:56', 6) - PA.LastPostActivity) 
+            ELSE datePart('day', cast('2024-10-01 12:34:56' as timestamp) - PA.LastPostActivity) 
         END AS DaysSinceLastPost
     FROM 
         UserBadges UB

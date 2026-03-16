@@ -32,7 +32,7 @@ PostDetails AS (
     ) PH ON P.Id = PH.PostId
     LEFT JOIN UserVoteSummary VS ON P.Id = VS.PostId
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR 
+    WHERE P.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' 
     GROUP BY P.Id, U.DisplayName, PH.EditCount, VS.UpVotes, VS.DownVotes
 ),
 RankedPosts AS (

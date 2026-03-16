@@ -49,4 +49,4 @@ JOIN
     RankedPromotions rp ON rc.expenditure_rank <= 5 AND rp.promotion_rank <= 3
 ORDER BY 
     rc.total_spent DESC, rp.pages_linked DESC
-LIMIT 25;
+FETCH FIRST 25 ROWS ONLY;

@@ -7,7 +7,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(COALESCE(p.Score, 0)) AS TotalScore,
-        AVG(COALESCE(toUnixTimestamp((now64(6) - p.CreationDate)), 0)) AS AvgPostAgeInSeconds
+        AVG(COALESCE(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate)), 0)) AS AvgPostAgeInSeconds
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     GROUP BY u.Id, u.DisplayName

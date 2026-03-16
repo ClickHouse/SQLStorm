@@ -33,7 +33,7 @@ FROM part p
 LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 LEFT JOIN SupplyChain sc ON ps.ps_partkey = sc.ps_partkey
 LEFT JOIN region r ON r.r_regionkey = (SELECT n.n_regionkey FROM nation n WHERE n.n_nationkey = (SELECT c.c_nationkey FROM customer c WHERE c.c_custkey = (SELECT MAX(o.o_custkey) FROM orders o)))
-LEFT JOIN CustomerOrders co ON co.c_custkey = (SELECT o.o_custkey FROM orders o WHERE o.o_orderkey = (SELECT MAX(o2.o_orderkey) FROM orders o2 WHERE o2.o_orderdate < toDate('1998-10-01')))
+LEFT JOIN CustomerOrders co ON co.c_custkey = (SELECT o.o_custkey FROM orders o WHERE o.o_orderkey = (SELECT MAX(o2.o_orderkey) FROM orders o2 WHERE o2.o_orderdate < DATE '1998-10-01'))
 LEFT JOIN RankedOrders ho ON ho.o_orderkey = co.c_custkey
 WHERE p.p_retailprice > 50.00
 GROUP BY p.p_name, r.r_name

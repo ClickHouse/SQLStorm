@@ -13,7 +13,7 @@ WITH SupplierSales AS (
     JOIN
         orders O ON L.l_orderkey = O.o_orderkey
     WHERE
-        O.o_orderdate >= toDate('1997-01-01') AND O.o_orderdate < toDate('1998-01-01')
+        O.o_orderdate >= DATE '1997-01-01' AND O.o_orderdate < DATE '1998-01-01'
     GROUP BY
         S.s_suppkey, S.s_name
 ),

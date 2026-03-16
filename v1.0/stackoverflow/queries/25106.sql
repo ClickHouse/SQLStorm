@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, p.Score, p.AnswerCount, u.DisplayName
 ),
@@ -40,7 +40,7 @@ RecentUpdates AS (
     JOIN 
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 WEEK
+        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 weeks'
 )
 
 SELECT 

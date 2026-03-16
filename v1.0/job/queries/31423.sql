@@ -77,4 +77,4 @@ WHERE
 ORDER BY 
     number_of_actors DESC,
     title ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

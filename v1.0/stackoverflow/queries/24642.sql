@@ -44,7 +44,7 @@ WorstClosedPosts AS (
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
         PH.PostHistoryTypeId = 10  
-        AND PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        AND PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 PostTags AS (
     SELECT 

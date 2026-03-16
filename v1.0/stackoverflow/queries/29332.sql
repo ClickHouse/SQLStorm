@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR  
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'  
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.Body, p.Tags, p.CreationDate, p.Score
 ), RecentActivities AS (
@@ -29,7 +29,7 @@ WITH RankedPosts AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL 3 MONTH  
+        ph.CreationDate >= CURRENT_DATE - INTERVAL '3 months'  
     GROUP BY 
         ph.PostId
 )

@@ -53,4 +53,4 @@ WHERE
 ORDER BY 
     profit_status DESC,
     cs.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

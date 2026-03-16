@@ -71,4 +71,4 @@ GROUP BY
     t.UserId, t.DisplayName, t.QuestionCount, t.TotalScore, t.AvgViewCount, cr.CloseReasonNames
 ORDER BY 
     t.TotalScore DESC, t.QuestionCount DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

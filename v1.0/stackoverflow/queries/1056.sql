@@ -5,7 +5,7 @@ WITH UserStats AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
         COUNT(DISTINCT p.Id) AS PostCount,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.CreationDate))/3600) AS AvgAgeHours
+        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - u.CreationDate))/3600) AS AvgAgeHours
     FROM 
         Users u
         LEFT JOIN Posts p ON u.Id = p.OwnerUserId

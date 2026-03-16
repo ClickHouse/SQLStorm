@@ -59,4 +59,4 @@ WHERE
     rp.PostRank = 1
 ORDER BY 
     rp.ViewCount DESC, rp.CreationDate DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

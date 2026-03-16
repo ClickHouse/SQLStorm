@@ -17,7 +17,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount, U.DisplayName
 ),
@@ -67,4 +67,4 @@ WHERE
     BP.BadgeRank <= 10
 ORDER BY 
     BP.BadgeRank, BP.CreationDate DESC
-LIMIT 5;
+FETCH FIRST 5 ROWS ONLY;

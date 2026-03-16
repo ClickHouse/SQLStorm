@@ -18,7 +18,7 @@ CustomerOrders AS (
     WHERE o.o_orderstatus = 'O' AND o.o_totalprice > (
         SELECT AVG(o2.o_totalprice)
         FROM orders o2
-        WHERE o2.o_orderdate > toDate('1996-01-01')
+        WHERE o2.o_orderdate > DATE '1996-01-01'
     )
 ),
 PartSuppliers AS (
@@ -56,5 +56,5 @@ JOIN SupplierHierarchy sh ON sh.s_nationkey = COALESCE(
     (SELECT DISTINCT sh2.s_nationkey FROM SupplierHierarchy sh2 WHERE sh2.level = 0 LIMIT 1), 
     0
 )
-WHERE co.o_orderdate >= (toDate('1998-10-01') - INTERVAL 1 YEAR)
+WHERE co.o_orderdate >= (DATE '1998-10-01' - INTERVAL '1 year')
 ORDER BY stock_status, order_rank DESC;

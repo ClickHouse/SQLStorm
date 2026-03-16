@@ -51,7 +51,7 @@ FROM UserHierarchy u
 LEFT JOIN PostSummary ps ON ps.OwnerUserId = u.Id
 LEFT JOIN VoteDetails v ON v.PostId = ps.PostId
 LEFT JOIN CommentDetails cd ON cd.PostId = ps.PostId
-WHERE u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+WHERE u.LastAccessDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 GROUP BY u.Id, u.DisplayName, u.Reputation
 HAVING COUNT(DISTINCT ps.PostId) > 5 
 ORDER BY TotalViews DESC;

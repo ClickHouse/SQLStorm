@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
         AND p.Score > 0
 ), 
 TopRankedPosts AS (
@@ -77,4 +77,5 @@ GROUP BY
 ORDER BY 
     pa.Score DESC,
     pa.CreationDate ASC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS
+FETCH NEXT 10 ROWS ONLY;

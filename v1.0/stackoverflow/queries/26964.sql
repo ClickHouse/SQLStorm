@@ -42,7 +42,7 @@ PostAnalytics AS (
     JOIN 
         PostTypes PT ON P.PostTypeId = PT.Id
     WHERE 
-        P.LastActivityDate >= toDate('2024-10-01') - INTERVAL 30 DAY
+        P.LastActivityDate >= DATE '2024-10-01' - INTERVAL '30 days'
 )
 SELECT 
     P.Title,

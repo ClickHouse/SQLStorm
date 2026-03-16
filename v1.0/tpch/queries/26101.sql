@@ -20,11 +20,11 @@ JOIN
 WHERE 
     p.p_size BETWEEN 10 AND 20 
     AND s.s_acctbal > 1000.00
-    AND l.l_shipdate >= toDate('1997-01-01')
+    AND l.l_shipdate >= DATE '1997-01-01'
 GROUP BY 
     p.p_name, s.s_name
 HAVING 
     COUNT(DISTINCT o.o_orderkey) > 5 
 ORDER BY 
     total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

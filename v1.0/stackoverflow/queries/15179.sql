@@ -21,4 +21,4 @@ GROUP BY
     p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName
 ORDER BY 
     p.Score DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

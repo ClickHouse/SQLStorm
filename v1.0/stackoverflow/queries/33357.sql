@@ -83,4 +83,4 @@ WHERE
 ORDER BY 
     F.NetVoteCount DESC,
     F.AnswerCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

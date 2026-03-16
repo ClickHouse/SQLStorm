@@ -14,7 +14,7 @@ WITH RankedOrders AS (
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
         o.o_orderstatus = 'F' 
-        AND o.o_orderdate >= toDate('1996-01-01')
+        AND o.o_orderdate >= DATE '1996-01-01'
 ),
 SupplierStats AS (
     SELECT 

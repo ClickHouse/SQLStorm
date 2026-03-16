@@ -50,4 +50,4 @@ FROM
     FinalReport
 WHERE
     customer_count > 100
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

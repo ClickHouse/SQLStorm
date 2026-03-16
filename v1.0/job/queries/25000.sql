@@ -58,7 +58,7 @@ LEFT JOIN
 CROSS JOIN 
     (
         SELECT 
-            toYear(cast('2024-10-01' as date)) - MIN(AT2.production_year) AS year_difference
+            EXTRACT(YEAR FROM cast('2024-10-01' as date)) - MIN(AT2.production_year) AS year_difference
         FROM 
             aka_title AT2 
         WHERE 

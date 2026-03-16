@@ -7,7 +7,7 @@ WITH RankedOrders AS (
     FROM
         orders o
     WHERE
-        o.o_orderdate >= toDate('1995-01-01')
+        o.o_orderdate >= DATE '1995-01-01'
         AND o.o_orderstatus IN ('O', 'F')
 ),
 SupplierSales AS (
@@ -56,4 +56,4 @@ WHERE
 ORDER BY
     total_sales DESC,
     r.r_name ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

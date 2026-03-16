@@ -47,7 +47,7 @@ LEFT JOIN
             arrayJoin(splitByString(',', p.Tags)) AS TagName
     ) t ON true
 WHERE 
-    u.LastAccessDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR  
+    u.LastAccessDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'  
 GROUP BY 
     u.Id, u.DisplayName, u.Reputation
 ORDER BY 

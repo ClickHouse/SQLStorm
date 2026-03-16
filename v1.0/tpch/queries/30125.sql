@@ -91,4 +91,4 @@ WHERE
     co.order_rank = 1
 ORDER BY 
     co.o_totalprice DESC
-LIMIT 100; 
+FETCH FIRST 100 ROWS ONLY; 

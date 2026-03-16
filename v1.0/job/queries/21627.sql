@@ -82,4 +82,4 @@ WHERE
     md.production_year > 2000
 ORDER BY 
     md.production_year DESC, md.total_cast DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

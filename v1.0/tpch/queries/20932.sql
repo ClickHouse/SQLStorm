@@ -20,7 +20,7 @@ order_stats AS (
            COUNT(*) AS line_item_count
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate >= toDate('1995-01-01')
+    WHERE l.l_shipdate >= DATE '1995-01-01'
     GROUP BY o.o_orderkey, o.o_custkey, o.o_orderstatus
 ),
 ranked_orders AS (

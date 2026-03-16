@@ -41,7 +41,7 @@ ClosedPosts AS (
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PT.Name))), ', ') AS HistoryTypes
     FROM PostHistory PH
     JOIN PostHistoryTypes PT ON PH.PostHistoryTypeId = PT.Id
-    WHERE PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY PH.PostId
 )
 SELECT 

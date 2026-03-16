@@ -13,7 +13,7 @@ JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey
 WHERE p.p_size > 10
-    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     AND n.n_name LIKE '%USA%'
 GROUP BY p.p_mfgr, r.r_name, p.p_comment
 HAVING COUNT(DISTINCT l.l_orderkey) > 5

@@ -16,7 +16,7 @@ JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     s.s_acctbal > 10000
-    AND l_shipdate >= toDate('1997-01-01')
+    AND l_shipdate >= DATE '1997-01-01'
 GROUP BY 
     s.s_suppkey, s.s_name, s.s_phone
 HAVING 

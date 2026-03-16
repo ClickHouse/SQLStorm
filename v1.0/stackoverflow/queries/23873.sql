@@ -21,7 +21,7 @@ PopularPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate > (toDate('2024-10-01') - INTERVAL 1 YEAR)
+    WHERE p.CreationDate > (DATE '2024-10-01' - INTERVAL '1 year')
     GROUP BY p.Id, p.OwnerUserId
 )
 SELECT 
@@ -40,4 +40,4 @@ LEFT JOIN UserReputation ur ON u.Id = ur.UserId
 LEFT JOIN PopularPosts pp ON u.Id = pp.OwnerUserId AND pp.rn = 1
 WHERE ur.Reputation IS NOT NULL
 ORDER BY ur.Reputation DESC, pp.VoteCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

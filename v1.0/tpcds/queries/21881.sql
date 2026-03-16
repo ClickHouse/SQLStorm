@@ -58,4 +58,4 @@ LEFT JOIN
     return_stats r ON r.cr_item_sk = s.ws_item_sk
 ORDER BY 
     net_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

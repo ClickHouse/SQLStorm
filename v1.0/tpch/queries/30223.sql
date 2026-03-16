@@ -26,7 +26,7 @@ JOIN part p ON ps.ps_partkey = p.p_partkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
 LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
 WHERE (o.o_totalprice > 1000 OR c.c_acctbal > 500)
-  AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+  AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
   AND (p.p_mfgr LIKE 'Supplier%')
 GROUP BY c.c_name, n.n_name
 HAVING SUM(l.l_extendedprice) > 1000 OR MAX(l.l_discount) IS NULL

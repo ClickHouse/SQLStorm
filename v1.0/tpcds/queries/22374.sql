@@ -50,4 +50,4 @@ FROM FilteredSales fs
 LEFT JOIN ShipModes sm ON fs.sales_quartile = sm.priority
 WHERE sm.sm_carrier IS NOT NULL
 ORDER BY fs.total_return_amount DESC, fs.total_sales ASC
-LIMIT 50 OFFSET 5;
+FETCH FIRST 50 ROWS ONLY OFFSET 5 ROWS;

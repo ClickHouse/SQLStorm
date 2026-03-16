@@ -6,7 +6,7 @@ WITH CustomerStatistics AS (
         cd.cd_marital_status,
         COALESCE(SUM(ws.ws_ext_sales_price), 0) AS total_sales,
         COUNT(ws.ws_order_number) AS total_orders,
-        AVG(toUnixTimestamp((CURRENT_DATE - c.c_birth_year * INTERVAL 1 YEAR)) / 365.25) AS avg_age,
+        AVG(toUnixTimestamp((CURRENT_DATE - c.c_birth_year * INTERVAL '1 year')) / 365.25) AS avg_age,
         COUNT(DISTINCT ws.ws_item_sk) AS unique_items_purchased
     FROM 
         customer c

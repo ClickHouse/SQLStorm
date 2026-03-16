@@ -52,7 +52,7 @@ WHERE pd.VoteSentiment = 'Positive'
          FROM PostHistory ph 
          WHERE ph.PostId = pd.PostId 
            AND ph.PostHistoryTypeId IN (10, 11, 12) 
-           AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) > 0  
+           AND ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') > 0  
 GROUP BY 
     ud.UserId, 
     ud.Reputation, 

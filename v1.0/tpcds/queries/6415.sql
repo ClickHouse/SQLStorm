@@ -60,4 +60,4 @@ FROM
     SalesSummary
 ORDER BY 
     total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

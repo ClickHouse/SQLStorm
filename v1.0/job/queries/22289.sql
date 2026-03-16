@@ -74,4 +74,4 @@ WHERE
 ORDER BY 
     mh.production_year DESC, 
     oj.movie_title ASC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

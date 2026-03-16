@@ -59,4 +59,4 @@ WHERE
     i.i_current_price > 10.00
 ORDER BY 
     net_revenue_after_returns DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

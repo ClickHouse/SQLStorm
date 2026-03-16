@@ -66,4 +66,4 @@ WHERE
     ci.customer_rank <= 10
 ORDER BY 
     ss.total_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

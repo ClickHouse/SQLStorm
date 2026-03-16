@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserStats AS (
     SELECT 
@@ -57,6 +57,6 @@ LEFT JOIN
 WHERE 
     rp.ScoreRank = 1
     AND ups.TotalPosts > 5
-    AND (rp.ViewCount > (SELECT AVG(ViewCount) FROM Posts WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR))
+    AND (rp.ViewCount > (SELECT AVG(ViewCount) FROM Posts WHERE CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'))
 ORDER BY 
     rp.Score DESC, up.Reputation DESC;

@@ -5,7 +5,7 @@ WITH Ranked_Customer_Sales AS (
         SUM(CASE WHEN ws.ws_sales_price IS NOT NULL THEN ws.ws_sales_price ELSE 0 END) AS total_sales,
         DENSE_RANK() OVER (ORDER BY SUM(COALESCE(ws.ws_sales_price, 0)) DESC) AS sales_rank,
         c.c_birth_year,
-        toYear(toDate('2002-10-01')) - c.c_birth_year AS age
+        EXTRACT(YEAR FROM DATE '2002-10-01') - c.c_birth_year AS age
     FROM customer c
     LEFT JOIN web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk
     GROUP BY c.c_customer_id, c.c_birth_year

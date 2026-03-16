@@ -57,4 +57,4 @@ GROUP BY
     swd.sales_category, swd.cd_gender, swd.cd_marital_status
 ORDER BY 
     total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

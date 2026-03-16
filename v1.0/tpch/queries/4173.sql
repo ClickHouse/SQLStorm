@@ -45,4 +45,4 @@ WHERE
     tr.region_sales IS NOT NULL
 ORDER BY 
     total_region_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

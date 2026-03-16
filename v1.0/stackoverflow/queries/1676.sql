@@ -5,14 +5,14 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         COUNT(c.Id) AS CommentCount,
-        DENSE_RANK() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.Score DESC) AS ScoreRank
+        DENSE_RANK() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.Score DESC) AS ScoreRank
     FROM
         Posts p
     LEFT JOIN
         Comments c ON p.Id = c.PostId
     WHERE
         p.PostTypeId = 1 AND 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY
         p.Id, p.Title, p.CreationDate, p.Score
 ),
@@ -35,7 +35,7 @@ PostHistoryAggregated AS (
     JOIN
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY
         ph.PostId
 )

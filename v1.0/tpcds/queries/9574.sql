@@ -55,4 +55,4 @@ JOIN
     CustomerSales cs ON cs.order_count > 5
 ORDER BY 
     ti.total_sales DESC, cs.customer_total_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

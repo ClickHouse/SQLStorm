@@ -60,4 +60,4 @@ LEFT JOIN SalesSummary ss ON cs.total_orders > 10 AND cs.c_customer_sk = ss.cs_o
 WHERE cs.cd_gender IN ('M', 'F')
 AND (cs.cd_marital_status IS NULL OR cs.cd_marital_status = 'S')
 ORDER BY total_sales DESC NULLS LAST
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

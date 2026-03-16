@@ -62,4 +62,4 @@ WHERE
 ORDER BY 
     t.production_year DESC,
     rk.role_rank ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

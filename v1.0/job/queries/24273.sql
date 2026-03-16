@@ -47,7 +47,7 @@ SELECT
     COALESCE(rt.original_title, 'No Link') AS original_movie,
     COALESCE(rt.linked_title, 'No Link') AS linked_movie,
     COUNT(rt.linked_title) OVER (PARTITION BY r.production_year) AS total_linked_movies,
-    CONCAT_WS(' - ', COALESCE(rt.linked_title, 'Unknown'), COALESCE(CAST(r.movie_count AS text), '0 Movies')) AS summary_info
+    CONCAT_WS(' - ', COALESCE(rt.linked_title, 'Unknown'), COALESCE(r.movie_count::text, '0 Movies')) AS summary_info
 FROM 
     TopMovies r
 LEFT JOIN 

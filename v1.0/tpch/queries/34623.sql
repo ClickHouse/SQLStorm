@@ -28,7 +28,7 @@ part_sales AS (
     FROM part p
     JOIN lineitem l ON p.p_partkey = l.l_partkey
     JOIN orders o ON l.l_orderkey = o.o_orderkey
-    WHERE o.o_orderdate >= toDate('1995-01-01')
+    WHERE o.o_orderdate >= DATE '1995-01-01'
     GROUP BY p.p_partkey
 ),
 ranked_parts AS (

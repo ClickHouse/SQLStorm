@@ -45,7 +45,7 @@ RankedPosts AS (
     FROM Posts P
     LEFT JOIN PostStats PS ON P.OwnerUserId = PS.OwnerUserId
     LEFT JOIN VotedPosts VP ON P.Id = VP.PostId
-    WHERE P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    WHERE P.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     AND (P.Score IS NOT NULL AND P.Score > 0)
 )
 SELECT 

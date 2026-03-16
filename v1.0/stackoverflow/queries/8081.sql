@@ -30,7 +30,7 @@ RecentActiveUsers AS (
     GROUP BY 
         UserId, DisplayName, Reputation
     HAVING 
-        MAX(P.LastActivityDate) > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        MAX(P.LastActivityDate) > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 DAY')
 ),
 TopUsers AS (
     SELECT 

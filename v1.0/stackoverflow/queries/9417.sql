@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId 
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '6 months' 
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.CreationDate, p.Score
 ), 

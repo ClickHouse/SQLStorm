@@ -81,4 +81,4 @@ WHERE
     AND (inv.total_quantity IS NULL OR inv.total_quantity < 5)
 ORDER BY 
     total_profit DESC, ci.c_last_name ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

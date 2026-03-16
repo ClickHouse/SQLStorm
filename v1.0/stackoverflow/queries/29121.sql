@@ -19,7 +19,7 @@ PostTypeStatistics AS (
     SELECT 
         PT.Name AS PostTypeName,
         COUNT(P.Id) AS TotalPosts,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.CreationDate)) / 3600) AS AvgPostAgeInHours
+        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - P.CreationDate)) / 3600) AS AvgPostAgeInHours
     FROM 
         PostTypes PT
     LEFT JOIN 

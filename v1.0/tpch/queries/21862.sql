@@ -65,4 +65,4 @@ WHERE
 ORDER BY 
     availability_status DESC, 
     total_spent DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

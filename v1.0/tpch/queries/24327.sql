@@ -45,4 +45,4 @@ WHERE pd.rn <= 5 OR s.s_acctbal IS NULL
 GROUP BY ps.ps_partkey, pd.p_name
 HAVING SUM(ps.ps_availqty) > 1000 AND COUNT(DISTINCT r.r_regionkey) < 3
 ORDER BY total_available DESC, max_supplier_balance DESC
-LIMIT 50 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;

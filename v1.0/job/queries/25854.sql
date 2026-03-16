@@ -44,7 +44,7 @@ SELECT
     ks.movie_keyword,
     ks.keyword_count,
     ks.related_movies,
-    AVG(toYear(CURRENT_DATE) - m.production_year) AS average_age
+    AVG(EXTRACT(YEAR FROM CURRENT_DATE) - m.production_year) AS average_age
 FROM 
     keyword_stats ks
 JOIN 

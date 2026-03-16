@@ -25,7 +25,7 @@ WITH RankedPosts AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY 
         v.PostId
 ), PostHistoryData AS (

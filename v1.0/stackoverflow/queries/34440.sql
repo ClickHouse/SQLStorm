@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate > CURRENT_DATE - INTERVAL '1 year'
 ),
 UserVoteStatistics AS (
     SELECT 
@@ -61,7 +61,7 @@ RecentActiveUsers AS (
     FROM 
         Users u
     WHERE 
-        u.LastAccessDate > CURRENT_DATE - INTERVAL 6 MONTH
+        u.LastAccessDate > CURRENT_DATE - INTERVAL '6 months'
 )
 
 SELECT 
@@ -79,7 +79,7 @@ SELECT
     phd.CreationDate AS LastPostHistoryDate,
     phd.PostHistoryTypeId,
     CASE 
-        WHEN DaysInactive <= INTERVAL 30 DAY THEN 'Active'
+        WHEN DaysInactive <= INTERVAL '30 days' THEN 'Active'
         ELSE 'Inactive'
     END AS UserActivityStatus
 FROM 

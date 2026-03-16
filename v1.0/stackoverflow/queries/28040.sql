@@ -27,7 +27,7 @@ TagPerformance AS (
         SUM(CommentCount) AS TotalComments,
         SUM(AnswerCount) AS TotalAnswers,
         COUNT(DISTINCT OwnerDisplayName) AS UniqueAuthors,
-        COUNT(*) FILTER (WHERE CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 MONTH) AS RecentPosts
+        COUNT(*) FILTER (WHERE CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '1 month') AS RecentPosts
     FROM 
         RankedPosts
     GROUP BY 
@@ -41,8 +41,8 @@ SELECT
     TotalAnswers,
     UniqueAuthors,
     RecentPosts,
-    ROUND((CAST(TotalComments AS numeric) / PostCount), 2) AS AvgCommentsPerPost,
-    ROUND((CAST(TotalAnswers AS numeric) / PostCount), 2) AS AvgAnswersPerPost
+    ROUND((TotalComments::numeric / PostCount), 2) AS AvgCommentsPerPost,
+    ROUND((TotalAnswers::numeric / PostCount), 2) AS AvgAnswersPerPost
 FROM 
     TagPerformance
 WHERE 

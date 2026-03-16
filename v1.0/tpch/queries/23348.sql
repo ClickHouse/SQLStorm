@@ -75,6 +75,6 @@ WHERE
 GROUP BY 
     c.c_name, cs.total_spent
 HAVING 
-    (SUM(l.l_extendedprice * (1 - l.l_discount)) > 5000 OR MAX(cs.last_order_date) > cast('1998-10-01' as date) - INTERVAL 30 DAY)
+    (SUM(l.l_extendedprice * (1 - l.l_discount)) > 5000 OR MAX(cs.last_order_date) > cast('1998-10-01' as date) - INTERVAL '30 days')
 ORDER BY 
     customer_status DESC, total_revenue DESC;

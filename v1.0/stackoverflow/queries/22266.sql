@@ -96,6 +96,6 @@ LEFT JOIN
     PostEngagements PE ON RP.PostId = PE.PostId
 WHERE
     RP.ScoreRank = 1 
-    AND RP.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+    AND RP.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
 ORDER BY
     RP.CreationDate DESC;

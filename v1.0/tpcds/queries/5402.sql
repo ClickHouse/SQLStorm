@@ -47,6 +47,6 @@ SELECT
 FROM 
     DailyPerformance
 WHERE 
-    sales_date BETWEEN toDate('2023-01-01') AND toDate('2023-12-31')
+    sales_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31'
 ORDER BY 
     sales_date;

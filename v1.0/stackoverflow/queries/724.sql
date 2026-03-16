@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 RecentVotes AS (
     SELECT 
@@ -22,7 +22,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
+        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
     GROUP BY 
         v.PostId
 ),

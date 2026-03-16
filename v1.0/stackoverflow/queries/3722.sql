@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year')
 ),
 
 RecentComments AS (
@@ -29,7 +29,7 @@ RecentComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
+        c.CreationDate >= (CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 month')
     GROUP BY 
         c.PostId
 ),
@@ -41,7 +41,7 @@ PostHistoryFiltered AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
+        ph.CreationDate >= (CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '6 months')
     GROUP BY 
         ph.PostId
 )

@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         JOIN PostTypes pt ON p.PostTypeId = pt.Id
         LEFT JOIN Tags t ON t.ExcerptPostId = p.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR'
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, p.Score, pt.Name
 ),
@@ -35,7 +35,7 @@ UserActivity AS (
         LEFT JOIN Posts p ON u.Id = p.OwnerUserId
         LEFT JOIN PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH
+        u.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '3 MONTH'
     GROUP BY 
         u.Id, u.DisplayName
 )

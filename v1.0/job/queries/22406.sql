@@ -65,7 +65,7 @@ FROM
 LEFT JOIN 
     MovieKeywords KM ON TM.movie_id = KM.movie_id AND KM.keyword_rank <= 3
 LEFT JOIN 
-    CastDetails CD ON TM.movie_id = (SELECT movie_id FROM cast_info WHERE person_id = CD.person_id LIMIT 1)
+    CastDetails CD ON TM.movie_id = (SELECT movie_id FROM cast_info WHERE person_id = CD.person_id FETCH FIRST 1 ROW ONLY)
 ORDER BY 
     TM.production_year DESC, 
     TM.cast_count DESC, 

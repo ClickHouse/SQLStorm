@@ -23,7 +23,7 @@ LEFT JOIN
 LEFT JOIN 
     Users u ON p.OwnerUserId = u.Id
 WHERE 
-    p.CreationDate > toDate('2024-10-01') - INTERVAL 30 DAY
+    p.CreationDate > DATE '2024-10-01' - INTERVAL '30 days'
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName, p.Tags
 ORDER BY 

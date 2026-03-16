@@ -61,6 +61,6 @@ SELECT
     END AS ActivityLevel
 FROM PostStats ps
 WHERE ps.CommentCount IS NOT NULL
-  AND ps.LastActivity >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+  AND ps.LastActivity >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
 ORDER BY ps.ScoreDifference DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

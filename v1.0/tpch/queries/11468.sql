@@ -14,8 +14,8 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate >= toDate('1994-01-01') AND 
-    o.o_orderdate < toDate('1995-01-01') AND 
+    o.o_orderdate >= DATE '1994-01-01' AND 
+    o.o_orderdate < DATE '1995-01-01' AND 
     s.s_nationkey IN (SELECT n_nationkey FROM nation WHERE n_name IN ('FRANCE', 'GERMANY'))
 GROUP BY 
     n.n_name

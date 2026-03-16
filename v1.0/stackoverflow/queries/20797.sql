@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ), 
 PostMetrics AS (
     SELECT
@@ -21,7 +21,7 @@ PostMetrics AS (
         ph.PostHistoryTypeId,
         ph.CreationDate AS HistoryDate,
         ph.Comment,
-        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - ph.CreationDate)) AS AgeInSeconds,
+        toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - ph.CreationDate)) AS AgeInSeconds,
         CASE 
             WHEN ph.PostHistoryTypeId IN (10, 11) THEN 'Close'
             ELSE 'Edit'
@@ -89,4 +89,4 @@ WHERE
 ORDER BY 
     pm.Score DESC, 
     pm.HistoryDate ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

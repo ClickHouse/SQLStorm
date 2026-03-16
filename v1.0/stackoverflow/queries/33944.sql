@@ -48,7 +48,7 @@ TopPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 )
 SELECT 
     u.DisplayName AS UserName,
@@ -64,7 +64,7 @@ LEFT JOIN
 LEFT JOIN 
     TopPosts tp ON u.Id = tp.Id
 WHERE 
-    u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    u.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 AND 
     (u.Location IS NOT NULL OR u.WebsiteUrl IS NOT NULL)
 ORDER BY 

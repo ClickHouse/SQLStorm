@@ -26,7 +26,7 @@ WITH RankedPosts AS (
             WHERE PH2.PostId = P.Id AND PH2.PostHistoryTypeId IN (4, 5)
         )
     WHERE 
-        P.CreationDate > toDate('2024-10-01') - INTERVAL 30 DAY
+        P.CreationDate > DATE '2024-10-01' - INTERVAL '30 days'
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount, U.DisplayName, PH.Comment, PH.CreationDate
 ),
@@ -60,4 +60,4 @@ WHERE
 ORDER BY 
     TR.Score DESC, 
     TR.ViewCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

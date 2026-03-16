@@ -71,4 +71,4 @@ FROM
     SalesInsights s
 ORDER BY 
     sales_to_spent_ratio DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -19,7 +19,7 @@ RecentPosts AS (
         P.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RecentPostRank
     FROM Posts P
-    WHERE P.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE P.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 
 PostVoteCounts AS (
@@ -38,7 +38,7 @@ CloseReasons AS (
         PH.PostId,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CRT.Name))), ', ') AS ReasonNames
     FROM PostHistory PH
-    JOIN CloseReasonTypes CRT ON CAST(PH.Comment AS int) = CRT.Id
+    JOIN CloseReasonTypes CRT ON PH.Comment::int = CRT.Id
     WHERE PH.PostHistoryTypeId = 10
     GROUP BY PH.PostId
 )

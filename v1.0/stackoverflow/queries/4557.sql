@@ -24,7 +24,7 @@ ClosedPosts AS (
     FROM 
         PostHistory PH
     JOIN 
-        CloseReasonTypes CR ON CAST(PH.Comment AS int) = CR.Id
+        CloseReasonTypes CR ON PH.Comment::int = CR.Id
     WHERE 
         PH.PostHistoryTypeId IN (10, 11) 
     GROUP BY 

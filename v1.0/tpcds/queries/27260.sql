@@ -64,4 +64,4 @@ GROUP BY
     full_name, ca_city, ca_state, total_sales, order_count
 ORDER BY 
     total_spent DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

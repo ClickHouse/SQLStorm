@@ -44,8 +44,8 @@ LEFT JOIN partsupp ps ON l.l_partkey = ps.ps_partkey
 LEFT JOIN HighValueParts hv ON ps.ps_partkey = hv.p_partkey
 LEFT JOIN SupplierHierarchy sh ON c.c_nationkey = sh.s_nationkey
 WHERE r.r_name IS NOT NULL 
-AND o.o_orderdate >= toDate('1997-01-01')
-AND o.o_orderdate < toDate('1998-01-01')
+AND o.o_orderdate >= DATE '1997-01-01'
+AND o.o_orderdate < DATE '1998-01-01'
 GROUP BY r.r_name, sh.s_name, sh.level
 HAVING COUNT(DISTINCT c.c_custkey) > 5
 ORDER BY num_customers DESC, total_returns DESC;

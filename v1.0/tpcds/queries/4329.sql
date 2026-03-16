@@ -62,4 +62,4 @@ WHERE
     AND (id.ib_lower_bound IS NOT NULL OR id.ib_upper_bound IS NULL)
 ORDER BY 
     r.sales_rank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

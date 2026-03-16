@@ -41,7 +41,7 @@ PostStatistics AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.ViewCount, P.AcceptedAnswerId
 )

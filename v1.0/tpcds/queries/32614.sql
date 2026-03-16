@@ -38,4 +38,4 @@ WHERE ca.ca_state = 'CA'
 GROUP BY ca.ca_city
 HAVING SUM(ws.ws_sales_price) > 10000
 ORDER BY num_customers DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

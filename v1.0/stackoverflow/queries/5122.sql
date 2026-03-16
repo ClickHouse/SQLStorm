@@ -7,7 +7,7 @@ WITH UserBadges AS (
 PostStatistics AS (
     SELECT OwnerUserId, COUNT(*) AS PostCount, SUM(ViewCount) AS TotalViews, AVG(Score) AS AvgScore
     FROM Posts
-    WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY OwnerUserId
 ),
 CommentDetails AS (

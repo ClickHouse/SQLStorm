@@ -11,7 +11,7 @@ RankedOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice,
            RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS price_rank
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
 ),
 SupplierParts AS (
     SELECT ps.ps_partkey, SUM(ps.ps_availqty) AS total_available
@@ -31,7 +31,7 @@ LEFT JOIN orders o ON l.l_orderkey = o.o_orderkey
 LEFT JOIN TopSuppliers ts ON s.s_suppkey = ts.s_suppkey
 JOIN SupplierParts sp ON l.l_partkey = sp.ps_partkey
 WHERE o.o_orderstatus IN ('O', 'F')
-  AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+  AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY r.r_name, n.n_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY total_sales DESC NULLS LAST;

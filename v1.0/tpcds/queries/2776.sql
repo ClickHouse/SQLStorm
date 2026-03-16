@@ -72,7 +72,7 @@ FROM
 JOIN 
     income_summary isb ON tc.c_customer_sk = isb.hd_income_band_sk
 JOIN 
-    date_comparison dc ON toYear(toDate('2002-10-01')) = dc.d_year
+    date_comparison dc ON EXTRACT(YEAR FROM DATE '2002-10-01') = dc.d_year
 WHERE 
     tc.ranking <= 10
 ORDER BY 

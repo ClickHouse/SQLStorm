@@ -23,7 +23,7 @@ PopularPosts AS (
 RecentComments AS (
     SELECT c.PostId, COUNT(c.Id) AS CommentCount
     FROM Comments c
-    WHERE c.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE c.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY c.PostId
 )
 SELECT pp.Title, pp.Score, pp.ViewCount, tu.DisplayName, rc.CommentCount

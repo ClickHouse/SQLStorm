@@ -13,7 +13,7 @@ SELECT
         WHEN cd.cd_gender = 'F' THEN 'Female'
         ELSE 'Other'
     END AS gender,
-    toYear(d.d_date) AS order_year
+    EXTRACT(YEAR FROM d.d_date) AS order_year
 FROM 
     customer c
 JOIN 

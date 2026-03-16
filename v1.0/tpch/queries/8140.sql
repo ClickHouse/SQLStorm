@@ -50,4 +50,4 @@ GROUP BY
     c.c_custkey, c.c_name, o.o_orderkey, o.o_orderdate, hcs.s_name
 ORDER BY 
     total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

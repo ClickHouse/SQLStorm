@@ -11,7 +11,7 @@ WITH RankedSales AS (
     JOIN 
         lineitem l ON ps.ps_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+        l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY 
         s.s_suppkey, s.s_name
 ),
@@ -51,7 +51,7 @@ QualifiedOrders AS (
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
         o.o_orderstatus IN ('O', 'F') AND
-        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY 
         c.c_custkey, c.c_name
 ),

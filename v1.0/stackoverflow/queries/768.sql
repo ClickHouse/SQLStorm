@@ -24,7 +24,7 @@ WITH UserStats AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ), RecentVotes AS (
     SELECT 
         v.PostId,
@@ -36,7 +36,7 @@ WITH UserStats AS (
     JOIN 
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE 
-        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
+        v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
     GROUP BY 
         v.PostId
 )

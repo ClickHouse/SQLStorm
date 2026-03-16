@@ -8,7 +8,7 @@ WITH RankedPosts AS (
            P.Score,
            ROW_NUMBER() OVER (PARTITION BY P.PostTypeId ORDER BY P.Score DESC) AS Rank
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserStats AS (
     SELECT U.Id AS UserId,
@@ -36,7 +36,7 @@ RecentClosures AS (
     FROM Posts P
     JOIN PostHistory PH ON P.Id = PH.PostId
     WHERE PH.PostHistoryTypeId = 10 
-    AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    AND PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY P.Id, PH.UserId
 )
 SELECT RP.PostId,

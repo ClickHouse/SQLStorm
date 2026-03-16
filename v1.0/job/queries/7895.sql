@@ -9,7 +9,7 @@ WITH RankedMovies AS (
         movie_info mi ON at.id = mi.movie_id
     WHERE 
         mi.info_type_id = (SELECT id FROM info_type WHERE info = 'rating')
-        AND CAST(mi.info AS float) >= 7.5
+        AND mi.info::float >= 7.5
 ), 
 CastDetails AS (
     SELECT 

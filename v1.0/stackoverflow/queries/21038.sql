@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         p.Tags
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.Tags, p.PostTypeId
 ),
 PopularTags AS (
@@ -34,7 +34,7 @@ UserActivity AS (
         u.DisplayName,
         COUNT(DISTINCT p.Id) AS PostsCount,
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounty,
-        MAX(CASE WHEN p.CreationDate <= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN p.CreationDate END) AS LastActiveBeforeLastMonth
+        MAX(CASE WHEN p.CreationDate <= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' THEN p.CreationDate END) AS LastActiveBeforeLastMonth
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Votes v ON p.Id = v.PostId

@@ -19,7 +19,7 @@ WITH RankedPosts AS (
             u.Reputation > 1000
     ) w ON p.OwnerUserId = w.UserId
     WHERE
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
         AND p.PostTypeId IN (1, 2) 
 ),
 PostVotes AS (

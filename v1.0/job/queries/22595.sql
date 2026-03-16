@@ -76,4 +76,4 @@ WHERE
 ORDER BY 
     fm.production_year DESC, 
     fm.title_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ),
 ActiveUsers AS (
     SELECT 
@@ -30,7 +30,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY
+        u.LastAccessDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days'
     GROUP BY 
         u.Id, u.DisplayName
 ),

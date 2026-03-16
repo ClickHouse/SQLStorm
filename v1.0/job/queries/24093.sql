@@ -56,4 +56,4 @@ WHERE
 ORDER BY 
     ft.production_year DESC,
     ft.episode_metric ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

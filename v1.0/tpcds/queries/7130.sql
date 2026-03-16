@@ -35,7 +35,7 @@ SELECT
     tc.total_spent,
     tc.order_count,
     d.d_year,
-    toMonth(d.d_date) AS sale_month,
+    EXTRACT(MONTH FROM d.d_date) AS sale_month,
     COUNT(ws.ws_order_number) AS total_orders
 FROM 
     TopCustomers tc

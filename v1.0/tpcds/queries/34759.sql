@@ -47,4 +47,4 @@ WHERE t1.total_quantity > (
 )
 AND tc.cd_gender IS NOT NULL
 ORDER BY t1.total_net_paid DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

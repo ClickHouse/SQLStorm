@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR)
+        p.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year')
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
 ),
@@ -24,7 +24,7 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= (toDate('2024-10-01') - INTERVAL 6 MONTH)
+        b.Date >= (DATE '2024-10-01' - INTERVAL '6 months')
     GROUP BY 
         b.UserId
 ),
@@ -59,4 +59,4 @@ WHERE
     rp.UserRank <= 5
 ORDER BY 
     rp.Score DESC
-LIMIT 50 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;

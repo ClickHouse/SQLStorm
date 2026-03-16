@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
-        p.CreationDate > DATE('2024-10-01') - INTERVAL 30 DAY
+        p.CreationDate > DATE('2024-10-01') - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount
 ),

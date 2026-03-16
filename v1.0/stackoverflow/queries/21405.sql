@@ -29,7 +29,7 @@ PostWithFlags AS (
         WHERE VoteTypeId IN (10, 12)  
         GROUP BY PostId
     ) AS postFlags ON p.Id = postFlags.PostId
-    WHERE p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) 
+    WHERE p.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days') 
 )
 SELECT 
     us.UserId,
@@ -46,4 +46,4 @@ FROM UserStats us
 FULL OUTER JOIN PostWithFlags pwf ON us.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = pwf.PostId LIMIT 1)
 WHERE us.Reputation IS NOT NULL OR pwf.PostId IS NOT NULL
 ORDER BY us.Reputation DESC, pwf.Score DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

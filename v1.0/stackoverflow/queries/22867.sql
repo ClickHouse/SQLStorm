@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH 
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month' 
         AND p.ViewCount > 0
 ),
 UserStats AS (
@@ -20,7 +20,7 @@ UserStats AS (
         COUNT(b.Id) AS BadgeCount,
         SUM(v.BountyAmount) AS TotalBounties,
         COALESCE(SUM(CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END), 0) AS AcceptedAnswers,
-        AVG(COALESCE(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.LastAccessDate)) / 3600.0, 0)) AS AvgOfflineHours
+        AVG(COALESCE(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - u.LastAccessDate)) / 3600.0, 0)) AS AvgOfflineHours
     FROM 
         Users u
     LEFT JOIN 
@@ -31,7 +31,7 @@ UserStats AS (
         Votes v ON u.Id = v.UserId
     WHERE 
         u.Reputation > 1000
-        AND u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        AND u.LastAccessDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
     GROUP BY 
         u.Id
 ),
@@ -42,7 +42,7 @@ CloseReasons AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON CAST(ph.Comment AS INT) = cr.Id
+        CloseReasonTypes cr ON ph.Comment::INT = cr.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY 

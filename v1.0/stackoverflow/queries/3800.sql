@@ -55,4 +55,4 @@ WHERE
     us.Reputation > 1000  
 ORDER BY 
     us.Reputation DESC, us.TotalQuestions DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

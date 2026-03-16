@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON POSITION(CONCAT('<', t.TagName, '>') IN p.Tags) > 0
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, p.Score, p.AnswerCount, p.CommentCount, p.Tags
 ),

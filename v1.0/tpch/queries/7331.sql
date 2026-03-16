@@ -20,7 +20,7 @@ RecentLineItems AS (
            l.l_extendedprice, l.l_discount, l.l_tax, 
            RANK() OVER (PARTITION BY l.l_orderkey ORDER BY l.l_shipdate DESC) AS rank
     FROM lineitem l
-    WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
+    WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 days'
 )
 SELECT r.n_name AS supplier_nation,
        r.s_name AS supplier_name,

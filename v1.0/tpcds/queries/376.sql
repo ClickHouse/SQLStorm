@@ -45,4 +45,4 @@ WHERE
 ORDER BY 
     total_return_amount DESC, 
     cd.c_customer_sk
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

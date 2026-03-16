@@ -88,4 +88,4 @@ WHERE
 ORDER BY 
     pd.ViewCount DESC, 
     pd.PostCreationDate ASC
-LIMIT 50 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;

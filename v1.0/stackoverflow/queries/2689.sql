@@ -8,7 +8,7 @@ WITH RankedPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id
-    WHERE p.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR)
+    WHERE p.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year')
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, p.OwnerUserId
 ),
 FilteredPosts AS (

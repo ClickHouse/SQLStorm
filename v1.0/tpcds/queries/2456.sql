@@ -49,7 +49,7 @@ SELECT
             ItemSold i
         WHERE 
             i.total_sold = (SELECT MAX(total_sold) FROM ItemSold)
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     ), 'No Sales') AS top_selling_item,
     CASE 
         WHEN tc.total_sales IS NULL THEN 'No Sales'
@@ -65,4 +65,4 @@ LEFT JOIN
     )
 ORDER BY 
     tc.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

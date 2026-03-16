@@ -62,4 +62,4 @@ WHERE
     AND cs.cd_gender = 'F'
 ORDER BY 
     COALESCE(s.total_sales, 0) DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

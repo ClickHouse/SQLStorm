@@ -53,7 +53,7 @@ CurrentYearMovies AS (
     FROM 
         RankedMovies
     WHERE 
-        production_year = toYear(cast('2024-10-01' as date))
+        production_year = EXTRACT(YEAR FROM cast('2024-10-01' as date))
 ),
 DistinctYears AS (
     SELECT DISTINCT 

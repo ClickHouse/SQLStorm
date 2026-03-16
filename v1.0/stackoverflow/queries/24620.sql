@@ -18,7 +18,7 @@ PostStats AS (
         AVG(P.Score) AS AvgScore,
         MAX(P.CreationDate) AS LastPostDate
     FROM Posts P
-    WHERE P.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE P.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY P.OwnerUserId
 ),
 UserPostDetails AS (

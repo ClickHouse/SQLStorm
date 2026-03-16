@@ -42,7 +42,7 @@ SELECT
     T.QuestionCount,
     T.TotalViews,
     COALESCE(T.TotalBounty, 0) AS TotalBounty,
-    LPAD(COALESCE(CAST(T.Ranking AS text), '999'), 3, '0') AS Ranking
+    LPAD(COALESCE(T.Ranking::text, '999'), 3, '0') AS Ranking
 FROM 
     TopUsers T
 WHERE 

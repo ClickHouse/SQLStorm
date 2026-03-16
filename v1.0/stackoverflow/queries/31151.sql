@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (8, 9) 
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.Title, u.DisplayName, p.PostTypeId, p.Score
 ), TopPosts AS (
@@ -43,7 +43,7 @@ WITH RankedPosts AS (
 ), PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(CAST(ph.CreationDate AS TEXT), ': ', pht.Name)))), '; ') AS HistoryDetails
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ph.CreationDate::TEXT, ': ', pht.Name)))), '; ') AS HistoryDetails
     FROM 
         PostHistory ph
     JOIN 

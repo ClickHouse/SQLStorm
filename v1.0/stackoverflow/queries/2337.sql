@@ -32,7 +32,7 @@ PostMetrics AS (
         FROM Votes
         GROUP BY PostId
     ) ut ON p.Id = ut.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
 ),
 RecentPosts AS (
     SELECT 

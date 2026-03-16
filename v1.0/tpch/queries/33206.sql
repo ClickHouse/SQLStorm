@@ -27,4 +27,4 @@ WHERE co.order_rank <= 5
 GROUP BY c.c_name
 HAVING AVG(c.c_acctbal) > 5000 
 ORDER BY total_order_value DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

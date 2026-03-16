@@ -62,4 +62,4 @@ WHERE
 ORDER BY 
     ss.total_available DESC, 
     os.total_sales DESC NULLS LAST
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

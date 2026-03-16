@@ -25,7 +25,7 @@ RecentUserBadges AS (
     JOIN 
         Badges b ON u.Id = b.UserId
     WHERE
-        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 UserEngagement AS (
     SELECT 

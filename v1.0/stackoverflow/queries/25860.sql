@@ -26,7 +26,7 @@ Post_Summary AS (
     LEFT JOIN 
         Tags_CTE t ON POSITION(t.normalized_tag_name IN LOWER(p.Tags)) > 0
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score
 ),

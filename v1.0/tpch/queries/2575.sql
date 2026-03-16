@@ -60,4 +60,4 @@ WHERE
     COALESCE(ss.TotalSupplyCost, 0) > 10000
 ORDER BY 
     os.TotalRevenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

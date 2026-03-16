@@ -40,4 +40,4 @@ FROM HighSpenders h
 LEFT JOIN CustomerDemographics cd ON h.total_spent > 1000
 WHERE cd.avg_vehicles IS NOT NULL
 ORDER BY h.total_spent DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

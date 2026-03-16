@@ -72,7 +72,7 @@ LEFT JOIN
 LEFT JOIN 
     customer_address ca ON ca.ca_address_sk = (SELECT c.c_current_addr_sk FROM customer c WHERE c.c_current_cdemo_sk = (SELECT cd.cd_demo_sk FROM customer_demographics cd WHERE cd.cd_purchase_estimate > 5000 LIMIT 1))
 JOIN 
-    date_dim d ON d.d_date_sk = (SELECT MAX(d_date_sk) FROM date_dim WHERE d_year = toYear(CAST('2002-10-01 12:34:56' AS timestamp)))
+    date_dim d ON d.d_date_sk = (SELECT MAX(d_date_sk) FROM date_dim WHERE d_year = EXTRACT(YEAR FROM '2002-10-01 12:34:56'::timestamp))
 WHERE 
     i.i_current_price IS NOT NULL
 ORDER BY 

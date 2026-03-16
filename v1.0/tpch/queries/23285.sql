@@ -5,7 +5,7 @@ WITH RankedOrders AS (
         o.o_totalprice,
         RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS price_rank
     FROM orders o
-    WHERE o.o_orderdate >= (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
+    WHERE o.o_orderdate >= (cast('1998-10-01' as date) - INTERVAL '1 year')
 ),
 SupplierInfo AS (
     SELECT 

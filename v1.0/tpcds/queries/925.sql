@@ -68,4 +68,4 @@ WHERE
 ORDER BY 
     total_returned_quantity DESC,
     total_revenue DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

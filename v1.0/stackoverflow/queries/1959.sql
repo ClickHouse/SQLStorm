@@ -37,6 +37,6 @@ LEFT JOIN
     (SELECT * FROM (VALUES (1, 'Active'), (2, 'Inactive'), (3, 'Guest')) AS UT(Id, Name)) UT ON UA.Reputation / 100 > UT.Id
 WHERE 
     UA.PostCount > 0 
-    AND (UA.LastActive >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    AND (UA.LastActive >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')
 ORDER BY 
     UA.Reputation DESC;

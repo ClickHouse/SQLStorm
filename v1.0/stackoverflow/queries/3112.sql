@@ -31,7 +31,7 @@ PostEngagement AS (
     LEFT JOIN 
         Posts p2 ON pl.RelatedPostId = p2.Id
     WHERE 
-        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
     GROUP BY 
         p.Id, p.OwnerUserId
 )

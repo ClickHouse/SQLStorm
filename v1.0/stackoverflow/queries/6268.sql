@@ -54,7 +54,7 @@ SELECT
     pd.CreationDate,
     pd.Score,
     pd.CommentCount,
-    toYear(pd.CreationDate) AS PostYear
+    EXTRACT(YEAR FROM pd.CreationDate) AS PostYear
 FROM 
     PostDetails pd
 WHERE 

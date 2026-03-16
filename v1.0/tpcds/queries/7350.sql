@@ -56,4 +56,4 @@ SELECT
 FROM AggregatedSales ag
 WHERE ag.total_profit > 1000
 ORDER BY ag.total_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
 ),
 
 PostHistoryCTE AS (
@@ -87,6 +87,6 @@ FROM
 LEFT JOIN 
     RankedPosts rp ON psr.PostId = rp.PostId
 WHERE 
-    psr.LastClosedDate IS NULL OR psr.LastClosedDate >= cast('2024-10-01' as date) - INTERVAL 1 WEEK
+    psr.LastClosedDate IS NULL OR psr.LastClosedDate >= cast('2024-10-01' as date) - INTERVAL '1 week'
 ORDER BY 
     psr.CreationDate DESC NULLS LAST;

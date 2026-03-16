@@ -61,4 +61,4 @@ GROUP BY
     r.r_name, n.n_name, p.p_name
 ORDER BY 
     total_orders DESC, total_revenue DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

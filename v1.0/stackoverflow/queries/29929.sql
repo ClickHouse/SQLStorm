@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.Score, p.ViewCount
 ),
@@ -52,6 +52,6 @@ JOIN
 LEFT JOIN 
     Badges bh ON bh.UserId = u.Id
 WHERE 
-    bh.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    bh.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
 ORDER BY 
     tp.Score DESC, tp.ViewCount DESC;

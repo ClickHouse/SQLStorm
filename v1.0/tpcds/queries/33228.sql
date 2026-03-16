@@ -8,7 +8,7 @@ WITH RECURSIVE item_hierarchy AS (
         WHERE ss_sold_date_sk = (
             SELECT MAX(d_date_sk) 
             FROM date_dim 
-            WHERE d_date = toDate('2002-10-01')
+            WHERE d_date = DATE '2002-10-01'
         )
     )
     UNION ALL
@@ -40,7 +40,7 @@ AND ca.ca_state IN ('NY', 'CA')
 AND ws.ws_sold_date_sk >= (
     SELECT MAX(d_date_sk) 
     FROM date_dim 
-    WHERE d_date < toDate('2002-10-01') - INTERVAL 1 YEAR
+    WHERE d_date < DATE '2002-10-01' - INTERVAL '1 YEAR'
 )
 GROUP BY 
     c.c_customer_id, 

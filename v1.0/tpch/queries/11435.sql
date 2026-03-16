@@ -9,7 +9,7 @@ JOIN
 JOIN
     customer ON orders.o_custkey = customer.c_custkey
 WHERE
-    l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
+    l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
 GROUP BY
     o_orderdate, c_mktsegment
 ORDER BY

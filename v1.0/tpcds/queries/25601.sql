@@ -8,7 +8,7 @@ WITH EnhancedCustomerInfo AS (
         cd.cd_education_status,
         ca.ca_city,
         ca.ca_state,
-        COALESCE(CAST(toYear(toDateTime64('2002-10-01 12:34:56', 6)) AS VARCHAR), 'Unknown') AS current_year,
+        COALESCE(CAST(EXTRACT(YEAR FROM TIMESTAMP '2002-10-01 12:34:56') AS VARCHAR), 'Unknown') AS current_year,
         CASE
             WHEN cd.cd_purchase_estimate > 1000 THEN 'High Buyer'
             WHEN cd.cd_purchase_estimate BETWEEN 500 AND 1000 THEN 'Medium Buyer'

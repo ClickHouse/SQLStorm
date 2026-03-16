@@ -24,7 +24,7 @@ BizarreAggregates AS (
     SELECT COALESCE(NULLIF(MAX(ps.total_availability_cost), 0), SUM(cli.l_quantity)) AS bizarre_total
     FROM PartSupplierStats ps
     JOIN lineitem cli ON ps.ps_partkey = cli.l_partkey
-    WHERE cli.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    WHERE cli.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year'
 ),
 SelectedRegions AS (
     SELECT r.r_name, rs.nation_count, rs.total_supply_accounts

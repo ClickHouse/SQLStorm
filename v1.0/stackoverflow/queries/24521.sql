@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
         AND p.Score > (SELECT AVG(Score) FROM Posts)  
 ),
 PostComments AS (
@@ -62,4 +62,4 @@ WHERE
     (rp.Rank <= 5 OR ub.BadgeCount > 0)  
 ORDER BY 
     rp.Score DESC, rp.CreationDate ASC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

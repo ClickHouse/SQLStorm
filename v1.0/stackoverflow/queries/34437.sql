@@ -10,7 +10,7 @@ WITH RECURSIVE RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     UNION ALL
     SELECT 
         p.Id,
@@ -24,7 +24,7 @@ WITH RECURSIVE RecentPosts AS (
     JOIN 
         RecentPosts rp ON p.ParentId = rp.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ),
 UserPostCounts AS (
     SELECT 

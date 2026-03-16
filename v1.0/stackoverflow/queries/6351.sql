@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         (SELECT arrayJoin(splitByString('>', p.Tags)) AS TagName) t ON TRUE
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
 ),
 TopPosts AS (
     SELECT 

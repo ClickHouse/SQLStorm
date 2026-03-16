@@ -45,6 +45,6 @@ SELECT
 FROM 
     FilteredMovies fm
 LEFT JOIN 
-    movie_info mi ON fm.movie_id = mi.movie_id AND mi.info_type_id = (SELECT id FROM info_type WHERE info = 'Synopsis' LIMIT 1)
+    movie_info mi ON fm.movie_id = mi.movie_id AND mi.info_type_id = (SELECT id FROM info_type WHERE info = 'Synopsis' FETCH FIRST 1 ROWS ONLY)
 ORDER BY 
     fm.production_year DESC;

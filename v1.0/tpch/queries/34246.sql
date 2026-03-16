@@ -53,4 +53,4 @@ LEFT JOIN region r ON r.r_regionkey = (SELECT n.n_regionkey FROM nation n WHERE 
 WHERE ph.total_avail_qty > 100
   AND ph.avg_supply_cost >= 10.00 AND ph.avg_supply_cost <= 100.00
 ORDER BY ph.p_retailprice DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

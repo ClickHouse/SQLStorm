@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
-        DENSE_RANK() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.CreationDate DESC) AS YearRank,
+        DENSE_RANK() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.CreationDate DESC) AS YearRank,
         p.OwnerUserId
     FROM 
         Posts p

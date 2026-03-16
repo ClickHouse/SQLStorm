@@ -17,11 +17,11 @@ JOIN
 JOIN 
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
-    o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH
+    o.o_orderdate >= CURRENT_DATE - INTERVAL '12 months'
     AND o.o_orderstatus = 'O'
     AND n.n_name IN (SELECT r_name FROM region WHERE r_regionkey = 1)
 GROUP BY 
     n.n_name
 ORDER BY 
     total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

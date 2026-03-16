@@ -8,7 +8,7 @@ WITH RankedSales AS (
         SUM(ws.ws_sales_price) OVER (PARTITION BY ws.ws_item_sk) AS total_sales
     FROM web_sales ws
     JOIN item i ON ws.ws_item_sk = i.i_item_sk
-    WHERE i.i_rec_start_date <= toDate('2002-10-01') AND (i.i_rec_end_date IS NULL OR i.i_rec_end_date > toDate('2002-10-01'))
+    WHERE i.i_rec_start_date <= DATE '2002-10-01' AND (i.i_rec_end_date IS NULL OR i.i_rec_end_date > DATE '2002-10-01')
 ),
 LatestSales AS (
     SELECT 

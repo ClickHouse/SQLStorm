@@ -27,4 +27,4 @@ HAVING
     COUNT(DISTINCT s.s_suppkey) > 5
 ORDER BY 
     total_discounted_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

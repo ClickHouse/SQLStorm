@@ -6,7 +6,7 @@ WITH UserReputation AS (
     SELECT P.Id, P.Title, P.ViewCount, P.Score, P.AnswerCount, U.Reputation AS UserReputation
     FROM Posts P
     JOIN UserReputation U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND P.Score > 0
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' AND P.Score > 0
 ), PostTags AS (
     SELECT P.Id AS PostId, arrayJoin(splitByString('><', P.Tags)) AS Tag
     FROM Posts P

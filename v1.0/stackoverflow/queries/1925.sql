@@ -52,4 +52,4 @@ SELECT
 FROM HighScoringUsers H
 WHERE H.TotalQuestions > 5
 ORDER BY H.AverageScore DESC, H.PositiveScorePosts DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -71,4 +71,4 @@ WHERE
     ra.sales_value > 100
 ORDER BY 
     return_rate_pct DESC NULLS LAST
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

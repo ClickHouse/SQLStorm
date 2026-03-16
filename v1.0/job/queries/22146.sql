@@ -5,7 +5,7 @@ WITH RankedMovies AS (
         t.production_year,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.production_year DESC) AS rank,
         COUNT(DISTINCT ci.person_id) AS actor_count,
-        AVG(COALESCE(mi.info, '0'CAST() AS numeric)) AS average_info_length
+        AVG(COALESCE(mi.info, '0')::numeric) AS average_info_length
     FROM 
         aka_title t
     LEFT JOIN 

@@ -5,7 +5,7 @@ WITH UserStats AS (
         U.Reputation,
         COUNT(B.Id) AS BadgeCount,
         SUM(COALESCE(V.BountyAmount, 0)) AS TotalBounty,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - U.CreationDate)) ) AS AvgAccountAgeInSeconds
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - U.CreationDate)) ) AS AvgAccountAgeInSeconds
     FROM Users U
     LEFT JOIN Badges B ON U.Id = B.UserId
     LEFT JOIN Votes V ON U.Id = V.UserId

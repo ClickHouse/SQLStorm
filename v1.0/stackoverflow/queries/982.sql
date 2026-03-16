@@ -48,7 +48,7 @@ ClosedPosts AS (
     INNER JOIN 
         PostHistory ph ON p.Id = ph.PostId
     INNER JOIN 
-        CloseReasonTypes crt ON (CAST(ph.Comment AS jsonb)->>'CloseReasonId'CAST() AS int) = crt.Id
+        CloseReasonTypes crt ON (CAST(ph.Comment AS jsonb)->>'CloseReasonId')::int = crt.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11)
     GROUP BY 

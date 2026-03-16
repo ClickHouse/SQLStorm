@@ -45,7 +45,7 @@ SELECT
     ci.company_type,
     CASE 
         WHEN ar.role_count IS NULL THEN 'No Roles Listed'
-        ELSE CAST(ar.role_count AS TEXT)
+        ELSE ar.role_count::TEXT
     END AS role_count
 FROM 
     RankedMovies rm

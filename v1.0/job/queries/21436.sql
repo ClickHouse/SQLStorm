@@ -39,4 +39,4 @@ WHERE
 ORDER BY 
     m.title, r.actor_order
 OFFSET (SELECT COUNT(*) FROM RecursiveMovieCasts WHERE role_type = 'Notable Role') * 0.5
-LIMIT 10;
+FETCH NEXT 10 ROWS ONLY;

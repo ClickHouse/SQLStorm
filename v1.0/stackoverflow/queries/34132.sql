@@ -43,7 +43,7 @@ DetailedPostStats AS (
         ra.LastEditDate,
         rp.TotalBounty,
         rp.AnswerCount,
-        COALESCE(rp.TotalBounty, 0) + (CASE WHEN ra.LastActivityDate > now64(6) - INTERVAL 6 MONTH THEN 1 ELSE 0 END) AS ActivityScore
+        COALESCE(rp.TotalBounty, 0) + (CASE WHEN ra.LastActivityDate > CURRENT_TIMESTAMP - INTERVAL '6 months' THEN 1 ELSE 0 END) AS ActivityScore
     FROM 
         RankedPosts rp
         JOIN RecentActivity ra ON rp.PostId = ra.PostId

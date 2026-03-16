@@ -62,4 +62,4 @@ SELECT
 FROM HighValueItems hvi
 JOIN TopCustomers tc ON tc.avg_spend > 500
 ORDER BY hvi.total_net_paid DESC, tc.avg_spend DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

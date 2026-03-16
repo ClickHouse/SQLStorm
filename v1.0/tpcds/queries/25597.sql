@@ -56,4 +56,4 @@ WHERE
 ORDER BY 
     ts.total_profit DESC, 
     ci.full_name ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

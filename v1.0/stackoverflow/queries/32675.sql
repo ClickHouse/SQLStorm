@@ -6,7 +6,7 @@ WITH RECURSIVE UserEngagement AS (
         COUNT(DISTINCT P.Id) AS TotalPosts,
         COALESCE(SUM(CASE WHEN V.VoteTypeId IN (2, 3) THEN 1 ELSE 0 END), 0) AS TotalVotes,
         COALESCE(SUM(CASE WHEN C.Id IS NOT NULL THEN 1 ELSE 0 END), 0) AS TotalComments,
-        toDateTime64('2024-10-01 12:34:56', 6) - U.CreationDate AS AccountAge
+        TIMESTAMP '2024-10-01 12:34:56' - U.CreationDate AS AccountAge
     FROM 
         Users U
     LEFT JOIN 

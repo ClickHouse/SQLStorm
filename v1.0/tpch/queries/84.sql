@@ -53,6 +53,6 @@ LEFT JOIN
     LineItemAggregates l ON r.o_orderkey = l.l_orderkey
 WHERE 
     r.o_totalprice > (SELECT AVG(o_totalprice) FROM orders)
-    AND r.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    AND r.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year'
 ORDER BY 
     r.o_orderdate DESC, f.total_supplycost DESC;

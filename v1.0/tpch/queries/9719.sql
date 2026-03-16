@@ -34,7 +34,7 @@ RecentOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
+        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
 ),
 HighValueOrders AS (
     SELECT 
@@ -67,4 +67,4 @@ GROUP BY
     r.p_name, r.p_brand
 ORDER BY 
     total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

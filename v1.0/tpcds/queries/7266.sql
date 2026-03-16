@@ -41,4 +41,4 @@ GROUP BY
 ORDER BY 
     high_value_customer_count DESC, 
     avg_spent_per_customer DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

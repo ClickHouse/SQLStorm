@@ -32,7 +32,7 @@ TopPosts AS (
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.ViewCount DESC) AS rnk
     FROM Posts p
-    WHERE p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
 )
 
 SELECT 

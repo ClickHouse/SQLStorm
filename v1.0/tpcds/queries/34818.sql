@@ -11,7 +11,7 @@ WITH RECURSIVE sales_analysis AS (
     JOIN 
         web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk
     WHERE 
-        ws.ws_ship_date_sk >= (SELECT d.d_date_sk FROM date_dim d WHERE d.d_date = cast('2002-10-01' as date) - INTERVAL 1 YEAR)
+        ws.ws_ship_date_sk >= (SELECT d.d_date_sk FROM date_dim d WHERE d.d_date = cast('2002-10-01' as date) - INTERVAL '1 year')
     GROUP BY 
         c.c_customer_sk, c.c_first_name, c.c_last_name
 ),

@@ -8,7 +8,7 @@ WITH RecursiveCTE AS (
 AggregatedOrders AS (
     SELECT o.o_custkey, SUM(o.o_totalprice) AS total_spent
     FROM orders o
-    WHERE o.o_orderdate BETWEEN toDate('1994-01-01') AND toDate('1994-12-31')
+    WHERE o.o_orderdate BETWEEN DATE '1994-01-01' AND DATE '1994-12-31'
     GROUP BY o.o_custkey
     HAVING SUM(o.o_totalprice) > 1000.00
 ),

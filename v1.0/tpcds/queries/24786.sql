@@ -55,4 +55,4 @@ HAVING
     SUM(cs.total_net_paid) > (SELECT AVG(total_net_paid) FROM customer_summary)
 ORDER BY 
     total_net_paid DESC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

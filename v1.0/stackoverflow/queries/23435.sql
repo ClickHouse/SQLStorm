@@ -36,9 +36,9 @@ FilteredPosts AS (
     LEFT JOIN UserBadgeCounts bc ON p.OwnerUserId = bc.UserId
     LEFT JOIN RecentPostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
         AND p.Score > 10
-        AND (ph.LastHistoryDate IS NULL OR ph.LastHistoryDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 15 DAY)
+        AND (ph.LastHistoryDate IS NULL OR ph.LastHistoryDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '15 days')
 ),
 RankedPosts AS (
     SELECT 

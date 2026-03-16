@@ -9,7 +9,7 @@ WITH RecentPosts AS (
         p.ViewCount, 
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ), UserActivities AS (
     SELECT 
         u.Id AS UserId, 
@@ -24,7 +24,7 @@ WITH RecentPosts AS (
         ph.PostId, 
         COUNT(*) AS HistoryCount
     FROM PostHistory ph
-    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY ph.PostId
 )
 SELECT 

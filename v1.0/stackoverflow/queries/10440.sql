@@ -14,7 +14,7 @@ WITH PostStatistics AS (
     LEFT JOIN Posts A ON P.Id = A.ParentId AND A.PostTypeId = 2
     LEFT JOIN Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.ViewCount, P.Score, P.CreationDate
 ),

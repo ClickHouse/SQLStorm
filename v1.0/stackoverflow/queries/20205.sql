@@ -29,7 +29,7 @@ PostDetails AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) AND
+        p.CreationDate < cast('2024-10-01 12:34:56' as timestamp) AND
         p.ViewCount IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.AcceptedAnswerId

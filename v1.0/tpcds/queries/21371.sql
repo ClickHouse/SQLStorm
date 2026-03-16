@@ -67,4 +67,4 @@ WHERE
     cmp.NetSales IS NOT NULL
 ORDER BY 
     cmp.NetSales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

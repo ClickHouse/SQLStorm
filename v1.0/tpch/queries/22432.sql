@@ -17,7 +17,7 @@ CustomerOrders AS (
     SELECT DISTINCT o.o_orderkey, c.c_custkey, c.c_name, o.o_orderdate, o.o_totalprice
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
 ),
 LineItems As (
     SELECT li.l_orderkey, SUM(li.l_extendedprice * (1 - li.l_discount)) AS net_price

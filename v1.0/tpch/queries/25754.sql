@@ -22,8 +22,8 @@ JOIN
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
     o.o_orderstatus = 'O' 
-    AND l.l_shipdate >= toDate('1997-01-01') 
-    AND l.l_shipdate < toDate('1998-01-01')
+    AND l.l_shipdate >= DATE '1997-01-01' 
+    AND l.l_shipdate < DATE '1998-01-01'
 GROUP BY 
     supplier_region
 ORDER BY 

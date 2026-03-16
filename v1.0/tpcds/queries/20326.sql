@@ -19,7 +19,7 @@ WITH ranked_sales AS (
         ws.ws_sold_date_sk = (
             SELECT MAX(d_date_sk) 
             FROM date_dim 
-            WHERE d_date = toDate('2002-10-01') - INTERVAL 1 DAY
+            WHERE d_date = DATE '2002-10-01' - INTERVAL '1 day'
         )
 ),
 customer_info AS (
@@ -34,7 +34,7 @@ customer_info AS (
     JOIN 
         customer_demographics AS cd ON c.c_current_cdemo_sk = cd.cd_demo_sk
     WHERE 
-        c.c_birth_year < toYear(toDate('2002-10-01')) - 30
+        c.c_birth_year < EXTRACT(YEAR FROM DATE '2002-10-01') - 30
 )
 SELECT 
     ci.full_name,
@@ -57,11 +57,11 @@ RIGHT JOIN
         WHERE ws_sold_date_sk BETWEEN (
             SELECT MAX(d_date_sk) 
             FROM date_dim 
-            WHERE d_date <= toDate('2002-10-01') - INTERVAL 7 DAY
+            WHERE d_date <= DATE '2002-10-01' - INTERVAL '7 day'
         ) AND (
             SELECT MIN(d_date_sk) 
             FROM date_dim 
-            WHERE d_date >= toDate('2002-10-01') - INTERVAL 30 DAY
+            WHERE d_date >= DATE '2002-10-01' - INTERVAL '30 day'
         )
     )
 GROUP BY 

@@ -58,4 +58,4 @@ JOIN
     sales_summary ss ON cs.c_customer_sk IN (SELECT DISTINCT ws_bill_customer_sk FROM web_sales WHERE ws_sold_date_sk BETWEEN 20230101 AND 20230331)
 ORDER BY 
     ss.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

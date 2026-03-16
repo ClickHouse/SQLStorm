@@ -53,4 +53,4 @@ SELECT
 FROM CustomerAggregate ca
 LEFT JOIN SalesSummary ss ON ca.c_customer_sk = ss.c_customer_sk
 ORDER BY ca.total_net_profit DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

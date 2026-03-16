@@ -88,4 +88,4 @@ GROUP BY
 ORDER BY 
     aggregate_quantity DESC, 
     max_orders ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

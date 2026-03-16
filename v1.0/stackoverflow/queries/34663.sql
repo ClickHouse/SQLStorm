@@ -26,7 +26,7 @@ RecentBadgeCount AS (
     FROM 
         Badges B
     WHERE 
-        B.Date > cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        B.Date > cast('2024-10-01' as date) - INTERVAL '1 year' 
     GROUP BY 
         B.UserId
 ),

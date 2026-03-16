@@ -4,7 +4,7 @@ SELECT
     COUNT(DISTINCT c.c_custkey) AS total_customers,
     SUM(CASE WHEN o.o_orderstatus = 'O' THEN l.l_extendedprice ELSE 0 END) AS total_sales_open_orders,
     SUM(CASE WHEN l.l_discount > 0 THEN l.l_extendedprice * (1 - l.l_discount) ELSE l.l_extendedprice END) AS total_sales_after_discount,
-    AVG(toYear(o.o_orderdate)) AS avg_order_year
+    AVG(extract(YEAR FROM o.o_orderdate)) AS avg_order_year
 FROM 
     supplier s
 JOIN 

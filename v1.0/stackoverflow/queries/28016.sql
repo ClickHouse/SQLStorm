@@ -27,7 +27,7 @@ ActivePosts AS (
     JOIN 
         Tags t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
-        p.LastActivityDate > cast('2024-10-01' as date) - INTERVAL 30 DAY 
+        p.LastActivityDate > cast('2024-10-01' as date) - INTERVAL '30 days' 
 )
 SELECT 
     ts.TagName,

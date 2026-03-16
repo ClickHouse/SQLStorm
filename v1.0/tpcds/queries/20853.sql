@@ -37,7 +37,7 @@ SalesMetrics AS (
         COALESCE(cs.return_count, 0) AS return_count,
         CASE 
             WHEN COALESCE(cs.total_sales_quantity, 0) = 0 THEN NULL
-            ELSE ROUND(COALESCE(cs.total_returned, 0) / NULLIF(COALESCE(cs.total_sales_quantity, 0), 0, CAST() AS DECIMAL) * 100, 2)
+            ELSE ROUND(COALESCE(cs.total_returned, 0) / NULLIF(COALESCE(cs.total_sales_quantity, 0), 0)::DECIMAL * 100, 2)
         END AS return_rate
     FROM CombinedSales cs
 ),

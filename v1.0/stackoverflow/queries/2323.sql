@@ -36,7 +36,7 @@ WITH RankedPosts AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate >= now64(6) - INTERVAL 30 DAY
+        c.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY 
         c.PostId
 )
@@ -64,4 +64,4 @@ WHERE
 ORDER BY 
     rp.CreationDate DESC,
     ue.TotalPosts DESC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

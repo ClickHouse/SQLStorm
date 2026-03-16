@@ -53,4 +53,4 @@ JOIN
     StatewiseProfit s ON s.unique_customers > 0
 ORDER BY 
     s.state_net_profit DESC, d.avg_net_profit_per_demo DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

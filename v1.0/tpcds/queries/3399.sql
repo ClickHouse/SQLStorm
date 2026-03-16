@@ -44,4 +44,4 @@ WHERE
     (ss.total_return_qty = 0 AND ss.current_price > 20)
 ORDER BY 
     adjusted_price DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

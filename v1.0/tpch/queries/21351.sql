@@ -31,7 +31,7 @@ WITH RankedOrders AS (
         END AS discount_info,
         DENSE_RANK() OVER (PARTITION BY l.l_orderkey ORDER BY l.l_shipdate DESC) AS rank_ship_date
     FROM lineitem l
-    WHERE l.l_shipdate >= CURRENT_DATE - INTERVAL 3 MONTH
+    WHERE l.l_shipdate >= CURRENT_DATE - INTERVAL '3 months'
 )
 SELECT 
     r.o_orderkey,

@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
 ),
 RecentUserActivity AS (
     SELECT 
@@ -27,9 +27,9 @@ RecentUserActivity AS (
     LEFT JOIN 
         Badges b ON b.UserId = u.Id
     LEFT JOIN 
-        Votes v ON v.UserId = u.Id AND v.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        Votes v ON v.UserId = u.Id AND v.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     WHERE 
-        u.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        u.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -43,7 +43,7 @@ PostHistorySummary AS (
     JOIN 
         PostHistory ph ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        ph.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY 
         p.Id, ph.PostHistoryTypeId
 )

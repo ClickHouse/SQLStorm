@@ -23,7 +23,7 @@ DemoStats AS (
 ),
 SalesSummary AS (
     SELECT
-        toYear(d_date) AS sales_year,
+        EXTRACT(YEAR FROM d_date) AS sales_year,
         SUM(ws_ext_sales_price) AS total_sales,
         SUM(ws_net_profit) AS total_profit,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sm_carrier))), '; ') AS shipping_methods
@@ -34,7 +34,7 @@ SalesSummary AS (
     JOIN
         ship_mode ON ws_ship_mode_sk = sm_ship_mode_sk
     GROUP BY
-        toYear(d_date)
+        EXTRACT(YEAR FROM d_date)
 )
 SELECT
     ac.ca_state,

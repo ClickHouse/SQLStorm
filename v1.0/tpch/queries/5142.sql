@@ -31,14 +31,14 @@ PartSupplierDetails AS (
 OrderSummary AS (
     SELECT 
         o.o_orderkey,
-        toYear(o.o_orderdate) AS order_year,
+        EXTRACT(YEAR FROM o.o_orderdate) AS order_year,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM 
         orders o
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     GROUP BY 
-        o.o_orderkey, toYear(o.o_orderdate)
+        o.o_orderkey, EXTRACT(YEAR FROM o.o_orderdate)
 )
 SELECT 
     na.nation_name,

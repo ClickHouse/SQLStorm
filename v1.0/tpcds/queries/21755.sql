@@ -10,7 +10,7 @@ WITH RecursiveCTE AS (
         ROW_NUMBER() OVER (PARTITION BY cd.cd_gender ORDER BY cd.cd_purchase_estimate DESC) AS rank_purchase,
         (SELECT COUNT(*) 
          FROM customer
-         WHERE c_birth_year = toYear(CURRENT_DATE) - (2023 - (SELECT MAX(d_year) FROM date_dim)) 
+         WHERE c_birth_year = EXTRACT(YEAR FROM CURRENT_DATE) - (2023 - (SELECT MAX(d_year) FROM date_dim)) 
          AND c_current_cdemo_sk = cd.cd_demo_sk) AS younger_count
     FROM 
         customer AS c

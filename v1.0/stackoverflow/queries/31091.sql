@@ -14,7 +14,7 @@ WITH RECURSIVE PostActivity AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
     UNION ALL
     SELECT
         pa.PostId,
@@ -32,7 +32,7 @@ WITH RECURSIVE PostActivity AS (
     JOIN
         Votes v ON v.PostId = pa.PostId
     WHERE
-        v.CreationDate >= DATE('2024-10-01') - INTERVAL 6 MONTH
+        v.CreationDate >= DATE('2024-10-01') - INTERVAL '6 months'
 ),
 UserPostStats AS (
     SELECT
@@ -69,6 +69,6 @@ INNER JOIN
     PostHistoryTypes ht ON ph.PostHistoryTypeId = ht.Id
 WHERE
     ups.TotalScore > 100
-    AND ups.LastPostDate >= DATE('2024-10-01') - INTERVAL 6 MONTH
+    AND ups.LastPostDate >= DATE('2024-10-01') - INTERVAL '6 months'
 ORDER BY
     ups.TotalScore DESC;

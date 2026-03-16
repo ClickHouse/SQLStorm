@@ -38,7 +38,7 @@ OrderAnalysis AS (
     SELECT 
         o.o_orderkey,
         o.o_orderstatus,
-        toMonth(o.o_orderdate) AS order_month,
+        EXTRACT(MONTH FROM o.o_orderdate) AS order_month,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey

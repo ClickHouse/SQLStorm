@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, p.PostTypeId
 ),
 FrequentUsers AS (
@@ -19,7 +19,7 @@ FrequentUsers AS (
         COUNT(v.Id) AS VoteCount
     FROM Users u
     LEFT JOIN Votes v ON u.Id = v.UserId
-    WHERE u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    WHERE u.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
     GROUP BY u.Id, u.DisplayName
 ),
 TopBadges AS (

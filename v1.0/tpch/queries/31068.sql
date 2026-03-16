@@ -6,7 +6,7 @@ WITH RECURSIVE sales_summary AS (
     FROM 
         lineitem
     WHERE 
-        l_shipdate >= toDate('1997-01-01') AND l_shipdate < toDate('1997-10-01')
+        l_shipdate >= DATE '1997-01-01' AND l_shipdate < DATE '1997-10-01'
     GROUP BY 
         l_orderkey
 ),

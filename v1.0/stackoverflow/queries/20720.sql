@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
+        p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
         AND p.Score IS NOT NULL
         AND p.ViewCount IS NOT NULL
 ),
@@ -56,7 +56,7 @@ ActiveUserPosts AS (
     INNER JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
+        u.CreationDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -71,7 +71,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        ph.CreationDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
     GROUP BY 
         ph.PostId
 )

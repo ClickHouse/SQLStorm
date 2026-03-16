@@ -70,4 +70,4 @@ WHERE
 ORDER BY 
     di.production_year DESC,
     di.title ASC
-OFFSET 5;
+OFFSET 5 ROWS;

@@ -52,7 +52,7 @@ PostsWithBadges AS (
     FROM Posts P
     LEFT JOIN Users U ON P.OwnerUserId = U.Id
     LEFT JOIN Badges B ON U.Id = B.UserId
-    WHERE B.Date >= CURRENT_DATE - INTERVAL 1 YEAR
+    WHERE B.Date >= CURRENT_DATE - INTERVAL '1 year'
 ),
 RecentPostHistory AS (
     SELECT 

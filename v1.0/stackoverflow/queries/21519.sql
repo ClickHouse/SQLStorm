@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.ViewCount IS NOT NULL
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 PostStats AS (
     SELECT 
@@ -53,7 +53,7 @@ RecentCloseReasons AS (
         PostHistory ph
     WHERE 
         ph.PostHistoryTypeId = 10 
-        AND ph.CreationDate >= DATE_TRUNC('month', toDateTime64('2024-10-01 12:34:56', 6))
+        AND ph.CreationDate >= DATE_TRUNC('month', cast('2024-10-01 12:34:56' as timestamp))
     GROUP BY 
         ph.PostId, ph.Comment
 ),

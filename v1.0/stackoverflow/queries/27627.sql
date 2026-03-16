@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         COUNT(v.Id) AS VoteCount,
         arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray,
-        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY COUNT(v.Id) DESC) AS PostRank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY COUNT(v.Id) DESC) AS PostRank
     FROM 
         Posts p
     JOIN 

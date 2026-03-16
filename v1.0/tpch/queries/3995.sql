@@ -59,4 +59,4 @@ WHERE
     ss.unique_parts_supplied > 5
 ORDER BY 
     ss.total_supply_cost DESC, rs.sales_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

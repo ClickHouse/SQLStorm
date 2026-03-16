@@ -16,8 +16,8 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate >= toDate('1995-01-01') AND 
-    o.o_orderdate < toDate('1996-01-01') AND 
+    o.o_orderdate >= DATE '1995-01-01' AND 
+    o.o_orderdate < DATE '1996-01-01' AND 
     p.p_brand = 'Brand#54' AND 
     p.p_type LIKE 'MEDIUM POLISHED%'
 GROUP BY 

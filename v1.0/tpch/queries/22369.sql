@@ -40,7 +40,7 @@ LEFT JOIN OrderLineDetails ol ON ol.o_orderkey IN (
     SELECT o.o_orderkey
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_returnflag = 'R' AND l.l_shipdate < toDate('1998-10-01') - INTERVAL 30 DAY
+    WHERE l.l_returnflag = 'R' AND l.l_shipdate < DATE '1998-10-01' - INTERVAL '30 days'
 )
 GROUP BY p.p_partkey, p.p_name
 HAVING SUM(ol.total_revenue) > (

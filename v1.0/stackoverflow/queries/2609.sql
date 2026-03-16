@@ -20,7 +20,7 @@ PostStats AS (
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId AND V.UserId IS NOT NULL
     LEFT JOIN PostHistory PH ON P.Id = PH.PostId
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY P.Id, P.Title, P.CreationDate, P.Score
 ),
 TopPosts AS (

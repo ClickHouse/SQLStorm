@@ -36,4 +36,4 @@ JOIN
     Users u ON ups.UserId = u.Id
 ORDER BY 
     ups.PostCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

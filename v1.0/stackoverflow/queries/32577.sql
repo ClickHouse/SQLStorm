@@ -7,7 +7,7 @@ WITH RECURSIVE PostViews AS (
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS Downvotes
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
     GROUP BY p.Id
 ),
 UserEngagement AS (
@@ -44,7 +44,7 @@ TaggedPosts AS (
         GROUP BY t.Id
     ) AS th ON th.Id = p.Id
     LEFT JOIN PostViews vp ON vp.Id = p.Id
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '6 months'
 )
 SELECT 
     u.UserId,

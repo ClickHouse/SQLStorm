@@ -69,6 +69,6 @@ JOIN
 WHERE 
     rp.price_rank <= 5 AND 
     sd.supplier_nation = 'USA' AND 
-    co.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    co.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 ORDER BY 
     rp.p_brand, co.o_orderdate;

@@ -33,7 +33,7 @@ ActivePosts AS (
     FROM 
         Posts p
     WHERE 
-        p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.LastActivityDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
 ClosedPostHistory AS (
     SELECT 
@@ -69,7 +69,7 @@ LEFT JOIN
     ClosedPostHistory pp ON p.Id = pp.PostId
 WHERE 
     t.TagCount >= 3
-    AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     AND (u.Reputation > 500 OR pp.ClosedDate IS NOT NULL)
 ORDER BY 
     p.Score DESC, 

@@ -40,4 +40,4 @@ FULL OUTER JOIN Customer_Totals ct ON os.o_orderkey = ct.c_custkey
 WHERE (ss.total_avail_qty IS NULL OR ct.total_orders IS NOT NULL)
   AND (crn.level = 1 OR crn.n_name LIKE 'A%')
 ORDER BY crn.r_name, ct.last_order_date DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

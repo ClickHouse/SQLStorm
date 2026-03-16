@@ -9,7 +9,7 @@ WITH ranked_orders AS (
     JOIN
         customer c ON o.o_custkey = c.c_custkey
     WHERE
-        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
+        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
 ),
 high_value_orders AS (
     SELECT

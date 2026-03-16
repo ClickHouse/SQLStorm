@@ -41,7 +41,7 @@ FilteredPosts AS (
     WHERE 
         rp.rn = 1 
         AND rp.AnswerCount > 0 
-        AND rp.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
+        AND rp.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')
 )
 SELECT 
     f.PostId,

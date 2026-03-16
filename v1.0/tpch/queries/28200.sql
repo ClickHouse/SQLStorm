@@ -33,4 +33,4 @@ SELECT
     short_part_comment
 FROM StringBenchmarks
 WHERE supplier_name IS NOT NULL
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

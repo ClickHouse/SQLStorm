@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         Comments C ON P.Id = C.PostId
     WHERE 
         P.PostTypeId = 1 
-        AND P.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
+        AND P.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
 ),
 FilteredRankedPosts AS (
     SELECT 

@@ -64,7 +64,7 @@ LEFT JOIN
     customer c ON c.c_custkey = o.o_custkey
 WHERE 
     p.p_retailprice < 100
-    AND (l.l_shipdate IS NULL OR l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 30 DAY)
+    AND (l.l_shipdate IS NULL OR l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '30 days')
 GROUP BY 
     p.p_partkey, p.p_name, pt.total_available, pt.avg_supply_cost
 HAVING 

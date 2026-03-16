@@ -69,4 +69,4 @@ WHERE
     ps.ViewCount > 100
 ORDER BY 
     rr.Reputation DESC, ps.ViewCount DESC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

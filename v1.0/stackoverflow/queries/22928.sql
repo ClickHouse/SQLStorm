@@ -16,7 +16,7 @@ RecentPostHistory AS (
     FROM 
         PostHistory
     WHERE 
-        CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR'
     GROUP BY 
         PostId
 ),
@@ -38,7 +38,7 @@ PostDetails AS (
     WHERE 
         (P.PostTypeId = 1 AND P.AcceptedAnswerId IS NOT NULL)
         OR (P.PostTypeId IN (2, 4) AND P.ViewCount > 100)
-        OR (P.PostTypeId IN (1, 3) AND P.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
+        OR (P.PostTypeId IN (1, 3) AND P.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 MONTH')
 ),
 RankedPosts AS (
     SELECT 

@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON u.Id = b.UserId
 WHERE 
-    p.CreationDate >= CURRENT_DATE - INTERVAL 1 MONTH
+    p.CreationDate >= CURRENT_DATE - INTERVAL '1 MONTH'
 GROUP BY 
     p.Id, p.Title, pt.Name, u.Reputation, u.DisplayName
 ORDER BY 

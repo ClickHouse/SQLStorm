@@ -13,7 +13,7 @@ RankedOrders AS (
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate,
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 SupplierPartInfo AS (
     SELECT ps.ps_partkey, ps.ps_suppkey, SUM(ps.ps_availqty) AS total_availqty,

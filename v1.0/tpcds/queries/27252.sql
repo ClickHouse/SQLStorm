@@ -34,7 +34,7 @@ RecentPurchases AS (
     FROM 
         catalog_sales cs
     WHERE 
-        cs.cs_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = cast('2002-10-01' as date) - INTERVAL 30 DAY)
+        cs.cs_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = cast('2002-10-01' as date) - INTERVAL '30 days')
     GROUP BY 
         cs.cs_bill_customer_sk
 )

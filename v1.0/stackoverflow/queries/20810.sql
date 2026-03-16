@@ -77,4 +77,4 @@ WHERE
     AND (QU.TotalViews IS NOT NULL)
 ORDER BY 
     QU.Reputation DESC, QU.DisplayName ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

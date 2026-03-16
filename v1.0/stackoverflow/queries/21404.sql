@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) as Rank
     FROM Posts p
-    WHERE p.CreationDate >= '2023-01-01' AND p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6)
+    WHERE p.CreationDate >= '2023-01-01' AND p.CreationDate < cast('2024-10-01 12:34:56' as timestamp)
 ),
 TopUsers AS (
     SELECT 

@@ -40,4 +40,4 @@ HAVING
     COUNT(DISTINCT o.o_orderkey) > 10
 ORDER BY 
     TotalRevenue DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

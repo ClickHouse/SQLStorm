@@ -22,7 +22,7 @@ CustomTagStats AS (
         MAX(p.CreationDate) AS LastPostDate
     FROM Tags t
     JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%'
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY t.TagName
 ),
 ClosedPostReasons AS (
@@ -30,7 +30,7 @@ ClosedPostReasons AS (
         ph.UserId,
         ph.Comment,
         COUNT(ph.Id) AS CloseCount,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - ph.CreationDate))) AS AvgCloseTime
+        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - ph.CreationDate))) AS AvgCloseTime
     FROM PostHistory ph
     WHERE ph.PostHistoryTypeId = 10
     GROUP BY ph.UserId, ph.Comment

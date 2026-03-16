@@ -76,4 +76,4 @@ WHERE
     AND (PS.TotalPosts > 0 OR PH.HistoryActions > 0)
 ORDER BY 
     U.Reputation DESC, PS.TotalPosts DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

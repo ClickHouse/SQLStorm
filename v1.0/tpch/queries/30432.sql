@@ -5,7 +5,7 @@ WITH RECURSIVE popular_parts AS (
     FROM part
     JOIN lineitem ON p_partkey = l_partkey
     JOIN orders ON o_orderkey = l_orderkey
-    WHERE o_orderdate >= toDate('1997-01-01')
+    WHERE o_orderdate >= DATE '1997-01-01'
     GROUP BY p_partkey, p_name, p_retailprice, p_brand
 ),
 ranked_suppliers AS (

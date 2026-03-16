@@ -4,7 +4,7 @@ WITH RankedTitles AS (
         t.id AS title_id,
         t.title,
         t.production_year,
-        ROW_NUMBER() OVER (PARTITION BY toYear(toDateTime64('2024-10-01 12:34:56', 6)) - t.production_year ORDER BY t.production_year DESC) AS recent_rank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM TIMESTAMP '2024-10-01 12:34:56') - t.production_year ORDER BY t.production_year DESC) AS recent_rank
     FROM 
         aka_title t
     WHERE 

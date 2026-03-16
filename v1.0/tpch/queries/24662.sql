@@ -38,5 +38,5 @@ WHERE r.r_name IS NOT NULL AND (ns.n_name LIKE 'A%' OR ns.n_name IS NULL)
 GROUP BY ns.n_name, p.p_name
 HAVING COUNT(DISTINCT s.s_suppkey) > 1 OR COUNT(p.p_partkey) = 0
 ORDER BY Nation_Name, Part_Name DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;
 

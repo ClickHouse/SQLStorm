@@ -1,7 +1,7 @@
 WITH RecentPosts AS (
     SELECT p.Id, p.Title, p.OwnerUserId, p.CreationDate, p.ViewCount, p.Score
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 UserReputation AS (
     SELECT u.Id AS UserId, u.Reputation, u.DisplayName
@@ -41,6 +41,6 @@ LEFT JOIN ClosedPosts cl ON rp.Id = cl.PostId
 LEFT JOIN TopAnswers ta ON rp.Id = ta.PostId
 WHERE (pt.TagCount > 3 OR rp.ViewCount > 100)
   AND (ta.VoteCount IS NOT NULL OR rp.Score > 10)
-  AND rp.CreationDate < cast('2024-10-01' as date) - INTERVAL 1 WEEK
+  AND rp.CreationDate < cast('2024-10-01' as date) - INTERVAL '1 week'
 ORDER BY rp.Score DESC, rp.ViewCount DESC
 LIMIT 100;

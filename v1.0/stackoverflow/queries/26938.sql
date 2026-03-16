@@ -68,4 +68,4 @@ JOIN
     UserReputation ur ON ur.UserId = u.Id
 ORDER BY 
     tp.Score DESC, tp.ViewCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

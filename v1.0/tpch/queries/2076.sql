@@ -7,7 +7,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
 ),
 HighValueSuppliers AS (
     SELECT 
@@ -65,7 +65,7 @@ LEFT JOIN
 LEFT JOIN 
     CustomerDetails cd ON c.c_custkey = cd.c_custkey
 WHERE 
-    l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 6 MONTH 
+    l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '6 months' 
     AND p.p_retailprice BETWEEN 10 AND 100
 GROUP BY 
     p.p_name, p.p_brand, r.r_name

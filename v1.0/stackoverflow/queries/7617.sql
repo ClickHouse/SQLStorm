@@ -27,7 +27,7 @@ PostDetail AS (
         FROM arrayJoin(splitByString('><', p.Tags)) AS tag
         JOIN Tags t ON t.TagName = tag
     ) AS t ON TRUE
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 )
 SELECT 
     pd.PostId,

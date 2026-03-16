@@ -38,7 +38,7 @@ SELECT
     mwk.movie_title,
     mwk.production_year,
     mwk.num_cast_members,
-    arrayStringConcat(groupArray(assumeNotNull(CAST(mwk.all_actor_names AS text))), ', ') AS actor_names,
+    arrayStringConcat(groupArray(assumeNotNull(mwk.all_actor_names::text)), ', ') AS actor_names,
     arrayStringConcat(groupArray(assumeNotNull(mwk.movie_keyword)), ', ') AS keywords
 FROM 
     MoviesWithKeywords mwk

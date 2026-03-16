@@ -42,8 +42,8 @@ JOIN
 JOIN
     part p ON l.l_partkey = p.p_partkey
 WHERE
-    l.l_shipdate >= toDate('1996-01-01')
-    AND l.l_shipdate < toDate('1997-01-01')
+    l.l_shipdate >= DATE '1996-01-01'
+    AND l.l_shipdate < DATE '1997-01-01'
 GROUP BY
     p.p_name,
     n.n_name

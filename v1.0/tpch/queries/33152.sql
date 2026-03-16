@@ -15,7 +15,7 @@ RecentOrders AS (
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate,
            RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_orderdate DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
+    WHERE o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL '1 year')
 ),
 HighValueParts AS (
     SELECT p.p_partkey, p.p_name, SUM(l.l_extendedprice) AS total_sales

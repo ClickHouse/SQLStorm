@@ -31,7 +31,7 @@ RecentPostDetails AS (
         (SELECT COUNT(C.Id) FROM Comments C WHERE C.PostId = P.Id) AS CommentCount
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 )
 SELECT 
     U.UserId,
@@ -52,4 +52,4 @@ LEFT JOIN PopularTags PT ON U.TotalPosts > 0
 LEFT JOIN RecentPostDetails RPD ON RPD.OwnerName = U.DisplayName
 WHERE U.ReputationRank <= 10
 ORDER BY U.Reputation DESC, PT.PostCount DESC
-LIMIT 5 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY;

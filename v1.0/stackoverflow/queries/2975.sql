@@ -60,6 +60,6 @@ JOIN
     PostDetails pd ON tu.UserId = pd.OwnerUserId
 WHERE 
     tu.Rank <= 10
-    AND pd.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    AND pd.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ORDER BY 
     tu.TotalPosts DESC, tu.PositiveScore DESC;

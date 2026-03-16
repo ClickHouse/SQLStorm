@@ -82,6 +82,6 @@ LEFT JOIN
         LIMIT 1
     )
 WHERE 
-    cs.last_order_date >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    cs.last_order_date >= cast('1998-10-01' as date) - INTERVAL '1 year'
 ORDER BY 
     cs.total_spent DESC, cs.order_count DESC;

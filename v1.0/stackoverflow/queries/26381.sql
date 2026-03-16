@@ -78,4 +78,4 @@ LEFT JOIN
     ClosedPostReasons cr ON cr.PostHistoryTypeId = 10  
 ORDER BY 
     ts.PostCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

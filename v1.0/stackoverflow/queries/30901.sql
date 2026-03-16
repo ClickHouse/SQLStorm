@@ -75,7 +75,7 @@ LEFT JOIN
 LEFT JOIN 
     RankedPosts rp ON rp.PostId = p.Id
 WHERE
-    p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+    p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
     AND (p.Score > 0 OR p.ViewCount > 100)
 ORDER BY
     rp.Rank, b.MaxBadgeClass DESC, phs.LastEdited DESC;

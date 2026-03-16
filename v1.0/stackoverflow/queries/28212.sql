@@ -27,7 +27,7 @@ LatestPostDetails AS (
     LEFT JOIN 
         TagCounts tc ON tc.TagName = ANY (splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
     GROUP BY 
         p.Id, u.DisplayName
     HAVING 

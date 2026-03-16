@@ -5,18 +5,18 @@ WITH SalesData AS (
         SUM(ws.ws_net_paid) AS total_sales,
         COUNT(DISTINCT ws.ws_order_number) AS total_orders,
         AVG(ws.ws_quantity) AS avg_quantity,
-        toDayOfMonth(d.d_date) AS sale_day,
-        toMonth(d.d_date) AS sale_month,
-        toYear(d.d_date) AS sale_year
+        EXTRACT(DAY FROM d.d_date) AS sale_day,
+        EXTRACT(MONTH FROM d.d_date) AS sale_month,
+        EXTRACT(YEAR FROM d.d_date) AS sale_year
     FROM 
         web_sales ws
     JOIN 
         date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
     GROUP BY 
         ws.ws_web_site_sk, 
-        toDayOfMonth(d.d_date),
-        toMonth(d.d_date),
-        toYear(d.d_date)
+        EXTRACT(DAY FROM d.d_date),
+        EXTRACT(MONTH FROM d.d_date),
+        EXTRACT(YEAR FROM d.d_date)
 ),
 CustomerAnalytics AS (
     SELECT 
@@ -31,8 +31,8 @@ CustomerAnalytics AS (
     JOIN 
         customer_address ca ON c.c_current_addr_sk = ca.ca_address_sk
     JOIN 
-        date_dim d ON s.sale_day = toDayOfMonth(d.d_date) 
-                     AND s.sale_month = toMonth(d.d_date) 
+        date_dim d ON s.sale_day = EXTRACT(DAY FROM d.d_date) 
+                     AND s.sale_month = EXTRACT(MONTH FROM d.d_date) 
                      AND s.sale_year = d.d_year
     GROUP BY 
         ca.ca_city,

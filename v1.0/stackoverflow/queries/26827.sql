@@ -50,7 +50,7 @@ RecentPostHistory AS (
     JOIN 
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
-        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - interval '1 month'
 )
 SELECT 
     r.PostId,

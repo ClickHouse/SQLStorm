@@ -39,7 +39,7 @@ SELECT
     tm.title,
     tm.production_year,
     tm.actor_count,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(tm.actors AS text)))), ', ') AS all_actors,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tm.actors::text))), ', ') AS all_actors,
     arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tm.genre))), ', ') AS all_genres
 FROM 
     TopMovies tm

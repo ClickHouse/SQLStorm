@@ -23,7 +23,7 @@ ClosedPostHistory AS (
     SELECT 
         PH.UserId, 
         COUNT(PH.Id) AS ClosedPostCount,
-        SUM(CASE WHEN PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS RecentClosedPosts,
+        SUM(CASE WHEN PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 1 ELSE 0 END) AS RecentClosedPosts,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(P.Title))), ', ') AS ClosedPostTitles
     FROM PostHistory PH
     JOIN Posts P ON PH.PostId = P.Id

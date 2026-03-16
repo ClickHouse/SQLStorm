@@ -57,4 +57,4 @@ WHERE
     i.i_current_price IS NOT NULL
 ORDER BY 
     effective_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

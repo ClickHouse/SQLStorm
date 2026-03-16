@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 ),
 SupplierStats AS (
     SELECT 
@@ -30,8 +30,8 @@ FilteredLineItems AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= toDate('1997-01-01')
-        AND l.l_shipdate <= toDate('1997-06-30')
+        l.l_shipdate >= DATE '1997-01-01'
+        AND l.l_shipdate <= DATE '1997-06-30'
         AND l.l_returnflag = 'N'
     GROUP BY 
         l.l_orderkey

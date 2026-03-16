@@ -43,4 +43,4 @@ WHERE r.r_name LIKE 'Eu%'
 GROUP BY r.r_name
 HAVING COUNT(ns.n_nationkey) > 1
 ORDER BY total_supply_cost DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

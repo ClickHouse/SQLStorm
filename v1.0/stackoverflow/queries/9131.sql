@@ -9,7 +9,7 @@ WITH UserStatistics AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.CreationDate) / 86400)) AS AccountAgeInDays
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - u.CreationDate) / 86400)) AS AccountAgeInDays
     FROM 
         Users u
     LEFT JOIN 

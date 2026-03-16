@@ -49,7 +49,7 @@ ClosedPostReasons AS (
     FROM 
         PostHistory PH
     INNER JOIN 
-        CloseReasonTypes CR ON CAST(PH.Comment AS int) = CR.Id
+        CloseReasonTypes CR ON PH.Comment::int = CR.Id
     WHERE 
         PH.PostHistoryTypeId = 10
     GROUP BY 

@@ -62,7 +62,7 @@ LEFT JOIN CustomerOrders cos ON EXISTS (
     SELECT 1 
     FROM orders o 
     WHERE cos.c_custkey = o.o_custkey 
-    AND o.o_orderdate > CURRENT_DATE - INTERVAL 6 MONTH
+    AND o.o_orderdate > CURRENT_DATE - INTERVAL '6 months'
 )
 WHERE rp.price_rank <= 5 OR rp.p_retailprice IS NULL
 ORDER BY rp.p_partkey;

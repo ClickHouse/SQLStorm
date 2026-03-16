@@ -30,7 +30,7 @@ RecentPostHistories AS (
     JOIN 
         PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY 
         ph.PostId, ph.CreationDate, PHT.Name
 ),

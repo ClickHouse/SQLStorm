@@ -56,4 +56,4 @@ ORDER BY
     tt.production_year, 
     total_comp_rnk, 
     tt.title
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

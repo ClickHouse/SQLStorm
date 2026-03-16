@@ -36,7 +36,7 @@ LEFT JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     r.r_name IN ('AMERICA', 'EUROPE')
-    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY 
     n.n_name
 HAVING 

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ), 
 TopPostStats AS (
     SELECT 
@@ -66,7 +66,7 @@ SELECT
       FROM PostHistory ph 
       LEFT JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id 
       WHERE ph.PostId = tps.PostId) AS HistoryTypes,
-    COALESCE(ha.LastChangeDate, toDateTime64('1970-01-01 00:00:00', 6)) AS LastChange
+    COALESCE(ha.LastChangeDate, TIMESTAMP '1970-01-01 00:00:00') AS LastChange
 FROM 
     TopPostStats tps
 LEFT JOIN 

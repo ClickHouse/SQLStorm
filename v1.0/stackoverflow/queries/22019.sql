@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserBadges AS (
     SELECT 
@@ -63,4 +63,4 @@ WHERE
     up.Ranking <= 10
 ORDER BY 
     up.Score DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

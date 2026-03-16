@@ -47,4 +47,4 @@ JOIN
     SalesByDate sb ON tc.total_revenue > (SELECT AVG(total_revenue) FROM TopCustomers)
 ORDER BY 
     tc.revenue_rank, sb.d_date DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

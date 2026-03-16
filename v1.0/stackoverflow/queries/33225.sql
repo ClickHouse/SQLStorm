@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         Votes V ON P.Id = V.PostId
     WHERE 
         P.Score > 0
-        AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 PostHistoryDetails AS (
     SELECT 
@@ -32,7 +32,7 @@ PostHistoryDetails AS (
         PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     WHERE 
         PHT.Name IN ('Post Closed', 'Post Reopened', 'Edit Body') 
-        AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        AND PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
 ),
 RecursiveVotes AS (
     SELECT 

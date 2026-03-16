@@ -32,7 +32,7 @@ HighValueLineitems AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 1 MONTH
+        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '1 month'
     GROUP BY 
         l.l_orderkey
 )

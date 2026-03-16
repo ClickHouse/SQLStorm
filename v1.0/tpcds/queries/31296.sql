@@ -49,7 +49,7 @@ SELECT
     cs.avg_purchase_estimate,
     CASE 
         WHEN cs.avg_purchase_estimate IS NULL THEN 'No Data' 
-        ELSE ROUND((s.yearly_sales / cs.avg_purchase_estimate), 2, CAST() AS VARCHAR)
+        ELSE ROUND((s.yearly_sales / cs.avg_purchase_estimate), 2)::VARCHAR
     END AS sales_to_estimate_ratio
 FROM 
     Sales_Summary s

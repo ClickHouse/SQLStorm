@@ -20,7 +20,7 @@ WITH StringBenchmark AS (
     JOIN 
         customer c ON c.c_nationkey = s.s_nationkey
     WHERE 
-        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     ORDER BY 
         combined_length DESC
 )

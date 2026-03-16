@@ -27,4 +27,4 @@ HAVING
     COUNT(DISTINCT s.s_suppkey) > 2
 ORDER BY 
     Total_Available_Quantity DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

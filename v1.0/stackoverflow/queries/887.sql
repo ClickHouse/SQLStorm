@@ -48,7 +48,7 @@ SELECT
     us.Reputation,
     us.TotalBadges,
     us.PostScore,
-    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = us.UserId AND p.CreationDate < DATE('2024-10-01') - INTERVAL 1 YEAR) AS OldPostCount,
+    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = us.UserId AND p.CreationDate < DATE('2024-10-01') - INTERVAL '1 year') AS OldPostCount,
     (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Posts p 
      INNER JOIN Tags t ON p.Tags LIKE CONCAT('%', t.TagName, '%') 

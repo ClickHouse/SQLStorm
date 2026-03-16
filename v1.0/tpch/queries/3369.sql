@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01')
+        o.o_orderdate >= DATE '1996-01-01'
 ),
 SupplierDetails AS (
     SELECT 
@@ -61,7 +61,7 @@ LEFT JOIN
 WHERE 
     p.p_retailprice > 50 
     AND o.o_orderstatus IN ('F', 'P') 
-    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     p.p_name, r.r_name, c.c_name, so.s_name
 HAVING 

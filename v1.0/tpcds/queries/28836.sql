@@ -42,6 +42,6 @@ SELECT ac.full_address,
        ds.all_days_names
 FROM AddressComponents ac
 JOIN BenchmarkedDemographics bd ON ac.ca_address_sk = bd.cd_demo_sk
-JOIN DateStats ds ON ds.d_year = toYear(CAST('2002-10-01' AS DATE))
+JOIN DateStats ds ON ds.d_year = EXTRACT(YEAR FROM CAST('2002-10-01' AS DATE))
 JOIN AddressCount a_count ON a_count.ca_city = ac.city_lower
 ORDER BY a_count.city_address_count DESC, ac.full_address;

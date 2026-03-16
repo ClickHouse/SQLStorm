@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR AND p.Score >= 0
+        p.CreationDate >= CURRENT_DATE - INTERVAL '2 years' AND p.Score >= 0
 ),
 
 PostWithMostComments AS (
@@ -52,7 +52,7 @@ PostHistoryData AS (
     JOIN 
         PostHistoryTypes PHT ON ph.PostHistoryTypeId = PHT.Id
     WHERE 
-        ph.CreationDate BETWEEN toDate('2023-01-01') AND CURRENT_DATE
+        ph.CreationDate BETWEEN DATE '2023-01-01' AND CURRENT_DATE
 ),
 
 FilteredPosts AS (

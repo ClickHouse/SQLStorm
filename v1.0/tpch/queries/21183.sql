@@ -7,7 +7,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
+        o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL '1 YEAR')
 ),
 SupplierInfo AS (
     SELECT 

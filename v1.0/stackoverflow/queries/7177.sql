@@ -19,7 +19,7 @@ WITH UserStats AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        U.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation
 ),
@@ -56,7 +56,7 @@ PostSummary AS (
          GROUP BY 
              PostId) H ON P.Id = H.PostId
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
 )
 SELECT 
     US.UserId,

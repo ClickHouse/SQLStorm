@@ -57,4 +57,4 @@ GROUP BY
     ns.n_name, r.r_name
 ORDER BY 
     total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -14,7 +14,7 @@ WITH SupplierSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01')
+        o.o_orderdate >= DATE '1997-01-01'
     GROUP BY 
         s.s_suppkey, s.s_name
 ),
@@ -41,7 +41,7 @@ SELECT
     (SELECT COUNT(DISTINCT c.c_custkey) 
      FROM customer c 
      JOIN orders o ON c.c_custkey = o.o_custkey 
-     WHERE o.o_orderdate >= toDate('1997-01-01') 
+     WHERE o.o_orderdate >= DATE '1997-01-01' 
      AND o.o_orderstatus = 'F') AS total_customers
 FROM 
     TopSuppliers ts

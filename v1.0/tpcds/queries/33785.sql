@@ -47,4 +47,4 @@ FROM sales_summary ss
 WHERE ss.rank = 1
 AND ss.total_revenue > (SELECT AVG(ss2.total_revenue) FROM sales_summary ss2)
 ORDER BY ss.total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

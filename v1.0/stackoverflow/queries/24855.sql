@@ -44,7 +44,7 @@ ClosedPosts AS (
     JOIN 
         Posts p ON ph.PostId = p.Id
     JOIN 
-        CloseReasonTypes pr ON (CAST(ph.Comment AS jsonb) ->> 'CloseReasonId'CAST() AS int) = pr.Id
+        CloseReasonTypes pr ON (ph.Comment::jsonb ->> 'CloseReasonId')::int = pr.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
 )

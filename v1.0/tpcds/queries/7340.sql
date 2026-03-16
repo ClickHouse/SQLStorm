@@ -50,4 +50,4 @@ JOIN
     WarehouseStats ws ON cs.total_web_orders > 0 AND cs.total_web_sales > 0
 ORDER BY 
     cs.total_web_sales DESC, ws.total_sales_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

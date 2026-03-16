@@ -71,4 +71,4 @@ GROUP BY
     cs.marital_status, ir.income_range
 ORDER BY 
     customer_count DESC, total_web_net_profit ASC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

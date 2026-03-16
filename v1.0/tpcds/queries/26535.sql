@@ -20,14 +20,14 @@ WITH Combined_Customer_Info AS (
 ),
 Web_Sales_Growth AS (
     SELECT 
-        toYear(d.d_date) AS sales_year,
+        EXTRACT(YEAR FROM d.d_date) AS sales_year,
         SUM(ws.ws_sales_price) AS total_sales
     FROM 
         web_sales ws
     JOIN 
         date_dim d ON ws.ws_sold_date_sk = d.d_date_sk
     GROUP BY 
-        toYear(d.d_date)
+        EXTRACT(YEAR FROM d.d_date)
 ),
 Sales_Comparison AS (
     SELECT 
@@ -53,7 +53,7 @@ SELECT
 FROM 
     Combined_Customer_Info c
 JOIN 
-    Sales_Comparison s ON toYear(toDate('2002-10-01')) - 1 = s.sales_year
+    Sales_Comparison s ON EXTRACT(YEAR FROM DATE '2002-10-01') - 1 = s.sales_year
 WHERE 
     c.same_year_birth_count > 10 
 ORDER BY 

@@ -48,4 +48,4 @@ SELECT hvo.o_orderkey,
        COALESCE(NTH_VALUE(hvo.supplier_name, 2) OVER (ORDER BY hvo.order_total DESC), 'No Second Supplier') AS second_supplier_name
 FROM HighValueOrders hvo
 ORDER BY hvo.order_total DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

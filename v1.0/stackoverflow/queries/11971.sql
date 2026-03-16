@@ -21,4 +21,4 @@ GROUP BY
     u.DisplayName
 ORDER BY 
     TotalPosts DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

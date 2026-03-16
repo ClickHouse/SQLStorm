@@ -29,7 +29,7 @@ OrderDetails AS (
         SUM(li.l_extendedprice * (1 - li.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem li ON o.o_orderkey = li.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
     GROUP BY o.o_orderkey, o.o_totalprice, o.o_orderdate
 ),
 HighValueOrders AS (

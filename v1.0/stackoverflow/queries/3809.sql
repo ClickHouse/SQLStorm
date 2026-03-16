@@ -18,7 +18,7 @@ PostRanked AS (
         P.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
 ),
 PostStats AS (
     SELECT 

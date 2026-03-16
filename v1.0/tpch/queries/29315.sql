@@ -19,7 +19,7 @@ JOIN
     supplier s ON ps.ps_suppkey = s.s_suppkey 
 WHERE 
     r.r_name LIKE 'S%' 
-    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31') 
+    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31' 
 GROUP BY 
     c.c_name, n.n_name, r.r_name 
 ORDER BY 

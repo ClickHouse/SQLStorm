@@ -55,7 +55,7 @@ OverallStats AS (
     FROM 
         CustomerStats cs
     JOIN 
-        SalesStats ss ON ss.d_year = toYear(toDate('2002-10-01'))
+        SalesStats ss ON ss.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
     JOIN 
         WarehouseStats ws ON ws.sales_generated > 100000
 )

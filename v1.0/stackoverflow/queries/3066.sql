@@ -38,7 +38,7 @@ PostHistoryDetail AS (
         COALESCE(PH.Text, 'No change') AS ChangeDescription
     FROM PostHistory PH
     JOIN Posts P ON PH.PostId = P.Id
-    WHERE PH.CreationDate >= now64(6) - INTERVAL 1 YEAR
+    WHERE PH.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
 )
 SELECT 
     U.DisplayName,

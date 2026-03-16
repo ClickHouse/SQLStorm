@@ -43,6 +43,6 @@ SELECT
 FROM 
     sales_summary AS ss
 JOIN 
-    warehouse_summary AS ws ON ss.sales_year = toYear(toDate('2002-10-01'))
+    warehouse_summary AS ws ON ss.sales_year = EXTRACT(YEAR FROM DATE '2002-10-01')
 ORDER BY 
     ss.sales_year, ws.total_inventory DESC;

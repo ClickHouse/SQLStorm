@@ -11,7 +11,7 @@ WITH RecentPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
 ), UserReputation AS (
     SELECT 
         U.Id AS UserId,
@@ -35,7 +35,7 @@ WITH RecentPosts AS (
     JOIN 
         PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id 
     WHERE 
-        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        PH.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
     GROUP BY 
         PH.PostId
 )
@@ -74,4 +74,4 @@ WHERE
     RP.UserPostRank = 1
 ORDER BY 
     RP.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

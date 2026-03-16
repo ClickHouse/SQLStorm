@@ -7,7 +7,7 @@ WITH RankedSuppliers AS (
     SELECT o.o_orderkey, o.o_orderdate, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
     GROUP BY o.o_orderkey, o.o_orderdate
 ), TopCustomers AS (
     SELECT c.c_custkey, c.c_name, SUM(o.total_revenue) AS total_spent

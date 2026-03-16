@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score IS NOT NULL AND 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
 ), 
 UserBadges AS (
     SELECT 

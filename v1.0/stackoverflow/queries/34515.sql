@@ -48,4 +48,4 @@ FROM PostStatistics ps
 WHERE ps.PostLevel > 0
   AND ps.Score > 10
 ORDER BY ps.Rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

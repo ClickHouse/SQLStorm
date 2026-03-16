@@ -24,7 +24,7 @@ CustomerOrders AS (
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
         o.o_orderstatus = 'O' 
-        AND o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
+        AND o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         c.c_custkey, c.c_name, o.o_orderkey, o.o_orderdate
 ), 

@@ -15,7 +15,7 @@ WITH UserActivity AS (
     LEFT JOIN Comments c ON c.UserId = u.Id
     LEFT JOIN Votes v ON v.UserId = u.Id
     LEFT JOIN Badges b ON b.UserId = u.Id
-    WHERE u.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+    WHERE u.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY u.Id, u.DisplayName
 ),
 UserRanked AS (

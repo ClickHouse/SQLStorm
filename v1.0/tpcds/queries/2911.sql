@@ -73,4 +73,4 @@ WHERE
     tc.total_orders > 3
 ORDER BY 
     tc.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

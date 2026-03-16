@@ -47,4 +47,4 @@ WHERE
 ORDER BY 
     HighestSupplierBalance DESC, 
     co.TotalSpent ASC NULLS LAST
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

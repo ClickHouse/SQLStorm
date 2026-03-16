@@ -25,7 +25,7 @@ WITH UserStatistics AS (
         P.CommentCount,
         ROW_NUMBER() OVER (ORDER BY P.LastActivityDate DESC) AS RecentRank
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ), PostHistoryAggregates AS (
     SELECT 
         Ph.PostId,

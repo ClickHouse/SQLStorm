@@ -56,4 +56,4 @@ WHERE
     AND cd.total_net_paid > 5000
 ORDER BY 
     net_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

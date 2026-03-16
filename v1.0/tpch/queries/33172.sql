@@ -32,7 +32,7 @@ LEFT JOIN
 WHERE 
     o.o_orderstatus = 'O' 
 AND 
-    l.l_shipdate >= toDate('1996-01-01')
+    l.l_shipdate >= DATE '1996-01-01'
 GROUP BY 
     p.p_partkey, p.p_name, p.p_size
 HAVING 

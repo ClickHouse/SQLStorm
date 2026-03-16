@@ -59,4 +59,4 @@ WHERE
 ORDER BY 
     ub.BadgeCount DESC,
     pd.UserRank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

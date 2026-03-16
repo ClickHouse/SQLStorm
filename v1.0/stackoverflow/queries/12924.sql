@@ -48,4 +48,4 @@ JOIN
 ORDER BY 
     pd.ViewCount DESC, 
     pd.TotalVotes DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

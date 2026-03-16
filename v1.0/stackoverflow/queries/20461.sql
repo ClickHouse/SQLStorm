@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON p.OwnerUserId = U.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 RecentHistory AS (
     SELECT 
@@ -22,13 +22,13 @@ RecentHistory AS (
         ph.CreationDate AS HistoryDate,
         CASE 
             WHEN ph.PostHistoryTypeId IN (10, 11) 
-            THEN now64(6) - ph.CreationDate 
+            THEN CURRENT_TIMESTAMP - ph.CreationDate 
             ELSE NULL 
         END AS CloseReopenDuration
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
 ),
 PostClosed AS (
     SELECT 

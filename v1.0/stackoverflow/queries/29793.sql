@@ -20,7 +20,7 @@ Active_Users AS (
         SUM(CASE WHEN p.Score < 0 THEN 1 ELSE 0 END) AS DownVotes
     FROM Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY u.Id, u.DisplayName
 ),
 Top_Tags AS (

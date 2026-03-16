@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
         AND p.Score IS NOT NULL
 ),
 FilteredPosts AS (
@@ -69,4 +69,4 @@ LEFT JOIN
     PostComments pc ON fp.PostId = pc.PostId
 ORDER BY 
     fp.CreationDate DESC
-LIMIT 25 OFFSET 0
+OFFSET 0 ROWS FETCH NEXT 25 ROWS ONLY

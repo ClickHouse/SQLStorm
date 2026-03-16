@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL 12 MONTH 
+        o.o_orderdate >= CURRENT_DATE - INTERVAL '12 month' 
         AND o.o_orderstatus IN ('O', 'F')
 ), RecentLineItems AS (
     SELECT 
@@ -20,7 +20,7 @@ WITH RankedOrders AS (
     FROM 
         lineitem li
     WHERE 
-        li.l_shipdate BETWEEN CURRENT_DATE - INTERVAL 30 DAY AND CURRENT_DATE
+        li.l_shipdate BETWEEN CURRENT_DATE - INTERVAL '30 day' AND CURRENT_DATE
     GROUP BY 
         li.l_orderkey
 ), SupplierPartInfo AS (

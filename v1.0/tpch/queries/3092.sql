@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL 3 MONTH
+        o.o_orderdate >= CURRENT_DATE - INTERVAL '3 months'
 ),
 SupplierPartCosts AS (
     SELECT 
@@ -57,7 +57,7 @@ AND
         SELECT 1
         FROM lineitem l
         WHERE l.l_partkey = p.p_partkey
-        AND l.l_shipdate >= CURRENT_DATE - INTERVAL 1 YEAR
+        AND l.l_shipdate >= CURRENT_DATE - INTERVAL '1 year'
     )
 ORDER BY 
     price_rank, p.p_name;

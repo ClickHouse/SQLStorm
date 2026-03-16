@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > CURRENT_DATE - INTERVAL 2 YEAR
+        p.CreationDate > CURRENT_DATE - INTERVAL '2 years'
 ),
 UserReputation AS (
     SELECT 

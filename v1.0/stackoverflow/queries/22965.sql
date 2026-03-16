@@ -69,7 +69,7 @@ LEFT JOIN
 LEFT JOIN 
     UserBadges ub ON u.Id = ub.UserId
 WHERE 
-    (cb.LastCloseDate IS NULL OR cb.LastCloseDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) 
+    (cb.LastCloseDate IS NULL OR cb.LastCloseDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days') 
     AND u.Reputation > (SELECT AVG(Reputation) FROM Users) 
 ORDER BY 
     r.Score DESC NULLS LAST,

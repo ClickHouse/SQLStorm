@@ -18,7 +18,7 @@ WITH PostStatistics AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
 ),

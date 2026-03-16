@@ -65,4 +65,4 @@ WHERE
 ORDER BY 
     fa.total_movies DESC, 
     fa.actor_name ASC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

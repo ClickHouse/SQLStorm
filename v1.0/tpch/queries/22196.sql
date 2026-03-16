@@ -43,4 +43,4 @@ WHERE ns.total_acctbal IS NOT NULL
 GROUP BY ns.n_name, pp.avg_price, pp.demand_category
 HAVING SUM(bc.total_spent) IS NOT NULL AND COUNT(tc.s_suppkey) > 2
 ORDER BY total_sales DESC, ns.n_name ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

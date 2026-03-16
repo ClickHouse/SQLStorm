@@ -7,7 +7,7 @@ WITH RECURSIVE SalesData AS (
         ws_sold_date_sk,
         ROW_NUMBER() OVER (PARTITION BY ws_order_number ORDER BY ws_sales_price DESC) AS rn
     FROM web_sales
-    WHERE ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL 30 DAY)
+    WHERE ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL '30 days')
 ),
 CustomerStats AS (
     SELECT 

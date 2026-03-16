@@ -48,7 +48,7 @@ RecentPostHistory AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
         OR ph.CreationDate IS NULL
 ),
 FilteredPostLinks AS (
@@ -77,7 +77,7 @@ PostRankings AS (
     LEFT JOIN 
         PostLinks pl ON p.Id = pl.PostId
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title
 )

@@ -61,7 +61,7 @@ SELECT
     tu.DisplayName,
     tu.BadgeCount,
     COALESCE(SUM(ps.Score), 0) AS TotalScore,
-    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = tu.UserId AND p.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)) AS OldPostCount,
+    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = tu.UserId AND p.CreationDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months')) AS OldPostCount,
     CASE 
         WHEN SUM(ps.Score) IS NULL THEN 'No Score Yet'
         WHEN SUM(ps.Score) > 100 THEN 'Highly Rated'

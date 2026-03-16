@@ -57,4 +57,4 @@ JOIN
     customer_info ci ON ts.c_customer_id = ci.c_customer_id
 ORDER BY 
     ts.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

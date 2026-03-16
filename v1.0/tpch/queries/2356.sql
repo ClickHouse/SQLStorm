@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01')
+        o.o_orderdate >= DATE '1997-01-01'
 ),
 SupplierDetails AS (
     SELECT 
@@ -35,7 +35,7 @@ PartSummary AS (
     JOIN 
         lineitem l ON p.p_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate >= toDate('1997-01-01')
+        l.l_shipdate >= DATE '1997-01-01'
     GROUP BY 
         p.p_partkey, p.p_name
 ),

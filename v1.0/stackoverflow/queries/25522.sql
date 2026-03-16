@@ -53,7 +53,7 @@ PostStatistics AS (
         tp.ViewCount,
         pvc.UpVotes,
         pvc.DownVotes,
-        tp.Reputation / (toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - tp.CreationDate)/3600) AS ReputationPerHour 
+        tp.Reputation / (toUnixTimestamp(cast('2024-10-01 12:34:56' as timestamp) - tp.CreationDate)/3600) AS ReputationPerHour 
     FROM 
         TopPosts tp
     LEFT JOIN 

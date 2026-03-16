@@ -35,7 +35,7 @@ ExtremeOrders AS (
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
         o.o_orderstatus IN ('O', 'F') 
-        AND l.l_shipdate > toDate('1996-01-01')
+        AND l.l_shipdate > DATE '1996-01-01'
     GROUP BY 
         o.o_orderkey
     HAVING 

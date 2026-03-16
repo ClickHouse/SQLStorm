@@ -34,4 +34,4 @@ HAVING
     AND COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY 
     total_available_quantity DESC, avg_order_price ASC
-LIMIT 10 OFFSET 0
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY

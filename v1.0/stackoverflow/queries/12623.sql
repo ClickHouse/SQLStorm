@@ -23,4 +23,4 @@ GROUP BY
     p.Id, p.Title, p.CreationDate, u.DisplayName
 ORDER BY 
     p.CreationDate DESC
-LIMIT 1000;
+FETCH FIRST 1000 ROWS ONLY;

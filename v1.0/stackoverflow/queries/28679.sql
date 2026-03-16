@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 RecentEdits AS (
     SELECT 
@@ -33,7 +33,7 @@ RecentEdits AS (
         RankedPosts r ON p.Id = r.PostId
     WHERE 
         ph.PostHistoryTypeId IN (4, 5, 6) 
-        AND ph.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
+        AND ph.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
 )
 SELECT 
     rp.PostId,

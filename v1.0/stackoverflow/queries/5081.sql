@@ -61,4 +61,4 @@ WHERE
     TotalPosts > 0
 ORDER BY 
     TotalPosts DESC, AvgViewCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

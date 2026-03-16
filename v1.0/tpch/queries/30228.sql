@@ -3,7 +3,7 @@ WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 
            ROW_NUMBER() OVER (PARTITION BY o.o_orderkey ORDER BY o.o_orderdate DESC) AS rnk
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01') 
+    WHERE o.o_orderdate >= DATE '1997-01-01' 
     UNION ALL
     SELECT oh.o_orderkey, oh.o_orderdate, oh.o_totalprice, 
            ROW_NUMBER() OVER (PARTITION BY oh.o_orderkey ORDER BY oh.o_orderdate DESC)
@@ -39,7 +39,7 @@ SELECT
     COUNT(DISTINCT s.s_suppkey) AS supplier_count,
     AVG(sp.total_cost) AS avg_supplier_cost,
     COUNT(DISTINCT p.p_partkey) AS part_count,
-    (SELECT COUNT(*) FROM lineitem l WHERE l.l_shipdate > toDate('1998-10-01') - INTERVAL 90 DAY) AS recent_shipments
+    (SELECT COUNT(*) FROM lineitem l WHERE l.l_shipdate > DATE '1998-10-01' - INTERVAL '90 days') AS recent_shipments
 FROM nation n
 LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey
 LEFT JOIN SupplierStats sp ON s.s_suppkey = sp.s_suppkey

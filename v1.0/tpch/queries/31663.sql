@@ -25,9 +25,9 @@ LEFT JOIN part p ON ps.ps_partkey = p.p_partkey
 LEFT JOIN lineitem l ON l.l_partkey = p.p_partkey
 WHERE r.r_name IS NOT NULL 
   AND (l.l_returnflag IS NULL OR l.l_returnflag IN ('A', 'N'))  
-  AND l.l_shipdate >= toDate('1996-01-01')
+  AND l.l_shipdate >= DATE '1996-01-01'
   AND (s.s_acctbal > 500 OR s.s_comment NOT LIKE '%discount%')  
 GROUP BY r.r_name
 HAVING COUNT(DISTINCT s.s_suppkey) > 5  
 ORDER BY nation_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

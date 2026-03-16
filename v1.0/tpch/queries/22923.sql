@@ -80,4 +80,4 @@ HAVING
     SUM(lt.l_extendedprice * (1 - lt.l_discount)) > 50000
 ORDER BY 
     revenue DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

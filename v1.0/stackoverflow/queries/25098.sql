@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 FilteredPosts AS (
     SELECT 
         rp.*,
-        ROUND((CAST(UpVoteCount AS decimal) / NULLIF((UpVoteCount + DownVoteCount), 0)) * 100, 2) AS UpVotePercentage
+        ROUND((UpVoteCount::decimal / NULLIF((UpVoteCount + DownVoteCount), 0)) * 100, 2) AS UpVotePercentage
     FROM 
         RankedPosts rp
     WHERE 

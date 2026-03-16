@@ -26,7 +26,7 @@ JOIN
 WHERE 
     p.p_size > 10 AND 
     s.s_acctbal > 5000.00 AND 
-    o.o_orderdate >= toDate('1995-01-01')
+    o.o_orderdate >= DATE '1995-01-01'
 GROUP BY 
     p.p_name, s.s_name, s.s_address 
 ORDER BY 

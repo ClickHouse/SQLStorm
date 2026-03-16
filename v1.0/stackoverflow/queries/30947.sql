@@ -23,7 +23,7 @@ PostStatistics AS (
         RANK() OVER (PARTITION BY P.PostTypeId ORDER BY P.ViewCount DESC) AS ViewRank,
         RANK() OVER (PARTITION BY P.PostTypeId ORDER BY P.Score DESC) AS ScoreRank
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
 ),
 TopPosts AS (
     SELECT 
@@ -47,7 +47,7 @@ RecentBadgers AS (
         arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
     FROM Badges B
     JOIN Users U ON B.UserId = U.Id
-    WHERE B.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    WHERE B.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 MONTH'
     GROUP BY B.UserId, U.DisplayName
 )
 SELECT 

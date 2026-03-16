@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDate('2023-01-01') 
+        p.CreationDate >= DATE '2023-01-01' 
         AND p.PostTypeId IN (1, 2)  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.PostTypeId

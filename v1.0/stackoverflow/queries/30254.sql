@@ -11,7 +11,7 @@ RecentPosts AS (
            COALESCE(MAX(rph.CreationDate), p.CreationDate) AS LastEditDate
     FROM Posts p
     LEFT JOIN RecursivePostHistory rph ON p.Id = rph.PostId
-    WHERE p.CreationDate >= now64(6) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY p.Id, p.CreationDate, p.Title, p.Body, p.ViewCount,
              p.OwnerUserId, p.AcceptedAnswerId, p.AnswerCount
 ),

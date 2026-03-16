@@ -46,7 +46,7 @@ FROM customer_address AS ca
 LEFT JOIN address_counts AS ac ON ca.ca_address_sk = ac.ca_address_sk
 LEFT JOIN promotion_summary AS ps ON ps.total_sales > 0
 LEFT JOIN ranked_sales AS rp ON rp.ws_order_number = ps.total_sales
-LEFT JOIN item_prices AS ip ON ip.i_item_id = CAST(rp.ws_order_number AS text) 
+LEFT JOIN item_prices AS ip ON ip.i_item_id = rp.ws_order_number::text 
 LEFT JOIN customer_gender AS cg ON cg.cd_gender IS NOT NULL
 WHERE ca.ca_city LIKE '%ville%'
 AND (ac.customer_count IS NULL OR ac.customer_count > 10)

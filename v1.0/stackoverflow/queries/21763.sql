@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.ParentId, p.PostTypeId
 ),
@@ -41,7 +41,7 @@ PostHistorySummary AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
     GROUP BY 
         ph.PostId
 )

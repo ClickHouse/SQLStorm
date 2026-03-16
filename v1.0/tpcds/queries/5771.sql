@@ -50,4 +50,4 @@ JOIN warehouse_sales ws ON ca.total_sales_amount > ws.total_sales_amount
 ORDER BY 
     ca.total_sales_amount DESC, 
     ws.total_sales_amount ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

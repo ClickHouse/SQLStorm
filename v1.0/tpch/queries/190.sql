@@ -27,7 +27,7 @@ OrdersWithSupplier AS (
     LEFT JOIN 
         TopSuppliers ts ON l.l_suppkey = ts.s_suppkey
     WHERE 
-        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
         AND l.l_quantity > 0
 )
 SELECT 

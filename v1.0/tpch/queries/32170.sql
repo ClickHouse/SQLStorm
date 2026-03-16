@@ -15,7 +15,7 @@ OrderSummary AS (
            COUNT(li.l_orderkey) AS total_items, RANK() OVER (PARTITION BY o.o_custkey ORDER BY SUM(li.l_extendedprice * (1 - li.l_discount)) DESC) AS rank
     FROM orders o
     JOIN lineitem li ON o.o_orderkey = li.l_orderkey
-    WHERE o.o_orderdate >= '1997-01-01' AND li.l_shipdate < o.o_orderdate + INTERVAL 30 DAY
+    WHERE o.o_orderdate >= '1997-01-01' AND li.l_shipdate < o.o_orderdate + INTERVAL '30 day'
     GROUP BY o.o_orderkey, o.o_custkey
 ),
 TopCustomers AS (

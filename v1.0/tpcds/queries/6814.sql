@@ -47,4 +47,4 @@ JOIN
     customer_stats cs ON cs.order_count > 0
 ORDER BY 
     ti.total_net_profit DESC, cs.total_spent DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

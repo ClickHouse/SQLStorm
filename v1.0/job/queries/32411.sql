@@ -54,4 +54,4 @@ HAVING
     COUNT(DISTINCT ci.person_id) > 5
 ORDER BY 
     mt.production_year DESC, a.name
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

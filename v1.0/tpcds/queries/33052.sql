@@ -9,7 +9,7 @@ WITH RECURSIVE SalesCTE AS (
         ROW_NUMBER() OVER (PARTITION BY ws_ship_mode_sk ORDER BY SUM(ws_sales_price) DESC) AS rank
     FROM web_sales
     WHERE ws_sold_date_sk >= (
-        SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL 30 DAY
+        SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL '30 days'
     )
     GROUP BY ws_sold_date_sk, ws_ship_mode_sk, ws_item_sk, ws_order_number
 ),
@@ -50,4 +50,4 @@ SELECT
 FROM CustomerInfo ci
 LEFT JOIN TopSales ts ON ci.order_count > 0
 ORDER BY ci.total_spent DESC, ts.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

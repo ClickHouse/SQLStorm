@@ -18,7 +18,7 @@ LEFT JOIN
 LEFT JOIN 
     Tags t ON TRIM(tag) = t.TagName
 WHERE 
-    u.LastAccessDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+    u.LastAccessDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
 GROUP BY 
     u.DisplayName, u.Reputation
 HAVING 

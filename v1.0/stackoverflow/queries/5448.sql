@@ -15,7 +15,7 @@ WITH UserActivity AS (
     LEFT JOIN 
         Badges bb ON u.Id = bb.UserId
     WHERE 
-        u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        u.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName
 ), PostStatistics AS (
@@ -30,7 +30,7 @@ WITH UserActivity AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days'
     GROUP BY 
         pt.Name
 )
@@ -52,4 +52,4 @@ JOIN
     PostStatistics ps ON ua.PostsCreated > 0
 ORDER BY 
     ua.AvgReputation DESC, ps.PostCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -28,7 +28,7 @@ SELECT od.order_sequence, od.o_orderkey, od.o_orderdate, od.o_totalprice,
        r.supplier_count, 
        CASE 
            WHEN od.o_orderdate IS NULL THEN 'Missing Date'
-           WHEN od.o_orderdate < cast('1998-10-01' as date) - INTERVAL 365 DAY THEN 'Old Order' 
+           WHEN od.o_orderdate < cast('1998-10-01' as date) - INTERVAL '365 days' THEN 'Old Order' 
            ELSE 'Recent Order'
        END AS order_age_category,
        COALESCE(NULLIF(s.avg_acctbal, 0), (SELECT MIN(s2.s_acctbal) FROM supplier s2)) AS adjusted_avg_acctbal
@@ -42,4 +42,4 @@ AND EXISTS (SELECT 1 FROM customer c WHERE c.c_custkey = od.o_custkey
             AND c.c_acctbal > 1000 
             AND c.c_mktsegment = 'BUILDING')
 ORDER BY od.o_orderdate DESC, li.total_revenue DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

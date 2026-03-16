@@ -11,7 +11,7 @@ WITH RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate > CURRENT_DATE - INTERVAL 30 DAY
+        p.CreationDate > CURRENT_DATE - INTERVAL '30 days'
 ),
 UserEngagement AS (
     SELECT 

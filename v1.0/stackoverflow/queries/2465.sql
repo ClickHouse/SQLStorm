@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserReputation AS (
     SELECT 
@@ -55,7 +55,7 @@ LEFT JOIN
 WHERE 
     rp.rn = 1
     AND (u.AvgReputation > 100 OR u.TotalBadges > 2)
-    AND (cp.ClosedDate IS NULL OR cp.ClosedDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    AND (cp.ClosedDate IS NULL OR cp.ClosedDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
 ORDER BY 
     rp.Score DESC, rp.ViewCount DESC
 LIMIT 100;

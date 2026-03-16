@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory h ON h.PostId = p.Id
 WHERE 
-    p.CreationDate >= CURRENT_DATE - INTERVAL 3 MONTH
+    p.CreationDate >= CURRENT_DATE - INTERVAL '3 months'
 GROUP BY 
     p.Id, p.Title, p.CreationDate, u.DisplayName, u.Reputation
 ORDER BY 

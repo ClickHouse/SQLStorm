@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 UserReputation AS (
     SELECT 
@@ -22,7 +22,7 @@ UserReputation AS (
         u.DisplayName,
         u.Reputation,
         CASE 
-            WHEN u.LastAccessDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Inactive'
+            WHEN u.LastAccessDate < CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days' THEN 'Inactive'
             ELSE 'Active'
         END AS UserStatus
     FROM 

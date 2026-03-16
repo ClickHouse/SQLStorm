@@ -17,7 +17,7 @@ WITH Revenue AS (
     JOIN 
         region ON n_regionkey = r_regionkey
     WHERE 
-        o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+        o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY 
         n_name, r_name, o_orderdate
 ),

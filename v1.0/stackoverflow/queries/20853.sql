@@ -14,7 +14,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
         AND p.ViewCount IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.OwnerUserId
@@ -38,7 +38,7 @@ ClosedPosts AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON ph.Comment = CAST(cr.Id AS varchar)
+        CloseReasonTypes cr ON ph.Comment = cr.Id::varchar
     WHERE 
         ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY 

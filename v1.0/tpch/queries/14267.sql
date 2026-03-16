@@ -17,8 +17,8 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     r.r_name = 'EUROPE' AND 
-    ls.l_shipdate >= toDate('1997-01-01') AND 
-    ls.l_shipdate < toDate('1997-12-31')
+    ls.l_shipdate >= DATE '1997-01-01' AND 
+    ls.l_shipdate < DATE '1997-12-31'
 GROUP BY 
     p.p_brand, p.p_type, p.p_size
 ORDER BY 

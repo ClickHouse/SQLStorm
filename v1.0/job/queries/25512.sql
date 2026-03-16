@@ -33,7 +33,7 @@ SELECT
     tm.title,
     tm.production_year,
     tm.num_cast_members,
-    arrayStringConcat(groupArray(assumeNotNull(CAST(tm.aka_names AS text))), ', ') AS all_aka_names
+    arrayStringConcat(groupArray(assumeNotNull(tm.aka_names::text)), ', ') AS all_aka_names
 FROM 
     TopMovies AS tm
 JOIN 

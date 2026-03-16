@@ -52,4 +52,4 @@ FROM DemographicAnalysis d
 JOIN SalesSummary s ON d.avg_estimate > s.total_sales
 WHERE d.demo_count > 10
 ORDER BY d.cd_gender, rank_by_sales
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -48,4 +48,4 @@ HAVING
     COUNT(DISTINCT rs.ws_item_sk) > 5
 ORDER BY 
     TotalNetProfit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

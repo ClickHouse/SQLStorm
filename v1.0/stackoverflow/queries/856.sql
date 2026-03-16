@@ -21,7 +21,7 @@ PostStatistics AS (
         ROW_NUMBER() OVER(ORDER BY COUNT(c.Id) DESC) AS CommentRank
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
     GROUP BY p.Id, p.Title
 ),
 TopUsers AS (

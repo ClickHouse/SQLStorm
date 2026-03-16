@@ -27,4 +27,4 @@ HAVING
     COUNT(DISTINCT o.o_orderkey) > 5
 ORDER BY 
     total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

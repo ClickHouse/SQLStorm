@@ -21,7 +21,7 @@ JOIN
 WHERE 
     p.p_size > 10 
     AND p.p_retailprice BETWEEN 50.00 AND 100.00
-    AND l.l_shipdate >= toDate('1997-01-01') 
+    AND l.l_shipdate >= DATE '1997-01-01' 
 GROUP BY 
     p.p_name, 
     s.s_name 

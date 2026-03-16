@@ -7,7 +7,7 @@ WITH RECURSIVE SalesData AS (
     FROM 
         web_sales
     WHERE 
-        ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = CAST('2002-10-01' AS DATE) - INTERVAL 1 YEAR)
+        ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = CAST('2002-10-01' AS DATE) - INTERVAL '1 year')
     GROUP BY 
         ws_item_sk
     
@@ -20,7 +20,7 @@ WITH RECURSIVE SalesData AS (
     FROM 
         catalog_sales
     WHERE 
-        cs_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = CAST('2002-10-01' AS DATE) - INTERVAL 1 YEAR)
+        cs_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = CAST('2002-10-01' AS DATE) - INTERVAL '1 year')
     GROUP BY 
         cs_item_sk
 )

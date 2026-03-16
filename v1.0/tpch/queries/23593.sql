@@ -2,7 +2,7 @@ WITH RankedOrders AS (
     SELECT o.o_orderkey, o.o_orderstatus, o.o_totalprice, 
            RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS OrderRank
     FROM orders o
-    WHERE o.o_orderdate >= (cast('1998-10-01' as date) - INTERVAL 2 YEAR)
+    WHERE o.o_orderdate >= (cast('1998-10-01' as date) - INTERVAL '2 year')
 ),
 SupplierDetails AS (
     SELECT s.s_suppkey, s.s_name, s.s_acctbal, 

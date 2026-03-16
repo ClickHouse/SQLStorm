@@ -43,8 +43,8 @@ PostStats AS (
         GROUP BY PostId
     ) C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
-        OR P.LastActivityDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
+        OR P.LastActivityDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
 ),
 BadgeCounts AS (
     SELECT 

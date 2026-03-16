@@ -25,9 +25,9 @@ SELECT
 FROM customer c
 LEFT JOIN orders o ON c.c_custkey = o.o_custkey
 LEFT JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-WHERE o.o_orderdate >= toDate('1997-01-01')
+WHERE o.o_orderdate >= DATE '1997-01-01'
 AND c.c_nationkey IN (SELECT n_nationkey FROM NationHierarchy)
 GROUP BY c.c_custkey, c.c_name, c.c_nationkey
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) IS NOT NULL
 ORDER BY total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

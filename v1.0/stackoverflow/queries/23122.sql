@@ -68,7 +68,7 @@ SELECT
     UR.NetVotes,
     UR.TotalEngagement,
     UR.ClosedCount,
-    COALESCE(CAST(UR.LastClosedDate AS DATE), toDate('1970-01-01')) AS LastClosedDate,
+    COALESCE(CAST(UR.LastClosedDate AS DATE), DATE '1970-01-01') AS LastClosedDate,
     UR.ClosureBehavior
 FROM 
     UserRankings UR

@@ -56,9 +56,9 @@ final_summary AS (
     FROM 
         sales_summary ss
     LEFT JOIN 
-        warehouse_sales ws ON ss.transaction_year = toYear(cast('2002-10-01' as date)) 
+        warehouse_sales ws ON ss.transaction_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) 
     LEFT JOIN 
-        promotion_analysis pa ON ss.transaction_year = toYear(cast('2002-10-01' as date))
+        promotion_analysis pa ON ss.transaction_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
 )
 SELECT 
     transaction_year,

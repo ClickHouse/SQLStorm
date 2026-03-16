@@ -53,6 +53,6 @@ FROM
 LEFT JOIN 
     PostTypes pt ON pt.Id = (SELECT DISTINCT p.PostTypeId FROM Posts p WHERE p.Id = tp.PostId)
 WHERE 
-    tp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY  
+    tp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'  
 ORDER BY 
     tp.Score DESC;

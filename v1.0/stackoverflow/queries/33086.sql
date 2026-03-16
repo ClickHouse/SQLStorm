@@ -55,5 +55,5 @@ LEFT JOIN UserBadges ub ON mu.OwnerUserId = ub.UserId AND ub.BadgeRank = 1
 WHERE mu.TotalPosts > 10
 GROUP BY mu.DisplayName, mu.TotalPosts, mu.AverageScore, mu.TotalViews, mu.TotalComments, mu.ClosedPostCount, mu.AvgClosedPostScore
 ORDER BY mu.TotalPosts DESC, UniqueBadgeCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;
 

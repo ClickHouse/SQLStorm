@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts P
         JOIN Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+        P.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
         AND P.Score IS NOT NULL
 ),
 TagStatistics AS (

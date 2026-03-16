@@ -18,7 +18,7 @@ CustomerOrders AS (
     SELECT c.c_custkey, c.c_name, SUM(o.o_totalprice) AS total_spent
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
     GROUP BY c.c_custkey, c.c_name
 ),
 HighSpendingCustomers AS (
@@ -40,7 +40,7 @@ JOIN PartDetail p ON l.l_partkey = p.p_partkey
 JOIN orders o ON l.l_orderkey = o.o_orderkey
 LEFT JOIN supplier s ON l.l_suppkey = s.s_suppkey
 INNER JOIN HighSpendingCustomers hsc ON o.o_custkey = hsc.c_custkey
-WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY p.p_name, s.s_name
 HAVING SUM(l.l_quantity) > 1000
 ORDER BY total_quantity DESC, avg_price ASC;

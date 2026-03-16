@@ -24,7 +24,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory PH ON P.Id = PH.PostId
 WHERE 
-    P.CreationDate >= toDate('2023-01-01') 
+    P.CreationDate >= DATE '2023-01-01' 
 GROUP BY 
     P.Id, P.Title, P.CreationDate, P.ViewCount, P.AnswerCount, P.CommentCount, P.Score, 
     U.DisplayName, U.Reputation

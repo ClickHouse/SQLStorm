@@ -42,4 +42,4 @@ GROUP BY
     cd.cd_education_status
 ORDER BY 
     total_avg_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

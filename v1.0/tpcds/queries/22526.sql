@@ -65,4 +65,4 @@ WHERE
     NOT EXISTS (SELECT 1 FROM web_returns wr WHERE wr.wr_returning_customer_sk = ss.c_customer_sk)
 ORDER BY 
     ss.TotalSales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

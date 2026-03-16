@@ -26,7 +26,7 @@ OrderDetails AS (
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
     JOIN HighCostSuppliers hs ON l.l_suppkey = hs.s_suppkey
-    WHERE o.o_orderdate >= toDate('1996-01-01') 
+    WHERE o.o_orderdate >= DATE '1996-01-01' 
     GROUP BY o.o_orderkey, o.o_orderstatus, hs.total_cost
 )
 SELECT 

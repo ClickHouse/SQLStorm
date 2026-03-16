@@ -13,7 +13,7 @@ WITH SupplierSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate BETWEEN toDate('1994-01-01') AND toDate('1994-12-31')
+        o.o_orderdate BETWEEN DATE '1994-01-01' AND DATE '1994-12-31'
         AND s.s_nationkey IN (SELECT n.n_nationkey FROM nation n WHERE n.n_regionkey IN (SELECT r.r_regionkey FROM region r WHERE r.r_name = 'Asia'))
     GROUP BY 
         s.s_suppkey, s.s_name

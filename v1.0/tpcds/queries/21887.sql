@@ -85,4 +85,4 @@ WHERE
     st.unique_customers > 10
 ORDER BY 
     st.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

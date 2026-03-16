@@ -18,7 +18,7 @@ WITH
         JOIN 
             orders o ON l.l_orderkey = o.o_orderkey
         WHERE 
-            l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1997-12-31')
+            l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1997-12-31'
         GROUP BY 
             r.r_name
     ),
@@ -33,7 +33,7 @@ WITH
         JOIN 
             lineitem l ON o.o_orderkey = l.l_orderkey
         WHERE 
-            o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
+            o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
         GROUP BY 
             c.c_name
     )
@@ -55,7 +55,7 @@ JOIN
         JOIN lineitem l ON p.p_partkey = l.l_partkey
         JOIN orders o ON l.l_orderkey = o.o_orderkey
         WHERE 
-            l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1997-12-31')
+            l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1997-12-31'
         GROUP BY 
             r.r_name
     )

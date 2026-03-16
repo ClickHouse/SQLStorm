@@ -5,7 +5,7 @@ WITH ranked_orders AS (
            o.o_totalprice,
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_orderdate DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1996-01-01') AND o.o_orderstatus IN ('O', 'F')
+    WHERE o.o_orderdate >= DATE '1996-01-01' AND o.o_orderstatus IN ('O', 'F')
 ), 
 customer_summary AS (
     SELECT c.c_custkey,

@@ -4,11 +4,11 @@ WITH ranked_orders AS (
         o.o_orderkey,
         o.o_orderdate,
         o.o_totalprice,
-        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS order_rank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS order_rank
     FROM 
         orders AS o
     WHERE 
-        o.o_orderdate >= toDate('1994-01-01')
+        o.o_orderdate >= DATE '1994-01-01'
 ),
 filtered_parts AS (
     SELECT 
@@ -70,7 +70,7 @@ FROM
 LEFT JOIN 
     filtered_parts AS fp ON r.region_count > 5
 LEFT JOIN 
-    ranked_orders AS ranking ON r.region_count = toYear(ranking.o_orderdate)
+    ranked_orders AS ranking ON r.region_count = EXTRACT(YEAR FROM ranking.o_orderdate)
 WHERE 
     r.region_count IS NOT NULL
 GROUP BY 

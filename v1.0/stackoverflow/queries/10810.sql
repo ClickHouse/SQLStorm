@@ -22,4 +22,4 @@ GROUP BY
     p.Id, p.Title, u.DisplayName
 ORDER BY 
     p.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

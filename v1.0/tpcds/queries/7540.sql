@@ -52,4 +52,4 @@ WHERE
     (c.total_web_sales + c.total_store_sales) > 1000
 ORDER BY 
     grand_total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

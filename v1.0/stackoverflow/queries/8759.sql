@@ -29,7 +29,7 @@ PostDetails AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > now64(6) - INTERVAL 1 YEAR
+        p.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.OwnerUserId, p.PostTypeId, p.Title
 ),

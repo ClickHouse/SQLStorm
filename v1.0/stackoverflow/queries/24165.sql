@@ -42,7 +42,7 @@ RecentComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate > now64(6) - INTERVAL 30 DAY
+        c.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY 
         c.PostId
 )

@@ -58,4 +58,4 @@ WHERE
 ORDER BY 
     ss.total_profit DESC, 
     ss.total_orders DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -34,7 +34,7 @@ PostStatistics AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate > now64(6) - INTERVAL 1 YEAR
+        p.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.ViewCount, h.UserDisplayName, pt.Name
 )

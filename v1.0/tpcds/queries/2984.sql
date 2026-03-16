@@ -41,4 +41,4 @@ WHERE
     s.s_state = 'CA'
 ORDER BY 
     return_rate DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

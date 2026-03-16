@@ -30,7 +30,7 @@ PostDetails AS (
     LEFT JOIN Posts a ON p.AcceptedAnswerId = a.Id
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY p.Id, a.Body
 ),
 Metrics AS (

@@ -9,7 +9,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes,
         SUM(CASE WHEN c.Id IS NOT NULL THEN 1 ELSE 0 END) AS TotalComments,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.CreationDate)) ) AS AvgAccountAgeSeconds
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - u.CreationDate)) ) AS AvgAccountAgeSeconds
     FROM 
         Users u
     LEFT JOIN 
@@ -27,7 +27,7 @@ PostEngagement AS (
         p.Title,
         p.ViewCount,
         p.Score,
-        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) AS PostAgeSeconds,
+        toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) AS PostAgeSeconds,
         COUNT(DISTINCT c.Id) AS TotalComments,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes

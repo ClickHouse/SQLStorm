@@ -66,7 +66,7 @@ final_summary AS (
          FROM 
              revenue_growth 
          GROUP BY 
-             d_year) g ON g.d_year = toYear(cast('2002-10-01' as date))
+             d_year) g ON g.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
 )
 SELECT 
     fs.ca_state,

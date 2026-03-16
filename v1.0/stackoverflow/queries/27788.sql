@@ -62,4 +62,4 @@ ORDER BY
     BadgePostRank ASC,
     TotalBadges DESC,
     TotalPosts DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

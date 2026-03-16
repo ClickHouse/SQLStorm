@@ -85,7 +85,7 @@ SELECT
     END AS PopularityStatus,
     CASE 
         WHEN cs.LastCommentDate IS NULL THEN 'No comments yet'
-        WHEN cs.LastCommentDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Last comment over a year ago'
+        WHEN cs.LastCommentDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Last comment over a year ago'
         ELSE 'Recent comments'
     END AS CommentActivityStatus
 FROM 
@@ -104,4 +104,5 @@ WHERE
 ORDER BY 
     ps.Score DESC, 
     ps.ViewCount DESC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS 
+FETCH NEXT 10 ROWS ONLY;

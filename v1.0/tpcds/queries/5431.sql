@@ -71,4 +71,4 @@ JOIN
     PromotionsSummary AS ps ON cs.total_net_profit >= 1000
 ORDER BY 
     cs.total_net_profit DESC, ps.total_profit DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

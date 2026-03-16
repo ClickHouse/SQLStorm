@@ -80,4 +80,4 @@ WHERE
     fr.net_sales_incl_returns > 0
 ORDER BY 
     fr.total_sales DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

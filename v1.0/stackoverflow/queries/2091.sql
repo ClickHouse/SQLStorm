@@ -34,7 +34,7 @@ PostHistoryCounts AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
     GROUP BY 
         ph.PostId
 )

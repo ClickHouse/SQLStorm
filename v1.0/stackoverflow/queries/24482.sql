@@ -21,7 +21,7 @@ PopularQuestions AS (
         p.CreationDate,
         p.Score,
         COUNT(c.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.ViewCount DESC) AS PopularityRank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.ViewCount DESC) AS PopularityRank
     FROM 
         Posts p
     LEFT JOIN 

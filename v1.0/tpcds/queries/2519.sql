@@ -54,4 +54,4 @@ WHERE
     AND i.i_item_sk IN (SELECT ws_item_sk FROM web_sales WHERE ws_ship_date_sk IS NOT NULL)
 ORDER BY 
     net_sales_per_unit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

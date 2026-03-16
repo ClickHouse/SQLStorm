@@ -69,4 +69,4 @@ FROM
 LEFT JOIN SalesSummary ss ON tc.c_customer_sk = ss.c_customer_sk
 ORDER BY
     net_positive_sales DESC, sales_rank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

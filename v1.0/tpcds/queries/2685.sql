@@ -17,7 +17,7 @@ CustomerReturns AS (
     WHERE 
         cr.cr_returned_date_sk >= (SELECT d.d_date_sk 
                                      FROM date_dim d 
-                                     WHERE d.d_date = cast('2002-10-01' as date) - INTERVAL 1 YEAR)
+                                     WHERE d.d_date = cast('2002-10-01' as date) - INTERVAL '1 year')
     GROUP BY 
         cr.cr_item_sk
 ),

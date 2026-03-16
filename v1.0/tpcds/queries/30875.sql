@@ -55,4 +55,4 @@ WHERE ia.ca_country = 'USA'
 GROUP BY ia.ca_country, ia.ca_state
 HAVING AVG(stats.total_profit) > 1000
 ORDER BY overall_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

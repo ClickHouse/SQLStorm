@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         LEFT JOIN Tags T ON T.WikiPostId = p.Id
         LEFT JOIN Votes v ON v.PostId = p.Id AND v.VoteTypeId = 8  
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
         AND p.PostTypeId IN (1, 2)  
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, p.PostTypeId, T.TagName
@@ -33,7 +33,7 @@ RecentPostHistory AS (
         PostHistory ph
     WHERE 
         ph.PostHistoryTypeId IN (10, 11, 12, 13, 14)  
-        AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        AND ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
 ),
 CombinedPosts AS (
     SELECT 
@@ -46,7 +46,7 @@ CombinedPosts AS (
         rp.CommentCount,
         rp.AvgBounty,
         COALESCE(rph.PostHistoryTypeId, 0) AS LastAction,
-        COALESCE(rph.HistoryDate, toDate('9999-12-31')) AS LastActionDate
+        COALESCE(rph.HistoryDate, DATE '9999-12-31') AS LastActionDate
     FROM 
         RankedPosts rp
     LEFT JOIN RecentPostHistory rph ON rp.PostId = rph.PostId AND rph.HistoryRank = 1
@@ -68,7 +68,7 @@ SELECT
         ELSE 'Locked'
     END AS PostStatus,
     CASE 
-        WHEN cp.LastActionDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN 'Recently Active'
+        WHEN cp.LastActionDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' THEN 'Recently Active'
         ELSE 'Inactive'
     END AS ActivityStatus
 FROM 

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR 
+        p.CreationDate > DATE '2024-10-01' - INTERVAL '1 year' 
         AND p.Score IS NOT NULL
 ),
 UserEngagement AS (
@@ -42,7 +42,7 @@ SELECT
     END AS ReputationCategory,
     (SELECT COUNT(*) 
      FROM Comments c 
-     WHERE c.UserId = up.Id AND c.CreationDate > toDate('2024-10-01') - INTERVAL 30 DAY
+     WHERE c.UserId = up.Id AND c.CreationDate > DATE '2024-10-01' - INTERVAL '30 days'
     ) AS RecentCommentsCount,
     (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Posts p 
@@ -57,7 +57,7 @@ LEFT JOIN
 LEFT JOIN 
     UserEngagement ue ON up.Id = ue.UserId
 WHERE 
-    up.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    up.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
     AND (up.Location IS NOT NULL OR up.AboutMe IS NOT NULL)
 GROUP BY 
     up.Id, up.DisplayName, up.Reputation

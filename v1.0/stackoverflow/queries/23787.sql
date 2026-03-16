@@ -39,7 +39,7 @@ RecentVotingActivity AS (
         COUNT(CASE WHEN V.VoteTypeId IN (2, 3) THEN 1 END) AS UpVotes,
         COUNT(CASE WHEN V.VoteTypeId = 2 THEN 1 END) AS DownVotes
     FROM Votes V
-    WHERE V.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+    WHERE V.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY V.UserId
 )
 SELECT 

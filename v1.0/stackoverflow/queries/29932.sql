@@ -41,7 +41,7 @@ FinalResults AS (
         pd.CommentCount,
         pd.UpVotes,
         pd.DownVotes,
-        COALESCE(CAST(pd.UpVotes AS float) / NULLIF(pd.DownVotes, 0), 0) AS UpvoteDownvoteRatio
+        COALESCE(pd.UpVotes::float / NULLIF(pd.DownVotes, 0), 0) AS UpvoteDownvoteRatio
     FROM PostDetails pd
 )
 

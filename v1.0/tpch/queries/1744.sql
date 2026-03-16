@@ -6,7 +6,7 @@ WITH RankedOrders AS (
         o.o_orderstatus,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_orderdate DESC) as OrderRank
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
 ),
 SupplierParts AS (
     SELECT 

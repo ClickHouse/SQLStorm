@@ -32,7 +32,7 @@ PostStatistics AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
 ),
 ClosedPosts AS (
     SELECT 
@@ -42,7 +42,7 @@ ClosedPosts AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes ctr ON (CAST(ph.Comment AS json)->>'CloseReasonId'CAST() AS int) = ctr.Id
+        CloseReasonTypes ctr ON (ph.Comment::json->>'CloseReasonId')::int = ctr.Id
     WHERE 
         ph.PostHistoryTypeId = 10
 )

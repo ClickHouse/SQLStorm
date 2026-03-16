@@ -63,7 +63,7 @@ LEFT JOIN
     RecentEdits E ON P.Id = E.PostId AND E.EditRank = 1
 WHERE 
     U.Reputation > (SELECT AVG(Reputation) FROM Users) 
-    AND P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    AND P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     AND P.Body IS NOT NULL
 ORDER BY 
     U.Reputation DESC, P.CreationDate DESC

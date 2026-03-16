@@ -42,7 +42,7 @@ WITH Recursive_Actor_Movies AS (
         keyword k ON mk.keyword_id = k.id
     WHERE 
         m.production_year IS NOT NULL AND 
-        m.production_year <= toYear(cast('2024-10-01' as date)) 
+        m.production_year <= EXTRACT(YEAR FROM cast('2024-10-01' as date)) 
         AND (m.note IS NULL OR m.note NOT LIKE '%canceled%')
 )
 SELECT 

@@ -34,4 +34,4 @@ WHERE EXISTS (
       AND m.supplier_count > (SELECT COUNT(*) FROM supplier WHERE s_acctbal < 1000)
 )
 ORDER BY m.supplier_count DESC NULLS LAST
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -18,7 +18,7 @@ ActiveUserPosts AS (
         SUM(P.Score) AS TotalScore,
         AVG(P.Score) AS AvgScore
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY P.OwnerUserId
 ),
 CombinedData AS (

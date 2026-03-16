@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 TopAnswerers AS (
     SELECT 
@@ -25,7 +25,7 @@ TopAnswerers AS (
         Posts a ON u.Id = a.OwnerUserId
     WHERE 
         a.PostTypeId = 2 AND 
-        a.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        a.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName
     HAVING 

@@ -28,7 +28,7 @@ PostStatistics AS (
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (8, 9) 
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 YEAR'
     GROUP BY P.Id, P.Title, P.CreationDate, P.ViewCount
 ),
 ClosedPostHistory AS (
@@ -37,7 +37,7 @@ ClosedPostHistory AS (
         COUNT(*) AS CloseCount,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(C.Name))), ', ') AS CloseReasons
     FROM PostHistory PH
-    JOIN CloseReasonTypes C ON (CAST(PH.Comment AS jsonb)CAST() AS textCAST() AS int) = C.Id
+    JOIN CloseReasonTypes C ON (PH.Comment::jsonb)::text::int = C.Id
     WHERE PH.PostHistoryTypeId IN (10, 11) 
     GROUP BY PH.PostId
 ),

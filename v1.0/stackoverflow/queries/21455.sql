@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR) 
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 year') 
         AND (p.Score > 0 OR p.ViewCount > 100)
 ),
 ActiveUsers AS (
@@ -31,7 +31,7 @@ ActiveUsers AS (
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
         u.Reputation > 1000 
-        AND u.LastAccessDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
+        AND u.LastAccessDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months')
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation, u.LastAccessDate
 ),

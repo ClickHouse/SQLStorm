@@ -24,7 +24,7 @@ RecentActivity AS (
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ),
 UserBadges AS (
     SELECT 
@@ -60,4 +60,4 @@ WHERE
     US.Reputation > 1000
 ORDER BY 
     US.Reputation DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

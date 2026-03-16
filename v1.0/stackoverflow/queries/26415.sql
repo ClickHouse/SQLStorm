@@ -46,7 +46,7 @@ WITH PostStatistics AS (
     FROM 
         PostStatistics PS
     WHERE 
-        PS.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        PS.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
 )
 SELECT 
     TQ.Title,

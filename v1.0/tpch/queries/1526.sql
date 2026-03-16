@@ -70,14 +70,14 @@ LEFT JOIN
         SELECT ps.ps_partkey
         FROM partsupp ps
         JOIN lineitem l ON ps.ps_partkey = l.l_partkey
-        WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
+        WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 day'
     )
 LEFT JOIN 
     OrderDetails os ON os.o_orderkey IN (
         SELECT o.o_orderkey
         FROM orders o 
         WHERE o.o_orderstatus = 'F'
-        AND o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 90 DAY
+        AND o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '90 day'
     )
 WHERE 
     r.total_balance IS NOT NULL 

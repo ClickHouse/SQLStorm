@@ -41,4 +41,4 @@ JOIN
     avg_income ai ON sd.unique_customers > 100
 ORDER BY 
     sd.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

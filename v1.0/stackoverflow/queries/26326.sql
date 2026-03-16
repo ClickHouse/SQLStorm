@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Tags t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR 
+        AND p.CreationDate > DATE '2024-10-01' - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.Title, p.Body, p.Score, p.ViewCount
 ),

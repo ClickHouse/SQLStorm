@@ -62,4 +62,4 @@ WHERE
     AND t.total_spent > 100
 ORDER BY 
     s.net_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

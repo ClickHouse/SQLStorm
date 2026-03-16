@@ -54,4 +54,4 @@ WHERE
     ad.cleaned_city LIKE '%York%'
 ORDER BY 
     total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

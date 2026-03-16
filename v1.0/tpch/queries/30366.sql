@@ -1,7 +1,7 @@
 WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 0 AS depth
     FROM orders o
-    WHERE o.o_orderdate < toDate('1997-01-01')
+    WHERE o.o_orderdate < DATE '1997-01-01'
     
     UNION ALL
     

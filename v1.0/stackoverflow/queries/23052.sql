@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' AND
         p.PostTypeId = 1
 ),
 PostDetails AS (
@@ -23,7 +23,7 @@ PostDetails AS (
         rp.ViewCount,
         rp.AnswerCount,
         COALESCE(ph.PostHistoryTypeId, 0) AS LastHistoryType,
-        COALESCE(ph.CreationDate, toDateTime64('1970-01-01', 6)) AS LastHistoryDate
+        COALESCE(ph.CreationDate, CAST('1970-01-01' AS TIMESTAMP)) AS LastHistoryDate
     FROM 
         RankedPosts rp
     LEFT JOIN 
@@ -76,7 +76,7 @@ SELECT
             END
     END AS LastAction,
     CASE 
-        WHEN pd.LastHistoryDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Recently Updated'
+        WHEN pd.LastHistoryDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days' THEN 'Recently Updated'
         ELSE 'Stale'
     END AS UpdateStatus
 FROM 

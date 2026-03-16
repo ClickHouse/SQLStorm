@@ -41,4 +41,4 @@ SELECT
 FROM PostStatistics PS
 LEFT JOIN PostHistoryAnalysis PH ON PS.PostId = PH.PostId
 ORDER BY PS.UpVotes DESC, PS.CommentCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -78,7 +78,7 @@ SELECT
         ELSE 'Accepted'
     END AS AnswerStatus,
     CASE 
-        WHEN PC.LastCommentDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Inactive Discussion'
+        WHEN PC.LastCommentDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 'Inactive Discussion'
         ELSE 'Active Discussion'
     END AS DiscussionStatus
 FROM 

@@ -13,7 +13,7 @@ CustomerOrders AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_orderdate, o.o_totalprice
     FROM orders o
     WHERE o.o_orderstatus = 'O'
-    AND toYear(o.o_orderdate) = 1997
+    AND EXTRACT(YEAR FROM o.o_orderdate) = 1997
 )
 SELECT 
     fp.p_partkey,

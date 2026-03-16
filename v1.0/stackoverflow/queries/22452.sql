@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        COALESCE(MAX(b.Date), toDate('1900-01-01')) AS LastBadgeDate
+        COALESCE(MAX(b.Date), DATE '1900-01-01') AS LastBadgeDate
     FROM 
         Posts p
     LEFT JOIN 
@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score, p.CreationDate, p.PostTypeId
 ), FeaturedPosts AS (
@@ -38,7 +38,7 @@ WITH RankedPosts AS (
             ELSE 'Regular'
         END AS PopularityStatus,
         CASE 
-            WHEN rp.LastBadgeDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Active Contributor'
+            WHEN rp.LastBadgeDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 DAYS' THEN 'Active Contributor'
             ELSE 'Inactive Contributor'
         END AS ContributorStatus
     FROM 

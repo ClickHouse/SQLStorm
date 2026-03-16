@@ -63,4 +63,4 @@ FROM item_analysis ia
 JOIN join_example je ON ia.i_item_sk = je.catalog_order_count
 WHERE ia.profit_rank < 0.1 AND je.catalog_order_count > 5
 ORDER BY ia.total_profit DESC, ia.i_item_sk ASC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

@@ -19,7 +19,7 @@ WITH RankedPosts AS (
         Votes v ON v.PostId = p.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 30 DAY) 
+        AND p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '30 days') 
     GROUP BY 
         p.Id, p.Title, p.Tags, p.CreationDate, u.DisplayName
 ),

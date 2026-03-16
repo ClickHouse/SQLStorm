@@ -48,4 +48,4 @@ WHERE
 ORDER BY 
     co.total_spent DESC, 
     r.s_acctbal DESC 
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

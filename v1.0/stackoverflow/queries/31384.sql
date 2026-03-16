@@ -61,7 +61,7 @@ LEFT JOIN
         SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName
     ) t ON TRUE
 WHERE 
-    p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+    p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName, u.Reputation
 ORDER BY 

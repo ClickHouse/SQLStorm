@@ -15,7 +15,7 @@ TopCustomers AS (
     FROM CustomerSales cs
     JOIN customer c ON cs.c_customer_sk = c.c_customer_sk
     ORDER BY cs.total_sales DESC
-    LIMIT 10
+    FETCH FIRST 10 ROWS ONLY
 ),
 WarehouseSales AS (
     SELECT w.w_warehouse_id, SUM(ws.ws_net_paid) AS total_warehouse_sales

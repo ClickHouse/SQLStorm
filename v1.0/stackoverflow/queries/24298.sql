@@ -82,7 +82,7 @@ WHERE
          FROM PostHistory ph 
          WHERE ph.UserId = u.Id 
            AND ph.PostHistoryTypeId IN (10, 11) 
-           AND ph.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)) >= 1
+           AND ph.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months')) >= 1
 ORDER BY 
     u.Reputation DESC,
     COALESCE(us.TotalPosts, 0) DESC,

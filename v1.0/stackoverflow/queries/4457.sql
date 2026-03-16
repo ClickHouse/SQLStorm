@@ -23,11 +23,11 @@ PostMetrics AS (
         COALESCE(ah.AcceptedAnswerId, 0) AS AcceptedAnswerId,
         p.AnswerCount,
         p.CommentCount,
-        DENSE_RANK() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) DESC) AS PopularityRank
+        DENSE_RANK() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) DESC) AS PopularityRank
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Posts ah ON p.AcceptedAnswerId = ah.Id
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
     GROUP BY p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, ah.AcceptedAnswerId
 )
 SELECT 

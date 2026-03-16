@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserActivity AS (
     SELECT 
@@ -33,7 +33,7 @@ PostHistoryDetails AS (
         ph.PostId,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostHistoryTypes,
         COUNT(*) AS HistoryCount,
-        MAX(CASE WHEN ph.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS IsStale
+        MAX(CASE WHEN ph.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 1 ELSE 0 END) AS IsStale
     FROM 
         PostHistory ph
     INNER JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id

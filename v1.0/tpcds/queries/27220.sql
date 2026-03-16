@@ -47,7 +47,7 @@ SELECT
     si.dashed_address,
     SUM(gi.demographic_count) AS total_customers
 FROM GenderIncome gi
-JOIN DateInfo di ON di.d_year = toYear(toDate('2002-10-01')) 
+JOIN DateInfo di ON di.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') 
 JOIN OptimizedString si ON si.ca_address_sk IN (1, 2, 3) 
 GROUP BY 
     gi.cd_gender, 

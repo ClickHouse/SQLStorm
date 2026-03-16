@@ -76,4 +76,4 @@ WHERE
     AND pw.Rank = 1
 ORDER BY 
     pw.Score DESC, pw.ViewCount DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

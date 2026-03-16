@@ -2,7 +2,7 @@ WITH RankedOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 
            RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rank_order
     FROM orders o
-    WHERE o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1996-12-31')
+    WHERE o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
 ), SupplierDetails AS (
     SELECT s.s_suppkey, s.s_name, s.s_acctbal, n.n_name AS nation_name
     FROM supplier s
@@ -13,7 +13,7 @@ WITH RankedOrders AS (
     FROM lineitem li
     JOIN partsupp ps ON li.l_partkey = ps.ps_partkey AND li.l_suppkey = ps.ps_suppkey
     JOIN part p ON p.p_partkey = ps.ps_partkey
-    WHERE li.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    WHERE li.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year'
 )
 SELECT
     ro.o_orderkey,

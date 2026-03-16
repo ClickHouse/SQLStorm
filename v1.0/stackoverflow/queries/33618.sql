@@ -30,7 +30,7 @@ PostStats AS (
         COUNT(com.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpvotes,  
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownvotes,
-        COALESCE(p.ClosedDate, toDate('9999-12-31')) AS ClosedDate 
+        COALESCE(p.ClosedDate, DATE '9999-12-31') AS ClosedDate 
     FROM Posts p
     LEFT JOIN Comments com ON p.Id = com.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
@@ -46,7 +46,7 @@ ClosedPosts AS (
         ps.TotalDownvotes,
         ROW_NUMBER() OVER (PARTITION BY ps.ClosedDate ORDER BY ps.Score DESC) AS Rank
     FROM PostStats ps
-    WHERE ps.ClosedDate < toDateTime64('2024-10-01 12:34:56', 6)
+    WHERE ps.ClosedDate < TIMESTAMP '2024-10-01 12:34:56'
 )
 SELECT 
     tu.DisplayName,

@@ -48,15 +48,15 @@ RecentSales AS (
         COUNT(DISTINCT ws.ws_order_number) AS recent_web_orders,
         COUNT(DISTINCT cs.cs_order_number) AS recent_catalog_orders,
         COUNT(DISTINCT ss.ss_ticket_number) AS recent_store_orders,
-        toDateTime64('2002-10-01 12:34:56', 6) - INTERVAL 30 DAY AS recent_period
+        cast('2002-10-01 12:34:56' as timestamp) - INTERVAL '30 days' AS recent_period
     FROM
         customer c
     LEFT JOIN
-        web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk AND ws.ws_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date >= toDateTime64('2002-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk AND ws.ws_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date >= cast('2002-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
     LEFT JOIN
-        catalog_sales cs ON c.c_customer_sk = cs.cs_bill_customer_sk AND cs.cs_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date >= toDateTime64('2002-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        catalog_sales cs ON c.c_customer_sk = cs.cs_bill_customer_sk AND cs.cs_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date >= cast('2002-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
     LEFT JOIN
-        store_sales ss ON c.c_customer_sk = ss.ss_customer_sk AND ss.ss_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date >= toDateTime64('2002-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        store_sales ss ON c.c_customer_sk = ss.ss_customer_sk AND ss.ss_sold_date_sk >= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date >= cast('2002-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
     GROUP BY
         c.c_customer_id
 )

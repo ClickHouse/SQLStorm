@@ -8,7 +8,7 @@ WITH RankedOrders AS (
         orders o
     WHERE 
         o.o_orderstatus = 'O' 
-        AND o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
+        AND o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
 ),
 SupplierCosts AS (
     SELECT 
@@ -43,7 +43,7 @@ CombinedData AS (
     JOIN 
         nation n ON s.s_nationkey = n.n_nationkey
     WHERE 
-        o.o_orderdate BETWEEN CURRENT_DATE - INTERVAL 1 YEAR AND CURRENT_DATE
+        o.o_orderdate BETWEEN CURRENT_DATE - INTERVAL '1 year' AND CURRENT_DATE
         AND (l.l_discount BETWEEN 0.05 AND 0.1 OR l.l_discount IS NULL)
 )
 SELECT 
@@ -68,7 +68,7 @@ HAVING
                                     JOIN 
                                         orders o ON l.l_orderkey = o.o_orderkey
                                     WHERE 
-                                        o.o_orderdate < CURRENT_DATE - INTERVAL 1 YEAR
+                                        o.o_orderdate < CURRENT_DATE - INTERVAL '1 year'
                                     GROUP BY 
                                         o.o_orderkey) AS avg_revenue)
 ORDER BY 

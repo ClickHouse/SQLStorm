@@ -1,7 +1,7 @@
 
 WITH sales_summary AS (
     SELECT 
-        toMonth(d.d_date) AS sale_month,
+        EXTRACT(MONTH FROM d.d_date) AS sale_month,
         COUNT(s.ss_ticket_number) AS total_sales,
         SUM(s.ss_sales_price) AS total_revenue,
         AVG(s.ss_net_profit) AS average_profit,
@@ -18,7 +18,7 @@ WITH sales_summary AS (
         d.d_year = 2023
         AND cd.cd_marital_status = 'M'
     GROUP BY 
-        toMonth(d.d_date)
+        EXTRACT(MONTH FROM d.d_date)
 ),
 top_months AS (
     SELECT 

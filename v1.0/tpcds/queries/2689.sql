@@ -53,4 +53,4 @@ WHERE
     hc.return_count < 5
 ORDER BY 
     profit_rank
-LIMIT 100;
+FETCH NEXT 100 ROWS ONLY;

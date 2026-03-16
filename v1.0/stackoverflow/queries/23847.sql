@@ -33,7 +33,7 @@ RecentPosts AS (
         P.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RecentPostRank
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
 TopUsers AS (
     SELECT
@@ -58,8 +58,8 @@ SELECT
     (SELECT COUNT(Comment.Id) FROM Comments Comment WHERE Comment.PostId = P.PostId) AS TotalComments,
     CASE WHEN P.CreationDate IS NOT NULL THEN
         CASE 
-            WHEN P.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 14 DAY THEN 'Old Post'
-            WHEN P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 DAY THEN 'New Post'
+            WHEN P.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '14 days' THEN 'Old Post'
+            WHEN P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '3 days' THEN 'New Post'
             ELSE 'Somewhat Recent Post'
         END
     ELSE 'No Recent Posts'

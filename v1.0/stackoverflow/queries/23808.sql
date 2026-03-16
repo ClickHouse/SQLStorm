@@ -49,7 +49,7 @@ ActiveUsers AS (
     FROM 
         Users U
     WHERE 
-        U.LastAccessDate >= toDate('2024-10-01') - INTERVAL 30 DAY
+        U.LastAccessDate >= DATE '2024-10-01' - INTERVAL '30 days'
 )
 
 SELECT 

@@ -52,4 +52,4 @@ JOIN max_sales ms ON ch.c_customer_sk = ms.c_customer_sk
 LEFT JOIN address_info ai ON ch.c_customer_sk = ai.ca_address_sk
 WHERE ms.max_sale > 100
 ORDER BY ai.customer_count DESC, ch.sales_price DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

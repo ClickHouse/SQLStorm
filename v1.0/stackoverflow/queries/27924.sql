@@ -74,7 +74,7 @@ LEFT JOIN
 LEFT JOIN 
     RecentPostHistory rph ON p.Id = rph.PostId AND rph.rn = 1
 WHERE 
-    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+    p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
 ORDER BY 
     p.Score DESC, 
     p.ViewCount DESC;

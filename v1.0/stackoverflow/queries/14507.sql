@@ -52,7 +52,7 @@ PostEngagement AS (
             UserId
     ) B ON P.OwnerUserId = B.UserId
     WHERE 
-        P.CreationDate >= DATE('2024-10-01') - INTERVAL 30 DAY
+        P.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days'
 )
 SELECT 
     UPS.UserId,

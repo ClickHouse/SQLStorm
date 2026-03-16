@@ -51,7 +51,7 @@ SELECT
     u.TotalBounty,
     COALESCE(cp.CloseCount, 0) AS CloseCount,
     COALESCE(rph.PostHistoryId, 0) AS LastPostHistoryId,
-    COALESCE(rph.CreationDate, toDate('1970-01-01')) AS LastPostHistoryDate
+    COALESCE(rph.CreationDate, DATE '1970-01-01') AS LastPostHistoryDate
 FROM 
     UserActivity u
 LEFT JOIN 

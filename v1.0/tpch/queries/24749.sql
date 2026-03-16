@@ -11,7 +11,7 @@ WITH RecursiveTotal AS (
     JOIN
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE
-        l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+        l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     GROUP BY
         p.p_partkey, p.p_name
     HAVING
@@ -63,4 +63,4 @@ WHERE
     f.supplier_count > 2
 ORDER BY
     f.total_revenue DESC NULLS LAST
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

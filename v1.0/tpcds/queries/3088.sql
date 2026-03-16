@@ -57,4 +57,4 @@ WHERE
     ca.ca_state IS NOT NULL
 ORDER BY 
     tc.total_sales DESC, tc.customer_type DESC
-LIMIT 50 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;

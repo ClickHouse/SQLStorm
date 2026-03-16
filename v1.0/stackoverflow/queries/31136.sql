@@ -65,6 +65,6 @@ JOIN
     TopUsers tu ON u.Id = tu.Id
 WHERE 
     u.Location IS NOT NULL
-    AND u.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    AND u.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
 ORDER BY 
     tu.Rank, u.Reputation DESC;

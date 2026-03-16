@@ -37,4 +37,4 @@ JOIN
 ORDER BY 
     a.total_addresses DESC, 
     d.avg_purchase_estimate DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

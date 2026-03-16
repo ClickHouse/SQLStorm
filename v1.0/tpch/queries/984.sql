@@ -52,7 +52,7 @@ LEFT JOIN
 LEFT JOIN 
     SupplierCosts SC ON t.distinct_parts = SC.ps_partkey
 WHERE 
-    o.o_orderdate >= toDate('1997-01-01')
+    o.o_orderdate >= DATE '1997-01-01'
     AND (o.o_orderstatus = 'O' OR o.o_orderstatus IS NULL)
 GROUP BY 
     n.n_name, SC.total_supply_cost

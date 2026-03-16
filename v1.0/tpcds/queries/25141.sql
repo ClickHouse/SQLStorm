@@ -25,7 +25,7 @@ RecentSales AS (
     JOIN 
         date_dim dd ON ws.ws_sold_date_sk = dd.d_date_sk
     WHERE
-        dd.d_date >= cast('2002-10-01' as date) - INTERVAL 1 YEAR
+        dd.d_date >= cast('2002-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         ws.ws_bill_customer_sk
 ),

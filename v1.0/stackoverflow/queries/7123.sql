@@ -73,4 +73,4 @@ WHERE
     UA.BadgeCount > 0
 ORDER BY 
     UA.PostCount DESC, UA.UpVotes DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

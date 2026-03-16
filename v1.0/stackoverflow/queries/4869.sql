@@ -24,7 +24,7 @@ RecentActivity AS (
         MAX(p.LastActivityDate) AS LastActive
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 MONTH'
     GROUP BY p.Id
 ),
 ClosedPosts AS (
@@ -51,7 +51,7 @@ LEFT JOIN ClosedPosts cp ON cp.PostId = p.Id
 WHERE 
     p.Score > 0 
     OR (p.AcceptedAnswerId IS NOT NULL AND p.PostTypeId = 1)
-    AND (p.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH AND toDateTime64('2024-10-01 12:34:56', 6))
+    AND (p.CreationDate BETWEEN cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 MONTHS' AND cast('2024-10-01 12:34:56' as timestamp))
 ORDER BY 
     COALESCE(rp.UserRank, 0) ASC,
     TOTALVOTES DESC,

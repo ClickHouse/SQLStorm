@@ -70,4 +70,4 @@ WHERE
     cp.ViewCount > (SELECT AVG(ViewCount) FROM Posts) 
 ORDER BY 
     cp.Score DESC, cp.CreationDate DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

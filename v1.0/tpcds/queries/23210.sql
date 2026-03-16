@@ -73,4 +73,4 @@ WHERE
     )
 ORDER BY 
     tc.spending_rank, c.c_last_name DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

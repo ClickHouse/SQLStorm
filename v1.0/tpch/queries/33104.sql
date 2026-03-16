@@ -26,8 +26,8 @@ FROM part p
 LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
 LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 LEFT JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
-WHERE l.l_shipdate >= toDate('1996-01-01') 
-  AND l.l_shipdate < toDate('1997-01-01')
+WHERE l.l_shipdate >= DATE '1996-01-01' 
+  AND l.l_shipdate < DATE '1997-01-01'
   AND (l.l_discount <= 0.2 OR l.l_discount IS NULL)
 GROUP BY p.p_partkey, p.p_name, s.s_name
 HAVING SUM(l.l_quantity) > 100
@@ -40,7 +40,7 @@ SELECT
     SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
     NULL AS revenue_rank
 FROM lineitem l
-WHERE l.l_shipdate >= toDate('1996-01-01') 
-  AND l.l_shipdate < toDate('1997-01-01')
+WHERE l.l_shipdate >= DATE '1996-01-01' 
+  AND l.l_shipdate < DATE '1997-01-01'
   AND l.l_discount IS NOT NULL
 ORDER BY total_revenue DESC;

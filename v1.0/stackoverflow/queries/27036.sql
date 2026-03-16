@@ -53,7 +53,7 @@ SELECT
     TUT.DisplayName AS TopUser,
     TUT.TagName AS FavoriteTag,
     COUNT(UB.BadgeName) AS GoldBadges,
-    SUM(CASE WHEN Post.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS RecentPosts
+    SUM(CASE WHEN Post.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 1 ELSE 0 END) AS RecentPosts
 FROM 
     TopUserTags TUT
 LEFT JOIN 

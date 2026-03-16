@@ -43,4 +43,4 @@ LEFT JOIN sales_summary ss ON ci.c_customer_sk = ss.ws_bill_customer_sk
 WHERE a.rn <= 5
   AND (ci.c_email_address LIKE '%@example.com' OR ci.c_email_address IS NULL)
 ORDER BY customer_status, rank_in_state
-LIMIT 30 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 30 ROWS ONLY;

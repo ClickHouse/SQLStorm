@@ -30,7 +30,7 @@ MostActiveTags AS (
         PostCount > 10
     ORDER BY 
         TotalScore DESC
-    LIMIT 5
+    FETCH FIRST 5 ROWS ONLY
 ),
 UserStats AS (
     SELECT 
@@ -48,7 +48,7 @@ UserStats AS (
         U.DisplayName
     ORDER BY 
         QuestionsAnswered DESC
-    LIMIT 10
+    FETCH FIRST 10 ROWS ONLY
 )
 SELECT 
     M.TagName,

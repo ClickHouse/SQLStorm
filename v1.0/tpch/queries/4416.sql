@@ -9,7 +9,7 @@ RecentOrders AS (
            SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_price
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
     GROUP BY o.o_orderkey, o.o_custkey, o.o_orderdate
 ),
 CustomerTotal AS (

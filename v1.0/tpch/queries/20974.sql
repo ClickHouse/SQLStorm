@@ -49,7 +49,7 @@ JOIN
 JOIN 
     FilteredCustomers f ON o.o_custkey = f.c_custkey
 WHERE 
-    o.o_orderdate BETWEEN toDate('1997-01-01') AND cast('1998-10-01' as date)
+    o.o_orderdate BETWEEN DATE '1997-01-01' AND cast('1998-10-01' as date)
     AND l.l_returnflag = 'N'
     AND (l.l_discount < 0.05 OR l.l_tax > 0.1)
 GROUP BY 

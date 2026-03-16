@@ -9,7 +9,7 @@ WITH ranked_orders AS (
     FROM 
         orders o 
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
+        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
 ),
 total_lineitems AS (
     SELECT 
@@ -18,7 +18,7 @@ total_lineitems AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1998-01-01')
+        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1998-01-01'
     GROUP BY 
         l.l_orderkey
 ),

@@ -25,7 +25,7 @@ OrderDetails AS (
            o_totalprice, 
            o_orderdate,
            o_orderstatus,
-           toYear(o_orderdate) AS order_year
+           EXTRACT(YEAR FROM o_orderdate) AS order_year
     FROM orders
     WHERE o_orderstatus = 'O'
 ), 

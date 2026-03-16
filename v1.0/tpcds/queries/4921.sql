@@ -74,4 +74,4 @@ WHERE
     (ts.total_net_profit > 1000 OR pd.promo_order_count IS NULL)
 ORDER BY 
     ts.total_net_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

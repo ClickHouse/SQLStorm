@@ -12,7 +12,7 @@ WITH RECURSIVE UserActivity AS (
     LEFT JOIN 
         Posts P ON U.Id = P.OwnerUserId
     WHERE 
-        U.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        U.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ), 
 
 UserBadges AS (
@@ -23,7 +23,7 @@ UserBadges AS (
     FROM 
         Badges B
     WHERE 
-        B.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        B.Date >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         B.UserId
 ),

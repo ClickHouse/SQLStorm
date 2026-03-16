@@ -45,4 +45,4 @@ SELECT
 FROM filtered_sales fs
 WHERE fs.ws_net_paid IS NOT NULL
 ORDER BY fs.ws_net_paid DESC, fs.ws_order_number ASC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

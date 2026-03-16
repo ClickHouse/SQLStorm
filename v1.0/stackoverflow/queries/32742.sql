@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId, p.CreationDate, p.LastActivityDate, u.Reputation
 ),

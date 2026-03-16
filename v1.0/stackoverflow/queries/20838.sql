@@ -26,7 +26,7 @@ ActivePostOwners AS (
         SUM(PA.VoteCount) AS TotalVotes
     FROM Posts P
     JOIN PostActivity PA ON P.Id = PA.PostId
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY P.OwnerUserId
 ),
 TopUsers AS (

@@ -47,7 +47,7 @@ FinalBenchmarking AS (
         pha.EditCount,
         pha.UniqueEditors,
         ptp.TotalBounty,
-        (COALESCE(ptp.CommentCount, 0) + COALESCE(pha.EditCount, 0)CAST() AS float) / NULLIF(ptp.TagCount, 0) AS InteractionToTagRatio 
+        (COALESCE(ptp.CommentCount, 0) + COALESCE(pha.EditCount, 0))::float / NULLIF(ptp.TagCount, 0) AS InteractionToTagRatio 
     FROM 
         PostTagProcessing ptp
     JOIN 

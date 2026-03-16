@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     WHERE 
         p.PostTypeId = 1 AND  
-        p.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY  
+        p.CreationDate >= CURRENT_DATE - INTERVAL '30 days'  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName
 ), 

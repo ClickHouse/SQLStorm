@@ -25,7 +25,7 @@ JOIN
 WHERE 
     l.l_shipmode IN ('AIR', 'GROUND')
     AND r.r_name LIKE 'E%'
-    AND o.o_orderdate >= toDate('1997-01-01')
+    AND o.o_orderdate >= DATE '1997-01-01'
 GROUP BY 
     s.s_name, n.n_name, r.r_name
 ORDER BY 

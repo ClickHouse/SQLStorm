@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT PostId, COUNT(*) AS HistoryCount FROM PostHistory GROUP BY PostId) ph ON p.Id = ph.PostId
 WHERE 
-    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
 ORDER BY 
     p.Score DESC, 
     p.CreationDate DESC

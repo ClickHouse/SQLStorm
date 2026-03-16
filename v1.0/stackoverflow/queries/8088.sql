@@ -33,7 +33,7 @@ UserActivity AS (
     FROM Users U
     LEFT JOIN UserBadgeStats UB ON U.Id = UB.UserId
     LEFT JOIN PostStats PS ON U.Id = PS.OwnerUserId
-    WHERE U.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE U.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 )
 SELECT 
     U.DisplayName,

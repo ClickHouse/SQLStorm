@@ -73,4 +73,4 @@ WHERE
 ORDER BY 
     TotalScore DESC,
     PostCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

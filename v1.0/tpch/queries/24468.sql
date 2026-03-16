@@ -33,7 +33,7 @@ WITH RecursiveCTE AS (
         customer AS c ON o.o_custkey = c.c_custkey
     WHERE 
         o.o_orderstatus = 'F' 
-        AND (l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31') OR l.l_commitdate IS NULL)
+        AND (l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31' OR l.l_commitdate IS NULL)
     GROUP BY 
         r.r_name, n.n_name, c.c_name, o.o_orderkey
 ), FinalResults AS (
@@ -65,4 +65,4 @@ FROM
     FinalResults AS fr
 ORDER BY 
     fr.net_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

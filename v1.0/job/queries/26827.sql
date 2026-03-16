@@ -35,8 +35,8 @@ SELECT
     a.actor_name,
     a.movie_count,
     a.movie_titles,
-    (SELECT COUNT(*) FROM title t2 WHERE t2.production_year >= toYear(cast('2024-10-01' as date)) - 10) AS recent_movies_count,
-    (SELECT COUNT(DISTINCT t2.id) FROM movie_keyword mk JOIN keyword k ON mk.keyword_id = k.id JOIN title t2 ON mk.movie_id = t2.id WHERE k.keyword LIKE '%action%' AND t2.production_year >= toYear(cast('2024-10-01' as date)) - 10) AS action_movies_count
+    (SELECT COUNT(*) FROM title t2 WHERE t2.production_year >= EXTRACT(YEAR FROM cast('2024-10-01' as date)) - 10) AS recent_movies_count,
+    (SELECT COUNT(DISTINCT t2.id) FROM movie_keyword mk JOIN keyword k ON mk.keyword_id = k.id JOIN title t2 ON mk.movie_id = t2.id WHERE k.keyword LIKE '%action%' AND t2.production_year >= EXTRACT(YEAR FROM cast('2024-10-01' as date)) - 10) AS action_movies_count
 FROM 
     actor_statistics a
 ORDER BY 

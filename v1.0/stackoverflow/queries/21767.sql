@@ -54,4 +54,4 @@ LEFT JOIN Tags t ON p.Tags LIKE '%' || t.TagName || '%'
 GROUP BY f.UserId, f.DisplayName, f.NextUserDisplayName, f.QuestionCount, f.AnswerCount, f.BadgeCount, f.CloseReopenCount, f.Rank
 HAVING COUNT(DISTINCT t.Id) > 2
 ORDER BY f.Rank
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

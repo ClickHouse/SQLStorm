@@ -60,4 +60,4 @@ WHERE
     ss.total_supplycost > 10000
 ORDER BY 
     os.total_order_value DESC, ss.avg_acctbal ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

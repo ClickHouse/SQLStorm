@@ -53,4 +53,4 @@ ORDER BY
     ac.total_address_count DESC, 
     cs.total_customers DESC, 
     ss.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

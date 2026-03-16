@@ -55,4 +55,4 @@ SELECT
 FROM CTE_CombinedReturns cb
 WHERE (cb.web_return_count > 0 OR cb.store_return_count > 0)
 ORDER BY cb.gender, rank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

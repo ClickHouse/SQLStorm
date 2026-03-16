@@ -33,7 +33,7 @@ PostStatistics AS (
     LEFT JOIN 
         (SELECT ParentId, COUNT(*) AS Count FROM Posts WHERE PostTypeId = 2 GROUP BY ParentId) AN ON P.Id = AN.ParentId
     WHERE 
-        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 TopUsers AS (
     SELECT 

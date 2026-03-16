@@ -35,7 +35,7 @@ SELECT
         WHEN pd.ClosureReopenCount > 0 THEN 'Reopened'
         ELSE 'Active'
     END AS PostStatus,
-    ROUND(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - pd.CreationDate)) / 3600, 2) AS HoursSinceCreation,
+    ROUND(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - pd.CreationDate)) / 3600, 2) AS HoursSinceCreation,
     pd.TagCount * pd.Score AS TagScoreImpact
 FROM 
     PostDetails pd

@@ -26,7 +26,7 @@ SalesSummary AS (
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales,
         AVG(l.l_extendedprice) AS avg_price
     FROM lineitem l
-    WHERE l.l_shipdate <= toDate('1997-10-01')
+    WHERE l.l_shipdate <= DATE '1997-10-01'
     GROUP BY l.l_partkey
 ),
 CompetitivePricing AS (

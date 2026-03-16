@@ -70,7 +70,7 @@ LEFT JOIN (
 JOIN 
     date_dim d ON d.d_date_sk = (SELECT MAX(d_date_sk) FROM date_dim) 
 WHERE 
-    d.d_date <= DATE('2002-10-01') - INTERVAL 1 DAY
+    d.d_date <= DATE('2002-10-01') - INTERVAL '1 DAY'
     AND (cs.total_sales IS NOT NULL OR fail.total_failed_returns IS NOT NULL)
 ORDER BY 
     total_sales DESC, total_failed_returns ASC;

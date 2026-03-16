@@ -48,7 +48,7 @@ RecentActivity AS (
         INNER JOIN PostHistory ph ON p.Id = ph.PostId
         INNER JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
-        p.LastActivityDate >= CURRENT_DATE - INTERVAL 30 DAY
+        p.LastActivityDate >= CURRENT_DATE - INTERVAL '30 DAY'
     GROUP BY 
         p.Id, p.Title, ph.CreationDate, p.LastActivityDate, p.LastEditorDisplayName
 )

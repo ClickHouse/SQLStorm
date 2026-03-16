@@ -2,7 +2,7 @@ WITH RECURSIVE OrderCTE AS (
     SELECT o_orderkey, o_custkey, o_orderdate, o_totalprice,
            ROW_NUMBER() OVER (PARTITION BY o_custkey ORDER BY o_orderdate DESC) AS recent_order
     FROM orders
-    WHERE o_orderstatus = 'O' AND o_orderdate >= toDate('1996-01-01')
+    WHERE o_orderstatus = 'O' AND o_orderdate >= DATE '1996-01-01'
 ),
 SupplierDetails AS (
     SELECT s_suppkey, s_name, s_nationkey, s_acctbal,

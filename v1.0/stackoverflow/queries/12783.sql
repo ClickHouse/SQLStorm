@@ -25,7 +25,7 @@ LEFT JOIN
 JOIN 
     PostTypes PT ON P.PostTypeId = PT.Id
 WHERE 
-    P.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY 
+    P.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days' 
 GROUP BY 
     P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score, U.Reputation, 
     PT.Name, P.LastActivityDate, PH.CreationDate, PH.Comment

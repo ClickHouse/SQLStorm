@@ -53,7 +53,7 @@ SELECT
     MAX(po.AvailableQty) AS MaxAvailableProductQty,
     (SELECT COUNT(DISTINCT l.l_orderkey) 
      FROM lineitem l 
-     WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
+     WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 days'
      AND l.l_partkey IN (SELECT p.p_partkey FROM productdetails p)) AS RecentOrdersCount
 FROM 
     customer c

@@ -60,4 +60,4 @@ WHERE
     cd.cd_purchase_estimate > 1000
 ORDER BY
     ds.sale_date DESC, ds.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

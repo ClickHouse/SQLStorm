@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
         COUNT(c.Id) OVER (PARTITION BY p.Id) AS CommentCount,
         CASE 
-            WHEN p.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) THEN 'Old Post'
+            WHEN p.CreationDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') THEN 'Old Post'
             ELSE 'Recent Post'
         END AS PostAge
     FROM Posts p

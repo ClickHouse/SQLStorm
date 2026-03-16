@@ -16,7 +16,7 @@ PostScore AS (
         SUM(p.Score) AS TotalScore,
         COUNT(p.Id) AS PostCount
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY p.OwnerUserId
 ),
 UserBadges AS (
@@ -31,7 +31,7 @@ UserPosts AS (
         p.OwnerUserId, 
         COUNT(p.Id) AS TotalPosts
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY p.OwnerUserId
     HAVING COUNT(p.Id) > 10
 ),

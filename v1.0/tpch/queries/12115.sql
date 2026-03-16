@@ -15,8 +15,8 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate >= toDate('1997-01-01') AND 
-    l.l_shipdate < toDate('1997-12-31')
+    l.l_shipdate >= DATE '1997-01-01' AND 
+    l.l_shipdate < DATE '1997-12-31'
 GROUP BY 
     p.p_partkey, p.p_name, n.n_name, r.r_name
 ORDER BY 

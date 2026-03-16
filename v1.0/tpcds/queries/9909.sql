@@ -73,4 +73,4 @@ FROM
 ORDER BY 
     f.total_net_profit DESC, 
     f.c_last_name ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

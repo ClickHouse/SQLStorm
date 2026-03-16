@@ -19,4 +19,4 @@ GROUP BY
     u.DisplayName, p.Title, p.CreationDate, p.ViewCount
 ORDER BY 
     p.CreationDate DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

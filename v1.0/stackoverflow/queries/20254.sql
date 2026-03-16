@@ -77,7 +77,7 @@ LEFT JOIN
 WHERE 
     (rp.RankByScore <= 5 OR rp.RankByDate <= 10)
     AND (us.BadgeCount > 0 OR us.TotalBounty > 0)
-    AND (phd.LastActionDate IS NULL OR phd.LastActionDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    AND (phd.LastActionDate IS NULL OR phd.LastActionDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
 ORDER BY 
     rp.CreationDate DESC
 LIMIT 100;

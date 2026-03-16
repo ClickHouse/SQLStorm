@@ -17,7 +17,7 @@ RecentActivity AS (
         OwnerUserId AS UserId,
         COUNT(*) AS RecentActivePosts
     FROM Posts
-    WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY OwnerUserId
 ),
 TopBadges AS (
@@ -43,7 +43,7 @@ SELECT
         ELSE 'Low Reputation'
     END AS ReputationTier,
     CASE
-        WHEN EXISTS(SELECT 1 FROM Comments C WHERE C.UserId = U.Id AND C.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 60 DAY) THEN 'Inactive'
+        WHEN EXISTS(SELECT 1 FROM Comments C WHERE C.UserId = U.Id AND C.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '60 days') THEN 'Inactive'
         ELSE 'Active'
     END AS ActivityStatus
 FROM Users U

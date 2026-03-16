@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 CloseReasons AS (
     SELECT 
@@ -59,7 +59,7 @@ LEFT JOIN
 RIGHT JOIN 
     MostActiveUsers mu ON rp.OwnerUserId = mu.UserId
 WHERE 
-    (cr.LastClosed IS NULL OR cr.LastClosed >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
+    (cr.LastClosed IS NULL OR cr.LastClosed >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months')
     AND mu.PostCount > 5
 ORDER BY 
     rp.Score DESC, 

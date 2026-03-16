@@ -36,7 +36,7 @@ RecentPostHistory AS (
         H.Comment
     FROM PostHistory H
     JOIN Posts P ON H.PostId = P.Id
-    WHERE H.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE H.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     AND H.PostHistoryTypeId IN (10, 11) 
 )
 SELECT 

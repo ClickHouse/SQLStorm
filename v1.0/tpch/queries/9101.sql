@@ -10,7 +10,7 @@ WITH TopSuppliers AS (
 RecentOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_custkey
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
 ),
 OrderLineItems AS (
     SELECT l.l_orderkey, l.l_quantity, l.l_extendedprice, l.l_discount, l.l_tax, l.l_shipdate

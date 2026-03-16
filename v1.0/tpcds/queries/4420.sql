@@ -19,8 +19,8 @@ WITH ranked_customer_sales AS (
         c.c_customer_sk,
         c.c_customer_id,
         cd.cd_gender,
-        COALESCE(SUM(CASE WHEN d.d_date >= cast('2002-10-01' as date) - INTERVAL 30 DAY THEN ws.ws_ext_sales_price END), 0) AS recent_sales,
-        COUNT(DISTINCT CASE WHEN d.d_date >= cast('2002-10-01' as date) - INTERVAL 30 DAY THEN ws.ws_order_number END) AS recent_orders
+        COALESCE(SUM(CASE WHEN d.d_date >= cast('2002-10-01' as date) - INTERVAL '30 DAY' THEN ws.ws_ext_sales_price END), 0) AS recent_sales,
+        COUNT(DISTINCT CASE WHEN d.d_date >= cast('2002-10-01' as date) - INTERVAL '30 DAY' THEN ws.ws_order_number END) AS recent_orders
     FROM 
         customer c
     LEFT JOIN 

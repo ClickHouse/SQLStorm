@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND toDateTime64('2024-10-01 12:34:56', 6)
+        P.CreationDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND TIMESTAMP '2024-10-01 12:34:56'
 ),
 PostSummary AS (
     SELECT 

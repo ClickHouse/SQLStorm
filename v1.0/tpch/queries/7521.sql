@@ -2,7 +2,7 @@ WITH RankedOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue, ROW_NUMBER() OVER (PARTITION BY o.o_orderdate ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS rank
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate BETWEEN toDate('1993-01-01') AND toDate('1994-01-01')
+    WHERE o.o_orderdate BETWEEN DATE '1993-01-01' AND DATE '1994-01-01'
     GROUP BY o.o_orderkey, o.o_orderdate
 ),
 TopRevenueOrders AS (

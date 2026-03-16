@@ -65,4 +65,4 @@ SELECT
 FROM final_summary f
 WHERE f.total_profit IS NOT NULL
 ORDER BY f.total_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

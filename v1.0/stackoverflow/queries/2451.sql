@@ -60,6 +60,6 @@ LEFT JOIN
     LinkTypes ll ON pl.LinkTypeId = ll.Id
 WHERE 
     rp.Rank <= 5 AND 
-    rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    rp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - interval '1 year'
 ORDER BY 
     rp.Score DESC, CommentCount DESC;

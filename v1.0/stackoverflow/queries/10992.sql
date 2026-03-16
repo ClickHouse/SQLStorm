@@ -8,7 +8,7 @@ WITH UserPostStats AS (
         COUNT(CASE WHEN p.PostTypeId = 2 THEN 1 END) AS TotalAnswers,
         COALESCE(SUM(p.Score), 0) AS TotalScore,
         COALESCE(SUM(p.ViewCount), 0) AS TotalViews,
-        AVG(toUnixTimestamp((now64(6) - p.CreationDate))) AS AvgPostAge
+        AVG(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate))) AS AvgPostAge
     FROM 
         Users u
     LEFT JOIN 
@@ -40,6 +40,6 @@ SELECT
 FROM 
     UserPostStats ups
 LEFT JOIN 
-    PostHistoryStats phs ON ups.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = phs.PostId LIMIT 1)
+    PostHistoryStats phs ON ups.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = phs.PostId FETCH FIRST 1 ROW ONLY)
 ORDER BY 
     ups.TotalScore DESC, ups.TotalPosts DESC;

@@ -15,11 +15,11 @@ FROM
 JOIN 
     Users u ON p.OwnerUserId = u.Id
 LEFT JOIN 
-    Tags t ON EXISTS (SELECT 1 FROM arrayJoin(splitByString('<>', p.Tags)) AS tag WHERE CAST(tag AS text) = CAST(t.Id AS text))
+    Tags t ON EXISTS (SELECT 1 FROM arrayJoin(splitByString('<>', p.Tags)) AS tag WHERE tag::text = t.Id::text)
 LEFT JOIN 
     Comments c ON p.Id = c.PostId
 WHERE 
-    p.CreationDate >= toDate('2023-01-01')  
+    p.CreationDate >= DATE '2023-01-01'  
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, 
     u.DisplayName, u.Reputation, 

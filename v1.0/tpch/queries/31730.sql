@@ -29,7 +29,7 @@ JOIN lineitem l ON p.p_partkey = l.l_partkey
 JOIN orders o ON l.l_orderkey = o.o_orderkey
 JOIN customer c ON o.o_custkey = c.c_custkey
 WHERE o.o_orderstatus IN ('F', 'O')
-  AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1998-10-01')
+  AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1998-10-01'
   AND EXISTS (SELECT 1 FROM supplier_hierarchy sh WHERE sh.s_suppkey = s.s_suppkey)
 GROUP BY r.r_name, n.n_name
 HAVING COUNT(DISTINCT o.o_orderkey) > 10

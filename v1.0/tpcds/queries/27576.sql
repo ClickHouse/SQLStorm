@@ -6,7 +6,7 @@ WITH customer_stats AS (
         cd.cd_gender,
         COUNT(DISTINCT ws.ws_order_number) AS total_orders,
         SUM(ws.ws_net_profit) AS total_profit,
-        AVG(toYear(cast('2002-10-01' as date)) - c.c_birth_year) AS average_age
+        AVG(EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c.c_birth_year) AS average_age
     FROM 
         customer c
     JOIN 

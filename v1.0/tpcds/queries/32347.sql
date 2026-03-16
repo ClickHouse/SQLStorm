@@ -58,4 +58,4 @@ WHERE
     cs.max_net_profit IS NOT NULL
 ORDER BY 
     cs.avg_net_profit DESC, ss.total_net_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

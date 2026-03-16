@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
+        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') 
         AND p.Score >= 0
 ),
 ClosedPosts AS (
@@ -64,4 +64,4 @@ GROUP BY
     rp.MostActivePostForUser
 ORDER BY 
     rp.Score DESC, rp.CreationDate ASC
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;

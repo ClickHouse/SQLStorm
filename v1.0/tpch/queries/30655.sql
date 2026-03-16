@@ -26,7 +26,7 @@ HighValueParts AS (
 FrequentOrders AS (
     SELECT o.o_custkey, COUNT(*) AS order_count
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1996-01-01'
     GROUP BY o.o_custkey
     HAVING COUNT(*) > 5
 )
@@ -49,6 +49,6 @@ JOIN nation n ON c.c_nationkey = n.n_nationkey
 JOIN supplier s ON l.l_suppkey = s.s_suppkey
 JOIN HighValueParts p ON l.l_partkey = p.p_partkey
 LEFT JOIN FrequentOrders f ON c.c_custkey = f.o_custkey
-WHERE l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+WHERE l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY c.c_name, n.n_name, s.s_name, p.p_name, l.l_quantity
 ORDER BY total_sales DESC, sales_rank;

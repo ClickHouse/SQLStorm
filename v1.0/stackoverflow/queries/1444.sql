@@ -20,7 +20,7 @@ SELECT
     rp.CommentCount,
     rp.VoteBalance,
     CASE 
-        WHEN rp.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) THEN 'Old Post' 
+        WHEN rp.CreationDate < (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year') THEN 'Old Post' 
         ELSE 'Recent Post' 
     END AS PostAge,
     arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsList

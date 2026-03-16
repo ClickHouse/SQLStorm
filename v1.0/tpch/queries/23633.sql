@@ -25,7 +25,7 @@ FilteredLineItems AS (
     SELECT l.l_orderkey, l.l_partkey, l.l_quantity, l.l_discount, l.l_returnflag,
            CASE WHEN l.l_returnflag = 'R' THEN l.l_extendedprice * (1 - l.l_discount) ELSE 0 END AS refund_amount
     FROM lineitem l
-    WHERE l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1998-01-01')
+    WHERE l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1998-01-01'
 )
 SELECT 
     p.p_name,

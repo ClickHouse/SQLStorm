@@ -7,7 +7,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT c.Id) AS TotalComments,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownvotes,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.CreationDate))/86400) AS AverageDaysSinceCreation
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - u.CreationDate))/86400) AS AverageDaysSinceCreation
     FROM 
         Users u
     LEFT JOIN 
@@ -39,7 +39,7 @@ PostStatistics AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.AcceptedAnswerId
 )

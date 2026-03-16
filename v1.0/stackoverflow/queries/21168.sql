@@ -60,4 +60,4 @@ WHERE
     pw.UpVotes - pw.DownVotes > 5 
 ORDER BY 
     pw.CreationDate DESC NULLS LAST
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

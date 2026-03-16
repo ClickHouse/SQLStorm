@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 RecentActivity AS (
     SELECT 
@@ -29,7 +29,7 @@ RecentActivity AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id
 ),
@@ -78,7 +78,7 @@ SELECT
 FROM 
     PostSummary ps
 WHERE 
-    ps.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    ps.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
 ORDER BY 
     ps.Score DESC, ps.ViewCount DESC
 LIMIT 100;

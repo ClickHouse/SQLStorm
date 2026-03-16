@@ -25,7 +25,7 @@ ActivePosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8 
-    WHERE p.LastActivityDate >= now64(6) - INTERVAL 30 DAY
+    WHERE p.LastActivityDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, p.AcceptedAnswerId
 ),
 PostDetails AS (

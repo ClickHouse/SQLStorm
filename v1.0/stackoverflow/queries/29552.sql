@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
         AND p.Score > 0
 ),
 TopPosts AS (

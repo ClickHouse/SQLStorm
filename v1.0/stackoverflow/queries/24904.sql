@@ -15,7 +15,7 @@ WITH UserActivity AS (
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8  
     WHERE 
         u.Reputation > 1000 
-        AND u.CreationDate < cast('2024-10-01' as date) - INTERVAL 2 YEAR
+        AND u.CreationDate < cast('2024-10-01' as date) - INTERVAL '2 years'
     GROUP BY 
         u.Id, u.Reputation, u.CreationDate, u.DisplayName, u.LastAccessDate
 ),
@@ -27,7 +27,7 @@ ActiveBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        b.Date >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         b.UserId
 ),

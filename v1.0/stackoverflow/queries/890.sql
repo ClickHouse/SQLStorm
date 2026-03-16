@@ -25,7 +25,7 @@ RecentVotes AS (
         v.UserId,
         COUNT(*) AS RecentVoteCount
     FROM Votes v
-    WHERE v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY v.UserId
 )
 

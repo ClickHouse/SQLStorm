@@ -27,7 +27,7 @@ CustomerData AS (
         cd.cd_marital_status,
         cd.cd_education_status,
         cd.cd_credit_rating,
-        toYear(d.d_date) AS year
+        EXTRACT(YEAR FROM d.d_date) AS year
     FROM 
         customer c
     JOIN 

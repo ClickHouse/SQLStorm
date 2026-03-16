@@ -35,7 +35,7 @@ RecentPosts AS (
         COUNT(*) AS EditCount,
         RANK() OVER (ORDER BY COUNT(*) DESC) AS EditRank
     FROM PostHistory
-    WHERE CreationDate > now64(6) - INTERVAL 30 DAY
+    WHERE CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY PostId
 ),
 CombinedInfo AS (

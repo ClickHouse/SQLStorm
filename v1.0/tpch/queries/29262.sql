@@ -23,11 +23,11 @@ JOIN
 WHERE 
     p.p_type LIKE 'rubber%'
 AND 
-    o.o_orderdate >= toDate('1996-01-01') 
+    o.o_orderdate >= DATE '1996-01-01' 
 AND 
-    o.o_orderdate < toDate('1997-01-01')
+    o.o_orderdate < DATE '1997-01-01'
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey, p.p_comment, o.o_orderdate
 ORDER BY 
     total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

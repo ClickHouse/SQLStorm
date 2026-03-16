@@ -17,7 +17,7 @@ WITH PostAggregates AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
         AND p.PostTypeId = 1  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount

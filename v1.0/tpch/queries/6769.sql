@@ -9,7 +9,7 @@ OrderStats AS (
     SELECT o.o_orderkey, o.o_custkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderstatus = 'F' AND l.l_shipdate BETWEEN toDate('1998-01-01') AND toDate('1998-12-31')
+    WHERE o.o_orderstatus = 'F' AND l.l_shipdate BETWEEN DATE '1998-01-01' AND DATE '1998-12-31'
     GROUP BY o.o_orderkey, o.o_custkey
 ),
 TopCustomers AS (

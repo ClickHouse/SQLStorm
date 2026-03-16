@@ -49,4 +49,4 @@ GROUP BY
     o.o_orderkey, rg.r_name, hp.p_name
 ORDER BY 
     revenue DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

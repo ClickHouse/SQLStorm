@@ -64,4 +64,4 @@ WHERE
 ORDER BY 
     u.Reputation DESC, 
     rp.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

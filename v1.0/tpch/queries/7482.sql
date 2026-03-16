@@ -15,7 +15,7 @@ WITH RevenueSummary AS (
     JOIN
         nation n ON s.s_nationkey = n.n_nationkey
     WHERE
-        o.o_orderdate >= toDate('2000-01-01') AND o.o_orderdate < toDate('2001-01-01')
+        o.o_orderdate >= DATE '2000-01-01' AND o.o_orderdate < DATE '2001-01-01'
         AND l.l_returnflag = 'N'
     GROUP BY
         n.n_name

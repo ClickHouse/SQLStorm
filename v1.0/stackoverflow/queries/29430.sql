@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 TagPostCounts AS (
     SELECT 
@@ -54,7 +54,7 @@ PopularPosts AS (
         rp.PostTypeName,
         pt.Name AS CloseReason,
         CASE 
-            WHEN rp.LastActivityDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH THEN 'Inactivity Detected'
+            WHEN rp.LastActivityDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months' THEN 'Inactivity Detected'
             ELSE 'Active'
         END AS ActivityStatus
     FROM 

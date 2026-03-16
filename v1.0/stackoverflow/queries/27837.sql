@@ -25,7 +25,7 @@ TaggedPosts AS (
     JOIN 
         Tags ON Posts.Tags LIKE '%' || Tags.TagName || '%'
     WHERE 
-        Posts.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        Posts.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         Posts.Id
 ),

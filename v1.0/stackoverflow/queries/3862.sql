@@ -61,4 +61,4 @@ WHERE
 ORDER BY 
     U.Reputation DESC, 
     U.QuestionCount DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

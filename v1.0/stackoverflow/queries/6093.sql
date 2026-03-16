@@ -28,7 +28,7 @@ PostAnalysis AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         p.OwnerUserId, p.PostTypeId
 )

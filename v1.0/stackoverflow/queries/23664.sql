@@ -12,7 +12,7 @@ WITH PostEngagement AS (
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (8, 9) 
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Badges b ON p.OwnerUserId = b.UserId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY p.Id, p.Title, p.Score, p.ViewCount, p.PostTypeId
 ),
 PostHistoryDetails AS (
@@ -24,7 +24,7 @@ PostHistoryDetails AS (
     FROM PostHistory ph
     JOIN PostHistoryTypes r ON ph.PostHistoryTypeId = r.Id
     JOIN Posts p ON ph.PostId = p.Id
-    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
       AND ph.Comment IS NOT NULL
 ),
 RecentEngagements AS (

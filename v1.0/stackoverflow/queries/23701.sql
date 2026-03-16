@@ -22,7 +22,7 @@ RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 TopUsers AS (
     SELECT 
@@ -72,7 +72,7 @@ SELECT
     END AS UserTier,
     CASE 
         WHEN phs.LastUpdate IS NULL THEN 'No history available'
-        ELSE (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rp.PostId AND v.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY) || ' votes in the last month'
+        ELSE (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rp.PostId AND v.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days') || ' votes in the last month'
     END AS RecentVotingActivity
 FROM 
     TopUsers tu

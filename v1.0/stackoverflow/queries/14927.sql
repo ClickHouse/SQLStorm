@@ -17,7 +17,7 @@ WITH Benchmark AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.CreationDate, U.Reputation
 )
@@ -28,8 +28,8 @@ SELECT
     CommentCount, 
     VoteCount, 
     LastHistoryActionDate,
-    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - PostCreationDate)) AS AgeInSeconds,
-    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - LastHistoryActionDate)) AS LastActionLagInSeconds
+    toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - PostCreationDate)) AS AgeInSeconds,
+    toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - LastHistoryActionDate)) AS LastActionLagInSeconds
 FROM 
     Benchmark
 ORDER BY 

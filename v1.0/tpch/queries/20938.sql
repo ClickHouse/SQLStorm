@@ -42,7 +42,7 @@ LEFT JOIN
 JOIN 
     orders o ON l.l_orderkey = o.o_orderkey 
 WHERE 
-    l.l_shipdate >= CURRENT_DATE - INTERVAL 6 MONTH
+    l.l_shipdate >= CURRENT_DATE - INTERVAL '6 months'
     AND (s.s_phone IS NULL OR s.s_phone LIKE '%555%')
     AND p.p_partkey IN (
         SELECT rp.p_partkey

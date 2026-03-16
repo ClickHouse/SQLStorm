@@ -9,7 +9,7 @@ WITH top_suppliers AS (
 recent_orders AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_orderdate
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
 ),
 lineitem_details AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_line_value

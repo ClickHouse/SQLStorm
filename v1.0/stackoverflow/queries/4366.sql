@@ -18,7 +18,7 @@ RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ), 
 UserPostStats AS (
     SELECT 
@@ -58,7 +58,7 @@ SELECT
     COALESCE(cp.ClosureCount, 0) as ClosedPostCount,
     CASE 
         WHEN ups.LastPostDate IS NULL THEN 'No posts'
-        WHEN ups.LastPostDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Inactive'
+        WHEN ups.LastPostDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 'Inactive'
         ELSE 'Active'
     END as UserStatus
 FROM 

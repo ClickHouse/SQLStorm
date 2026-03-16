@@ -52,4 +52,4 @@ SELECT
 FROM CustomerInfo ci
 JOIN PopularItems pi ON ci.total_customer_return > 0
 ORDER BY ci.total_customer_return DESC, pi.net_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

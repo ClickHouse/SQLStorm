@@ -70,4 +70,4 @@ WHERE
     AND (s.return_percentage IS NULL OR s.return_percentage < 10)
 ORDER BY 
     s.return_percentage DESC, s.total_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

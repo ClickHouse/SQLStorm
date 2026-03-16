@@ -9,7 +9,7 @@ WITH UserVotes AS (
     JOIN 
         Posts p ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         v.UserId
 ),
@@ -42,7 +42,7 @@ PopularPosts AS (
         p.ViewCount,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
-        ROW_NUMBER() OVER (ORDER BY p.Score DESC, any(p.CreationDate) ASC) AS PopularityRank
+        ROW_NUMBER() OVER (ORDER BY p.Score DESC, p.CreationDate ASC) AS PopularityRank
     FROM 
         Posts p
     LEFT JOIN 

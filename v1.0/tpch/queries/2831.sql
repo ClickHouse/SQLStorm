@@ -16,7 +16,7 @@ top_customers AS (
         SUM(o.o_totalprice) AS total_spending
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '6 MONTH'
     GROUP BY c.c_custkey, c.c_name
     ORDER BY total_spending DESC
     LIMIT 10
@@ -44,4 +44,4 @@ JOIN supplier_summary ss ON ss.num_parts > 5
 JOIN national_parts np ON np.part_count < 50
 WHERE ts.total_spending > 1000
 ORDER BY ts.total_spending DESC, ss.total_supply_cost ASC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

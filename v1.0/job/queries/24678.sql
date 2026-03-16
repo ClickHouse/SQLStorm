@@ -71,4 +71,4 @@ ORDER BY
     mc.production_year DESC, 
     mc.movie_title,
     mc.actor_name
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;

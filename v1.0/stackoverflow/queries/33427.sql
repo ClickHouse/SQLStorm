@@ -30,7 +30,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON p.OwnerUserId = U.Id
     WHERE
-        p.CreationDate >= toDate('2023-01-01') 
+        p.CreationDate >= DATE '2023-01-01' 
 ),
 ClosedPosts AS (
     SELECT 

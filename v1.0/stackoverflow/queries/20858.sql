@@ -28,7 +28,7 @@ RecentActors AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        u.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        u.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -40,7 +40,7 @@ TopBadgers AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        b.Date >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         b.UserId
     HAVING 

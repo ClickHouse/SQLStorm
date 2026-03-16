@@ -43,4 +43,4 @@ SELECT
 FROM high_sales h
 JOIN customer_demographics_filtered cd ON h.total_profit > (SELECT AVG(total_profit) FROM high_sales)
 ORDER BY h.total_profit DESC, cd.customer_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

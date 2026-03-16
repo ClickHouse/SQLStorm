@@ -51,7 +51,7 @@ PostStatistics AS (
         ub.BadgeCount,
         CASE
             WHEN rph.HistoryCreationDate IS NOT NULL THEN 
-                toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - rph.HistoryCreationDate)) / 3600 
+                toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - rph.HistoryCreationDate)) / 3600 
             ELSE NULL
         END AS HoursSinceLastEdit
     FROM 

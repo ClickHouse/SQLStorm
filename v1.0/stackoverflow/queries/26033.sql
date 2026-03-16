@@ -30,7 +30,7 @@ FilteredPosts AS (
     FROM 
         RankedPosts rp
     WHERE 
-        rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
+        rp.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
 )
 SELECT 
     fp.PostId,

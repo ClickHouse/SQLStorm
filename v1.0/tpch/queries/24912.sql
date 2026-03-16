@@ -36,7 +36,7 @@ RecentOrders AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY
+        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '30 days'
 )
 
 SELECT 

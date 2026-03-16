@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Tags t ON t.WikiPostId = p.Id
     WHERE 
         u.Reputation > 1000 AND 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR'
 ),
 RecentTopPosts AS (
     SELECT 

@@ -23,7 +23,7 @@ TopPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankedPosts
     FROM Posts p
     INNER JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate > CURRENT_DATE - INTERVAL 90 DAY
+    WHERE p.CreationDate > CURRENT_DATE - INTERVAL '90 days'
 )
 SELECT 
     ua.DisplayName,

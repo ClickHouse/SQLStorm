@@ -27,7 +27,7 @@ cast_data AS (
 ),
 movie_keywords AS (
     SELECT mk.movie_id, 
-           arrayStringConcat(groupArray(assumeNotNull(CAST(mk.keyword_id AS text))), ',') AS keyword_ids
+           arrayStringConcat(groupArray(assumeNotNull(mk.keyword_id::text)), ',') AS keyword_ids
     FROM movie_keyword mk
     GROUP BY mk.movie_id
 )

@@ -82,4 +82,4 @@ GROUP BY
     tci.gender_label
 ORDER BY 
     customer_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR
+        p.CreationDate > DATE '2024-10-01' - INTERVAL '1 year'
         AND p.PostTypeId = 1 
 ),
 RecentVotes AS (
@@ -28,7 +28,7 @@ RecentVotes AS (
     JOIN 
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE 
-        v.CreationDate >= toDate('2024-10-01') - INTERVAL 7 DAY
+        v.CreationDate >= DATE '2024-10-01' - INTERVAL '7 days'
     GROUP BY 
         v.PostId, v.UserId, vt.Name
 ),

@@ -32,4 +32,4 @@ GROUP BY
     c.c_customer_id, c.c_first_name, c.c_last_name, d.d_year, ca.ca_city, cd.cd_gender, cd.cd_marital_status
 ORDER BY 
     total_sales DESC, average_order_value DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

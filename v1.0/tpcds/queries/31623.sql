@@ -58,4 +58,4 @@ WHERE
     AND (ad.customer_count IS NOT NULL OR ad.customer_count > 0)
 ORDER BY 
     sd.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -47,7 +47,7 @@ LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
 JOIN part p ON l.l_partkey = p.p_partkey
 JOIN RankedSuppliers rs ON l.l_suppkey = rs.s_suppkey
 LEFT JOIN SupplierHierarchy sh ON rs.s_suppkey = sh.s_suppkey
-WHERE (l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31'))
+WHERE (l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31')
 AND (p.p_retailprice > 100 OR p.p_container IS NOT NULL)
 AND l.l_returnflag IS NULL
 GROUP BY p.p_name, r.r_name, c.c_name, sh.level, o.o_orderstatus

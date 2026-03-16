@@ -18,7 +18,7 @@ CurrentYearSales AS (
     INNER JOIN 
         date_dim ON ws_sold_date_sk = d_date_sk
     WHERE 
-        d_year = toYear(cast('2002-10-01' as date))
+        d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
     GROUP BY 
         ws_item_sk
 ),

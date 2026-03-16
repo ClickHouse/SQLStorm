@@ -8,7 +8,7 @@ WITH RankedMovies AS (
     FROM 
         aka_title t
     WHERE 
-        toYear(toDate('2024-10-01')) - t.production_year <= 10
+        EXTRACT(YEAR FROM DATE '2024-10-01') - t.production_year <= 10
 ),
 CastSummary AS (
     SELECT 

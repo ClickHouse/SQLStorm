@@ -34,7 +34,7 @@ PostVoteStats AS (
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes
     FROM Posts P
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY P.OwnerUserId
 ),
 TopPostVoters AS (

@@ -62,4 +62,4 @@ FROM
     final_output
 WHERE 
     actor_rank <= 3
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Comments c ON p.Id = c.PostId
     WHERE
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 PostVoteStats AS (
     SELECT 
@@ -83,4 +83,4 @@ WHERE
     AND f.OwnerReputation IS NOT NULL
 ORDER BY 
     f.CreationDate DESC
-LIMIT 30 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 30 ROWS ONLY;

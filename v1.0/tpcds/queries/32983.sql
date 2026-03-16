@@ -74,4 +74,4 @@ HAVING
     SUM(ds.avg_spent) IS NOT NULL
 ORDER BY 
     avg_spending DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

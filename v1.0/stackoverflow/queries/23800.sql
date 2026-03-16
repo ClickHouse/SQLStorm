@@ -62,4 +62,4 @@ ORDER BY
     CASE WHEN cp.ClosedDate IS NOT NULL THEN 0 ELSE 1 END, 
     rp.Score DESC,
     rp.CreationDate DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -5,7 +5,7 @@ WITH CustomerInfo AS (
         cd.cd_gender,
         ca.ca_city,
         ca.ca_state,
-        datePart('year', toDate('2002-10-01')) - c.c_birth_year AS age,
+        datePart('year', DATE '2002-10-01') - c.c_birth_year AS age,
         c.c_customer_sk
     FROM 
         customer c

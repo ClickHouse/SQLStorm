@@ -50,4 +50,4 @@ WHERE
     COALESCE(RS.total_sales, 0) + COALESCE(HR.total_return_amt, 0) > 100
 ORDER BY 
     net_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

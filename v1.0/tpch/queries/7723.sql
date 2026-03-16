@@ -21,7 +21,7 @@ JOIN
     supplier s ON ps.ps_suppkey = s.s_suppkey
 WHERE 
     r.r_name LIKE 'EUROPE%'
-    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     n.n_name, r.r_name
 ORDER BY 

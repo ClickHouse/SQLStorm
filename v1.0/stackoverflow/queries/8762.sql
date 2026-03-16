@@ -36,7 +36,7 @@ PostDetails AS (
     LEFT JOIN 
         Users U ON PH.UserId = U.Id
     WHERE 
-        P.LastActivityDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        P.LastActivityDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
 ),
 AggregateData AS (
     SELECT 

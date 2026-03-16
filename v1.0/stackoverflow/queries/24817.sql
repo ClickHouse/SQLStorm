@@ -28,7 +28,7 @@ HighRepUsers AS (
 RecentPostStats AS (
     SELECT 
         p.OwnerUserId,
-        COUNT(CASE WHEN p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 END) AS RecentPostsCount,
+        COUNT(CASE WHEN p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 1 END) AS RecentPostsCount,
         AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))/60) AS AvgMinutesToActivity,
         MAX(p.Score) AS MaxPostScore
     FROM Posts p
@@ -68,4 +68,4 @@ LEFT JOIN RecentPostStats r ON hu.UserId = r.OwnerUserId
 LEFT JOIN UserBadgeCount b ON hu.UserId = b.UserId
 WHERE hu.RepRank <= 10
 ORDER BY hu.TotalUpVotes - hu.TotalDownVotes DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

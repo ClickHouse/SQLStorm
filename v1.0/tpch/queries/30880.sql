@@ -36,7 +36,7 @@ JOIN orders o ON l.l_orderkey = o.o_orderkey
 LEFT JOIN nation n ON s.s_nationkey = n.n_nationkey
 LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
 LEFT JOIN SupplierHierarchy sh ON s.s_suppkey = sh.s_suppkey
-WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 AND (l.l_returnflag = 'N' OR l.l_returnflag IS NULL)
 GROUP BY p.p_name, p.p_brand, r.r_name, sh.s_name, s.s_nationkey
 ORDER BY order_count DESC, avg_revenue DESC

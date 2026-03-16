@@ -55,4 +55,4 @@ WHERE p.p_retailprice > (
         WHERE p2.p_size < 20
     )
 ORDER BY total_revenue DESC NULLS LAST
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

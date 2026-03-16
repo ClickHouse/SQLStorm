@@ -77,7 +77,7 @@ JOIN
 JOIN 
     PopularTags T ON T.Tag = ANY(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2)))
 WHERE 
-    P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+    P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
 ORDER BY 
     V.UpVoteCount DESC, E.LastEditDate DESC
 LIMIT 50;

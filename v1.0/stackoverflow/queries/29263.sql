@@ -71,4 +71,4 @@ LEFT JOIN
     UserReputation ur ON ur.UserId = u.Id
 ORDER BY 
     rp.CreationDate DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -47,4 +47,4 @@ CROSS JOIN
 ORDER BY 
     sd.total_sales DESC, 
     dd.avg_purchase_estimate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

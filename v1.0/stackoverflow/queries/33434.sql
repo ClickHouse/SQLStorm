@@ -20,7 +20,7 @@ RecentPosts AS (
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (2, 3) 
-    WHERE P.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
     GROUP BY P.Id, P.Title, P.CreationDate, P.OwnerUserId, P.Score
 ), 
 PostMetadata AS (

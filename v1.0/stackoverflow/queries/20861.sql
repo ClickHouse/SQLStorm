@@ -39,7 +39,7 @@ RecentVotes AS (
     JOIN 
         VoteTypes vt ON v.VoteTypeId = vt.Id
     WHERE 
-        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY 
         v.PostId
 ),
@@ -94,4 +94,5 @@ ORDER BY
     ps.Score DESC, 
     ps.Reputation DESC, 
     ps.ViewCount DESC
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS 
+FETCH NEXT 100 ROWS ONLY;

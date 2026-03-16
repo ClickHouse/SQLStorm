@@ -22,9 +22,9 @@ DateDetails AS (
     SELECT 
         d_date_sk,
         d_date,
-        toYear(d_date) AS year,
-        toMonth(d_date) AS month,
-        toDayOfMonth(d_date) AS day,
+        EXTRACT(YEAR FROM d_date) AS year,
+        EXTRACT(MONTH FROM d_date) AS month,
+        EXTRACT(DAY FROM d_date) AS day,
         COUNT(*) AS total_dates
     FROM 
         date_dim

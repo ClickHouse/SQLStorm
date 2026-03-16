@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
         AND P.Score IS NOT NULL
 ), 
 AggregatedVotes AS (
@@ -51,7 +51,7 @@ SELECT
     PD.ViewCount,
     PD.OwnerName,
     COALESCE(PH.Comment, 'No comments') AS LastPostHistoryComment,
-    COALESCE(SUM(CASE WHEN PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 DAY THEN 1 END), 0) AS RecentChanges
+    COALESCE(SUM(CASE WHEN PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '3 days' THEN 1 END), 0) AS RecentChanges
 FROM 
     PostDetails PD
 LEFT JOIN 
@@ -62,4 +62,4 @@ HAVING
     COUNT(PH.Id) > 0
 ORDER BY 
     PD.Score DESC, PD.ViewCount DESC, PD.CreationDate ASC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

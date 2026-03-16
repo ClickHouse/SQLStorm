@@ -37,6 +37,6 @@ LEFT JOIN UserReputation UR ON U.Id = UR.UserId
 LEFT JOIN PostsSummary PS ON U.Id = PS.OwnerUserId
 LEFT JOIN VoteCounts VC ON U.Id = VC.UserId
 WHERE U.Location IS NOT NULL
-  AND U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+  AND U.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ORDER BY Reputation DESC, TotalPosts DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

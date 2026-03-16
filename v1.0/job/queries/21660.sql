@@ -70,7 +70,7 @@ LEFT JOIN
         FROM cast_info ci 
         WHERE ci.movie_id = m.title_id
         ORDER BY ci.nr_order
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     )
 WHERE 
     m.keywords IS NOT NULL

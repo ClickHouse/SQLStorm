@@ -48,7 +48,7 @@ SELECT
     r.CloseReason,
     CASE 
         WHEN r.ViewRank IS NULL THEN 'No posts ranked'
-        ELSE 'Ranked as ' || CAST(r.ViewRank AS TEXT) || ' by views'
+        ELSE 'Ranked as ' || r.ViewRank::TEXT || ' by views'
     END AS ViewRankComment,
     CASE 
         WHEN r.RecentRank < 10 THEN 'Recent high activity'
@@ -66,4 +66,5 @@ WHERE
     a.TotalViews > 500
 ORDER BY 
     a.BadgeCount DESC, a.TotalViews DESC, r.ViewCount DESC NULLS LAST
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS
+FETCH NEXT 10 ROWS ONLY;

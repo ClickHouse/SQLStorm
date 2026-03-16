@@ -55,4 +55,4 @@ WHERE
     ia.i_current_price IS NOT NULL
 ORDER BY 
     total_sales_value DESC NULLS LAST
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

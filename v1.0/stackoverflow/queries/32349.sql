@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) OVER (PARTITION BY p.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserReputation AS (
     SELECT 
@@ -84,4 +84,4 @@ SELECT
     COALESCE(fo.CloseReason, 'N/A') AS CloseReasonDetails
 FROM FinalOutput fo
 ORDER BY fo.Score DESC, fo.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

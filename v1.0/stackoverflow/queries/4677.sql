@@ -50,4 +50,4 @@ WHERE
     B.Class = 1 OR B.Class = 2  
 ORDER BY 
     TU.Reputation DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

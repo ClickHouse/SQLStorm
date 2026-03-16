@@ -28,7 +28,7 @@ PostAnalytics AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId 
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
         AND (p.Score > 10 OR (SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id) > 5)
 ),
 TopUsers AS (

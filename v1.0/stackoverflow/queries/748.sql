@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserBadges AS (
     SELECT 
@@ -72,6 +72,6 @@ FULL OUTER JOIN
 LEFT JOIN 
     PostsWithComments pc ON rp.PostId = pc.PostId
 WHERE 
-    a.TotalScore > 500 OR (rp.PostId IS NOT NULL AND rp.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
+    a.TotalScore > 500 OR (rp.PostId IS NOT NULL AND rp.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months')
 ORDER BY 
     a.TotalScore DESC, rp.Score DESC;

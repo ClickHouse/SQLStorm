@@ -48,6 +48,6 @@ SELECT
     ss.yearly_orders,
     ss.yearly_avg_sales_price
 FROM TopCustomers tc
-LEFT JOIN SalesSummary ss ON ss.d_year = toYear(toDate('2002-10-01'))
+LEFT JOIN SalesSummary ss ON ss.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
 WHERE tc.rank <> -1
 ORDER BY total_sales DESC, tc.c_last_name ASC;

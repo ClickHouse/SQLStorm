@@ -12,7 +12,7 @@ TopPostCounts AS (
         P.OwnerUserId,
         COUNT(P.Id) AS PostCount
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY P.OwnerUserId
 ),
 RecentVotes AS (
@@ -22,7 +22,7 @@ RecentVotes AS (
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes
     FROM Votes V
-    WHERE V.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE V.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
     GROUP BY V.UserId
 ),
 UserStats AS (

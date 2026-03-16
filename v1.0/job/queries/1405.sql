@@ -49,4 +49,4 @@ LEFT JOIN CompanyInfo ci ON rm.movie_id = ci.movie_id
 LEFT JOIN MovieCast mcast ON rm.movie_id = mcast.movie_id
 WHERE rm.rn <= 5
 ORDER BY rm.production_year DESC, rm.title ASC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

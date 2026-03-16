@@ -28,7 +28,7 @@ FilteredPosts AS (
         rp.OwnerUserId,
         COALESCE(rp.CommentCount, 0) AS CommentCount,
         CASE 
-            WHEN rp.ClosedOrReopenedDate IS NOT NULL AND rp.ClosedOrReopenedDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+            WHEN rp.ClosedOrReopenedDate IS NOT NULL AND rp.ClosedOrReopenedDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
             THEN 'Closed Recently'
             ELSE 'Active'
         END AS PostStatus

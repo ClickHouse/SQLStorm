@@ -13,7 +13,7 @@ DateRanks AS (
     SELECT d.d_date, 
            DENSE_RANK() OVER (ORDER BY d.d_date) AS date_rank
     FROM date_dim d
-    WHERE d.d_date >= toDate('1998-01-01')
+    WHERE d.d_date >= DATE '1998-01-01'
 ),
 SalesSummary AS (
     SELECT coalesce(ws.ws_bill_cdemo_sk, cs.cs_bill_cdemo_sk, ss.ss_cdemo_sk) AS customer_id,

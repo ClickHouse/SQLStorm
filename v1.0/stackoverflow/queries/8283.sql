@@ -22,7 +22,7 @@ WITH LatestPosts AS (
     LEFT JOIN 
         Tags t ON t.TagName = tag_name.tag
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.CreationDate, p.ViewCount
 ),
@@ -34,7 +34,7 @@ PostHistoryStats AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId
 ),

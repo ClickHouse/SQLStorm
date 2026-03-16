@@ -55,7 +55,7 @@ CustomerOrderDetails AS (
     GROUP BY 
         c.c_custkey, c.c_name
     HAVING 
-        MAX(l.l_shipdate) < cast('1998-10-01' as date) - INTERVAL 1 YEAR
+        MAX(l.l_shipdate) < cast('1998-10-01' as date) - INTERVAL '1 year'
 ),
 FinalReport AS (
     SELECT 

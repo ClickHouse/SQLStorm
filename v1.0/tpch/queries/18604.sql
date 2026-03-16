@@ -4,4 +4,4 @@ FROM part p
 JOIN lineitem l ON p.p_partkey = l.l_partkey
 GROUP BY p.p_name
 ORDER BY total_quantity DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

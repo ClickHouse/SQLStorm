@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     INNER JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
 ),
 TopPosts AS (
     SELECT 
@@ -47,7 +47,7 @@ PostHistorySummary AS (
     INNER JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
     GROUP BY 
         p.Id, ph.PostHistoryTypeId
 )

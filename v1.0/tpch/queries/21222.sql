@@ -41,4 +41,4 @@ SELECT fs.p_partkey, fs.p_name, fs.p_brand, fs.p_retailprice, fs.rank_within_cat
 FROM final_selection fs
 WHERE fs.rank_within_category <= 5
 ORDER BY fs.p_retailprice DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

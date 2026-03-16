@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 PostWithComments AS (
     SELECT 
@@ -41,7 +41,7 @@ TopUsers AS (
     INNER JOIN 
         Posts p ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -56,7 +56,7 @@ PostHistorySummary AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        ph.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         ph.PostId, ph.PostHistoryTypeId, ph.UserDisplayName, ph.CreationDate
 )

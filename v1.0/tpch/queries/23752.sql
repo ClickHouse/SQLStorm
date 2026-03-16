@@ -35,4 +35,4 @@ AND (o.o_orderdate BETWEEN '1996-01-01' AND '1996-12-31' OR o.o_orderdate IS NUL
 GROUP BY n.n_name
 HAVING COUNT(DISTINCT cust.c_custkey) > 0
 ORDER BY unique_customers DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

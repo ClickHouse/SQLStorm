@@ -31,7 +31,7 @@ RecentVotes AS (
     LEFT JOIN 
         Comments c ON v.PostId = c.PostId
     WHERE 
-        v.CreationDate > CURRENT_DATE - INTERVAL 30 DAY
+        v.CreationDate > CURRENT_DATE - INTERVAL '30 days'
     GROUP BY 
         v.PostId
 )
@@ -60,4 +60,4 @@ WHERE
     AND (rv.VoteSum IS NULL OR rv.VoteSum > 0 OR q.AnswerCount > 0)
 ORDER BY 
     q.CreationDate DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

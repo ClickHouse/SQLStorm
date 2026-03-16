@@ -62,7 +62,7 @@ JOIN
         FROM date_dim d
         JOIN web_sales ws ON ws.ws_sold_date_sk = d.d_date_sk
         WHERE ws.ws_bill_customer_sk = c.c_customer_sk
-        AND toYear(d.d_date) = 2023
+        AND EXTRACT(YEAR FROM d.d_date) = 2023
     )
 ORDER BY
     cs.total_net_profit DESC, c.c_last_name, c.c_first_name;

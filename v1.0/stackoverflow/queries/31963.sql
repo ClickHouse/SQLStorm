@@ -84,7 +84,7 @@ SELECT
     CS.CommentCount,
     CS.LastCommentDate,
     CASE 
-        WHEN CS.LastCommentDate IS NOT NULL AND CS.LastCommentDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        WHEN CS.LastCommentDate IS NOT NULL AND CS.LastCommentDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
         THEN 'Active' 
         ELSE 'Inactive' 
     END AS UserStatus

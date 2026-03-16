@@ -93,4 +93,4 @@ FROM
 ORDER BY 
     r.total_revenue DESC, 
     r.total_avail_qty ASC 
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

@@ -54,4 +54,4 @@ WHERE
     h.total_net_profit > 1000
 ORDER BY 
     h.total_net_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

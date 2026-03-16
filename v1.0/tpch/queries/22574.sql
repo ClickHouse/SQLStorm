@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL 3 YEAR 
+        o.o_orderdate >= CURRENT_DATE - INTERVAL '3 years' 
         AND o.o_orderstatus IN ('O', 'F')
 ),
 SuppliersWithComments AS (

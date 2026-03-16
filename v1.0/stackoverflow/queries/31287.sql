@@ -25,7 +25,7 @@ PostStats AS (
         COALESCE(uh.TotalScore, 0) AS UserTotalScore
     FROM Posts p
     LEFT JOIN UserPosts uh ON p.OwnerUserId = uh.UserId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 ClosedPosts AS (
     SELECT 

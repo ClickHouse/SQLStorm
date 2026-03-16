@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 TopPosts AS (
     SELECT 
@@ -56,9 +56,9 @@ SELECT
     TotalViews,
     TotalAnswers,
     TotalComments,
-    (CAST(TotalViews AS DECIMAL) / NULLIF(TotalPosts, 0)) AS AvgViewsPerPost,
-    (CAST(TotalAnswers AS DECIMAL) / NULLIF(TotalPosts, 0)) AS AvgAnswersPerPost,
-    (CAST(TotalComments AS DECIMAL) / NULLIF(TotalPosts, 0)) AS AvgCommentsPerPost
+    (TotalViews::DECIMAL / NULLIF(TotalPosts, 0)) AS AvgViewsPerPost,
+    (TotalAnswers::DECIMAL / NULLIF(TotalPosts, 0)) AS AvgAnswersPerPost,
+    (TotalComments::DECIMAL / NULLIF(TotalPosts, 0)) AS AvgCommentsPerPost
 FROM 
     PostStatistics
 ORDER BY 

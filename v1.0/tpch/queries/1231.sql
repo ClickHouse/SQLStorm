@@ -44,6 +44,6 @@ JOIN lineitem l ON o.o_orderkey = l.l_orderkey
 JOIN RankedSuppliers s ON l.l_suppkey = s.s_suppkey AND s.rn = 1
 JOIN SupplierCostSummary sc ON l.l_partkey = sc.p_partkey
 JOIN part p ON l.l_partkey = p.p_partkey
-WHERE o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+WHERE o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 ORDER BY total_price DESC, supplier_cost DESC
 LIMIT 100;

@@ -67,7 +67,7 @@ LEFT JOIN (
         SUM(o.o_totalprice) AS total_price
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= toDate('1998-10-01') - INTERVAL 30 DAY
+    WHERE o.o_orderdate >= DATE '1998-10-01' - INTERVAL '30 days'
     GROUP BY c.c_custkey
 ) fro ON o.o_custkey = fro.c_custkey
 WHERE fo.retail_price_adj > 100

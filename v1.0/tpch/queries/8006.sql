@@ -26,7 +26,7 @@ OrderDetails AS (
     JOIN 
         supplier s ON ps.ps_suppkey = s.s_suppkey
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
+        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
     GROUP BY 
         o.o_orderkey, o.o_totalprice, o.o_orderdate, s.s_name
 ),

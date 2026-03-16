@@ -28,7 +28,7 @@ JOIN
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
     o.o_orderstatus = 'O' 
-    AND l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    AND l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
 GROUP BY 
     p.p_name
 ORDER BY 

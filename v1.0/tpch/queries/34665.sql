@@ -80,4 +80,4 @@ WHERE
 ORDER BY 
     p.p_brand ASC, 
     total_spent_by_customer DESC 
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

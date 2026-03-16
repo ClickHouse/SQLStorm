@@ -73,4 +73,4 @@ WHERE
     )
 ORDER BY 
     rc.total_spent DESC, rc.sales_count ASC
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;

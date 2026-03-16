@@ -81,4 +81,4 @@ OR
 ORDER BY 
     cd.total_price DESC, 
     cd.orders_count ASC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

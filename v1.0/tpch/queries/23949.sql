@@ -29,7 +29,7 @@ LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
 LEFT JOIN lineitem l ON ps.ps_partkey = l.l_partkey
 LEFT JOIN part p ON ps.ps_partkey = p.p_partkey
 WHERE s.s_acctbal BETWEEN 100 AND 500
-  AND l.l_shipdate BETWEEN toDate('1994-01-01') AND toDate('1997-12-31')
+  AND l.l_shipdate BETWEEN DATE '1994-01-01' AND DATE '1997-12-31'
   AND (s.s_comment LIKE '%important%' OR s.s_comment IS NULL)
 GROUP BY n.n_name, n.n_nationkey
 HAVING COUNT(DISTINCT s.s_suppkey) > 3

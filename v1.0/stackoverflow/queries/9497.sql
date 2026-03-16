@@ -22,7 +22,7 @@ PostActivity AS (
         PH.PostHistoryTypeId,
         COUNT(*) AS ChangeCount
     FROM PostHistory PH
-    WHERE PH.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    WHERE PH.CreationDate >= (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')
     GROUP BY PH.UserId, PH.PostId, PH.CreationDate, PH.PostHistoryTypeId
 ),
 Result AS (

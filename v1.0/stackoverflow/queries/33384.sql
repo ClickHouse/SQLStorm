@@ -18,7 +18,7 @@ RecentVotes AS (
     FROM 
         Votes
     WHERE 
-        CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY 
         PostId
 ),
@@ -33,7 +33,7 @@ ClosedPosts AS (
         PostHistory 
     WHERE 
         PostHistoryTypeId = 10
-        AND CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        AND CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
 ),
 TopUsers AS (
     SELECT 

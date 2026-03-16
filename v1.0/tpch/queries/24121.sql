@@ -38,7 +38,7 @@ INNER JOIN supplier s ON l.l_suppkey = s.s_suppkey
 INNER JOIN nation n ON s.s_nationkey = n.n_nationkey
 INNER JOIN region r ON n.n_regionkey = r.r_regionkey
 LEFT JOIN Order_CTE oc ON c.c_custkey = oc.o_custkey AND oc.level > 1
-WHERE l.l_shipdate BETWEEN toDate('1998-10-01') - INTERVAL 1 YEAR AND toDate('1998-10-01')
+WHERE l.l_shipdate BETWEEN DATE '1998-10-01' - INTERVAL '1 year' AND DATE '1998-10-01'
   AND l.l_discount > 0.1
   AND r.r_name IS NOT NULL
   AND n.n_name IS NOT NULL
@@ -54,4 +54,4 @@ HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > (
     ) AS subquery
 )
 ORDER BY total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

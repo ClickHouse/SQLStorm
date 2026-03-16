@@ -8,7 +8,7 @@ WITH RankedOrders AS (
         o.o_orderpriority,
         RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS rank_status_price
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
 ), 
 CustomerStats AS (
     SELECT 

@@ -73,4 +73,4 @@ FROM
 ORDER BY 
     f.production_year DESC,
     f.actor_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

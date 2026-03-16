@@ -64,4 +64,5 @@ WHERE
 ORDER BY 
     rm.production_year DESC, 
     rm.num_cast DESC 
-LIMIT 10 OFFSET 20;
+OFFSET 20 ROWS
+FETCH NEXT 10 ROWS ONLY;

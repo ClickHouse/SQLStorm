@@ -27,7 +27,7 @@ RecentPostActivity AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.OwnerUserId
 ),
@@ -80,4 +80,4 @@ WHERE
 ORDER BY 
     us.Reputation DESC,
     us.TotalPosts DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

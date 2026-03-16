@@ -53,4 +53,4 @@ SELECT
 FROM CombinedStats
 WHERE address_count > 5 AND total_net_profit > 1000
 ORDER BY total_net_profit DESC, address_count DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

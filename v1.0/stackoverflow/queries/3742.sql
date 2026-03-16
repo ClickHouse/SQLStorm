@@ -39,7 +39,7 @@ RecentActivities AS (
         RANK() OVER (PARTITION BY U.Id ORDER BY P.CreationDate DESC) AS RecentPostRank
     FROM Users U
     JOIN Posts P ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate > now64(6) - INTERVAL 30 DAY
+    WHERE P.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
 )
 SELECT 
     UA.DisplayName,

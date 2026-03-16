@@ -39,7 +39,7 @@ JOIN OrderSummary os ON o.o_orderkey = os.o_orderkey
 LEFT JOIN SupplierHierarchy sh ON n.n_nationkey = sh.s_nationkey
 LEFT JOIN SupplierWithDiscounts sd ON sh.s_suppkey = sd.s_suppkey
 WHERE o.o_orderstatus = 'O' 
-AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY r.r_name
 HAVING SUM(os.total_revenue) > 1000000
 ORDER BY total_revenue DESC;

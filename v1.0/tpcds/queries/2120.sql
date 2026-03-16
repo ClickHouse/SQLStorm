@@ -58,4 +58,4 @@ WHERE
   id.total_orders > 0 
 ORDER BY 
   return_rate_percentage DESC NULLS LAST
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

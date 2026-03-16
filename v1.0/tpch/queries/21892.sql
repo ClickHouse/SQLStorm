@@ -63,4 +63,5 @@ WHERE
 ORDER BY 
     p.p_retailprice ASC,
     Availability DESC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS
+FETCH NEXT 20 ROWS ONLY;

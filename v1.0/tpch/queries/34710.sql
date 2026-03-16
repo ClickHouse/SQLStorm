@@ -32,7 +32,7 @@ LEFT JOIN (
            SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_order_value
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
     GROUP BY o.o_orderkey, o.o_custkey
 ) so ON so.o_custkey IN (SELECT c.c_custkey FROM customer c WHERE c.c_nationkey = nh.n_nationkey)
 LEFT JOIN SupplierStats ss ON ss.s_suppkey IN (SELECT ps.ps_suppkey FROM partsupp ps WHERE ps.ps_partkey IN (SELECT p.p_partkey FROM part p WHERE p.p_size > 10)) 

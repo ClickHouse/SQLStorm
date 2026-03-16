@@ -1,16 +1,16 @@
 
 WITH RECURSIVE MonthlyReturnStats AS (
     SELECT
-        toYear(d_date) AS year,
-        toMonth(d_date) AS month,
+        EXTRACT(YEAR FROM d_date) AS year,
+        EXTRACT(MONTH FROM d_date) AS month,
         COUNT(DISTINCT wr_order_number) AS total_web_returns,
         SUM(wr_return_amt) AS total_return_amount
     FROM
         web_returns
     JOIN date_dim ON wr_returned_date_sk = d_date_sk
     GROUP BY
-        toYear(d_date),
-        toMonth(d_date)
+        EXTRACT(YEAR FROM d_date),
+        EXTRACT(MONTH FROM d_date)
     
     UNION ALL
     
@@ -40,8 +40,8 @@ SalesData AS (
     SELECT
         ws_sales_price,
         ws_net_profit,
-        toMonth(d_date) AS sales_month,
-        AVG(ws_net_profit) OVER (PARTITION BY toMonth(d_date)) AS avg_monthly_profit,
+        EXTRACT(MONTH FROM d_date) AS sales_month,
+        AVG(ws_net_profit) OVER (PARTITION BY EXTRACT(MONTH FROM d_date)) AS avg_monthly_profit,
         CASE
             WHEN ws_sales_price IS NULL THEN 'Unknown Price'
             ELSE CAST(ws_sales_price AS VARCHAR)
@@ -67,9 +67,9 @@ LEFT JOIN (
         m.total_web_returns
     FROM
         MonthlyReturnStats m
-) AS wr ON toMonth(CAST('2002-10-01' AS DATE)) = wr.return_month
+) AS wr ON EXTRACT(MONTH FROM CAST('2002-10-01' AS DATE)) = wr.return_month
 JOIN customer c ON c.c_current_cdemo_sk = ed.cd_demo_sk
-JOIN SalesData sd ON sd.sales_month = toMonth(CAST('2002-10-01' AS DATE))
+JOIN SalesData sd ON sd.sales_month = EXTRACT(MONTH FROM CAST('2002-10-01' AS DATE))
 WHERE
     (ed.cd_gender IS NOT NULL OR ed.cd_gender = 'F')
     AND (ed.cd_education_status IS NOT NULL AND (ed.cd_education_status LIKE '%graduate%' OR ed.cd_education_status LIKE '%postgraduate%'))

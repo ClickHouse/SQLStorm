@@ -45,7 +45,7 @@ ActivePosts AS (
     LEFT JOIN 
         (SELECT arrayJoin(splitByString('<>', P.Tags)) AS TagName) T ON TRUE
     WHERE 
-        P.CreationDate > now64(6) - INTERVAL 1 YEAR
+        P.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.ViewCount, P.AnswerCount
 )

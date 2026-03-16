@@ -35,7 +35,7 @@ PopularPosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.Score, P.ViewCount
     HAVING 

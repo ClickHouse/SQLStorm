@@ -17,7 +17,7 @@ customer_info AS (
         cd.cd_gender,
         cd.cd_marital_status,
         cd.cd_education_status,
-        toYear(CURRENT_DATE) - (c.c_birth_year + (c.c_birth_month * 30 + c.c_birth_day) / 365.25) AS age,
+        EXTRACT(YEAR FROM CURRENT_DATE) - (c.c_birth_year + (c.c_birth_month * 30 + c.c_birth_day) / 365.25) AS age,
         cbd.full_address,
         cbd.city_length,
         cbd.state_length,

@@ -40,7 +40,7 @@ RecentPosts AS (
     JOIN 
         Tags t ON p.Tags LIKE CONCAT('%<', t.TagName, '>%')
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY 
+        p.CreationDate > cast('2024-10-01' as date) - interval '30 days' 
     AND 
         p.PostTypeId = 1 
 )

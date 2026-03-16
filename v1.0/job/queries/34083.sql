@@ -47,7 +47,7 @@ LEFT JOIN
 LEFT JOIN (
     SELECT 
         movie_id,
-        toYear(cast('2024-10-01' as date)) - production_year AS produced_years
+        EXTRACT(YEAR FROM cast('2024-10-01' as date)) - production_year AS produced_years
     FROM 
         aka_title
 ) years ON years.movie_id = c.movie_id

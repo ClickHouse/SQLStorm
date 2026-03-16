@@ -11,6 +11,6 @@ WHERE
     CreationDate >= '2023-01-01' 
     AND PostTypeId = 1 
 GROUP BY 
-    toYear(CreationDate) 
+    EXTRACT(YEAR FROM CreationDate) 
 ORDER BY 
     TotalPosts DESC;

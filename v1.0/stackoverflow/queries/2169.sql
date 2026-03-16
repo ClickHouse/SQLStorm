@@ -35,7 +35,7 @@ SELECT
     arrayStringConcat(groupArray(assumeNotNull(rp.Title)), ', ') AS PostTitles,
     MAX(rp.CreationDate) AS LastPostDate,
     CASE 
-        WHEN MAX(rp.CreationDate) < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Inactive' 
+        WHEN MAX(rp.CreationDate) < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' THEN 'Inactive' 
         ELSE 'Active' 
     END AS ActivityStatus
 FROM 

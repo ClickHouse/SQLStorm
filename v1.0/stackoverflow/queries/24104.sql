@@ -8,7 +8,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
         AND p.ViewCount IS NOT NULL
 ),
 PostMetrics AS (
@@ -34,7 +34,7 @@ PostMetrics AS (
         JOIN 
             VoteTypes vt ON v.VoteTypeId = vt.Id
         WHERE 
-            v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+            v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
         GROUP BY 
             p.Id
     ) v ON rp.PostId = v.PostId
@@ -45,7 +45,7 @@ PostMetrics AS (
         FROM 
             Badges
         WHERE 
-            Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+            Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
         GROUP BY 
             UserId
     ) b ON b.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = rp.PostId)
@@ -61,7 +61,7 @@ PostHistoryCounts AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
+        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years'
         AND pht.Id IN (10, 11, 12) 
     GROUP BY 
         ph.PostId

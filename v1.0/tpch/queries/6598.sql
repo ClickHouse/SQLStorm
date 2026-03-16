@@ -70,4 +70,4 @@ WHERE
 ORDER BY 
     rn.region_name, 
     ls.total_revenue DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

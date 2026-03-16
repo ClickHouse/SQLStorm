@@ -44,7 +44,7 @@ Combined_Details AS (
 SELECT full_name, 
        COALESCE(total_spent, 0) AS total_spent, 
        COALESCE(total_sold, 0) AS total_sold,
-       ROUND(total_spent / NULLIF(total_sold, 0, CAST() AS NUMERIC), 2) AS avg_spent_per_item
+       ROUND(total_spent / NULLIF(total_sold, 0)::NUMERIC, 2) AS avg_spent_per_item
 FROM Combined_Details
 WHERE total_spent IS NOT NULL OR total_sold IS NOT NULL
 ORDER BY avg_spent_per_item DESC

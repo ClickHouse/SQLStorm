@@ -36,7 +36,7 @@ RecentPostHistory AS (
     FROM PostHistory ph
     JOIN Posts p ON ph.PostId = p.Id
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
-    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 )
 SELECT 
     trp.PostId,

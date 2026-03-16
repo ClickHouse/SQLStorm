@@ -9,7 +9,7 @@ WITH RecursivePostHistory AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= DATE('2024-10-01') - INTERVAL 1 YEAR
+        ph.CreationDate >= DATE('2024-10-01') - INTERVAL '1 year'
 ),
 UserStats AS (
     SELECT 
@@ -61,7 +61,7 @@ PostsWithDetails AS (
     LEFT JOIN 
         Comments cm ON p.Id = cm.PostId
     WHERE 
-        p.CreationDate >= DATE('2024-10-01') - INTERVAL 6 MONTH
+        p.CreationDate >= DATE('2024-10-01') - INTERVAL '6 months'
     GROUP BY 
         p.Id, p.Title, p.Body, p.OwnerUserId, p.CreationDate, 
         u.DisplayName, cr.CloseCount, cr.CloseReasons

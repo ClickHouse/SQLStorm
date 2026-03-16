@@ -18,7 +18,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     MAX(o.o_orderdate) AS last_order_date,
     CASE 
-        WHEN MAX(o.o_orderdate) < toDate('1998-10-01') - INTERVAL 1 YEAR THEN 'Inactive'
+        WHEN MAX(o.o_orderdate) < DATE '1998-10-01' - INTERVAL '1 year' THEN 'Inactive'
         ELSE 'Active'
     END AS customer_status,
     r.r_name AS region_name

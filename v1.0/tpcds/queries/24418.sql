@@ -79,4 +79,4 @@ FROM
     FinalStats fs
 ORDER BY 
     fs.total_spent DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

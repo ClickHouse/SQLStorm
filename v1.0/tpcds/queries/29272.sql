@@ -55,6 +55,6 @@ FROM
 CROSS JOIN 
     CustomerStats C
 JOIN 
-    SalesData S ON S.d_year = toYear(cast('2002-10-01' as date))
+    SalesData S ON S.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
 ORDER BY 
     A.address_count DESC, C.customer_count DESC;

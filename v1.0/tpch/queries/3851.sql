@@ -66,7 +66,7 @@ LEFT JOIN
         FROM part p 
         WHERE p.p_retailprice > 50 
         ORDER BY p.p_partkey 
-        LIMIT 1
+        FETCH FIRST 1 ROWS ONLY
     )
 LEFT JOIN 
     customer_orders cus ON cus.c_custkey = (

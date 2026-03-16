@@ -34,7 +34,7 @@ PostAnalytics AS (
     LEFT JOIN 
         (SELECT DISTINCT arrayJoin(splitByRegexp('[><]', P.Tags)) AS TagName) AS T ON TRUE
     WHERE 
-        P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        P.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY 
         P.Id, P.Title, P.Score, P.ViewCount, P.AcceptedAnswerId
 )

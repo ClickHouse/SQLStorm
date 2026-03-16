@@ -24,7 +24,7 @@ OrderTotals AS (
         SUM(o.o_totalprice) AS total_spent,
         COUNT(o.o_orderkey) AS order_count
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
     GROUP BY o.o_custkey
 ),
 CustomerPerformance AS (

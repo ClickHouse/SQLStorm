@@ -22,8 +22,8 @@ CustomerOrders AS (
     JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate >= toDate('1994-01-01') 
-        AND o.o_orderdate < toDate('1995-01-01')
+        o.o_orderdate >= DATE '1994-01-01' 
+        AND o.o_orderdate < DATE '1995-01-01'
     GROUP BY 
         c.c_custkey, c.c_name
 ),

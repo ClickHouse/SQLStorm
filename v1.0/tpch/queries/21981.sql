@@ -40,7 +40,7 @@ SELECT
     (
         SELECT COUNT(*)
         FROM orders o
-        WHERE o.o_orderdate < cast('1998-10-01' as date) - INTERVAL 1 YEAR
+        WHERE o.o_orderdate < cast('1998-10-01' as date) - INTERVAL '1 YEAR'
         AND EXISTS (
             SELECT 1 
             FROM lineitem l 

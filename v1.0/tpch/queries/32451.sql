@@ -29,7 +29,7 @@ AggregateData AS (
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    WHERE o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
       AND l.l_discount BETWEEN 0.05 AND 0.1
     GROUP BY c.c_name
 ),

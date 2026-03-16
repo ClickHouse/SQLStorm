@@ -54,7 +54,7 @@ FinalStats AS (
         PostCommentCounts pcc ON u.Id = (SELECT OwnerUserId FROM Posts WHERE Id = pcc.PostId LIMIT 1)
     WHERE 
         (u.Reputation > 100 OR b.BadgeCount > 0) 
-        AND (u.LastAccessDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        AND (u.LastAccessDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
 )
 SELECT 
     *,

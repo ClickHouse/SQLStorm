@@ -23,7 +23,7 @@ NestedPosts AS (
         COUNT(*) OVER (PARTITION BY p.OwnerUserId) AS TotalPosts
     FROM Posts p
     LEFT JOIN Comments c ON c.PostId = p.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 PostVoteCounts AS (
     SELECT 
@@ -66,7 +66,7 @@ SELECT
     (SELECT COUNT(*) FROM Comments c WHERE c.PostId = pd.PostId) AS CommentCount
 FROM PostDetails pd
 WHERE pd.ReputationLevel = 'High Reputation'
-  AND pd.CreationDate BETWEEN cast('2024-10-01' as date) - INTERVAL 6 MONTH AND cast('2024-10-01' as date)
+  AND pd.CreationDate BETWEEN cast('2024-10-01' as date) - INTERVAL '6 MONTH' AND cast('2024-10-01' as date)
   AND pd.PostId NOT IN (SELECT RelatedPostId FROM PostLinks)
 ORDER BY pd.NetScore DESC, pd.CreationDate ASC
 LIMIT 100;

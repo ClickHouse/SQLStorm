@@ -49,7 +49,7 @@ FinalReport AS (
     LEFT JOIN 
         DemographicsStats d ON a.ca_state IN (SELECT DISTINCT ca_state FROM customer_address)
     LEFT JOIN 
-        SalesStats s ON s.d_year = toYear(toDate('2002-10-01'))
+        SalesStats s ON s.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
 )
 SELECT 
     * 

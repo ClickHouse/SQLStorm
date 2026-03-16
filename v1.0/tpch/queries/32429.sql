@@ -27,7 +27,7 @@ LEFT JOIN
 LEFT JOIN 
     supplier s ON ps.ps_suppkey = s.s_suppkey
 WHERE 
-    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1998-10-01')
+    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1998-10-01'
     AND o.o_orderstatus IN ('O', 'F')
     AND s.s_acctbal IS NOT NULL
     AND (s.s_comment LIKE '%priority%' OR s.s_comment IS NULL)

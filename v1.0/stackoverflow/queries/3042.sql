@@ -23,7 +23,7 @@ WITH RankedPosts AS (
     JOIN Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.Score > 0 AND 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
 ),
 ClosedPosts AS (
     SELECT 
@@ -62,7 +62,7 @@ SELECT
 FROM 
     FinalResults
 WHERE 
-    LastPostDate >= toDate('2024-10-01') - INTERVAL 30 DAY
+    LastPostDate >= DATE '2024-10-01' - INTERVAL '30 days'
 ORDER BY 
     TotalViews DESC, 
     TotalPosts DESC;

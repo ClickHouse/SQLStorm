@@ -22,4 +22,4 @@ HAVING
     SUM(ws.ws_ext_sales_price) > 1000
 ORDER BY 
     total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

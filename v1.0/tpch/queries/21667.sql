@@ -57,17 +57,17 @@ SELECT
     cs.total_orders,
     COALESCE(lds.net_revenue, 0) AS total_revenue,
     CASE 
-        WHEN cs.last_order_date > toDate('1998-10-01') - INTERVAL 1 YEAR THEN 'Active' 
+        WHEN cs.last_order_date > DATE '1998-10-01' - INTERVAL '1 year' THEN 'Active' 
         ELSE 'Inactive' 
     END AS customer_status
 FROM 
     CustomerOrderSummary cs
 LEFT JOIN 
-    NationRegion ns ON cs.c_custkey = (SELECT c.c_custkey FROM customer c WHERE c.c_nationkey = ns.n_nationkey LIMIT 1)
+    NationRegion ns ON cs.c_custkey = (SELECT c.c_custkey FROM customer c WHERE c.c_nationkey = ns.n_nationkey FETCH FIRST 1 ROW ONLY)
 LEFT JOIN 
     RankedSuppliers rs ON ns.n_nationkey = rs.s_nationkey AND rs.rn = 1
 LEFT JOIN 
-    LineItemDetails lds ON lds.l_orderkey = (SELECT o.o_orderkey FROM orders o WHERE o.o_custkey = cs.c_custkey ORDER BY o.o_orderdate DESC LIMIT 1)
+    LineItemDetails lds ON lds.l_orderkey = (SELECT o.o_orderkey FROM orders o WHERE o.o_custkey = cs.c_custkey ORDER BY o.o_orderdate DESC FETCH FIRST 1 ROW ONLY)
 ORDER BY 
     cs.total_spent DESC,
     customer_status;

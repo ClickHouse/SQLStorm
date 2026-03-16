@@ -58,4 +58,4 @@ WHERE
     AND ss.total_supply_cost IS NOT NULL
 ORDER BY 
     cs.total_spent DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

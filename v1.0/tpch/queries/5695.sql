@@ -16,7 +16,7 @@ recent_orders AS (
     SELECT o.o_orderkey, o.o_orderdate, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 3 MONTH
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '3 MONTH'
     GROUP BY o.o_orderkey, o.o_orderdate
 )
 SELECT p.p_name, pp.total_available, ro.total_revenue, si.nation_name

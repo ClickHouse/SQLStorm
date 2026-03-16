@@ -74,4 +74,4 @@ WHERE
     AND (m.production_year BETWEEN 1990 AND 2023)
 ORDER BY 
     m.production_year DESC, m.title
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

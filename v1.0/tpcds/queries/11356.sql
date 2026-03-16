@@ -15,4 +15,4 @@ HAVING
     COUNT(ss.ss_ticket_number) > 10
 ORDER BY 
     total_sales_amount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -64,7 +64,7 @@ JOIN
 WHERE 
     ps.price_category = 'High Price'
     AND cs.total_spent > (SELECT AVG(total_spent) FROM CustomerTotalOrders)
-    AND EXISTS (SELECT 1 FROM LatestOrderInfo lo WHERE lo.o_orderkey = li.l_orderkey AND lo.max_order_date < cast('1998-10-01' as date) - INTERVAL 30 DAY)
+    AND EXISTS (SELECT 1 FROM LatestOrderInfo lo WHERE lo.o_orderkey = li.l_orderkey AND lo.max_order_date < cast('1998-10-01' as date) - INTERVAL '30 days')
 ORDER BY 
     cs.total_spent DESC, 
     ps.p_retailprice ASC, 

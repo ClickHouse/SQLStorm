@@ -10,7 +10,7 @@ WITH RecursiveCTE AS (
     LEFT JOIN
         PostHistory PH ON p.Id = PH.PostId AND PH.PostHistoryTypeId IN (4, 5, 6) 
     WHERE
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 
 MostActiveUsers AS (
@@ -27,7 +27,7 @@ MostActiveUsers AS (
     LEFT JOIN
         Votes v ON p.Id = v.PostId
     WHERE
-        u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
+        u.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years'
     GROUP BY
         u.Id, u.DisplayName
     HAVING
@@ -45,7 +45,7 @@ ClosedPosts AS (
     JOIN
         PostHistory PH ON p.Id = PH.PostId AND PH.PostHistoryTypeId = 10 
     WHERE
-        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
 )
 
 SELECT

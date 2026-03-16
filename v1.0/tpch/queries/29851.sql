@@ -25,7 +25,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_retailprice > (SELECT AVG(p2.p_retailprice) FROM part p2)
-    AND l.l_shipdate > CURRENT_DATE - INTERVAL 6 MONTH
+    AND l.l_shipdate > CURRENT_DATE - INTERVAL '6 months'
 GROUP BY 
     s.s_name, p.p_name, r.r_name
 HAVING 

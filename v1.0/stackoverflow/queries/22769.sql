@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId, p.CreationDate, p.PostTypeId
 ),
@@ -23,7 +23,7 @@ UserActivity AS (
         u.DisplayName,
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounties,
         SUM(CASE WHEN v.VoteTypeId IN (2, 3) THEN 1 ELSE 0 END) AS VoteCount,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.LastAccessDate)) / 3600) AS AvgHoursSinceLastAccess
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - u.LastAccessDate)) / 3600) AS AvgHoursSinceLastAccess
     FROM 
         Users u
     LEFT JOIN 

@@ -25,7 +25,7 @@ WITH PostEngagement AS (
         GROUP BY 
             ParentId) a ON p.Id = a.ParentId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY  
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, a.AnswerCount
 )
@@ -38,7 +38,7 @@ SELECT
     pe.UpVotes,
     pe.DownVotes,
     pe.AnswerCount,
-    CASE WHEN pe.VoteCount > 0 THEN ROUND((CAST(pe.UpVotes AS decimal) / pe.VoteCount) * 100, 2) ELSE 0 END AS UpVotePercentage
+    CASE WHEN pe.VoteCount > 0 THEN ROUND((pe.UpVotes::decimal / pe.VoteCount) * 100, 2) ELSE 0 END AS UpVotePercentage
 FROM 
     PostEngagement pe
 ORDER BY 

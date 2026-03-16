@@ -49,4 +49,4 @@ FROM FilteredSales fs
 GROUP BY fs.w_warehouse_name
 HAVING SUM(fs.total_net_profit) > 10000
 ORDER BY overall_net_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

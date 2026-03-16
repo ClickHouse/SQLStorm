@@ -41,4 +41,4 @@ JOIN
     DemographicsData dd ON sd.d_year = (SELECT MAX(d_year) FROM SalesData)
 ORDER BY 
     sd.total_sales DESC, dd.customer_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

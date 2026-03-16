@@ -52,7 +52,7 @@ PostStatistics AS (
             ParentId
     ) A ON P.Id = A.ParentId
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 )
 SELECT 
     U.DisplayName,
@@ -68,7 +68,7 @@ JOIN
 JOIN 
     (SELECT UserId, AVG(Score) AS AvgPostScore
      FROM Posts 
-     WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 2 YEAR
+     WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '2 years'
      GROUP BY UserId) S ON U.UserId = S.UserId
 WHERE 
     PS.TotalVotes > 5

@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         p.Score,
         p.ViewCount,
-        ROW_NUMBER() OVER (PARTITION BY toYear(p.CreationDate) ORDER BY p.CreationDate DESC) AS YearRank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY p.CreationDate DESC) AS YearRank
     FROM 
         Posts p
     JOIN 

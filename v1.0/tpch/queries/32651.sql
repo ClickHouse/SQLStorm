@@ -28,7 +28,7 @@ LEFT JOIN
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
     p.p_retailprice > 100.00
-    AND l.l_shipdate >= toDate('1997-01-01')
+    AND l.l_shipdate >= DATE '1997-01-01'
     AND (l.l_returnflag IS NULL OR l.l_returnflag <> 'R')
 GROUP BY 
     p.p_partkey, p.p_name, p.p_brand

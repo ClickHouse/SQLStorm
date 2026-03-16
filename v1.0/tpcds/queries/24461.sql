@@ -78,4 +78,4 @@ WHERE
     )
 ORDER BY 
     f.total_sales_price DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

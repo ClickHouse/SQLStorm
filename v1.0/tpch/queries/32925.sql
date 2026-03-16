@@ -39,7 +39,7 @@ LEFT JOIN MaxParts rh ON p.p_partkey = rh.ps_partkey
 LEFT JOIN CustomerSummary c ON c.c_custkey = (SELECT c1.c_custkey 
                                                FROM customer c1 
                                                WHERE c1.c_name LIKE 'A%' 
-                                               LIMIT 1)
+                                               FETCH FIRST 1 ROW ONLY)
 LEFT JOIN NationDetails nd ON nd.n_nationkey = p.p_partkey % 10
 WHERE p.p_size BETWEEN 10 AND 20
   AND (p.p_comment IS NULL OR p.p_comment NOT LIKE '%damaged%')

@@ -37,7 +37,7 @@ RecentVotes AS (
     FROM 
         Votes
     WHERE 
-        CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
     GROUP BY 
         PostId
 ),
@@ -79,7 +79,7 @@ LEFT JOIN
 LEFT JOIN 
     Users u ON p.OwnerUserId = u.Id
 WHERE 
-    p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 GROUP BY 
     p.Id, p.Title, p.Score, rt.Upvotes, rt.Downvotes, hs.IsClosed, hs.IsReopened, u.Id, u.DisplayName
 ORDER BY 

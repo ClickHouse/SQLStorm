@@ -63,4 +63,4 @@ FROM final_report fr
 WHERE (fr.total_sales_value > 1000 OR fr.total_customer_returns > 5) 
 AND fr.max_return_amount IS NOT NULL
 ORDER BY fr.total_sales_value DESC
-LIMIT 100 OFFSET 50;
+FETCH FIRST 100 ROWS ONLY OFFSET 50;

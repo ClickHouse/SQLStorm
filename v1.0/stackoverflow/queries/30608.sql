@@ -56,7 +56,7 @@ CombinedStatistics AS (
         COALESCE(RA.LastCommentDate, '1900-01-01') AS LastCommentDate,
         CASE 
             WHEN RA.LastCommentDate IS NULL THEN 'No Comments Yet'
-            WHEN RA.LastCommentDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Inactive'
+            WHEN RA.LastCommentDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Inactive'
             ELSE 'Active'
         END AS ActivityStatus
     FROM 

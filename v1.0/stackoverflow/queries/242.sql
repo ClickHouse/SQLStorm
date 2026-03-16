@@ -15,11 +15,11 @@ WITH PostInfo AS (
     LEFT JOIN (
         SELECT UserId, COUNT(*) AS NumBadges
         FROM Badges
-        WHERE Date > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        WHERE Date > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
         GROUP BY UserId
     ) b ON u.Id = b.UserId
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH 
+        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '3 months' 
         AND p.ViewCount > 100
 ),
 HighScorePosts AS (
@@ -37,7 +37,7 @@ RecentVotes AS (
     FROM 
         Votes
     WHERE 
-        CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
     GROUP BY 
         PostId
 )

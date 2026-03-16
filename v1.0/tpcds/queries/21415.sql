@@ -32,7 +32,7 @@ sales_summary AS (
         rs.total_sales,
         rc.c_first_name,
         rc.c_last_name,
-        (rc.c_birth_year - toYear(toDate('2002-10-01'))) AS age
+        (rc.c_birth_year - EXTRACT(YEAR FROM DATE '2002-10-01')) AS age
     FROM 
         ranked_sales rs 
     LEFT JOIN 

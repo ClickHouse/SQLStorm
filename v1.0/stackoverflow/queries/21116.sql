@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 30 DAY)
+        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '30 days')
 ),
 UserBadges AS (
     SELECT 
@@ -55,7 +55,7 @@ SELECT
         ELSE 'Neutral'
     END AS VoteSentiment,
     CASE 
-        WHEN rp.CreationDate <= (cast('2024-10-01' as date) - INTERVAL 15 DAY) THEN 'Old'
+        WHEN rp.CreationDate <= (cast('2024-10-01' as date) - INTERVAL '15 days') THEN 'Old'
         ELSE 'New'
     END AS PostAge
 FROM 

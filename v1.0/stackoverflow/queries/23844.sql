@@ -54,7 +54,7 @@ SELECT
     rp.PostId,
     rp.Title AS PostTitle,
     rp.Score,
-    datePart('epoch', toDateTime64('2024-10-01 12:34:56', 6) - rp.CreationDate) AS PostAgeInSeconds,
+    datePart('epoch', TIMESTAMP '2024-10-01 12:34:56' - rp.CreationDate) AS PostAgeInSeconds,
     cp.CloseReasons
 FROM 
     UserBadges up

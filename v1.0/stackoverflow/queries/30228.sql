@@ -34,7 +34,7 @@ RecentActivity AS (
         Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     WHERE 
-        p.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.LastActivityDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.LastActivityDate, p.OwnerUserId
 ),

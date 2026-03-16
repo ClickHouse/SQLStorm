@@ -52,7 +52,7 @@ FROM
     LEFT JOIN RankedOrders o ON o.o_orderkey = (
         SELECT MAX(o2.o_orderkey)
         FROM orders o2
-        WHERE o2.o_orderdate < (toDate('1998-10-01') - INTERVAL 30 DAY)
+        WHERE o2.o_orderdate < (DATE '1998-10-01' - INTERVAL '30 days')
         AND o2.o_orderstatus <> 'O'
     )
 WHERE 

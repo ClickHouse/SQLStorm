@@ -20,7 +20,7 @@ WITH
             COUNT(CASE WHEN p.PostTypeId = 2 THEN 1 END) AS AnswerCount,
             AVG(p.Score) AS AvgScore
         FROM Posts p
-        WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
         GROUP BY p.OwnerUserId
     ),
     CombinedStats AS (

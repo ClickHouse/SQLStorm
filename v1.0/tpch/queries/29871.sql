@@ -20,7 +20,7 @@ JOIN
     supplier s ON l.l_suppkey = s.s_suppkey
 WHERE 
     s.s_acctbal > 5000 AND 
-    l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1997-12-31')
+    l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1997-12-31'
 GROUP BY 
     p.p_name, s.s_name, c.c_name
 ORDER BY 

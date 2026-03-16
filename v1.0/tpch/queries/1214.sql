@@ -48,9 +48,9 @@ SELECT
 FROM 
     part p
 LEFT JOIN 
-    SupplierStats ss ON ss.s_suppkey = (SELECT ps.ps_suppkey FROM partsupp ps WHERE ps.ps_partkey = p.p_partkey ORDER BY ps.ps_supplycost ASC LIMIT 1)
+    SupplierStats ss ON ss.s_suppkey = (SELECT ps.ps_suppkey FROM partsupp ps WHERE ps.ps_partkey = p.p_partkey ORDER BY ps.ps_supplycost ASC FETCH FIRST 1 ROW ONLY)
 LEFT JOIN 
-    HighValueCust hc ON hc.c_custkey = (SELECT o.o_custkey FROM orders o JOIN lineitem li ON o.o_orderkey = li.l_orderkey WHERE li.l_partkey = p.p_partkey AND o.o_orderstatus = 'O' ORDER BY o.o_totalprice DESC LIMIT 1)
+    HighValueCust hc ON hc.c_custkey = (SELECT o.o_custkey FROM orders o JOIN lineitem li ON o.o_orderkey = li.l_orderkey WHERE li.l_partkey = p.p_partkey AND o.o_orderstatus = 'O' ORDER BY o.o_totalprice DESC FETCH FIRST 1 ROW ONLY)
 LEFT JOIN 
     PartWithHighDiscount phd ON phd.l_partkey = p.p_partkey
 WHERE 

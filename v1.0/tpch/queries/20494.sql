@@ -50,4 +50,4 @@ GROUP BY
     r.r_name
 ORDER BY 
     r.r_name
-LIMIT 1 OFFSET 1;
+OFFSET 1 ROW FETCH NEXT 1 ROWS ONLY;

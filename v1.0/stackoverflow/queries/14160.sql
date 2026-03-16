@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT c.Id) AS TotalComments,
     COUNT(DISTINCT v.Id) AS TotalVotes,
     DATE_TRUNC('month', u.CreationDate) AS UserCreationMonth,
-    toYear(u.CreationDate) AS CreationYear
+    EXTRACT(YEAR FROM u.CreationDate) AS CreationYear
 FROM 
     Users u
 LEFT JOIN 
@@ -16,6 +16,6 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 GROUP BY 
-    u.Id, u.DisplayName, DATE_TRUNC('month', u.CreationDate), toYear(u.CreationDate)
+    u.Id, u.DisplayName, DATE_TRUNC('month', u.CreationDate), EXTRACT(YEAR FROM u.CreationDate)
 ORDER BY 
     UserCreationMonth, u.DisplayName;

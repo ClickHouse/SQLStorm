@@ -25,7 +25,7 @@ WITH RECURSIVE sales_hierarchy AS (
     JOIN 
         orders o ON sh.o_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate < (cast('1998-10-01' as date) - INTERVAL 30 DAY) AND 
+        o.o_orderdate < (cast('1998-10-01' as date) - INTERVAL '30 days') AND 
         sh.level < 3
 ), ranked_sales AS (
     SELECT 
@@ -70,4 +70,4 @@ WHERE
     rs.total_sales IS NOT NULL
 ORDER BY 
     rs.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

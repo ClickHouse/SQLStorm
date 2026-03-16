@@ -6,7 +6,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         SUM(p.Score) AS TotalScore,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 3600) AS AvgPostAgeHours
+        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) / 3600) AS AvgPostAgeHours
     FROM 
         Users u
     LEFT JOIN 

@@ -22,7 +22,7 @@ WITH RECURSIVE PostActivity AS (
             PostId
     ) v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     UNION ALL
     SELECT 
         p.Id,
@@ -52,7 +52,7 @@ SELECT
     COUNT(DISTINCT pa.PostId) AS TotalPosts,
     SUM(pa.UpVoteCount) AS TotalUpVotes,
     SUM(pa.DownVoteCount) AS TotalDownVotes,
-    AVG(toUnixTimestamp((now64(6) - pa.CreationDate))) AS AvgPostAge
+    AVG(toUnixTimestamp((CURRENT_TIMESTAMP - pa.CreationDate))) AS AvgPostAge
 FROM 
     Users u
 LEFT JOIN PostActivity pa ON u.Id = pa.OwnerUserId

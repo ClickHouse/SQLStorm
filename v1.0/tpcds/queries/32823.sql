@@ -36,4 +36,4 @@ SELECT h.i_item_id,
 FROM high_profit_items h
 LEFT JOIN warehouse w ON h.total_quantity > w.w_warehouse_sq_ft
 ORDER BY h.total_profit DESC, h.total_quantity ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -20,7 +20,7 @@ MovieDetails AS (
         m.movie_id, 
         m.movie_title, 
         m.production_year, 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.role_id AS text)))), ', ') AS roles
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.role_id::text))), ', ') AS roles
     FROM 
         RankedMovies m
     JOIN 

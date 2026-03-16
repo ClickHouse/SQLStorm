@@ -15,7 +15,7 @@ RecentPosts AS (
         P.Score,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate > (cast('2024-10-01' as date) - INTERVAL 30 DAY)
+    WHERE P.CreationDate > (cast('2024-10-01' as date) - INTERVAL '30 days')
 ),
 ClosedPosts AS (
     SELECT 

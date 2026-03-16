@@ -53,7 +53,7 @@ LEFT JOIN
             ws.ws_bill_customer_sk = cs.c_customer_sk 
         ORDER BY 
             ws.ws_sold_date_sk DESC 
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     )
 WHERE 
     (cs.cd_gender = 'F' AND cs.cd_purchase_estimate > 1000)

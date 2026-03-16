@@ -63,6 +63,6 @@ LEFT JOIN
     UserBadges ub ON tu.UserId = ub.UserId
 WHERE 
     tu.AnswerCount > 10
-    AND tu.RecentPostDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+    AND tu.RecentPostDate >= DATE '2024-10-01' - INTERVAL '1 year'
 ORDER BY 
     tu.TotalScore DESC;

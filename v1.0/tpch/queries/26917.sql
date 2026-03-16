@@ -20,4 +20,4 @@ GROUP BY
     p.p_name
 ORDER BY 
     total_available_qty DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

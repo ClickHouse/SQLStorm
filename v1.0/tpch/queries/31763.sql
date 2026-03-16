@@ -31,11 +31,11 @@ LEFT JOIN
 LEFT JOIN 
     customer c ON c.c_custkey = o.o_custkey
 WHERE 
-    l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1998-10-01')
+    l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1998-10-01'
 GROUP BY 
     n.n_nationkey, n.n_name
 HAVING 
     COUNT(DISTINCT c.c_custkey) > 5
 ORDER BY 
     revenue_rank, total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

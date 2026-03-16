@@ -13,8 +13,8 @@ WITH RankedOrders AS (
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
         o.o_orderstatus = 'O' 
-        AND l.l_shipdate >= toDate('1996-01-01') 
-        AND l.l_shipdate < toDate('1997-01-01')
+        AND l.l_shipdate >= DATE '1996-01-01' 
+        AND l.l_shipdate < DATE '1997-01-01'
     GROUP BY 
         o.o_orderkey, c.c_name, c.c_nationkey
 ),

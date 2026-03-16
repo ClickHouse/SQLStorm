@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CAST('2023-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+        p.CreationDate >= '2023-10-01 12:34:56'::timestamp - INTERVAL '1 year'
 ),
 UserReputation AS (
     SELECT 
@@ -64,4 +64,5 @@ WHERE
     ps.Reputation > 1000
 ORDER BY 
     ps.Score DESC, ps.ViewCount ASC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS
+FETCH NEXT 10 ROWS ONLY;

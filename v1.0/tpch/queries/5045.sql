@@ -11,7 +11,7 @@ WITH TotalSales AS (
     JOIN
         nation n ON c.c_nationkey = n.n_nationkey
     WHERE
-        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
+        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
     GROUP BY
         n.n_name
 ), 
@@ -33,7 +33,7 @@ FROM
 JOIN
     nation r ON r.n_name = s.nation
 JOIN
-    lineitem l ON l.l_orderkey IN (SELECT o.o_orderkey FROM orders o WHERE o.o_orderdate >= toDate('1997-01-01'))
+    lineitem l ON l.l_orderkey IN (SELECT o.o_orderkey FROM orders o WHERE o.o_orderdate >= DATE '1997-01-01')
 WHERE
     s.revenue_rank <= 5
 GROUP BY

@@ -14,7 +14,7 @@ RecentPosts AS (
            P.ViewCount, P.Tags,
            ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 PopularTags AS (
     SELECT TRIM(arrayJoin(splitByString(' ', P.Tags))) AS TagName,
@@ -36,6 +36,6 @@ LEFT JOIN UserBadges UB ON U.UserId = UB.UserId
 LEFT JOIN RecentPosts RP ON U.UserId = RP.OwnerUserId AND RP.PostRank = 1
 LEFT JOIN PopularTags PT ON PT.TagName = ANY(splitByString(' ', RP.Tags))
 WHERE U.Reputation > 1000
-  AND U.CreationDate <= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+  AND U.CreationDate <= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ORDER BY U.Reputation DESC, LastPostScore DESC
 LIMIT 50;

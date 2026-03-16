@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.Score IS NOT NULL
-        AND p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        AND p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 EligibleBadges AS (
     SELECT 
@@ -51,7 +51,7 @@ ClosedPosts AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes c ON CAST(ph.Comment AS int) = c.Id
+        CloseReasonTypes c ON ph.Comment::int = c.Id
     WHERE 
         ph.PostHistoryTypeId = 10 
 ),

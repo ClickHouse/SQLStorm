@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         P.Score,
         P.ViewCount,
         U.DisplayName AS OwnerDisplayName,
-        RANK() OVER (PARTITION BY toYear(P.CreationDate) ORDER BY P.Score DESC, P.ViewCount DESC) AS Rank
+        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM P.CreationDate) ORDER BY P.Score DESC, P.ViewCount DESC) AS Rank
     FROM 
         Posts P
     JOIN 
@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     WHERE 
         P.PostTypeId = 1 
     AND 
-        P.CreationDate >= toDate('2024-10-01') - INTERVAL 2 YEAR
+        P.CreationDate >= DATE '2024-10-01' - INTERVAL '2 years'
 ),
 PostStatistics AS (
     SELECT 

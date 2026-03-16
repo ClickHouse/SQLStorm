@@ -61,4 +61,4 @@ HAVING
     COUNT(DISTINCT c.c_customer_sk) > 50
 ORDER BY 
     rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

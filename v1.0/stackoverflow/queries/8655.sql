@@ -8,7 +8,7 @@ RecentPosts AS (
     SELECT P.Id AS PostId, P.Title, P.OwnerUserId, P.CreationDate,
            ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS rn
     FROM Posts P
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 PostDetails AS (
     SELECT R.PostId, R.Title, U.DisplayName AS OwnerName, 

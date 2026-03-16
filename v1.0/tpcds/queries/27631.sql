@@ -65,4 +65,4 @@ FROM
     CompleteInfo
 ORDER BY
     total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

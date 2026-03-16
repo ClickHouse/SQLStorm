@@ -48,7 +48,7 @@ RecentPosts AS (
             PostId
     ) AS PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
 )
 SELECT 
     R.PostId,
@@ -56,7 +56,7 @@ SELECT
     R.CreationDate,
     R.AnswerCount,
     R.ViewCount,
-    now64(6) AS BenchmarkTimestamp,
+    CURRENT_TIMESTAMP AS BenchmarkTimestamp,
     U.UserId,
     U.DisplayName,
     U.Upvotes,

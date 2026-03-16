@@ -17,7 +17,7 @@ PopularPosts AS (
         p.ViewCount,
         ROW_NUMBER() OVER (ORDER BY p.ViewCount DESC) AS PopularityRank
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
       AND p.ViewCount IS NOT NULL
 ),
 PostHistoryDetails AS (

@@ -48,4 +48,4 @@ WHERE
     s.s_acctbal > (SELECT AVG(s2.s_acctbal) FROM supplier s2)
 ORDER BY
     total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

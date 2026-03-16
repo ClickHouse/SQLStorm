@@ -29,7 +29,7 @@ LEFT JOIN customer c ON o.o_custkey = c.c_custkey
 LEFT JOIN nation n ON c.c_nationkey = n.n_nationkey
 LEFT JOIN region r ON n.n_regionkey = r.r_regionkey
 WHERE p.p_retailprice BETWEEN 100 AND 500
-AND l.l_shipdate >= toDate('1997-01-01')
+AND l.l_shipdate >= DATE '1997-01-01'
 AND l.l_returnflag = 'N'
 GROUP BY p.p_partkey, p.p_name, p.p_retailprice, r.r_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 10000

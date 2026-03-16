@@ -24,7 +24,7 @@ RecentPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 30 DAY
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName
 ), 

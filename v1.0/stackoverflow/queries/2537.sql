@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId = 1 AND  
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 UserActivity AS (
     SELECT 
@@ -35,7 +35,7 @@ BadgeStats AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        b.Date >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         b.UserId
 )

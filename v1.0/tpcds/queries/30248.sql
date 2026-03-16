@@ -60,7 +60,7 @@ JOIN sales_summary ss ON ss.ws_item_sk = (
     FROM web_sales ws
     WHERE ws.ws_bill_customer_sk = cs.c_customer_sk
     ORDER BY ws.ws_net_profit DESC
-    LIMIT 1
+    FETCH FIRST 1 ROW ONLY
 )
 WHERE 
     cs.last_purchase_date >= (
@@ -70,4 +70,4 @@ GROUP BY
     cs.c_customer_sk, cs.orders_count, cs.total_spent, ss.total_quantity, ss.total_net_profit
 ORDER BY 
     cs.total_spent DESC 
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

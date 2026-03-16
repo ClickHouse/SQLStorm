@@ -32,4 +32,4 @@ GROUP BY
     ca.ca_city
 ORDER BY 
     total_net_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

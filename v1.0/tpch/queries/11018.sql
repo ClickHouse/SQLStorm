@@ -12,7 +12,7 @@ FROM
 JOIN 
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
-    l.l_shipdate >= toDate('1996-01-01') AND l.l_shipdate < toDate('1996-04-01')
+    l.l_shipdate >= DATE '1996-01-01' AND l.l_shipdate < DATE '1996-04-01'
 GROUP BY 
     l.l_returnflag, l.l_linestatus
 ORDER BY 

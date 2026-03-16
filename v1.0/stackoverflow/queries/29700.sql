@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 TagPostCounts AS (
     SELECT 
@@ -34,7 +34,7 @@ TopTags AS (
         ROW_NUMBER() OVER (ORDER BY TagCount DESC) AS TagRank
     FROM 
         TagPostCounts
-    LIMIT 10
+    FETCH FIRST 10 ROWS ONLY
 )
 SELECT 
     rp.Title,

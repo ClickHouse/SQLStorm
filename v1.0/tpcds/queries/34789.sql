@@ -50,4 +50,4 @@ WHERE
 ORDER BY 
     s.total_spent DESC, 
     s.total_purchases DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

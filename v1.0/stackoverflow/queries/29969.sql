@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 PopularTags AS (
     SELECT 
@@ -47,7 +47,7 @@ SELECT
     COUNT(DISTINCT rp.PostId) AS QuestionCount,
     COALESCE(SUM(pma.TotalAnswers), 0) AS TotalAnswers,
     AVG(rp.ViewCount) AS AvgViewCount,
-    AVG(toUnixTimestamp((now64(6) - rp.CreationDate)) / 60) AS AvgTimeSinceCreation
+    AVG(toUnixTimestamp((CURRENT_TIMESTAMP - rp.CreationDate)) / 60) AS AvgTimeSinceCreation
 FROM 
     PopularTags pt
 JOIN 

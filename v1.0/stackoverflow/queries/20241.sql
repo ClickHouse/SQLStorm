@@ -58,6 +58,6 @@ JOIN TopPosts TP ON UA.UserId = TP.OwnerUserId
 WHERE UA.Reputation > 1000 
     AND TP.Rank <= 3
     AND (TP.ClosedDate IS NULL OR 
-    (TP.ClosedDate IS NOT NULL AND TP.CreationDate < CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR))
+    (TP.ClosedDate IS NOT NULL AND TP.CreationDate < '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'))
 ORDER BY UA.Reputation DESC, TP.ViewCount DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

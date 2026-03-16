@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE
         p.PostTypeId = 1 
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 YEAR'
 ),
 UserStats AS (
     SELECT
@@ -43,7 +43,7 @@ RecentActivity AS (
     FROM
         PostHistory pho
     WHERE
-        pho.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
+        pho.CreationDate >= CURRENT_DATE - INTERVAL '6 MONTH'
     GROUP BY
         pho.UserId
 )

@@ -46,7 +46,7 @@ TopPosts AS (
     LEFT JOIN 
         PostHistoryStats phs ON p.Id = phs.PostId
     WHERE 
-        p.CreationDate >= (now64(6) - INTERVAL 1 YEAR)
+        p.CreationDate >= (CURRENT_TIMESTAMP - INTERVAL '1 year')
 )
 SELECT 
     us.UserId,

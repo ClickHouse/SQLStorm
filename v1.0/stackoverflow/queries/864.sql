@@ -51,7 +51,7 @@ SELECT
     END AS BountyCategory
 FROM TopPosts tp
 LEFT JOIN Comments c ON c.PostId = tp.PostId
-WHERE c.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+WHERE c.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 GROUP BY tp.PostId, tp.Title, tp.CreationDate, tp.Score, tp.DisplayName, tp.Reputation, tp.TotalBounty
 HAVING COUNT(c.Id) > 5
 ORDER BY tp.Score DESC, tp.CreationDate DESC;

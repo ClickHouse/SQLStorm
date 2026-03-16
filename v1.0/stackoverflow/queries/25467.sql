@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Users U ON P.OwnerUserId = U.Id
     WHERE 
         P.PostTypeId = 1 
-        AND P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        AND P.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
         AND P.ViewCount > 100
 ),
 TagDetails AS (

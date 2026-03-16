@@ -7,7 +7,7 @@ SELECT
     SUM(ws.ws_sales_price) AS total_spent,
     arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.p_promo_name))), ', ') AS promotions_used,
     DATE_TRUNC('month', d.d_date) AS month_of_order,
-    toYear(d.d_date) AS order_year
+    EXTRACT(YEAR FROM d.d_date) AS order_year
 FROM 
     customer c
 JOIN 

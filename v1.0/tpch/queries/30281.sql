@@ -13,7 +13,7 @@ WITH RECURSIVE SupplyChain AS (
 RecentOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1998-10-01') - INTERVAL 30 DAY
+    WHERE o.o_orderdate >= DATE '1998-10-01' - INTERVAL '30 days'
 ),
 TopNations AS (
     SELECT n.n_nationkey, SUM(o.o_totalprice) AS total_sales

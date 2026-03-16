@@ -7,7 +7,7 @@ PostStats AS (
     SELECT OwnerUserId, COUNT(*) AS PostCount, SUM(ViewCount) AS TotalViews, 
            AVG(Score) AS AverageScore
     FROM Posts
-    WHERE CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY OwnerUserId
 ),
 TopUsers AS (
@@ -24,7 +24,7 @@ ClosedPosts AS (
 )
 SELECT tu.DisplayName, tu.Reputation, 
        COALESCE(COUNT(cp.PostId), 0) AS ClosedPostCount,
-       SUM(CASE WHEN cp.CloseDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN 1 ELSE 0 END) AS RecentClosedPosts,
+       SUM(CASE WHEN cp.CloseDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month' THEN 1 ELSE 0 END) AS RecentClosedPosts,
        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cp.Title))), ', ') AS ClosedPostTitles
 FROM TopUsers tu
 LEFT JOIN ClosedPosts cp ON tu.DisplayName = cp.UserDisplayName

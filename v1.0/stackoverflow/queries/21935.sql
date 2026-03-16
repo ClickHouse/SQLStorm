@@ -65,7 +65,7 @@ RecentPostHistory AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 )
 SELECT 
     pd.Title, 
@@ -76,7 +76,7 @@ SELECT
     COUNT(rph.EventType) FILTER (WHERE rph.EventType = 'Close/Reopen Event') AS CloseReopenCount,
     CASE 
         WHEN MAX(rph.MostRecentEventDate) IS NULL THEN 'No recent activity'
-        WHEN MAX(rph.MostRecentEventDate) < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY THEN 'Inactive'
+        WHEN MAX(rph.MostRecentEventDate) < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days' THEN 'Inactive'
         ELSE 'Active'
     END AS PostStatus
 FROM 

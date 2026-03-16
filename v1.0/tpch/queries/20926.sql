@@ -12,7 +12,7 @@ total_spent AS (
         l.l_suppkey,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total
     FROM lineitem l
-    WHERE l.l_shipdate >= toDate('1996-01-01')
+    WHERE l.l_shipdate >= DATE '1996-01-01'
     GROUP BY l.l_suppkey
 ),
 high_value_orders AS (
@@ -67,5 +67,5 @@ WHERE p.p_retailprice BETWEEN 10 AND 100
                                    WHERE c.c_nationkey = ns.n_nationkey 
                                    ORDER BY c.c_acctbal DESC 
                                    LIMIT 1) 
-              AND o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR)
+              AND o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year')
 ORDER BY total_spent DESC, supplier_name;

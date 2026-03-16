@@ -6,7 +6,7 @@ WITH UserPostStatistics AS (
         COUNT(p.Id) AS TotalPosts,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
-        SUM(CASE WHEN p.LastActivityDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH) THEN 1 ELSE 0 END) AS RecentActivity
+        SUM(CASE WHEN p.LastActivityDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month') THEN 1 ELSE 0 END) AS RecentActivity
     FROM 
         Users u
     LEFT JOIN 

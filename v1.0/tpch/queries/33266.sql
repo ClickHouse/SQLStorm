@@ -41,4 +41,4 @@ JOIN nation n ON h.c_custkey IN (SELECT c.c_custkey FROM customer c WHERE c.c_na
 WHERE h.revenue_rank <= 10
 GROUP BY n.n_name
 ORDER BY avg_revenue DESC
-LIMIT 5;
+FETCH FIRST 5 ROWS ONLY;

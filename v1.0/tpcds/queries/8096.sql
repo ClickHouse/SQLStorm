@@ -57,4 +57,4 @@ JOIN
     )
 ORDER BY
     ss.total_sales_amount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

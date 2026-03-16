@@ -19,7 +19,7 @@ OrderStats AS (
     SELECT c.c_nationkey, SUM(o.o_totalprice) AS total_order_value, COUNT(o.o_orderkey) AS order_count
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    WHERE o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     GROUP BY c.c_nationkey
 ),
 FilteredParts AS (

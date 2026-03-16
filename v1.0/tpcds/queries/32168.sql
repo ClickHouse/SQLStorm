@@ -63,4 +63,4 @@ JOIN
 ORDER BY 
     hvc.total_return_amount DESC,
     hvi.total_sales DESC
-LIMIT 100
+FETCH FIRST 100 ROWS ONLY

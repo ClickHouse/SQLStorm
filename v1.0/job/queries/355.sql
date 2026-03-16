@@ -2,7 +2,7 @@ WITH movie_years AS (
     SELECT 
         production_year,
         COUNT(*) AS movie_count,
-        AVG(CAST(toYear(cast('2024-10-01' as date)) AS INTEGER) - production_year) AS avg_age
+        AVG(CAST(EXTRACT(YEAR FROM cast('2024-10-01' as date)) AS INTEGER) - production_year) AS avg_age
     FROM 
         aka_title
     GROUP BY 

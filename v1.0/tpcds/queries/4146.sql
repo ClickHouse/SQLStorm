@@ -71,4 +71,4 @@ WHERE
     AND c.cd_gender IS NOT NULL
 ORDER BY 
     cs.total_sales DESC, cs.total_quantity ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -15,7 +15,7 @@ HighValueSuppliers AS (
 RecentOrders AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_orderdate
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 SupplierOrderStats AS (
     SELECT l.l_orderkey, l.l_partkey, l.l_suppkey, 

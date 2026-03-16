@@ -7,7 +7,7 @@ WITH RankedSales AS (
     FROM 
         web_sales ws
     WHERE 
-        ws.ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL 1 YEAR)
+        ws.ws_sold_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL '1 year')
 ),
 TopItems AS (
     SELECT 
@@ -27,7 +27,7 @@ CustomerReturns AS (
     FROM 
         store_returns sr
     WHERE 
-        sr.sr_returned_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL 1 YEAR)
+        sr.sr_returned_date_sk >= (SELECT d_date_sk FROM date_dim WHERE d_date = cast('2002-10-01' as date) - INTERVAL '1 year')
     GROUP BY 
         sr.sr_item_sk
 )

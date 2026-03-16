@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= now64(6) - INTERVAL 1 YEAR AND 
+        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year' AND 
         P.Score >= 10
 ), RecentBadges AS (
     SELECT 
@@ -22,7 +22,7 @@ WITH RankedPosts AS (
     FROM 
         Badges B
     WHERE 
-        B.Date >= now64(6) - INTERVAL 6 MONTH
+        B.Date >= CURRENT_TIMESTAMP - INTERVAL '6 months'
     GROUP BY 
         B.UserId
 ), ActiveUsers AS (
@@ -36,7 +36,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         RecentBadges R ON U.Id = R.UserId
     WHERE 
-        U.LastAccessDate >= now64(6) - INTERVAL 3 MONTH
+        U.LastAccessDate >= CURRENT_TIMESTAMP - INTERVAL '3 months'
 )
 SELECT 
     RP.PostId,

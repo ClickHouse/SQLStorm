@@ -58,4 +58,4 @@ WHERE
     rs.rank = 1
 ORDER BY 
     rs.total_net_profit DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

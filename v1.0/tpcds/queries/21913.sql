@@ -33,4 +33,4 @@ LEFT JOIN inventory_summary i ON s.ws_item_sk = i.inv_item_sk
 WHERE f.ca_state IN (SELECT DISTINCT ca_state FROM customer_address WHERE ca_country = 'USA')
 AND (f.ca_city LIKE '%York%' OR f.ca_city IS NULL)
 ORDER BY f.c_last_name DESC, f.c_first_name ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

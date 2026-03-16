@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) OVER (PARTITION BY p.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 UserEngagement AS (
     SELECT 

@@ -29,7 +29,7 @@ PostDetails AS (
     LEFT JOIN (
         SELECT arrayJoin(splitByString('>', P.Tags)) AS TagName
     ) T ON TRUE
-    WHERE P.ViewCount > 100 AND P.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.ViewCount > 100 AND P.CreationDate < CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY P.Id, P.Title, P.Score, P.AnswerCount, P.ViewCount, P.CreationDate, P.ClosedDate, L.LinkTypeId, PH.PostHistoryTypeId, PH.Comment
 ),
 PostStatistics AS (

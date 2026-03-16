@@ -73,4 +73,4 @@ WHERE
     AND (rs.rank <= 5 OR rs.rank IS NULL)
 ORDER BY 
     fa.adjusted_price DESC, fa.order_count DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

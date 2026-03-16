@@ -52,7 +52,7 @@ FilteredLineItems AS (
     FROM 
         lineitem li
     WHERE 
-        li.l_shipdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
+        li.l_shipdate >= DATE '1998-10-01' - INTERVAL '1 year'
     GROUP BY 
         li.l_orderkey
 )

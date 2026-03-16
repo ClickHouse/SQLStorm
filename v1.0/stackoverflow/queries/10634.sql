@@ -22,4 +22,4 @@ GROUP BY
     p.Title, p.CreationDate, u.DisplayName, p.ViewCount, p.AnswerCount, p.CommentCount, pt.Name
 ORDER BY 
     p.ViewCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

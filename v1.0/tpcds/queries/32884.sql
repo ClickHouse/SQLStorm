@@ -42,4 +42,4 @@ LEFT JOIN HighSpender hs ON ch.c_customer_sk = hs.customer_id
 LEFT JOIN AddressDetails ad ON ch.c_current_addr_sk = ad.ca_address_sk
 WHERE hs.total_orders IS NOT NULL
 ORDER BY hs.total_spent DESC, ch.c_last_name ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

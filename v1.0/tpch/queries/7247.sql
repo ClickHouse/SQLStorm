@@ -9,7 +9,7 @@ WITH RegionSummary AS (
     JOIN part p ON ps.ps_partkey = p.p_partkey
     JOIN lineitem l ON p.p_partkey = l.l_partkey
     JOIN orders o ON l.l_orderkey = o.o_orderkey
-    WHERE o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    WHERE o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY r_name
 ),
 AverageRevenue as (

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Votes V ON P.Id = V.PostId
     WHERE 
         P.PostTypeId = 1 AND
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.OwnerUserId
 ),

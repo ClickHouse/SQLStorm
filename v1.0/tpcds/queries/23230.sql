@@ -65,4 +65,4 @@ WHERE
 ORDER BY 
     COALESCE(cr.total_return_amount, 0) DESC, 
     u.total_sales ASC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

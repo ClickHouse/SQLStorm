@@ -11,7 +11,7 @@ RecentPosts AS (
     SELECT P.Id AS PostId, P.OwnerUserId, P.Title, P.CreationDate,
            ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RN
     FROM Posts P
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserScores AS (
     SELECT U.Id AS UserId, U.DisplayName, COALESCE(SUM(V.BountyAmount), 0) AS TotalBounty, COALESCE(SUM(P.Score), 0) AS TotalScore

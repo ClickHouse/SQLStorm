@@ -56,7 +56,7 @@ SELECT
         SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(P.Title))), ', ') 
         FROM Posts P 
         WHERE P.OwnerUserId = TU.Id 
-        AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     ) AS RecentPostTitles,
     (
         SELECT COUNT(*) 
@@ -66,4 +66,4 @@ SELECT
 FROM TopUsers TU
 WHERE TU.TotalPosts > 0
 ORDER BY TU.Reputation DESC, TU.BadgeCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

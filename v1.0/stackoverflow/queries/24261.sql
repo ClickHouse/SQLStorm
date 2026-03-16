@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
     LEFT JOIN arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON TRUE
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY p.Id, p.Score, p.OwnerUserId
 ),
 UserBadges AS (
@@ -42,7 +42,7 @@ HighScoringUsers AS (
     INNER JOIN RankedPosts rp ON u.Id = rp.OwnerUserId
     LEFT JOIN UserBadges ub ON u.Id = ub.UserId
     WHERE rp.RankByScore = 1 
-      AND (rp.LastClosedDate IS NULL OR rp.LastClosedDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+      AND (rp.LastClosedDate IS NULL OR rp.LastClosedDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days')
 )
 SELECT 
     hsu.UserId,

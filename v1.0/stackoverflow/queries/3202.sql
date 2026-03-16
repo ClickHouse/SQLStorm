@@ -55,4 +55,4 @@ WHERE
     ps.RecentPostRank <= 5
 ORDER BY 
     ps.Score DESC, ps.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

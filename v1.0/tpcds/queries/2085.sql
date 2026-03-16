@@ -58,4 +58,4 @@ LEFT JOIN
     SalesSummary ss ON hvc.c_customer_sk = ss.c_customer_sk
 ORDER BY
     total_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

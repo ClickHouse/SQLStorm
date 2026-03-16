@@ -7,7 +7,7 @@ WITH RankedOrders AS (
         o.o_orderpriority,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderpriority ORDER BY o.o_totalprice DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
 ),
 SupplierStats AS (
     SELECT 

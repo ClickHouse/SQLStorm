@@ -17,7 +17,7 @@ PostDetails AS (
         p.Score,
         p.CreationDate,
         p.ViewCount,
-        COALESCE(MAX(c.CreationDate), toDateTime64('2000-01-01', 6)) AS LatestCommentDate,
+        COALESCE(MAX(c.CreationDate), CAST('2000-01-01' AS TIMESTAMP)) AS LatestCommentDate,
         COUNT(DISTINCT ppm.UserId) AS UniqueCommenters
     FROM 
         Posts p
@@ -29,7 +29,7 @@ PostDetails AS (
          FROM 
              Comments) ppm ON ppm.PostId = p.Id
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, p.ViewCount
 ),
@@ -57,7 +57,7 @@ FinalResults AS (
                                               ORDER BY p.Score DESC 
                                               LIMIT 1)
     WHERE 
-        rpd.LatestCommentDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        rpd.LatestCommentDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days' 
 )
 SELECT 
     Title,

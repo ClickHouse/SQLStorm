@@ -16,8 +16,8 @@ JOIN
 JOIN 
     customer c ON c.c_custkey = o.o_custkey 
 WHERE 
-    l.l_shipdate >= toDate('1997-01-01') 
-    AND l.l_shipdate < toDate('1998-01-01') 
+    l.l_shipdate >= DATE '1997-01-01' 
+    AND l.l_shipdate < DATE '1998-01-01' 
 GROUP BY 
     p.p_partkey, 
     p.p_name 

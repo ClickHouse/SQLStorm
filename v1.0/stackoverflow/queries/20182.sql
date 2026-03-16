@@ -7,7 +7,7 @@ WITH RankedPosts AS (
            ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS RankByScore,
            SUM(p.ViewCount) OVER (PARTITION BY p.OwnerUserId) AS TotalViews
     FROM Posts p
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 UserStats AS (
     SELECT u.Id AS UserId,

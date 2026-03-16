@@ -17,7 +17,7 @@ UserMetrics AS (
         u.Id AS UserId,
         COUNT(DISTINCT p.Id) AS TotalPosts,
         SUM(COALESCE(p.Score, 0)) AS TotalScore,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - u.CreationDate)) / 86400) AS AvgDaysSinceCreation
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - u.CreationDate)) / 86400) AS AvgDaysSinceCreation
     FROM 
         Users u
     LEFT JOIN 
@@ -39,7 +39,7 @@ RecentClosedPosts AS (
     LEFT JOIN 
         CloseReasonTypes c ON CAST(ph.Comment AS INTEGER) = c.Id
     WHERE 
-        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 )
 SELECT 
     u.DisplayName,

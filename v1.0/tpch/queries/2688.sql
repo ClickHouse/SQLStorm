@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01')
+        o.o_orderdate >= DATE '1997-01-01'
         AND o.o_orderstatus IN ('O', 'F', 'P')
 ),
 SupplierSummary AS (
@@ -63,4 +63,4 @@ WHERE
     ns.nation_revenue IS NOT NULL
 ORDER BY 
     revenue_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

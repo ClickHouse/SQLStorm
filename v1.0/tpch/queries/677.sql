@@ -56,7 +56,7 @@ LEFT JOIN
                                             FROM partsupp 
                                             WHERE ps_availqty > 0 
                                             ORDER BY ps_supplycost 
-                                            LIMIT 1)  -- Standard SQL for LIMIT
+                                            FETCH FIRST 1 ROW ONLY)  -- Standard SQL for LIMIT
 LEFT JOIN 
     RankedSuppliers rs ON rs.rn = 1
 WHERE 

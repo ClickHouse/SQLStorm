@@ -71,4 +71,4 @@ WHERE
     )
 ORDER BY 
     pr.profit_rank 
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

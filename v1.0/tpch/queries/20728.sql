@@ -3,7 +3,7 @@ WITH RECURSIVE CTE_Orders AS (
     SELECT o_orderkey, o_custkey, o_orderdate, o_totalprice,
            ROW_NUMBER() OVER (PARTITION BY o_custkey ORDER BY o_orderdate DESC) AS rn
     FROM orders
-    WHERE o_orderdate >= toDate('1998-01-01')
+    WHERE o_orderdate >= DATE '1998-01-01'
 ),
 CTE_Suppliers AS (
     SELECT s_suppkey, s_name, s_acctbal,

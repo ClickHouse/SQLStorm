@@ -64,4 +64,4 @@ WHERE
     s.TotalSupplyCost IS NOT NULL OR o.TotalQuantity IS NOT NULL
 ORDER BY 
     s.TotalSupplyCost DESC, o.TotalQuantity ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

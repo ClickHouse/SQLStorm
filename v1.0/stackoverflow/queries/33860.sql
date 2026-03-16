@@ -23,7 +23,7 @@ PostStatistics AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate > CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate > CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title
 ),

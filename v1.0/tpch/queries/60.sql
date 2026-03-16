@@ -10,7 +10,7 @@ WITH OrderSummary AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01')
+        o.o_orderdate >= DATE '1997-01-01'
     GROUP BY 
         o.o_orderkey, o.o_orderdate, o.o_orderstatus
 ),
@@ -43,7 +43,7 @@ LEFT JOIN
 LEFT JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 INNER JOIN 
-    TopOrders os ON os.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    TopOrders os ON os.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 WHERE 
     (p.p_size > 10 OR p.p_size IS NULL)
     AND s.s_acctbal IS NOT NULL

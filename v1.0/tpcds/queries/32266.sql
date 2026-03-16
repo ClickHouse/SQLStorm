@@ -58,4 +58,4 @@ WHERE
     cs.total_spent > 100
 ORDER BY 
     cs.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

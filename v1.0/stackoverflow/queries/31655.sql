@@ -53,7 +53,7 @@ PostRankings AS (
     FROM 
         Posts pa
     WHERE 
-        pa.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        pa.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
     GROUP BY 
         pa.OwnerUserId
 )

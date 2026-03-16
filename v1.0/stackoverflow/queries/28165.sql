@@ -47,4 +47,4 @@ JOIN
     PostSummary ps ON ub.UserId = ps.OwnerUserId
 ORDER BY 
     ub.TotalViews DESC, ub.GoldBadges DESC, ps.TotalScore DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

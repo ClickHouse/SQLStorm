@@ -31,7 +31,7 @@ LEFT JOIN
 LEFT JOIN 
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
-    o.o_orderdate BETWEEN toDate('1990-01-01') AND toDate('1995-12-31')
+    o.o_orderdate BETWEEN DATE '1990-01-01' AND DATE '1995-12-31'
     AND (c.c_acctbal > (SELECT AVG(c2.c_acctbal) FROM customer c2 WHERE c2.c_mktsegment = c.c_mktsegment) OR c.c_acctbal IS NULL)
 GROUP BY 
     r.r_name, n.n_name

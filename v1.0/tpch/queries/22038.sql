@@ -7,7 +7,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 YEAR'
         AND o.o_totalprice > (SELECT AVG(o2.o_totalprice) FROM orders o2)
 ),
 CustomerSegments AS (
@@ -72,4 +72,4 @@ WHERE
 ORDER BY 
     r.o_orderdate DESC, 
     total_price_after_discount DESC 
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

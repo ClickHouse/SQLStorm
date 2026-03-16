@@ -48,6 +48,6 @@ SELECT
     rp.p_retailprice,
     sp.SupplierRegionInfo
 FROM RankedParts rp
-JOIN StringProcessed sp ON rp.p_partkey = (SELECT ps.ps_partkey FROM partsupp ps WHERE ps.ps_suppkey = sp.s_suppkey LIMIT 1)
+JOIN StringProcessed sp ON rp.p_partkey = (SELECT ps.ps_partkey FROM partsupp ps WHERE ps.ps_suppkey = sp.s_suppkey FETCH FIRST 1 ROW ONLY)
 WHERE rp.rnk <= 5
 ORDER BY rp.p_retailprice DESC, sp.SupplierRegionInfo;

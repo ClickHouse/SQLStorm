@@ -50,4 +50,4 @@ WHERE
     AND (bd.o_orderdate >= '1997-01-01' OR bd.o_orderdate IS NULL)
 ORDER BY 
     bd.total_revenue DESC NULLS LAST
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

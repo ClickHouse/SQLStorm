@@ -31,7 +31,7 @@ RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+        o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 YEAR'
 ),
 ActiveSuppliers AS (
     SELECT 
@@ -39,7 +39,7 @@ ActiveSuppliers AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 6 MONTH
+        l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '6 MONTH'
 )
 SELECT 
     c.c_name,

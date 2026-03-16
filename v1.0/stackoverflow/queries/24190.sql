@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 
 CTE_ClosedPosts AS (
@@ -24,10 +24,10 @@ CTE_ClosedPosts AS (
     FROM 
         PostHistory PH
     JOIN 
-        CloseReasonTypes CT ON CAST(PH.Comment AS integer) = CT.Id
+        CloseReasonTypes CT ON PH.Comment::integer = CT.Id
     WHERE 
         PH.PostHistoryTypeId IN (10, 11) AND 
-        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
 ),
 
 UserVotes AS (

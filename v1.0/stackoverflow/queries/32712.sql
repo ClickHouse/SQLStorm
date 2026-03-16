@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.CreationDate, p.Score, p.AcceptedAnswerId
 ),
@@ -32,7 +32,7 @@ UserAggregate AS (
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate >= cast('2024-10-01' as date) - INTERVAL 90 DAY
+        u.CreationDate >= cast('2024-10-01' as date) - INTERVAL '90 days'
     GROUP BY 
         u.Id
 )

@@ -71,4 +71,4 @@ WHERE
     itemDetails.i_item_sk IS NOT NULL
 ORDER BY 
     sales.avg_sales DESC, demographic.cd_gender, demographic.customer_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

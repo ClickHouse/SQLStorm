@@ -9,7 +9,7 @@ WITH RECURSIVE PopularPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
 RecentUserActivity AS (
     SELECT 
@@ -21,11 +21,11 @@ RecentUserActivity AS (
     FROM 
         Users u
     LEFT JOIN 
-        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 60 DAY
+        Posts p ON u.Id = p.OwnerUserId AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '60 days'
     LEFT JOIN 
         Comments c ON c.UserId = u.Id
     LEFT JOIN 
-        Votes v ON v.UserId = u.Id AND v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 60 DAY
+        Votes v ON v.UserId = u.Id AND v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '60 days'
     GROUP BY 
         u.Id, u.DisplayName
 ),

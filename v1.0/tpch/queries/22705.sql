@@ -12,7 +12,7 @@ ranked_orders AS (
     SELECT o.o_orderkey, o.o_totalprice, 
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS price_rank
     FROM orders o
-    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR 
+    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year' 
     AND o.o_totalprice > 0
 ),
 string_aggregates AS (
@@ -48,4 +48,4 @@ JOIN ranked_orders ro ON ro.o_orderkey = (
 WHERE ps.total_value IS NOT NULL
 AND (ps.unique_suppliers IS NULL OR ps.unique_suppliers < 5)
 ORDER BY ps.total_value DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

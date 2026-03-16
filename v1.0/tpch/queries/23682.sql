@@ -54,4 +54,4 @@ WHERE COALESCE(sd.TotalCost, 0) < (SELECT AVG(TotalCost) FROM SupplierDetails)
 GROUP BY co.c_custkey, co.c_name, sd.TotalCost
 HAVING SUM(co.o_totalprice) > 5000
 ORDER BY GrandTotal DESC, TotalOrders DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

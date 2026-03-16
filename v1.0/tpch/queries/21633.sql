@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+        o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 ),
 SupplierStats AS (
     SELECT 
@@ -73,4 +73,4 @@ HAVING
     COUNT(ss.s_suppkey) > 2
 ORDER BY 
     supplier_count DESC, total_supplied DESC
-LIMIT 5 OFFSET 1;
+OFFSET 1 ROW FETCH NEXT 5 ROW ONLY;

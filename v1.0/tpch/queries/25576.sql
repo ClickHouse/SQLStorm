@@ -25,7 +25,7 @@ JOIN
 WHERE 
     c.c_acctbal > (SELECT AVG(c2.c_acctbal) FROM customer c2)
 AND 
-    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY 
     c.c_name, s.s_name, r.r_name
 HAVING 

@@ -64,4 +64,4 @@ WHERE
     rc.total_profit > 5000
 ORDER BY 
     rc.total_quantity DESC, wp.total_sales_profit DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

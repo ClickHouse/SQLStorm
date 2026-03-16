@@ -25,7 +25,7 @@ SuppliersWithLaterOrders AS (
     LEFT JOIN partsupp ps ON rs.s_suppkey = ps.ps_suppkey
     LEFT JOIN lineitem li ON ps.ps_partkey = li.l_partkey
     LEFT JOIN orders o ON li.l_orderkey = o.o_orderkey
-    WHERE o.o_orderdate > toDate('1998-10-01') - INTERVAL 1 YEAR
+    WHERE o.o_orderdate > DATE '1998-10-01' - INTERVAL '1 YEAR'
     GROUP BY rs.s_suppkey
 ),
 FinalBenchmark AS (

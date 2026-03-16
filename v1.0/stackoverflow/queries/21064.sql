@@ -15,7 +15,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR)
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '1 year')
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.Reputation
 ),
@@ -85,4 +85,4 @@ WHERE
     (NetVotes > 0 OR AcceptedAnswersCount > 0)
 ORDER BY 
     NetVotes DESC, Title
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -4,7 +4,7 @@ WITH PostStatistics AS (
         pt.Name AS PostType,
         COUNT(p.Id) AS TotalPosts,
         AVG(p.Score) AS AvgScore,
-        SUM(CASE WHEN p.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS RecentPosts,
+        SUM(CASE WHEN p.LastActivityDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 1 ELSE 0 END) AS RecentPosts,
         SUM(p.ViewCount) AS TotalViews
     FROM 
         Posts p
@@ -17,7 +17,7 @@ UserStatistics AS (
     SELECT 
         u.DisplayName,
         COUNT(b.Id) AS TotalBadges,
-        SUM(CASE WHEN c.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 365 DAY THEN 1 ELSE 0 END) AS ActiveComments
+        SUM(CASE WHEN c.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '365 days' THEN 1 ELSE 0 END) AS ActiveComments
     FROM 
         Users u
     LEFT JOIN 

@@ -23,7 +23,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
         AND p.Title IS NOT NULL
     GROUP BY 
         p.Id, u.DisplayName, p.CreationDate, pt.Name, p.Tags, p.AcceptedAnswerId

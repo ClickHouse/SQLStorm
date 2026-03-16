@@ -19,7 +19,7 @@ WITH RankedPosts AS (
                 arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
         ) t ON TRUE
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year' 
         AND p.ViewCount > 100
 ),
 

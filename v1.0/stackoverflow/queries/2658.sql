@@ -33,7 +33,7 @@ SELECT
 FROM UserActivity ua
 LEFT JOIN RecentPosts rp ON ua.UserId = rp.OwnerUserId AND rp.rn = 1
 WHERE ua.TotalPosts > 5
-    AND ua.LastActive >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    AND ua.LastActive >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     AND (SELECT COUNT(*) FROM Votes v WHERE v.UserId = ua.UserId AND v.VoteTypeId = 2) > 0
 ORDER BY ua.LastActive DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

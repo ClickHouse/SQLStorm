@@ -53,4 +53,4 @@ FULL OUTER JOIN
     BestSellingItems bi ON ds.customer_count > 50
 ORDER BY 
     ds.cd_gender, bi.total_sold DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

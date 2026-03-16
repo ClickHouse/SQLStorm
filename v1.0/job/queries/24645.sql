@@ -75,4 +75,4 @@ WHERE
 ORDER BY 
     r.production_year DESC,
     ai.movies_count DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

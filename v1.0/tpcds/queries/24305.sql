@@ -67,4 +67,4 @@ WHERE
     OR (hvc.total_sales > 10000 AND cd.gender IS NOT NULL)
 ORDER BY 
     hvc.sales_rank, hvc.c_last_name DESC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

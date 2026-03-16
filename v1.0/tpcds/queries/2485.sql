@@ -55,4 +55,4 @@ SELECT
 FROM CustomerCombined c
 WHERE c.total_returned_quantity > 0
 ORDER BY c.total_returned_amt DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

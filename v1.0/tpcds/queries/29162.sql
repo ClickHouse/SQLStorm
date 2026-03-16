@@ -44,5 +44,5 @@ SELECT
     t.days_names
 FROM address_summary a
 JOIN demographics_summary d ON a.ca_state = 'CA' AND d.cd_gender = 'F'
-JOIN time_analysis t ON t.d_year = toYear(cast('2002-10-01' as date))
+JOIN time_analysis t ON t.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
 ORDER BY a.address_count DESC, d.demographic_count DESC;

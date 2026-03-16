@@ -16,7 +16,7 @@ filtered_orders AS (
                ELSE 'Low'
            END AS price_category
     FROM orders o
-    WHERE o.o_orderstatus = 'O' AND toMonth(o.o_orderdate) IN (1, 6)
+    WHERE o.o_orderstatus = 'O' AND EXTRACT(MONTH FROM o.o_orderdate) IN (1, 6)
 ),
 customer_summary AS (
     SELECT c.c_custkey, COUNT(DISTINCT l.l_orderkey) AS order_count,

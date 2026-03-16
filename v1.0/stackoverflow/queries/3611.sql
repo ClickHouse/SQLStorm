@@ -19,7 +19,7 @@ PostMetrics AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8 
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY p.Id, p.OwnerUserId
 ),
 PostHistoryDetails AS (
@@ -29,7 +29,7 @@ PostHistoryDetails AS (
         MAX(CASE WHEN ph.PostHistoryTypeId IN (11, 12) THEN ph.CreationDate END) AS LastReopenDate,
         COUNT(ph.Id) AS EditCount
     FROM PostHistory ph
-    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY ph.PostId
 )
 SELECT 
@@ -47,4 +47,4 @@ LEFT JOIN PostHistoryDetails phd ON p.Id = phd.PostId
 WHERE pm.CommentCount > 5
 AND (phd.LastCloseDate IS NULL OR phd.LastReopenDate > phd.LastCloseDate)
 ORDER BY ur.ReputationLevel DESC, pm.TotalBounty DESC, pm.CommentCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

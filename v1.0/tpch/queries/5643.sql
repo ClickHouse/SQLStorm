@@ -9,7 +9,7 @@ HighValueCustomers AS (
     SELECT c.c_custkey, c.c_name, SUM(o.o_totalprice) AS total_spent
     FROM customer c 
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1996-01-01'
     GROUP BY c.c_custkey, c.c_name
     HAVING SUM(o.o_totalprice) > 10000
 ),
@@ -17,7 +17,7 @@ RecentOrders AS (
     SELECT o.o_orderkey, o.o_custkey, COUNT(l.l_orderkey) AS item_count
     FROM orders o 
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
     GROUP BY o.o_orderkey, o.o_custkey
 )
 

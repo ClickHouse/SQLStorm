@@ -39,4 +39,4 @@ HAVING
     COUNT(DISTINCT ps.ps_suppkey) > 0
 ORDER BY 
     total_avail_qty DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

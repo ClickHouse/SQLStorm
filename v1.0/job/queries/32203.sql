@@ -53,7 +53,7 @@ LEFT JOIN
 LEFT JOIN (
     SELECT 
         pi.person_id,
-        toYear(AGE(CAST('2024-10-01' AS DATE), CAST(pi.info AS DATE))) AS age
+        EXTRACT(YEAR FROM AGE(CAST('2024-10-01' AS DATE), pi.info::DATE)) AS age
     FROM 
         person_info pi
     WHERE 

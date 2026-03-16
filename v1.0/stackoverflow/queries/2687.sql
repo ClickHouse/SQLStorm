@@ -41,7 +41,7 @@ CombinedPosts AS (
         PostHistory PH ON PS.PostId = PH.PostId 
     WHERE 
         PH.PostHistoryTypeId IN (10, 11) 
-        AND PH.CreationDate BETWEEN PS.CreationDate AND toDateTime64('2024-10-01 12:34:56', 6)
+        AND PH.CreationDate BETWEEN PS.CreationDate AND cast('2024-10-01 12:34:56' as timestamp)
 ),
 FinalResults AS (
     SELECT 

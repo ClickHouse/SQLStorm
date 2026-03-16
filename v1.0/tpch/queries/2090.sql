@@ -13,7 +13,7 @@ WITH RegionalSales AS (
     JOIN lineitem l ON p.p_partkey = l.l_partkey
     JOIN orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     GROUP BY 
         r.r_name
 ), RankedSales AS (
@@ -46,7 +46,7 @@ LEFT JOIN (
     JOIN lineitem l ON p.p_partkey = l.l_partkey
     JOIN orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31') 
+        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31' 
         AND s.s_acctbal < (SELECT AVG(s.s_acctbal) FROM supplier s)
     GROUP BY 
         r.r_name

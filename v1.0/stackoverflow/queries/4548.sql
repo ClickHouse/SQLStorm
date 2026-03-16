@@ -37,7 +37,7 @@ WHERE tu.TotalPosts > 0
       SELECT 1 
       FROM Posts p
       WHERE p.OwnerUserId = tu.UserId 
-        AND p.LastActivityDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        AND p.LastActivityDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR')
   )
 ORDER BY tu.Reputation DESC, tu.TotalPosts DESC
 LIMIT 20;

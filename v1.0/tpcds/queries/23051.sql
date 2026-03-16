@@ -74,4 +74,4 @@ WHERE
 ORDER BY 
     cu.c_last_name, 
     cu.c_first_name
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

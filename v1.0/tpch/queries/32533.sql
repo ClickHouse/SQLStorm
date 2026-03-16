@@ -56,4 +56,5 @@ HAVING
     AVG(rs.total_sales) > 1000
 ORDER BY
     region_total_sales DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS
+FETCH NEXT 10 ROWS ONLY;

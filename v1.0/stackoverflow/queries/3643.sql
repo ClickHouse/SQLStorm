@@ -27,7 +27,7 @@ PostStats AS (
     LEFT JOIN 
         UserVotes V ON P.OwnerUserId = V.UserId
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 )
 SELECT 
     PS.PostId,

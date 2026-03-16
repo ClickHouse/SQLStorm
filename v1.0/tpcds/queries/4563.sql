@@ -56,4 +56,4 @@ LEFT JOIN
     MonthlyReturns mr ON mr.wr_returned_date_sk = (SELECT MAX(d_date_sk) FROM date_dim WHERE d_year = 2023)
 ORDER BY 
     net_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

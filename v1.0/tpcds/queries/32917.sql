@@ -67,9 +67,9 @@ FROM
 LEFT JOIN
     CustomerDemographics cd ON ss.total_sales > 1000
 WHERE
-    ss.sale_date > toDate('2023-01-01')
+    ss.sale_date > DATE '2023-01-01'
 ORDER BY
     ss.sale_date DESC,
     cd.cd_gender ASC, 
     cd.cd_marital_status DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

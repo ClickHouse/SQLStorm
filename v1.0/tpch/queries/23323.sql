@@ -64,7 +64,7 @@ JOIN
 LEFT JOIN 
     FilteredParts fp ON p.p_partkey = fp.ps_partkey
 WHERE 
-    r.o_orderdate > (cast('1998-10-01' as date) - INTERVAL 1 YEAR) 
+    r.o_orderdate > (cast('1998-10-01' as date) - INTERVAL '1 year') 
     AND (fp.total_supply_cost IS NULL OR fp.total_supply_cost < 5000)
 ORDER BY 
     r.o_orderdate DESC, total_revenue DESC;

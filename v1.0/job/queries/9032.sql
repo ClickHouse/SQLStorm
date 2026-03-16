@@ -27,4 +27,4 @@ GROUP BY
     a.name, t.title, t.production_year
 ORDER BY 
     t.production_year DESC, total_cast_members DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

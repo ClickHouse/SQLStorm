@@ -19,8 +19,8 @@ WITH Supplier_Order_Summary AS (
     JOIN 
         nation n ON s.s_nationkey = n.n_nationkey
     WHERE 
-        l.l_shipdate > toDate('1995-01-01') 
-        AND l.l_shipdate < toDate('1996-12-31')
+        l.l_shipdate > DATE '1995-01-01' 
+        AND l.l_shipdate < DATE '1996-12-31'
     GROUP BY 
         s.s_name, n.n_name
 )

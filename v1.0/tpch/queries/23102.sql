@@ -78,4 +78,4 @@ FROM
     FinalAggregation fa
 ORDER BY 
     fa.total_spent DESC, fa.p_retailprice ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id AND v.VoteTypeId = 9  
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
     AND p.Score > 0  
     GROUP BY p.Id, p.OwnerUserId, p.Title, p.ViewCount, p.Score, p.CreationDate
 ),
@@ -48,7 +48,7 @@ ClosedPosts AS (
     FROM Posts p
     JOIN PostHistory ph ON ph.PostId = p.Id 
     WHERE ph.PostHistoryTypeId = 10  
-    AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
+    AND ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'  
 )
 SELECT 
     tp.PostId,

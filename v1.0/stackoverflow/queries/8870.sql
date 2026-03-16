@@ -58,4 +58,4 @@ WHERE
     uBadge.BadgeCount > 0
 ORDER BY
     uBadge.BadgeCount DESC, uPost.TotalScore DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

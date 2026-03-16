@@ -16,7 +16,7 @@ ActivePosts AS (
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositiveScores,
         AVG(p.ViewCount) AS AvgViewCount
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
     GROUP BY p.OwnerUserId
 ),
 UserActivity AS (

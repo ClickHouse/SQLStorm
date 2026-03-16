@@ -74,4 +74,4 @@ WHERE
 ORDER BY 
     revenue_status DESC, 
     profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

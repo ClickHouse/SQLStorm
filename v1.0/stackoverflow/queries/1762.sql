@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 TopQuestions AS (
     SELECT 
@@ -35,7 +35,7 @@ QuestionStats AS (
         COALESCE(COUNT(c.Id), 0) AS CommentCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
-        COALESCE(avg(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - q.CreationDate)) / 3600), 0) AS HoursSinceCreation
+        COALESCE(avg(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - q.CreationDate)) / 3600), 0) AS HoursSinceCreation
     FROM 
         TopQuestions q
     LEFT JOIN 

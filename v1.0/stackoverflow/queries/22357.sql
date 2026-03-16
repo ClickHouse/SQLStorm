@@ -70,4 +70,4 @@ WHERE
     AND (ur.Reputation IS NULL OR ur.Reputation > 1000)  
 ORDER BY 
     rp.CreationDate DESC, rp.VoteCount DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

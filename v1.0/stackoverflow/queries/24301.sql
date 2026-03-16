@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         p.Id
 ), 
@@ -55,7 +55,7 @@ ClosedPosts AS (
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
         pht.Name = 'Post Closed' 
-        AND ph.CreationDate < cast('2024-10-01' as date) - INTERVAL 1 MONTH
+        AND ph.CreationDate < cast('2024-10-01' as date) - INTERVAL '1 month'
 ), 
 UserBadges AS (
     SELECT 

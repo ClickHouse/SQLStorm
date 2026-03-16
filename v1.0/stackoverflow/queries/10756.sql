@@ -8,7 +8,7 @@ WITH PostStats AS (
         p.Score,
         p.ViewCount,
         COUNT(DISTINCT b.Id) AS BadgeCount,
-        toUnixTimestamp((now64(6) - p.CreationDate)) AS PostAgeInSeconds
+        toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate)) AS PostAgeInSeconds
     FROM 
         Posts p
     LEFT JOIN 
@@ -18,7 +18,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId
     WHERE 
-        p.CreationDate > CURRENT_DATE - INTERVAL 30 DAY 
+        p.CreationDate > CURRENT_DATE - INTERVAL '30 days' 
     GROUP BY 
         p.Id, p.PostTypeId, p.Score, p.ViewCount, p.CreationDate
 )

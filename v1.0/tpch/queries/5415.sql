@@ -12,7 +12,7 @@ WITH RankedOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01')
+        o.o_orderdate >= DATE '1997-01-01'
 ), SumLineItems AS (
     SELECT 
         l.l_orderkey,
@@ -20,7 +20,7 @@ WITH RankedOrders AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= toDate('1997-01-01')
+        l.l_shipdate >= DATE '1997-01-01'
     GROUP BY 
         l.l_orderkey
 ), SuppliersWithPartCount AS (

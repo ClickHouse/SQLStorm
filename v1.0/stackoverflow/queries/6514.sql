@@ -62,4 +62,4 @@ JOIN
     PostStatistics ps ON tu.AnswerCount > 10
 ORDER BY 
     tu.ReputationRank, ps.PostCount DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

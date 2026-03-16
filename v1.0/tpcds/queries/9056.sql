@@ -24,4 +24,4 @@ GROUP BY
     c.c_first_name, c.c_last_name, d.d_date, cd.cd_gender, w.w_warehouse_name
 ORDER BY 
     Total_Sales_Amount DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

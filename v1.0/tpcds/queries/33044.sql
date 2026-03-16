@@ -37,4 +37,4 @@ FROM SalesSummary ss
 LEFT JOIN AddressInfo ai ON ss.total_sales > 0 AND ai.city_rank <= 10
 WHERE ss.total_revenue IS NOT NULL AND ss.total_sales > 5
 ORDER BY ss.total_revenue DESC, ss.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

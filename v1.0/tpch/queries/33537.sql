@@ -57,7 +57,7 @@ SELECT
     oa.net_sales,
     oa.last_ship_date,
     CASE 
-        WHEN oa.last_ship_date < toDate('1998-10-01') - INTERVAL 30 DAY 
+        WHEN oa.last_ship_date < DATE '1998-10-01' - INTERVAL '30 days' 
         THEN 'Overdue'
         ELSE 'Current'
     END AS shipping_status,

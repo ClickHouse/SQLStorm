@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 2 MONTH 
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '2 months' 
         AND P.Score IS NOT NULL
 ),
 ClosedPosts AS (
@@ -24,7 +24,7 @@ ClosedPosts AS (
     FROM 
         PostHistory PH
     JOIN 
-        CloseReasonTypes CR ON CAST(PH.Comment AS int) = CR.Id
+        CloseReasonTypes CR ON PH.Comment::int = CR.Id
     WHERE 
         PH.PostHistoryTypeId IN (10, 11) 
 ),

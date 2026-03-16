@@ -3,7 +3,7 @@ WITH RecentOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, c.c_nationkey, c.c_acctbal, o.o_totalprice
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
+    WHERE o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
 ),
 PartSuppliers AS (
     SELECT ps.ps_partkey, SUM(ps.ps_availqty * ps.ps_supplycost) AS total_supply_cost

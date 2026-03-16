@@ -30,7 +30,7 @@ TopPosts AS (
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS rn
     FROM Posts p
-    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
       AND p.ViewCount > 500
 ),
 

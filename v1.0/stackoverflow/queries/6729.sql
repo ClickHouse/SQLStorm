@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON p.OwnerUserId = U.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY AND 
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' AND 
         p.ViewCount > 100
 ),
 RecentVotes AS (
@@ -22,7 +22,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY 
+        v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days' 
     GROUP BY 
         v.PostId
 ),

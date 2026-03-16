@@ -25,7 +25,7 @@ ActivePostHistory AS (
         PH.Comment,
         ROW_NUMBER() OVER (PARTITION BY PH.PostId ORDER BY PH.CreationDate DESC) AS ActivityRank
     FROM PostHistory PH
-    WHERE PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE PH.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 )
 SELECT 
     UPS.DisplayName,

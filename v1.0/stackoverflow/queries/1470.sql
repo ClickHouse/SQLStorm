@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserReputation AS (
     SELECT 
@@ -60,4 +60,4 @@ WHERE
     ps.TotalAnswers > 5
 ORDER BY 
     ps.TotalScore DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

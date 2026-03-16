@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON t.WikiPostId = p.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - interval '1 year' 
         AND p.PostTypeId = 1 
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score, p.CreationDate, p.OwnerUserId

@@ -37,4 +37,4 @@ CROSS JOIN
     SalesSummary ss
 ORDER BY 
     cs.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

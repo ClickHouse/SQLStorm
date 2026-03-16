@@ -57,4 +57,4 @@ LEFT JOIN
     ReturnDetails rd ON tp.ws_item_sk = rd.wr_item_sk
 ORDER BY 
     net_sales DESC, total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

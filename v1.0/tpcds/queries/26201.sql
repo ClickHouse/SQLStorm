@@ -21,7 +21,7 @@ DemographicStats AS (
 ),
 DateStats AS (
     SELECT
-        toYear(d_date) AS year,
+        EXTRACT(YEAR FROM d_date) AS year,
         COUNT(*) AS total_dates,
         COUNT(DISTINCT d_month_seq) AS unique_months,
         AVG(d_dom) AS avg_day_of_month

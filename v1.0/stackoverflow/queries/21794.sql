@@ -31,7 +31,7 @@ PostStats AS (
     LEFT JOIN 
         Posts P2 ON PL.RelatedPostId = P2.Id
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
     GROUP BY 
         P.Id, P.OwnerUserId
 ),

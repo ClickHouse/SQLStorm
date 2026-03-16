@@ -21,7 +21,7 @@ WITH RegionalSales AS (
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
         r.r_name IS NOT NULL AND 
-        l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
+        l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
     GROUP BY 
         r.r_name
 ),

@@ -31,19 +31,19 @@ SELECT
     p.p_brand,
     p.p_retailprice,
     COALESCE(SUM(l.l_quantity), 0) AS total_quantity,
-    COALESCE(MIN(l.l_shipdate), toDate('9999-12-31')) AS earliest_ship_date,
+    COALESCE(MIN(l.l_shipdate), DATE '9999-12-31') AS earliest_ship_date,
     ns.n_name AS nation_name,
     ns.customer_count,
     ROUND(AVG(l.l_discount), 2) AS average_discount,
     (SELECT COUNT(DISTINCT o.o_orderkey)
      FROM orders o
-     WHERE o.o_orderdate > toDate('1998-10-01') - INTERVAL 30 DAY) AS recent_order_count
+     WHERE o.o_orderdate > DATE '1998-10-01' - INTERVAL '30 days') AS recent_order_count
 FROM part p
 LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
 LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 LEFT JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
 LEFT JOIN NationDetails ns ON s.s_nationkey = ns.n_nationkey
 GROUP BY p.p_partkey, p.p_name, p.p_brand, p.p_retailprice, ns.n_name, ns.customer_count
-HAVING SUM(l.l_quantity) > 100 OR MIN(l.l_shipdate) < toDate('1998-10-01') - INTERVAL 10 DAY
+HAVING SUM(l.l_quantity) > 100 OR MIN(l.l_shipdate) < DATE '1998-10-01' - INTERVAL '10 days'
 ORDER BY total_quantity DESC, p.p_name ASC
 LIMIT 50;

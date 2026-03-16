@@ -28,7 +28,7 @@ WITH RECURSIVE TopUsers AS (
         ROW_NUMBER() OVER (ORDER BY P.Score DESC) AS PopularityRank
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 MONTH'
     GROUP BY P.Id, P.Title, P.OwnerUserId, P.Score
 ), UserPostStats AS (
     SELECT 

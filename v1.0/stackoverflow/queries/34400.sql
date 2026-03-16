@@ -34,7 +34,7 @@ FilteredPosts AS (
         RankedPosts rp
     WHERE 
         rp.Rank <= 10
-        AND rp.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
+        AND rp.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
 ),
 PostClosureDetails AS (
     SELECT 

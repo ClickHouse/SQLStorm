@@ -56,7 +56,7 @@ FilteredMovies AS (
 )
 SELECT 
     fm.title,
-    COALESCE(CAST(fm.production_year AS TEXT), 'Unknown') AS year,
+    COALESCE(fm.production_year::TEXT, 'Unknown') AS year,
     COALESCE(fm.cast_count, 0) AS total_cast,
     COALESCE(fm.actors, 'None') AS actor_names,
     COALESCE(fm.companies, 'No Companies') AS production_companies,

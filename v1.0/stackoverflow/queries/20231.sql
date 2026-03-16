@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Badges b ON p.OwnerUserId = b.UserId
         AND b.Class = 1  
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
         AND p.PostTypeId = 1  
 ),
 FilteredRankedPosts AS (
@@ -62,4 +62,4 @@ WHERE
     (v.UpVoteCount - v.DownVoteCount) > 10  
 ORDER BY 
     f.ViewCount DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

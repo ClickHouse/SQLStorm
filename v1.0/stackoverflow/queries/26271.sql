@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
+        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'  
 ),
 TopTags AS (
     SELECT 
@@ -74,7 +74,7 @@ LEFT JOIN (
     FROM 
         Badges 
     WHERE 
-        Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        Date >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
     GROUP BY 
         UserId
 ) badgeSummary ON ps.OwnerDisplayName = (SELECT DisplayName FROM Users WHERE Id = badgeSummary.UserId)

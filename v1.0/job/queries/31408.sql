@@ -56,7 +56,7 @@ ranked_movies AS (
         COALESCE(cc.number_of_covered_roles, 0) AS cast_count,
         COALESCE(hpc.highest_salary, '0') AS highest_salary,
         RANK() OVER (ORDER BY 
-            COALESCE(NULLIF(hpc.highest_salary, '0'), '0'CAST() AS numeric) DESC, 
+            COALESCE(NULLIF(hpc.highest_salary, '0'), '0')::numeric DESC, 
             COALESCE(cc.number_of_covered_roles, 0) DESC) AS movie_rank
     FROM 
         movie_hierarchy mh
@@ -70,13 +70,13 @@ SELECT
     r.title,
     r.production_year,
     r.cast_count,
-    NULLIF(r.highest_salary, '0'CAST() AS numeric) AS highest_salary,
+    NULLIF(r.highest_salary, '0')::numeric AS highest_salary,
     r.movie_rank
 FROM 
     ranked_movies r
 WHERE 
     r.cast_count > 3
     AND r.highest_salary IS NOT NULL
-    AND NULLIF(r.highest_salary, '0'CAST() AS numeric) > 1000000  
+    AND NULLIF(r.highest_salary, '0')::numeric > 1000000  
 ORDER BY 
     r.movie_rank;

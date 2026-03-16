@@ -57,7 +57,7 @@ SELECT
     o.TotalRevenue,
     o.LineCount,
     CASE 
-        WHEN o.LastShipDate < toDate('1998-10-01') - INTERVAL 30 DAY THEN 'Stale'
+        WHEN o.LastShipDate < DATE '1998-10-01' - INTERVAL '30 days' THEN 'Stale'
         ELSE 'Fresh'
     END AS ShippingStatus
 FROM 
@@ -80,4 +80,4 @@ WHERE
 ORDER BY 
     f.p_retailprice ASC, 
     ShippingStatus DESC
-LIMIT 20 OFFSET 10
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY

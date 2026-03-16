@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
         AND p.PostTypeId = 1 
 ),
 VoteSummary AS (
@@ -71,8 +71,8 @@ CROSS JOIN
 WHERE 
     rp.ScoreRank = 1
     AND (rp.ViewCount IS NOT NULL OR rp.ViewCount > 100)
-    AND (rp.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY OR rp.ViewCount < 50)
+    AND (rp.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' OR rp.ViewCount < 50)
     AND (t.PostCount > 5 OR t.TagName IS NULL)
 ORDER BY 
     rp.CreationDate DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

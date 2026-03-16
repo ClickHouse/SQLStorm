@@ -46,4 +46,4 @@ WHERE
     (COALESCE(rs.total_sales, 0.00) > 500 OR COALESCE(pr.total_returns, 0) > 0)
 ORDER BY 
     net_income DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

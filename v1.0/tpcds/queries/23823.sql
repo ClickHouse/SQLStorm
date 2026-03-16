@@ -81,4 +81,4 @@ WHERE
     (a.cd_gender IS NULL AND a.total_profit IS NOT NULL)
 ORDER BY 
     a.total_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

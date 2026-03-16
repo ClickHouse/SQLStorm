@@ -6,7 +6,7 @@ SELECT
     COUNT(DISTINCT o.o_orderkey) AS total_orders,
     arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('OrderID: ', o.o_orderkey, ' (', o.o_orderdate, ')')))), '; ') AS order_details,
     AVG(l.l_extendedprice) AS average_price,
-    MAX(CASE WHEN l.l_shipdate < toDate('1998-10-01') THEN 'Shipped' ELSE 'Pending' END) AS shipping_status
+    MAX(CASE WHEN l.l_shipdate < DATE '1998-10-01' THEN 'Shipped' ELSE 'Pending' END) AS shipping_status
 FROM 
     supplier s
 JOIN 

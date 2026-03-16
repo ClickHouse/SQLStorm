@@ -53,7 +53,7 @@ SalesData AS (
     JOIN 
         CustomerSummary AS CUSTOMER ON ADDRESS.ca_state = CUSTOMER.cd_marital_status
     JOIN 
-        DateSummary AS DATE ON DATE.d_year = toYear(now64(6))
+        DateSummary AS DATE ON DATE.d_year = EXTRACT(YEAR FROM CURRENT_TIMESTAMP)
 )
 SELECT 
     ca_city, 

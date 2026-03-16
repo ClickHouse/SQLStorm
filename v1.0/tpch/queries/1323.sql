@@ -59,4 +59,4 @@ WHERE
     (si.sales_status = 'No Sales' OR sp.s_acctbal > 1000.00)
 ORDER BY 
     si.total_sales DESC, si.p_partkey
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;

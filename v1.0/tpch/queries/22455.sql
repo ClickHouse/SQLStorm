@@ -57,7 +57,7 @@ LEFT JOIN supplier_part_info s ON s.ps_suppkey IN (
 )
 LEFT JOIN top_nations nt ON c.c_nationkey = nt.n_nationkey
 LEFT JOIN order_stats os ON os.o_orderstatus = 'F'
-LEFT JOIN lineitem_summary ls ON ls.l_shipdate = toDate('1998-10-01')
+LEFT JOIN lineitem_summary ls ON ls.l_shipdate = DATE '1998-10-01'
 WHERE c.c_acctbal IS NOT NULL AND c.c_acctbal BETWEEN 1000 AND 5000
 ORDER BY total_spent DESC, nt.total_balance ASC
 LIMIT 100;

@@ -41,7 +41,7 @@ RecentActivePosts AS (
     JOIN 
         Posts p ON rp.PostId = p.Id
     WHERE
-        p.LastActivityDate >= CURRENT_DATE - INTERVAL 30 DAY  
+        p.LastActivityDate >= CURRENT_DATE - INTERVAL '30 days'  
 )
 
 SELECT

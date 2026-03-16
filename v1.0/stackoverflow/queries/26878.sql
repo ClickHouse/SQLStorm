@@ -41,7 +41,7 @@ TopActiveUsers AS (
     JOIN 
         Votes v ON v.UserId = u.Id
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName
     HAVING 

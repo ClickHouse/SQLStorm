@@ -71,4 +71,4 @@ HAVING
     COUNT(DISTINCT cr.c_custkey) > 5
 ORDER BY 
     total_revenue DESC, supplier_cost ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

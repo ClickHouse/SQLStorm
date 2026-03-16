@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > toDate('2023-01-01')
+        p.CreationDate > DATE '2023-01-01'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId, p.AcceptedAnswerId
 ),
@@ -31,7 +31,7 @@ RecentUsers AS (
     FROM 
         Users
     WHERE 
-        CreationDate >= (SELECT MAX(CreationDate) FROM Users) - INTERVAL 1 YEAR
+        CreationDate >= (SELECT MAX(CreationDate) FROM Users) - INTERVAL '1 year'
 ),
 UserBadges AS (
     SELECT 

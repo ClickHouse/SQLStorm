@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score IS NOT NULL
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 PostVoteSummary AS (
     SELECT 
@@ -31,7 +31,7 @@ PostCloseReasons AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
+        CloseReasonTypes cr ON ph.Comment::int = cr.Id
     WHERE 
         ph.PostHistoryTypeId = 10
     GROUP BY 

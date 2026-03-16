@@ -60,7 +60,7 @@ LEFT JOIN
 FULL OUTER JOIN 
     top_customers ts ON s.ss_customer_sk = ts.c_customer_sk
 LEFT JOIN 
-    sales_summary ss ON ss.d_year = toYear(CAST('2002-10-01' AS date))
+    sales_summary ss ON ss.d_year = EXTRACT(YEAR FROM '2002-10-01'::date)
 LEFT JOIN 
     item i ON s.ss_item_sk = i.i_item_sk
 WHERE 

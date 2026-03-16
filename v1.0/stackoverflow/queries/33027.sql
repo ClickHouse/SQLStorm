@@ -62,7 +62,7 @@ SELECT
     fp.PostCategory,
     la.LastActivity,
     CASE 
-        WHEN la.LastActivity < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Inactive'
+        WHEN la.LastActivity < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 'Inactive'
         ELSE 'Active'
     END AS ActivityStatus
 FROM 

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Users U ON p.OwnerUserId = U.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 CloseReasons AS (
     SELECT 

@@ -18,7 +18,7 @@ TopSuppliers AS (
 ),
 AnnualOrderStats AS (
     SELECT o.o_orderkey, o.o_orderdate, SUM(l.l_extendedprice) - SUM(l.l_discount) AS net_revenue,
-           toYear(o.o_orderdate) AS order_year
+           EXTRACT(YEAR FROM o.o_orderdate) AS order_year
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
     GROUP BY o.o_orderkey, o.o_orderdate
@@ -30,6 +30,6 @@ JOIN AnnualOrderStats aos ON ts.s_suppkey IN (SELECT ps.ps_suppkey
                                              FROM partsupp ps 
                                              JOIN lineitem l ON ps.ps_partkey = l.l_partkey 
                                              WHERE l.l_orderkey IN (SELECT o.o_orderkey FROM orders o 
-                                                                    WHERE toYear(o.o_orderdate) = aos.order_year))
+                                                                    WHERE EXTRACT(YEAR FROM o.o_orderdate) = aos.order_year))
 GROUP BY ts.s_name, ts.n_name, ts.r_name, aos.order_year
 ORDER BY ts.r_name, aos.order_year;

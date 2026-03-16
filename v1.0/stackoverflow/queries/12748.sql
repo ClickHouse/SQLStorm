@@ -48,4 +48,4 @@ SELECT
 FROM UserStats us
 JOIN PostEngagement pe ON us.UserId = pe.OwnerUserId
 ORDER BY us.TotalPosts DESC, pe.Score DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

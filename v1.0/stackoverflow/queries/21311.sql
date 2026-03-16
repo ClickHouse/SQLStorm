@@ -15,7 +15,7 @@ PostStats AS (
         AVG(ViewCount) AS AvgViews,
         MAX(Score) AS MaxScore
     FROM Posts
-    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY OwnerUserId
 ), 
 UserPerformance AS (
@@ -33,7 +33,7 @@ UserPerformance AS (
             WHEN COALESCE(PS.TotalQuestions, 0) > 0 AND COALESCE(PS.TotalAnswers, 0) > 0 THEN 'Active Contributor'
             ELSE 'Inactive or Passive'
         END AS ActivityLevel,
-        datePart('epoch', COALESCE(BC.LastBadgeDate, CAST('1970-01-01' AS timestamp))) AS LastBadgeEpoch
+        datePart('epoch', COALESCE(BC.LastBadgeDate, '1970-01-01'::timestamp)) AS LastBadgeEpoch
     FROM Users U
     LEFT JOIN BadgeCounts BC ON U.Id = BC.UserId
     LEFT JOIN PostStats PS ON U.Id = PS.OwnerUserId
@@ -74,4 +74,4 @@ FROM RankedUsers R
 WHERE R.ActivityLevel != 'No Activity'
 ORDER BY R.UserRank
 OFFSET (SELECT COUNT(*) FROM RankedUsers R2 WHERE R2.ActivityLevel = 'Active Contributor') ROWS 
-LIMIT 5;
+FETCH NEXT 5 ROWS ONLY;

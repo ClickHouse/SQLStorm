@@ -51,4 +51,4 @@ WHERE
     ss.total_sales > 1000
 ORDER BY 
     net_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

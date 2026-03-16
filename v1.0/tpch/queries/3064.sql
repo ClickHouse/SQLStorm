@@ -8,7 +8,7 @@ WITH RankedOrders AS (
            ROW_NUMBER() OVER (PARTITION BY o.o_orderpriority ORDER BY o.o_totalprice DESC) as order_rank
     FROM orders o
     WHERE o.o_orderstatus = 'O' 
-      AND o.o_orderdate >= toDate('1997-01-01')
+      AND o.o_orderdate >= DATE '1997-01-01'
 ),
 SupplierPartCounts AS (
     SELECT ps.ps_partkey, 
@@ -34,7 +34,7 @@ FROM part p
 LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
 LEFT JOIN RankedOrders o ON l.l_orderkey = o.o_orderkey
 LEFT JOIN SupplierPartCounts supplier_info ON p.p_partkey = supplier_info.ps_partkey
-WHERE l.l_shipdate >= toDate('1997-01-01')
+WHERE l.l_shipdate >= DATE '1997-01-01'
   AND l.l_returnflag = 'N'
 GROUP BY p.p_name, supplier_info.supplier_count, p.p_type
 HAVING COUNT(DISTINCT o.o_orderkey) > 5

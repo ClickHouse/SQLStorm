@@ -10,8 +10,8 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01') 
-        AND o.o_orderdate < toDate('1997-12-31')
+        o.o_orderdate >= DATE '1997-01-01' 
+        AND o.o_orderdate < DATE '1997-12-31'
 ),
 SupplierInfo AS (
     SELECT 
@@ -45,7 +45,7 @@ LineItemSummary AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+        l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY 
         l.l_orderkey
 )
@@ -60,7 +60,7 @@ SELECT
     CASE 
         WHEN ro.o_totalprice > (SELECT AVG(o2.o_totalprice) 
                                 FROM orders o2 
-                                WHERE o2.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31'))
+                                WHERE o2.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31')
         THEN 'Above Average'
         ELSE 'Below Average'
     END AS price_category

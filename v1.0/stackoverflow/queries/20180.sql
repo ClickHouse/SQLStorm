@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM
         Posts p
     WHERE
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 UserReputation AS (
     SELECT
@@ -27,7 +27,7 @@ UserReputation AS (
     FROM
         Users u
     WHERE
-        u.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        u.LastAccessDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 PostVoteCounts AS (
     SELECT

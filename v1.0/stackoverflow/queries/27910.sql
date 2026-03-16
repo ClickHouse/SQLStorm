@@ -59,6 +59,6 @@ LEFT JOIN
 LEFT JOIN 
     PostHistorySummary ph ON pt.PostId = ph.PostId
 WHERE 
-    pt.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY  
+    pt.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'  
 ORDER BY 
     pt.CreationDate DESC;

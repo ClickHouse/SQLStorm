@@ -38,7 +38,7 @@ SELECT
     n.n_name AS nation_name,
     SUM(COALESCE(ss.total_supply_value, 0)) AS total_supplier_value,
     COUNT(DISTINCT bo.o_orderkey) AS big_order_count,
-    toYear(bo.o_orderdate) AS order_year
+    EXTRACT(YEAR FROM bo.o_orderdate) AS order_year
 FROM 
     nation n
 LEFT JOIN 
@@ -50,7 +50,7 @@ LEFT JOIN
 WHERE 
     n.n_name IS NOT NULL
 GROUP BY 
-    n.n_name, toYear(bo.o_orderdate)
+    n.n_name, EXTRACT(YEAR FROM bo.o_orderdate)
 HAVING 
     SUM(COALESCE(ss.total_supply_value, 0)) > 100000
 ORDER BY 

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes V ON V.PostId = P.Id
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 CommentsWithTags AS (
     SELECT 
@@ -86,7 +86,7 @@ SELECT
     Rank,
     COALESCE(CommentTags, 'No comments') AS CommentTags,
     COALESCE(CloseCount, 0) AS CloseCount,
-    COALESCE(LastReopenDate, toDate('1970-01-01')) AS LastReopenDate,
+    COALESCE(LastReopenDate, DATE '1970-01-01') AS LastReopenDate,
     COALESCE(UniqueEditors, 0) AS UniqueEditors,
     NetVotes
 FROM 

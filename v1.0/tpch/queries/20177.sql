@@ -27,7 +27,7 @@ WITH RankedSuppliers AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
+        o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
         AND o.o_totalprice IS NOT NULL
 ), LineItemSummary AS (
     SELECT 

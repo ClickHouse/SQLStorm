@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
 ),
 
 PostWithBadges AS (
@@ -44,7 +44,7 @@ CommentStats AS (
     LEFT JOIN 
         Comments c ON c.PostId = p.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 60 DAY
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '60 days'
     GROUP BY 
         p.Id
 ),
@@ -72,7 +72,7 @@ Final AS (
         Posts pw ON pw.Id = pwb.PostId
     WHERE 
         pwb.BadgeCount > 0 AND
-        pw.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        pw.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
     ORDER BY 
         pwb.BadgeCount DESC,
         pwb.CreationDate ASC

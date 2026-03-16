@@ -74,9 +74,9 @@ LEFT JOIN
             arrayJoin(splitByString(',', p.Tags)) AS TagName
     ) t ON true
 WHERE 
-    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 GROUP BY 
     p.Id, p.Title, ph.Level, u.Reputation, ub.GoldBadges, ub.SilverBadges, ub.BronzeBadges, vs.UpVotes, vs.DownVotes
 ORDER BY 
     p.LastActivityDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

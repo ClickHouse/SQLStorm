@@ -48,4 +48,4 @@ SELECT
 FROM SalesStatistics s
 WHERE s.sales_rank <= 10
 ORDER BY s.total_sales DESC, s.avg_sales_price DESC
-LIMIT 20 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY;

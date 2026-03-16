@@ -45,7 +45,7 @@ LEFT JOIN (SELECT P.OwnerUserId, COUNT(*) AS CommentCount
             WHERE P.PostTypeId = 1 
             GROUP BY P.OwnerUserId) AS c ON p.OwnerUserId = c.OwnerUserId
 LEFT JOIN PostHistory ph ON ph.PostId = p.Id AND ph.PostHistoryTypeId = 10
-LEFT JOIN CloseReasonTypes nt ON (CAST(ph.Comment AS jsonb) ->> 'closeReasonId'CAST() AS integer) = nt.Id
+LEFT JOIN CloseReasonTypes nt ON (ph.Comment::jsonb ->> 'closeReasonId')::integer = nt.Id
 WHERE p.RecentPostRank = 1
 ORDER BY p.Score DESC, p.CreationDate DESC
 LIMIT 50;

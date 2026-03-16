@@ -14,7 +14,7 @@ WITH RankedOrders AS (
     LEFT JOIN partsupp ps ON l.l_partkey = ps.ps_partkey
     LEFT JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
     WHERE 
-        o.o_orderdate > CURRENT_DATE - INTERVAL 12 MONTH 
+        o.o_orderdate > CURRENT_DATE - INTERVAL '12 months' 
         AND l.l_discount IS NULL
 ),
 SupplierRanked AS (

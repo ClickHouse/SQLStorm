@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes V ON V.PostId = P.Id
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.Score, P.ViewCount, U.DisplayName
 ),
@@ -59,6 +59,6 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory PH ON TP.PostId = PH.PostId
 WHERE 
-    PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
 ORDER BY 
     TP.Score DESC, TP.CreationDate DESC;

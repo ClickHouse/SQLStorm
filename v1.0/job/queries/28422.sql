@@ -35,7 +35,7 @@ highlighted_movies AS (
 SELECT 
     hm.movie_title,
     hm.production_year,
-    arrayStringConcat(groupArray(assumeNotNull(CAST(hm.actors_list AS text))), ', ') AS actors
+    arrayStringConcat(groupArray(assumeNotNull(hm.actors_list::text)), ', ') AS actors
 FROM 
     highlighted_movies hm
 GROUP BY 

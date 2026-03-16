@@ -8,11 +8,11 @@ WITH PostStats AS (
         AVG(COALESCE(p.AnswerCount, 0)) AS AvgAnswers,
         AVG(COALESCE(p.CommentCount, 0)) AS AvgComments,
         AVG(COALESCE(p.FavoriteCount, 0)) AS AvgFavorites,
-        AVG(COALESCE(toUnixTimestamp((now64(6) - p.CreationDate)), 0)) AS AvgPostAgeSeconds
+        AVG(COALESCE(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate)), 0)) AS AvgPostAgeSeconds
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         p.PostTypeId
 ),

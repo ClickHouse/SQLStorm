@@ -27,7 +27,7 @@ LEFT JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 LEFT JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
 LEFT JOIN lineitem lp ON lp.l_partkey = p.p_partkey
 LEFT JOIN orders o ON lp.l_orderkey = o.o_orderkey
-WHERE (o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1998-01-01') OR p.p_comment IS NULL)
+WHERE (o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1998-01-01' OR p.p_comment IS NULL)
   AND p.p_retailprice > (SELECT AVG(p2.p_retailprice) 
                           FROM part p2 WHERE p2.p_type = p.p_type)
   AND EXISTS (SELECT 1 FROM region r 
@@ -36,4 +36,4 @@ WHERE (o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1998-01-01') OR p.
 GROUP BY p.p_partkey, p.p_name, p.p_mfgr, p.p_size
 HAVING COUNT(DISTINCT o.o_orderkey) > 10
 ORDER BY total_sales DESC, rank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -5,7 +5,7 @@ WITH PostStats AS (
         COUNT(p.Id) AS TotalPosts,
         AVG(p.Score) AS AverageScore,
         SUM(p.ViewCount) AS TotalViews,
-        AVG(toUnixTimestamp((COALESCE(p.LastActivityDate, now64(6)) - p.CreationDate))) AS AverageActiveDurationInSeconds
+        AVG(toUnixTimestamp((COALESCE(p.LastActivityDate, CURRENT_TIMESTAMP) - p.CreationDate))) AS AverageActiveDurationInSeconds
     FROM 
         Posts p
     JOIN 

@@ -33,4 +33,4 @@ FROM HighValueParts p
 LEFT JOIN FinalReport s ON p.p_partkey = s.p_partkey
 GROUP BY p.p_partkey, p.p_name, p.p_retailprice
 ORDER BY p.p_retailprice DESC, total_sales DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

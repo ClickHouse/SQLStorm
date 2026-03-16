@@ -77,4 +77,4 @@ WHERE
     AND fm.ws_sales_price > (SELECT AVG(ws_sales_price) FROM web_sales)
 ORDER BY 
     fm.ws_sales_price DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

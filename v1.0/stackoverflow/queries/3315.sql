@@ -31,7 +31,7 @@ WITH RankedPosts AS (
             PostId
     ) AS dn ON p.Id = dn.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 ClosedPosts AS (
     SELECT 
@@ -40,7 +40,7 @@ ClosedPosts AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON CAST(ph.Comment AS INT) = cr.Id
+        CloseReasonTypes cr ON ph.Comment::INT = cr.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY 

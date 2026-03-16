@@ -39,7 +39,7 @@ LineItemDetails AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= (cast('1998-10-01' as date) - INTERVAL 1 YEAR) 
+        l.l_shipdate >= (cast('1998-10-01' as date) - INTERVAL '1 year') 
         AND l.l_returnflag = 'N'
     GROUP BY 
         l.l_orderkey, l.l_partkey

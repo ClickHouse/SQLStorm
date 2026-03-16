@@ -71,4 +71,4 @@ WHERE
 ORDER BY 
     md.production_year DESC,
     md.title ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

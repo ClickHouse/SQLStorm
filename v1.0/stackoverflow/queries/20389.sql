@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
         AND p.ViewCount IS NOT NULL
 ),
 FilteredPosts AS (
@@ -48,7 +48,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE 
-        ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        ph.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         ph.PostId
 )
@@ -76,8 +76,9 @@ LEFT JOIN
 LEFT JOIN 
     PostHistoryDetails phd ON fp.PostId = phd.PostId
 WHERE 
-    EXISTS (SELECT 1 FROM Comments c WHERE c.PostId = fp.PostId AND c.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    EXISTS (SELECT 1 FROM Comments c WHERE c.PostId = fp.PostId AND c.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
 ORDER BY 
     fp.Score DESC,
     fp.ViewCount DESC
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS 
+FETCH NEXT 100 ROWS ONLY;

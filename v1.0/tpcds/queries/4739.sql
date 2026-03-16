@@ -40,4 +40,4 @@ SELECT fr.ca_city, fr.ca_state, fr.customer_count, fr.total_net_sales,
 FROM Final_Report fr
 WHERE fr.total_net_sales IS NOT NULL
 ORDER BY fr.total_net_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -21,7 +21,7 @@ JOIN
 WHERE 
     p.p_name LIKE '%widget%' 
     AND s.s_nationkey IN (SELECT n.n_nationkey FROM nation n WHERE n.n_name = 'USA')
-    AND l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    AND l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year'
 GROUP BY 
     p.p_name, s.s_name
 HAVING 

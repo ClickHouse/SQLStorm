@@ -17,7 +17,7 @@ PostStatistics AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Users u ON v.UserId = u.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY p.Id
 ),
 TagPopularity AS (

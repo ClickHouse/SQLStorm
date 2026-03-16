@@ -41,7 +41,7 @@ LEFT JOIN orders o ON l.l_orderkey = o.o_orderkey
 LEFT JOIN SupplierHierarchy s ON ps.p_partkey = s.s_suppkey
 LEFT JOIN NationCounts nc ON np.n_nationkey = nc.n_nationkey
 WHERE r.r_name IS NOT NULL
-  AND o.o_orderdate >= toDate('1996-01-01')
+  AND o.o_orderdate >= DATE '1996-01-01'
   AND o.o_orderstatus IN ('O', 'P')
 GROUP BY r.r_name, np.n_name
 HAVING SUM(ps.avg_price) > 10000

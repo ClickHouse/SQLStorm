@@ -49,4 +49,4 @@ SELECT
 FROM HighValueCustomers hvc
 CROSS JOIN TopProducts tp
 ORDER BY hvc.total_spent DESC, tp.total_revenue DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

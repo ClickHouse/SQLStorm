@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Votes v ON p.Id = v.PostId
     WHERE
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),
@@ -45,7 +45,7 @@ PostHistoryDetails AS (
     JOIN
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE
-        ph.CreationDate > cast('2024-10-01' as date) - INTERVAL 60 DAY AND
+        ph.CreationDate > cast('2024-10-01' as date) - INTERVAL '60 days' AND
         ph.PostHistoryTypeId IN (10, 11, 12)  
 ),
 FinalResults AS (

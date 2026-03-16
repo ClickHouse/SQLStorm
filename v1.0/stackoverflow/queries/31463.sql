@@ -51,7 +51,7 @@ RecentActivity AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        PostHistory ph ON p.Id = ph.PostId AND ph.CreationDate > CURRENT_DATE - INTERVAL 30 DAY
+        PostHistory ph ON p.Id = ph.PostId AND ph.CreationDate > CURRENT_DATE - INTERVAL '30 days'
     GROUP BY 
         p.OwnerUserId
 )

@@ -24,7 +24,7 @@ CustomerOrderStats AS (
            RANK() OVER (ORDER BY SUM(o.o_totalprice) DESC) AS spend_rank
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
     GROUP BY c.c_custkey, c.c_name
 )
 SELECT DISTINCT p.p_partkey, p.p_name, p.p_retailprice,
@@ -37,4 +37,4 @@ LEFT JOIN CustomerOrderStats COS ON COS.total_orders > 0
 WHERE p.p_retailprice BETWEEN 10 AND 100
   AND (p.p_comment IS NULL OR p.p_comment LIKE '%new%')
 ORDER BY p.p_partkey
-LIMIT 100; 
+FETCH FIRST 100 ROWS ONLY; 

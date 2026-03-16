@@ -9,7 +9,7 @@ SELECT
     SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
     SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
     COALESCE(SUM(p.ViewCount), 0) AS TotalViews,
-    COALESCE(MAX(p.CreationDate), toDate('1970-01-01')) AS LatestPostDate
+    COALESCE(MAX(p.CreationDate), DATE '1970-01-01') AS LatestPostDate
 FROM 
     Users u
 LEFT JOIN 

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) 
+        p.CreationDate < cast('2024-10-01 12:34:56' as timestamp) 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.Score
 ),
@@ -79,4 +79,4 @@ WHERE
     AND rp.Rank = 1 
 ORDER BY 
     rp.Score DESC, up.Reputation DESC
-LIMIT 50 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;

@@ -31,7 +31,7 @@ RecentPostHistory AS (
         ROW_NUMBER() OVER (PARTITION BY h.PostId ORDER BY h.CreationDate DESC) AS RecentHistoryRank
     FROM PostHistory h
     JOIN PostHistoryTypes ph ON h.PostHistoryTypeId = ph.Id
-    WHERE h.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE h.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 )
 SELECT 
     u.DisplayName,

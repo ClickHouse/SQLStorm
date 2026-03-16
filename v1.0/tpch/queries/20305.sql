@@ -36,7 +36,7 @@ customer_orders AS (
     LEFT JOIN 
         orders o ON c.c_custkey = o.o_custkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR OR o.o_orderdate IS NULL
+        o.o_orderdate >= CURRENT_DATE - INTERVAL '1 year' OR o.o_orderdate IS NULL
     GROUP BY 
         c.c_custkey
 )

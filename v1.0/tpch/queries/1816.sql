@@ -51,4 +51,4 @@ WHERE
     co.total_spent IS NOT NULL
 ORDER BY 
     co.total_spent DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

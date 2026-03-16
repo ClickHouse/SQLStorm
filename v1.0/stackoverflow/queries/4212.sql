@@ -60,11 +60,11 @@ SELECT
         ELSE 'None'
     END AS HighestBadge,
     us.AverageScore,
-    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = us.UserId AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AS PostsLastYear
+    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = us.UserId AND p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') AS PostsLastYear
 FROM 
     UserSummary us
 WHERE 
     us.TotalPosts > 10
 ORDER BY 
     us.TotalPosts DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

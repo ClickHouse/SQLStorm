@@ -8,7 +8,7 @@ WITH UserActivity AS (
         COALESCE(SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS Downvotes,
         COUNT(DISTINCT P.Id) AS PostsCount,
         COUNT(DISTINCT C.Id) AS CommentsCount,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - U.CreationDate) / 86400) ) AS DaysSinceCreation
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - U.CreationDate) / 86400) ) AS DaysSinceCreation
     FROM 
         Users U
     LEFT JOIN 

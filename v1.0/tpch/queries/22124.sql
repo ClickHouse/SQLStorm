@@ -10,7 +10,7 @@ WITH RankedSuppliers AS (
     JOIN 
         partsupp ps ON s.s_suppkey = ps.ps_suppkey
     LEFT JOIN 
-        lineitem l ON ps.ps_partkey = l.l_partkey AND l.l_shipdate < toDate('1998-10-01')
+        lineitem l ON ps.ps_partkey = l.l_partkey AND l.l_shipdate < DATE '1998-10-01'
     GROUP BY 
         s.s_suppkey, s.s_name, ps.ps_partkey
 ),
@@ -52,7 +52,7 @@ LEFT JOIN
 LEFT JOIN 
     TopSuppliers s ON l.l_suppkey = s.s_suppkey
 INNER JOIN 
-    DynamicRegion d ON l.l_shipdate > toDate('1998-10-01') - INTERVAL '1' YEAR
+    DynamicRegion d ON l.l_shipdate > DATE '1998-10-01' - INTERVAL '1' YEAR
 WHERE 
     p.p_size IN (SELECT DISTINCT ps.ps_availqty FROM partsupp ps WHERE ps.ps_supplycost > 100)
     OR (p.p_container IS NULL AND p.p_retailprice IS NOT NULL)

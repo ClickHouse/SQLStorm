@@ -5,7 +5,7 @@ WITH movie_details AS (
         m.title,
         m.production_year,
         k.keyword AS movie_keyword,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(c.role_id AS TEXT)))), ',') AS role_ids,
+        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.role_id::TEXT))), ',') AS role_ids,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(a.name))), ',') AS actor_names
     FROM title m
     JOIN movie_keyword mk ON m.id = mk.movie_id

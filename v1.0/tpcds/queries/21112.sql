@@ -15,7 +15,7 @@ WITH RankedSales AS (
         web_sales ws ON c.c_customer_sk = ws.ws_bill_customer_sk
     WHERE 
         ws.ws_sales_price IS NOT NULL
-        AND c.c_birth_year <= toYear(toDate('2002-10-01')) - 18
+        AND c.c_birth_year <= EXTRACT(YEAR FROM DATE '2002-10-01') - 18
 ),
 TotalSales AS (
     SELECT 
@@ -72,4 +72,4 @@ WHERE
 ORDER BY 
     fr.total_spent DESC,
     fr.c_customer_id
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

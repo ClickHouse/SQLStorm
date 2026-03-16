@@ -12,7 +12,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 ), 
 CustomerDetails AS (
     SELECT 
@@ -65,7 +65,7 @@ JOIN
             o.o_custkey = cd.c_custkey 
         ORDER BY 
             o.o_orderdate DESC 
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     )
 JOIN 
     SupplierInfo si ON si.ps_availqty > 0

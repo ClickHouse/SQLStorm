@@ -58,7 +58,7 @@ LEFT JOIN
     RegionSupplier r ON os.o_orderkey = (SELECT l.l_orderkey FROM lineitem l WHERE l.l_orderkey = os.o_orderkey LIMIT 1)
 WHERE 
     os.total_revenue IS NOT NULL 
-    AND os.o_orderkey IN (SELECT o.o_orderkey FROM orders o WHERE toYear(o.o_orderdate) = toYear(toDate('1998-10-01')) - 1)
+    AND os.o_orderkey IN (SELECT o.o_orderkey FROM orders o WHERE EXTRACT(YEAR FROM o.o_orderdate) = EXTRACT(YEAR FROM DATE '1998-10-01') - 1)
 ORDER BY 
     os.total_revenue DESC
 LIMIT 10;

@@ -6,7 +6,7 @@ WITH UserPostStats AS (
         COUNT(P.Id) AS TotalPosts,
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(CASE WHEN P.PostTypeId = 1 AND P.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswers,
-        SUM(CASE WHEN P.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH THEN 1 ELSE 0 END) AS RecentPosts
+        SUM(CASE WHEN P.LastActivityDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' THEN 1 ELSE 0 END) AS RecentPosts
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     GROUP BY U.Id, U.DisplayName
@@ -26,7 +26,7 @@ RecentPostComments AS (
         C.PostId,
         COUNT(C.Id) AS TotalComments
     FROM Comments C
-    WHERE C.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 WEEK
+    WHERE C.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 week'
     GROUP BY C.PostId
 ),
 PostHistoryInfo AS (

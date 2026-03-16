@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.PostTypeId
 ),
@@ -47,7 +47,7 @@ SELECT
         ELSE 'Score exists' 
     END AS ScoreStatus,
     CASE 
-        WHEN tp.CreationDate < CURRENT_DATE - INTERVAL 6 MONTH THEN 'Older Post'
+        WHEN tp.CreationDate < CURRENT_DATE - INTERVAL '6 months' THEN 'Older Post'
         ELSE 'Recent Post'
     END AS PostAgeCategory
 FROM 

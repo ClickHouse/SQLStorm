@@ -6,7 +6,7 @@ WITH ranked_orders AS (
            ROW_NUMBER() OVER (PARTITION BY c.c_mktsegment ORDER BY o.o_totalprice DESC) AS rank
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= toDate('1995-01-01') AND o.o_orderdate < toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1995-01-01' AND o.o_orderdate < DATE '1996-01-01'
 ),
 supplier_stats AS (
     SELECT ps.ps_suppkey, 
@@ -21,7 +21,7 @@ lineitem_summary AS (
     SELECT l.l_orderkey, 
            SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue
     FROM lineitem l
-    WHERE l.l_shipdate >= toDate('1995-07-01')
+    WHERE l.l_shipdate >= DATE '1995-07-01'
     GROUP BY l.l_orderkey
 )
 SELECT r.o_orderkey, 

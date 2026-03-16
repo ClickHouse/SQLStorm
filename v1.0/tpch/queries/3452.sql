@@ -49,7 +49,7 @@ INNER JOIN
 LEFT JOIN 
     SupplierDetails sd ON lo.l_suppkey = sd.s_suppkey
 WHERE 
-    lo.l_shipdate >= toDate('1997-01-01')
+    lo.l_shipdate >= DATE '1997-01-01'
     AND (lo.l_discount BETWEEN 0.05 AND 0.20 OR lo.l_returnflag = 'N')
 GROUP BY 
     cr.region_name, cr.nation_name

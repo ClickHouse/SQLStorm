@@ -52,7 +52,7 @@ SELECT
     U.TotalComments,
     U.CloseReopenCount,
     COALESCE(U.UserVoteBalance, 0) AS UserVoteBalance,
-    (SELECT COUNT(*) FROM Posts P WHERE P.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)) AS RecentPostsCount,
+    (SELECT COUNT(*) FROM Posts P WHERE P.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR')) AS RecentPostsCount,
     (SELECT COUNT(*) FROM Users WHERE Reputation > 1000) AS HighReputationUsers
 FROM 
     UserPostStats U

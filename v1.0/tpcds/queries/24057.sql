@@ -56,4 +56,4 @@ AND net_sold > (
     WHERE net_sold IS NOT NULL
 )
 ORDER BY net_sold DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -54,4 +54,4 @@ WHERE
     rp.OwnerPostRank = 1
 ORDER BY 
     rp.VoteCount DESC, rp.AnswerCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

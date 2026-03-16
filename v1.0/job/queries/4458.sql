@@ -57,4 +57,4 @@ WHERE
 ORDER BY
     mt.production_year DESC,
     mt.rank ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

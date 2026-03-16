@@ -56,7 +56,7 @@ LEFT JOIN
 LEFT JOIN 
     HighValueSuppliers AS hvs ON ps.ps_suppkey = hvs.s_suppkey
 WHERE 
-    lo.l_shipdate > cast('1998-10-01' as date) - INTERVAL 30 DAY
+    lo.l_shipdate > cast('1998-10-01' as date) - interval '30 days'
     AND (lo.l_returnflag = 'R' OR lo.l_linestatus = 'F')
 GROUP BY 
     hvs.s_name

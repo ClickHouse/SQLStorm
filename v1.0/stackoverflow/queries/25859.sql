@@ -51,7 +51,7 @@ RecentActivePosts AS (
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate > now64(6) - INTERVAL 1 MONTH
+    WHERE p.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 month'
     GROUP BY p.Id, p.Title, u.DisplayName, p.CreationDate, p.LastActivityDate
 )
 SELECT 

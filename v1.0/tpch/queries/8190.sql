@@ -38,4 +38,4 @@ JOIN
 ORDER BY 
     rs.total_supply_cost DESC, 
     hvc.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

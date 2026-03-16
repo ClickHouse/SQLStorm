@@ -25,9 +25,9 @@ RecentOrders AS (
         o.o_custkey,
         o.o_totalprice,
         RANK() OVER (ORDER BY o.o_orderdate DESC) AS order_rank,
-        toYear(o.o_orderdate) AS order_year
+        EXTRACT(YEAR FROM o.o_orderdate) AS order_year
     FROM orders o
-    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    WHERE o.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
 ),
 SupplierPartAvailability AS (
     SELECT 

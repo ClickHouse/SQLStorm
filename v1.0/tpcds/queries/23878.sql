@@ -77,4 +77,4 @@ HAVING
     COUNT(DISTINCT rd.ws_item_sk) > 10
 ORDER BY 
     unique_customers DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

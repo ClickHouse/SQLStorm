@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= CAST('2023-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+        P.CreationDate >= '2023-10-01 12:34:56'::timestamp - INTERVAL '1 year'
 ),
 PostTags AS (
     SELECT 

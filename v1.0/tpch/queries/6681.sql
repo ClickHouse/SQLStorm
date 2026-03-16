@@ -50,4 +50,4 @@ GROUP BY
     r.r_name, cs.c_name
 ORDER BY 
     total_revenue_generated DESC, total_supply_value_provided DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

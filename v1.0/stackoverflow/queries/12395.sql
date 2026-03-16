@@ -13,7 +13,7 @@ WITH PostAggregates AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         p.OwnerUserId
 ),
@@ -47,4 +47,4 @@ FROM
     UserStats us
 ORDER BY 
     us.Reputation DESC, us.PostCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

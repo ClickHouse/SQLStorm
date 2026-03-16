@@ -33,7 +33,7 @@ RecentPosts AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
     GROUP BY 
         P.Id, P.Title, P.CreationDate, U.DisplayName, P.AcceptedAnswerId, P.ViewCount
 ),
@@ -45,7 +45,7 @@ ClosedPosts AS (
     FROM 
         PostHistory PH
     JOIN 
-        CloseReasonTypes CRT ON CAST(PH.Comment AS INTEGER) = CRT.Id
+        CloseReasonTypes CRT ON PH.Comment::INTEGER = CRT.Id
     WHERE 
         PH.PostHistoryTypeId = 10
     GROUP BY 

@@ -38,7 +38,7 @@ ClosedPostStats AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10
     LEFT JOIN 
-        CloseReasonTypes c ON (CAST(ph.Comment AS text)CAST() AS int) = c.Id
+        CloseReasonTypes c ON (ph.Comment::text)::int = c.Id
     WHERE 
         ph.PostHistoryTypeId = 10
     GROUP BY 

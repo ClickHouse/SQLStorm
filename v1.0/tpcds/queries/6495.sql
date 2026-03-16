@@ -70,8 +70,8 @@ JOIN
         FROM inventory inv 
         JOIN web_sales ws ON inv.inv_item_sk = ws.ws_item_sk 
         WHERE ws.ws_bill_customer_sk = ss.c_customer_sk 
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     )
 ORDER BY 
     ss.total_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

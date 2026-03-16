@@ -35,7 +35,7 @@ OrderDetails AS (
     JOIN 
         lineitem li ON o.o_orderkey = li.l_orderkey
     WHERE 
-        li.l_shipdate >= CURRENT_DATE - INTERVAL 6 MONTH
+        li.l_shipdate >= CURRENT_DATE - INTERVAL '6 months'
     GROUP BY 
         o.o_orderkey, o.o_orderdate, o.o_orderstatus
 ),

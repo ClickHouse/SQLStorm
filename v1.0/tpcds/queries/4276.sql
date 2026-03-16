@@ -64,4 +64,4 @@ WHERE
     AND cs.total_quantity > (SELECT AVG(total_quantity) FROM CustomerStats)
 ORDER BY 
     cs.total_spent DESC, cs.order_count ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

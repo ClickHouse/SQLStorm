@@ -59,4 +59,4 @@ FROM
     HighScoringPosts hsp
 ORDER BY 
     hsp.NetScore DESC, hsp.CommentCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

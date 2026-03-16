@@ -51,4 +51,4 @@ HAVING
     COUNT(DISTINCT m.c_customer_id) > 1
 ORDER BY 
     total_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

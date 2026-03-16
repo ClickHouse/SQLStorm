@@ -40,4 +40,4 @@ WHERE
     rm.year_rank <= 5
 ORDER BY 
     rm.production_year DESC, actor_count DESC 
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

@@ -25,7 +25,7 @@ RecentOrders AS (
     JOIN 
         customer c ON o.o_custkey = c.c_custkey
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01')
+        o.o_orderdate >= DATE '1997-01-01'
 )
 SELECT 
     r.r_name, 
@@ -46,7 +46,7 @@ JOIN
 JOIN 
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
-    l.l_shipdate >= toDate('1997-01-01') AND
+    l.l_shipdate >= DATE '1997-01-01' AND
     s.s_suppkey IN (SELECT s_suppkey FROM TopSuppliers)
 GROUP BY 
     r.r_name

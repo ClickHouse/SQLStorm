@@ -48,4 +48,4 @@ FROM sales_and_returns sa
 WHERE sa.return_percentage < 50
   AND sa.total_sales > (SELECT AVG(total_sales) FROM sales_data)
 ORDER BY return_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

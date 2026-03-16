@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 AND 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 PostWithBadge AS (
     SELECT 
@@ -26,7 +26,7 @@ PostWithBadge AS (
     FROM 
         RankedPosts rp
     LEFT JOIN 
-        Badges b ON rp.PostId = b.UserId AND b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        Badges b ON rp.PostId = b.UserId AND b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     WHERE 
         rp.Rank = 1
 ),

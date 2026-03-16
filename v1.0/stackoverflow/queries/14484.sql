@@ -7,7 +7,7 @@ SELECT
     SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes,
-    AVG(toUnixTimestamp((now64(6) - p.CreationDate)) / 60) AS AvgPostAgeInMinutes,
+    AVG(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate)) / 60) AS AvgPostAgeInMinutes,
     MAX(p.Score) AS HighestPostScore,
     MIN(p.Score) AS LowestPostScore
 FROM 

@@ -62,4 +62,4 @@ WHERE
     AND s.total_sales > (SELECT AVG(total_sales) FROM sales_summary WHERE sales_category = 'High Sales') 
 ORDER BY 
     s.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

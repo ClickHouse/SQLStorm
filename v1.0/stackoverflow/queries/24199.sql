@@ -45,7 +45,7 @@ PostDetails AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.AcceptedAnswerId
 ),
@@ -70,7 +70,7 @@ UserPostHistory AS (
     JOIN 
         Posts P ON PH.PostId = P.Id
     WHERE 
-        PH.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR AND toDateTime64('2024-10-01 12:34:56', 6)
+        PH.CreationDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 years' AND TIMESTAMP '2024-10-01 12:34:56'
 )
 SELECT 
     U.DisplayName,

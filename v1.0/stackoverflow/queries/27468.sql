@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         (SELECT PostId, COUNT(*) AS CommentCount FROM Comments GROUP BY PostId) c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR  
+        AND p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '1 year'  
 ),
 TagSummary AS (
     SELECT 

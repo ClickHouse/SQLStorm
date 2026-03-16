@@ -25,7 +25,7 @@ RecentPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 YEAR'
     ORDER BY 
         p.CreationDate DESC
     LIMIT 10
@@ -41,7 +41,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
+        ph.CreationDate >= CURRENT_DATE - INTERVAL '6 MONTH'
 )
 SELECT 
     ua.UserId,

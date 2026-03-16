@@ -50,7 +50,7 @@ LEFT JOIN
         SELECT o.o_custkey 
         FROM orders o 
         WHERE o.o_orderstatus = 'O' 
-        AND o.o_orderdate >= (toDate('1998-10-01') - INTERVAL 1 YEAR)
+        AND o.o_orderdate >= (DATE '1998-10-01' - INTERVAL '1 year')
     )
 WHERE 
     ns.avg_supplier_balance > (
@@ -68,4 +68,4 @@ OR (
 ORDER BY 
     pc.total_cost DESC, 
     co.avg_order_value ASC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

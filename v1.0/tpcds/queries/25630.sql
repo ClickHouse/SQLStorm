@@ -1,6 +1,6 @@
 
 WITH RECURSIVE date_range AS (
-    SELECT d_date_sk, d_date, toYear(d_date) AS d_year
+    SELECT d_date_sk, d_date, EXTRACT(YEAR FROM d_date) AS d_year
     FROM date_dim
     WHERE d_date >= '2023-01-01' AND d_date < '2024-01-01'
 ),

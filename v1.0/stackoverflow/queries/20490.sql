@@ -12,14 +12,14 @@ WITH RankedPosts AS (
     INNER JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
         AND P.ViewCount IS NOT NULL
 ), PostCloseHistory AS (
     SELECT 
         PH.PostId,
         PH.CreationDate,
         PH.Comment,
-        COALESCE(CAST(PH.Text AS json) ->> 'closeReasonId', 'Not Applicable') AS CloseReason
+        COALESCE(PH.Text::json ->> 'closeReasonId', 'Not Applicable') AS CloseReason
     FROM 
         PostHistory PH
     WHERE 

@@ -27,7 +27,7 @@ RecentAcceptedAnswers AS (
         LEFT JOIN Posts pa ON p.AcceptedAnswerId = pa.Id
     WHERE 
         p.PostTypeId = 1
-        AND pa.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        AND pa.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ),
 PostHistoryAgg AS (
     SELECT

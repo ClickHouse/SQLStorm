@@ -71,4 +71,4 @@ GROUP BY
     u.Id, u.DisplayName, u.Reputation, b.BadgeName, u.UpVotes, u.DownVotes
 ORDER BY 
     u.Reputation DESC, UserName ASC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

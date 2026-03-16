@@ -62,4 +62,4 @@ LEFT JOIN
     PostHistoryStats pHS ON fp.Id = pHS.PostId
 ORDER BY 
     fp.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

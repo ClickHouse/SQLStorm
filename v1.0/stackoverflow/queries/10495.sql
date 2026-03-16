@@ -22,7 +22,7 @@ LEFT JOIN
 LEFT JOIN 
     arrayJoin(splitByString('> <', SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2))) AS T(TagName) ON T.TagName IS NOT NULL
 WHERE 
-    P.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+    P.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
 GROUP BY 
     P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score, U.Reputation, U.DisplayName, T.TagName
 ORDER BY 

@@ -39,7 +39,7 @@ CloseReasonCounts AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes cr ON ph.Comment = CAST(cr.Id AS TEXT)
+        CloseReasonTypes cr ON ph.Comment = cr.Id::TEXT
     WHERE 
         ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY 

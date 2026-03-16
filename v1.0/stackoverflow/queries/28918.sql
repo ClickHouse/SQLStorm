@@ -40,7 +40,7 @@ SELECT
     (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), ', ') 
      FROM Posts p 
      WHERE p.Tags LIKE '%' || tt.TagName || '%' 
-       AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY) AS RecentPosts
+       AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days') AS RecentPosts
 FROM 
     TopTags tt
 WHERE 

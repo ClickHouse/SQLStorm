@@ -67,4 +67,4 @@ WHERE
 ORDER BY 
     f.production_year DESC, 
     f.title ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

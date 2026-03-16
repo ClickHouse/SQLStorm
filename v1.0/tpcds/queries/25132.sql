@@ -60,4 +60,4 @@ WHERE
     UPPER(ca_city) LIKE UPPER('%York%')
 ORDER BY 
     ca_state, full_name
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

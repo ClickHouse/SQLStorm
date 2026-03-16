@@ -27,7 +27,7 @@ FilteredMovies AS (
         rm.cast_count,
         rm.actors,
         rm.keywords,
-        RANK() OVER (PARTITION BY toYear(cast('2024-10-01' as date)) - rm.production_year ORDER BY rm.cast_count DESC) AS rank_by_age
+        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM cast('2024-10-01' as date)) - rm.production_year ORDER BY rm.cast_count DESC) AS rank_by_age
     FROM 
         RankedMovies AS rm
 )

@@ -15,7 +15,7 @@ WITH CustomerStats AS (
     LEFT JOIN 
         web_sales AS ws ON c.c_customer_sk = ws.ws_bill_customer_sk
     WHERE 
-        (c.c_birth_month = toMonth(cast('2002-10-01' as date)) OR c.c_birth_day = toDayOfMonth(cast('2002-10-01' as date)))
+        (c.c_birth_month = EXTRACT(MONTH FROM cast('2002-10-01' as date)) OR c.c_birth_day = EXTRACT(DAY FROM cast('2002-10-01' as date)))
     GROUP BY 
         c.c_customer_sk, c.c_first_name, c.c_last_name, cd.cd_gender, cd.cd_marital_status
 ),

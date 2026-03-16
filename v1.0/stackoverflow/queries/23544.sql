@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
 ),
 UserVoteSummary AS (
     SELECT 
@@ -24,7 +24,7 @@ UserVoteSummary AS (
     JOIN 
         Posts P ON V.PostId = P.Id
     WHERE 
-        P.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH AND toDateTime64('2024-10-01 12:34:56', 6)
+        P.CreationDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 MONTH' AND TIMESTAMP '2024-10-01 12:34:56'
     GROUP BY 
         V.UserId
 ),
@@ -71,4 +71,4 @@ WHERE
     U.Reputation >= 500
 ORDER BY 
     U.Reputation DESC, RP.Score DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

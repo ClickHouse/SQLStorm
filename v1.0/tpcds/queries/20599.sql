@@ -57,4 +57,4 @@ HAVING
     AND SUM(rr.sr_return_quantity) > 0
 ORDER BY 
     return_category DESC, total_returned_amt DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

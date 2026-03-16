@@ -67,4 +67,4 @@ SELECT
 FROM HighValueCustomers custom
 WHERE custom.rank <= 100
 ORDER BY custom.total_net_profit DESC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

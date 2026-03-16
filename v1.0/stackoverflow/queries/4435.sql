@@ -61,7 +61,7 @@ PostDetails AS (
             PostId
     ) AV ON P.Id = AV.PostId
     WHERE 
-        P.CreationDate >= now64(6) - INTERVAL 30 DAY
+        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
 ),
 PostInteractions AS (
     SELECT 

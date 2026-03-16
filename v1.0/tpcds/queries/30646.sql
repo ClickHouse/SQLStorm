@@ -60,4 +60,4 @@ WHERE
     a.total_sales > (SELECT AVG(total_sales) FROM AggregatedSales)
 ORDER BY 
     a.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

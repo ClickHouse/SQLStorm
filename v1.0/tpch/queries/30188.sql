@@ -36,7 +36,7 @@ LEFT JOIN
 LEFT JOIN 
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
-    o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year'
     AND (l.l_returnflag IS NULL OR l.l_returnflag <> 'R')
 GROUP BY 
     n.n_name

@@ -56,4 +56,4 @@ WHERE EXISTS (SELECT 1
               FROM PartSupplierInfo psi 
               WHERE psi.ps_partkey = r.p_partkey AND psi.total_available_qty > 50)
 ORDER BY r.p_partkey
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

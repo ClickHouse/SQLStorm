@@ -43,7 +43,7 @@ SELECT
     fp.Tags,
     fp.Upvotes,
     fp.Downvotes,
-    ROUND(COALESCE(CAST(fp.Upvotes AS FLOAT) / NULLIF(fp.Upvotes + fp.Downvotes, 0), 0), 2) AS UpvoteRatio
+    ROUND(COALESCE(fp.Upvotes::FLOAT / NULLIF(fp.Upvotes + fp.Downvotes, 0), 0), 2) AS UpvoteRatio
 FROM 
     FilteredPosts fp
 WHERE 

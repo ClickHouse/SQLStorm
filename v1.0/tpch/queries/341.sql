@@ -7,7 +7,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
+        o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
 ),
 SupplierStats AS (
     SELECT 
@@ -38,7 +38,7 @@ HighValueLineItems AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= toDate('1996-01-01')
+        l.l_shipdate >= DATE '1996-01-01'
 ),
 OrderSupplierDetails AS (
     SELECT 

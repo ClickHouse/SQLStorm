@@ -56,6 +56,6 @@ JOIN UserVoteSummary UVS ON P.OwnerUserId = UVS.UserId
 JOIN Users U ON P.OwnerUserId = U.Id
 JOIN ReputationCounts RC ON U.Id = RC.UserId
 WHERE U.Reputation > 100
-  AND P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY)
+  AND P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '7 days')
 ORDER BY RC.ReputationRank, P.CreationDate DESC
 LIMIT 50;

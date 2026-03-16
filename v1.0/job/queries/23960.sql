@@ -3,7 +3,7 @@ WITH RecursiveMovies AS (
         t.id AS movie_id,
         t.title,
         t.production_year,
-        COALESCE(toYear(cast('2024-10-01' as date)) - t.production_year, 0) AS age,
+        COALESCE(EXTRACT(YEAR FROM cast('2024-10-01' as date)) - t.production_year, 0) AS age,
         ROW_NUMBER() OVER (PARTITION BY t.production_year ORDER BY t.title) AS rn
     FROM 
         aka_title t

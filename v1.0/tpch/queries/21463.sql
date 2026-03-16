@@ -85,4 +85,4 @@ WHERE
     )
 ORDER BY 
     c.c_name ASC, e.total_available DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

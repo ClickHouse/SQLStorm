@@ -67,7 +67,7 @@ SELECT
 FROM 
     PostDetails pd
 WHERE 
-    pd.MostRecentActivity > cast('2024-10-01' as date) - INTERVAL 30 DAY 
+    pd.MostRecentActivity > cast('2024-10-01' as date) - INTERVAL '30 days' 
 ORDER BY 
     pd.UserTotalPosts DESC, pd.AverageVotes DESC
 LIMIT 50;

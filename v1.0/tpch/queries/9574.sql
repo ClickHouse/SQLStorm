@@ -45,7 +45,7 @@ JOIN
 JOIN 
     part p ON p.p_partkey = ps.ps_partkey
 WHERE 
-    o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
+    o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
 GROUP BY 
     p.p_name, ts.nation_name
 ORDER BY 

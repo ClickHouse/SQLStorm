@@ -10,7 +10,7 @@ WITH RankedPostScores AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate > CURRENT_DATE - INTERVAL 1 YEAR
+        P.CreationDate > CURRENT_DATE - INTERVAL '1 year'
 ),
 UserReputation AS (
     SELECT 
@@ -31,7 +31,7 @@ UserActivity AS (
     SELECT 
         C.UserId,
         COUNT(C.Id) AS CommentCount,
-        SUM(CASE WHEN C.CreationDate > CURRENT_DATE - INTERVAL 6 MONTH THEN 1 ELSE 0 END) AS RecentComments
+        SUM(CASE WHEN C.CreationDate > CURRENT_DATE - INTERVAL '6 months' THEN 1 ELSE 0 END) AS RecentComments
     FROM 
         Comments C
     GROUP BY 

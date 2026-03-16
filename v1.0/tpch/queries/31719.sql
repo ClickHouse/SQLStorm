@@ -19,7 +19,7 @@ OrderSummary AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+        l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY 
         o.o_orderkey
 ),
@@ -55,4 +55,4 @@ WHERE
 ORDER BY 
     R.p_retailprice DESC, 
     O.total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

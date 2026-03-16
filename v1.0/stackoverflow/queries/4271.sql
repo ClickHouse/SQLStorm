@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 UserInfo AS (
     SELECT 
@@ -59,7 +59,7 @@ JOIN
 LEFT JOIN 
     Badges b ON fu.Id = b.UserId
 WHERE 
-    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
+    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
 GROUP BY 
     fu.DisplayName, fu.Reputation
 HAVING 

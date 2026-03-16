@@ -40,9 +40,9 @@ JOIN
 JOIN 
     TopSuppliers ts ON c.c_nationkey = (SELECT n.n_nationkey FROM nation n WHERE n.n_name = ts.nation_name)
 WHERE 
-    o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1998-01-01')
+    o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1998-01-01'
 GROUP BY 
     o.o_orderkey, c.c_name, ts.s_name, ts.nation_name
 ORDER BY 
     revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

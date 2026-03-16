@@ -54,7 +54,7 @@ JOIN Users u ON ua.UserId = u.Id
 LEFT JOIN RankedPosts rp ON u.Id = rp.OwnerUserId AND rp.Rank = 1
 LEFT JOIN CloseReasons cr ON rp.PostId = cr.PostId
 WHERE 
-    ua.LastActivity > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    ua.LastActivity > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
     AND (COALESCE(cr.CloseReasons, '') <> '' OR rp.Score > 10)
 ORDER BY 
     ua.TotalBounty DESC, ua.PostCount DESC, rp.Score DESC NULLS LAST;

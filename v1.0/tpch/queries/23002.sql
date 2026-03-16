@@ -32,5 +32,5 @@ WHERE p.p_retailprice BETWEEN 10.00 AND 100.00
   AND (s.s_acctbal IS NULL OR s.s_acctbal > (SELECT AVG(s_acctbal) FROM supplier WHERE s_nationkey = s.s_nationkey))
 GROUP BY p.p_name, p.p_brand, supplier_name, customer_type
 HAVING COUNT(DISTINCT l.l_orderkey) >= 5
-   OR MAX(CASE WHEN l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 30 DAY THEN 1 ELSE 0 END) = 1
+   OR MAX(CASE WHEN l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '30 days' THEN 1 ELSE 0 END) = 1
 ORDER BY discounted_sales DESC, returns ASC NULLS LAST;

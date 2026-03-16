@@ -67,4 +67,4 @@ ORDER BY
     r.production_year DESC, 
     m.number_of_companies DESC,
     k.keyword_count DESC
-LIMIT 20 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY;

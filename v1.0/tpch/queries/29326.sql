@@ -22,7 +22,7 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     AND p.p_type LIKE '%rubber%'
 GROUP BY 
     p.p_name, s.s_name

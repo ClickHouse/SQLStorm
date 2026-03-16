@@ -71,4 +71,4 @@ FROM
     TopPosts tp
 ORDER BY 
     tp.CreationDate DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

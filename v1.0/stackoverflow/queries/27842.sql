@@ -46,8 +46,8 @@ SELECT
     U.TotalDownvotes,
     T.TagName,
     T.TotalQuestionsWithTag,
-    ROUND((CAST(U.TotalUpvotes AS decimal) / NULLIF(U.TotalQuestions, 0)) * 100, 2) AS UpvotePercentage,
-    ROUND((CAST(U.TotalDownvotes AS decimal) / NULLIF(U.TotalQuestions, 0)) * 100, 2) AS DownvotePercentage
+    ROUND((U.TotalUpvotes::decimal / NULLIF(U.TotalQuestions, 0)) * 100, 2) AS UpvotePercentage,
+    ROUND((U.TotalDownvotes::decimal / NULLIF(U.TotalQuestions, 0)) * 100, 2) AS DownvotePercentage
 FROM 
     UserActivity U
 LEFT JOIN 

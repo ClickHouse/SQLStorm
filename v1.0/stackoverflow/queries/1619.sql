@@ -58,7 +58,7 @@ SELECT
     up.SilverBadges,
     up.BronzeBadges,
     up.Rank,
-    ROUND((CAST(up.TotalUpvotes AS numeric) / NULLIF(up.TotalPosts, 0)) * 100, 2) AS UpvotePercentage,
+    ROUND((up.TotalUpvotes::numeric / NULLIF(up.TotalPosts, 0)) * 100, 2) AS UpvotePercentage,
     CASE 
         WHEN up.Rank <= 10 THEN 'Top Contributor'
         ELSE 'Regular Contributor'
@@ -69,4 +69,4 @@ WHERE
     up.TotalPosts > 0
 ORDER BY 
     up.Rank
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -37,7 +37,7 @@ OrderDetails AS (
         o.o_orderkey,
         o.o_orderstatus,
         datePart('year', o.o_orderdate) AS order_year,
-        toMonth(o.o_orderdate) AS order_month,
+        EXTRACT(MONTH FROM o.o_orderdate) AS order_month,
         o.o_totalprice,
         o.o_clerk,
         o.o_comment,

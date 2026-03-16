@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     WHERE
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
     GROUP BY
         p.Id, p.Title, p.Tags, p.CreationDate, u.DisplayName
     HAVING

@@ -66,4 +66,4 @@ WHERE
     AND id.i_item_id LIKE 'A%'
 ORDER BY 
     ts.total_sales_amount DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

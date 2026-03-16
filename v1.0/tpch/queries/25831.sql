@@ -29,4 +29,4 @@ GROUP BY
     sb.p_partkey, sb.short_comment, sb.extended_description, sb.name_with_underscores, sb.name_length, sb.brand_lowercase
 ORDER BY 
     sb.name_length DESC, supplier_count ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

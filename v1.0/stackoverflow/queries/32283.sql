@@ -48,7 +48,7 @@ PostStats AS (
         rp.Score,
         ur.Reputation AS OwnerReputation,
         ur.DisplayName AS OwnerDisplayName,
-        COALESCE(MAX(rph.CreationDate) FILTER (WHERE rph.rn = 1), CAST('1970-01-01' AS timestamp)) AS LastActionDate,
+        COALESCE(MAX(rph.CreationDate) FILTER (WHERE rph.rn = 1), '1970-01-01'::timestamp) AS LastActionDate,
         COUNT(DISTINCT c.Id) AS CommentCount
     FROM 
         RankedPosts rp
@@ -80,7 +80,7 @@ SELECT
     END AS PopularityCategory,
     ps.LastActionDate - ps.CreationDate AS PostAge,
     CASE 
-        WHEN ps.LastActionDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Inactive'
+        WHEN ps.LastActionDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 'Inactive'
         ELSE 'Active' 
     END AS ActivityStatus
 FROM 

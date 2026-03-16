@@ -44,7 +44,7 @@ SELECT
 FROM 
     TopRegions tr
 LEFT JOIN 
-    orders o ON o.o_orderkey IN (SELECT l.l_orderkey FROM lineitem l WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR)
+    orders o ON o.o_orderkey IN (SELECT l.l_orderkey FROM lineitem l WHERE l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '1 year')
 LEFT JOIN 
     customer c ON o.o_custkey = c.c_custkey 
 GROUP BY 

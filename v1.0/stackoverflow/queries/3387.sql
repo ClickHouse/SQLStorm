@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
 ),
@@ -28,7 +28,7 @@ TopUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
+        u.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 years'
     GROUP BY 
         u.Id, u.DisplayName
 )
@@ -48,7 +48,7 @@ SELECT
          FROM PostHistory ph 
          JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
          WHERE ph.PostId = rp.Id
-         AND ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH), 
+         AND ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'), 
         'No Recent History') AS RecentPostHistory
 FROM 
     TopUsers tu

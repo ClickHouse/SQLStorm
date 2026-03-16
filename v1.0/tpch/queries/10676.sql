@@ -18,7 +18,7 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY 
     l.l_orderkey, o.o_orderdate, c.c_name, s.s_name, n.n_name
 ORDER BY 

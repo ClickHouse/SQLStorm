@@ -19,4 +19,4 @@ HAVING
     COUNT(DISTINCT s.s_suppkey) > 5
 ORDER BY 
     avg_supply_cost DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

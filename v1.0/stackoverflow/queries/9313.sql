@@ -74,4 +74,4 @@ JOIN
     UserPostDetails U ON T.UserId = U.UserId
 ORDER BY 
     T.Reputation DESC, U.CommentCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

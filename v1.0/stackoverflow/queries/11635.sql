@@ -50,4 +50,4 @@ LEFT JOIN
     BadgeStatistics BS ON US.UserId = BS.UserId
 ORDER BY 
     US.TotalScore DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

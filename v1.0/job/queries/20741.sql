@@ -62,4 +62,4 @@ JOIN
     MovieStats t ON g.genre = t.genre
 ORDER BY 
     popular_ratio DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

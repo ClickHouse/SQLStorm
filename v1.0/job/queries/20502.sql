@@ -69,4 +69,4 @@ WHERE
 ORDER BY
     rm.production_year DESC,
     rm.title ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

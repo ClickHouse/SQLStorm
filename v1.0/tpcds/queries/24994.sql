@@ -41,8 +41,8 @@ SalesData AS (
     FROM 
         web_sales
     WHERE
-        ws_sold_date_sk BETWEEN (SELECT MIN(d_date_sk) FROM date_dim WHERE d_year = toYear(cast('2002-10-01' as date)) - 1)
-        AND (SELECT MAX(d_date_sk) FROM date_dim WHERE d_year = toYear(cast('2002-10-01' as date)))
+        ws_sold_date_sk BETWEEN (SELECT MIN(d_date_sk) FROM date_dim WHERE d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) - 1)
+        AND (SELECT MAX(d_date_sk) FROM date_dim WHERE d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)))
     GROUP BY 
         ws_item_sk
 ),

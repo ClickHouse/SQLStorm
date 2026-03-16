@@ -33,7 +33,7 @@ PostStats AS (
     LEFT JOIN 
         UserVoteCounts U ON U.UserId = P.OwnerUserId
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
     GROUP BY 
         P.Id
 ),

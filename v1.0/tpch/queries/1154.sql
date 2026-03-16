@@ -52,7 +52,7 @@ LEFT JOIN
 LEFT JOIN
     TotalRevenue t ON r.o_orderkey = t.l_orderkey
 WHERE
-    r.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    r.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     AND t.revenue IS NOT NULL
 ORDER BY
     r.o_orderdate DESC,

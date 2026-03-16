@@ -48,4 +48,4 @@ HAVING
 ORDER BY 
     total_sales DESC 
 LIMIT 10 
-OFFSET (SELECT COUNT(DISTINCT i_item_sk) FROM item WHERE i_rec_start_date < toDate('2002-10-01')) % 50
+OFFSET (SELECT COUNT(DISTINCT i_item_sk) FROM item WHERE i_rec_start_date < DATE '2002-10-01') % 50

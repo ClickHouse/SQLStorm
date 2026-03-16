@@ -50,7 +50,7 @@ LEFT JOIN
 LEFT JOIN 
     customer_address ci ON ci.ca_address_sk = (SELECT c_current_addr_sk FROM customer WHERE c_customer_sk = (SELECT ws_bill_customer_sk FROM web_sales WHERE ws_net_profit = (SELECT MAX(ws_net_profit) FROM web_sales)))
 WHERE 
-    toDayOfWeek(da.sale_date) IN (6, 0) 
+    EXTRACT(DOW FROM da.sale_date) IN (6, 0) 
 ORDER BY 
     da.sale_date DESC
 LIMIT 10;

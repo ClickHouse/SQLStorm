@@ -60,7 +60,7 @@ LEFT JOIN
 WHERE 
     rp.UserPostRank = 1 
     AND rp.Score > 10
-    AND (phs.LastModifiedDate IS NULL OR phs.LastModifiedDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    AND (phs.LastModifiedDate IS NULL OR phs.LastModifiedDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
 ORDER BY 
     rp.Score DESC, 
     u.Reputation DESC;

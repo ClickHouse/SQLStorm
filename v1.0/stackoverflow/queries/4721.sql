@@ -56,4 +56,4 @@ SELECT
 FROM FinalStats F
 WHERE F.Reputation > 1000 
 ORDER BY F.TotalScore DESC, F.BadgeCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

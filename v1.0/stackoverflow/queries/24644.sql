@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 PostComments AS (
     SELECT 
@@ -30,16 +30,16 @@ PostHistoryDetails AS (
         ph.CreationDate AS HistoryCreationDate,
         CASE 
             WHEN ph.PostHistoryTypeId IN (10, 11) THEN 
-                'Closed on ' || CAST(ph.CreationDate AS text)
+                'Closed on ' || ph.CreationDate::text
             WHEN ph.PostHistoryTypeId IN (12, 13) THEN 
-                'Deleted on ' || CAST(ph.CreationDate AS text)
+                'Deleted on ' || ph.CreationDate::text
             ELSE 
-                'Edited on ' || CAST(ph.CreationDate AS text)
+                'Edited on ' || ph.CreationDate::text
         END AS HistoryText
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
+        ph.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
 ),
 UserBadges AS (
     SELECT
@@ -49,7 +49,7 @@ UserBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= CURRENT_DATE - INTERVAL 2 YEAR
+        b.Date >= CURRENT_DATE - INTERVAL '2 years'
     GROUP BY 
         b.UserId
 )

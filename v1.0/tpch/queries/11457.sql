@@ -16,9 +16,9 @@ JOIN
 WHERE 
     r.r_name = 'ASIA'
 AND 
-    l.l_shipdate >= toDate('1995-01-01') 
+    l.l_shipdate >= DATE '1995-01-01' 
 AND 
-    l.l_shipdate < toDate('1995-12-31')
+    l.l_shipdate < DATE '1995-12-31'
 GROUP BY 
     p.p_name
 ORDER BY 

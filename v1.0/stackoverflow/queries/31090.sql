@@ -20,7 +20,7 @@ RecentPostHistory AS (
         ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY ph.CreationDate DESC) AS HistoryRank
     FROM Posts p
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
 AggregatedVotes AS (
     

@@ -79,4 +79,4 @@ HAVING
     (COUNT(*) > 5 AND AVG(rws.purchase_estimate) > 100)
 ORDER BY 
     total_returns DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

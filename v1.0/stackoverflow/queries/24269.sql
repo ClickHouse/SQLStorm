@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         (SELECT * FROM arrayJoin(splitByString('>', p.Tags)) AS t(TagName)) AS t ON TRUE
     WHERE 
-        p.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        p.LastActivityDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 
         p.Id, p.OwnerUserId, p.Title, p.CreationDate, p.ViewCount
 ),

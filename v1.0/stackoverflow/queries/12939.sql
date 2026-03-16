@@ -44,4 +44,4 @@ SELECT
 FROM UserPostStats u
 JOIN TagPostStats t ON u.TotalPosts > 0 
 ORDER BY u.TotalScore DESC, t.TotalScore DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

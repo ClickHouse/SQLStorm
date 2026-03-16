@@ -77,7 +77,7 @@ WHERE
         FROM Comments c
         WHERE c.PostId = ap.PostId 
         AND c.UserId = ub.UserId
-        AND c.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        AND c.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     )
 ORDER BY 
     ub.TotalBadges DESC, 

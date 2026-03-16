@@ -8,7 +8,7 @@ WITH RECURSIVE OrderHierarchy AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01')
+        o.o_orderdate >= DATE '1997-01-01'
     UNION ALL
     SELECT 
         o.o_orderkey,
@@ -66,7 +66,7 @@ SELECT
     AVG(cs.total_spent) AS avg_spent,
     MAX(sd.part_count) AS max_parts_supplied,
     (SELECT COUNT(*) FROM LargeOrders) AS total_large_orders,
-    COUNT(oh.o_orderkey) FILTER (WHERE oh.o_orderdate < toDate('1998-10-01')) AS historical_orders
+    COUNT(oh.o_orderkey) FILTER (WHERE oh.o_orderdate < DATE '1998-10-01') AS historical_orders
 FROM 
     nation n
 JOIN 

@@ -7,7 +7,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounty,
-        AVG(COALESCE(toUnixTimestamp((now64(6) - p.CreationDate)) / 60, 0)) AS AvgResponseTime
+        AVG(COALESCE(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate)) / 60, 0)) AS AvgResponseTime
     FROM 
         Users u
     LEFT JOIN 
@@ -15,7 +15,7 @@ WITH UserPostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8 
     WHERE 
-        u.Reputation > 100 AND u.CreationDate < now64(6) - INTERVAL 1 YEAR
+        u.Reputation > 100 AND u.CreationDate < CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName
 ),

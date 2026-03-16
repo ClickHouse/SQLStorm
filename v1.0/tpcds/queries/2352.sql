@@ -68,7 +68,7 @@ FROM SalesAndReturns s
 JOIN TopCustomers tc ON tc.c_customer_sk = (
     SELECT c.c_customer_sk 
     FROM customer c
-    WHERE c.c_birth_month = toMonth(s.d_date)
+    WHERE c.c_birth_month = EXTRACT(MONTH FROM s.d_date)
     ORDER BY c.c_birth_year DESC
     LIMIT 1
 )

@@ -62,4 +62,4 @@ FROM
 ORDER BY 
     up.TotalScore DESC, 
     up.BadgeCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -42,6 +42,6 @@ FROM
 LEFT JOIN 
     order_details od ON sa.p_partkey IN (SELECT ps.ps_partkey FROM partsupp ps WHERE ps.ps_suppkey IN (SELECT s.s_suppkey FROM supplier s WHERE s.s_nationkey = (SELECT n.n_nationkey FROM nation n WHERE n.n_name = 'USA')))
 WHERE 
-    od.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    od.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 ORDER BY 
     sa.p_partkey, od.o_orderdate DESC;

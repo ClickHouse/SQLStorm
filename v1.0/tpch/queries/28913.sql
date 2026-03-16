@@ -36,4 +36,4 @@ FROM
     FilteredParts
 ORDER BY 
     comment_length DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

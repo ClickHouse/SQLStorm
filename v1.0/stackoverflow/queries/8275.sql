@@ -38,7 +38,7 @@ PostStatistics AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= now64(6) - INTERVAL 1 YEAR
+        P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
 )
 SELECT 
     UP.DisplayName,

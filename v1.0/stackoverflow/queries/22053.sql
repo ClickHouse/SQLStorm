@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate > (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
+        p.CreationDate > (cast('2024-10-01' as date) - INTERVAL '1 year')
 ),
 TopQuestions AS (
     SELECT 
@@ -50,7 +50,7 @@ RecentActivity AS (
     JOIN 
         PostHistoryTypes pt ON pt.Id = ph.PostHistoryTypeId
     WHERE 
-        ph.CreationDate > (cast('2024-10-01' as date) - INTERVAL 30 DAY)
+        ph.CreationDate > (cast('2024-10-01' as date) - INTERVAL '30 days')
 )
 SELECT 
     tq.Title,

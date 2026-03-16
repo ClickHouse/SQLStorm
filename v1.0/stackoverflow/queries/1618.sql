@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, u.DisplayName, p.PostTypeId, p.CreationDate
 ),
@@ -44,7 +44,7 @@ SELECT
     tp.DownVotes,
     CASE 
         WHEN tp.UpVotes IS NULL THEN 'No votes yet'
-        ELSE CONCAT('Ratio: ', COALESCE(CAST(tp.UpVotes AS DECIMAL) / NULLIF(tp.UpVotes + tp.DownVotes, 0), 0), ':1')
+        ELSE CONCAT('Ratio: ', COALESCE(tp.UpVotes::DECIMAL / NULLIF(tp.UpVotes + tp.DownVotes, 0), 0), ':1')
     END AS VoteRatio,
     COALESCE(ph.Comment, 'No history available') AS PostHistory
 FROM 

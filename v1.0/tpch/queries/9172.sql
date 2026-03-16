@@ -37,6 +37,6 @@ JOIN partsupp ps ON ts.s_suppkey = ps.ps_suppkey
 JOIN lineitem l ON ps.ps_partkey = l.l_partkey
 JOIN orders o ON l.l_orderkey = o.o_orderkey
 JOIN TopCustomers tc ON o.o_custkey = tc.c_custkey
-WHERE o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+WHERE o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY ts.s_suppkey, ts.s_name, tc.c_custkey, tc.c_name
 ORDER BY total_revenue DESC;

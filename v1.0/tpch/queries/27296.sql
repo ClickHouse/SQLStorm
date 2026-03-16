@@ -25,4 +25,4 @@ HAVING
     SUM(ps.ps_availqty) > 100
 ORDER BY 
     total_available_quantity DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -4,7 +4,7 @@ WITH RankedOrders AS (
         o.o_orderdate,
         ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) as order_rank
     FROM orders o
-    WHERE o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL 1 YEAR) 
+    WHERE o.o_orderdate > (cast('1998-10-01' as date) - INTERVAL '1 year') 
       AND o.o_orderstatus IN ('O', 'F')
 ), 
 TotalRevenue AS (

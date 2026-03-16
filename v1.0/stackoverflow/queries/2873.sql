@@ -63,7 +63,7 @@ LEFT JOIN
 WHERE 
     UR.Reputation > 1000
     AND PA.Upvotes - PA.Downvotes > 0 
-    AND (PH.CreationDate IS NULL OR PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    AND (PH.CreationDate IS NULL OR PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
 ORDER BY 
     UR.TotalBounty DESC, 
     PA.ViewCount DESC

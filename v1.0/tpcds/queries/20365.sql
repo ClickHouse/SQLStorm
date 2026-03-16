@@ -88,5 +88,5 @@ WHERE
     AND fs.return_ratio > (SELECT AVG(return_ratio) FROM sales_returns)
 ORDER BY 
     fs.total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;
 

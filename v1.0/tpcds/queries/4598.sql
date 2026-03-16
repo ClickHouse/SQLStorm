@@ -43,4 +43,4 @@ WHERE
     ss.order_count > 0
 ORDER BY
     ss.sales_rank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

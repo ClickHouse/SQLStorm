@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 PostDetails AS (
     SELECT 
@@ -28,7 +28,7 @@ PostDetails AS (
     LEFT JOIN 
         Comments c ON rp.PostId = c.PostId
     LEFT JOIN 
-        Votes v ON rp.PostId = v.PostId AND v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        Votes v ON rp.PostId = v.PostId AND v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     LEFT JOIN 
         PostHistory ph ON rp.PostId = ph.PostId AND ph.PostHistoryTypeId = 24 
     WHERE 

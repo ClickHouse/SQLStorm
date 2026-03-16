@@ -17,7 +17,7 @@ PopularPosts AS (
         P.ViewCount,
         RANK() OVER (ORDER BY P.Score DESC, P.ViewCount DESC) AS RankScore
     FROM Posts P
-    WHERE P.PostTypeId = 1 AND P.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
+    WHERE P.PostTypeId = 1 AND P.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
 ),
 PostHistoryDetails AS (
     SELECT 
@@ -29,7 +29,7 @@ PostHistoryDetails AS (
         PH.CreationDate AS EditDate
     FROM PostHistory PH
     INNER JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
-    WHERE PH.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 90 DAY
+    WHERE PH.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '90 days'
 )
 SELECT 
     UVS.DisplayName,

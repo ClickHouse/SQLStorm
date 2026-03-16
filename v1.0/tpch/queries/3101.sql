@@ -18,7 +18,7 @@ WITH RegionSales AS (
     JOIN 
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     GROUP BY 
         r.r_name
 ),

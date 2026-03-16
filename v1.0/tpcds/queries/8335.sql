@@ -54,4 +54,4 @@ JOIN
     SalesData sd ON sd.d_year >= (SELECT MAX(d_year) - 1 FROM SalesData)
 ORDER BY 
     ac.active_customer_count DESC, sd.total_web_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

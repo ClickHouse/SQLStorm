@@ -8,7 +8,7 @@ WITH SupplierSales AS (
     JOIN lineitem l ON ps.ps_partkey = l.l_partkey
     JOIN orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
-        o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1995-12-31')
+        o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1995-12-31'
         AND o.o_orderstatus = 'F'
     GROUP BY 
         s.s_suppkey, s.s_name

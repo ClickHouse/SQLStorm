@@ -53,8 +53,8 @@ FinalReport AS (
         ms.total_sales_amount
     FROM
         AggregateCustomerInfo aci
-    JOIN MonthlySales ms ON ms.d_year = toYear(cast('2002-10-01' as date)) 
-        AND ms.d_month_seq = toMonth(cast('2002-10-01' as date))
+    JOIN MonthlySales ms ON ms.d_year = EXTRACT(YEAR FROM cast('2002-10-01' as date)) 
+        AND ms.d_month_seq = EXTRACT(MONTH FROM cast('2002-10-01' as date))
 )
 SELECT
     c_customer_id,

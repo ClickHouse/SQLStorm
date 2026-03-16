@@ -26,7 +26,7 @@ UserStatistics AS (
         SUM(r.ViewCount) AS TotalViews,
         SUM(r.UpVoteCount - r.DownVoteCount) AS NetVotes,
         MAX(r.CreationDate) AS LastPostDate,
-        toYear(AGE(MAX(r.CreationDate))) AS YearsActive
+        EXTRACT(YEAR FROM AGE(MAX(r.CreationDate))) AS YearsActive
     FROM 
         Users u
     JOIN 

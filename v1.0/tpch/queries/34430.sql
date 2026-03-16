@@ -4,7 +4,7 @@ WITH RECURSIVE OrderSummary AS (
            ROW_NUMBER() OVER (PARTITION BY c.c_custkey ORDER BY o.o_orderdate DESC) AS rn
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
 ),
 SupplierAggregate AS (
     SELECT s.s_suppkey, SUM(ps.ps_supplycost * ps.ps_availqty) AS total_cost
@@ -23,7 +23,7 @@ LineItemAnalysis AS (
            AVG(l.l_quantity) AS avg_quantity,
            COUNT(CASE WHEN l.l_returnflag = 'R' THEN 1 END) AS returns_count
     FROM lineitem l
-    WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY l.l_orderkey
 )
 SELECT os.o_orderkey, os.o_orderdate, os.o_totalprice, os.c_name, os.c_acctbal, 

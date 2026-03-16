@@ -62,7 +62,7 @@ LEFT JOIN
 JOIN 
     NationTotals ns ON cs.TotalOrders > 5 AND ns.SupplierCount > 0
 WHERE 
-    o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
+    o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
   AND 
     (rc.TotalCost IS NOT NULL OR rc.TotalCost > 5000)
 ORDER BY 

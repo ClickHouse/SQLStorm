@@ -54,4 +54,4 @@ JOIN
 ORDER BY 
     ac.address_frequency DESC, 
     dm.cd_purchase_estimate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

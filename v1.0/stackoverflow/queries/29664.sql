@@ -13,7 +13,7 @@ WITH FilteredPosts AS (
     LEFT JOIN 
         Tags t ON t.WikiPostId = p.Id OR t.ExcerptPostId = p.Id
     WHERE
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 MONTH'
         AND p.PostTypeId IN (1, 2)  
     GROUP BY
         p.Id, p.Title, p.ViewCount, p.Tags, U.DisplayName
@@ -38,7 +38,7 @@ ClosedPostHistory AS (
     FROM
         PostHistory ph
     JOIN
-        CloseReasonTypes c ON CAST(ph.Comment AS int) = c.Id
+        CloseReasonTypes c ON ph.Comment::int = c.Id
     WHERE
         ph.PostHistoryTypeId = 10  
 )

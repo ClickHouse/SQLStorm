@@ -49,4 +49,4 @@ SELECT
 FROM enriched_data ed
 WHERE ed.p_retailprice > (SELECT AVG(p_retailprice) FROM part)
 ORDER BY ed.name_length DESC, ed.p_retailprice DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

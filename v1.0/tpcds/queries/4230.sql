@@ -51,4 +51,4 @@ GROUP BY
     ca.ca_city, ca.ca_state, tc.customer_rank, tc.total_spent
 ORDER BY 
     total_spent DESC NULLS LAST
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

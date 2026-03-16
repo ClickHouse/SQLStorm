@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 UserStatistics AS (
     SELECT 
@@ -45,7 +45,7 @@ RecentClosedPosts AS (
     LEFT JOIN 
         Comments c ON c.PostId = p.Id
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
+        ph.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
     GROUP BY 
         p.Id, p.Title, ph.CreationDate, ph.UserDisplayName
 )

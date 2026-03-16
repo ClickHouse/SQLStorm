@@ -19,7 +19,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     r.r_name = 'EUROPE' AND 
-    o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     l.l_orderkey
 ORDER BY 

@@ -60,7 +60,7 @@ SELECT
 FROM 
     sales_summary ss
 JOIN 
-    customer_demographics_analysis cd ON ss.d_year = toYear(toDate('2002-10-01')) 
+    customer_demographics_analysis cd ON ss.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') 
 JOIN 
     warehouse_sales_summary ws ON ss.total_sales > 10000 
 ORDER BY 

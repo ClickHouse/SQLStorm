@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),
 TopPosts AS (
@@ -38,7 +38,7 @@ SELECT
     tp.CommentCount,
     tp.VoteScore,
     tp.PostRank,
-    toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - tp.CreationDate) AS AgeInSeconds
+    toUnixTimestamp(cast('2024-10-01 12:34:56' as timestamp) - tp.CreationDate) AS AgeInSeconds
 FROM TopPosts tp
 WHERE tp.PostRank <= 10
 ORDER BY tp.PostRank;

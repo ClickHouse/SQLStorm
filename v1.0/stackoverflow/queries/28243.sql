@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM Posts p
     JOIN PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY p.Id, pt.Name, p.Title, p.Body, p.CreationDate, p.ViewCount, p.Score, p.Tags
 ),
 TopContributors AS (
@@ -22,7 +22,7 @@ TopContributors AS (
         COUNT(*) AS TotalContributions
     FROM Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY u.Id, u.DisplayName
     HAVING COUNT(*) > 5
 ),

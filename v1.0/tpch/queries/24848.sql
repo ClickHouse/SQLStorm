@@ -51,7 +51,7 @@ outlier_orders AS (
     GROUP BY 
         o.o_orderkey
     HAVING 
-        SUM(l.l_discount) > (SELECT AVG(l2.l_discount) FROM lineitem l2 WHERE l2.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR)
+        SUM(l.l_discount) > (SELECT AVG(l2.l_discount) FROM lineitem l2 WHERE l2.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year')
 )
 SELECT 
     r.o_orderkey,

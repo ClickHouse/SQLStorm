@@ -20,8 +20,8 @@ JOIN
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
     c.c_mktsegment = 'BUILDING'
-    AND l.l_shipdate >= toDate('1997-01-01')
-    AND l.l_shipdate < toDate('1998-01-01')
+    AND l.l_shipdate >= DATE '1997-01-01'
+    AND l.l_shipdate < DATE '1998-01-01'
 GROUP BY 
     c.c_name, s.s_name, p.p_name
 HAVING 

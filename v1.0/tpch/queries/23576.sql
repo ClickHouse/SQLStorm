@@ -71,4 +71,4 @@ WHERE
 ORDER BY 
     ps.total_avail DESC NULLS LAST, 
     p.p_mfgr ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

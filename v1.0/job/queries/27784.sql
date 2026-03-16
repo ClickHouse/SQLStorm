@@ -40,8 +40,8 @@ movie_details AS (
 SELECT 
     md.title,
     md.production_year,
-    COALESCE(CAST(md.aka_names AS text), 'No Alias') AS aka_aliases,
-    COALESCE(CAST(md.person_infos AS text), 'No Info Available') AS person_info
+    COALESCE(md.aka_names::text, 'No Alias') AS aka_aliases,
+    COALESCE(md.person_infos::text, 'No Info Available') AS person_info
 FROM 
     movie_details md
 ORDER BY 

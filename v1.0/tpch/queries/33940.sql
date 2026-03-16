@@ -25,7 +25,7 @@ LEFT JOIN nation n ON s.s_nationkey = n.n_nationkey
 LEFT JOIN lineitem l ON l.l_partkey = p.p_partkey
 LEFT JOIN orders o ON l.l_orderkey = o.o_orderkey
 WHERE n.n_name IS NOT NULL 
-  AND (l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31') OR l.l_returnflag = 'R')
+  AND (l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31' OR l.l_returnflag = 'R')
 GROUP BY n.n_name
 HAVING SUM(COALESCE(ps.ps_availqty, 0)) > 100 AND AVG(p.p_retailprice) < 50.00
 ORDER BY total_supply_cost DESC

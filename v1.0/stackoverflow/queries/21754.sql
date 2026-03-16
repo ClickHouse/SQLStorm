@@ -55,7 +55,7 @@ SELECT
     CASE 
         WHEN UEng.ReputationRank <= 10 THEN 'Top User'
         WHEN UEng.ReputationRank <= 50 THEN 'Average User'
-        WHEN toYear(CURRENT_DATE) - toYear(U.CreationDate) < 1 THEN 'New User'
+        WHEN EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM U.CreationDate) < 1 THEN 'New User'
         ELSE 'Experienced User'
     END AS UserCategory,
     UEng.AssociatedTags,
@@ -71,7 +71,7 @@ FROM
 JOIN 
     UserEngagement UEng ON U.Id = UEng.UserId
 WHERE 
-    U.LastAccessDate > now64(6) - INTERVAL 30 DAY
+    U.LastAccessDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
 ORDER BY 
     UEng.ReputationRank ASC, UEng.TotalScore DESC
 LIMIT 50;

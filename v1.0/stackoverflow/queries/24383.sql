@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ), 
 
 UserBadges AS (
@@ -59,7 +59,7 @@ ActivePosts AS (
     FROM 
         RankedPosts rp
     LEFT JOIN 
-        UserBadges ub ON rp.DisplayName = CAST(ub.UserId AS text) 
+        UserBadges ub ON rp.DisplayName = ub.UserId::text 
     LEFT JOIN 
         VoteSummary vs ON rp.Id = vs.PostId
     WHERE 

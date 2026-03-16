@@ -20,7 +20,7 @@ JOIN
 JOIN 
     orders o ON l.l_orderkey = o.o_orderkey
 WHERE 
-    p.p_size > 10 AND o.o_orderdate >= toDate('1996-01-01')
+    p.p_size > 10 AND o.o_orderdate >= DATE '1996-01-01'
 GROUP BY 
     p.p_name, s.s_name, r.r_name
 HAVING 

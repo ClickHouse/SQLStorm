@@ -55,4 +55,4 @@ GROUP BY
     sales_date, full_name, full_address
 ORDER BY 
     sales_date DESC, total_net_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

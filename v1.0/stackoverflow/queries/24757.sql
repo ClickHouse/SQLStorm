@@ -61,4 +61,4 @@ WHERE
     ps.Rank <= 5 OR tp.TopRank IS NOT NULL
 ORDER BY 
     ps.Score DESC, ps.CreationDate ASC
-OFFSET 5;
+OFFSET 5 ROWS;

@@ -47,7 +47,7 @@ JOIN Posts p ON pr.PostId = p.Id
 LEFT JOIN PostVoteCounts pv ON p.Id = pv.PostId
 LEFT JOIN ClosedPosts cp ON p.Id = cp.PostId
 WHERE pr.RankByViews <= 10
-  AND (cp.LastClosedDate IS NOT NULL AND cp.LastClosedDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+  AND (cp.LastClosedDate IS NOT NULL AND cp.LastClosedDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR')
   OR (pv.TotalUpVotes - pv.TotalDownVotes) > 10
 ORDER BY pr.RankByViews, p.CreationDate DESC
 LIMIT 50;

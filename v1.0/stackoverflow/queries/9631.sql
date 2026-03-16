@@ -21,7 +21,7 @@ WITH RecentPostStats AS (
     LEFT JOIN 
         arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS t(TagName) ON TRUE
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' 
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score, p.CreationDate
 ),

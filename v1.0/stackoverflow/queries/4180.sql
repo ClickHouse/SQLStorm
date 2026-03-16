@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Users ut ON p.OwnerUserId = ut.Id
     WHERE
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
         AND p.ViewCount IS NOT NULL
 ),
 ClosedPostHistory AS (
@@ -70,7 +70,7 @@ LEFT JOIN
 LEFT JOIN
     BadgedUsers bu ON rp.OwnerUserId = bu.UserId
 WHERE
-    (cb.CreationDate IS NULL OR cb.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
+    (cb.CreationDate IS NULL OR cb.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 MONTH')
 ORDER BY
     rp.ViewCount DESC, rp.Score DESC
 LIMIT 100;

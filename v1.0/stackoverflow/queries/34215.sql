@@ -35,7 +35,7 @@ RecentActivity AS (
         U.DisplayName,
         U.Reputation,
         U.PostCount,
-        GREATEST(P.LastActivityDate, COALESCE(C.CreationDate, '1900-01-01'CAST() AS timestamp)) AS MostRecentActivityDate
+        GREATEST(P.LastActivityDate, COALESCE(C.CreationDate, '1900-01-01')::timestamp) AS MostRecentActivityDate
     FROM 
         TopUsers U
     LEFT JOIN 
@@ -62,6 +62,6 @@ FROM
 JOIN 
     RecentActivity A ON U.UserId = A.UserId
 WHERE 
-    A.MostRecentActivityDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    A.MostRecentActivityDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
 ORDER BY 
     U.Reputation DESC, U.PostCount DESC;

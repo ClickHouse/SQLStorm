@@ -28,7 +28,7 @@ RecentActivity AS (
     LEFT JOIN 
         PostHistory ph ON ph.PostId = p.Id AND ph.PostHistoryTypeId IN (4, 5) 
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY 
         p.Title, p.CreationDate, u.DisplayName
 ),
@@ -43,7 +43,7 @@ TopUsers AS (
     JOIN 
         Posts p ON p.OwnerUserId = u.Id
     WHERE 
-        u.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        u.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         u.DisplayName, u.Reputation
     ORDER BY 

@@ -30,8 +30,8 @@ TopSuppliers AS (
     JOIN 
         region r ON n.n_regionkey = r.r_regionkey
     WHERE 
-        l.l_shipdate >= toDate('1996-01-01')
-        AND l.l_shipdate < toDate('1996-12-31')
+        l.l_shipdate >= DATE '1996-01-01'
+        AND l.l_shipdate < DATE '1996-12-31'
     GROUP BY 
         s.s_suppkey, s.s_name, r.r_name
     HAVING 

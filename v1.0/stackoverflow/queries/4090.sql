@@ -68,4 +68,4 @@ WHERE
     pa.Reputation > 500
 ORDER BY 
     pa.ViewCount DESC, pa.Reputation DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

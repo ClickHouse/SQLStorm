@@ -23,7 +23,7 @@ ActiveUsers AS (
     FROM 
         Users U
     WHERE 
-        U.LastAccessDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        U.LastAccessDate > (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
 ),
 SpamDetection AS (
     SELECT 
@@ -37,7 +37,7 @@ SpamDetection AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
-        P.CreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY)
+        P.CreationDate < (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '90 days')
     GROUP BY 
         U.Id
     HAVING 

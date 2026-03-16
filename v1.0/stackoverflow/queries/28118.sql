@@ -29,7 +29,7 @@ WITH StringData AS (
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, u.DisplayName, clr.Name
 )
@@ -47,7 +47,7 @@ SELECT
         WHEN CHAR_LENGTH(Body) > 500 THEN 'Long Body' 
         ELSE 'Short Body' 
     END AS BodyLengthCategory,
-    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - CreationDate)) AS AgeInSeconds
+    toUnixTimestamp((CAST('2024-10-01 12:34:56' AS timestamp) - CreationDate)) AS AgeInSeconds
 FROM 
     StringData
 ORDER BY 

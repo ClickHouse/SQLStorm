@@ -16,7 +16,7 @@ ineligible_customers AS (
         customer 
     WHERE 
         c_last_review_date_sk IS NULL 
-        OR (c_birth_year IS NOT NULL AND (toYear(cast('2002-10-01' as date)) - c_birth_year) < 18)
+        OR (c_birth_year IS NOT NULL AND (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c_birth_year) < 18)
 ),
 eligible_sales AS (
     SELECT 
@@ -51,4 +51,4 @@ HAVING
 ORDER BY 
     final_quantity DESC, 
     max_sales_value ASC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

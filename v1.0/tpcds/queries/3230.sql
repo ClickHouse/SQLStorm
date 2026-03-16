@@ -57,4 +57,4 @@ WHERE
     c.c_current_addr_sk IS NOT NULL
 ORDER BY 
     net_profit_after_returns DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

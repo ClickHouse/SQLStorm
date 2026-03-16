@@ -72,4 +72,4 @@ WHERE
     ci.total_profit > 1000
 ORDER BY 
     highest_order_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

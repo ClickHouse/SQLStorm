@@ -73,4 +73,4 @@ WHERE
     ts.total_spent > avg.avg_spent
 ORDER BY 
     ts.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

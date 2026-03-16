@@ -83,4 +83,4 @@ WHERE
     CS.Reputation > 500
 ORDER BY 
     CS.TotalPosts DESC, CS.Reputation DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

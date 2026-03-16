@@ -68,4 +68,4 @@ HAVING
     SUM(fr.discounted_price) > 1000
 ORDER BY 
     fr.discounted_price DESC, fr.o_orderdate ASC, fr.l_partkey DESC
-LIMIT 20 OFFSET 10
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY

@@ -32,7 +32,7 @@ SELECT
     SUM(ws.ws_net_profit) AS total_profit,
     CASE 
         WHEN SUM(ws.ws_net_profit) IS NULL THEN 'No Profit'
-        ELSE CONCAT('Total Profit: $', SUM(ws.ws_net_profitCAST() AS TEXT))
+        ELSE CONCAT('Total Profit: $', SUM(ws.ws_net_profit)::TEXT)
     END AS profit_statement
 FROM 
     customer c
@@ -44,7 +44,7 @@ LEFT JOIN
     High_Profit_Items hpi ON ws.ws_item_sk = hpi.ws_item_sk
 WHERE 
     ws.ws_ship_date_sk IS NOT NULL
-    AND (c.c_birth_year < (toYear(toDate('2002-10-01')) - 18) OR c.c_birth_country IS NULL)
+    AND (c.c_birth_year < (EXTRACT(YEAR FROM DATE '2002-10-01') - 18) OR c.c_birth_country IS NULL)
 GROUP BY 
     c.c_customer_id, c.c_first_name, c.c_last_name, ca.ca_city
 HAVING 

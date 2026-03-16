@@ -31,7 +31,7 @@ RecentPosts AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY
+    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL '30 days'
     GROUP BY p.Id, p.Title, p.CreationDate, p.Tags
 ),
 HighScoringPosts AS (

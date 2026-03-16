@@ -16,7 +16,7 @@ PostHistorySummary AS (
            ph.PostHistoryTypeId, 
            COUNT(*) AS HistoryCount
     FROM PostHistory ph
-    WHERE ph.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+    WHERE ph.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
     GROUP BY ph.PostId, ph.PostHistoryTypeId
 ),
 TopUsers AS (

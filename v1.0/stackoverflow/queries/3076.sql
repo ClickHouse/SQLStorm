@@ -26,7 +26,7 @@ PostDetails AS (
     LEFT JOIN 
         UserVoteSummary UP ON P.OwnerUserId = UP.UserId
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 ClosedPosts AS (
     SELECT 

@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score > 0 
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 PostVotes AS (
     SELECT 
@@ -95,7 +95,7 @@ FROM
 WHERE 
     (UpVotes - DownVotes) > 0 
     AND TagCount > 1 
-    AND (LastEdited IS NULL OR LastEdited >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    AND (LastEdited IS NULL OR LastEdited >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
 ORDER BY 
     Score DESC,
     CreationDate ASC

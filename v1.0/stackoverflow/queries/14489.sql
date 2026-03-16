@@ -19,7 +19,7 @@ LEFT JOIN
 LEFT JOIN 
     Tags t ON t.TagName = TRIM(BOTH ' ' FROM tag.tag)
 WHERE 
-    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.LastActivityDate, p.Score, p.ViewCount
 ORDER BY 

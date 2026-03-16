@@ -36,7 +36,7 @@ OrderSummary AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate >= toDate('1997-01-01')
+        l.l_shipdate >= DATE '1997-01-01'
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 )

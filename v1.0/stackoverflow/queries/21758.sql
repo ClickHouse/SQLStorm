@@ -51,7 +51,7 @@ UserActivity AS (
     LEFT JOIN 
         Votes V ON U.Id = V.UserId
     WHERE 
-        U.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        U.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY 
         U.Id, U.DisplayName
 ), 

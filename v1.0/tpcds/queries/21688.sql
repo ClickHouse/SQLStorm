@@ -47,4 +47,4 @@ LEFT JOIN sales_summary cs ON ci.c_customer_sk = cs.ws_item_sk
 GROUP BY ci.c_first_name, ci.c_last_name
 HAVING COALESCE(SUM(cs.total_revenue), 0) > 1000 OR COUNT(ci.c_first_name) = 0
 ORDER BY total_spent DESC, ci.c_last_name ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

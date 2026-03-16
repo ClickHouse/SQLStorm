@@ -19,7 +19,7 @@ RecentPosts AS (
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    WHERE P.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
     GROUP BY P.Id, P.OwnerUserId, P.Title, P.CreationDate, P.Score, P.ViewCount
 ),
 TopPosts AS (

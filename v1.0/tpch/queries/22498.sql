@@ -17,7 +17,7 @@ cte_customer AS (
 cte_lineitem AS (
     SELECT l.l_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_price
     FROM lineitem l
-    WHERE l.l_shipdate > (toDate('1998-10-01') - INTERVAL 1 YEAR)
+    WHERE l.l_shipdate > (DATE '1998-10-01' - INTERVAL '1 year')
     GROUP BY l.l_orderkey
 ),
 cte_order_stats AS (

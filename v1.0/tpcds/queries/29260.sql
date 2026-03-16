@@ -46,4 +46,4 @@ CROSS JOIN
     AddressStats a
 ORDER BY 
     l.address_length DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

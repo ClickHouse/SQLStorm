@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId
 ),
@@ -56,7 +56,7 @@ UserPostStats AS (
         COALESCE(SUM(rp.Score), 0) AS TotalScore,
         COALESCE(SUM(rp.UpVotes), 0) AS TotalUpVotes,
         COALESCE(SUM(rp.DownVotes), 0) AS TotalDownVotes,
-        COALESCE(MAX(rp.CreationDate), toDateTime64('1900-01-01', 6)) AS MostRecentPost
+        COALESCE(MAX(rp.CreationDate), TIMESTAMP '1900-01-01') AS MostRecentPost
     FROM 
         UserMetrics um
     LEFT JOIN 

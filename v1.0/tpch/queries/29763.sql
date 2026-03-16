@@ -19,7 +19,7 @@ JOIN
 WHERE 
     p.p_size > 10 
     AND s.s_acctbal > 5000 
-    AND o.o_orderdate >= toDate('1997-01-01')
+    AND o.o_orderdate >= DATE '1997-01-01'
 GROUP BY 
     short_name, updated_comment, supplier_info
 ORDER BY 

@@ -16,7 +16,7 @@ WITH UserActivity AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId AND V.UserId = U.Id
     WHERE 
-        U.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        U.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         U.Id, U.DisplayName
 ),
@@ -45,7 +45,7 @@ LEFT JOIN (
     FROM 
         Badges 
     WHERE 
-        Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
     GROUP BY 
         UserId
 ) BA ON TU.UserId = BA.UserId

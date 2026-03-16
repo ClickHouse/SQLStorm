@@ -32,8 +32,8 @@ ValidPromotions AS (
         promotion p
     WHERE 
         p.p_discount_active = 'Y' 
-        AND p.p_start_date_sk <= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = toDate('2002-10-01'))
-        AND (p.p_end_date_sk >= (SELECT MIN(d.d_date_sk) FROM date_dim d WHERE d.d_date = toDate('2002-10-01')) OR p.p_end_date_sk IS NULL)
+        AND p.p_start_date_sk <= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = DATE '2002-10-01')
+        AND (p.p_end_date_sk >= (SELECT MIN(d.d_date_sk) FROM date_dim d WHERE d.d_date = DATE '2002-10-01') OR p.p_end_date_sk IS NULL)
 ),
 FinalResult AS (
     SELECT 
@@ -69,4 +69,4 @@ WHERE
     COALESCE(f.sale_rank, 0) > 0
 ORDER BY 
     f.total_returned_amount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

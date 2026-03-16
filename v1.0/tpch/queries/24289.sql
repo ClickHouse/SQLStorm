@@ -37,7 +37,7 @@ SELECT rs.r_name,
        AVG(CASE WHEN fo.lineitem_status = 'No Line Items' THEN fo.o_totalprice END) AS avg_revenue_no_items,
        STRING_AGG(DISTINCT rs.s_name) AS supplier_names,
        COUNT(DISTINCT fo.o_orderkey) FILTER (WHERE fo.o_totalprice IS NOT NULL) AS non_null_orders,
-       STRING_AGG(DISTINCT CASE WHEN fo.o_orderdate >= toDate('1998-10-01') - INTERVAL 30 DAY THEN CAST(fo.o_orderkey AS VARCHAR) END) AS recent_orders
+       STRING_AGG(DISTINCT CASE WHEN fo.o_orderdate >= DATE '1998-10-01' - INTERVAL '30 days' THEN CAST(fo.o_orderkey AS VARCHAR) END) AS recent_orders
 FROM filtered_orders fo
 JOIN regional_supplier rs ON fo.c_custkey = rs.s_suppkey 
 GROUP BY rs.r_name

@@ -73,4 +73,4 @@ WHERE
     (P.supplier_count > 2 OR O.line_item_count > 5)
 ORDER BY 
     R.o_orderdate DESC NULLS LAST
-LIMIT 50 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY;

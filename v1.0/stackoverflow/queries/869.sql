@@ -3,7 +3,7 @@ WITH RankedPosts AS (
     SELECT p.Id, p.Title, p.Score, p.OwnerUserId, p.CreationDate,
            ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS PostRank
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ), UserStats AS (
     SELECT u.Id AS UserId, u.DisplayName, 
            COUNT(p.Id) AS TotalPosts,
@@ -34,7 +34,7 @@ SELECT fp.Title, fp.Score, fp.DisplayName, fp.TotalPosts,
        END AS ScoreCategory
 FROM FilteredPosts fp
 LEFT JOIN Comments c ON c.PostId = fp.Id
-WHERE c.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+WHERE c.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 GROUP BY fp.Title, fp.Score, fp.DisplayName, fp.TotalPosts
 ORDER BY fp.Score DESC
 LIMIT 10;

@@ -16,7 +16,7 @@ WITH TopSuppliers AS (
     SELECT p.p_partkey, p.p_name, SUM(l.l_extendedprice * (1 - l.l_discount)) AS SalesRevenue
     FROM part p
     JOIN lineitem l ON p.p_partkey = l.l_partkey
-    WHERE l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    WHERE l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     GROUP BY p.p_partkey, p.p_name
     ORDER BY SalesRevenue DESC
     LIMIT 10

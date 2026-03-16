@@ -17,7 +17,7 @@ JOIN
 JOIN 
     region ON nation.n_regionkey = region.r_regionkey
 WHERE 
-    lineitem.l_shipdate >= toDate('1994-01-01') AND lineitem.l_shipdate < toDate('1995-01-01')
+    lineitem.l_shipdate >= DATE '1994-01-01' AND lineitem.l_shipdate < DATE '1995-01-01'
 GROUP BY 
     nation.n_name, region.r_name
 ORDER BY 

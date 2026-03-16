@@ -66,4 +66,4 @@ LEFT JOIN (
 ) b ON ps.OwnerDisplayName = (SELECT DisplayName FROM Users WHERE Id = b.UserId)
 ORDER BY 
     ps.Score DESC, ps.CreationDate DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

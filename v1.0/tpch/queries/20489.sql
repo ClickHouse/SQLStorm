@@ -12,7 +12,7 @@ WITH RankedOrders AS (
         AND o.o_totalprice > (
             SELECT AVG(o2.o_totalprice) 
             FROM orders o2 
-            WHERE o2.o_orderdate >= CURRENT_DATE - INTERVAL 1 YEAR
+            WHERE o2.o_orderdate >= CURRENT_DATE - INTERVAL '1 year'
         )
 ), SupplierParts AS (
     SELECT 
@@ -64,7 +64,7 @@ SELECT
     COUNT(*) AS num_orders,
     AVG(cd.o_totalprice) AS avg_order_value,
     SUM(COALESCE(cd.total_avail_qty, 0)) AS total_available_qty,
-    arrayStringConcat(groupArray(assumeNotNull(CAST(cd.o_orderdate AS TEXT))), ', ') AS order_dates
+    arrayStringConcat(groupArray(assumeNotNull(cd.o_orderdate::TEXT)), ', ') AS order_dates
 FROM 
     CombinedData cd
 GROUP BY 

@@ -62,7 +62,7 @@ PostHistories AS (
     JOIN 
         PostHistoryTypes h ON ph.PostHistoryTypeId = h.Id
     WHERE 
-        ph.CreationDate > toDateTime64('2022-01-01', 6) 
+        ph.CreationDate > CAST('2022-01-01' AS timestamp) 
 ),
 PostStatistics AS (
     SELECT 

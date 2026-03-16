@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         u.Reputation > 500 AND
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 TopUsers AS (
     SELECT 
@@ -77,4 +77,4 @@ FROM
     FinalResults f
 ORDER BY 
     f.TotalScore DESC, f.ViewCount DESC
-LIMIT 10;  -- Changed LIMIT to standard SQL FETCH FIRST
+FETCH FIRST 10 ROWS ONLY;  -- Changed LIMIT to standard SQL FETCH FIRST

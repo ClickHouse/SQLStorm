@@ -50,4 +50,4 @@ JOIN
     CustomerSales CS ON TSI.total_quantity > 50
 ORDER BY 
     TSI.total_sales_price DESC, CS.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

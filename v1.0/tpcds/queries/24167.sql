@@ -45,7 +45,7 @@ JOIN customer_address a ON c.c_current_addr_sk = a.ca_address_sk
 JOIN TopItems t ON t.i_item_id = c.c_customer_id
 JOIN TopSales s ON s.ws_item_sk = c.c_customer_sk
 WHERE a.ca_city IS NOT NULL 
-  AND (c.c_birth_month = (toMonth(cast('2002-10-01' as date)) - 1) OR c.c_birth_month IS NULL)
+  AND (c.c_birth_month = (EXTRACT(MONTH FROM cast('2002-10-01' as date)) - 1) OR c.c_birth_month IS NULL)
   AND s.rn <= 3
 ORDER BY a.ca_city, s.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

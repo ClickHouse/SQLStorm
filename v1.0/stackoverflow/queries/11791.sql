@@ -42,7 +42,7 @@ WITH PostStats AS (
          GROUP BY 
             PostId) v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 YEAR' 
 )
 SELECT 
     ps.PostId,

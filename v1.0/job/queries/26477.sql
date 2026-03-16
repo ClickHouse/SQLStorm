@@ -42,4 +42,4 @@ FROM
 WHERE 
     md.keywords LIKE '%drama%' 
     AND md.companies IS NOT NULL
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

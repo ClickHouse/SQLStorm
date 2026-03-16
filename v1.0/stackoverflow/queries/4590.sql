@@ -45,8 +45,8 @@ SELECT
     P.DownvoteCount,
     P.LastEditDate,
     CASE 
-        WHEN P.LastEditDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Stale'
-        WHEN P.LastEditDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Recent'
+        WHEN P.LastEditDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' THEN 'Stale'
+        WHEN P.LastEditDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' THEN 'Recent'
     END AS PostRecency
 FROM 
     UserVoteStats U

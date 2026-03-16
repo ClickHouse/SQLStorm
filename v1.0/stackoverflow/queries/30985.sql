@@ -46,7 +46,7 @@ WITH RECURSIVE UserReputationCTE AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId 
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.Body, P.CreationDate, P.LastActivityDate
 )
@@ -73,7 +73,7 @@ FROM
 JOIN 
     RankedPosts P ON P.RankByComments <= 10
 WHERE 
-    UR.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    UR.LastAccessDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
     AND UR.Reputation > 100
 ORDER BY 
     UR.Reputation DESC, P.RankByComments;

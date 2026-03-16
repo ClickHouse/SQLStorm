@@ -33,7 +33,7 @@ DateInfo AS (
     FROM 
         date_dim d
     WHERE 
-        d.d_date BETWEEN toDate('2000-01-01') AND toDate('2000-12-31')
+        d.d_date BETWEEN DATE '2000-01-01' AND DATE '2000-12-31'
 ),
 AggregatedSales AS (
     SELECT 
@@ -49,7 +49,7 @@ AggregatedSales AS (
     JOIN 
         SalesCTE sc ON ci.c_customer_sk = sc.ws_item_sk
     JOIN 
-        DateInfo ds ON ds.d_year = toYear(toDate('2002-10-01')) - 1
+        DateInfo ds ON ds.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') - 1
     GROUP BY 
         ci.c_customer_sk, ci.c_first_name, ci.c_last_name, ci.marital_status, ci.credit_rating, ds.d_year
 )

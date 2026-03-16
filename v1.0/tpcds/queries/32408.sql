@@ -82,10 +82,10 @@ LEFT JOIN
             store s 
         ORDER BY 
             s.s_number_employees DESC 
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     )
 LEFT JOIN 
-    recent_trends rt ON rt.d_year = toYear(toDate('2002-10-01'))
+    recent_trends rt ON rt.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
 WHERE 
     cs.order_count >= (SELECT AVG(order_count) FROM customer_info)
 AND 

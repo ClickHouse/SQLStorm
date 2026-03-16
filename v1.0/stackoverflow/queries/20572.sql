@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDate('2023-01-01')
+        p.CreationDate >= DATE '2023-01-01'
 ),
 ClosedPosts AS (
     SELECT 
@@ -39,7 +39,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        u.LastAccessDate >= toDate('2024-10-01') - INTERVAL 90 DAY
+        u.LastAccessDate >= DATE '2024-10-01' - INTERVAL '90 days'
     GROUP BY 
         u.Id
 ),

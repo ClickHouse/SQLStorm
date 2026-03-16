@@ -23,7 +23,7 @@ TopPosts AS (
     LEFT JOIN 
         Votes V ON V.PostId = P.Id
     WHERE 
-        P.CreationDate >= (toDate('2024-10-01') - INTERVAL 1 YEAR)
+        P.CreationDate >= (DATE '2024-10-01' - INTERVAL '1 year')
     GROUP BY 
         P.Id, P.PostTypeId, P.AcceptedAnswerId
 ),

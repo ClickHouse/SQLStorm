@@ -59,4 +59,4 @@ WHERE
     )
 ORDER BY 
     total_supply_cost DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

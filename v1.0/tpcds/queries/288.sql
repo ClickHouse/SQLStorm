@@ -51,4 +51,4 @@ LEFT JOIN
     CustomerStats cs ON cs.cd_demo_sk = (SELECT MAX(cd_demo_sk) FROM CustomerStats)
 ORDER BY 
     tp.total_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

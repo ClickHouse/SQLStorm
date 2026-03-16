@@ -61,7 +61,7 @@ SELECT
     COALESCE(phs.CloseCount, 0) AS CloseCount,
     COALESCE(phs.DeleteCount, 0) AS DeleteCount,
     CASE 
-        WHEN tp.LastActivityDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Inactive'
+        WHEN tp.LastActivityDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Inactive'
         ELSE 'Active'
     END AS UserActivityStatus
 FROM 

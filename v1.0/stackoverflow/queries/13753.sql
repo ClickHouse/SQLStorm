@@ -7,7 +7,7 @@ WITH UserPostStats AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(p.Score) AS TotalScore,
-        AVG(toUnixTimestamp((now64(6) - p.CreationDate))) AS AvgPostAgeInSeconds
+        AVG(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate))) AS AvgPostAgeInSeconds
     FROM 
         Users u
     JOIN 
@@ -26,4 +26,4 @@ FROM
     UserPostStats
 ORDER BY 
     TotalScore DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

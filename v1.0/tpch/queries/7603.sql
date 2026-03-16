@@ -5,7 +5,7 @@ WITH RankedOrders AS (
         o.o_orderdate,
         RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) as price_rank
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1996-01-01') AND o.o_orderdate < toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1996-01-01' AND o.o_orderdate < DATE '1997-01-01'
 ),
 TopSuppliers AS (
     SELECT 

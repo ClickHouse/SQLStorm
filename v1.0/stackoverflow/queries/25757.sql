@@ -61,6 +61,6 @@ SELECT
     r.EditComment
 FROM TopTags t
 JOIN TopUsers u ON u.Rank <= 10  
-JOIN RecentActivity r ON r.EditDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+JOIN RecentActivity r ON r.EditDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 WHERE t.Rank <= 10  
 ORDER BY t.TagCount DESC, u.TotalViews DESC, r.EditDate DESC;

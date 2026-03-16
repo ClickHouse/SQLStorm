@@ -34,7 +34,7 @@ PostStatistics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 30 DAY
+        p.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
 ),

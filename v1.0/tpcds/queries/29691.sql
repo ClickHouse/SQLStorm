@@ -59,4 +59,4 @@ JOIN
 ORDER BY 
     si.total_net_paid DESC, 
     di.demographic_count DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

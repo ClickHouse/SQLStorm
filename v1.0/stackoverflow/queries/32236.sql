@@ -50,7 +50,7 @@ TopClosedPosts AS (
         COUNT(ph.Id) AS CloseCount
     FROM Posts p
     JOIN PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10
-    WHERE p.CreationDate >= now64(6) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY p.Id, p.Title
     ORDER BY CloseCount DESC
     LIMIT 5

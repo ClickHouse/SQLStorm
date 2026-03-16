@@ -11,8 +11,8 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
-        AND p.Score >= (SELECT AVG(Score) FROM Posts WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY)
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
+        AND p.Score >= (SELECT AVG(Score) FROM Posts WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days')
 ),
 UserBadges AS (
     SELECT 
@@ -64,7 +64,7 @@ PostHistoryAggregate AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate > cast('2024-10-01' as date) - INTERVAL 90 DAY
+        ph.CreationDate > cast('2024-10-01' as date) - INTERVAL '90 days'
     GROUP BY 
         ph.PostId
 )

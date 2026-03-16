@@ -8,7 +8,7 @@ WITH PostStats AS (
         p.Score,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
-        COALESCE(MAX(v.CreationDate), toDate('1900-01-01')) AS LastVoteDate
+        COALESCE(MAX(v.CreationDate), DATE '1900-01-01') AS LastVoteDate
     FROM 
         Posts p
     LEFT JOIN 
@@ -18,7 +18,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     WHERE 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR 
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score
 )

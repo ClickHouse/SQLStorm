@@ -28,4 +28,4 @@ GROUP BY
     p.p_name, p.p_brand, p.p_type, short_comment, r.r_name, p.p_partkey, r.r_regionkey
 ORDER BY 
     avg_supply_cost DESC, supplier_count ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

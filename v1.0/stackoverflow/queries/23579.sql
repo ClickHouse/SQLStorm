@@ -42,7 +42,7 @@ PostHistorySummary AS (
     JOIN 
         PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     WHERE 
-        PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY 
         PH.UserId, PH.PostId
 )

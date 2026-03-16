@@ -17,4 +17,4 @@ GROUP BY
     c.c_first_name, c.c_last_name, ca.ca_city, ca.ca_state
 ORDER BY 
     total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

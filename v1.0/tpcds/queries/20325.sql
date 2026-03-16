@@ -74,4 +74,4 @@ WHERE
     customer_rank <= 10
 ORDER BY 
     total_returned_amount DESC
-LIMIT 5 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY;

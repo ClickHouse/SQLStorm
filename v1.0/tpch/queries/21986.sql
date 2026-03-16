@@ -38,7 +38,7 @@ OrderSummary AS (
     SELECT 
         o.o_orderkey,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue,
-        toYear(o.o_orderdate) AS order_year,
+        EXTRACT(YEAR FROM o.o_orderdate) AS order_year,
         COUNT(DISTINCT l.l_suppkey) AS unique_suppliers,
         CASE 
             WHEN o.o_orderstatus = 'F' THEN 'Finalized'
@@ -81,7 +81,7 @@ LEFT JOIN
 LEFT JOIN 
     TopSuppliers ts ON ts.s_suppkey = rp.p_partkey
 FULL OUTER JOIN 
-    FilteredOrders fp ON toYear(toDate('1998-10-01')) = fp.order_year
+    FilteredOrders fp ON EXTRACT(YEAR FROM DATE '1998-10-01') = fp.order_year
 WHERE 
     np.country_count > 1
 GROUP BY 

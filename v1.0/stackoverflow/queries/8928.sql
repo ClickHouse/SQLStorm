@@ -64,7 +64,7 @@ FROM
 LEFT JOIN 
     PostHistory ph ON ps.PostId = ph.PostId
 WHERE 
-    ph.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY 
+    ph.CreationDate >= CURRENT_DATE - INTERVAL '30 days' 
 GROUP BY 
     ps.PostId, ps.Title, ps.OwnerDisplayName, ps.TotalComments, ps.AverageVotes
 ORDER BY 

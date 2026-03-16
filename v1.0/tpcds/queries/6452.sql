@@ -61,4 +61,4 @@ JOIN
     employee_sales es ON es.w_warehouse_id = rs.s_store_id
 ORDER BY 
     rs.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

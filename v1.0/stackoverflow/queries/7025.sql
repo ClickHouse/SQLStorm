@@ -22,7 +22,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON TRUE
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 5 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '5 years'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 )

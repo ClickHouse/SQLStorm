@@ -38,7 +38,7 @@ FinalOutput AS (
         sar.total_return_amt,
         ROUND(sar.total_sales / NULLIF(sar.total_sold, 0), 2) AS sales_per_unit,
         CASE 
-            WHEN sar.total_return_count > 0 THEN ROUND((CAST(sar.total_return_amt AS DECIMAL) / sar.total_sales) * 100, 2)
+            WHEN sar.total_return_count > 0 THEN ROUND((sar.total_return_amt::DECIMAL / sar.total_sales) * 100, 2)
             ELSE NULL 
         END AS return_rate,
         CASE 

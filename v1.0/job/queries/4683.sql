@@ -54,4 +54,4 @@ WHERE
 ORDER BY 
     md.production_year DESC,
     md.title ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

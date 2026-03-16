@@ -9,7 +9,7 @@ WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_orderdate, o.o_orderstatus, o.o_totalprice, oh.level + 1
     FROM orders o
     INNER JOIN OrderHierarchy oh ON o.o_orderkey = oh.o_orderkey
-    WHERE o.o_orderdate < toDate('1998-10-01') - INTERVAL 30 DAY
+    WHERE o.o_orderdate < DATE '1998-10-01' - INTERVAL '30 days'
 ),
 CustomerSummary AS (
     SELECT c.c_custkey, 

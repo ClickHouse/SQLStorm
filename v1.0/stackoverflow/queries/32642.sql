@@ -21,7 +21,7 @@ RecentPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
 TopComments AS (
     SELECT 
@@ -30,7 +30,7 @@ TopComments AS (
     FROM 
         Comments C
     WHERE 
-        C.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        C.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY 
         C.UserId
 ),

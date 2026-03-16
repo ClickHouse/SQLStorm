@@ -33,7 +33,7 @@ PopularPosts AS (
         FROM 
             Posts p
         WHERE 
-            p.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY
+            p.CreationDate >= CURRENT_DATE - INTERVAL '30 DAY'
     ) pr ON p.Id = pr.Id
 )
 SELECT 

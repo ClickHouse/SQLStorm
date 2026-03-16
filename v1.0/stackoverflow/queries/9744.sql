@@ -53,4 +53,4 @@ WHERE
     S.TotalPosts > 0
 ORDER BY 
     S.Reputation DESC, S.TotalPosts DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

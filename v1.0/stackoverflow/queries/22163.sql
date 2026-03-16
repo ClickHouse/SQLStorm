@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.Tags, p.Body
 ),
@@ -59,7 +59,7 @@ LEFT JOIN
     ClosedPostHistories cp ON rp.PostId = cp.PostId
 WHERE 
     (rp.CommentCount > 5 OR rp.Score >= 10)
-    AND (cp.LastClosedDate IS NULL OR cp.LastClosedDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 15 DAY)
+    AND (cp.LastClosedDate IS NULL OR cp.LastClosedDate < CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '15 days')
 ORDER BY 
     rp.Score DESC, 
     rp.CreationDate DESC

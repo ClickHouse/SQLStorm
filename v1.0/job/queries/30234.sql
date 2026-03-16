@@ -70,7 +70,7 @@ SELECT
         WHEN md.cast_count > 10 THEN 'Popular'
         ELSE 'Less Popular'
     END AS popularity,
-    COALESCE(CAST(md.keywords AS text), 'No Keywords') AS keywords
+    COALESCE(md.keywords::text, 'No Keywords') AS keywords
 FROM
     movie_details md
 WHERE

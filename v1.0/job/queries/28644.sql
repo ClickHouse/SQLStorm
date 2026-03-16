@@ -31,7 +31,7 @@ ProductionDetails AS (
         md.keywords,
         md.companies,
         md.cast_count,
-        toMonth(toDate('2024-10-01')) AS current_month
+        EXTRACT(MONTH FROM DATE '2024-10-01') AS current_month
     FROM
         MovieData md
 )
@@ -44,8 +44,8 @@ SELECT
     pd.companies,
     pd.cast_count,
     CASE
-        WHEN pd.production_year = toYear(toDate('2024-10-01')) THEN 'Released This Year'
-        WHEN pd.production_year = toYear(toDate('2024-10-01')) - 1 THEN 'Released Last Year'
+        WHEN pd.production_year = EXTRACT(YEAR FROM DATE '2024-10-01') THEN 'Released This Year'
+        WHEN pd.production_year = EXTRACT(YEAR FROM DATE '2024-10-01') - 1 THEN 'Released Last Year'
         ELSE 'Older'
     END AS release_status,
     CASE

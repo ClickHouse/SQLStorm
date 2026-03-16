@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '90 days'
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.CreationDate, p.PostTypeId
 ),
@@ -56,7 +56,7 @@ LEFT JOIN
     PostHistory ph ON fp.PostId = ph.PostId 
 WHERE 
     ph.PostHistoryTypeId IN (10, 11, 12)  
-    AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY
+    AND ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days'
 ORDER BY 
     NetVotes DESC,
     fp.CreationDate DESC

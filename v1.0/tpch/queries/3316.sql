@@ -35,7 +35,7 @@ WITH RankedSuppliers AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        l.l_shipdate BETWEEN toDate('1998-10-01') - INTERVAL 30 DAY AND toDate('1998-10-01')
+        l.l_shipdate BETWEEN DATE '1998-10-01' - INTERVAL '30 DAY' AND DATE '1998-10-01'
     GROUP BY 
         o.o_orderkey, o.o_orderdate
     HAVING 

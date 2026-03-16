@@ -22,7 +22,7 @@ WITH RankedPosts AS (
     WHERE 
         p.PostTypeId = 1 AND  
         p.Score > 0 AND       
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR  
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, p.ViewCount, p.AnswerCount, p.Score, u.DisplayName
 ),
@@ -82,4 +82,4 @@ FROM
     FinalResults
 ORDER BY 
     Score DESC, ViewCount DESC, CreationDate DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

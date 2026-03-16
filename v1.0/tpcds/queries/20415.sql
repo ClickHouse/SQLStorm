@@ -7,7 +7,7 @@ WITH customer_info AS (
         cd.cd_gender,
         cd.cd_marital_status,
         cd.cd_purchase_estimate,
-        COALESCE(NULLIF(cd.cd_credit_rating, ''CAST() AS VARCHAR), 'UNKNOWN') AS credit_rating,
+        COALESCE(NULLIF(cd.cd_credit_rating, '')::VARCHAR, 'UNKNOWN') AS credit_rating,
         ROW_NUMBER() OVER (PARTITION BY cd.cd_gender ORDER BY cd.cd_purchase_estimate DESC) AS gender_rank
     FROM 
         customer AS c

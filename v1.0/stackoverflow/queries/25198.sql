@@ -47,8 +47,8 @@ PostPerformance AS (
         pa.DownVotes,
         pa.CreationDate,
         re.LastEditDate,
-        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - pa.CreationDate)) / 86400 AS DaysSinceCreation,
-        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - re.LastEditDate)) / 86400 AS DaysSinceLastEdit
+        toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - pa.CreationDate)) / 86400 AS DaysSinceCreation,
+        toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - re.LastEditDate)) / 86400 AS DaysSinceLastEdit
     FROM 
         PostAnalytics pa
     LEFT JOIN 

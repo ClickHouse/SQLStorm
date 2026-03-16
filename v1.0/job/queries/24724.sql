@@ -38,7 +38,7 @@ qualified_cast AS (
         aka_title at ON at.id = ci.movie_id
     WHERE 
         at.production_year >= 2000
-        AND at.production_year = toYear(toDate('2024-10-01'))
+        AND at.production_year = EXTRACT(YEAR FROM DATE '2024-10-01')
     GROUP BY 
         ci.person_id
     HAVING 

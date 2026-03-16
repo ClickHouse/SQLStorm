@@ -58,7 +58,7 @@ LEFT JOIN
 LEFT JOIN 
     CustomerOrderStats cos ON cos.c_custkey = (SELECT o.o_custkey FROM orders o ORDER BY o.o_orderdate DESC LIMIT 1)
 WHERE 
-    li.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    li.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     AND (n.n_name LIKE 'A%' OR n.n_name LIKE '%B')
 GROUP BY 
     n.n_name

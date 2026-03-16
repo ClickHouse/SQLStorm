@@ -61,7 +61,7 @@ final_benchmark AS (
 SELECT 
     mb.movie_id,
     mb.title,
-    COALESCE(CAST(mb.production_year AS TEXT), 'Unknown Year') AS production_year,
+    COALESCE(mb.production_year::TEXT, 'Unknown Year') AS production_year,
     COALESCE(mb.total_cast, 0) AS total_cast,
     mb.company_names,
     mb.info_count,

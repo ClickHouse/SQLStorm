@@ -69,4 +69,4 @@ HAVING
     SUM(RANKED.ws_sales_price * RANKED.ws_quantity) IS NOT NULL
 ORDER BY 
     total_sales DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

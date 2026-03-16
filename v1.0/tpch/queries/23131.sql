@@ -16,7 +16,7 @@ order_summary AS (
     SELECT o.o_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    WHERE l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     GROUP BY o.o_orderkey
 )
 
@@ -41,4 +41,5 @@ HAVING COUNT(DISTINCT sc.s_suppkey) > COALESCE((SELECT COUNT(*)
                                                                         FROM nation n 
                                                                         WHERE n.n_name = 'USA')), 0)
 ORDER BY unique_suppliers DESC, avg_order_revenue ASC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS 
+FETCH NEXT 10 ROWS ONLY;

@@ -53,4 +53,4 @@ WHERE
 ORDER BY 
     u.Reputation DESC, 
     LatestPostDate DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

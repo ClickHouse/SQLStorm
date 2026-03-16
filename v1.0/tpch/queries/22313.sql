@@ -81,4 +81,4 @@ WHERE
     AND p.p_retailprice IS NOT NULL
 ORDER BY 
     region_name, order_total DESC, supplier_cost ASC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

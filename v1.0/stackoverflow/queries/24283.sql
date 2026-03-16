@@ -47,7 +47,7 @@ FinalReport AS (
             FROM PostHistory ph
             JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
             WHERE ph.PostId = pd.PostId 
-            AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+            AND ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
         ), 'No recent edits') AS RecentEdits
     FROM 
         PostDetails pd

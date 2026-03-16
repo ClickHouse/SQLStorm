@@ -65,4 +65,4 @@ WHERE
     AND (rs.num_customers > 0 AND rs.avg_order_value > (SELECT AVG(o.o_totalprice) FROM orders o WHERE o.o_orderstatus != 'C'))
 ORDER BY 
     rs.total_acctbal DESC, rp.price_rank ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

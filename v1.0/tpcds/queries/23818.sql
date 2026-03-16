@@ -62,4 +62,4 @@ HAVING
     COUNT(ws.ws_order_number) > 0
 ORDER BY 
     fr.total_revenue DESC, revenue_category ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

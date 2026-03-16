@@ -51,4 +51,4 @@ WHERE
     lm.rn = 1
 ORDER BY 
     lm.production_year DESC, mh.company_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

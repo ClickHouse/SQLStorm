@@ -18,7 +18,7 @@ PopularPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ), 
 RecentComments AS (
     SELECT 
@@ -30,7 +30,7 @@ RecentComments AS (
     FROM 
         Comments C
     WHERE 
-        C.CreationDate >= cast('2024-10-01' as date) - INTERVAL 7 DAY
+        C.CreationDate >= cast('2024-10-01' as date) - INTERVAL '7 days'
 )
 
 SELECT 

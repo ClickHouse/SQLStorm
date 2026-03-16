@@ -12,7 +12,7 @@ WITH RecursivePostHistory AS (
     INNER JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+        ph.CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
 ), 
 PostStatistics AS (
     SELECT 
@@ -30,7 +30,7 @@ PostStatistics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 2 YEAR
+        p.CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '2 years'
     GROUP BY 
         p.Id, p.Title
 ),
@@ -65,7 +65,7 @@ SELECT
         ELSE LastEditComment 
     END AS LastEditCommentDescription,
     CASE 
-        WHEN LastEditDate < CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 6 MONTH THEN 'Stale post'
+        WHEN LastEditDate < '2024-10-01 12:34:56'::timestamp - INTERVAL '6 months' THEN 'Stale post'
         ELSE 'Recently active'
     END AS PostActivityStatus
 FROM 

@@ -19,7 +19,7 @@ WITH UserActivity AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        u.CreationDate >= toDate('2020-01-01')
+        u.CreationDate >= DATE '2020-01-01'
     GROUP BY 
         u.Id, u.DisplayName
 ),

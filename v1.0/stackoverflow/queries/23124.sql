@@ -71,7 +71,7 @@ FinalResults AS (
             WHEN s.FirstHistoryDate IS NULL THEN 'No history'
             ELSE 'Has history'
         END AS HistoryStatus,
-        toYear(AGE(s.FirstHistoryDate)) AS YearsSinceFirstHistory
+        EXTRACT(YEAR FROM AGE(s.FirstHistoryDate)) AS YearsSinceFirstHistory
     FROM 
         PostStats s
     JOIN 

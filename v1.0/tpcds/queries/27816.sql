@@ -48,6 +48,6 @@ FROM
 JOIN 
     DemographicSummary d ON a.total_addresses > 10
 JOIN 
-    SalesSummary s ON s.sale_date BETWEEN toDate('2023-01-01') AND toDate('2023-12-31')
+    SalesSummary s ON s.sale_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31'
 ORDER BY 
     a.ca_city, a.ca_state, d.cd_gender;

@@ -30,8 +30,8 @@ DateRange AS (
     JOIN 
         web_sales ws ON d.d_date_sk = ws.ws_sold_date_sk
     WHERE 
-        d.d_date >= toDate('2000-01-01') 
-        AND d.d_date < toDate('2000-12-31')
+        d.d_date >= DATE '2000-01-01' 
+        AND d.d_date < DATE '2000-12-31'
     GROUP BY 
         d.d_date_sk
 ),

@@ -22,7 +22,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (8, 9) 
 WHERE 
-    P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+    P.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
 GROUP BY 
     P.Id, P.Title, P.CreationDate, P.ViewCount, P.Score, U.Reputation, U.CreationDate, U.LastAccessDate, U.Views, U.UpVotes, U.DownVotes
 ORDER BY 

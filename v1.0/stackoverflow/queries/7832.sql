@@ -33,7 +33,7 @@ RecentEdits AS (
         P.Title
     FROM PostHistory PH
     JOIN Posts P ON PH.PostId = P.Id
-    WHERE PH.CreationDate >= now64(6) - INTERVAL 1 MONTH
+    WHERE PH.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 month'
     ORDER BY PH.CreationDate DESC
     LIMIT 10
 )

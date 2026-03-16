@@ -24,7 +24,7 @@ PostDetails AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    WHERE p.CreationDate BETWEEN DATE('2024-10-01') - INTERVAL 1 YEAR AND DATE('2024-10-01')
+    WHERE p.CreationDate BETWEEN DATE('2024-10-01') - INTERVAL '1 year' AND DATE('2024-10-01')
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, p.AnswerCount, p.AcceptedAnswerId
 ),
 EnhancedRankedPosts AS (

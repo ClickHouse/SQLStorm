@@ -64,4 +64,4 @@ WHERE
     cd.cd_purchase_estimate > 5000
 ORDER BY 
     sc.total_web_sales DESC, sc.total_catalog_sales DESC, sc.total_store_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -31,7 +31,7 @@ PostHistoryDetails AS (
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate BETWEEN toDate('2024-10-01') - INTERVAL 1 YEAR AND toDate('2024-10-01')
+        PH.CreationDate BETWEEN DATE '2024-10-01' - INTERVAL '1 year' AND DATE '2024-10-01'
     GROUP BY 
         PH.PostId
 )
@@ -69,4 +69,4 @@ WHERE
     U.Reputation IS NOT NULL
 ORDER BY 
     U.Reputation DESC, U.UserId ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

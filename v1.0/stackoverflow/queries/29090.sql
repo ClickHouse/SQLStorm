@@ -16,7 +16,7 @@ WITH PostDetails AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        Tags t ON splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)CAST() AS varchar)[] @> ARRAY[t.TagName]
+        Tags t ON splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))::varchar[] @> ARRAY[t.TagName]
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 

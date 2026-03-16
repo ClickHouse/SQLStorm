@@ -66,4 +66,4 @@ WHERE
     AND cd.cd_purchase_estimate >= 1000
 ORDER BY 
     so.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

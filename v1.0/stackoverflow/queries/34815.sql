@@ -24,7 +24,7 @@ RecentUserActivity AS (
     JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
 ),
 PostStatistics AS (
     
@@ -61,7 +61,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT * FROM RecentUserActivity WHERE BadgeRank = 1) ru ON ru.UserId = p.OwnerUserId
 WHERE 
-    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+    p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
     AND (ps.TotalComments > 0 OR ps.AvgUpvotes > 5) 
     AND p.ClosedDate IS NULL 
 GROUP BY 

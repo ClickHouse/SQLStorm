@@ -56,4 +56,4 @@ WHERE ch.total_sales > 10
       AND sr.sr_return_amt_inc_tax IS NOT NULL
   )
 ORDER BY ch.c_last_name, ch.c_first_name, total_profit DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

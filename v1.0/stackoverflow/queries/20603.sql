@@ -7,7 +7,7 @@ WITH RecentUserVotes AS (
         SUM(CASE WHEN vt.Name = 'DownMod' THEN 1 ELSE 0 END) AS DownVotes
     FROM Votes v
     JOIN VoteTypes vt ON v.VoteTypeId = vt.Id
-    WHERE v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE v.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY v.UserId
 ),
 PostDetails AS (
@@ -30,7 +30,7 @@ PostDetails AS (
         ), NULL) AS LastClosedDate,
         p.OwnerUserId
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 AggregatedPosts AS (
     SELECT 

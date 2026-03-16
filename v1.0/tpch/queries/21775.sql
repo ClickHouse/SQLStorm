@@ -34,4 +34,4 @@ LEFT JOIN order_summary os ON ns.n_nationkey = os.c_custkey
 LEFT JOIN supplier_parts sp ON sp.s_suppkey = ns.n_nationkey
 WHERE (ns.total_balance IS NOT NULL OR sp.ps_supplycost < 50.00)
 ORDER BY ns.n_name, customer_value DESC, sp.ps_availqty ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

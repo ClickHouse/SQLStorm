@@ -58,4 +58,5 @@ JOIN RankedPosts RP ON U.TotalPosts > 0
 LEFT JOIN ClosedPosts CP ON RP.PostId = CP.PostId
 WHERE U.UpVotes - U.DownVotes > 5
 ORDER BY U.DisplayName, RP.VoteCount DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS
+FETCH NEXT 10 ROWS ONLY;

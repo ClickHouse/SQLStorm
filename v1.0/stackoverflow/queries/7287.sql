@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 6 MONTH
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '6 months'
 ),
 TopPosts AS (
     SELECT 

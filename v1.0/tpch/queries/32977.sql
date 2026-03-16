@@ -37,4 +37,4 @@ HAVING
     COUNT(DISTINCT c.c_custkey) > 10
 ORDER BY 
     AvgOrderValue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

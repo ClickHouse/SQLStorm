@@ -44,7 +44,7 @@ SELECT
      FROM 
         Posts 
      WHERE 
-        CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)) AS RecentPostCount
+        CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')) AS RecentPostCount
 FROM 
     TopUsers TU
 WHERE 

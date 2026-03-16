@@ -2,7 +2,7 @@ WITH RankedOrders AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
 ),
 HighValueCustomers AS (
     SELECT c.c_custkey, c.c_name, SUM(o.o_totalprice) AS total_spent
@@ -33,7 +33,7 @@ JOIN part p ON ps.ps_partkey = p.p_partkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
 LEFT JOIN HighValueCustomers hvc ON c.c_custkey = hvc.c_custkey
 WHERE n.n_name IS NOT NULL 
-AND (l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31'))
+AND (l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31')
 AND hvc.c_custkey IS NULL
 GROUP BY n.n_name, p.p_name
 ORDER BY nation_name, revenue DESC;

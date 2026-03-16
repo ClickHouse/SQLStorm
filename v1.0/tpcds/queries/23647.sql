@@ -79,4 +79,4 @@ LEFT JOIN
 ORDER BY 
     asales.total_net_paid DESC, 
     ai.ca_city ASC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

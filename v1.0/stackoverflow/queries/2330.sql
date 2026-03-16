@@ -20,7 +20,7 @@ WITH RankedUsers AS (
         COUNT(CASE WHEN p.PostTypeId = 2 THEN 1 END) AS AnswerCount,
         SUM(p.Score) AS TotalScore
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY p.OwnerUserId
 ), UserDetails AS (
     SELECT 

@@ -26,7 +26,7 @@ RecentBadges AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        b.Date >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY 
         b.UserId
 ),

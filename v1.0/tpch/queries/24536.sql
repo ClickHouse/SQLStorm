@@ -44,7 +44,7 @@ SELECT
         WHEN c.c_mktsegment = 'AUTOMOBILE' THEN 'Personal'
         ELSE 'Unknown'
     END AS segment_type,
-    CONCAT('Customer ', c.c_name, ' has spent ', COALESCE(NULLIF(c.total_spent, 0, CAST() AS TEXT), 'nothing'), ' on orders.') AS narrative
+    CONCAT('Customer ', c.c_name, ' has spent ', COALESCE(NULLIF(c.total_spent, 0)::TEXT, 'nothing'), ' on orders.') AS narrative
 FROM customer_orders c
 FULL OUTER JOIN order_details od ON c.c_custkey = od.o_orderkey
 JOIN region_nation rn ON rn.n_nationkey = c.c_custkey % 5

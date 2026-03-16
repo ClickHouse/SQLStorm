@@ -39,4 +39,4 @@ LEFT JOIN
     sales_cte AS s ON s.ws_item_sk IN (SELECT DISTINCT i.i_item_sk FROM item AS i WHERE i.i_current_price > 100)
 ORDER BY 
     a.unique_customers DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

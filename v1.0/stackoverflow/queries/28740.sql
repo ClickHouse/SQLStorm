@@ -23,7 +23,7 @@ ActivePosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Posts a ON p.Id = a.ParentId
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
     GROUP BY p.Id
 ),
 PostTagStats AS (

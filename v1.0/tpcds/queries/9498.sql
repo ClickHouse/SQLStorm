@@ -42,6 +42,6 @@ SELECT
 FROM 
     SalesData sd
 JOIN 
-    CustomerData cd ON sd.SalesYear = toYear(CAST('2002-10-01' AS DATE))
+    CustomerData cd ON sd.SalesYear = EXTRACT(YEAR FROM CAST('2002-10-01' AS DATE))
 ORDER BY 
     sd.SalesYear, sd.TotalSales DESC;

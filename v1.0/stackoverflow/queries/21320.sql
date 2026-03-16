@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
 ),
 MostActiveUsers AS (
     SELECT 
@@ -79,7 +79,7 @@ FROM
 JOIN 
     MostActiveUsers u ON d.PostRank = 1
 WHERE 
-    (d.LastCommentDate IS NULL OR d.LastCommentDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    (d.LastCommentDate IS NULL OR d.LastCommentDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 DAY')
 ORDER BY 
     d.PostRank DESC, 
     d.CommentCount DESC, 

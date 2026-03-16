@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (2, 3) 
-    WHERE p.CreationDate >= now64(6) - INTERVAL 1 YEAR 
+    WHERE p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year' 
     GROUP BY p.Id, p.Title, p.OwnerUserId, p.CreationDate
 ),
 TopPosts AS (

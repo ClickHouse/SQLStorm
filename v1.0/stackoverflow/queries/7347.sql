@@ -34,7 +34,7 @@ PostStatistics AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
     WHERE
-        PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        PH.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 )
 SELECT 
     UA.DisplayName,

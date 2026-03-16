@@ -43,4 +43,4 @@ LEFT JOIN nation_sales ns ON r.r_regionkey = ns.n_nationkey
 LEFT JOIN supplier_hierarchy sh ON sh.s_nationkey = ns.n_nationkey
 WHERE ns.total_sales > 1000
 ORDER BY r.r_name, ns.total_sales DESC, sh.s_acctbal DESC
-LIMIT 10
+FETCH FIRST 10 ROWS ONLY

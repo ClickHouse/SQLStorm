@@ -25,7 +25,7 @@ DemoStats AS (
 ),
 YearlyReturns AS (
     SELECT 
-        toYear(d_date) AS return_year,
+        EXTRACT(YEAR FROM d_date) AS return_year,
         SUM(sr_return_quantity) AS total_returns,
         SUM(sr_return_amt_inc_tax) AS total_return_amount
     FROM 
@@ -33,7 +33,7 @@ YearlyReturns AS (
     JOIN 
         date_dim ON sr_returned_date_sk = d_date_sk
     GROUP BY 
-        toYear(d_date)
+        EXTRACT(YEAR FROM d_date)
 )
 SELECT 
     A.full_address,
@@ -53,6 +53,6 @@ JOIN
 JOIN 
     DemoStats D ON C.c_current_cdemo_sk = D.cd_demo_sk
 JOIN 
-    YearlyReturns R ON R.return_year = toYear(cast('2002-10-01' as date))
+    YearlyReturns R ON R.return_year = EXTRACT(YEAR FROM cast('2002-10-01' as date))
 ORDER BY 
     A.ca_city, D.cd_gender;

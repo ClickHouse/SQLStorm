@@ -25,7 +25,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        v.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
     GROUP BY 
         v.PostId
 ), 
@@ -84,4 +84,4 @@ WHERE
 ORDER BY 
     ps.AdjustedScore DESC NULLS LAST, 
     ps.ViewCount DESC 
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

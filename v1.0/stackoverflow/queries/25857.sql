@@ -54,4 +54,4 @@ LEFT JOIN PostHistorySummary phs ON rp.PostId = phs.PostId
 LEFT JOIN UserReputation ur ON rp.OwnerUserId = ur.UserId
 WHERE rp.Rank = 1
 ORDER BY rp.ViewCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

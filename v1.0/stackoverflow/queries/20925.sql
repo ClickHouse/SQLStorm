@@ -12,7 +12,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
         AND P.PostTypeId = 1  
 ),
 AggregatedVotes AS (
@@ -91,7 +91,7 @@ SELECT
     FR.CloseCount,
     CASE 
         WHEN FR.CloseCount IS NULL THEN 'Not Closed'
-        WHEN FR.LastClosedDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY THEN 'Recently Closed'
+        WHEN FR.LastClosedDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '90 days' THEN 'Recently Closed'
         ELSE 'Older Closed'
     END AS CloseStatus
 FROM 

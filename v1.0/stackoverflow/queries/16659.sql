@@ -15,7 +15,7 @@ JOIN
 LEFT JOIN 
     Comments c ON p.Id = c.PostId
 WHERE 
-    p.CreationDate >= toDate('2023-01-01')
+    p.CreationDate >= DATE '2023-01-01'
 GROUP BY 
     p.Id, p.Title, p.CreationDate, u.DisplayName, pt.Name
 ORDER BY 

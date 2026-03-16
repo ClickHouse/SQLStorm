@@ -9,8 +9,8 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01') 
-        AND o.o_orderdate <= toDate('1997-09-30')
+        o.o_orderdate >= DATE '1996-01-01' 
+        AND o.o_orderdate <= DATE '1997-09-30'
 ),
 HighValueLineitems AS (
     SELECT 
@@ -21,7 +21,7 @@ HighValueLineitems AS (
     JOIN 
         RankedOrders ro ON li.l_orderkey = ro.o_orderkey
     WHERE 
-        li.l_shipdate >= toDate('1996-01-01')
+        li.l_shipdate >= DATE '1996-01-01'
     GROUP BY 
         li.l_orderkey
     HAVING 

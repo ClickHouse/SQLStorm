@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     WHERE 
         p.PostTypeId = 1 
         AND p.Score > 0 
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
 ),
 TagPopularity AS (
     SELECT

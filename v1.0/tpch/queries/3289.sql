@@ -3,7 +3,7 @@ WITH RankedOrders AS (
         o.o_orderkey,
         o.o_orderdate,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue,
-        RANK() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS order_rank
+        RANK() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS order_rank
     FROM 
         orders o
     JOIN 
@@ -17,7 +17,7 @@ HighValueOrders AS (
         RO.o_orderdate,
         RO.revenue,
         COALESCE(c.c_name, 'Unknown') AS customer_name,
-        ROW_NUMBER() OVER (PARTITION BY toMonth(RO.o_orderdate) ORDER BY RO.revenue DESC) AS customer_month_rank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(MONTH FROM RO.o_orderdate) ORDER BY RO.revenue DESC) AS customer_month_rank
     FROM 
         RankedOrders RO
     LEFT JOIN 

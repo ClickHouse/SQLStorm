@@ -1,7 +1,7 @@
 WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 0 AS level 
     FROM orders o
-    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= toDate('1995-01-01') 
+    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= DATE '1995-01-01' 
     UNION ALL
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, oh.level + 1 
     FROM orders o 
@@ -38,7 +38,7 @@ JOIN nation n ON c.c_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey
 LEFT JOIN SupplierParts SP ON p.p_partkey = SP.ps_partkey
 LEFT JOIN CustomerSpending CS ON c.c_custkey = CS.c_custkey
-WHERE ls.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1997-01-01')
+WHERE ls.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1997-01-01'
 GROUP BY p.p_name, p.p_mfgr, r.r_name, SP.total_cost, CS.total_spending
 ORDER BY revenue DESC
 LIMIT 10;

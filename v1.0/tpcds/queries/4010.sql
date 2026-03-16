@@ -36,4 +36,4 @@ JOIN TopItems t ON s.ws_item_sk = t.ws_item_sk
 WHERE i.i_current_price IS NOT NULL 
   AND (s.total_sales > 5000 OR s.avg_sales_price > 100)
 ORDER BY total_sales DESC, avg_sales_price DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

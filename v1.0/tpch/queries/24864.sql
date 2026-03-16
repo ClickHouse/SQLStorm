@@ -31,7 +31,7 @@ SELECT P.p_partkey, P.p_name, R.region_name, O.total_revenue,
            WHEN O.total_revenue IS NULL THEN 'No Revenue'
            ELSE 'Revenue Exists'
        END AS revenue_status,
-       CONCAT('Part: ', P.p_name, ' | Max Cost: ', COALESCE(CAST(S.max_supply_cost AS TEXT), 'N/A')) AS details
+       CONCAT('Part: ', P.p_name, ' | Max Cost: ', COALESCE(S.max_supply_cost::TEXT, 'N/A')) AS details
 FROM RecursivePart P
 LEFT JOIN FilteredNations R ON R.n_nationkey = (SELECT n_nationkey FROM nation ORDER BY rand() LIMIT 1)
 LEFT JOIN OrderStats O ON O.o_custkey = (SELECT c_custkey FROM customer WHERE c_nationkey = R.n_nationkey LIMIT 1)

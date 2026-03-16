@@ -25,7 +25,7 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_type LIKE '%plastic%'
-    AND o.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND o.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey, r.r_name, n.n_name, o.o_comment
 HAVING 

@@ -17,7 +17,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= now64(6) - INTERVAL 30 DAY
+        p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName
 ),

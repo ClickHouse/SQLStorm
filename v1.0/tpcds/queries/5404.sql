@@ -62,4 +62,4 @@ JOIN
     )
 ORDER BY
     ti.total_net_paid DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

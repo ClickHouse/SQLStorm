@@ -42,8 +42,8 @@ SalesAnalytics AS (
     FROM
         TopCustomers tc
     JOIN
-        date_dim td ON toYear(td.d_date) = toYear(toDate('2002-10-01')) 
-                   AND toMonth(td.d_date) = toMonth(toDate('2002-10-01'))
+        date_dim td ON EXTRACT(YEAR FROM td.d_date) = EXTRACT(YEAR FROM DATE '2002-10-01') 
+                   AND EXTRACT(MONTH FROM td.d_date) = EXTRACT(MONTH FROM DATE '2002-10-01')
     WHERE
         tc.sales_rank <= 100
 )

@@ -72,4 +72,4 @@ WHERE
     AND (co.total_spent > COALESCE(ds.discounted_total, 0) OR ds.discounted_total IS NULL)
 ORDER BY 
     co.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

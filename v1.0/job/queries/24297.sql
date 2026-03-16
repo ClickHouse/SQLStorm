@@ -56,4 +56,4 @@ WHERE
     rm.title_rank <= 5
 ORDER BY 
     rm.production_year DESC, rm.movie_title
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

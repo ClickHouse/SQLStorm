@@ -65,4 +65,4 @@ LEFT JOIN
     PostCloseStatistics PCS ON UPS.UserId = PCS.UserId
 ORDER BY 
     UPS.TotalPosts DESC, UPS.TotalUpvotes DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

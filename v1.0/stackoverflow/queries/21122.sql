@@ -51,7 +51,7 @@ WITH RECURSIVE UserPostCounts AS (
         Users U ON RP.OwnerUserId = U.Id
     WHERE 
         RP.rn = 1 AND 
-        RP.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        RP.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
 )
 SELECT 
     P.*,
@@ -60,7 +60,7 @@ SELECT
         ELSE 'No Comments'
     END AS CommentStatus,
     CASE 
-        WHEN P.LastGoldBadgeDate >= cast('2024-10-01' as date) - INTERVAL 3 YEAR THEN 'Active Contributor'
+        WHEN P.LastGoldBadgeDate >= cast('2024-10-01' as date) - INTERVAL '3 years' THEN 'Active Contributor'
         ELSE 'Occasional Contributor'
     END AS ContributorType
 FROM 

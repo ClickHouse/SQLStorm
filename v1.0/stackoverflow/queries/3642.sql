@@ -29,7 +29,7 @@ RecentVotes AS (
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes
     FROM Votes V
-    WHERE V.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE V.CreationDate >= timestamp '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY V.UserId
 )
 

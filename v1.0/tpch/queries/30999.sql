@@ -38,7 +38,7 @@ LEFT JOIN supplier s ON s.s_suppkey = l.l_suppkey
 LEFT JOIN nation n ON n.n_nationkey = s.s_nationkey
 LEFT JOIN region r ON r.r_regionkey = n.n_regionkey
 WHERE p.p_size > 25 AND 
-      (l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31'))
+      (l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31')
       AND l.l_returnflag = 'N'
 GROUP BY p.p_partkey, p.p_name, p.p_brand, ps.total_availqty, ps.avg_supplycost, r.r_name
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > 500000

@@ -27,7 +27,7 @@ RecentPosts AS (
     JOIN 
         Tags t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
-        p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
+        p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
     ORDER BY 
         p.CreationDate DESC
 ),

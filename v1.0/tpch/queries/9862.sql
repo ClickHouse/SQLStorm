@@ -12,8 +12,8 @@ JOIN
 JOIN 
     lineitem AS l ON o.o_orderkey = l.l_orderkey
 WHERE 
-    o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
-    AND l.l_shipdate >= toDate('1996-01-01')
+    o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
+    AND l.l_shipdate >= DATE '1996-01-01'
 GROUP BY 
     n.n_name
 HAVING 

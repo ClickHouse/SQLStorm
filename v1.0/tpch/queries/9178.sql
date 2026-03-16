@@ -8,7 +8,7 @@ FilteredOrders AS (
     SELECT o.o_orderkey, o.o_totalprice, c.c_nationkey
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-02-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-02-01'
 ),
 OrderLineItems AS (
     SELECT li.l_orderkey, SUM(li.l_extendedprice * (1 - li.l_discount)) AS total_price

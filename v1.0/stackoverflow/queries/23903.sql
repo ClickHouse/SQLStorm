@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Users U ON P.OwnerUserId = U.Id
     WHERE
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 UserBadges AS (
     SELECT
@@ -47,7 +47,7 @@ ClosedPosts AS (
     FROM
         PostHistory PH
     JOIN
-        CloseReasonTypes CT ON CAST(PH.Comment AS int) = CT.Id
+        CloseReasonTypes CT ON PH.Comment::int = CT.Id
     WHERE
         PH.PostHistoryTypeId IN (10, 11) 
     GROUP BY

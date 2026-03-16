@@ -78,4 +78,4 @@ SELECT
 FROM PostDetails pd
 WHERE pd.UserPostRank <= 5 
 ORDER BY pd.Score DESC, pd.CreationDate DESC
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

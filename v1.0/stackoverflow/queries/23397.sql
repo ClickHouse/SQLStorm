@@ -29,7 +29,7 @@ RecentPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 30 DAY
+        p.CreationDate >= CURRENT_DATE - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.OwnerUserId
 ), 
@@ -75,7 +75,7 @@ SELECT
     pwlh.LastEditor,
     pwlh.PostStatus,
     CASE 
-        WHEN pwlh.TotalVotes > 0 THEN ROUND((1.0 * pwlh.UpVotes / pwlh.TotalVotes) * 100, 2, CAST() AS TEXT) || '%' 
+        WHEN pwlh.TotalVotes > 0 THEN ROUND((1.0 * pwlh.UpVotes / pwlh.TotalVotes) * 100, 2)::TEXT || '%' 
         ELSE 'N/A'
     END AS VoteRatio
 FROM 

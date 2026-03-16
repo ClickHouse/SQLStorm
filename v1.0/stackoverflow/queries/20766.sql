@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR' 
         AND p.Score IS NOT NULL
 ),
 PostHistoryDetails AS (
@@ -32,7 +32,7 @@ PostHistoryDetails AS (
     JOIN 
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     WHERE 
-        ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 MONTHS'
     GROUP BY 
         ph.PostId, ph.UserId, ph.CreationDate, pht.Name
 ),
@@ -43,7 +43,7 @@ ClosedPosts AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes crt ON CAST(ph.Comment AS textCAST() AS int) = crt.Id
+        CloseReasonTypes crt ON ph.Comment::text::int = crt.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY 

@@ -20,7 +20,7 @@ QualifiedOrders AS (
             ELSE 'Unknown Status'
         END AS order_status,
         o.o_orderdate,
-        toYear(o.o_orderdate) AS order_year
+        EXTRACT(YEAR FROM o.o_orderdate) AS order_year
     FROM 
         orders o
     WHERE 

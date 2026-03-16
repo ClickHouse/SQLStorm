@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.Score, p.OwnerUserId
 ),
@@ -55,7 +55,7 @@ RecentActivity AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.OwnerUserId
 )
@@ -88,6 +88,6 @@ LEFT JOIN
     RecentActivity ra ON rp.PostId = ra.PostId
 WHERE 
     rp.RankByScore <= 5 
-    AND (pHD.LastChangeDate IS NULL OR pHD.LastChangeDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 180 DAY)
+    AND (pHD.LastChangeDate IS NULL OR pHD.LastChangeDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '180 days')
 ORDER BY 
     rp.Score DESC, rp.ViewCount DESC;

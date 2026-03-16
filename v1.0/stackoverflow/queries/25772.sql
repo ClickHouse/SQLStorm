@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY 
         p.Id, p.Title, p.Tags, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
 ),
@@ -64,7 +64,7 @@ SELECT
     fa.TagCount,
     fa.BadgeNames,
     fa.PostStatus,
-    toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - fa.CreationDate)) AS TimeSincePostCreation
+    toUnixTimestamp((CAST('2024-10-01 12:34:56' AS TIMESTAMP) - fa.CreationDate)) AS TimeSincePostCreation
 FROM 
     FilteredAnalytics fa
 ORDER BY 

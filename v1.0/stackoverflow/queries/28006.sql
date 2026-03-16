@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > toDate('2023-01-01')
+        p.CreationDate > DATE '2023-01-01'
         AND p.Body IS NOT NULL
 ),
 TagStatistics AS (

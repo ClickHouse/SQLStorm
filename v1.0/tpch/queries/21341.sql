@@ -14,7 +14,7 @@ FrequentCustomers AS (
         o.o_custkey,
         COUNT(DISTINCT o.o_orderkey) AS order_count
     FROM orders o
-    WHERE o.o_orderdate BETWEEN toDate('1998-10-01') - INTERVAL 1 YEAR AND toDate('1998-10-01')
+    WHERE o.o_orderdate BETWEEN DATE '1998-10-01' - INTERVAL '1 year' AND DATE '1998-10-01'
     GROUP BY o.o_custkey
     HAVING COUNT(DISTINCT o.o_orderkey) > 5
 )
@@ -51,4 +51,4 @@ WHERE p.p_retailprice > (SELECT AVG(p2.p_retailprice)
                           AND p2.p_type LIKE '%wood%')
 OR p.p_type IS NULL
 ORDER BY p.p_name ASC, rc.total_avail_qty DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

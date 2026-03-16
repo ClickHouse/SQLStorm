@@ -31,7 +31,7 @@ UserAggregates AS (
         COALESCE(ps.Questions, 0) AS Questions,
         COALESCE(ps.Answers, 0) AS Answers,
         COALESCE(ps.AverageViews, 0) AS AverageViews,
-        COALESCE(ps.LastPostDate, toDate('1900-01-01')) AS LastPostDate 
+        COALESCE(ps.LastPostDate, DATE '1900-01-01') AS LastPostDate 
     FROM Users u
     LEFT JOIN UserBadgeCounts bc ON u.Id = bc.UserId
     LEFT JOIN PostStats ps ON u.Id = ps.OwnerUserId

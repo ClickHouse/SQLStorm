@@ -34,7 +34,7 @@ processed_data AS (
             WHEN c.cd_gender = 'F' THEN 'Ms. ' || c.full_name
             ELSE c.full_name 
         END AS saluted_name,
-        toYear(AGE(cast('2002-10-01' as date), c.first_purchase_date)) AS years_since_first_purchase,
+        EXTRACT(YEAR FROM AGE(cast('2002-10-01' as date), c.first_purchase_date)) AS years_since_first_purchase,
         CASE 
             WHEN c.address_city ILIKE '%New%' THEN 'New City Discount'
             ELSE 'Regular Customer' 

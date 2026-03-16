@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         (SELECT PostId, SUM(CASE WHEN VoteTypeId IN (2, 8) THEN 1 WHEN VoteTypeId = 3 THEN -1 ELSE 0 END) AS VoteSum
          FROM Votes GROUP BY PostId) voteSum ON voteSum.PostId = p.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     AND 
         p.Score > 0
 ),
@@ -34,7 +34,7 @@ ActiveUsers AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        u.LastAccessDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
     GROUP BY 
         u.Id
 ),
@@ -45,7 +45,7 @@ RecentComments AS (
     FROM
         Comments
     WHERE 
-        CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY 
         PostId
 ),

@@ -42,8 +42,8 @@ SELECT
     COALESCE((SELECT COUNT(*) 
               FROM store_sales ss 
               WHERE ss.ss_customer_sk = asales.c_customer_sk 
-              AND ss.ss_sold_date_sk BETWEEN (SELECT MIN(d_date_sk) FROM date_dim WHERE d_year = toYear(toDate('2002-10-01')) - 1)
-              AND (SELECT MAX(d_date_sk) FROM date_dim WHERE d_year = toYear(toDate('2002-10-01')))), 0) AS store_orders_last_year
+              AND ss.ss_sold_date_sk BETWEEN (SELECT MIN(d_date_sk) FROM date_dim WHERE d_year = EXTRACT(YEAR FROM DATE '2002-10-01') - 1)
+              AND (SELECT MAX(d_date_sk) FROM date_dim WHERE d_year = EXTRACT(YEAR FROM DATE '2002-10-01'))), 0) AS store_orders_last_year
 FROM 
     AggregatedSales asales
 WHERE 

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
          WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpVotes
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     AND p.Score > 0
 ),
 

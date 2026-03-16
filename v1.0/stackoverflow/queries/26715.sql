@@ -39,7 +39,7 @@ RecentVotes AS (
     FROM 
         Votes
     WHERE 
-        CreationDate >= now64(6) - INTERVAL 30 DAY
+        CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY 
         PostId
 )

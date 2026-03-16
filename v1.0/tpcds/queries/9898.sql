@@ -33,4 +33,4 @@ HAVING
     SUM(ss.ss_sales_price) > 1000
 ORDER BY 
     total_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

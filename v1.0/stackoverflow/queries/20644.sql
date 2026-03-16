@@ -38,7 +38,7 @@ PostActivity AS (
         FROM Comments
         GROUP BY PostId
     ) ch ON ch.PostId = p.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 
 RankedPosts AS (

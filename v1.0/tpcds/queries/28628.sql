@@ -31,4 +31,4 @@ GROUP BY
     C.c_customer_id, C.c_first_name, C.c_last_name, A.ca_city, A.ca_state, A.ca_zip, D.d_year
 ORDER BY 
     total_sales DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

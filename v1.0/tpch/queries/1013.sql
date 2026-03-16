@@ -5,7 +5,7 @@ WITH RankedOrders AS (
            o.o_orderpriority,
            ROW_NUMBER() OVER (PARTITION BY o.o_orderpriority ORDER BY o.o_orderdate DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
 ),
 SuppliersWithParts AS (
     SELECT s.s_suppkey,
@@ -40,4 +40,4 @@ LEFT JOIN RankedOrders r ON co.total_spent > 1000 AND co.c_custkey = r.o_orderke
 LEFT JOIN SuppliersWithParts sp ON co.total_orders = sp.total_available_qty
 WHERE co.total_spent IS NOT NULL AND sp.total_supply_cost > 10000
 ORDER BY co.total_spent DESC, sp.total_supply_cost ASC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

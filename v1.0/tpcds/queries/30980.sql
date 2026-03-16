@@ -40,7 +40,7 @@ TopCustomers AS (
 ),
 SalesByMonth AS (
     SELECT 
-        toMonth(d.d_date) AS sale_month,
+        EXTRACT(MONTH FROM d.d_date) AS sale_month,
         SUM(ws.ws_ext_sales_price) AS monthly_sales
     FROM date_dim d
     JOIN web_sales ws ON d.d_date_sk = ws.ws_sold_date_sk
@@ -54,7 +54,7 @@ FinalStats AS (
         sbm.sale_month,
         COALESCE(sbm.monthly_sales, 0) AS monthly_sales
     FROM TopCustomers tc
-    LEFT JOIN SalesByMonth sbm ON toMonth(cast('2002-10-01' as date)) = sbm.sale_month
+    LEFT JOIN SalesByMonth sbm ON EXTRACT(MONTH FROM cast('2002-10-01' as date)) = sbm.sale_month
     WHERE tc.sales_rank <= 10
 )
 SELECT 

@@ -21,7 +21,7 @@ RegionalSales AS (
     JOIN lineitem l ON ps.ps_partkey = l.l_partkey
     JOIN orders o ON l.l_orderkey = o.o_orderkey
     WHERE o.o_orderstatus = 'F'
-      AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+      AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY n.n_name
 ),
 SupplierRankings AS (

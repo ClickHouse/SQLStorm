@@ -10,7 +10,7 @@ WITH RECURSIVE SupplierHierarchy AS (
 FrequentOrders AS (
     SELECT o.o_custkey, COUNT(o.o_orderkey) AS order_count
     FROM orders o
-    WHERE o.o_orderstatus = 'O' AND o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    WHERE o.o_orderstatus = 'O' AND o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year'
     GROUP BY o.o_custkey
     HAVING COUNT(o.o_orderkey) > (
         SELECT AVG(order_count)

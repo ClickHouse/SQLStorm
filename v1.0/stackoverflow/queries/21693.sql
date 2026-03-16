@@ -7,7 +7,7 @@ WITH RecentUserActivities AS (
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes
     FROM Users u
     LEFT JOIN Votes v ON u.Id = v.UserId 
-    WHERE u.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE u.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY u.Id
 ),
 PostStatistics AS (
@@ -34,7 +34,7 @@ CloseReasonSummary AS (
         COUNT(ph.Id) AS CloseCount,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasonNames
     FROM PostHistory ph
-    JOIN CloseReasonTypes cr ON CAST(ph.Comment AS int) = cr.Id
+    JOIN CloseReasonTypes cr ON ph.Comment::int = cr.Id
     WHERE ph.PostHistoryTypeId = 10  
     GROUP BY ph.UserId
 )

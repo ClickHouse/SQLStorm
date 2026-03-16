@@ -58,4 +58,4 @@ JOIN
 ORDER BY 
     cs.total_profit DESC, 
     ss.total_store_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

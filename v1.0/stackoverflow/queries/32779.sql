@@ -27,7 +27,7 @@ RecentVotes AS (
     JOIN 
         VoteTypes VT ON V.VoteTypeId = VT.Id
     WHERE 
-        V.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        V.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY 
         V.UserId
 ),

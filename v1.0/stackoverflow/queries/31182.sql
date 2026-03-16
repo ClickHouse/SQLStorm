@@ -51,7 +51,7 @@ LEFT JOIN
     Badges b ON u.Id = b.UserId
 WHERE 
     u.Reputation > 1000
-    AND u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    AND u.LastAccessDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 GROUP BY 
     u.Id, u.DisplayName, u.Reputation, u.CreationDate
 HAVING 

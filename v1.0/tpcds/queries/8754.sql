@@ -41,4 +41,4 @@ JOIN demographic_summary ds ON ss.total_orders > 10
 ORDER BY 
     ss.total_sales_amount DESC, 
     ds.customer_count DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

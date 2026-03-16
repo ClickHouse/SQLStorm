@@ -60,7 +60,7 @@ SELECT
 FROM 
     GrowthTrends g
 LEFT JOIN 
-    CustomerCategories cc ON g.d_year = toYear(toDateTime64('2002-10-01 12:34:56', 6)) 
+    CustomerCategories cc ON g.d_year = EXTRACT(YEAR FROM TIMESTAMP '2002-10-01 12:34:56') 
 GROUP BY 
     g.d_year, 
     g.total_profit, 

@@ -64,4 +64,4 @@ SELECT
 FROM final_summary
 WHERE net_sales > 0
 ORDER BY income_band_rank, total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

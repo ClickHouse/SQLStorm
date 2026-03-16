@@ -24,7 +24,7 @@ LEFT JOIN
 LEFT JOIN 
     LinkTypes lt ON pl.LinkTypeId = lt.Id
 WHERE 
-    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 GROUP BY 
     p.Id, u.DisplayName
 ORDER BY 

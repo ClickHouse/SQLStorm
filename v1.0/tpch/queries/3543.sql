@@ -10,7 +10,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01')
+        o.o_orderdate >= DATE '1996-01-01'
 ),
 CustomerSummary AS (
     SELECT 
@@ -61,4 +61,4 @@ WHERE
     hvo.o_orderstatus = 'O'
 ORDER BY 
     hvo.o_totalprice DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

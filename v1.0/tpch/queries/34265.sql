@@ -64,7 +64,7 @@ LEFT JOIN
     customer_orders cs ON c.c_custkey = cs.c_custkey
 WHERE 
     p.p_retailprice > (SELECT AVG(p_retailprice) FROM part) 
-    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     AND l.l_returnflag = 'N'
 GROUP BY 
     p.p_partkey, p.p_name, p.p_retailprice, r.r_name, cs.total_spent

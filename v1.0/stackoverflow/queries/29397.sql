@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         LEFT JOIN (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag) AS tag ON TRUE
         JOIN Tags t ON tag.tag = t.TagName
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 
         p.Id, u.DisplayName, p.Title, p.Body, p.CreationDate, p.Score, p.ViewCount
 ),

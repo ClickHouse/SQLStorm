@@ -26,7 +26,7 @@ SELECT
 FROM part p
 LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
 LEFT JOIN nation_supply nt ON nt.total_nation_supply > 0
-WHERE (l.l_shipdate <= toDate('1998-10-01') OR l.l_shipdate IS NULL)
+WHERE (l.l_shipdate <= DATE '1998-10-01' OR l.l_shipdate IS NULL)
   AND (p.p_retailprice BETWEEN 0 AND 100 OR p.p_retailprice IS NULL)
 GROUP BY p.p_name, nt.total_nation_supply, p.p_partkey, p.p_comment
 HAVING COUNT(l.l_orderkey) > 5

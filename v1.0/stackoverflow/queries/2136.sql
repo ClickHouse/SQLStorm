@@ -73,7 +73,7 @@ SELECT
     (SELECT COUNT(*) 
      FROM PostHistory pH 
      WHERE pH.PostId = ps.PostId 
-       AND pH.CreationDate > CURRENT_DATE - INTERVAL 6 MONTH) AS RecentEdits
+       AND pH.CreationDate > CURRENT_DATE - INTERVAL '6 MONTH') AS RecentEdits
 FROM 
     PostStatistics ps
 ORDER BY 

@@ -31,7 +31,7 @@ WITH UserStats AS (
         v.UserId, 
         COUNT(v.Id) AS RecentVoteCount
     FROM Votes v
-    WHERE v.CreationDate >= now64(6) - INTERVAL 30 DAY
+    WHERE v.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY v.UserId
 )
 SELECT 

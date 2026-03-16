@@ -8,7 +8,7 @@ WITH UserAggregation AS (
         SUM(CASE WHEN P.Score < 0 THEN 1 ELSE 0 END) AS NegativeScorePosts
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
-    WHERE U.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE U.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY U.Id, U.DisplayName, U.Reputation
 ),
 RecentVotes AS (
@@ -17,7 +17,7 @@ RecentVotes AS (
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotesReceived,
         COUNT(V.Id) AS TotalVotes
     FROM Votes V
-    WHERE V.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    WHERE V.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months'
     GROUP BY V.UserId
 ),
 PostHistoryAggregation AS (
@@ -27,7 +27,7 @@ PostHistoryAggregation AS (
         arrayDistinct(groupArray(assumeNotNull(PH.PostId))) AS RelatedPostIds,
         MAX(PH.CreationDate) AS LastActivity
     FROM PostHistory PH
-    WHERE PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY PH.UserId
 )
 SELECT 
@@ -51,4 +51,4 @@ LEFT OUTER JOIN RecentVotes RV ON UA.UserId = RV.UserId
 LEFT JOIN PostHistoryAggregation PH ON UA.UserId = PH.UserId
 WHERE UA.PostCount > 0
 ORDER BY UA.Reputation DESC, UA.DisplayName
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -54,4 +54,4 @@ WHERE
     a.total_movies > 3
 ORDER BY 
     a.actor_name, a.production_year DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

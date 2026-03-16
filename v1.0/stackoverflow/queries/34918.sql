@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate > toDate('2021-01-01')
+    WHERE p.CreationDate > DATE '2021-01-01'
     GROUP BY p.Id, p.Title, p.ViewCount, p.Score, p.OwnerUserId
 ),
 UserReputation AS (
@@ -61,4 +61,4 @@ LEFT JOIN PostHistoryDetails phd ON rp.PostId = phd.PostId
 LEFT JOIN PopularPostLinks pl ON rp.PostId = pl.PostId
 WHERE rp.ScoreRank <= 5
 ORDER BY rp.Score DESC, ur.Reputation DESC
-LIMIT 20 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY;

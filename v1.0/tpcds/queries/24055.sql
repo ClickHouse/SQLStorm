@@ -66,4 +66,4 @@ HAVING
     SUM(r.total_profit) IS NOT NULL AND COUNT(DISTINCT r.ws_item_sk) > 0
 ORDER BY 
     total_profit_made DESC, total_quantity_sold DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

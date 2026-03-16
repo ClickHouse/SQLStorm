@@ -42,6 +42,6 @@ SELECT
     st.total_net_profit
 FROM customer_sales cs
 LEFT JOIN high_value_customers hvc ON cs.c_customer_sk = hvc.c_customer_sk
-JOIN sales_trends st ON st.d_year = toYear(toDate('2002-10-01'))
+JOIN sales_trends st ON st.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
 WHERE cs.rnk <= 10
 ORDER BY cs.total_net_profit DESC;

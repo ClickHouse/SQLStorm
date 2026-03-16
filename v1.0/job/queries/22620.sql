@@ -91,4 +91,4 @@ WHERE
 ORDER BY
     fo.production_year DESC,
     fo.cast_count DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

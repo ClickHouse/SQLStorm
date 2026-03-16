@@ -41,7 +41,7 @@ TopUsers AS (
     JOIN RecentActivity ra ON ur.Id = ra.OwnerUserId
     WHERE ur.ReputationLevel = 'High'
       AND ps.TotalPosts > 5
-      AND ra.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+      AND ra.LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 )
 SELECT 
     t.DisplayName,

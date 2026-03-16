@@ -21,7 +21,7 @@ RecentPostActivity AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN RecursivePostHistory ph ON p.Id = ph.PostId AND ph.rn = 1
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY p.Id, p.Title
 ),
 FilteredPosts AS (

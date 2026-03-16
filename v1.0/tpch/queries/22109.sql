@@ -75,4 +75,4 @@ AND
 ORDER BY 
     rp.p_retailprice DESC, 
     co.last_order_date DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

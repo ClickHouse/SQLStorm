@@ -20,7 +20,7 @@ WITH RankedPosts AS (
             PostId
     ) AS cnt ON p.Id = cnt.PostId
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 TopContributors AS (
     SELECT 
@@ -53,4 +53,4 @@ WHERE
     r.RankByScore <= 5 
 ORDER BY 
     r.CreationDate DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

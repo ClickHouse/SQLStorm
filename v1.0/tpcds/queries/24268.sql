@@ -64,4 +64,4 @@ WHERE
     i.inv_quantity_on_hand < (SELECT AVG(inv_quantity_on_hand) FROM inventory) + (SELECT COUNT(DISTINCT ws_item_sk) FROM web_sales)
 ORDER BY 
     effective_inventory DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -74,4 +74,4 @@ WHERE
     us.Reputation > 1000
 ORDER BY 
     us.Reputation DESC, us.PostCount DESC
-LIMIT 20 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY;

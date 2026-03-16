@@ -12,7 +12,7 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate BETWEEN toDate('1995-01-01') AND toDate('1996-12-31')
+    o.o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
     AND l.l_shipmode IN ('AIR', 'SEA')
     AND c.c_mktsegment = 'BUILDING'
 GROUP BY 

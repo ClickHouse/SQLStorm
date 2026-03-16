@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 90 DAY 
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '90 days' 
 ),
 TopTags AS (
     SELECT 

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         Posts p
         LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 FilteredPosts AS (
     SELECT 
@@ -62,4 +62,4 @@ FROM
 ORDER BY 
     fp.Score DESC, 
     fp.CreationDate DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -8,7 +8,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= now64(6) - INTERVAL 6 MONTH
+        o.o_orderdate >= CURRENT_TIMESTAMP - INTERVAL '6 months'
 ),
 SupplierDetails AS (
     SELECT 

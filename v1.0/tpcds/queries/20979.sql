@@ -74,4 +74,4 @@ WHERE
     transaction_type != 'No Transactions'
 ORDER BY 
     net_transaction_value DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

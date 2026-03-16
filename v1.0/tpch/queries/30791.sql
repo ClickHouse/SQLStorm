@@ -39,7 +39,7 @@ SELECT
         ELSE 'Not Returned'
     END AS return_status,
     ROUND(AVG(l.l_extendedprice * (1 - l.l_discount)), 2) AS avg_price,
-    SUM(CASE WHEN o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR THEN l.l_quantity ELSE 0 END) AS recent_quantity,
+    SUM(CASE WHEN o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year' THEN l.l_quantity ELSE 0 END) AS recent_quantity,
     (SELECT COUNT(DISTINCT c.c_custkey) 
      FROM customer c 
      WHERE c.c_nationkey = (SELECT s.s_nationkey FROM supplier s WHERE s.s_name = 'Supplier#000001')) AS customer_count

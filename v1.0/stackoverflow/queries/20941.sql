@@ -82,4 +82,4 @@ WHERE
     AND (rp.CommentCount IS NULL OR rp.CommentCount > 0) 
 ORDER BY 
     rp.PostId DESC
-LIMIT 100 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;

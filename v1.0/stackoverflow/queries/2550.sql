@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDate('2023-01-01') AND 
+        p.CreationDate >= DATE '2023-01-01' AND 
         p.Score > 0
 ),
 TopUsers AS (
@@ -53,4 +53,4 @@ LEFT JOIN
     RankedPosts rp ON tu.UserId = rp.OwnerUserId AND rp.PostRank = 1
 ORDER BY 
     tu.TotalScore DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

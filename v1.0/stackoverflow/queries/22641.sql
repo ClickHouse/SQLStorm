@@ -76,7 +76,7 @@ SELECT
     COALESCE(C.TotalScore, 0) AS TotalScore,
     CASE 
         WHEN C.LatestPostDate IS NOT NULL 
-        THEN toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - C.LatestPostDate)) / 86400 
+        THEN toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - C.LatestPostDate)) / 86400 
         ELSE NULL 
     END AS DaysSinceLastPost
 FROM 

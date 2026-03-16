@@ -67,4 +67,4 @@ WHERE
 ORDER BY
     r.production_year DESC,
     r.actor_sequence
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

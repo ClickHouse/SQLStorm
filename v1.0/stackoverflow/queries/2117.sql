@@ -11,13 +11,13 @@ WITH RankedPosts AS (
          WHERE c.PostId = p.Id AND c.Score > 0) AS PositiveCommentCount,
         CASE 
             WHEN p.LastActivityDate IS NULL THEN 'No Activity' 
-            WHEN p.LastActivityDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Inactive' 
+            WHEN p.LastActivityDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 'Inactive' 
             ELSE 'Active' 
         END AS ActivityStatus
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
 ),
 PostVotes AS (
     SELECT 

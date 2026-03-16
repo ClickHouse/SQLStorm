@@ -36,7 +36,7 @@ customer_income AS (
         h.hd_income_band_sk,
         COUNT(DISTINCT c.c_customer_id) AS num_customers,
         AVG(CASE 
-            WHEN d.d_year = toYear(toDateTime64('2002-10-01 12:34:56', 6)) THEN c.c_birth_year 
+            WHEN d.d_year = EXTRACT(YEAR FROM cast('2002-10-01 12:34:56' as timestamp)) THEN c.c_birth_year 
             ELSE NULL 
         END) AS avg_birth_year
     FROM 
@@ -63,7 +63,7 @@ FROM
 LEFT JOIN 
     customer_returns cr ON ci.num_customers > 0
 JOIN 
-    revenue_cte r ON r.year = toYear(toDateTime64('2002-10-01 12:34:56', 6)) - 1
+    revenue_cte r ON r.year = EXTRACT(YEAR FROM cast('2002-10-01 12:34:56' as timestamp)) - 1
 WHERE 
     ci.hd_income_band_sk IS NOT NULL
 ORDER BY 

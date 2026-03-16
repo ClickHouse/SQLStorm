@@ -46,4 +46,4 @@ LEFT JOIN RecentActivity ra ON ups.UserId = ra.UserId
 LEFT JOIN UserBadges ub ON ups.UserId = ub.UserId
 WHERE ups.Reputation > 100
 ORDER BY ups.TotalPosts DESC, ups.Reputation DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

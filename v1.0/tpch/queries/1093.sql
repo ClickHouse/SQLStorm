@@ -43,8 +43,8 @@ JOIN
 WHERE 
     rs.rn <= 5 AND
     o.o_orderstatus = 'O' AND 
-    l.l_shipdate >= toDate('1997-01-01') AND 
-    l.l_shipdate < toDate('1997-12-31')
+    l.l_shipdate >= DATE '1997-01-01' AND 
+    l.l_shipdate < DATE '1997-12-31'
 GROUP BY 
     p.p_name, r.r_name
 HAVING 

@@ -43,4 +43,4 @@ LEFT JOIN
     UserBadgeStats ubs ON ups.UserId = ubs.UserId
 ORDER BY 
     ups.TotalScore DESC, ups.TotalPosts DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

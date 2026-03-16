@@ -65,5 +65,5 @@ ORDER BY
     ym.production_year DESC, 
     ym.avg_cast_per_movie DESC, 
     am.actor_name ASC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;
 

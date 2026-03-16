@@ -65,7 +65,7 @@ FROM
 LEFT JOIN 
     ReturnData rd ON sd.ws_item_sk = rd.wr_item_sk
 JOIN 
-    CustomerDemographics cd ON cd.cd_demo_sk = (SELECT c.c_current_cdemo_sk FROM customer c WHERE c.c_first_name IS NOT NULL LIMIT 1)
+    CustomerDemographics cd ON cd.cd_demo_sk = (SELECT c.c_current_cdemo_sk FROM customer c WHERE c.c_first_name IS NOT NULL FETCH FIRST 1 ROW ONLY)
 WHERE 
     sd.total_quantity > (SELECT AVG(sd2.total_quantity) FROM SalesData sd2)
 ORDER BY 

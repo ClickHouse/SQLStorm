@@ -47,5 +47,5 @@ JOIN popular_items pi ON tm.c_customer_id = (
     ORDER BY ws.ws_ext_sales_price DESC
     LIMIT 1
 )
-JOIN average_monthly_sales ams ON ams.d_year = toYear(toDate('2002-10-01'))
+JOIN average_monthly_sales ams ON ams.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
 ORDER BY pi.total_quantity_sold DESC, ams.avg_sales DESC;

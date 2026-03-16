@@ -16,7 +16,7 @@ WITH UserStatistics AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        U.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        U.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation
 ), UserBadgeStatistics AS (

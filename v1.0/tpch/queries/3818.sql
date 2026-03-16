@@ -9,7 +9,7 @@ WITH SupplierSales AS (
     JOIN lineitem li ON ps.ps_partkey = li.l_partkey
     JOIN orders o ON li.l_orderkey = o.o_orderkey
     WHERE o.o_orderstatus = 'O' 
-    AND li.l_shipdate >= toDate('1997-01-01') 
+    AND li.l_shipdate >= DATE '1997-01-01' 
     GROUP BY s.s_suppkey, s.s_name
 ),
 TopSuppliers AS (

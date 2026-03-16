@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         LEFT JOIN Comments c ON p.Id = c.PostId
         LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL 30 DAY)
+        p.CreationDate >= (CAST('2024-10-01' AS DATE) - INTERVAL '30 days')
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ),
@@ -62,4 +62,4 @@ WHERE
 ORDER BY 
     f.VoteRank,
     f.NetVotes DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

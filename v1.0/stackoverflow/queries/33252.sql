@@ -62,4 +62,4 @@ FROM
     FilteredUsers FU
 ORDER BY 
     FU.Reputation DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

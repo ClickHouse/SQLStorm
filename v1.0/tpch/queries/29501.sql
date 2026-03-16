@@ -46,7 +46,7 @@ SELECT
 FROM 
     StringAggregate sa
 JOIN 
-    FilteredSuppliers fs ON sa.p_partkey = (SELECT ps.ps_partkey FROM partsupp ps WHERE ps.ps_supplycost > 1000 LIMIT 1)
+    FilteredSuppliers fs ON sa.p_partkey = (SELECT ps.ps_partkey FROM partsupp ps WHERE ps.ps_supplycost > 1000 FETCH FIRST 1 ROWS ONLY)
 JOIN 
     CustomerOrders fo ON fo.order_count > 5
 WHERE 

@@ -64,4 +64,4 @@ HAVING
     COUNT(DISTINCT c.customer_name) > 10
 ORDER BY 
     total_return_amount DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

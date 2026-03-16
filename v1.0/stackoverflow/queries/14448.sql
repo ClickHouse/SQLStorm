@@ -1,8 +1,8 @@
 
 WITH PostActivity AS (
     SELECT
-        toYear(CreationDate) AS Year,
-        toMonth(CreationDate) AS Month,
+        EXTRACT(YEAR FROM CreationDate) AS Year,
+        EXTRACT(MONTH FROM CreationDate) AS Month,
         COUNT(*) AS TotalPosts,
         SUM(CASE WHEN PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
         SUM(CASE WHEN PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
@@ -11,23 +11,23 @@ WITH PostActivity AS (
     FROM
         Posts
     WHERE
-        CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY
-        toYear(CreationDate),
-        toMonth(CreationDate)
+        EXTRACT(YEAR FROM CreationDate),
+        EXTRACT(MONTH FROM CreationDate)
 ),
 UserActivity AS (
     SELECT
-        toYear(CreationDate) AS Year,
-        toMonth(CreationDate) AS Month,
+        EXTRACT(YEAR FROM CreationDate) AS Year,
+        EXTRACT(MONTH FROM CreationDate) AS Month,
         COUNT(DISTINCT Id) AS TotalUsers
     FROM
         Users
     WHERE
-        CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY
-        toYear(CreationDate),
-        toMonth(CreationDate)
+        EXTRACT(YEAR FROM CreationDate),
+        EXTRACT(MONTH FROM CreationDate)
 )
 SELECT
     p.Year,

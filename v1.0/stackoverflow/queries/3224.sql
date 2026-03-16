@@ -65,6 +65,6 @@ LEFT JOIN
     RecentActivity ra ON up.UserId = ra.PostId
 WHERE 
     up.PostCount > 0
-    AND (ra.LastCommentDate IS NULL OR ra.LastCommentDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY)
+    AND (ra.LastCommentDate IS NULL OR ra.LastCommentDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days')
 ORDER BY 
     up.UserRank ASC, up.PostCount DESC;

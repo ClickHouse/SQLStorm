@@ -15,7 +15,7 @@ WITH PostStatistics AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.Score, P.ViewCount, P.CreationDate
 )
@@ -39,4 +39,4 @@ LEFT JOIN
     Users U ON P.OwnerUserId = U.Id
 ORDER BY 
     PS.Score DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

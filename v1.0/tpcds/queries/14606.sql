@@ -35,4 +35,4 @@ WHERE
     cs.total_sales > 1000
 ORDER BY 
     cs.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

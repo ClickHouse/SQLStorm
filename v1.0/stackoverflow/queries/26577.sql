@@ -64,4 +64,4 @@ ORDER BY
     t.UpVotes DESC, 
     t.CommentCount DESC, 
     u.Reputation DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

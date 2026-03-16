@@ -43,7 +43,7 @@ FROM
 LEFT JOIN 
     PostHistoryCounts phc ON rp.PostId = phc.PostId
 WHERE 
-    rp.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    rp.CreationDate >= (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
 ORDER BY 
     rp.Score DESC, rp.CreationDate DESC
 LIMIT 100;

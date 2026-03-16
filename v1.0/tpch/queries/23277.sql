@@ -24,10 +24,10 @@ JOIN nation n ON n.n_regionkey = r.r_regionkey
 JOIN supplier s ON s.s_nationkey = n.n_nationkey
 LEFT JOIN partsupp ps ON ps.ps_suppkey = s.s_suppkey
 LEFT JOIN lineitem l ON l.l_partkey = ps.ps_partkey
-WHERE l.l_shipdate BETWEEN toDate('1995-01-01') AND toDate('1996-12-31')
+WHERE l.l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
   AND ps.ps_supplycost > (SELECT AVG(ps_supplycost) FROM partsupp WHERE ps_availqty > 100)
 GROUP BY r.r_name, n.n_name, s.s_name, r.r_regionkey
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) IS NOT NULL 
    AND SUM(CASE WHEN l.l_returnflag = 'R' THEN l.l_quantity ELSE 0 END) IS NOT NULL
 ORDER BY revenue_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

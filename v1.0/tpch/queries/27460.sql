@@ -17,7 +17,7 @@ JOIN
 JOIN 
     part p ON l.l_partkey = p.p_partkey 
 WHERE 
-    o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1997-12-31') 
+    o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1997-12-31' 
     AND l_returnflag = 'N' 
 GROUP BY 
     short_nation_name

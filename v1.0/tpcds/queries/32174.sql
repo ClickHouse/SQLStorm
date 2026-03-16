@@ -65,4 +65,4 @@ SELECT
     fr.top_rating
 FROM FinalReport fr
 ORDER BY fr.total_net_profit DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         p.OwnerUserId
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    WHERE p.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
 ),
 RecentBadges AS (
     SELECT 
@@ -21,7 +21,7 @@ RecentBadges AS (
         COUNT(b.Id) AS BadgeCount,
         MAX(b.Date) AS LastBadgeDate
     FROM Badges b
-    WHERE b.Date > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 3 MONTH)
+    WHERE b.Date > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '3 months')
     GROUP BY b.UserId
 ),
 PostHistoryAggregated AS (

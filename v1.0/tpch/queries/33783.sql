@@ -16,7 +16,7 @@ WITH RECURSIVE RegionalSales AS (
     JOIN 
         lineitem l ON p.p_partkey = l.l_partkey
     WHERE 
-        l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1998-01-01')
+        l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1998-01-01'
     GROUP BY 
         r.r_name
 ), 
@@ -57,7 +57,7 @@ WHERE
     NOT EXISTS (
         SELECT 1
         FROM lineitem l2
-        WHERE l2.l_shipdate < toDate('1997-01-01') 
+        WHERE l2.l_shipdate < DATE '1997-01-01' 
           AND l2.l_orderkey IN (SELECT o.o_orderkey FROM orders o WHERE o.o_custkey = coc.c_custkey)
     )
 ORDER BY 

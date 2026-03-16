@@ -67,4 +67,4 @@ GROUP BY
     ti.i_item_sk, ti.i_item_desc, ti.i_brand, ti.ws_sales_price, ti.i_current_price
 ORDER BY 
     total_profit DESC, ti.i_item_desc
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;

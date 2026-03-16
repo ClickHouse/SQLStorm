@@ -77,4 +77,4 @@ WHERE
     AND i.quantity_on_hand IS NOT NULL
 ORDER BY 
     cs.total_spent DESC, cs.order_count DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

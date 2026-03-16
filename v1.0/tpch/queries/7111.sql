@@ -17,7 +17,7 @@ RevenueBySupplier AS (
     SELECT li.l_suppkey, SUM(li.l_extendedprice * (1 - li.l_discount)) AS total_revenue
     FROM lineitem li
     JOIN orders o ON li.l_orderkey = o.o_orderkey
-    WHERE o.o_orderdate < toDate('1997-01-01')
+    WHERE o.o_orderdate < DATE '1997-01-01'
     GROUP BY li.l_suppkey
 ),
 FinalSummary AS (

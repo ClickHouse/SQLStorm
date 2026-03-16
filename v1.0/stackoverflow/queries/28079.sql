@@ -37,7 +37,7 @@ TopPosts AS (
         P.Score,
         P.ViewCount,
         P.CreationDate,
-        now64(6) - P.CreationDate AS DaysAgo,
+        CURRENT_TIMESTAMP - P.CreationDate AS DaysAgo,
         Y.UserId,
         Y.DisplayName,
         T.TagCount,

@@ -58,7 +58,7 @@ JOIN
      JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
      WHERE 
-        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)) recent_posts ON tu.UserId = recent_posts.OwnerUserId AND recent_posts.RecentPost = 1
+        p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 month')) recent_posts ON tu.UserId = recent_posts.OwnerUserId AND recent_posts.RecentPost = 1
 JOIN 
     PostTypes r ON recent_posts.Name = r.Name
 WHERE 

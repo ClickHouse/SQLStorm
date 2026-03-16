@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         Comments c ON p.Id = c.PostId
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY
+        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days'
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.CreationDate, p.Score, u.DisplayName
 ),

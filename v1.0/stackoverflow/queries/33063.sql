@@ -26,7 +26,7 @@ PopularTags AS (
         Posts P ON P.Tags ILIKE CONCAT('%', T.TagName, '%')
     WHERE 
         P.PostTypeId = 1  
-        AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        AND P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 
     GROUP BY 
         T.TagName
     ORDER BY 

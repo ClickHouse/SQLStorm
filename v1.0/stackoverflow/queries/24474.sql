@@ -15,7 +15,7 @@ WITH RecentPostActivity AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ),
 
 PostVoteCounts AS (
@@ -84,7 +84,7 @@ LEFT JOIN
 LEFT JOIN 
     UserBadges ub ON rpa.OwnerUserId = ub.UserId
 WHERE 
-    (pcr.CloseDate IS NULL OR pcr.CloseDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    (pcr.CloseDate IS NULL OR pcr.CloseDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
 ORDER BY 
     rpa.LastActivityDate DESC,
     rpa.Score DESC

@@ -12,7 +12,7 @@ WITH ranked_posts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId 
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR AND
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' AND
         p.Score > 0
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId

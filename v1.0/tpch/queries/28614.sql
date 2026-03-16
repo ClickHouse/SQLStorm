@@ -21,7 +21,7 @@ JOIN
 WHERE 
     p.p_name LIKE 'widget%'
     AND o.o_orderstatus = 'O'
-    AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY 
     s.s_name, p.p_name, p.p_retailprice
 ORDER BY 

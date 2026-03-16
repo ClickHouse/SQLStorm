@@ -24,7 +24,7 @@ WITH RecentPosts AS (
          WHERE PostTypeId = 2 
          GROUP BY ParentId) a ON p.Id = a.ParentId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
         AND p.PostTypeId IN (1, 2)  
     GROUP BY 
         p.Id, p.Title, p.Body, p.Tags, p.CreationDate, u.DisplayName, a.AnswerCount

@@ -17,15 +17,15 @@ WITH RECURSIVE customer_hierarchy AS (
 date_analysis AS (
     SELECT 
         d.d_date,
-        toYear(d.d_date) AS year,
-        toMonth(d.d_date) AS month,
+        EXTRACT(YEAR FROM d.d_date) AS year,
+        EXTRACT(MONTH FROM d.d_date) AS month,
         COUNT(ws.ws_order_number) AS total_sales
     FROM 
         date_dim d
     LEFT JOIN 
         web_sales ws ON d.d_date_sk = ws.ws_sold_date_sk
     WHERE 
-        d.d_date BETWEEN toDate('2022-01-01') AND toDate('2022-12-31')
+        d.d_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31'
     GROUP BY 
         d.d_date, year, month
 ),

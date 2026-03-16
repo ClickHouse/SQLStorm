@@ -20,7 +20,7 @@ WITH PostActivity AS (
     LEFT JOIN 
         Badges B ON P.OwnerUserId = B.UserId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.LastActivityDate
 )

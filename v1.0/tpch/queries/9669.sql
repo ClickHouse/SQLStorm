@@ -9,7 +9,7 @@ part_line_item AS (
     SELECT p.p_partkey, p.p_name, l.l_orderkey, l.l_quantity, l.l_extendedprice
     FROM part p
     JOIN lineitem l ON p.p_partkey = l.l_partkey
-    WHERE l.l_shipdate >= toDate('1997-01-01') AND l.l_shipdate < toDate('1998-01-01')
+    WHERE l.l_shipdate >= DATE '1997-01-01' AND l.l_shipdate < DATE '1998-01-01'
 ),
 aggregated_data AS (
     SELECT ns.n_name, pl.p_name, SUM(pl.l_extendedprice) AS total_revenue, COUNT(DISTINCT pl.l_orderkey) AS order_count
@@ -23,4 +23,4 @@ WHERE ad.total_revenue > (
     SELECT AVG(total_revenue) FROM aggregated_data
 )
 ORDER BY ad.total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

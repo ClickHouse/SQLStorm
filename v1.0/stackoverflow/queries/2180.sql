@@ -12,7 +12,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01' as date) - interval '30 days'
     GROUP BY 
         p.Id
 ),
@@ -40,7 +40,7 @@ ClosedPosts AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes r ON CAST(ph.Comment AS int) = r.Id
+        CloseReasonTypes r ON ph.Comment::int = r.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11)
     GROUP BY 
@@ -82,4 +82,4 @@ WHERE
     rp.Score > (SELECT AVG(Score) FROM Posts) 
 ORDER BY 
     rp.CreationDate DESC 
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -26,8 +26,8 @@ CustomerSegmentation AS (
     LEFT JOIN 
         household_demographics hd ON cd.cd_demo_sk = hd.hd_demo_sk
     JOIN 
-        MonthlySales ms ON ms.SalesYear = toYear(toDate('2002-10-01')) 
-                          AND ms.SalesMonth = toMonth(toDate('2002-10-01'))
+        MonthlySales ms ON ms.SalesYear = EXTRACT(YEAR FROM DATE '2002-10-01') 
+                          AND ms.SalesMonth = EXTRACT(MONTH FROM DATE '2002-10-01')
     GROUP BY 
         cd.cd_gender, cd.cd_marital_status, hd.hd_income_band_sk
 ),

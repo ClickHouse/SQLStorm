@@ -7,7 +7,7 @@ WITH UserReputation AS (
 PostActivity AS (
     SELECT p.OwnerUserId, COUNT(p.Id) AS PostCount, SUM(p.Score) AS TotalScore, AVG(p.ViewCount) AS AvgViewCount
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY p.OwnerUserId
 ),
 ActiveUsers AS (
@@ -15,7 +15,7 @@ ActiveUsers AS (
     FROM Users u
     JOIN UserReputation ur ON u.Id = ur.UserId
     JOIN PostActivity pa ON u.Id = pa.OwnerUserId
-    WHERE u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH AND u.Reputation > 1000
+    WHERE u.LastAccessDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month' AND u.Reputation > 1000
 )
 SELECT au.UserId, au.DisplayName, au.Reputation, au.BadgeCount, au.PostCount, au.TotalScore, au.AvgViewCount, 
        CASE 

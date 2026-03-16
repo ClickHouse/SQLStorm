@@ -16,7 +16,7 @@ RecentPostStats AS (
         AVG(P.Score) AS AvgScore,
         MAX(P.CreationDate) AS LastPostDate
     FROM Posts P
-    WHERE P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY P.OwnerUserId
 ),
 ClosedPosts AS (
@@ -27,7 +27,7 @@ ClosedPosts AS (
         C.Name AS CloseReason
     FROM PostHistory PH
     JOIN CloseReasonTypes C ON PH.PostHistoryTypeId = 10 AND PH.Comment IS NOT NULL
-    WHERE PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    WHERE PH.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
 )
 SELECT 
     UR.DisplayName,

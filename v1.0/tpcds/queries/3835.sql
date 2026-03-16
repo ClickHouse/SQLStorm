@@ -70,4 +70,4 @@ WHERE
     (hd.hd_buy_potential IS NOT NULL OR hd.hd_buy_potential = 'High')
 ORDER BY 
     cd.total_sales DESC
-LIMIT 15;
+FETCH FIRST 15 ROWS ONLY;

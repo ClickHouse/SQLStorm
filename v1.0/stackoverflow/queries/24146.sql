@@ -13,7 +13,7 @@ WITH RecentActivity AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
 ActiveUsers AS (
     SELECT 
@@ -60,4 +60,4 @@ ORDER BY
     r.CreationDate DESC,
     COALESCE(au.PostCount, 0) DESC,
     r.Score DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -53,7 +53,7 @@ SELECT
 FROM 
     TopCustomers tc
 LEFT JOIN 
-    SalesByMonth s_monthly ON s_monthly.d_month_seq = toMonth(toDate('2002-10-01'))
+    SalesByMonth s_monthly ON s_monthly.d_month_seq = EXTRACT(MONTH FROM DATE '2002-10-01')
 LEFT JOIN 
     SalesByCategory s_category ON s_category.i_category IN (
         SELECT i.i_category

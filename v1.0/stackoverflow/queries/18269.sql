@@ -1,6 +1,6 @@
 SELECT 
-    p.Title,
-    p.ViewCount,
+    any(p.Title),
+    any(p.ViewCount),
     u.DisplayName,
     COUNT(c.Id) AS CommentCount
 FROM 
@@ -14,5 +14,5 @@ WHERE
 GROUP BY 
     p.Id, u.DisplayName
 ORDER BY 
-    p.CreationDate DESC
+    any(p.CreationDate) DESC
 LIMIT 10;

@@ -72,4 +72,4 @@ WHERE
     sct.rn = 1
 ORDER BY 
     sct.total_sales DESC, hv.total_spent DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -53,4 +53,4 @@ WHERE
     AND p.p_size BETWEEN 10 AND 20
 ORDER BY 
     ns.n_name, rs.total_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

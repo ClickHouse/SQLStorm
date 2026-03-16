@@ -58,4 +58,4 @@ WHERE
 ORDER BY 
     ti.total_sales DESC, 
     ci.c_customer_id
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

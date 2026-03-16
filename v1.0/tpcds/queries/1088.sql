@@ -71,4 +71,4 @@ WHERE
     AND rs.total_quantity >= (SELECT AVG(total_quantity) FROM sales_data)
 ORDER BY 
     rs.profit_rank, cs.c_customer_sk DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

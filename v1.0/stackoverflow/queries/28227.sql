@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         Badges b ON U.Id = b.UserId
     WHERE 
         p.PostTypeId = 1 AND  
-        p.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR 
+        p.CreationDate > DATE '2024-10-01' - INTERVAL '1 year' 
     GROUP BY 
         p.Id, U.DisplayName, p.Title, p.Body, p.Score, p.CreationDate
 ),

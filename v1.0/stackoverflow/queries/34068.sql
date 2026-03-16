@@ -24,11 +24,11 @@ RecentActivity AS (
     FROM 
         Posts P
     LEFT JOIN 
-        Comments C ON P.Id = C.PostId AND C.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        Comments C ON P.Id = C.PostId AND C.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     LEFT JOIN 
-        Votes V ON P.Id = V.PostId AND V.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        Votes V ON P.Id = V.PostId AND V.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     WHERE 
-        P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         P.Id
 ), 

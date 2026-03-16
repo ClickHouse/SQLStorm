@@ -35,7 +35,7 @@ LatestVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY 
+        v.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 
 ),
 RecentComments AS (
     SELECT 
@@ -44,7 +44,7 @@ RecentComments AS (
     FROM 
         Comments c
     WHERE 
-        c.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 15 DAY 
+        c.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '15 days' 
     GROUP BY 
         c.PostId
 )

@@ -17,7 +17,7 @@ WITH RecentPosts AS (
          FROM Comments 
          GROUP BY PostId) c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+        p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
 )
 
 SELECT 
@@ -52,4 +52,4 @@ WHERE
     r.rn = 1
 ORDER BY 
     r.CreationDate DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

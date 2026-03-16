@@ -22,4 +22,4 @@ WHERE
     AND p.p_retailprice > 100 
 ORDER BY 
     p.p_partkey DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

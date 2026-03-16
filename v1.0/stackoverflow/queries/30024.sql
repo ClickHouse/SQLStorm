@@ -40,7 +40,7 @@ ClosedPostHistories AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes ctr ON CAST(ph.Comment AS int) = ctr.Id
+        CloseReasonTypes ctr ON ph.Comment::int = ctr.Id
     JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 

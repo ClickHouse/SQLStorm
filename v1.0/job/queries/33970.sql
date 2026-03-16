@@ -65,4 +65,4 @@ LEFT JOIN
     MoviesWithInfo mi ON mh.movie_id = mi.movie_id
 ORDER BY
     mh.production_year DESC, actor_rank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -6,7 +6,7 @@ WITH RECURSIVE OrderHierarchy AS (
     SELECT c.c_custkey, c.c_name, c.c_acctbal, SUM(oh.o_totalprice) AS total_spent, 
            AVG(oh.o_totalprice) AS avg_order_value, 
            COUNT(oh.o_orderkey) AS order_count,
-           COUNT(DISTINCT CASE WHEN oh.o_orderdate >= cast('1998-10-01' as date) - INTERVAL 30 DAY THEN oh.o_orderkey END) AS recent_orders
+           COUNT(DISTINCT CASE WHEN oh.o_orderdate >= cast('1998-10-01' as date) - INTERVAL '30 days' THEN oh.o_orderkey END) AS recent_orders
     FROM customer c
     LEFT JOIN OrderHierarchy oh ON c.c_custkey = oh.o_custkey
     GROUP BY c.c_custkey, c.c_name, c.c_acctbal

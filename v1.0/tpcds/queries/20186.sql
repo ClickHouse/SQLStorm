@@ -55,4 +55,4 @@ WHERE
 ORDER BY 
     COALESCE(s.total_profit, 0) DESC, 
     cte.gender_rank NULLS LAST
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

@@ -59,4 +59,4 @@ WHERE
 ORDER BY 
     r.production_year DESC,
     ac.movie_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

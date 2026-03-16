@@ -52,7 +52,7 @@ SELECT
     COUNT(DISTINCT c.c_customer_sk) AS customer_count,
     AVG(CASE 
             WHEN c.c_birth_year IS NULL THEN 0
-            ELSE toYear(toDate('2002-10-01')) - c.c_birth_year
+            ELSE EXTRACT(YEAR FROM DATE '2002-10-01') - c.c_birth_year
         END) AS average_age,
     SUM(COALESCE(rs.ws_sales_price, 0)) AS total_sales,
     SUM(COALESCE(tr.total_returned, 0)) AS total_returns

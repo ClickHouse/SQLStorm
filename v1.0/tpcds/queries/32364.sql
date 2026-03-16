@@ -52,7 +52,7 @@ SELECT f.c_customer_sk,
        f.total_sales - f.total_returns AS net_spent,
        CASE 
            WHEN f.total_sales = 0 THEN NULL
-           ELSE ROUND((f.total_returns / CAST(f.total_sales AS numeric)) * 100, 2)
+           ELSE ROUND((f.total_returns / f.total_sales::numeric) * 100, 2)
        END AS return_percentage,
        RANK() OVER (ORDER BY f.total_sales DESC) AS sales_rank
 FROM FinalMetrics f

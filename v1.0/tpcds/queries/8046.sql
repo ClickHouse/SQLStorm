@@ -43,4 +43,4 @@ JOIN
     customer c ON hvc.c_customer_sk = c.c_customer_sk
 ORDER BY 
     hvc.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

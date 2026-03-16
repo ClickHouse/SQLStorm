@@ -6,7 +6,7 @@ WITH RankedSales AS (
     FROM 
         lineitem
     WHERE 
-        l_shipdate >= toDate('1996-01-01') AND l_shipdate < toDate('1997-01-01')
+        l_shipdate >= DATE '1996-01-01' AND l_shipdate < DATE '1997-01-01'
     GROUP BY 
         l_partkey
 ), 
@@ -44,4 +44,4 @@ WHERE
     AND (fs.s_acctbal IS NOT NULL OR rs.total_sales IS NOT NULL)
 ORDER BY 
     total_sales DESC NULLS LAST
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

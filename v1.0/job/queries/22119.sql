@@ -51,4 +51,4 @@ LEFT JOIN ActorMovies ac ON ac.movie_id = rt.title_id
 LEFT JOIN CompanyTitles ct ON ct.movie_id = rt.title_id
 WHERE rt.rank_per_year <= 5
 ORDER BY rt.production_year DESC, rt.rank_per_year
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

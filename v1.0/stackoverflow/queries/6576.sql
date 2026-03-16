@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > CURRENT_DATE - INTERVAL 30 DAY 
+        p.CreationDate > CURRENT_DATE - INTERVAL '30 days' 
     GROUP BY 
         p.Id, p.Title, u.DisplayName
 ),
@@ -49,6 +49,6 @@ JOIN
 JOIN 
     PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
 WHERE 
-    ph.CreationDate > CURRENT_DATE - INTERVAL 7 DAY 
+    ph.CreationDate > CURRENT_DATE - INTERVAL '7 days' 
 ORDER BY 
     Score DESC, pp.CommentCount DESC;

@@ -23,8 +23,8 @@ OrderSummary AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01') AND 
-        o.o_orderdate < toDate('1997-01-01')
+        o.o_orderdate >= DATE '1996-01-01' AND 
+        o.o_orderdate < DATE '1997-01-01'
     GROUP BY 
         o.o_orderkey
 ),
@@ -53,7 +53,7 @@ SELECT
     (SELECT COUNT(DISTINCT l.l_partkey) 
      FROM lineitem l 
      JOIN orders o ON o.o_orderkey = l.l_orderkey 
-     WHERE l.l_shipdate > toDate('1996-07-01')) AS total_distinct_parts,
+     WHERE l.l_shipdate > DATE '1996-07-01') AS total_distinct_parts,
     (SELECT AVG(total_revenue) 
      FROM OrderSummary) AS avg_order_revenue
 FROM 

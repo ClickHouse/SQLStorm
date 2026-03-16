@@ -12,7 +12,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId
 ), UserReputation AS (
@@ -42,7 +42,7 @@ JOIN
     UserReputation ur ON up.OwnerUserId = ur.UserId
 WHERE 
     ur.Reputation > 1000
-    AND (ur.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR OR ur.BadgeClass = 1)
+    AND (ur.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 years' OR ur.BadgeClass = 1)
     AND EXISTS (
         SELECT 1 
         FROM Votes v 

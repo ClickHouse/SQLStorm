@@ -52,4 +52,4 @@ LEFT JOIN
     CustomerAddress a ON f.c_customer_sk = a.ca_address_sk
 ORDER BY 
     f.total_sales DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

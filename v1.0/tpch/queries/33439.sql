@@ -15,7 +15,7 @@ WITH RECURSIVE regional_sales AS (
     JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
     JOIN part p ON ps.ps_partkey = p.p_partkey
     JOIN lineitem l ON p.p_partkey = l.l_partkey
-    WHERE l_shipdate >= (SELECT MAX(l_shipdate) FROM lineitem) - INTERVAL 1 YEAR
+    WHERE l_shipdate >= (SELECT MAX(l_shipdate) FROM lineitem) - INTERVAL '1 year'
     GROUP BY n.n_nationkey, r.r_regionkey
 ), customer_summary AS (
     SELECT c.c_custkey, c.c_name, SUM(o.o_totalprice) AS total_spent

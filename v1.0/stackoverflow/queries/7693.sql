@@ -22,7 +22,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        p.CreationDate > CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate > CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, u.DisplayName, p.CreationDate, p.ViewCount, p.Score, p.PostTypeId
 ),

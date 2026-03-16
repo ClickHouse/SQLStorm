@@ -56,4 +56,4 @@ LEFT JOIN
     PromotionsUsed pu ON co.total_spent > 1000 /* Customers who spent more than $1000 */
 ORDER BY 
     co.total_spent DESC, pu.total_profit DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

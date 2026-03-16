@@ -33,7 +33,7 @@ PostStatistics AS (
         P.CreationDate,
         COUNT(CASE WHEN C.PostId IS NOT NULL THEN 1 END) AS CommentCount,
         COUNT(DISTINCT CASE WHEN V.Id IS NOT NULL THEN V.Id END) AS VoteCount,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - P.CreationDate)) / 3600) AS AvgHoursSinceCreation
+        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - P.CreationDate)) / 3600) AS AvgHoursSinceCreation
     FROM 
         Posts P
     LEFT JOIN 

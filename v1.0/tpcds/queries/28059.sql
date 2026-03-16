@@ -55,4 +55,4 @@ FROM
     FormattedDetails
 ORDER BY 
     total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

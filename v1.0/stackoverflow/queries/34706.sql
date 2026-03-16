@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         Votes V ON P.Id = V.PostId
     WHERE 
         P.PostTypeId = 1 
-        AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
     GROUP BY 
         P.Id, P.Title, P.CreationDate, U.DisplayName
 ),
@@ -46,7 +46,7 @@ SELECT
     RAP.LatestCommentDate,
     CASE 
         WHEN RAP.LatestCommentDate IS NULL THEN 'No Comments'
-        WHEN RAP.LatestCommentDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Inactive'
+        WHEN RAP.LatestCommentDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 DAY' THEN 'Inactive'
         ELSE 'Active'
     END AS ActivityStatus
 FROM 
@@ -57,4 +57,4 @@ WHERE
     RP.rn = 1
 ORDER BY 
     RP.NetVotes DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

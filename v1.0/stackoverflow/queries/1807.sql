@@ -59,7 +59,7 @@ LEFT JOIN
 JOIN 
     UserReputation ur ON owner.Id = ur.UserId
 WHERE 
-    p.CreationDate > (toDate('2024-10-01') - INTERVAL 1 YEAR)
+    p.CreationDate > (DATE '2024-10-01' - INTERVAL '1 year')
     AND (cr.CloseCount IS NULL OR cr.CloseCount = 0)
 ORDER BY 
     ps.CommentRank, ps.CommentCount DESC;

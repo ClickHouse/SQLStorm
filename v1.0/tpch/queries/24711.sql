@@ -23,7 +23,7 @@ HighValueOrders AS (
         o.o_totalprice > (
             SELECT AVG(o2.o_totalprice)
             FROM orders o2
-            WHERE o2.o_orderdate BETWEEN toDate('1994-01-01') AND toDate('1994-12-31')
+            WHERE o2.o_orderdate BETWEEN DATE '1994-01-01' AND DATE '1994-12-31'
         )
 ),
 AggregatedLineItems AS (
@@ -86,7 +86,7 @@ LEFT JOIN
             ps.ps_availqty > (SELECT AVG(ps2.ps_availqty) FROM partsupp ps2)
         ORDER BY 
             ps.ps_supplycost 
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     )
 WHERE 
     (na.nation_count >= 5 OR na.total_acctbal IS NULL)

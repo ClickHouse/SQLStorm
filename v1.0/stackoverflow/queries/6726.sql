@@ -49,7 +49,7 @@ PostStats AS (
     LEFT JOIN 
         PostHistory h ON tp.PostId = h.PostId
     WHERE 
-        h.CreationDate >= now64(6) - INTERVAL 30 DAY
+        h.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
 )
 SELECT 
     Title,

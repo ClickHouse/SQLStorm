@@ -51,7 +51,7 @@ FROM Posts p
 LEFT JOIN PostVoteCounts pc ON p.Id = pc.PostId
 LEFT JOIN AcceptedAnswers ah ON p.Id = ah.QuestionId
 LEFT JOIN PostHistoryDetails phd ON p.Id = phd.PostId
-WHERE p.CreationDate > CURRENT_DATE - INTERVAL 1 YEAR
+WHERE p.CreationDate > CURRENT_DATE - INTERVAL '1 year'
 AND (p.ViewCount > 100 OR pc.TotalVotes > 10)
 ORDER BY p.Score DESC, phd.LastModifiedDate DESC
 LIMIT 50;

@@ -38,7 +38,7 @@ PostDetails AS (
     LEFT JOIN 
         PostHistory H ON P.Id = H.PostId
     WHERE 
-        P.CreationDate > toDate('2024-10-01') - INTERVAL 1 YEAR
+        P.CreationDate > DATE '2024-10-01' - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.AcceptedAnswerId, A.OwnerDisplayName, 
         P.Score, P.ViewCount
@@ -81,4 +81,4 @@ WHERE
     (ReputationRank <= 10 OR BadgeCount > 5) 
 ORDER BY 
     Score DESC, UserName ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

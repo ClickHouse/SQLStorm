@@ -60,4 +60,4 @@ WHERE
     (d.cd_dep_count IS NULL OR d.cd_gender = 'F')
 ORDER BY 
     return_percentage DESC, total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

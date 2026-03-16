@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 5 YEAR 
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '5 years' 
         AND (p.Score IS NOT NULL OR p.ViewCount > 100)
 ), 
 PopularPosts AS (

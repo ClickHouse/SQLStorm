@@ -55,7 +55,7 @@ SELECT
 FROM 
     high_value_customers hc
 JOIN 
-    monthly_sales ms ON ms.sales_month = DATE_TRUNC('month', CAST('2002-10-01' AS date))
+    monthly_sales ms ON ms.sales_month = DATE_TRUNC('month', '2002-10-01'::date)
 ORDER BY 
     ms.total_monthly_sales DESC
 LIMIT 10;

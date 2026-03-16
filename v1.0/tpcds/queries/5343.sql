@@ -70,4 +70,4 @@ ORDER BY
     cs.total_spent DESC, 
     ts.d_year DESC, 
     ts.d_month_seq DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

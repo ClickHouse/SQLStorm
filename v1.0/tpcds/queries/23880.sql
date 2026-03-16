@@ -80,4 +80,4 @@ WHERE
     )
 ORDER BY 
     ra.total_net_loss DESC, rhvc.rn
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

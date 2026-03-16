@@ -35,8 +35,8 @@ SELECT
     TM.production_year,
     TM.actor_count,
     TM.actors,
-    COALESCE(COUNT(DISTINCT mc.company_idCAST() AS TEXT), '0') AS production_companies,
-    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', 'CAST() AS TEXT), 'N/A') AS company_names
+    COALESCE(COUNT(DISTINCT mc.company_id)::TEXT, '0') AS production_companies,
+    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cn.name))), ', ')::TEXT, 'N/A') AS company_names
 FROM 
     TopMovies TM
 LEFT JOIN 

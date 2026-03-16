@@ -20,7 +20,7 @@ WITH RecursiveCTE AS (
         orders o ON l.l_orderkey = o.o_orderkey
     WHERE 
         r.r_comment LIKE '%specific%' 
-        AND (o.o_orderdate IS NULL OR o.o_orderdate >= toDate('1996-01-01'))
+        AND (o.o_orderdate IS NULL OR o.o_orderdate >= DATE '1996-01-01')
     GROUP BY 
         n.n_name, r.r_name
     HAVING 

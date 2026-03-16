@@ -27,4 +27,4 @@ HAVING
     SUM(l.l_quantity) > 100
 ORDER BY 
     total_quantity DESC, avg_price ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

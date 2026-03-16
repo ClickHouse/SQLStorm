@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
         AND p.Score IS NOT NULL
 ),
 UserBadges AS (

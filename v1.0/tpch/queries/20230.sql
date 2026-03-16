@@ -4,9 +4,9 @@ WITH RankedOrders AS (
         o.o_orderkey,
         o.o_orderdate,
         o.o_totalprice,
-        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS rn
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS rn
     FROM orders o
-    WHERE o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1998-10-01')
+    WHERE o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1998-10-01'
 ),
 TopOrders AS (
     SELECT 

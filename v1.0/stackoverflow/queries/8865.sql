@@ -15,7 +15,7 @@ WITH PopularPosts AS (
     LEFT JOIN 
         Tags t ON t.ExcerptPostId = p.Id
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
         AND p.PostTypeId = 1 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount

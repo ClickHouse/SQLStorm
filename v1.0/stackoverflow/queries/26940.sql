@@ -41,7 +41,7 @@ PostActivity AS (
     LEFT JOIN 
         UserBadges pb ON p.OwnerUserId = pb.UserId
     WHERE 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '30 DAY'
 ),
 TopTags AS (
     SELECT 

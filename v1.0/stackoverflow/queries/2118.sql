@@ -68,4 +68,4 @@ WHERE
     rp.UserRank = 1
 ORDER BY 
     rp.CreationDate DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

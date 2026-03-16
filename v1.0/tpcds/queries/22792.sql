@@ -55,4 +55,4 @@ SELECT
 FROM combined_data
 GROUP BY cd_gender
 ORDER BY overall_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

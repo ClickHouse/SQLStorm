@@ -29,7 +29,7 @@ PostActivity AS (
         (SELECT COUNT(H.Id) FROM PostHistory H WHERE H.PostId = P.Id AND H.PostHistoryTypeId IN (10, 11)) AS ClosureCount
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id 
-    WHERE P.CreationDate >= NOW() - INTERVAL 30 DAY
+    WHERE P.CreationDate >= NOW() - INTERVAL '30 days'
 ),
 BadgeSummary AS (
     SELECT 

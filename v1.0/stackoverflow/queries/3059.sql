@@ -48,4 +48,4 @@ JOIN UserVoteCounts uvc ON pd.PostId IN (
 )
 WHERE pd.PostRank <= 10
 ORDER BY pd.CreationDate DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

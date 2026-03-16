@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (2, 3) 
     LEFT JOIN arrayJoin(splitByString('><', p.Tags)) AS tag ON tag IS NOT NULL
     LEFT JOIN Tags t ON t.TagName = tag
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.DisplayName, pt.Name
 ),
 TopPosts AS (

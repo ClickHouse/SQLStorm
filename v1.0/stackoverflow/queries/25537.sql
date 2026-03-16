@@ -10,7 +10,7 @@ WITH PostDetails AS (
         p.Tags,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        COALESCE(MAX(b.Date), toDate('1970-01-01')) AS LastBadgeDate
+        COALESCE(MAX(b.Date), DATE '1970-01-01') AS LastBadgeDate
     FROM 
         Posts p
     JOIN 
@@ -20,7 +20,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, u.DisplayName, p.Body, p.CreationDate, p.ViewCount, p.Score, p.Tags
 ),

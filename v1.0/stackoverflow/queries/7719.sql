@@ -24,7 +24,7 @@ TopUsers AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName
     HAVING 
@@ -58,4 +58,4 @@ LEFT JOIN
     PostHistorySummary ph ON tp.PostId = ph.PostId
 ORDER BY 
     u.TotalScore DESC, tp.Score DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

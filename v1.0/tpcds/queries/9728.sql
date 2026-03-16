@@ -54,4 +54,4 @@ JOIN
     item i ON hi.ws_item_sk = i.i_item_sk
 ORDER BY 
     hi.total_net_profit DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

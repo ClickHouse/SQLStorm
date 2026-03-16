@@ -4,7 +4,7 @@ WITH RECURSIVE movie_hierarchy AS (
         m.title AS movie_title,
         m.production_year,
         0 AS level,
-        CAST(NULL AS integer) AS parent_id
+        NULL::integer AS parent_id
     FROM 
         aka_title m
     WHERE 

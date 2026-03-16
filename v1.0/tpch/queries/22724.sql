@@ -66,7 +66,7 @@ LEFT JOIN
             WHERE p.price_rank = 1
         ) 
         ORDER BY ps_supplycost DESC 
-        LIMIT 1
+        FETCH FIRST 1 ROW ONLY
     )
 LEFT JOIN 
     filtered_nations np ON c.c_nationkey = np.n_nationkey
@@ -74,4 +74,4 @@ WHERE
     (np.region_name IS NOT NULL OR co.max_order_price > 500.00)
 ORDER BY 
     c.c_custkey DESC 
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

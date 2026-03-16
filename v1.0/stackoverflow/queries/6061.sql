@@ -7,7 +7,7 @@ WITH RankedPosts AS (
            ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ), PopularResponses AS (
     SELECT p.Id AS ResponseId, 
            p.ParentId, 
@@ -21,7 +21,7 @@ WITH RankedPosts AS (
            COUNT(CASE WHEN v.VoteTypeId = 2 THEN 1 END) AS UpVotes, 
            COUNT(CASE WHEN v.VoteTypeId = 3 THEN 1 END) AS DownVotes
     FROM Votes v
-    WHERE v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
     GROUP BY v.PostId
 )
 SELECT rp.PostId, 

@@ -67,4 +67,4 @@ AND
     (cs.total_sales > 1000 OR cs.total_returns > 50)
 ORDER BY 
     customer_value_segment, c.c_last_name, c.c_first_name
-LIMIT 25 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 25 ROWS ONLY;

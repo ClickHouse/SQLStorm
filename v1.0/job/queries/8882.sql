@@ -61,4 +61,4 @@ WHERE
     mr.production_year >= 2000
 ORDER BY 
     mr.total_cast DESC, mr.production_year DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

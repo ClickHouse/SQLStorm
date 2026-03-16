@@ -48,7 +48,7 @@ FROM NULLChecks n
 LEFT JOIN cast_info c ON n.actor_id = c.person_id
 LEFT JOIN aka_title m ON c.movie_id = m.id
 WHERE m.production_year >= 2000
-  AND m.production_year <= toYear(cast('2024-10-01' as date))
+  AND m.production_year <= EXTRACT(YEAR FROM cast('2024-10-01' as date))
   AND m.kind_id IN (SELECT id FROM kind_type WHERE kind = 'feature')
 GROUP BY n.normalized_actor_name
 HAVING COUNT('1') > 5

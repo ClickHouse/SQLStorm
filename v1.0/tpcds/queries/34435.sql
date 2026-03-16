@@ -57,4 +57,4 @@ WHERE
     AND tc.purchase_count > 0
 ORDER BY 
     total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserDetails AS (
     SELECT 
@@ -83,4 +83,4 @@ WHERE
     EXISTS (SELECT 1 FROM PostHistory ph WHERE ph.PostId = fp.PostId AND ph.PostHistoryTypeId IN (10, 11))
 ORDER BY 
     fp.CreationDate DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

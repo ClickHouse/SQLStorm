@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
         COALESCE(NULLIF(UPPER(p.Title), ''), 'Untitled') AS SafeTitle
     FROM Posts p
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 UserPostStats AS (
     SELECT 
@@ -53,4 +53,4 @@ JOIN UserPostStats us ON u.Id = us.UserId
 LEFT JOIN ClosedPosts c ON r.PostId = c.PostId
 WHERE r.Rank <= 5
 ORDER BY r.ViewCount DESC, CloseCount DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

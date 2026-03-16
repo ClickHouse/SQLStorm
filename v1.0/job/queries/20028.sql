@@ -66,7 +66,7 @@ filtered_movies AS (
     LEFT JOIN 
         movie_keywords mk ON t.id = mk.movie_id
     WHERE 
-        (toYear(cast('2024-10-01' as date)) - t.production_year) < 10
+        (EXTRACT(YEAR FROM cast('2024-10-01' as date)) - t.production_year) < 10
         OR t.title ILIKE '%(special)%'
 )
 SELECT 

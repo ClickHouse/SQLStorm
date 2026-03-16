@@ -8,7 +8,7 @@ ActivePosts AS (
     SELECT p.Id AS PostId, p.Title, p.CreationDate, p.Score, p.ViewCount, p.OwnerUserId
     FROM Posts p
     INNER JOIN UserReputation ur ON p.OwnerUserId = ur.UserId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND p.PostTypeId = 1 
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND p.PostTypeId = 1 
 ), 
 TopTaggedPosts AS (
     SELECT ap.PostId, SUM(t.Count) AS TagCount

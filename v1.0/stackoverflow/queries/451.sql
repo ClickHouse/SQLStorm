@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.Score > 0 
-        AND p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 RecentVotes AS (
     SELECT 
@@ -23,7 +23,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+        v.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 
         v.PostId, v.VoteTypeId
 ),

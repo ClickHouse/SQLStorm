@@ -29,6 +29,6 @@ LEFT JOIN orders o ON li.l_orderkey = o.o_orderkey
 LEFT JOIN customer c ON o.o_custkey = c.c_custkey
 WHERE s.s_acctbal IS NOT NULL
   AND o.o_orderstatus IN ('F', 'O')
-  AND li.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+  AND li.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY r.r_name, s.s_acctbal
 ORDER BY total_sales DESC, avg_acct_balance DESC;

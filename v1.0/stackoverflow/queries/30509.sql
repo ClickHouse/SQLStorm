@@ -11,7 +11,7 @@ WITH RecentPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 3 MONTH
+        p.CreationDate >= CURRENT_DATE - INTERVAL '3 MONTH'
 ),
 UserReputation AS (
     SELECT 

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
         AND p.Score > 0
 ),
 MostActiveUsers AS (
@@ -41,7 +41,7 @@ Mortuary AS (
         PostHistory ph
     WHERE 
         ph.PostHistoryTypeId IN (10, 11) 
-        AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
+        AND ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 year'
 ),
 FinalReport AS (
     SELECT 

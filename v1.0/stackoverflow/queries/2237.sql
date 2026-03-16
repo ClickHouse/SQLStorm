@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         Posts p
     WHERE 
         p.PostTypeId IN (1, 2) AND
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 PostVotes AS (
     SELECT 
@@ -49,7 +49,7 @@ SELECT
         ELSE 'Other Posts'
     END AS PostCategory,
     CASE 
-        WHEN p.CreationDate < cast('2024-10-01' as date) - INTERVAL 6 MONTH THEN 'Older Post'
+        WHEN p.CreationDate < cast('2024-10-01' as date) - INTERVAL '6 months' THEN 'Older Post'
         ELSE 'Recent Post'
     END AS PostAge
 FROM 

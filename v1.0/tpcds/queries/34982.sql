@@ -66,8 +66,8 @@ SELECT
 FROM
     monthly_sales ms
 JOIN
-    top_customers tc ON ms.d_year = toYear(toDate('2002-10-01')) 
-                     AND ms.d_month_seq = toMonth(toDate('2002-10-01'))
+    top_customers tc ON ms.d_year = EXTRACT(YEAR FROM DATE '2002-10-01') 
+                     AND ms.d_month_seq = EXTRACT(MONTH FROM DATE '2002-10-01')
 LEFT JOIN
     date_dim d ON ms.d_year = d.d_year AND ms.d_month_seq = d.d_month_seq
 WHERE 

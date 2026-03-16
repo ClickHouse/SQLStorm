@@ -62,6 +62,6 @@ FinalOutput AS (
 )
 SELECT 
     *,
-    (SELECT COUNT(*) FROM Posts WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR) AS TotalPostsLastYear
+    (SELECT COUNT(*) FROM Posts WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year') AS TotalPostsLastYear
 FROM 
     FinalOutput;

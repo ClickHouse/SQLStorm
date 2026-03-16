@@ -16,8 +16,8 @@ AgeGroups AS (
         c_birth_year,
         cd_gender,
         CASE 
-            WHEN toYear(cast('2002-10-01' as date)) - c_birth_year < 30 THEN 'Under 30'
-            WHEN toYear(cast('2002-10-01' as date)) - c_birth_year BETWEEN 30 AND 60 THEN '30-60'
+            WHEN EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c_birth_year < 30 THEN 'Under 30'
+            WHEN EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c_birth_year BETWEEN 30 AND 60 THEN '30-60'
             ELSE '60 and above'
         END AS age_group,
         SUM(total_orders) AS total_orders,

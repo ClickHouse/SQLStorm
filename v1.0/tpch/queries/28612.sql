@@ -19,11 +19,11 @@ JOIN
     lineitem l ON l.l_partkey = p.p_partkey
 WHERE 
     p.p_retailprice > 50.00
-    AND l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    AND l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY 
     p.p_name, r.r_name, p.p_comment
 HAVING 
     COUNT(DISTINCT s.s_suppkey) > 5
 ORDER BY 
     avg_price_per_unit DESC, supplier_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

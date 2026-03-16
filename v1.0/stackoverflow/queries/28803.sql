@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
     GROUP BY 
         p.Id, p.Title, p.Body, p.ViewCount, p.CreationDate, pt.Name
 ), 
@@ -35,7 +35,7 @@ SELECT
     tq.PostId,
     tq.Title,
     tq.ViewCount,
-    toDayOfMonth((toDateTime64('2024-10-01 12:34:56', 6) - tq.CreationDate)) AS DaysSincePosted,
+    EXTRACT(DAY FROM (cast('2024-10-01 12:34:56' as timestamp) - tq.CreationDate)) AS DaysSincePosted,
     (SELECT 
          COUNT(*) 
      FROM 

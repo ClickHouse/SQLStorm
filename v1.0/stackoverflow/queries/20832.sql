@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
         AND p.ViewCount IS NOT NULL
 ),
 PostStatistics AS (
@@ -39,7 +39,7 @@ ClosedPostReasons AS (
     FROM 
         PostHistory ph
     LEFT JOIN 
-        CloseReasonTypes cr ON CAST(cr.Id AS text) = ph.Comment
+        CloseReasonTypes cr ON cr.Id::text = ph.Comment
     GROUP BY 
         ph.PostId
 ),
@@ -53,7 +53,7 @@ UserPostLinkages AS (
     JOIN 
         Posts p ON pl.PostId = p.Id
     WHERE 
-        p.CreationDate < cast('2024-10-01' as date) - INTERVAL 6 MONTH
+        p.CreationDate < cast('2024-10-01' as date) - INTERVAL '6 months'
     GROUP BY 
         pl.PostId, pl.RelatedPostId
 ),

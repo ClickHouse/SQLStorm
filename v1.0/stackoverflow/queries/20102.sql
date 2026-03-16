@@ -17,10 +17,10 @@ PostDetails AS (
         p.OwnerUserId,
         p.Title,
         p.CreationDate,
-        COALESCE(p.ClosedDate, toDateTime64('1970-01-01', 6)) AS ClosureDate,
+        COALESCE(p.ClosedDate, CAST('1970-01-01' AS TIMESTAMP)) AS ClosureDate,
         DENSE_RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank,
         length(splitByString(',', p.Tags), 1) AS TagCount,
-        toYear(p.CreationDate) AS CreationYear
+        EXTRACT(YEAR FROM p.CreationDate) AS CreationYear
     FROM Posts p
 ),
 PostHistoryCounts AS (
@@ -41,7 +41,7 @@ ActiveUsers AS (
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN PostHistoryCounts ph ON p.Id = ph.PostId
     LEFT JOIN UserReputation uv ON u.Id = uv.UserId
-    WHERE u.LastAccessDate >= CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR
+    WHERE u.LastAccessDate >= CAST('2024-10-01' AS DATE) - INTERVAL '1 year'
     GROUP BY u.Id, u.DisplayName
 ),
 TopUsers AS (

@@ -1,7 +1,7 @@
 SELECT 
     SUM(l_extendedprice * (1 - l_discount)) AS revenue,
     n_name,
-    toYear(o_orderdate) AS o_year
+    extract(YEAR FROM o_orderdate) AS o_year
 FROM 
     part p
 JOIN 
@@ -15,8 +15,8 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate >= toDate('1995-01-01') 
-    AND o.o_orderdate < toDate('1996-01-01')
+    o.o_orderdate >= DATE '1995-01-01' 
+    AND o.o_orderdate < DATE '1996-01-01'
     AND p.p_brand = 'Brand#22'
 GROUP BY 
     n_name, o_year

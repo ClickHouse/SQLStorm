@@ -22,7 +22,7 @@ RecentBadges AS (
     JOIN 
         Badges B ON U.Id = B.UserId
     WHERE 
-        B.Date > cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        B.Date > cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         U.Id
 ),
@@ -47,7 +47,7 @@ FilteredPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH 
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months' 
         AND P.Score IS NOT NULL
 )
 SELECT 
@@ -68,7 +68,7 @@ LEFT JOIN
 LEFT JOIN 
     RecursivePostHistory RPH ON RPH.PostId = FP.Id AND RPH.rn = 1
 WHERE 
-    (FP.LastCommentDate IS NULL OR FP.LastCommentDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    (FP.LastCommentDate IS NULL OR FP.LastCommentDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days')
     AND (FP.UpVotes - FP.DownVotes) > 5
 ORDER BY 
     FP.ViewCount DESC

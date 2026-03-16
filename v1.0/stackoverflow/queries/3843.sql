@@ -64,4 +64,4 @@ WHERE
 ORDER BY 
     us.TotalPosts DESC,
     us.Reputation DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

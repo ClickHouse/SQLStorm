@@ -15,7 +15,7 @@ RecentPosts AS (
     SELECT Posts.Id, Posts.Title, Posts.CreationDate, Posts.ViewCount, Posts.Score,
            (SELECT COUNT(*) FROM Comments WHERE PostId = Posts.Id) as CommentCount
     FROM Posts
-    WHERE Posts.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE Posts.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
 PostScoreWithVotes AS (
     SELECT P.Id, P.Title, P.Score, P.ViewCount, 

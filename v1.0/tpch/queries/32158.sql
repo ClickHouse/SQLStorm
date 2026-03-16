@@ -18,7 +18,7 @@ OrderSummary AS (
         o.o_orderdate,
         SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue,
         COUNT(DISTINCT c.c_custkey) AS customer_count,
-        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY SUM(l.l_extendedprice * (1 - l.l_discount)) DESC) AS revenue_rank
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
     JOIN customer c ON o.o_custkey = c.c_custkey

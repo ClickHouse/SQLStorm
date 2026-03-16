@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     WHERE 
         P.PostTypeId = 1 
       AND 
-        P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 TopAnsweredPosts AS (
     SELECT 
@@ -36,7 +36,7 @@ TopAnsweredPosts AS (
         FROM 
             PostHistory PH
         JOIN 
-            CloseReasonTypes CRT ON PH.Comment = CAST(CRT.Id AS TEXT)
+            CloseReasonTypes CRT ON PH.Comment = CRT.Id::TEXT
         WHERE 
             PH.PostHistoryTypeId = 10
         GROUP BY 

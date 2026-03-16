@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL 1 YEAR)
+        p.CreationDate >= (cast('2024-10-01' as date) - INTERVAL '1 year')
 ), 
 RecentBadges AS (
     SELECT 
@@ -30,7 +30,7 @@ RecentBadges AS (
     FROM 
         Badges b 
     WHERE 
-        b.Date >= (cast('2024-10-01' as date) - INTERVAL 1 MONTH)
+        b.Date >= (cast('2024-10-01' as date) - INTERVAL '1 month')
     GROUP BY 
         b.UserId
 ), 

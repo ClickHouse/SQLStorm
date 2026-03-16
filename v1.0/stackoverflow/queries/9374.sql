@@ -21,7 +21,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     WHERE 
         p.PostTypeId = 1  
-        AND p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY  
+        AND p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, U.DisplayName
 ), TopPosts AS (

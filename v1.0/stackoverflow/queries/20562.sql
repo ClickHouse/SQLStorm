@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         RANK() OVER (ORDER BY p.Score DESC) AS RankByScore,
         p.OwnerUserId
     FROM Posts p
-    WHERE p.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+    WHERE p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
 ),
 UserReputation AS (
     SELECT 
@@ -29,7 +29,7 @@ PostHistoryDetail AS (
         COUNT(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 1 END) AS ClosureCount,
         COUNT(CASE WHEN ph.PostHistoryTypeId IN (24) THEN 1 END) AS EditSuggestionsCount
     FROM PostHistory ph
-    WHERE ph.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH)
+    WHERE ph.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months')
     GROUP BY ph.PostId
 ),
 PostVoteStats AS (

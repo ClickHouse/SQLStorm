@@ -39,4 +39,4 @@ SELECT cs.n_name, COALESCE(cs.total_sales, 0) AS total_sales,
 FROM combined_sales cs
 WHERE COALESCE(cs.total_sales, 0) > 50000
 ORDER BY sales_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

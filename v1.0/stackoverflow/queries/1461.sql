@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE 
         p.Score IS NOT NULL
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, p.PostTypeId
 ),
@@ -49,4 +49,4 @@ WHERE
 ORDER BY 
     tp.Score DESC, 
     tp.CreationDate DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

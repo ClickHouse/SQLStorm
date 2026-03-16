@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
         AND p.Score IS NOT NULL
 ),
 CloseReasons AS (
@@ -79,4 +79,4 @@ WHERE
     rp.rn = 1 
 ORDER BY 
     rp.CreationDate DESC
-LIMIT 25;
+FETCH FIRST 25 ROWS ONLY;

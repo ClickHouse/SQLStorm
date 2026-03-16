@@ -16,7 +16,7 @@ WITH RankedPosts AS (
              AND ph.PostHistoryTypeId IN (10, 11) 
              ORDER BY ph.CreationDate DESC 
              LIMIT 1), 
-            toDateTime64('1970-01-01', 6)
+            CAST('1970-01-01' AS TIMESTAMP)
         ) AS LastClosedReopenedDate
     FROM 
         Posts p
@@ -26,7 +26,7 @@ WITH RankedPosts AS (
         Posts a ON p.Id = a.ParentId
     WHERE 
         p.PostTypeId = 1 AND  
-        p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH  
+        p.CreationDate < CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months'  
 ),
 PostTotals AS (
     SELECT 
@@ -52,7 +52,7 @@ SELECT
     p.LastClosedReopenedDate,
     CASE 
         WHEN pt.TotalUpVotes IS NULL OR pt.TotalPosts = 0 THEN 0 
-        ELSE ROUND((CAST(pt.TotalUpVotes AS float) / (pt.TotalPosts + 1)) * 100, 2) 
+        ELSE ROUND((pt.TotalUpVotes::float / (pt.TotalPosts + 1)) * 100, 2) 
     END AS UpVotePercentage
 FROM 
     Users u
@@ -66,4 +66,4 @@ ORDER BY
     UpVotePercentage DESC NULLS LAST, 
     pt.TotalPosts DESC, 
     p.CreationDate DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

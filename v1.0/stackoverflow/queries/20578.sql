@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.Score
 ),
@@ -24,7 +24,7 @@ CloseReasons AS (
     FROM 
         PostHistory ph
     JOIN 
-        CloseReasonTypes crt ON CAST(ph.Comment AS int) = crt.Id
+        CloseReasonTypes crt ON ph.Comment::int = crt.Id
     WHERE 
         ph.PostHistoryTypeId IN (10, 11)  
     GROUP BY 
@@ -36,7 +36,7 @@ UserStatistics AS (
         u.DisplayName,
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(p.Score) AS TotalScore,
-        AVG(COALESCE(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)), 0)) AS AvgPostAgeInSeconds
+        AVG(COALESCE(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)), 0)) AS AvgPostAgeInSeconds
     FROM 
         Users u
     LEFT JOIN 

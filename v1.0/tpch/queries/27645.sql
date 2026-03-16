@@ -34,11 +34,11 @@ RecentOrders AS (
         o.o_orderdate,
         o.o_clerk,
         o.o_comment,
-        toYear(o.o_orderdate) AS order_year
+        EXTRACT(YEAR FROM o.o_orderdate) AS order_year
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
+        o.o_orderdate >= DATE '1998-10-01' - INTERVAL '1 year'
 )
 SELECT 
     fp.p_name,

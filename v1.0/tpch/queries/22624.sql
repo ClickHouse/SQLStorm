@@ -40,7 +40,7 @@ WHERE rp.price_rank <= 10
    AND (ts.avg_acctbal IS NOT NULL OR rp.p_name LIKE '%ABC%')
    AND (EXISTS (SELECT 1 FROM lineitem l 
                  WHERE l.l_partkey = rp.p_partkey 
-                   AND l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')) 
+                   AND l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31') 
            OR ts.total_avail_qty IS NULL)
 ORDER BY rp.p_brand, rp.p_retailprice DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

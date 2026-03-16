@@ -66,7 +66,7 @@ SELECT
 FROM 
     TopUsers TU
 JOIN 
-    RecentPosts RP ON RP.LastEditDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    RecentPosts RP ON RP.LastEditDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
 ORDER BY 
     TU.Reputation DESC, RP.LastEditDate DESC
 LIMIT 10;

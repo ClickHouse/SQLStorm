@@ -44,4 +44,4 @@ GROUP BY
     ar.roles_list
 ORDER BY 
     rm.production_year DESC, rm.title ASC
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;

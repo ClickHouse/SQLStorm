@@ -13,7 +13,7 @@ OrderSummary AS (
     SELECT o.o_custkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales, COUNT(o.o_orderkey) AS order_count
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate BETWEEN toDate('1998-10-01') - INTERVAL 1 YEAR AND toDate('1998-10-01')
+    WHERE o.o_orderdate BETWEEN DATE '1998-10-01' - INTERVAL '1 year' AND DATE '1998-10-01'
     GROUP BY o.o_custkey
 ),
 CustomerRegion AS (

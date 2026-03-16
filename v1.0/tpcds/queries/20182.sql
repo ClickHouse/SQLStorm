@@ -48,4 +48,4 @@ WHERE
 ORDER BY 
     COALESCE(rs.total_sales, 0) DESC NULLS LAST, 
     i.i_item_desc
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

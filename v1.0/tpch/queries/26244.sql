@@ -24,4 +24,4 @@ FROM SupplierInfo si
 JOIN PartInfo pi ON pi.p_container LIKE '%box%'
 JOIN OrderSummary os ON os.total_lineitems > 5
 ORDER BY os.net_amount DESC, si.s_acctbal DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

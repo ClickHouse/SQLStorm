@@ -22,9 +22,9 @@ WITH customer_stats AS (
 age_distribution AS (
     SELECT 
         CASE 
-            WHEN toYear(cast('2002-10-01' as date)) - c.c_birth_year BETWEEN 0 AND 25 THEN '0-25'
-            WHEN toYear(cast('2002-10-01' as date)) - c.c_birth_year BETWEEN 26 AND 40 THEN '26-40'
-            WHEN toYear(cast('2002-10-01' as date)) - c.c_birth_year BETWEEN 41 AND 55 THEN '41-55'
+            WHEN EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c.c_birth_year BETWEEN 0 AND 25 THEN '0-25'
+            WHEN EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c.c_birth_year BETWEEN 26 AND 40 THEN '26-40'
+            WHEN EXTRACT(YEAR FROM cast('2002-10-01' as date)) - c.c_birth_year BETWEEN 41 AND 55 THEN '41-55'
             ELSE '56+' 
         END AS age_group,
         COUNT(1) AS customer_count,

@@ -21,7 +21,7 @@ LEFT JOIN part p ON ps.ps_partkey = p.p_partkey
 LEFT JOIN lineitem l ON l.l_partkey = p.p_partkey
 LEFT JOIN orders o ON l.l_orderkey = o.o_orderkey
 WHERE (p.p_size > 10 OR p.p_container IS NULL)
-  AND (l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31'))
+  AND (l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31')
   AND (o.o_orderstatus = 'F' OR o.o_orderstatus IS NULL)
 GROUP BY n.r_name, p.p_type
 HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > (SELECT AVG(total_revenue) 
@@ -32,4 +32,4 @@ HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > (SELECT AVG(total_revenue)
                                                            GROUP BY o.o_orderkey
                                                        ) AS subquery)
 ORDER BY n.r_name, total_revenue DESC
-LIMIT 10 OFFSET 0;
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;

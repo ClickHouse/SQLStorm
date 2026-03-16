@@ -31,7 +31,7 @@ PostDetails AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN PostAnswers pa ON p.Id = pa.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY p.Id, p.Title, p.ViewCount, p.Score, p.OwnerUserId
 )
 SELECT us.UserId, us.DisplayName, us.Reputation, us.BadgeCount, us.TotalBounties,
@@ -40,6 +40,6 @@ SELECT us.UserId, us.DisplayName, us.Reputation, us.BadgeCount, us.TotalBounties
 FROM UserStats us
 JOIN PostDetails pd ON us.UserId = pd.OwnerUserId
 WHERE us.Reputation > 1000 
-AND us.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+AND us.CreationDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ORDER BY us.Reputation DESC, pd.Score DESC
 LIMIT 10;

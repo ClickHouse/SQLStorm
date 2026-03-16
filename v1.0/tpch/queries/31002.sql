@@ -31,7 +31,7 @@ JOIN
 JOIN
     SupplierHierarchy SH ON SH.s_suppkey = s.s_suppkey
 WHERE 
-    o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1997-01-01')
+    o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1997-01-01'
     AND (s.s_acctbal IS NULL OR s.s_acctbal > 5000)
 GROUP BY
     n.n_name

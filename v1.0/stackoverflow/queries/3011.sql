@@ -79,7 +79,7 @@ FROM
     FinalOutput f
 WHERE 
     f.Title ILIKE '%sql%'
-    AND (f.CloseDate IS NULL OR f.CloseDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY)
+    AND (f.CloseDate IS NULL OR f.CloseDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days')
 ORDER BY 
     f.CreationDate DESC
 LIMIT 100;

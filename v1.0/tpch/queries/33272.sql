@@ -17,7 +17,7 @@ OrderSummary AS (
         ROW_NUMBER() OVER (PARTITION BY c.c_nationkey ORDER BY SUM(o.o_totalprice) DESC) AS rank
     FROM customer c
     JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') 
+    WHERE o.o_orderdate >= DATE '1997-01-01' 
     GROUP BY c.c_custkey, c.c_nationkey
 ),
 PartSupplier AS (

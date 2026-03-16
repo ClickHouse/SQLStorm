@@ -90,7 +90,7 @@ LEFT JOIN
     RecursivePostHierarchy r ON r.PostId = p.Id
 WHERE 
     p.PostTypeId = 1  
-    AND (ph.LatestEditTypeId IS NULL OR ph.LatestEditDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH)
+    AND (ph.LatestEditTypeId IS NULL OR ph.LatestEditDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month')
     AND (ps.ViewCount > 100 OR r.Level > 0)
 ORDER BY 
     ps.TotalVotes DESC, ps.ViewCount DESC

@@ -7,7 +7,7 @@ WITH RecursiveAggregatedVotes AS (
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY COUNT(V.Id) DESC) AS VoteRank
     FROM Posts P
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY P.Id, P.OwnerUserId
 ),
 
@@ -24,7 +24,7 @@ FilteredPosts AS (
     FROM Posts P
     JOIN RecursiveAggregatedVotes R ON P.Id = R.PostId
     WHERE R.UpVotes > R.DownVotes
-    AND P.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY
+    AND P.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days'
 ),
 
 TagPostCount AS (

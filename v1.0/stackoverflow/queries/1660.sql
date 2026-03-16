@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ), BadgeSummary AS (
     SELECT 
         b.UserId,
@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     FROM 
         Badges b
     WHERE 
-        b.Date >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        b.Date >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         b.UserId
 ), ClosedPosts AS (

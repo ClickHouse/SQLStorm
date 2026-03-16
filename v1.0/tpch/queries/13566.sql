@@ -13,7 +13,7 @@ JOIN
 JOIN 
     region R ON N.n_regionkey = R.r_regionkey
 WHERE 
-    O.o_orderdate >= toDate('1995-01-01') AND O.o_orderdate < toDate('1996-01-01')
+    O.o_orderdate >= DATE '1995-01-01' AND O.o_orderdate < DATE '1996-01-01'
 GROUP BY 
     N.n_name, R.r_name
 ORDER BY 

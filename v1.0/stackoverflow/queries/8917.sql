@@ -25,7 +25,7 @@ WITH RecentPosts AS (
             ParentId
     ) a ON p.Id = a.ParentId
     WHERE 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 30 DAY
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days'
 ),
 TopTags AS (
     SELECT 

@@ -56,4 +56,5 @@ HAVING
     ) 
 ORDER BY 
     avg_customer_spend DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS
+FETCH NEXT 10 ROWS ONLY;

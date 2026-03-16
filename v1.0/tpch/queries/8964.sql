@@ -4,7 +4,7 @@ WITH SupplierSummary AS (
         s.s_name, 
         SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supplycost,
         COUNT(DISTINCT ps.ps_partkey) AS unique_parts,
-        SUM(CASE WHEN l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR THEN l.l_quantity ELSE 0 END) AS recent_quantity
+        SUM(CASE WHEN l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '1 year' THEN l.l_quantity ELSE 0 END) AS recent_quantity
     FROM 
         supplier s
     JOIN 

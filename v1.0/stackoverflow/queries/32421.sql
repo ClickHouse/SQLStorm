@@ -43,7 +43,7 @@ PostHistoryEntry AS (
     JOIN 
         PostHistoryTypes ht ON ph.PostHistoryTypeId = ht.Id
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
+        ph.CreationDate >= CURRENT_DATE - INTERVAL '6 months'
 ),
 UserBadges AS (
     SELECT 

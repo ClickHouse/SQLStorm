@@ -24,7 +24,7 @@ OrdersSummary AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= CURRENT_DATE - INTERVAL 6 MONTH
+        o.o_orderdate >= CURRENT_DATE - INTERVAL '6 months'
     GROUP BY 
         o.o_orderkey, o.o_custkey
 ),

@@ -2,7 +2,7 @@ WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 
            ROW_NUMBER() OVER (PARTITION BY o.o_orderkey ORDER BY o.o_orderdate) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1996-01-01'
     UNION ALL
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 
            ROW_NUMBER() OVER (PARTITION BY o.o_orderkey ORDER BY o.o_orderdate)

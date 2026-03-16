@@ -35,8 +35,8 @@ SELECT
     f.movie_id,
     f.title,
     f.production_year,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(f.company_names AS text)))), ', ') AS companies,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(f.keywords AS text)))), ', ') AS tags
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.company_names::text))), ', ') AS companies,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(f.keywords::text))), ', ') AS tags
 FROM 
     FilteredMovies f
 GROUP BY 

@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+        p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.Score, p.Tags
 ),
@@ -69,7 +69,7 @@ PostHistoryRecent AS (
     JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate >= toDate('2024-10-01') - INTERVAL 1 MONTH
+        ph.CreationDate >= DATE '2024-10-01' - INTERVAL '1 month'
         AND ph.PostHistoryTypeId IN (10, 11, 12, 13)
 )
 SELECT 

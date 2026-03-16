@@ -17,7 +17,7 @@ WITH Benchmark AS (
     JOIN 
         Users U ON PH.UserId = U.Id
     WHERE 
-        PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        PH.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 )
 SELECT 
     PostType,

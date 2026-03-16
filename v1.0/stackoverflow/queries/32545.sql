@@ -29,7 +29,7 @@ RecentBadges AS (
     JOIN 
         Badges b ON u.Id = b.UserId
     WHERE 
-        b.Date >= now64(6) - INTERVAL 30 DAY
+        b.Date >= CURRENT_TIMESTAMP - INTERVAL '30 days'
 ),
 PostHistoryAggregates AS (
     SELECT 

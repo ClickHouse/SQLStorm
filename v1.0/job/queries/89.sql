@@ -54,4 +54,4 @@ FROM RecentMovies rm
 JOIN TopActors ta ON rm.production_year = ta.movies_played
 WHERE rm.year_category = 'Post-2010'
 ORDER BY rm.production_year DESC, rm.title_length DESC
-LIMIT 25; 
+FETCH FIRST 25 ROWS ONLY; 

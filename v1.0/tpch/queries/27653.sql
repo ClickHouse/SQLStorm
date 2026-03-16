@@ -28,4 +28,4 @@ HAVING
     SUM(ps.ps_availqty) > 1000
 ORDER BY 
     avg_order_price DESC, total_orders DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

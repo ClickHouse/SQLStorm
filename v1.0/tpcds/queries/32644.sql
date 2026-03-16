@@ -21,7 +21,7 @@ Top_Items AS (
         LEAD(sd.total_sales) OVER (ORDER BY sd.total_sales DESC) AS next_sales
     FROM 
         Sales_Data sd
-    LEFT JOIN date_dim d ON d.d_date_sk = (SELECT d2.d_date_sk FROM date_dim d2 WHERE d2.d_date = cast('2002-10-01' as date) - INTERVAL 1 DAY)
+    LEFT JOIN date_dim d ON d.d_date_sk = (SELECT d2.d_date_sk FROM date_dim d2 WHERE d2.d_date = cast('2002-10-01' as date) - INTERVAL '1 day')
     LEFT JOIN store_returns sr ON sr.sr_item_sk = sd.ws_item_sk
     LEFT JOIN reason r ON r.r_reason_sk = sr.sr_reason_sk
 ),

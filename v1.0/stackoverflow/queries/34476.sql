@@ -21,7 +21,7 @@ WITH RECURSIVE UserActivity AS (
             LEFT JOIN 
                 Votes V ON V.PostId = P.Id
             WHERE 
-                P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+                P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
             GROUP BY 
                 P.OwnerUserId, P.Id
         ) UP ON UP.OwnerUserId = U.Id

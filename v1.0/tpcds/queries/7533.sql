@@ -48,7 +48,7 @@ Summary AS (
     FROM
         CustomerStats cs
     JOIN
-        MonthlySales ms ON cs.c_birth_month = toMonth(toDate('2002-10-01')) 
+        MonthlySales ms ON cs.c_birth_month = EXTRACT(MONTH FROM DATE '2002-10-01') 
 )
 SELECT
     c_birth_month,

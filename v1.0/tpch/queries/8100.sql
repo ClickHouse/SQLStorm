@@ -39,7 +39,7 @@ OrderStats AS (
     JOIN 
         lineitem l ON o.o_orderkey = l.l_orderkey
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01')
+        o.o_orderdate >= DATE '1996-01-01'
     GROUP BY 
         o.o_orderkey, o.o_orderdate
 )
@@ -56,7 +56,7 @@ JOIN
     OrderStats os ON ts.s_suppkey = (
         SELECT l.l_suppkey 
         FROM lineitem l 
-        WHERE l.l_orderkey IN (SELECT o.o_orderkey FROM orders o WHERE o.o_orderdate >= toDate('1996-01-01')) 
+        WHERE l.l_orderkey IN (SELECT o.o_orderkey FROM orders o WHERE o.o_orderdate >= DATE '1996-01-01') 
         LIMIT 1
     )
 ORDER BY 

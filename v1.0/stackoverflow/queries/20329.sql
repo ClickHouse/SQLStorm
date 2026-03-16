@@ -54,7 +54,7 @@ SELECT
     ub.BadgeCount,
     CASE 
         WHEN fp.LastVoteDate IS NULL THEN 'No votes yet' 
-        WHEN fp.LastVoteDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 'Old Vote Activity'
+        WHEN fp.LastVoteDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 'Old Vote Activity'
         ELSE 'Recent Vote Activity'
     END AS VoteActivityStatus,
     arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tg.TagName))), ', ') AS Tags

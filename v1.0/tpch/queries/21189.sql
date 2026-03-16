@@ -40,7 +40,7 @@ WITH RankedCustomers AS (
     FROM 
         lineitem li
     WHERE 
-        li.l_shipdate >= toDate('1998-10-01') - INTERVAL 30 DAY
+        li.l_shipdate >= DATE '1998-10-01' - INTERVAL '30 days'
     GROUP BY 
         li.l_orderkey
 )
@@ -52,7 +52,7 @@ SELECT
     sd.total_supply_cost,
     CASE 
         WHEN rd.last_shipdate IS NULL THEN 'No shipment'
-        WHEN rd.last_shipdate < toDate('1998-10-01') - INTERVAL 15 DAY THEN 'Delayed shipment'
+        WHEN rd.last_shipdate < DATE '1998-10-01' - INTERVAL '15 days' THEN 'Delayed shipment'
         ELSE 'On time'
     END AS shipment_status
 FROM 
@@ -72,4 +72,4 @@ WHERE
     AND (rd.total_revenue IS NULL OR rd.total_revenue > 500)
 ORDER BY 
     rc.c_name, rd.total_revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

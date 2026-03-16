@@ -22,7 +22,7 @@ PostStats AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         P.OwnerUserId
 ),

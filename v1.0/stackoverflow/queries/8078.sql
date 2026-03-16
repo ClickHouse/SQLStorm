@@ -5,7 +5,7 @@ WITH RankedPosts AS (
            DENSE_RANK() OVER (PARTITION BY pt.Name ORDER BY p.ViewCount DESC) AS RankByViews
     FROM Posts p
     JOIN PostTypes pt ON p.PostTypeId = pt.Id
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 TopPosts AS (
     SELECT Id, Title, CreationDate, Score, ViewCount, 

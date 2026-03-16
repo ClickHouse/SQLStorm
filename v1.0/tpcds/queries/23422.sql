@@ -50,4 +50,4 @@ AND s.net_price > (SELECT AVG(ws_sales_price)
                                              FROM date_dim d 
                                              WHERE d.d_year = 2000))
 ORDER BY adjusted_net_profit DESC
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

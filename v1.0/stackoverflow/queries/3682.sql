@@ -31,7 +31,7 @@ RecentVotes AS (
         VT.Name AS VoteType
     FROM Votes V
     JOIN VoteTypes VT ON V.VoteTypeId = VT.Id
-    WHERE V.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE V.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
 PostsDetail AS (
     SELECT 
@@ -58,7 +58,7 @@ PostsDetail AS (
         FROM RecentVotes
         GROUP BY PostId
     ) RV ON P.Id = RV.PostId
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 )
 SELECT 
     TU.DisplayName AS TopUser,

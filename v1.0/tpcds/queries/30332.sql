@@ -63,7 +63,7 @@ SELECT
 FROM 
     TopDays td
 FULL OUTER JOIN 
-    TopCustomers tc ON td.sale_date = toDate('2002-10-01')  
+    TopCustomers tc ON td.sale_date = DATE '2002-10-01'  
 ORDER BY 
     td.total_net_profit DESC NULLS LAST, 
     tc.total_spent DESC NULLS LAST;

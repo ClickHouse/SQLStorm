@@ -50,7 +50,7 @@ CurrentMonthReturns AS (
             FROM 
                 date_dim 
             WHERE 
-                d_date = toDate('2002-10-01')
+                d_date = DATE '2002-10-01'
         )
     GROUP BY 
         sr.sr_customer_sk

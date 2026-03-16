@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 TopPosts AS (
     SELECT 
@@ -44,7 +44,7 @@ UserEngagement AS (
     LEFT JOIN 
         Votes v ON u.Id = v.UserId
     WHERE 
-        u.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        u.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName
 ),

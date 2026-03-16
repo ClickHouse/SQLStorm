@@ -63,4 +63,4 @@ WHERE
     cs.total_spent > 500
 ORDER BY 
     cs.total_spent DESC, ss.total_sales DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

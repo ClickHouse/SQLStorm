@@ -18,7 +18,7 @@ WITH RecentPosts AS (
         Votes V ON P.Id = V.PostId
     WHERE 
         P.PostTypeId = 1 AND 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH
+        P.CreationDate >= CURRENT_DATE - INTERVAL '6 MONTH'
     GROUP BY 
         P.Id, P.Title, P.CreationDate, P.OwnerUserId, P.Score
 ),

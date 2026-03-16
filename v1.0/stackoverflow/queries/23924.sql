@@ -47,7 +47,7 @@ SELECT
         WHEN (RP.UpVotes - RP.DownVotes) = 0 THEN 'Neutral'
         ELSE 'Negative'
     END AS Sentiment,
-    toDateTime64('2024-10-01 12:34:56', 6) - RP.CreationDate AS TimeSinceCreated
+    cast('2024-10-01 12:34:56' as timestamp) - RP.CreationDate AS TimeSinceCreated
 FROM 
     RankedPosts RP
 LEFT JOIN 

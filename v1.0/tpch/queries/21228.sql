@@ -41,4 +41,4 @@ WHERE f.supplier_total_cost IS NOT NULL
   AND (f.order_count IS NOT NULL OR f.supplier_name LIKE '%Inc%')
   AND f.discount_sales > 100.00
 ORDER BY f.supplier_total_cost DESC, f.order_count DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

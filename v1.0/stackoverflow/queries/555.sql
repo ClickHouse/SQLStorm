@@ -43,7 +43,7 @@ SELECT
 FROM Users U
 LEFT JOIN PostStats PS ON U.Id = PS.OwnerUserId
 LEFT JOIN Votes V ON U.Id = V.UserId
-WHERE U.Reputation > 500 AND U.LastAccessDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+WHERE U.Reputation > 500 AND U.LastAccessDate > (cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year')
 GROUP BY U.DisplayName, PS.TotalPosts, PS.Questions, PS.Answers, PS.AverageScore
 HAVING COUNT(DISTINCT U.Id) >= 1
 ORDER BY U.DisplayName;

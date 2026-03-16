@@ -25,7 +25,7 @@ RecentVotes AS (
     FROM 
         Votes v
     WHERE 
-        v.CreationDate > CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
+        v.CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
     GROUP BY 
         v.PostId, 
         v.VoteTypeId

@@ -17,7 +17,7 @@ JOIN
 JOIN 
     nation n ON s.s_nationkey = n.n_nationkey
 WHERE 
-    o.o_orderdate BETWEEN toDate('1994-01-01') AND toDate('1997-12-31')
+    o.o_orderdate BETWEEN DATE '1994-01-01' AND DATE '1997-12-31'
     AND l.l_shipdate < l.l_commitdate
 GROUP BY 
     n.n_name, c.c_acctbal

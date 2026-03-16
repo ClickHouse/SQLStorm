@@ -12,7 +12,7 @@ WITH RECURSIVE RegionalSales AS (
     LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
     LEFT JOIN orders o ON l.l_orderkey = o.o_orderkey
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') 
+    WHERE o.o_orderdate >= DATE '1997-01-01' 
     GROUP BY r.r_regionkey, r.r_name
     UNION ALL
     SELECT 
@@ -28,7 +28,7 @@ WITH RECURSIVE RegionalSales AS (
     LEFT JOIN lineitem l ON p.p_partkey = l.l_partkey
     LEFT JOIN orders o ON l.l_orderkey = o.o_orderkey
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate < toDate('1997-01-01')
+    WHERE o.o_orderdate < DATE '1997-01-01'
     GROUP BY r.r_regionkey, r.r_name
 ), RankedSales AS (
     SELECT 

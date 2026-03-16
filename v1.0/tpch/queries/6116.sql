@@ -8,7 +8,7 @@ OrderSummary AS (
     SELECT o.o_orderkey, o.o_custkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
     GROUP BY o.o_orderkey, o.o_custkey
 ),
 TopRegions AS (
@@ -30,6 +30,6 @@ JOIN TopRegions tr ON sp.s_suppkey IN (
     JOIN part p ON ps.ps_partkey = p.p_partkey
     JOIN lineitem l ON l.l_partkey = p.p_partkey
     JOIN orders o ON l.l_orderkey = o.o_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-12-31')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-12-31'
 )
 ORDER BY tr.region_revenue DESC, sp.ps_supplycost ASC;

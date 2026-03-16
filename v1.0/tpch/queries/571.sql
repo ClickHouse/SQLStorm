@@ -36,7 +36,7 @@ LineItemStats AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= toDate('1996-01-01')
+        l.l_shipdate >= DATE '1996-01-01'
     GROUP BY 
         l.l_orderkey
 )
@@ -62,4 +62,4 @@ WHERE
 ORDER BY 
     ss.total_avail_qty DESC,
     os.total_spending DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

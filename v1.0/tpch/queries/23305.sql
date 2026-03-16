@@ -71,4 +71,4 @@ WHERE
     AND (co.TotalOrders > 5 OR co.TotalSpent IS NULL)
 ORDER BY
     r.o_orderkey, SpendingComparison DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

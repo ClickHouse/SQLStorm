@@ -50,4 +50,4 @@ HAVING
     COUNT(DISTINCT c.c_customer_id) > (SELECT COUNT(*) / 10 FROM customer)  
 ORDER BY
     average_net_profit DESC
-LIMIT 5;
+FETCH FIRST 5 ROWS ONLY;

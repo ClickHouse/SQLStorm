@@ -33,7 +33,7 @@ LEFT JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     p.p_retailprice > 20.00
-    AND l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    AND l.l_shipdate >= cast('1998-10-01' as date) - INTERVAL '1 year'
     AND (o.o_orderstatus = 'F' OR o.o_orderstatus IS NULL)
 GROUP BY 
     p.p_partkey, p.p_name, r.r_name

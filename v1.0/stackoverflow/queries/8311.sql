@@ -52,7 +52,7 @@ JOIN
     PostHistory PH ON PH.PostId = P.Id
 WHERE 
     T.ReputationRank <= 10
-    AND P.CreationDate >= now64(6) - INTERVAL 1 YEAR
+    AND P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     AND PH.PostHistoryTypeId IN (4, 5) 
 ORDER BY 
     T.Reputation DESC, 

@@ -44,7 +44,7 @@ PostDetails AS (
         FROM Comments
         GROUP BY PostId
     ) c ON p.Id = c.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= timestamp '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 PostHistoryDetails AS (
     SELECT 
@@ -55,7 +55,7 @@ PostHistoryDetails AS (
         COALESCE(ph.Comment, 'No comments') AS ModificationComment
     FROM PostHistory ph
     JOIN Posts p ON ph.PostId = p.Id
-    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    WHERE ph.CreationDate >= timestamp '2024-10-01 12:34:56' - INTERVAL '6 months'
 ),
 CombinedData AS (
     SELECT 

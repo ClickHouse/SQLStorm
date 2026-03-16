@@ -66,7 +66,7 @@ SELECT
     f.UpVotes,
     f.DownVotes,
     CASE 
-        WHEN f.LastEditOrCreationDate < (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) THEN 'Old Activity'
+        WHEN f.LastEditOrCreationDate < (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days') THEN 'Old Activity'
         ELSE 'Recent Activity'
     END AS ActivityStatus,
     f.PostCount,

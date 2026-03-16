@@ -27,7 +27,7 @@ PopularPosts AS (
     FROM 
         Posts P
     WHERE 
-        P.CreationDate > (now64(6) - INTERVAL 1 YEAR)
+        P.CreationDate > (CURRENT_TIMESTAMP - INTERVAL '1 year')
 ),
 PostWithComments AS (
     SELECT 

@@ -78,4 +78,5 @@ AND
     (ai.total_movies > 5 OR ai.null_notes_count > 0)
 ORDER BY 
     rt.production_year DESC, rt.title ASC
-LIMIT 10 OFFSET 10;
+OFFSET 
+    10 ROWS FETCH NEXT 10 ROWS ONLY;

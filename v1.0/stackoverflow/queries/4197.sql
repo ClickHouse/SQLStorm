@@ -6,13 +6,13 @@ PopularPosts AS (
     SELECT P.Id, P.Title, P.ViewCount, P.Score, P.CreationDate, U.DisplayName AS OwnerDisplayName
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     AND P.Score > 5
 ),
 RecentComments AS (
     SELECT C.PostId, COUNT(C.Id) AS CommentCount
     FROM Comments C
-    WHERE C.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE C.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY C.PostId
 ),
 TopPosts AS (

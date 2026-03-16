@@ -55,4 +55,4 @@ SELECT
 FROM RankedUsers ru
 WHERE ru.TotalScore > 0
 ORDER BY ru.ScoreRank
-LIMIT 20;
+FETCH FIRST 20 ROWS ONLY;

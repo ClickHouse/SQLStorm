@@ -48,7 +48,7 @@ LEFT JOIN
 LEFT JOIN 
     store_sales ss ON ws.ws_item_sk = ss.ss_item_sk
 WHERE 
-    toYear(toDate('2002-10-01')) - s.c_birth_year <= 30
+    EXTRACT(YEAR FROM DATE '2002-10-01') - s.c_birth_year <= 30
 GROUP BY 
     s.c_first_name, s.c_last_name
 ORDER BY 

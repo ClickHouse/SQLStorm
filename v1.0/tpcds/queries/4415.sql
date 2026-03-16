@@ -43,4 +43,4 @@ WHERE
     i.i_current_price > 0
 ORDER BY
     net_profit_after_returns DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

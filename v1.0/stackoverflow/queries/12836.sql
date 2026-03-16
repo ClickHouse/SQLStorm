@@ -4,7 +4,7 @@ SELECT
     COUNT(*) AS RevisionCount, 
     MIN(ph.CreationDate) AS FirstRevisionDate, 
     MAX(ph.CreationDate) AS LastRevisionDate, 
-    AVG(toUnixTimestamp(COALESCE(ph2.CreationDate, now64(6)) - ph.CreationDate)) AS AvgTimeBetweenRevisions
+    AVG(toUnixTimestamp(COALESCE(ph2.CreationDate, CURRENT_TIMESTAMP) - ph.CreationDate)) AS AvgTimeBetweenRevisions
 FROM 
     PostHistory ph
 LEFT JOIN 

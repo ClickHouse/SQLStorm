@@ -48,4 +48,4 @@ WHERE
     fs.total_sales > (SELECT AVG(total_sales) FROM RegionalSales)
 ORDER BY 
     fs.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

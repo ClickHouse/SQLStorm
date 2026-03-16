@@ -28,7 +28,7 @@ JOIN
 WHERE
     r.r_comment LIKE '%global%'
     AND s.s_comment NOT LIKE '%obsolete%'
-    AND l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    AND l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY
     r.r_name, n.n_name, s.s_name, p.p_name
 ORDER BY

@@ -53,7 +53,7 @@ WHERE
         SELECT MAX(o_orderkey) 
         FROM orders 
         WHERE o_orderstatus IN ('O', 'F') 
-        AND o_orderdate >= (cast('1998-10-01' as date) - INTERVAL 1 YEAR)
+        AND o_orderdate >= (cast('1998-10-01' as date) - INTERVAL '1 year')
     )) 
     AND (sd.total_supply_cost >= (SELECT AVG(ps.ps_supplycost) FROM partsupp ps) OR sd.total_supply_cost IS NULL)
 ORDER BY 

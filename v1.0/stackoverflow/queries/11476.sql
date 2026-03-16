@@ -35,7 +35,7 @@ PostSummary AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 MONTH
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 month'
 )
 SELECT 
     u.DisplayName,

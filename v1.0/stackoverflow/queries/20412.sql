@@ -27,7 +27,7 @@ PostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY 
         p.Id, p.OwnerUserId
 ),
@@ -62,4 +62,4 @@ WHERE
     AND (ur.Reputation > 100 OR ur.BadgeCount > 5)
 ORDER BY 
     ur.Reputation DESC, tp.UpVoteCount DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

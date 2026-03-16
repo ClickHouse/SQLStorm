@@ -3,7 +3,7 @@ WITH RankedMovies AS (
         m.id AS movie_id,
         m.title AS movie_title,
         COUNT(DISTINCT c.person_id) AS total_cast,
-        AVG(CASE WHEN m.production_year IS NOT NULL THEN toYear(cast('2024-10-01' as date)) - m.production_year ELSE NULL END) AS avg_age,
+        AVG(CASE WHEN m.production_year IS NOT NULL THEN EXTRACT(YEAR FROM cast('2024-10-01' as date)) - m.production_year ELSE NULL END) AS avg_age,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(k.keyword))), ', ') AS keywords,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cmp.name))), ', ') AS companies
     FROM 

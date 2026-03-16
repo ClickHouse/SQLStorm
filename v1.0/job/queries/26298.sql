@@ -55,4 +55,4 @@ GROUP BY
     mwc.movie_id, mwc.title, mwc.production_year
 ORDER BY 
     mwc.production_year DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

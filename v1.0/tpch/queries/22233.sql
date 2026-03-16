@@ -53,4 +53,4 @@ WHERE
     rs.TotalSales > (SELECT AVG(TotalSales) FROM RegionalSales)
 ORDER BY 
     rs.TotalSales DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

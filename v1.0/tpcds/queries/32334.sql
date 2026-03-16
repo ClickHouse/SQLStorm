@@ -34,4 +34,4 @@ WHERE ca.ca_state = 'CA'
 GROUP BY ca.ca_city
 HAVING SUM(st.total_sales) > (SELECT AVG(total_sales) FROM sales_trend)
 ORDER BY city_total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

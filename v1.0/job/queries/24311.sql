@@ -56,4 +56,4 @@ WHERE
     fm.rn <= 50
 ORDER BY 
     fm.production_year DESC, fm.cast_count DESC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

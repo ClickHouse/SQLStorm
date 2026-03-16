@@ -47,5 +47,5 @@ SELECT
     END AS customer_category
 FROM customer_info ci 
 LEFT JOIN promotions p ON ci.c_customer_sk = p.p_promo_sk
-LEFT JOIN sales_summary ss ON ss.d_date = DATE('2002-10-01') - INTERVAL 1 DAY
+LEFT JOIN sales_summary ss ON ss.d_date = DATE('2002-10-01') - INTERVAL '1 day'
 ORDER BY ss.total_sales DESC, ci.c_last_name, ci.c_first_name;

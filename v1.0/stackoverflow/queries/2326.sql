@@ -51,5 +51,5 @@ LEFT JOIN TopTags T ON PT.Title LIKE '%' || T.TagName || '%'
 WHERE UPS.TotalPosts > 5
   AND PT.PostRank = 1
   AND PT.TotalBountyAmount > 0
-  AND PT.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND toDateTime64('2024-10-01 12:34:56', 6)
+  AND PT.CreationDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND TIMESTAMP '2024-10-01 12:34:56'
 ORDER BY UPS.AvgReputation DESC, PT.TotalBountyAmount DESC;

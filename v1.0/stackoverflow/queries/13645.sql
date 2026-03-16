@@ -9,7 +9,7 @@ SELECT
     u.Reputation AS OwnerReputation,
     COUNT(c.Id) AS CommentCount,
     COUNT(v.Id) AS VoteCount,
-    AVG(toUnixTimestamp(COALESCE(v.CreationDate, now64(6)) - p.CreationDate)) AS AverageVoteTime
+    AVG(toUnixTimestamp(COALESCE(v.CreationDate, CURRENT_TIMESTAMP) - p.CreationDate)) AS AverageVoteTime
 FROM 
     Posts p
 JOIN 
@@ -19,7 +19,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 WHERE 
-    p.CreationDate >= now64(6) - INTERVAL 1 YEAR  
+    p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'  
 GROUP BY 
     p.Id, p.Title, p.ViewCount, p.Score, p.CreationDate, u.DisplayName, u.Reputation
 ORDER BY 

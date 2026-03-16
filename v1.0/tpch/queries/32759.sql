@@ -21,7 +21,7 @@ OrderDetails AS (
     SELECT o.o_orderkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    WHERE l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     GROUP BY o.o_orderkey
 )
 SELECT ns.n_name, 

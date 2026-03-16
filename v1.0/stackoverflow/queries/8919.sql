@@ -37,7 +37,7 @@ PostActivity AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    WHERE p.CreationDate >= toDate('2024-10-01') - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
     GROUP BY p.Id, p.Title, p.ViewCount
 )
 SELECT 

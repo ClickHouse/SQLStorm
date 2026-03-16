@@ -3,7 +3,7 @@ WITH RankedOrders AS (
            ROW_NUMBER() OVER (PARTITION BY c.c_nationkey ORDER BY o.o_totalprice DESC) as rn
     FROM orders o
     JOIN customer c ON o.o_custkey = c.c_custkey
-    WHERE o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
 ), 
 NationSupplier AS (
     SELECT n.n_nationkey, n.n_name, s.s_suppkey, s.s_name, s.s_acctbal, s.s_comment

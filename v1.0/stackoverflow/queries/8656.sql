@@ -9,7 +9,7 @@ WITH UserActivity AS (
         SUM(c.Score) AS TotalCommentScore,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes,
-        AVG(toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) / 60) AS AvgPostAgeInMinutes,
+        AVG(toUnixTimestamp((CAST('2024-10-01 12:34:56' AS TIMESTAMP) - p.CreationDate)) / 60) AS AvgPostAgeInMinutes,
         MAX(p.CreationDate) AS LastActivityDate
     FROM 
         Users u

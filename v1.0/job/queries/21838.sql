@@ -48,4 +48,4 @@ FROM FilteredTitles tr
 LEFT JOIN TitleRoleCounts arc ON tr.title = arc.title
 WHERE tr.production_year BETWEEN 1990 AND 2022
 ORDER BY tr.production_year ASC, actor_count DESC
-LIMIT 10 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 10 ROWS ONLY;

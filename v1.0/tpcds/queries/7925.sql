@@ -8,8 +8,8 @@ WITH SalesData AS (
         MAX(ws.ws_sales_price) AS max_price,
         MIN(ws.ws_sales_price) AS min_price,
         AVG(ws.ws_sales_price) AS avg_price,
-        toYear(dd.d_date) AS sales_year,
-        toMonth(dd.d_date) AS sales_month
+        EXTRACT(YEAR FROM dd.d_date) AS sales_year,
+        EXTRACT(MONTH FROM dd.d_date) AS sales_month
     FROM 
         web_sales AS ws
     JOIN 
@@ -17,7 +17,7 @@ WITH SalesData AS (
     WHERE 
         dd.d_year BETWEEN 2021 AND 2023
     GROUP BY 
-        ws.ws_item_sk, toYear(dd.d_date), toMonth(dd.d_date)
+        ws.ws_item_sk, EXTRACT(YEAR FROM dd.d_date), EXTRACT(MONTH FROM dd.d_date)
 ),
 AggregatedSales AS (
     SELECT 

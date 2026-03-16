@@ -66,4 +66,4 @@ WHERE
     AND C.c_preferred_cust_flag = 'Y'
 ORDER BY 
     F.total_sales_amt DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

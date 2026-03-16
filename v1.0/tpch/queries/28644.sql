@@ -27,8 +27,8 @@ JOIN
     region r ON n.n_regionkey = r.r_regionkey
 WHERE 
     l.l_shipmode IN ('AIR', 'TRUCK')
-    AND o.o_orderdate >= toDate('1997-01-01')
-    AND o.o_orderdate < toDate('1997-10-01')
+    AND o.o_orderdate >= DATE '1997-01-01'
+    AND o.o_orderdate < DATE '1997-10-01'
 GROUP BY 
     p.p_name, s.s_name, c.c_name, o.o_orderkey, r.r_name, n.n_name
 ORDER BY 

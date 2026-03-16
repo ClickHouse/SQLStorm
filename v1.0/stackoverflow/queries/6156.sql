@@ -20,7 +20,7 @@ PostActivity AS (
         p.Id AS PostId,
         p.Title,
         p.CreationDate,
-        toYear(p.CreationDate) AS PostYear,
+        EXTRACT(YEAR FROM p.CreationDate) AS PostYear,
         COUNT(c.Id) AS CommentCount,
         COALESCE(MAX(h.CreationDate), '1970-01-01') AS LastEditDate
     FROM Posts p

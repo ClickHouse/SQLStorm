@@ -50,4 +50,4 @@ GROUP BY
     tc.order_count
 ORDER BY 
     tc.total_sales DESC
-LIMIT 30;
+FETCH FIRST 30 ROWS ONLY;

@@ -55,8 +55,8 @@ SELECT
     COALESCE(ua.QuestionCount, 0) AS QuestionCount,
     COALESCE(ua.AnswerCount, 0) AS AnswerCount,
     COALESCE(ua.PopularPostCount, 0) AS PopularPostCount,
-    (SELECT COUNT(*) FROM Votes v WHERE v.UserId = ua.UserId AND v.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AS RecentVotes,
-    (SELECT COUNT(*) FROM Comments c WHERE c.UserId = ua.UserId AND c.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AS RecentComments
+    (SELECT COUNT(*) FROM Votes v WHERE v.UserId = ua.UserId AND v.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') AS RecentVotes,
+    (SELECT COUNT(*) FROM Comments c WHERE c.UserId = ua.UserId AND c.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') AS RecentComments
 FROM 
     UserActivity ua
 ORDER BY 

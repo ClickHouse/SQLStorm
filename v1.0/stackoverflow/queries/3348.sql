@@ -51,7 +51,7 @@ ClosedQuestions AS (
     JOIN 
         PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId = 10
     LEFT JOIN 
-        CloseReasonTypes ctr ON (CAST(ph.Comment AS json)->>'ReasonId'CAST() AS int) = ctr.Id
+        CloseReasonTypes ctr ON (ph.Comment::json->>'ReasonId')::int = ctr.Id
     GROUP BY 
         p.Id, p.Title, ph.CreationDate
 )
@@ -82,4 +82,4 @@ WHERE
     ua.TotalPosts > 0
 ORDER BY 
     ua.Rank, ps.PostId
-LIMIT 10 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;

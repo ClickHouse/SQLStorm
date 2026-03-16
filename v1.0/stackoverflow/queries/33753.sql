@@ -40,4 +40,4 @@ FROM UserActivity ua
 LEFT JOIN UserBadges ub ON ua.UserId = ub.UserId
 WHERE ua.TotalViews > 1000 
 ORDER BY ua.TotalViews DESC, ua.QuestionCount DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

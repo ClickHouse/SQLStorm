@@ -35,7 +35,7 @@ SELECT
     m.production_year,
     m.director_name,
     m.cast_count,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(m.keywords AS text)))), ', ') AS keywords
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(m.keywords::text))), ', ') AS keywords
 FROM 
     RankedMovies m
 GROUP BY 

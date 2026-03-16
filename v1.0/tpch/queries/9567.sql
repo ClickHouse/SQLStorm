@@ -18,7 +18,7 @@ SuppliersWithCosts AS (
     FROM partsupp ps
     JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
     JOIN lineitem l ON ps.ps_partkey = l.l_partkey
-    WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY ps.ps_partkey, ps.ps_suppkey, s.s_acctbal
 )
 SELECT t.o_orderkey, t.o_orderdate, t.o_totalprice, t.c_name, t.nation_name, 

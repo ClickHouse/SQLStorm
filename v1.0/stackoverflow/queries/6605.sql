@@ -8,7 +8,7 @@ WITH UserStats AS (
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(COALESCE(P.ViewCount, 0)) AS TotalViews,
         SUM(COALESCE(P.Score, 0)) AS TotalScore,
-        AVG(CASE WHEN P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN P.Score ELSE NULL END) AS AvgScoreLastYear
+        AVG(CASE WHEN P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN P.Score ELSE NULL END) AS AvgScoreLastYear
     FROM Users U
     LEFT JOIN Badges B ON U.Id = B.UserId
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
@@ -38,7 +38,7 @@ VotedPosts AS (
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes
     FROM Posts P
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
     GROUP BY P.Id
 )
 SELECT 

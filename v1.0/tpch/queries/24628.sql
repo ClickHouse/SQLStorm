@@ -48,7 +48,7 @@ SELECT
     rn.o_orderdate,
     rn.o_totalprice,
     CASE 
-        WHEN rn.o_orderdate < toDate('1998-10-01') - INTERVAL 30 DAY THEN 'Old'
+        WHEN rn.o_orderdate < DATE '1998-10-01' - INTERVAL '30 days' THEN 'Old'
         ELSE 'Recent'
     END AS order_age_category,
     tn.n_name AS nation_name

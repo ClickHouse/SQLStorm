@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN Users u ON p.OwnerUserId = u.Id
     WHERE
         p.PostTypeId = 1 
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
 ),
 PopularTags AS (
     SELECT
@@ -40,7 +40,7 @@ RecentEdits AS (
     JOIN Posts p ON ph.PostId = p.Id
     WHERE
         ph.PostHistoryTypeId IN (4, 5, 6) 
-        AND ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        AND ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
 ),
 FinalResults AS (
     SELECT

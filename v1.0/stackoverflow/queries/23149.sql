@@ -24,7 +24,7 @@ RecentPostHistory AS (
         ph.UserDisplayName,
         ROW_NUMBER() OVER (PARTITION BY ph.PostId ORDER BY ph.CreationDate DESC) AS Rn
     FROM PostHistory ph
-    WHERE ph.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY
+    WHERE ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days'
 ),
 PostLinksAgg AS (
     SELECT 

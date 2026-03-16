@@ -40,9 +40,9 @@ top_promotion_items AS (
     JOIN 
         web_sales ws ON p.p_promo_sk = ws.ws_promo_sk
     WHERE 
-        p.p_start_date_sk <= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = toDate('2002-10-01'))
+        p.p_start_date_sk <= (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = DATE '2002-10-01')
       AND 
-        p.p_end_date_sk >= (SELECT MIN(d.d_date_sk) FROM date_dim d WHERE d.d_date = toDate('2002-10-01'))
+        p.p_end_date_sk >= (SELECT MIN(d.d_date_sk) FROM date_dim d WHERE d.d_date = DATE '2002-10-01')
     GROUP BY 
         p.p_promo_id
     HAVING 

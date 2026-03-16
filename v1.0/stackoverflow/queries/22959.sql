@@ -98,7 +98,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
 WHERE 
-    pa.PostCreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    pa.PostCreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 GROUP BY 
     pa.PostId,
     pa.Title,

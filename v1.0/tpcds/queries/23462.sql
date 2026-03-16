@@ -54,4 +54,4 @@ GROUP BY cs.c_customer_id
 HAVING COUNT(DISTINCT cs.total_orders) > 1
    AND (AVG(ps.profit_margin) IS NULL OR AVG(ps.profit_margin) > 0.10)
 ORDER BY total_store_net_profit DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

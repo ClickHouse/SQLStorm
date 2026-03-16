@@ -25,4 +25,4 @@ GROUP BY
     p.p_mfgr
 ORDER BY 
     supplier_count DESC, total_avail_qty DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

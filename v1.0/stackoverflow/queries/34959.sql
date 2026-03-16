@@ -42,7 +42,7 @@ SELECT
     a.TotalComments,
     a.NetVotes,
     CASE 
-        WHEN a.LastActiveDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) THEN 'Active'
+        WHEN a.LastActiveDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days') THEN 'Active'
         ELSE 'Inactive'
     END AS UserStatus
 FROM 
@@ -51,4 +51,4 @@ WHERE
     a.NetVotes >= 0 
 ORDER BY 
     a.TotalComments DESC 
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

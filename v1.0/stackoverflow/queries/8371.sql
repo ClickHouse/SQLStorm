@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         p.CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.ViewCount DESC) AS Rank
     FROM Posts p
-    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 UserStats AS (
     SELECT 

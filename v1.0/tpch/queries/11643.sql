@@ -15,8 +15,8 @@ JOIN
     partsupp ps ON p.p_partkey = ps.ps_partkey AND s.s_suppkey = ps.ps_suppkey
 WHERE 
     c.c_mktsegment = 'BUILDING'
-    AND l.l_shipdate >= toDate('1995-01-01') 
-    AND l.l_shipdate < toDate('1996-01-01')
+    AND l.l_shipdate >= DATE '1995-01-01' 
+    AND l.l_shipdate < DATE '1996-01-01'
 GROUP BY 
     p.p_name
 ORDER BY 

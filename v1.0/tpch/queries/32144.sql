@@ -56,7 +56,7 @@ JOIN HighValueParts p ON lo.l_partkey = p.p_partkey
 JOIN RegionNations r ON cot.o_custkey = r.n_nationkey
 LEFT JOIN SupplierHierarchy sh ON r.n_nationkey = sh.s_nationkey
 JOIN customer c ON cot.o_custkey = c.c_custkey
-WHERE lo.l_shipdate >= toDate('1997-01-01')
+WHERE lo.l_shipdate >= DATE '1997-01-01'
   AND (lo.l_returnflag IS NULL OR lo.l_returnflag != 'R')
 GROUP BY c.c_name, r.n_name, sh.level
 HAVING SUM(lo.l_extendedprice) IS NOT NULL

@@ -58,7 +58,7 @@ SELECT
     ts.total_titles,
     ts.earliest_release,
     ts.latest_release,
-    ROUND((toYear(cast('2024-10-01' as date)) - ts.earliest_release) / NULLIF(ts.total_titles, 0), 2) AS average_years_per_title
+    ROUND((EXTRACT(YEAR FROM cast('2024-10-01' as date)) - ts.earliest_release) / NULLIF(ts.total_titles, 0), 2) AS average_years_per_title
 FROM 
     TitleStats ts
 ORDER BY 

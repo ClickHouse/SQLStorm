@@ -30,7 +30,7 @@ ClosedPosts AS (
         PostHistory PH ON P.Id = PH.PostId
     WHERE 
         PH.PostHistoryTypeId = 10
-        AND PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND PH.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 RecentQuestions AS (
     SELECT 
@@ -43,7 +43,7 @@ RecentQuestions AS (
         Posts A ON P.Id = A.ParentId
     WHERE 
         P.PostTypeId = 1
-        AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        AND P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         P.Id, P.Title
 )

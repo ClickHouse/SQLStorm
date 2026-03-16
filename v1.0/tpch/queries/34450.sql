@@ -1,12 +1,12 @@
 WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, 1 AS depth
     FROM orders o
-    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= toDate('1996-01-01')
+    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= DATE '1996-01-01'
     UNION ALL
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice, oh.depth + 1
     FROM orders o
     JOIN OrderHierarchy oh ON o.o_custkey = (SELECT c.c_custkey FROM customer c WHERE c.c_custkey = oh.o_orderkey)
-    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= toDate('1996-01-01')
+    WHERE o.o_orderstatus = 'O' AND o.o_orderdate >= DATE '1996-01-01'
 ),
 PartSupplier AS (
     SELECT ps.ps_partkey, ps.ps_suppkey, AVG(ps.ps_supplycost) AS avg_supply_cost
@@ -23,7 +23,7 @@ CustomerStats AS (
     SELECT c.c_nationkey, COUNT(o.o_orderkey) AS order_count, SUM(o.o_totalprice) AS total_spent
     FROM customer c
     LEFT JOIN orders o ON c.c_custkey = o.o_custkey
-    WHERE o.o_orderdate >= toDate('1996-01-01')
+    WHERE o.o_orderdate >= DATE '1996-01-01'
     GROUP BY c.c_nationkey
 )
 SELECT r.r_name, 

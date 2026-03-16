@@ -15,7 +15,7 @@ RecentOrders AS (
     SELECT o.o_orderkey, o.o_custkey, o.o_orderdate, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_revenue
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
     GROUP BY o.o_orderkey, o.o_custkey, o.o_orderdate
 )
 SELECT 
@@ -30,7 +30,7 @@ JOIN RecentOrders ro ON hcss.s_suppkey IN (
         SELECT l.l_partkey 
         FROM lineitem l 
         JOIN orders o ON l.l_orderkey = o.o_orderkey 
-        WHERE o.o_orderdate >= toDate('1997-01-01')
+        WHERE o.o_orderdate >= DATE '1997-01-01'
     )
 )
 ORDER BY ro.total_revenue DESC

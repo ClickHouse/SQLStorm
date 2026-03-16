@@ -48,4 +48,4 @@ WHERE
 ORDER BY 
     r.i_item_id DESC, 
     total_revenue DESC NULLS LAST
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

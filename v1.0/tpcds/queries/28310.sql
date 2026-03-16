@@ -9,7 +9,7 @@ SELECT
         WHEN cd.cd_gender = 'M' THEN 'Male' 
         ELSE 'Female' 
     END AS customer_gender,
-    toYear(d.d_date) AS return_year,
+    EXTRACT(YEAR FROM d.d_date) AS return_year,
     SUM(CASE WHEN sr.sr_return_quantity > 0 THEN sr.sr_return_quantity ELSE 0 END) AS total_returned_quantity,
     arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.r_reason_desc))), ', ') AS return_reasons
 FROM 
@@ -30,4 +30,4 @@ GROUP BY
     c.c_customer_sk, c.c_first_name, c.c_last_name, ca.ca_city, ca.ca_state, cd.cd_gender, return_year
 ORDER BY 
     total_returns DESC, total_return_amount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

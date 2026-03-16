@@ -71,4 +71,4 @@ FROM
     final_results
 ORDER BY 
     total_spent DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

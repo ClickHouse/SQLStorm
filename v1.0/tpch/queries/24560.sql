@@ -20,7 +20,7 @@ order_analysis AS (
     SELECT o.o_orderkey, o.o_totalprice, SUM(l.l_discount * l.l_extendedprice) AS total_discount
     FROM orders o
     JOIN lineitem l ON o.o_orderkey = l.l_orderkey
-    WHERE l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    WHERE l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     GROUP BY o.o_orderkey, o.o_totalprice
     HAVING SUM(l.l_discount * l.l_extendedprice) > 5000
 )

@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges b ON b.UserId = p.OwnerUserId
     WHERE
-        p.CreationDate BETWEEN toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND toDateTime64('2024-10-01 12:34:56', 6)
+        p.CreationDate BETWEEN TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' AND TIMESTAMP '2024-10-01 12:34:56'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId
 ),
@@ -32,7 +32,7 @@ PostHistoryAssessments AS (
     FROM 
         PostHistory ph
     WHERE 
-        ph.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR)
+        ph.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year')
     GROUP BY 
         ph.PostId
 )

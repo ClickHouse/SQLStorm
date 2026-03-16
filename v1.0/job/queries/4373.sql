@@ -61,4 +61,4 @@ WHERE
 ORDER BY 
     ti.total_actors DESC, 
     ti.total_movies DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

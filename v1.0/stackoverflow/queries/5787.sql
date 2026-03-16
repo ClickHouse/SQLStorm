@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     WHERE 
         p.PostTypeId = 1 
-        AND p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
+        AND p.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
 ),
 TopPosts AS (
     SELECT 

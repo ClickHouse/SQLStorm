@@ -43,4 +43,4 @@ WHERE
     tp.RecentPostRank = 1 
 ORDER BY 
     tp.OverallRank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

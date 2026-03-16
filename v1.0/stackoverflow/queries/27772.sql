@@ -14,7 +14,7 @@ WITH StringProcessing AS (
         PostHistory ph ON p.Id = ph.PostId
     WHERE 
         ph.PostHistoryTypeId IN (4, 5, 6) 
-        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        AND p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
 ),
 TagAnalysis AS (
     SELECT 
@@ -32,7 +32,7 @@ RecentComments AS (
     FROM 
         Comments
     WHERE 
-        CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH 
+        CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month' 
     GROUP BY 
         PostId
 ),

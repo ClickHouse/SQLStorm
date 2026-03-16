@@ -56,4 +56,4 @@ WHERE a.ca_city LIKE 'New%'
   AND cd.demo_count > (SELECT AVG(demo_count) FROM CustomerDemographics)
 GROUP BY a.ca_city, a.ca_state, td.total_sales, ts.total_store_sales, cd.demo_count, ib.band_count
 ORDER BY a.ca_city, total_web_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

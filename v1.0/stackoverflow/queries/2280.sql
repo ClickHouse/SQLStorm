@@ -23,7 +23,7 @@ RecentChanges AS (
         ph.UserId,
         ROW_NUMBER() OVER (PARTITION BY ph.PostId ORDER BY ph.CreationDate DESC) AS rn
     FROM PostHistory ph
-    WHERE ph.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 MONTH
+    WHERE ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
 )
 
 SELECT 

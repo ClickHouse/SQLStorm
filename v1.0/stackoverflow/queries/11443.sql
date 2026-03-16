@@ -2,7 +2,7 @@ SELECT
     p.Id AS QuestionId,
     p.Title AS QuestionTitle,
     p.CreationDate AS QuestionCreationDate,
-    COALESCE(AVG(a.CreationDate - p.CreationDate), INTERVAL 0 SECOND) AS AverageResponseTime,
+    COALESCE(AVG(a.CreationDate - p.CreationDate), INTERVAL '0 seconds') AS AverageResponseTime,
     COUNT(a.Id) AS TotalAnswers
 FROM 
     Posts p

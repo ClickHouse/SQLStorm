@@ -18,7 +18,7 @@ RecentPosts AS (
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.LastActivityDate DESC) AS RecentPostRank
     FROM Posts p
-    WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
+    WHERE p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
 ),
 PostSummary AS (
     SELECT 

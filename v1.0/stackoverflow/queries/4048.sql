@@ -30,7 +30,7 @@ RecentPosts AS (
     FROM 
         Posts
     WHERE 
-        CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ),
 TopPosts AS (
     SELECT 

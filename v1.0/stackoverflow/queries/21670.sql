@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
 ),
 UserStats AS (
     SELECT 
@@ -40,7 +40,7 @@ PostHistoryDetails AS (
         ph.PostId,
         ph.Comment AS CloseComment,
         ph.CreationDate AS CloseDate,
-        CONCAT(toYear(ph.CreationDate), '-', LPAD(toMonth(ph.CreationDateCAST() AS TEXT), 2, '0')) AS CloseMonthYear
+        CONCAT(EXTRACT(YEAR FROM ph.CreationDate), '-', LPAD(EXTRACT(MONTH FROM ph.CreationDate)::TEXT, 2, '0')) AS CloseMonthYear
     FROM 
         PostHistory ph
     WHERE 

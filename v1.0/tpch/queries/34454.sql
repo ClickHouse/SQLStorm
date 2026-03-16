@@ -38,4 +38,4 @@ HAVING SUM(l.l_extendedprice * (1 - l.l_discount)) > (SELECT AVG(l2.l_extendedpr
                                                        FROM lineitem l2 
                                                        JOIN orders o2 ON l2.l_orderkey = o2.o_orderkey)
 ORDER BY revenue DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

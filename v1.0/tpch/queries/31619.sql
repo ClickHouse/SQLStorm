@@ -13,8 +13,8 @@ WITH RECURSIVE PartSupplierHierarchy AS (
     SELECT l.l_orderkey, l.l_partkey, l.l_quantity, l.l_extendedprice, l.l_discount, 
            l.l_tax, l.l_shipdate, ROW_NUMBER() OVER (PARTITION BY l.l_orderkey ORDER BY l.l_linenumber) AS rn
     FROM lineitem l
-    WHERE l.l_shipdate >= toDate('1997-01-01')
-      AND l.l_shipdate < toDate('1998-01-01')
+    WHERE l.l_shipdate >= DATE '1997-01-01'
+      AND l.l_shipdate < DATE '1998-01-01'
 ), SupplierDetails AS (
     SELECT s.s_suppkey, s.s_name, s.s_acctbal, s.s_comment, 
            COALESCE(SUM(ps.ps_supplycost), 0) AS total_supplycost

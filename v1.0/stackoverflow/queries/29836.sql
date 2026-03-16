@@ -75,4 +75,4 @@ GROUP BY
     UE.DisplayName, UE.QuestionsAsked, UE.AnswersProvided, UE.CommentsCount
 ORDER BY 
     TotalViews DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -25,7 +25,7 @@ JOIN supplier s ON l.l_suppkey = s.s_suppkey
 JOIN partsupp ps ON l.l_partkey = ps.ps_partkey AND l.l_suppkey = ps.ps_suppkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey
-WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY r.r_name, n.n_name
 ORDER BY Revenue DESC, TotalOrders DESC
 LIMIT 10;

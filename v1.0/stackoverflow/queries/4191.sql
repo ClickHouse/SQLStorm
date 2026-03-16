@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.LastActivityDate >= CURRENT_DATE - INTERVAL 6 MONTH
+        p.LastActivityDate >= CURRENT_DATE - INTERVAL '6 MONTH'
 ), 
 PostVoteStats AS (
     SELECT 
@@ -58,7 +58,7 @@ FROM
 LEFT JOIN 
     PostHistory ph ON tp.PostId = ph.PostId
 WHERE 
-    ph.CreationDate BETWEEN CURRENT_DATE - INTERVAL 1 YEAR AND CURRENT_DATE
+    ph.CreationDate BETWEEN CURRENT_DATE - INTERVAL '1 YEAR' AND CURRENT_DATE
     AND ph.PostHistoryTypeId NOT IN (12, 10) 
 ORDER BY 
     NetVotes DESC, 

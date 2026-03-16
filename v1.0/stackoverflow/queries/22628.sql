@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Tags t ON t.Id = CAST(tag_ids AS INT)
     WHERE 
-        p.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.LastActivityDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY 
         p.Id
 ), 
@@ -33,7 +33,7 @@ UserPostStats AS (
     LEFT JOIN 
         Posts p ON p.OwnerUserId = u.Id 
     WHERE 
-        u.Reputation > 1000 AND u.CreationDate < cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        u.Reputation > 1000 AND u.CreationDate < cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         u.Id
 ),

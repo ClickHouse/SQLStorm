@@ -47,4 +47,4 @@ ORDER BY
     a.total_profit DESC NULLS LAST,
     quantity_sold DESC,
     i.i_item_id
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

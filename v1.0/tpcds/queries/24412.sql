@@ -54,7 +54,7 @@ LEFT JOIN
 LEFT JOIN 
     Returns r ON i.i_item_sk = r.cr_item_sk
 WHERE 
-    i.i_rec_start_date >= cast('2002-10-01' as date) - INTERVAL 1 YEAR
+    i.i_rec_start_date >= cast('2002-10-01' as date) - INTERVAL '1 year'
 ORDER BY 
     i.i_item_id, 
     total_returns DESC,

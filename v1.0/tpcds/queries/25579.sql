@@ -53,4 +53,4 @@ LEFT JOIN
     sales_summary ss ON ds.cd_demo_sk = ss.ws_bill_cdemo_sk
 ORDER BY 
     ds.total_customers DESC, ss.total_net_profit DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

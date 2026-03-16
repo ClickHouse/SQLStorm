@@ -34,8 +34,8 @@ store_sales_summary AS (
     FROM
         store_sales sss
     WHERE
-        sss.ss_sold_date_sk BETWEEN (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = toDate('2002-10-01') - INTERVAL 1 YEAR)
-        AND (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = toDate('2002-10-01'))
+        sss.ss_sold_date_sk BETWEEN (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = DATE '2002-10-01' - INTERVAL '1 year')
+        AND (SELECT MAX(d.d_date_sk) FROM date_dim d WHERE d.d_date = DATE '2002-10-01')
     GROUP BY
         sss.ss_item_sk
 )

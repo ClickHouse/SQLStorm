@@ -40,4 +40,4 @@ WHERE
     (i.i_item_desc LIKE '%premium%' OR i.i_item_desc LIKE '%luxury%')
 ORDER BY 
     sales_rank, average_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

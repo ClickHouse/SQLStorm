@@ -12,7 +12,7 @@ WITH RecursiveUserActivity AS (
     JOIN 
         Posts P ON U.Id = P.OwnerUserId
     WHERE 
-        P.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR
+        P.CreationDate >= CURRENT_DATE - INTERVAL '1 year'
 ),
 RecentUserBadges AS (
     SELECT 
@@ -22,7 +22,7 @@ RecentUserBadges AS (
     FROM 
         Badges B
     WHERE 
-        B.Date >= CURRENT_DATE - INTERVAL 1 YEAR
+        B.Date >= CURRENT_DATE - INTERVAL '1 year'
     GROUP BY 
         B.UserId
 ),

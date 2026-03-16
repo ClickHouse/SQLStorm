@@ -57,4 +57,4 @@ HAVING
     COUNT(DISTINCT li.l_orderkey) > 5
 ORDER BY 
     order_count DESC, avg_price ASC
-LIMIT 15 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 15 ROWS ONLY;

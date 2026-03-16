@@ -56,6 +56,6 @@ JOIN PostStats PS ON UR.UserId = PS.OwnerUserId
 LEFT JOIN PostHistoryAggregate PH ON PS.PostId = PH.PostId
 WHERE PS.CommentCount > 5 
   AND PS.UpVotes - PS.DownVotes > 0 
-  AND PH.LastEdited < CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY
+  AND PH.LastEdited < '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'
 ORDER BY UR.Reputation DESC, PS.VoteCount DESC
 LIMIT 50;

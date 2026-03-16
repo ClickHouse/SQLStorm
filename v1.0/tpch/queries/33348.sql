@@ -23,7 +23,7 @@ Nation_Max AS (
 LineItem_Summary AS (
     SELECT l.l_partkey, SUM(l.l_extendedprice * (1 - l.l_discount)) AS total_sales, SUM(l.l_quantity) AS total_quantity
     FROM lineitem l
-    WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
     GROUP BY l.l_partkey
 )
 SELECT 
@@ -51,4 +51,4 @@ LEFT JOIN Nation_Max nm ON nm.n_nationkey = (
     LIMIT 1
 )
 ORDER BY total_sales DESC, p.p_partkey ASC
-LIMIT 20 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 20 ROWS ONLY;

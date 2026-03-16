@@ -59,6 +59,6 @@ SELECT
     TU.GoldBadges,
     TU.SilverBadges,
     TU.BronzeBadges,
-    (SELECT COUNT(*) FROM Posts P WHERE P.OwnerUserId = TU.UserId AND P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) AS PostsLastYear
+    (SELECT COUNT(*) FROM Posts P WHERE P.OwnerUserId = TU.UserId AND P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR') AS PostsLastYear
 FROM 
     TopUsers TU;

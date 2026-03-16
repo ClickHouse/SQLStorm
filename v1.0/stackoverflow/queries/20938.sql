@@ -57,9 +57,9 @@ RecentActivity AS (
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId 
     LEFT JOIN 
-        Votes v ON p.Id = v.PostId AND v.CreationDate > now64(6) - INTERVAL 30 DAY
+        Votes v ON p.Id = v.PostId AND v.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
     WHERE 
-        u.CreationDate < now64(6) - INTERVAL 1 YEAR
+        u.CreationDate < CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName
 )

@@ -62,4 +62,4 @@ GROUP BY
     ca.ca_address_sk, ca.ca_city, ca.ca_state, tc.total_amount_spent
 ORDER BY 
     total_amount_spent DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

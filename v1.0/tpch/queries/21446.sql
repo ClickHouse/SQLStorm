@@ -43,7 +43,7 @@ JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
 JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
 LEFT JOIN lineitem l ON ps.ps_partkey = l.l_partkey
 LEFT JOIN ActiveCustomers ac ON ac.c_custkey = l.l_orderkey
-WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 AND EXISTS (
     SELECT 1 FROM MaxRevenue 
     WHERE MaxRevenue.max_revenue > 1000

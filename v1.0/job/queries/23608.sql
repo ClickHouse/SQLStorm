@@ -48,7 +48,7 @@ SELECT
     u.production_year,
     COALESCE(mk.keyword_count, 0) AS keyword_count,
     CASE 
-        WHEN toYear(cast('2024-10-01' as date)) - u.production_year > 10 THEN 'Classic'
+        WHEN EXTRACT(YEAR FROM cast('2024-10-01' as date)) - u.production_year > 10 THEN 'Classic'
         ELSE 'Recent'
     END AS movie_age_category
 FROM 
@@ -60,4 +60,4 @@ WHERE
     AND u.actor_name IS NOT NULL
 ORDER BY 
     u.actor_name, u.production_year DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

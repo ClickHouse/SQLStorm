@@ -17,7 +17,7 @@ WITH UserEngagement AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        u.CreationDate < CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 1 YEAR
+        u.CreationDate < '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
     GROUP BY 
         u.Id, u.DisplayName
 ),
@@ -66,4 +66,4 @@ WHERE
     TotalPosts > 0
 ORDER BY 
     EngagementRank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

@@ -49,7 +49,7 @@ SELECT
      END) AS customer_status,
     (SELECT COUNT(*) 
      FROM lineitem l 
-     WHERE l.l_shipdate > toDate('1998-10-01') - INTERVAL 30 DAY) AS recent_shipments
+     WHERE l.l_shipdate > DATE '1998-10-01' - INTERVAL '30 days') AS recent_shipments
 FROM 
     RegionalSales r
 FULL OUTER JOIN 

@@ -19,7 +19,7 @@ RecentPostStats AS (
         COUNT(P.Id) AS TotalPosts,
         COALESCE(SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END), 0) AS Questions,
         COALESCE(SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END), 0) AS Answers,
-        COALESCE(SUM(CASE WHEN P.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY THEN 1 ELSE 0 END), 0) AS RecentPosts
+        COALESCE(SUM(CASE WHEN P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 1 ELSE 0 END), 0) AS RecentPosts
     FROM 
         Posts P
     GROUP BY 

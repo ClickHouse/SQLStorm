@@ -73,4 +73,4 @@ JOIN
     UserStats us ON ps.OwnerUserId = us.UserId
 ORDER BY 
     ps.ViewCount DESC, us.Reputation DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

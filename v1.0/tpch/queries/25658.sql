@@ -28,7 +28,7 @@ WHERE
         )
     )
 AND 
-    o.o_orderdate >= toDate('1997-01-01')
+    o.o_orderdate >= DATE '1997-01-01'
 GROUP BY 
     s.s_name, p.p_name
 ORDER BY 

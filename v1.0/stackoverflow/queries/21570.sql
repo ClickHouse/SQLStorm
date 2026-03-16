@@ -55,7 +55,7 @@ SELECT
     q.LastActive,
     CASE 
         WHEN q.LastActive IS NULL THEN 'Never Active'
-        WHEN q.LastActive < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Inactive for over a year'
+        WHEN q.LastActive < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Inactive for over a year'
         ELSE 'Active Recently'
     END AS ActivityStatus
 FROM QualifiedUsers q

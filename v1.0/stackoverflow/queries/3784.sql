@@ -23,7 +23,7 @@ PostStatistics AS (
     FROM Posts P
     LEFT JOIN Comments CM ON P.Id = CM.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
-    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY P.Id, P.Title, P.CreationDate, P.Score
 ),
 RankedPosts AS (

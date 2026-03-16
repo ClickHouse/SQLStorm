@@ -52,10 +52,10 @@ LEFT JOIN
 LEFT JOIN 
     ReturnData rd ON id.i_item_sk = rd.wr_item_sk
 WHERE 
-    id.i_rec_start_date <= toDate('2002-10-01')
-    AND (id.i_rec_end_date IS NULL OR id.i_rec_end_date > toDate('2002-10-01'))
+    id.i_rec_start_date <= DATE '2002-10-01'
+    AND (id.i_rec_end_date IS NULL OR id.i_rec_end_date > DATE '2002-10-01')
 GROUP BY 
     id.i_item_id, id.i_item_desc, sd.total_quantity_sold, rd.total_returns, sd.total_sales, rd.total_return_amount, id.i_current_price
 ORDER BY 
     return_percentage DESC, total_sales DESC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

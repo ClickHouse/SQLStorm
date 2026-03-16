@@ -32,7 +32,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON pt.Id = p.PostTypeId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 ClosedPosts AS (
     SELECT 
@@ -62,7 +62,7 @@ FROM
 LEFT JOIN 
     ClosedPosts cp ON cp.PostId = rp.PostId
 WHERE 
-    (rp.RankInType = 1 OR (cp.FirstClosedDate IS NOT NULL AND cp.FirstClosedDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH))
+    (rp.RankInType = 1 OR (cp.FirstClosedDate IS NOT NULL AND cp.FirstClosedDate < CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '6 months'))
 ORDER BY 
     rp.NetVotes DESC, 
     rp.CreationDate ASC

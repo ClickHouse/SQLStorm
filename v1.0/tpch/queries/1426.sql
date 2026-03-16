@@ -50,4 +50,4 @@ LEFT JOIN HighValueOrders h ON l.l_orderkey = h.o_orderkey
 GROUP BY r.p_partkey, r.p_name, r.p_brand, r.total_supply_cost, r.supplier_count
 HAVING supplier_count > 1 AND total_supply_cost IS NOT NULL
 ORDER BY total_supply_cost DESC, r.p_name ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

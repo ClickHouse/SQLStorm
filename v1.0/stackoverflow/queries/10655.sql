@@ -59,4 +59,4 @@ JOIN
     Users U ON ps.OwnerUserId = U.Id
 ORDER BY 
     ps.Score DESC, ps.ViewCount DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

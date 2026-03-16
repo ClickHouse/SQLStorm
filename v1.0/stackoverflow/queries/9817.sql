@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate > cast('2024-10-01' as date) - INTERVAL 30 DAY
+        p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY 
         p.Id, u.DisplayName
 ), TrendingPosts AS (
@@ -43,7 +43,7 @@ SELECT
     tp.CommentCount,
     tp.Score,
     CAST(tp.CreationDate AS DATE) AS CreationDateOnly,
-    toHour(tp.CreationDate) AS CreationHour,
+    EXTRACT(HOUR FROM tp.CreationDate) AS CreationHour,
     CASE 
         WHEN tp.Score > 0 THEN 'Positive'
         WHEN tp.Score < 0 THEN 'Negative'

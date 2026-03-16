@@ -21,7 +21,7 @@ RecentPostHistory AS (
         ph.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY ph.PostId ORDER BY ph.CreationDate DESC) AS rn
     FROM PostHistory ph
-    WHERE ph.CreationDate > (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR) 
+    WHERE ph.CreationDate > (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year') 
       AND ph.PostHistoryTypeId IN (10, 11, 12) 
 ),
 PostStats AS (
@@ -43,7 +43,7 @@ PostStats AS (
          FROM Votes v 
          WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpvoteCount
     FROM Posts p
-    WHERE p.CreationDate BETWEEN (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR) AND toDateTime64('2024-10-01 12:34:56', 6)
+    WHERE p.CreationDate BETWEEN (TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '2 year') AND TIMESTAMP '2024-10-01 12:34:56'
 )
 SELECT 
     ua.DisplayName,

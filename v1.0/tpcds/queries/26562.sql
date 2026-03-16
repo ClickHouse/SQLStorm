@@ -70,4 +70,4 @@ WHERE
     ci.cd_gender = 'F'
 ORDER BY 
     sales_rank
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

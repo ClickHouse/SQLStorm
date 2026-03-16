@@ -15,7 +15,7 @@ WITH PostStats AS (
     INNER JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 1 YEAR 
+        p.CreationDate >= CURRENT_DATE - INTERVAL '1 year' 
         AND p.PostTypeId IN (1, 2) 
 ),
 VoteCounts AS (

@@ -40,7 +40,7 @@ WHERE
         WHERE c2.c_nationkey = c.c_nationkey
     )
     AND n.n_regionkey IN (1, 2, 3) 
-    AND li.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    AND li.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY 
     c.c_custkey, c.c_name, c.c_nationkey
 HAVING 

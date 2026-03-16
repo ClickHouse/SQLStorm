@@ -2,13 +2,13 @@
 WITH RECURSIVE monthly_sales AS (
     SELECT 
         ws_sold_date_sk, 
-        toYear(d_date) AS sales_year, 
-        toMonth(d_date) AS sales_month, 
+        EXTRACT(YEAR FROM d_date) AS sales_year, 
+        EXTRACT(MONTH FROM d_date) AS sales_month, 
         SUM(ws_ext_sales_price) AS total_sales,
-        ROW_NUMBER() OVER (PARTITION BY toYear(d_date), toMonth(d_date) ORDER BY SUM(ws_ext_sales_price) DESC) AS rank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM d_date), EXTRACT(MONTH FROM d_date) ORDER BY SUM(ws_ext_sales_price) DESC) AS rank
     FROM web_sales
     JOIN date_dim ON ws_sold_date_sk = d_date_sk
-    GROUP BY ws_sold_date_sk, toYear(d_date), toMonth(d_date)
+    GROUP BY ws_sold_date_sk, EXTRACT(YEAR FROM d_date), EXTRACT(MONTH FROM d_date)
 ),
 customer_rank AS (
     SELECT 

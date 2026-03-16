@@ -35,7 +35,7 @@ WITH SupplierStats AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate >= toDate('1997-01-01') 
+        l.l_shipdate >= DATE '1997-01-01' 
         AND l.l_returnflag = 'N'
     GROUP BY 
         l.l_orderkey
@@ -61,4 +61,4 @@ WHERE
     cs.total_spent > (SELECT AVG(total_spent) FROM CustomerOrders WHERE order_count > 2)
 ORDER BY 
     cs.total_spent DESC, ss.avg_supply_cost ASC
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;

@@ -31,7 +31,7 @@ ActiveOrders AS (
             l.l_orderkey
     ) le ON o.o_orderkey = le.l_orderkey
     WHERE 
-        o.o_orderdate >= toDate('1997-01-01') AND o.o_orderdate < toDate('1997-10-01')
+        o.o_orderdate >= DATE '1997-01-01' AND o.o_orderdate < DATE '1997-10-01'
 ),
 SupplierDetails AS (
     SELECT 

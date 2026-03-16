@@ -21,7 +21,7 @@ WITH PostMetrics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     WHERE 
-        p.CreationDate >= toDate('2022-01-01')  
+        p.CreationDate >= DATE '2022-01-01'  
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.AnswerCount, 
         p.CommentCount, p.FavoriteCount, u.Reputation

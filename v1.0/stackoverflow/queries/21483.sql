@@ -56,7 +56,7 @@ SELECT
     END) AS PostRankCategory,
     (CASE 
         WHEN phd.TotalHistoryEntries IS NULL THEN 'No Changes'
-        WHEN phd.LastHistoryChange < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Stale Post'
+        WHEN phd.LastHistoryChange < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Stale Post'
         ELSE 'Active Post' 
     END) AS PostActivityStatus
 FROM 

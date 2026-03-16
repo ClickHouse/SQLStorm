@@ -15,7 +15,7 @@ TotalSales AS (
     FROM 
         lineitem l
     WHERE 
-        l.l_shipdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+        l.l_shipdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
     GROUP BY 
         l.l_suppkey
 ),

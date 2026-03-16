@@ -30,7 +30,7 @@ RecentPosts AS (
         P.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RecentPostRank
     FROM Posts P
-    WHERE P.CreationDate >= now64(6) - INTERVAL 30 DAY
+    WHERE P.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '30 days'
 ),
 CloseReasonSummary AS (
     SELECT

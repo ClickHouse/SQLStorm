@@ -63,4 +63,4 @@ WHERE
     ns.n_nationkey IN (SELECT n_nationkey FROM nation WHERE n_comment IS NOT NULL)
 ORDER BY 
     total_revenue DESC, customer_spending DESC, supplier_cost DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

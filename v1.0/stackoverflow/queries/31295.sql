@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 
-        p.CreationDate >= CURRENT_DATE - INTERVAL 2 YEAR
+        p.CreationDate >= CURRENT_DATE - INTERVAL '2 years'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName, p.Score, p.ViewCount
 ), PopularTags AS (
@@ -43,7 +43,7 @@ WITH RankedPosts AS (
     JOIN 
         Posts p ON p.Id = ph.PostId
     WHERE 
-        ph.CreationDate >= CURRENT_DATE - INTERVAL 1 MONTH
+        ph.CreationDate >= CURRENT_DATE - INTERVAL '1 month'
 )
 
 SELECT 

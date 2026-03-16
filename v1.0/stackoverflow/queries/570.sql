@@ -54,6 +54,6 @@ FROM
     Users U
 WHERE 
     NOT EXISTS (SELECT 1 FROM Votes V WHERE V.UserId = U.Id)
-    AND U.LastAccessDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 2 YEAR
+    AND U.LastAccessDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '2 years'
 ORDER BY 
     TotalVotes DESC NULLS LAST;

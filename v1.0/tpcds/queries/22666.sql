@@ -60,5 +60,5 @@ WHERE
     AND (SELECT COUNT(*) FROM customer c WHERE c.c_current_cdemo_sk IS NOT NULL) > 0
 ORDER BY 
     cp.total_sales DESC
-LIMIT 5 OFFSET 10;
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
 

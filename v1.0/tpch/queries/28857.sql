@@ -14,8 +14,8 @@ JOIN
     supplier s ON s.s_suppkey = ps.ps_suppkey
 WHERE 
     p.p_size BETWEEN 10 AND 20
-    AND l.l_shipdate >= toDate('1996-01-01')
-    AND l.l_shipdate <= toDate('1996-12-31')
+    AND l.l_shipdate >= DATE '1996-01-01'
+    AND l.l_shipdate <= DATE '1996-12-31'
 GROUP BY 
     p.p_name
 HAVING 

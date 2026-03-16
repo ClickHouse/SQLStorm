@@ -29,7 +29,7 @@ TopPostInfo AS (
     FROM Posts p
     LEFT JOIN PostHierarchy ph ON p.Id = ph.Id
     LEFT JOIN UserEngagement ue ON p.OwnerUserId = ue.UserId
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 MONTH
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 month'
 ),
 ClosedPosts AS (
     SELECT 

@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR AND
+        p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' AND
         p.PostTypeId = 1
     GROUP BY 
         p.Id, u.DisplayName

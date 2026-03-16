@@ -57,8 +57,8 @@ LEFT JOIN
     ReturnSummary rs ON c.c_customer_sk = rs.wr_returning_customer_sk
 WHERE 
     ca.ca_city IS NOT NULL
-    AND c.c_birth_year < (toYear(cast('2002-10-01' as date)) - 21)
+    AND c.c_birth_year < (EXTRACT(YEAR FROM cast('2002-10-01' as date)) - 21)
 ORDER BY 
     customer_value DESC, 
     return_behavior ASC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

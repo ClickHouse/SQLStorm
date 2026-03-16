@@ -6,8 +6,8 @@ select
 from
 	orders
 where
-	o_orderdate >= toDate('1995-03-01')
-	and o_orderdate < toDate('1995-03-01') + interval '3' month
+	o_orderdate >= date '1995-03-01'
+	and o_orderdate < date '1995-03-01' + interval '3' month
 	and exists (
 		select
 			*

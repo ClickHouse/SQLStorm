@@ -57,4 +57,4 @@ GROUP BY
     od.o_orderkey, od.o_orderdate
 ORDER BY 
     total_extended_price DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

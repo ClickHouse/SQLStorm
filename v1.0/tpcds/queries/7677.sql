@@ -56,4 +56,4 @@ JOIN
     Customer_Demographics AS cd ON cd.cd_demo_sk = (SELECT c_current_cdemo_sk FROM customer WHERE c_customer_sk = tc.c_customer_sk)
 ORDER BY 
     tc.total_sales DESC, tc.total_orders DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

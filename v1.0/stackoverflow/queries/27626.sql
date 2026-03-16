@@ -20,7 +20,7 @@ WITH StringStats AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     WHERE 
-        P.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL 1 YEAR
+        P.CreationDate >= CAST('2024-10-01' AS DATE) - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.Body, P.CreationDate, U.DisplayName
 ),

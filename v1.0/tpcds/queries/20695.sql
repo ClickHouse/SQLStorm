@@ -58,7 +58,7 @@ final_report AS (
         ss.net_sales,
         CASE 
             WHEN ss.total_sales = 0 THEN NULL
-            ELSE ROUND((COALESCE(ss.total_returns, 0, CAST() AS DECIMAL) / NULLIF(ss.total_sales, 0)) * 100, 2) 
+            ELSE ROUND((COALESCE(ss.total_returns, 0)::DECIMAL / NULLIF(ss.total_sales, 0)) * 100, 2) 
         END AS return_percentage,
         (
             SELECT 

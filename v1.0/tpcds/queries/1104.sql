@@ -47,4 +47,4 @@ WHERE
     tc.total_sales > (SELECT AVG(total_sales) FROM customer_sales)
 ORDER BY 
     tc.total_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN PostLinks lp ON p.Id = lp.PostId
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
         AND (p.Tags LIKE '%SQL%' OR p.Title LIKE '%SQL%')
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AcceptedAnswerId, lp.LinkTypeId

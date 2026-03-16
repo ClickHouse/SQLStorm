@@ -46,7 +46,7 @@ SELECT
 FROM 
     movie_details md
 LEFT JOIN 
-    actor_info ai ON ai.person_id = ANY(splitByString(', ', md.cast_idsCAST() AS integer)[])
+    actor_info ai ON ai.person_id = ANY(splitByString(', ', md.cast_ids)::integer[])
 WHERE 
     ai.rn = 1
 ORDER BY 

@@ -8,7 +8,7 @@ CTE_Order_Summary AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice,
            ROW_NUMBER() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_orderdate DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1996-01-01') 
+    WHERE o.o_orderdate >= DATE '1996-01-01' 
 )
 SELECT p.p_name, p.p_brand, p.p_type, 
        SUM(l.l_quantity) AS total_quantity, 

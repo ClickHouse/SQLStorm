@@ -51,7 +51,7 @@ SELECT
 FROM 
     sales_summary ss
 JOIN 
-    demographic_summary ds ON ds.c_birth_month = toMonth(DATE(CONCAT(ss.d_year, '-', ss.d_month_seq, '-01')))
+    demographic_summary ds ON ds.c_birth_month = EXTRACT(MONTH FROM DATE(CONCAT(ss.d_year, '-', ss.d_month_seq, '-01')))
 JOIN 
     warehouse_summary ws ON ws.w_warehouse_id IN ('W0001', 'W0002', 'W0003')
 ORDER BY 

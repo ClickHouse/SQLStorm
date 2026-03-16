@@ -12,7 +12,7 @@ WITH TagAggregates AS (
     JOIN 
         Users ON Posts.OwnerUserId = Users.Id
     WHERE 
-        Posts.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        Posts.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
     GROUP BY 
         Tags.TagName
 ),
@@ -38,7 +38,7 @@ TopContributors AS (
     JOIN 
         Posts ON Posts.OwnerUserId = Users.Id
     WHERE 
-        Posts.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        Posts.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         Users.DisplayName
     ORDER BY 

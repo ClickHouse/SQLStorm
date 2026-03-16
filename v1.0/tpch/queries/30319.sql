@@ -22,7 +22,7 @@ LEFT JOIN supplier s ON n.n_nationkey = s.s_nationkey
 LEFT JOIN partsupp ps ON s.s_suppkey = ps.ps_suppkey
 LEFT JOIN lineitem l ON ps.ps_partkey = l.l_partkey
 LEFT JOIN part p ON p.p_partkey = ps.ps_partkey
-WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
+WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '1 year'
   AND (l.l_discount > 0.10 OR l.l_returnflag IS NULL)
 GROUP BY r.r_name, n.n_name
 HAVING COUNT(DISTINCT s.s_suppkey) > 5 

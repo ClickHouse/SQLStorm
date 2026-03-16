@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 WHERE 
-    p.CreationDate >= CURRENT_DATE - INTERVAL 6 MONTH 
+    p.CreationDate >= CURRENT_DATE - INTERVAL '6 months' 
 GROUP BY 
     p.Id, p.Title, p.CreationDate, u.DisplayName, p.ViewCount, p.Score, 
     p.AnswerCount, p.CommentCount, p.FavoriteCount, t.TagName, v.VoteTypeId

@@ -25,7 +25,7 @@ JOIN
     part p ON ps.ps_partkey = p.p_partkey
 WHERE 
     c.c_mktsegment LIKE '%household%'
-    AND o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1996-12-31')
+    AND o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1996-12-31'
 GROUP BY 
     n.n_name, r.r_name, s.s_acctbal, l.l_extendedprice
 ORDER BY 

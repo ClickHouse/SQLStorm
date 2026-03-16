@@ -55,7 +55,7 @@ SELECT
     q.CommentCount,
     q.CreationDate,
     q.RelatedTags,
-    ROUND((toUnixTimestamp(toDateTime64('2024-10-01 12:34:56', 6) - q.CreationDate) / 86400), 2) AS AgeInDays
+    ROUND((toUnixTimestamp(cast('2024-10-01 12:34:56' as timestamp) - q.CreationDate) / 86400), 2) AS AgeInDays
 FROM 
     PopularQuestions q
 ORDER BY 

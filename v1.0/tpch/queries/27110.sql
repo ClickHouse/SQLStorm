@@ -11,7 +11,7 @@ WITH StringBenchmark AS (
     JOIN orders o ON l.l_orderkey = o.o_orderkey
     JOIN customer c ON o.o_custkey = c.c_custkey
     WHERE p.p_size BETWEEN 1 AND 10
-      AND l.l_shipdate > toDate('1996-01-01')
+      AND l.l_shipdate > DATE '1996-01-01'
     GROUP BY p.p_name, s.s_name, c.c_name
 )
 SELECT 
@@ -23,4 +23,4 @@ SELECT
     LOWER(formatted_string) AS lowercased_string
 FROM StringBenchmark
 ORDER BY total_price DESC
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

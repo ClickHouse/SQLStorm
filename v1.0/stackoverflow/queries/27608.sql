@@ -29,7 +29,7 @@ FilteredPosts AS (
     FROM 
         RankedPosts rp
     WHERE 
-        rp.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR 
+        rp.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
 ),
 TopPosts AS (
     SELECT 

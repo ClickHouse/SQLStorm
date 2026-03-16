@@ -55,4 +55,4 @@ WHERE
     )
 ORDER BY 
     p.p_partkey DESC 
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

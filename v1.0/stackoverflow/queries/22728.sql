@@ -49,7 +49,7 @@ SELECT
     END AS EngagementLevel,
     (SELECT AVG(ViewCount) 
      FROM Posts 
-     WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY 
+     WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
        AND PostTypeId = 1) AS AvgRecentViews,
     tp.BadgeName,
     COUNT(DISTINCT ph.Id) AS HistoryCount,

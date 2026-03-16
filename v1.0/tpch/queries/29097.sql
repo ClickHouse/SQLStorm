@@ -19,8 +19,8 @@ JOIN
 JOIN 
     part p ON l.l_partkey = p.p_partkey
 WHERE 
-    o.o_orderdate >= toDate('1997-01-01') AND
-    o.o_orderdate < toDate('1998-01-01') AND 
+    o.o_orderdate >= DATE '1997-01-01' AND
+    o.o_orderdate < DATE '1998-01-01' AND 
     p.p_type LIKE '%brass%'
 GROUP BY 
     c.c_name, p.p_type, c.c_address

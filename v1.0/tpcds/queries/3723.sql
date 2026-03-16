@@ -60,7 +60,7 @@ FROM
 LEFT JOIN 
     RankedStores si ON cs.c_customer_sk IN (SELECT sr_customer_sk FROM store_returns WHERE sr_store_sk = si.s_store_sk)
 JOIN 
-    MonthlySales ms ON toMonth(ms.Sales_Month) = toMonth(toDate('2002-10-01'))
+    MonthlySales ms ON EXTRACT(MONTH FROM ms.Sales_Month) = EXTRACT(MONTH FROM DATE '2002-10-01')
 WHERE 
     cs.Customer_Name LIKE '%John%' 
     OR cs.Customer_Name LIKE '%Doe%'

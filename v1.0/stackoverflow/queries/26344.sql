@@ -10,7 +10,7 @@ WITH TagStatistics AS (
     LEFT JOIN Posts p ON p.Tags LIKE CONCAT('%<', t.TagName, '>') 
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN PostTypes pt ON p.PostTypeId = pt.Id
-    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY t.TagName
 ),
 TopTags AS (

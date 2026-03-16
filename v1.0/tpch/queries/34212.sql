@@ -8,7 +8,7 @@ WITH RECURSIVE OrderHierarchy AS (
     SELECT o.o_orderkey, o.o_totalprice, o.o_orderdate, o.o_custkey, oh.level + 1
     FROM orders o
     JOIN OrderHierarchy oh ON o.o_custkey = oh.o_custkey
-    WHERE o.o_orderdate > cast('1998-10-01' as date) - INTERVAL 1 YEAR
+    WHERE o.o_orderdate > cast('1998-10-01' as date) - INTERVAL '1 year'
 ),
 SupplierInfo AS (
     SELECT s.s_suppkey, s.s_name, SUM(ps.ps_supplycost * ps.ps_availqty) AS total_supply_cost

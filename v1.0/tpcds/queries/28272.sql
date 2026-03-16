@@ -48,7 +48,7 @@ combined_data AS (
         cust.ca_state,
         COALESCE(sales.total_sales, 0) AS total_sales,
         COALESCE(sales.orders_count, 0) AS orders_count,
-        toYear(first_purchase_date) AS first_purchase_year
+        EXTRACT(YEAR FROM first_purchase_date) AS first_purchase_year
     FROM 
         customer_data cust
     LEFT JOIN 

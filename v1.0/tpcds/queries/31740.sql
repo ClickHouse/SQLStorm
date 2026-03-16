@@ -19,7 +19,7 @@ demographic_income AS (
     SELECT cd_cd.cd_demo_sk, ib.ib_income_band_sk, 
            CASE 
                WHEN ib.ib_lower_bound IS NULL OR ib.ib_upper_bound IS NULL THEN 'Unknown'
-               ELSE CONCAT('Income from ', CAST(ib.ib_lower_bound AS text), ' to ', CAST(ib.ib_upper_bound AS text))
+               ELSE CONCAT('Income from ', ib.ib_lower_bound::text, ' to ', ib.ib_upper_bound::text)
            END AS income_band
     FROM customer_demographics cd_cd
     LEFT JOIN household_demographics hd ON cd_cd.cd_demo_sk = hd.hd_demo_sk

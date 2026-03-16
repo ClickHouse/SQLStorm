@@ -59,4 +59,4 @@ FROM
     FinalReport
 WHERE 
     total_spent > 0
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

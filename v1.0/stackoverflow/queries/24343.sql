@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 RecentUserActivity AS (
     SELECT 
@@ -92,6 +92,6 @@ LEFT JOIN
 LEFT JOIN 
     PostHistoryDetails p ON r.PostId = p.PostId
 WHERE 
-    up.MostRecentPostDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 6 MONTH
+    up.MostRecentPostDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 months'
 ORDER BY 
     up.TotalViews DESC, up.UserId;

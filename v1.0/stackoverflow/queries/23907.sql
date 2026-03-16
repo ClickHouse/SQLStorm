@@ -12,7 +12,7 @@ WITH PostDetails AS (
     FROM Posts p
     LEFT JOIN Posts po ON p.AcceptedAnswerId = po.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
-    WHERE p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
     GROUP BY p.Id, p.Title, p.ViewCount, p.Score, p.CreationDate, po.OwnerUserId, p.AnswerCount
 ),
 UserActivity AS (

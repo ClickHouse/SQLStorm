@@ -36,4 +36,4 @@ WHERE p.p_size BETWEEN 10 AND 20
   AND (p.p_type LIKE '%Metal%' OR p.p_type LIKE '%Plastic%')
   AND (p.p_comment IS NOT NULL OR p.p_comment <> '')
 ORDER BY total_revenue DESC NULLS LAST
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

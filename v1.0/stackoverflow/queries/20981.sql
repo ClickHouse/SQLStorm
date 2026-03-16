@@ -17,7 +17,7 @@ WITH UserRankings AS (
         P.OwnerUserId,
         COUNT(P.Id) AS RecentPostsCount
     FROM Posts P
-    WHERE P.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+    WHERE P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY P.OwnerUserId
 ), CombinedData AS (
     SELECT 
@@ -48,14 +48,14 @@ SELECT
      WHERE T.WikiPostId IS NOT NULL) AS PopularTags,
     (SELECT COUNT(*) 
      FROM Votes V 
-     WHERE V.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 7 DAY 
+     WHERE V.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '7 days' 
      AND V.VoteTypeId = 2) AS RecentUpVotes,
     (SELECT COUNT(*) 
      FROM PostHistory PH 
      WHERE PH.UserId IN (SELECT U.Id 
                          FROM Users U 
                          WHERE U.Reputation > 1000) 
-     AND PH.CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 90 DAY) AS HistoryCommentsFromHighReputationUsers
+     AND PH.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '90 days') AS HistoryCommentsFromHighReputationUsers
 FROM CombinedData CD
 GROUP BY CD.DisplayName, CD.RecentPostsCount, CD.BadgesCount, CD.ReputationRank
 ORDER BY CD.ReputationRank;

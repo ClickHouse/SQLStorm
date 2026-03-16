@@ -9,7 +9,7 @@ WITH RankedOrders AS (
     FROM 
         orders o
     WHERE 
-        o.o_orderdate BETWEEN toDate('1996-01-01') AND toDate('1997-01-01')
+        o.o_orderdate BETWEEN DATE '1996-01-01' AND DATE '1997-01-01'
 ),
 SupplierPartInfo AS (
     SELECT 
@@ -63,7 +63,7 @@ LEFT JOIN
 LEFT JOIN 
     customer c ON o.o_custkey = c.c_custkey
 WHERE 
-    l.l_shipdate >= toDate('1998-10-01') - INTERVAL 1 YEAR
+    l.l_shipdate >= DATE '1998-10-01' - INTERVAL '1 year'
     AND (s.s_acctbal IS NOT NULL AND s.s_acctbal > 0)
 GROUP BY 
     n.n_nationkey, 

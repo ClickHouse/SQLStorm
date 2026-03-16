@@ -38,7 +38,7 @@ FilteredPosts AS (
     WHERE 
         rp.PostRank = 1 AND 
         rp.Score > 10 AND 
-        rp.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        rp.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 )
 SELECT 
     fp.*,

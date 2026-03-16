@@ -25,7 +25,7 @@ WITH RankedPosts AS (
 PostHistoryContent AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CAST(PH.CreationDate AS TEXT))), ', ') AS RevisionDates,
+        arrayStringConcat(groupArray(assumeNotNull(PH.CreationDate::TEXT)), ', ') AS RevisionDates,
         arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes,
         MAX(PH.CreationDate) AS LastModifiedDate
     FROM 
@@ -65,7 +65,7 @@ SELECT
 FROM 
     EnhancedPosts EP
 WHERE 
-    EP.LastModifiedDate >= CAST('2024-10-01 12:34:56' AS timestamp) - INTERVAL 30 DAY  
+    EP.LastModifiedDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '30 days'  
 ORDER BY 
     EP.Score DESC, 
     EP.CommentCount DESC;

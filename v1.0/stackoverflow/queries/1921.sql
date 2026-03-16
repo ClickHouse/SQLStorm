@@ -55,7 +55,7 @@ FROM
     FinalStats fs
 WHERE 
     fs.PostCount > 0 
-    AND fs.LastPostDate >= (toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY)
+    AND fs.LastPostDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
 ORDER BY 
     fs.TotalScore DESC
 LIMIT 10;

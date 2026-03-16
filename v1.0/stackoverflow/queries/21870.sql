@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 ),
 UserStats AS (
     SELECT 
@@ -59,7 +59,7 @@ SELECT
     R.Id,
     R.Title,
     R.Score,
-    (CAST(P.TotalUpVotes AS FLOAT) / NULLIF(P.TotalVotes, 0)) AS UpVoteRatio,
+    (P.TotalUpVotes::FLOAT / NULLIF(P.TotalVotes, 0)) AS UpVoteRatio,
     U.UserId,
     U.PostCount,
     U.UpVotes,

@@ -46,7 +46,7 @@ WITH RecursivePostHistory AS (
     LEFT JOIN 
         PostHistory ph ON ph.UserId = u.Id
     WHERE 
-        u.LastAccessDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        u.LastAccessDate >= timestamp '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         u.Id, u.DisplayName
 )
@@ -80,7 +80,7 @@ LEFT JOIN
 LEFT JOIN 
     RecentActiveUsers recent ON recent.UserId = p.OwnerUserId
 WHERE 
-    p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR 
+    p.CreationDate >= timestamp '2024-10-01 12:34:56' - INTERVAL '1 year' 
     AND (up.UpVoteCount > 0 OR down.DownVoteCount > 0)
 ORDER BY 
     p.LastActivityDate DESC,

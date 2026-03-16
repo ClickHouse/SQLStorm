@@ -53,4 +53,4 @@ GROUP BY
     w.ws_item_sk
 ORDER BY 
     net_sales DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

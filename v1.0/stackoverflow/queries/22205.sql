@@ -76,4 +76,4 @@ WHERE
     AND rp.RecentRank <= 10
 ORDER BY 
     rp.Score DESC, rp.ViewCount DESC
-LIMIT 5 OFFSET 5;
+OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY;

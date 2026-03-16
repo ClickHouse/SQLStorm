@@ -4,11 +4,11 @@ WITH RankedOrders AS (
         o.o_orderkey,
         o.o_orderdate,
         o.o_totalprice,
-        ROW_NUMBER() OVER (PARTITION BY toYear(o.o_orderdate) ORDER BY o.o_totalprice DESC) AS rank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM o.o_orderdate) ORDER BY o.o_totalprice DESC) AS rank
     FROM 
         orders o
     WHERE 
-        o.o_orderdate >= toDate('1996-01-01') 
+        o.o_orderdate >= DATE '1996-01-01' 
         AND o.o_orderstatus IN ('O', 'F')
 ), 
 SupplierStats AS (
@@ -47,7 +47,7 @@ SELECT
     COALESCE(
         (SELECT COUNT(DISTINCT li.l_orderkey) 
          FROM lineitem li 
-         WHERE li.l_partkey = p.p_partkey AND li.l_shipdate > toDate('1998-10-01') - INTERVAL 30 DAY), 
+         WHERE li.l_partkey = p.p_partkey AND li.l_shipdate > DATE '1998-10-01' - INTERVAL '30 days'), 
     0) AS ship_count_last_30_days,
     ROW_NUMBER() OVER (ORDER BY COALESCE(c.total_spent, 0) DESC) AS customer_spending_rank
 FROM 

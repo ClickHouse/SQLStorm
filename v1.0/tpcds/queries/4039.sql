@@ -52,4 +52,4 @@ WHERE
     r.total_web_sales > 1000 OR r.total_catalog_sales > 1000 OR r.total_store_sales > 1000
 ORDER BY 
     r.sales_rank
-LIMIT 100;
+FETCH FIRST 100 ROWS ONLY;

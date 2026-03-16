@@ -8,7 +8,7 @@ WITH Benchmark AS (
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
         COUNT(DISTINCT b.Id) AS BadgeCount,
-        toUnixTimestamp((toDateTime64('2024-10-01 12:34:56', 6) - p.CreationDate)) AS TimeSinceCreation
+        toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) AS TimeSinceCreation
     FROM 
         Posts p
     LEFT JOIN 

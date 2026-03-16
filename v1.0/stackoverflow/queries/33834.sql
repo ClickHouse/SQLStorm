@@ -66,7 +66,7 @@ LEFT JOIN
 LEFT JOIN 
     CloseReasons cr ON p.Id = cr.PostId
 WHERE 
-    p.LastActivityDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+    p.LastActivityDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR'
     AND (p.ViewCount > 100 OR p.Score > 0)
 ORDER BY 
     p.Score DESC,

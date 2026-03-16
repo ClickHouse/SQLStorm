@@ -39,9 +39,9 @@ SELECT
     t.GoldBadges,
     t.SilverBadges,
     t.BronzeBadges,
-    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = t.UserId AND p.CreationDate BETWEEN cast('2024-10-01' as date) - INTERVAL 30 DAY AND cast('2024-10-01' as date)) AS RecentPosts,
-    (SELECT COUNT(*) FROM Comments c WHERE c.UserId = t.UserId AND c.CreationDate BETWEEN cast('2024-10-01' as date) - INTERVAL 30 DAY AND cast('2024-10-01' as date)) AS RecentComments,
-    (SELECT COUNT(*) FROM Votes v WHERE v.UserId = t.UserId AND v.CreationDate BETWEEN cast('2024-10-01' as date) - INTERVAL 30 DAY AND cast('2024-10-01' as date)) AS RecentVotes
+    (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = t.UserId AND p.CreationDate BETWEEN cast('2024-10-01' as date) - INTERVAL '30 days' AND cast('2024-10-01' as date)) AS RecentPosts,
+    (SELECT COUNT(*) FROM Comments c WHERE c.UserId = t.UserId AND c.CreationDate BETWEEN cast('2024-10-01' as date) - INTERVAL '30 days' AND cast('2024-10-01' as date)) AS RecentComments,
+    (SELECT COUNT(*) FROM Votes v WHERE v.UserId = t.UserId AND v.CreationDate BETWEEN cast('2024-10-01' as date) - INTERVAL '30 days' AND cast('2024-10-01' as date)) AS RecentVotes
 FROM TopUsers t
 WHERE t.ScoreRank <= 10
 ORDER BY t.TotalScore DESC, t.TotalPosts DESC;

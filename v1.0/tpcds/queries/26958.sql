@@ -50,7 +50,7 @@ FullCustomerInfo AS (
 ),
 AgeDistribution AS (
     SELECT 
-        toYear(toDate('2002-10-01')) - full_birth_year AS age,
+        EXTRACT(YEAR FROM DATE '2002-10-01') - full_birth_year AS age,
         COUNT(*) AS num_customers
     FROM 
         FullCustomerInfo

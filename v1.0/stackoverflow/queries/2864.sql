@@ -32,7 +32,7 @@ SELECT
         WHEN T.UserRank <= 10 THEN 'Top Contributor'
         ELSE 'Contributor'
     END AS UserCategory,
-    (SELECT COUNT(*) FROM Posts WHERE OwnerUserId = T.UserId AND CreationDate > toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY) AS RecentPosts,
+    (SELECT COUNT(*) FROM Posts WHERE OwnerUserId = T.UserId AND CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days') AS RecentPosts,
     (SELECT COUNT(*) FROM Badges B WHERE B.UserId = T.UserId AND B.Class = 1) AS GoldBadges,
     COALESCE(CAST(SUM(CASE WHEN B.Class = 2 THEN 1 ELSE 0 END) AS INTEGER), 0) AS SilverBadges,
     COALESCE(CAST(SUM(CASE WHEN B.Class = 3 THEN 1 ELSE 0 END) AS INTEGER), 0) AS BronzeBadges

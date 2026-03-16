@@ -21,7 +21,7 @@ WITH RankedPosts AS (
         Tags t ON tag = t.TagName
     WHERE
         p.PostTypeId = 1  
-        AND p.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.DisplayName
 ),
@@ -35,7 +35,7 @@ RankedWithBadges AS (
     LEFT JOIN 
         Badges b ON rp.PostId = b.UserId
     WHERE
-        b.Date >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ),
 FinalRanking AS (
     SELECT

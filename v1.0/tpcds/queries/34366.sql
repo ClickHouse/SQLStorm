@@ -59,7 +59,7 @@ FROM
     top_customers tc
 INNER JOIN customer c ON tc.c_customer_id = c.c_customer_id
 INNER JOIN customer_address cad ON c.c_current_addr_sk = cad.ca_address_sk
-INNER JOIN yearly_average_sales yas ON yas.d_year = toYear(toDate('2002-10-01'))
+INNER JOIN yearly_average_sales yas ON yas.d_year = EXTRACT(YEAR FROM DATE '2002-10-01')
 LEFT JOIN customer_sales cs ON cs.c_customer_id = c.c_customer_id
 WHERE
     cad.ca_zip IS NOT NULL AND

@@ -6,7 +6,7 @@ WITH RECURSIVE max_supplycost AS (
     SELECT o.o_orderkey, o.o_orderdate, o.o_totalprice,
            RANK() OVER (PARTITION BY o.o_orderstatus ORDER BY o.o_totalprice DESC) AS order_rank
     FROM orders o
-    WHERE o.o_orderdate >= toDate('1997-01-01')
+    WHERE o.o_orderdate >= DATE '1997-01-01'
 ), customer_orders AS (
     SELECT c.c_custkey, c.c_name, c.c_acctbal, coalesce(SUM(o.o_totalprice), 0) AS total_spent
     FROM customer c
@@ -17,7 +17,7 @@ WITH RECURSIVE max_supplycost AS (
            l.l_extendedprice, l.l_discount, l.l_tax,
            ROW_NUMBER() OVER (PARTITION BY l.l_orderkey ORDER BY l.l_linenumber) AS line_item_number
     FROM lineitem l
-    WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL 30 DAY
+    WHERE l.l_shipdate > cast('1998-10-01' as date) - INTERVAL '30 day'
 )
 SELECT co.c_name, 
        COALESCE(SUM(dli.l_extendedprice), 0) AS total_extended_price,

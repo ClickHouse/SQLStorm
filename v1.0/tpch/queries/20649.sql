@@ -63,7 +63,7 @@ FROM
     FilteredOrders fr
 JOIN SupplierRegion sr ON fr.o_orderkey = sr.s_suppkey
 WHERE
-    fr.o_orderdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+    fr.o_orderdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY
     fr.o_orderdate, sr.region
 HAVING

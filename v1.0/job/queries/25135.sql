@@ -59,8 +59,8 @@ SELECT
     md.production_year,
     md.cast_count,
     md.keyword_count,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(md.actor_names AS text)))), ', ') AS actor_list,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(md.company_types AS text)))), ', ') AS company_type_list
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.actor_names::text))), ', ') AS actor_list,
+    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(md.company_types::text))), ', ') AS company_type_list
 FROM 
     MovieDetails md
 GROUP BY 

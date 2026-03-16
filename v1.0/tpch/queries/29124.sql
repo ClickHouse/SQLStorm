@@ -17,7 +17,7 @@ LEFT JOIN
 LEFT JOIN 
     orders o ON l.l_orderkey = o.o_orderkey 
 WHERE 
-    o.o_orderdate >= toDate('1996-01-01')
+    o.o_orderdate >= DATE '1996-01-01'
 GROUP BY 
     s.s_name
 HAVING 

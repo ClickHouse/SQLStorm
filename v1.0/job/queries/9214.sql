@@ -29,4 +29,4 @@ GROUP BY
     t.title, p.name, c.kind
 ORDER BY 
     alias_count DESC, movie_title ASC
-LIMIT 50;
+FETCH FIRST 50 ROWS ONLY;

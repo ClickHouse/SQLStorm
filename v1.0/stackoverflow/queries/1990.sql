@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     WHERE 
-        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL 1 YEAR
+        p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
 ),
 TopUsers AS (
     SELECT 
@@ -44,7 +44,7 @@ PostHistoryDetails AS (
     JOIN 
         Posts p ON ph.PostId = p.Id
     WHERE 
-        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL 6 MONTH
+        ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '6 months'
 )
 SELECT 
     ru.UserId,
@@ -60,7 +60,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT PostId, COUNT(*) AS TotalChanges 
      FROM PostHistory 
-     WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL 30 DAY
+     WHERE CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
      GROUP BY PostId) phd ON r.PostId = phd.PostId
 LEFT JOIN 
     PostHistoryDetails ph ON ru.UserId = ph.UserId

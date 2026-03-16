@@ -36,7 +36,7 @@ JOIN customer c ON o.o_custkey = c.c_custkey
 JOIN nation n ON s.s_nationkey = n.n_nationkey
 JOIN region r ON n.n_regionkey = r.r_regionkey
 LEFT JOIN SalesHierarchy rhr ON c.c_custkey = rhr.c_custkey
-WHERE l.l_shipdate BETWEEN toDate('1997-01-01') AND toDate('1997-12-31')
+WHERE l.l_shipdate BETWEEN DATE '1997-01-01' AND DATE '1997-12-31'
 GROUP BY r.r_name, n.n_name, s.s_name, p.p_name, c.c_custkey, rhr.parent_custkey
 HAVING COUNT(DISTINCT o.o_orderkey) > 10
 ORDER BY total_revenue DESC;

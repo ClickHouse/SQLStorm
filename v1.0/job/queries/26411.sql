@@ -29,11 +29,11 @@ FilteredMovies AS (
         rm.cast_count,
         rm.actors,
         rm.keywords,
-        ROW_NUMBER() OVER (PARTITION BY toYear(cast('2024-10-01' as date)) ORDER BY rm.cast_count DESC) AS rank
+        ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM cast('2024-10-01' as date)) ORDER BY rm.cast_count DESC) AS rank
     FROM 
         RankedMovies rm
     WHERE 
-        rm.production_year >= toYear(cast('2024-10-01' as date)) - 10
+        rm.production_year >= EXTRACT(YEAR FROM cast('2024-10-01' as date)) - 10
 )
 
 SELECT 

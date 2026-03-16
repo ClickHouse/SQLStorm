@@ -74,4 +74,4 @@ WHERE
     (fr.total_spent > 0 OR fr.purchase_category = 'Low')
     AND fr.cd_gender IS NOT NULL
 ORDER BY fr.purchase_category, fr.total_spent DESC
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;

@@ -34,7 +34,7 @@ RecentPostHistory AS (
     FROM 
         PostHistory PH
     WHERE 
-        PH.CreationDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 30 DAY
+        PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - interval '30 days'
 ),
 ActivePostLinks AS (
     SELECT 
@@ -46,7 +46,7 @@ ActivePostLinks AS (
     INNER JOIN 
         Posts P ON PL.PostId = P.Id
     WHERE 
-        P.LastActivityDate >= toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR
+        P.LastActivityDate >= cast('2024-10-01 12:34:56' as timestamp) - interval '1 year'
     GROUP BY 
         PL.PostId, PL.RelatedPostId
 )
