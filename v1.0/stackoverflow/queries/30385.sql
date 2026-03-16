@@ -30,7 +30,7 @@ UserStats AS (
         Posts p ON u.Id = p.OwnerUserId
     GROUP BY 
         u.Id
-),
+, u.DisplayName),
 RecentActivity AS (
     SELECT 
         p.Id AS PostId,

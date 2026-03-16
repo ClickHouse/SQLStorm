@@ -27,7 +27,7 @@ UserPostStats AS (
         U.Reputation > 100
     GROUP BY 
         U.Id
-),
+, U.DisplayName),
 PopularPosts AS (
     SELECT 
         P.Id AS PostId,

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN Votes v ON p.Id = v.PostId
     WHERE p.PostTypeId = 1 
     GROUP BY p.Id, u.DisplayName, p.Title, p.Body, p.LastActivityDate
-),
+, p.Tags),
 FilteredPosts AS (
     SELECT 
         rp.PostId,

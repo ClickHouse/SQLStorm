@@ -24,7 +24,7 @@ UserStats AS (
         Posts p ON u.Id = p.OwnerUserId
     GROUP BY 
         u.Id
-),
+, u.DisplayName),
 TopUsers AS (
     SELECT 
         us.UserId,

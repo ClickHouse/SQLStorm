@@ -15,7 +15,7 @@ WITH RecentPosts AS (
         p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY 
         p.Id
-),
+, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId),
 PostVotes AS (
     SELECT 
         v.PostId,

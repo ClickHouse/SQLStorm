@@ -27,7 +27,7 @@ UserEngagement AS (
         Votes v ON v.PostId = p.Id AND v.VoteTypeId = 9 
     GROUP BY 
         u.Id
-),
+, u.DisplayName),
 RecentPostHistory AS (
     SELECT 
         ph.PostId,

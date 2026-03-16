@@ -20,7 +20,7 @@ WITH RecursivePostStats AS (
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.OwnerUserId, p.PostTypeId, p.AcceptedAnswerId
-),
+, p.ClosedDate, p.CreationDate),
 AggregatedStats AS (
     SELECT 
         OwnerUserId,
