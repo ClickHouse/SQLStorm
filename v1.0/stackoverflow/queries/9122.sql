@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         COUNT(c.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank
+        ROW_NUMBER() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY p.CreationDate DESC) AS UserPostRank
     FROM 
         Posts p
     LEFT JOIN 

@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.AcceptedAnswerId,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS PostRank
+        RANK() OVER (PARTITION BY p.PostTypeId ORDER BY any(p.CreationDate) DESC) AS PostRank
     FROM 
         Posts p
     LEFT JOIN 

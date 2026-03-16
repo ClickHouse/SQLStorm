@@ -13,7 +13,7 @@ RecentPosts AS (
         P.OwnerUserId,
         P.Title,
         P.CreationDate,
-        COALESCE(P.AcceptedAnswerId, 0) AS AcceptedAnswerId,
+        COALESCE(any(P.AcceptedAnswerId), 0) AS AcceptedAnswerId,
         P.Score,
         P.ViewCount,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount

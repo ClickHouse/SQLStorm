@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         u.DisplayName AS Owner,
         COUNT(c.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY any(p.PostTypeId) ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p
     JOIN 

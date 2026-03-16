@@ -5,7 +5,7 @@ WITH UserScores AS (
         U.DisplayName,
         U.Reputation,
         U.CreationDate,
-        (U.UpVotes - U.DownVotes) AS NetVotes,
+        (any(U.UpVotes) - any(U.DownVotes)) AS NetVotes,
         COUNT(DISTINCT P.Id) AS TotalPosts,
         COUNT(DISTINCT CASE WHEN P.PostTypeId = 1 THEN P.Id END) AS TotalQuestions,
         COUNT(DISTINCT CASE WHEN P.PostTypeId = 2 THEN P.Id END) AS TotalAnswers

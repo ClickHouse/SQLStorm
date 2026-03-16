@@ -19,7 +19,7 @@ PostStats AS (
         COUNT(C.Id) AS CommentCount,
         COALESCE(SUM(V.BountyAmount), 0) AS TotalBounty,
         MAX(P.CreationDate) AS LatestActivity,
-        ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.Score DESC) AS UserPostRank
+        ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY any(P.Score) DESC) AS UserPostRank
     FROM 
         Posts P
     LEFT JOIN 

@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.Score,
         p.OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
+        ROW_NUMBER() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY p.CreationDate DESC) AS PostRank
     FROM 
         Posts p
     LEFT JOIN 

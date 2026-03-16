@@ -11,7 +11,7 @@ WITH UserReputation AS (
                 WHEN v.VoteTypeId = 3 THEN -1
                 ELSE 0 
             END) AS AvgVoteScore,
-        ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY u.CreationDate DESC) AS rn,
+        ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY any(u.CreationDate) DESC) AS rn,
         u.LastAccessDate,
         u.Views
     FROM 

@@ -42,7 +42,7 @@ PopularPosts AS (
         p.ViewCount,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
-        ROW_NUMBER() OVER (ORDER BY p.Score DESC, p.CreationDate ASC) AS PopularityRank
+        ROW_NUMBER() OVER (ORDER BY p.Score DESC, any(p.CreationDate) ASC) AS PopularityRank
     FROM 
         Posts p
     LEFT JOIN 

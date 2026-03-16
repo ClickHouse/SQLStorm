@@ -4,7 +4,7 @@ WITH UserScores AS (
         u.Id AS UserId,
         u.DisplayName,
         u.Reputation,
-        (u.UpVotes - u.DownVotes) AS NetVotes,
+        (any(u.UpVotes) - any(u.DownVotes)) AS NetVotes,
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount

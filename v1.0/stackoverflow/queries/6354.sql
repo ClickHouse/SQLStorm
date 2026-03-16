@@ -2,14 +2,14 @@
 WITH RankedPosts AS (
     SELECT 
         p.Id AS PostId,
-        p.Title,
+        any(p.Title),
         p.CreationDate,
         u.DisplayName AS Author,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank
+        ROW_NUMBER() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY p.CreationDate DESC) AS UserPostRank
     FROM 
         Posts p
     LEFT JOIN 

@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         p.OwnerUserId,
-        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
+        ROW_NUMBER() OVER (PARTITION BY any(p.PostTypeId) ORDER BY p.Score DESC) AS Rank,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVotes,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVotes
     FROM 

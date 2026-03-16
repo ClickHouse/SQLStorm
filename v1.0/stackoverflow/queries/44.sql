@@ -24,7 +24,7 @@ PostDetails AS (
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS Upvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS Downvotes,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
+        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY any(p.CreationDate) DESC) AS PostRank
     FROM 
         Posts p
     LEFT JOIN 

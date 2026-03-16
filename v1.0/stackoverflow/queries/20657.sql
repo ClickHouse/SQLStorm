@@ -21,7 +21,7 @@ PostsWithVotes AS (
         COUNT(V.Id) AS VoteCount,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        COALESCE(P.AnswerCount, 0) AS AnswerCount,
+        COALESCE(any(P.AnswerCount), 0) AS AnswerCount,
         P.OwnerUserId
     FROM 
         Posts P

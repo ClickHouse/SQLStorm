@@ -29,7 +29,7 @@ PostStats AS (
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 6 THEN 1 ELSE 0 END) AS CloseVotes,
-        DENSE_RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS ScoreRank
+        DENSE_RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY any(p.Score) DESC) AS ScoreRank
     FROM 
         Posts p
     LEFT JOIN 

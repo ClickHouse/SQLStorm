@@ -30,7 +30,7 @@ RecentUserBadges AS (
 UserEngagement AS (
     SELECT 
         u.Id AS UserId,
-        u.DisplayName,
+        any(u.DisplayName),
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS Upvotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS Downvotes,
         COUNT(c.Id) AS TotalComments

@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         COUNT(a.Id) AS AnswerCount,
-        ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.CreationDate DESC) AS LatestEditRank
+        ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY any(p.CreationDate) DESC) AS LatestEditRank
     FROM 
         Posts p
     LEFT JOIN 

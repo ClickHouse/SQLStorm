@@ -7,7 +7,7 @@ WITH PostStats AS (
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
         COALESCE(MAX(ph.CreationDate), toDateTime64('1900-01-01', 6)) AS LastEdit,
-        RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY COALESCE(MAX(ph.CreationDate), toDateTime64('1900-01-01', 6)) DESC) AS EditRank
+        RANK() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY COALESCE(MAX(ph.CreationDate), toDateTime64('1900-01-01', 6)) DESC) AS EditRank
     FROM 
         Posts p
     LEFT JOIN 

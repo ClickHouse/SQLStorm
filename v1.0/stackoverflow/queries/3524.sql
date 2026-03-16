@@ -16,7 +16,7 @@ WITH RankedPosts AS (
 UserScores AS (
     SELECT 
         u.Id AS UserId, 
-        u.DisplayName, 
+        any(u.DisplayName), 
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBountyEarned 
     FROM 
         Users u

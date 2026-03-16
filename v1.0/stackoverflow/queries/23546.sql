@@ -24,7 +24,7 @@ PostStatsCTE AS (
         COALESCE(v.UpVotes, 0) AS UpVotes,
         COALESCE(v.DownVotes, 0) AS DownVotes,
         COUNT(DISTINCT c.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RecentPostRank
+        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY any(p.CreationDate) DESC) AS RecentPostRank
     FROM 
         Posts p
     LEFT JOIN 

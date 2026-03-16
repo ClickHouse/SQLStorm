@@ -42,7 +42,7 @@ SELECT
         WHEN p.CreationDate < toDateTime64('2024-10-01 12:34:56', 6) - INTERVAL 1 YEAR THEN 'Older Post'
         ELSE 'Recent Post'
     END AS PostAge,
-    RANK() OVER (PARTITION BY p.Tags ORDER BY p.Score DESC) AS ScoreRank,
+    RANK() OVER (PARTITION BY any(p.Tags) ORDER BY p.Score DESC) AS ScoreRank,
     u.DisplayName AS OwnerDisplayName,
     u.Reputation AS OwnerReputation,
     COALESCE(u.Location, 'Location not specified') AS UserLocation

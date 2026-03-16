@@ -1,7 +1,7 @@
 WITH UserVoteStatistics AS (
     SELECT 
         U.Id AS UserId,
-        U.DisplayName,
+        any(U.DisplayName),
         COUNT(V.Id) AS TotalVotes,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,

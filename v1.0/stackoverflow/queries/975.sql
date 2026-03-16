@@ -13,7 +13,7 @@ RecentPosts AS (
     SELECT 
         p.Id AS PostId,
         p.OwnerUserId,
-        p.CreationDate,
+        any(p.CreationDate),
         p.Score,
         p.Title,
         p.Tags,

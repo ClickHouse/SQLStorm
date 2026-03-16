@@ -6,7 +6,7 @@ WITH PostMetrics AS (
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVotes,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVotes,
-        toUnixTimestamp((COALESCE(p.ClosedDate, p.LastActivityDate) - p.CreationDate)) AS PostAgeInSeconds,
+        toUnixTimestamp((COALESCE(any(p.ClosedDate), p.LastActivityDate) - p.CreationDate)) AS PostAgeInSeconds,
         p.CreationDate,
         p.LastActivityDate
     FROM 

@@ -12,7 +12,7 @@ SELECT
     u.DisplayName AS UserDisplayName,
     u.Location,
     COUNT(c.Id) AS TotalComments,
-    p.Tags,
+    any(p.Tags),
     pt.Name AS PostTypeName,
     p.LastActivityDate
 FROM 

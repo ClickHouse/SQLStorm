@@ -16,7 +16,7 @@ WITH RankedPosts AS (
 UserActivity AS (
     SELECT 
         u.Id AS UserId,
-        u.DisplayName,
+        any(u.DisplayName),
         SUM(COALESCE(vBounty.BountyAmount, 0)) AS TotalBounty,
         COUNT(DISTINCT p.Id) AS TotalPosts,
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositiveScoreCount

@@ -16,7 +16,7 @@ PostMetrics AS (
         P.Id AS PostId,
         P.OwnerUserId,
         COUNT(CASE WHEN C.PostId IS NOT NULL THEN 1 END) AS TotalComments,
-        COALESCE(NULLIF(P.AcceptedAnswerId, -1), P.Id) AS EffectiveAcceptedAnswerId,
+        COALESCE(NULLIF(any(P.AcceptedAnswerId), -1), P.Id) AS EffectiveAcceptedAnswerId,
         SUM(CASE WHEN PH.PostHistoryTypeId IN (10, 11) THEN 1 ELSE 0 END) AS CloseReopenCount
     FROM 
         Posts P

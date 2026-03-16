@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Score,
         u.DisplayName AS Author,
         COUNT(v.Id) AS VoteCount,
-        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY any(p.PostTypeId) ORDER BY any(p.CreationDate) DESC) AS Rank
     FROM 
         Posts p
     JOIN 

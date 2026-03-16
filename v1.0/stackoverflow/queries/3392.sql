@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
+        ROW_NUMBER() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY p.CreationDate DESC) AS PostRank
     FROM 
         Posts p
     LEFT JOIN 

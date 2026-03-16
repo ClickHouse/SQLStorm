@@ -31,7 +31,7 @@ PostStats AS (
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounty,
         COUNT(DISTINCT c.Id) AS TotalComments,
         COUNT(DISTINCT CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.Id END) AS TotalCloseVotes,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY COALESCE(SUM(v.BountyAmount), 0) DESC) AS PostRank
+        ROW_NUMBER() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY COALESCE(SUM(v.BountyAmount), 0) DESC) AS PostRank
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Comments c ON p.Id = c.PostId

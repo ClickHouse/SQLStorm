@@ -30,7 +30,7 @@ PostStats AS (
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS Upvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS Downvotes,
         COUNT(CASE WHEN v.VoteTypeId IN (2, 3) THEN 1 END) AS TotalVotes,
-        AVG(p.Score) OVER (PARTITION BY p.OwnerUserId) AS AvgUserScore
+        AVG(any(p.Score)) OVER (PARTITION BY p.OwnerUserId) AS AvgUserScore
     FROM Posts p
     LEFT JOIN Comments comment ON p.Id = comment.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId

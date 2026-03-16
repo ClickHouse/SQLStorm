@@ -1,7 +1,7 @@
 WITH UserBadges AS (
     SELECT 
         U.Id AS UserId,
-        U.DisplayName,
+        any(U.DisplayName),
         COUNT(B.Id) AS BadgeCount,
         SUM(CASE 
             WHEN B.Class = 1 THEN 1 

@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         COALESCE(COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2), 0) AS UpVoteCount,
         COALESCE(COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3), 0) AS DownVoteCount,
         COALESCE(COUNT(c.Id), 0) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank,
+        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY any(p.CreationDate) DESC) AS UserPostRank,
         p.OwnerUserId
     FROM 
         Posts p

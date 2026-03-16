@@ -15,7 +15,7 @@ WITH RankedPosts AS (
 TopUsers AS (
     SELECT 
         u.Id AS UserId,
-        u.DisplayName,
+        any(u.DisplayName),
         COUNT(DISTINCT p.Id) AS PostCount
     FROM 
         Users u

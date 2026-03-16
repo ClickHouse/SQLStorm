@@ -2,7 +2,7 @@
 WITH RankedPosts AS (
     SELECT 
         p.Id AS PostId,
-        p.Title,
+        any(p.Title),
         p.CreationDate,
         p.OwnerUserId,
         pt.Name AS PostType,

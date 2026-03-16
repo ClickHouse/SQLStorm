@@ -4,7 +4,7 @@ WITH RankedPosts AS (
         p.Id AS PostId,
         p.Title,
         COUNT(c.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS rn,
+        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY any(p.CreationDate) DESC) AS rn,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 WHEN v.VoteTypeId = 3 THEN -1 ELSE 0 END), 0) AS Score
     FROM 
         Posts p

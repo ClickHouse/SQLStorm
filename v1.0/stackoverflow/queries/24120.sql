@@ -8,7 +8,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
         DATE_TRUNC('day', U.LastAccessDate) AS LastActiveDate,
-        ROW_NUMBER() OVER (PARTITION BY U.Id ORDER BY U.CreationDate DESC) AS UserRank
+        ROW_NUMBER() OVER (PARTITION BY U.Id ORDER BY any(U.CreationDate) DESC) AS UserRank
     FROM 
         Users U
     LEFT JOIN 

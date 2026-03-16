@@ -29,7 +29,7 @@ PostMetrics AS (
         COALESCE(COUNT(c.Id), 0) AS CommentCount,
         COALESCE(SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END), 0) AS PositiveScoreCount,
         COALESCE(SUM(CASE WHEN p.Score < 0 THEN 1 ELSE 0 END), 0) AS NegativeScoreCount,
-        DENSE_RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS LatestPostRank
+        DENSE_RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY any(p.CreationDate) DESC) AS LatestPostRank
     FROM 
         Posts p
     LEFT JOIN 

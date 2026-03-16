@@ -8,7 +8,7 @@ WITH RecursiveUserActivity AS (
         COUNT(V.Id) AS TotalVotes,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        ROW_NUMBER() OVER (PARTITION BY U.Id ORDER BY U.CreationDate DESC) AS RowNum
+        ROW_NUMBER() OVER (PARTITION BY U.Id ORDER BY any(U.CreationDate) DESC) AS RowNum
     FROM 
         Users U
     LEFT JOIN 

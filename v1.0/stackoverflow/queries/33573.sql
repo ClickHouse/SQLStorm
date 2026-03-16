@@ -17,7 +17,7 @@ PostsWithVotes AS (
            COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVotes,
            COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVotes,
            COUNT(v.Id) AS TotalVotes,
-           ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS rn
+           ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY any(p.CreationDate) DESC) AS rn
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
     GROUP BY p.Id, p.OwnerUserId, p.Title

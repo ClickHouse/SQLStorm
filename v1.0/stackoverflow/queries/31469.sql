@@ -14,7 +14,7 @@ PostStats AS (
            SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
            SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
            p.Score AS PostScore,
-           ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS OwnerPostRank
+           ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY any(p.CreationDate) DESC) AS OwnerPostRank
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId

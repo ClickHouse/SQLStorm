@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         COALESCE((SELECT COUNT(*) FROM Comments C WHERE C.PostId = P.Id), 0) AS CommentCount,
         COALESCE(SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpvoteCount,
         COALESCE(SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownvoteCount,
-        ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RowNum
+        ROW_NUMBER() OVER (PARTITION BY any(P.OwnerUserId) ORDER BY P.CreationDate DESC) AS RowNum
     FROM 
         Posts P
     JOIN 

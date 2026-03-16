@@ -44,7 +44,7 @@ UserBadges AS (
 PostTypeStats AS (
     SELECT 
         pt.Id AS PostTypeId,
-        pt.Name AS PostTypeName,
+        any(pt.Name) AS PostTypeName,
         COUNT(p.Id) AS TypePostCount,
         SUM(p.Score) AS TotalScore
     FROM PostTypes pt

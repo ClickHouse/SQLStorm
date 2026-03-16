@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
-        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY any(p.CreationDate) DESC) AS Rank
     FROM 
         Posts p
     LEFT JOIN 

@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Tags,
         u.DisplayName AS OwnerDisplayName,
         p.CreationDate,
-        ROW_NUMBER() OVER (PARTITION BY p.Tags ORDER BY p.Score DESC) AS TagRank,
+        ROW_NUMBER() OVER (PARTITION BY p.Tags ORDER BY any(p.Score) DESC) AS TagRank,
         COUNT(c.Id) AS CommentCount
     FROM 
         Posts p

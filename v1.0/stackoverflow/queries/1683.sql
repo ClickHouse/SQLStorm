@@ -5,7 +5,7 @@ WITH UserStats AS (
         u.DisplayName,
         u.Reputation,
         u.Views,
-        COALESCE(u.UpVotes, 0) - COALESCE(u.DownVotes, 0) AS NetVotes,
+        COALESCE(any(u.UpVotes), 0) - COALESCE(any(u.DownVotes), 0) AS NetVotes,
         COUNT(DISTINCT p.Id) AS TotalPosts,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,

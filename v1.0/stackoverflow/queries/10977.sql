@@ -7,7 +7,7 @@ SELECT
     COUNT(C.Id) AS CommentCount,
     COALESCE(SUM(CASE WHEN V.CreationDate IS NOT NULL THEN 1 ELSE 0 END), 0) AS VoteCount,
     COUNT(DISTINCT B.Id) AS BadgeCount,
-    COALESCE(NULLIF(P.Score, 0), 0) AS Score,
+    COALESCE(NULLIF(any(P.Score), 0), 0) AS Score,
     P.ViewCount,
     P.CreationDate,
     P.LastActivityDate,

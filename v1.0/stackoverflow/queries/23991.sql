@@ -32,7 +32,7 @@ QualifiedUsers AS (
         U.DisplayName,
         COALESCE(SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS TotalUpVotes,
         COALESCE(SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS TotalDownVotes,
-        ROW_NUMBER() OVER (ORDER BY U.Reputation DESC) AS UserRank
+        ROW_NUMBER() OVER (ORDER BY any(U.Reputation) DESC) AS UserRank
     FROM 
         Users U
     LEFT JOIN 

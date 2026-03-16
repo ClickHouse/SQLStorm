@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.CommentCount,
         p.AcceptedAnswerId,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS OwnerPostRank,
+        ROW_NUMBER() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY p.CreationDate DESC) AS OwnerPostRank,
         COUNT(c.Id) AS CommentCountAggregate
     FROM 
         Posts p

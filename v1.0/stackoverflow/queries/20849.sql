@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount,
         AVG(CASE WHEN v.VoteTypeId = 2 THEN 1.0 ELSE 0.0 END) AS UpvoteCount,
         AVG(CASE WHEN v.VoteTypeId = 3 THEN 1.0 ELSE 0.0 END) AS DownvoteCount,
-        DENSE_RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS RankByType
+        DENSE_RANK() OVER (PARTITION BY any(p.PostTypeId) ORDER BY p.CreationDate DESC) AS RankByType
     FROM 
         Posts p
     LEFT JOIN 
