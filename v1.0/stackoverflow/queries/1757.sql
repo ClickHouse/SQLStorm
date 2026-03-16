@@ -36,6 +36,8 @@ OpenPosts AS (
             WHEN cp.PostId IS NULL THEN 'Open'
             ELSE 'Closed'
         END AS PostStatus
+    ,
+        CreationDate
     FROM 
         RankedPosts rp
         LEFT JOIN ClosedPosts cp ON rp.PostId = cp.PostId

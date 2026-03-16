@@ -24,6 +24,8 @@ TopPosts AS (
         rp.*,
         COALESCE(u.DisplayName, 'Anonymous') AS OwnerDisplayName,
         (UpVoteCount - DownVoteCount) AS NetVotes
+    ,
+        CreationDate
     FROM 
         RankedPosts rp
     LEFT JOIN 

@@ -28,6 +28,8 @@ PostMetrics AS (
         COALESCE(u.Reputation, 0) AS OwnerReputation,
         COALESCE(uv.UpVotesCount, 0) AS UserUpVotesCount,
         COALESCE(uv.DownVotesCount, 0) AS UserDownVotesCount
+    ,
+        CreationDate
     FROM RecentPosts rp
     LEFT JOIN Users u ON rp.OwnerUserId = u.Id
     LEFT JOIN UserVoteCounts uv ON rp.OwnerUserId = uv.UserId

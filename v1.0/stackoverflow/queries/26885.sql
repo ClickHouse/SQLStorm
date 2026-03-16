@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         p.AcceptedAnswerId,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.ViewCount DESC) AS PostRank
+        RANK() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY p.ViewCount DESC) AS PostRank
     FROM 
         Posts p
     LEFT JOIN 
@@ -46,6 +46,8 @@ HighRankedPosts AS (
         u.DisplayName AS Author,
         (SELECT COUNT(*) FROM PostHistory ph WHERE ph.PostId = rp.PostId AND ph.PostHistoryTypeId = 10) AS CloseCount, 
         (SELECT COUNT(*) FROM PostHistory ph WHERE ph.PostId = rp.PostId AND ph.PostHistoryTypeId = 12) AS DeleteCount 
+    ,
+        CreationDate
     FROM 
         RankedPosts rp
     JOIN 
