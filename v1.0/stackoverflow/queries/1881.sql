@@ -26,7 +26,7 @@ UserEngagement AS (
         LEFT JOIN Badges b ON u.Id = b.UserId
     GROUP BY 
         u.Id
-, u.DisplayName),
+),
 RecentVotes AS (
     SELECT 
         v.PostId,

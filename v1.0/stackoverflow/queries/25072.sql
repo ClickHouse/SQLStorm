@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         p.CreationDate,
         p.Score,
-        ROW_NUMBER() OVER (PARTITION BY length(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2)), 1) ORDER BY p.Score DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY length(splitByString('><', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2))), 1) ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p
     JOIN 
@@ -24,7 +24,7 @@ TagStats AS (
         AVG(score) AS AvgScore
     FROM (
         SELECT 
-            TRIM(arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2)))) AS tag,
+            TRIM(arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2))))) AS tag,
             Score
         FROM 
             Posts
@@ -48,7 +48,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStats ts ON ts.tag = ANY(splitByString('><', substring(rp.Tags, 2, LENGTH(rp.Tags) - 2)))
+    TagStats ts ON ts.tag = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, LENGTH(rp.Tags) - 2))))
 WHERE 
     rp.Rank <= 5
 ORDER BY 

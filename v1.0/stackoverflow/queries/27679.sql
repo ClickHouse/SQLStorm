@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         u.DisplayName AS UserDisplayName,
         u.Reputation,
-        ROW_NUMBER() OVER (PARTITION BY p.Tags ORDER BY any(p.ViewCount) DESC) AS TagRank,
+        ROW_NUMBER() OVER (PARTITION BY p.Tags ORDER BY p.ViewCount DESC) AS TagRank,
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount

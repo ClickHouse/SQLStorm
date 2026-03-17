@@ -24,7 +24,7 @@ PopularTags AS (
     FROM 
         RankedPosts
     CROSS JOIN 
-        arrayJoin(splitByString('>', Tags)) AS value
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS value
     GROUP BY 
         TRIM(SUBSTRING(value, 2, LENGTH(value) - 2))
 ),

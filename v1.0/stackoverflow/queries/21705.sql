@@ -39,7 +39,7 @@ TaggedPosts AS (
     FROM 
         Posts p
     JOIN 
-        (SELECT DISTINCT arrayJoin(splitByString('><', Tags)) AS TagName FROM Posts) t ON p.Id IS NOT NULL
+        (SELECT DISTINCT arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName FROM Posts) t ON p.Id IS NOT NULL
     GROUP BY 
         p.Id
 )

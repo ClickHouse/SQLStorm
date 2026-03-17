@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         COALESCE(p.AcceptedAnswerId, -1) AS AcceptedAnswerId,
-        length(splitByString('><', p.Tags), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(p.Tags)), 1) AS TagCount,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS PostRank,
         p.OwnerUserId
     FROM 

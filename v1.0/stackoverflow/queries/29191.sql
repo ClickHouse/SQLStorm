@@ -10,7 +10,7 @@ WITH TaggedPosts AS (
     FROM 
         Posts P
     CROSS JOIN 
-        arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) AS TS(TagName)
+        arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2)))) AS TS(TagName)
     WHERE 
         P.PostTypeId = 1 
 ), 

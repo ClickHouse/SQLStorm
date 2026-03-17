@@ -22,7 +22,7 @@ WITH PostMetrics AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tags_array ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tags_array ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tags_array
     WHERE 

@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -58,7 +58,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStats ts ON ts.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2)))
+    TagStats ts ON ts.Tag = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags) - 2))))
 LEFT JOIN 
     RecentVotes rv ON rp.PostId = rv.PostId
 WHERE 

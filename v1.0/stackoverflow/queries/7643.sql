@@ -23,7 +23,7 @@ WITH PostStatistics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
     WHERE 

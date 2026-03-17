@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 ),
 PostTagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts p
@@ -44,7 +44,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    PostTagStats pts ON pts.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
+    PostTagStats pts ON pts.Tag = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags)-2))))
 WHERE 
     rp.Rank <= 5 
 ORDER BY 

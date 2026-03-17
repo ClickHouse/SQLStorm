@@ -20,7 +20,7 @@ PostTagCounts AS (
     FROM 
         Posts P
     LEFT JOIN 
-        arrayJoin(splitByString('><', P.Tags)) AS T(TagName) ON true
+        arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS T(TagName) ON true
     GROUP BY 
         P.Id
 ),

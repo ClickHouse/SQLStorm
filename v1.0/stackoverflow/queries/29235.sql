@@ -10,7 +10,7 @@ WITH UserTags AS (
     FROM Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
     JOIN (
-        SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName
+        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName
     ) t ON TRUE
     GROUP BY u.Id, u.DisplayName, t.TagName
 ),

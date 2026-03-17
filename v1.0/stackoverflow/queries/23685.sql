@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
         LEFT JOIN Comments c ON c.PostId = p.Id
-        LEFT JOIN arrayJoin(splitByString('><', p.Tags)) AS tag(TagName) ON TRUE
+        LEFT JOIN arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag(TagName) ON TRUE
     WHERE 
         p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 

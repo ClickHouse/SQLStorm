@@ -16,7 +16,7 @@ WITH PostDetails AS (
                                AND ph.PostHistoryTypeId IN (4, 5, 6)  
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id
-    LEFT JOIN Tags t ON t.TagName IN (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))))
+    LEFT JOIN Tags t ON t.TagName IN (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))))
     WHERE p.PostTypeId = 1  
     GROUP BY p.Id, p.Title, p.Body, u.DisplayName, p.CreationDate, ph.CreationDate
 ), 

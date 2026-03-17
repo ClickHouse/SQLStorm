@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS TagName,
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS Frequency
     FROM 
         Posts

@@ -27,7 +27,7 @@ WITH RankedPosts AS (
 ProcessedTags AS (
     SELECT 
         PostId,
-        arrayJoin(splitByString(',', Tags)) AS Tag
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS Tag
     FROM 
         RankedPosts
 ),
@@ -63,7 +63,7 @@ FinalResults AS (
         rp.CommentCount,
         rp.UpvoteCount,
         rp.DownvoteCount,
-        (SELECT COUNT(*) FROM TopTags tt WHERE tt.Tag = ANY(splitByString(',', rp.Tags))) AS AssociatedTagsCount
+        (SELECT COUNT(*) FROM TopTags tt WHERE tt.Tag = ANY(splitByString(',', assumeNotNull(rp.Tags)))) AS AssociatedTagsCount
     FROM 
         RankedPosts rp
 )

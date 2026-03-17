@@ -46,7 +46,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString(',', rp.Tags))
+    PopularTags pt ON pt.TagName = ANY(splitByString(',', assumeNotNull(rp.Tags)))
 WHERE 
     rp.PostRank <= 100 
 GROUP BY 

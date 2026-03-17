@@ -53,7 +53,7 @@ SELECT
               FROM Tags T
               JOIN (
                   SELECT 
-                      arrayJoin(splitByString('><', P.Tags)) AS Tag
+                      arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS Tag
                   FROM Posts P
                   WHERE P.OwnerUserId = U.UserId
               ) ST ON ST.Tag = T.TagName

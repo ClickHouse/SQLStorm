@@ -1,7 +1,7 @@
 WITH PostTagCounts AS (
     SELECT 
         post.Id AS PostId, 
-        arrayJoin(splitByString('><', substring(post.Tags, 2, length(post.Tags) - 2))) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(substring(post.Tags, 2, length(post.Tags) - 2)))) AS Tag
     FROM 
         Posts post
     WHERE 

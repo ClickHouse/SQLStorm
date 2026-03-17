@@ -52,7 +52,7 @@ WITH RankedPosts AS (
              FROM 
                 Tags t 
              JOIN 
-                arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_name ON t.TagName = tag_name
+                arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag_name ON t.TagName = tag_name
              WHERE 
                 p.Id = fp.Id), 
             'No Tags') AS Tags

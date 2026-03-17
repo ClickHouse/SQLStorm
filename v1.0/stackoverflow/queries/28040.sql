@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 
 TagPerformance AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag,
         COUNT(*) AS PostCount,
         SUM(CommentCount) AS TotalComments,
         SUM(AnswerCount) AS TotalAnswers,

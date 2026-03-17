@@ -28,7 +28,7 @@ UserActivity AS (
         Posts p ON u.Id = p.OwnerUserId AND p.PostTypeId = 1
     GROUP BY 
         u.Id
-, u.DisplayName, u.Reputation),
+),
 PostHistoryRecords AS (
     SELECT 
         ph.PostId,

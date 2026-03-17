@@ -13,7 +13,7 @@ WITH UserPostStats AS (
     LEFT JOIN 
         Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS t(TagName) ON TRUE
     GROUP BY 
         u.Id, u.DisplayName
 ),

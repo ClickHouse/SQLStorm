@@ -37,7 +37,7 @@ FilteredPosts AS (
     LEFT JOIN 
         Posts P ON RP.PostId = P.Id
     LEFT JOIN 
-        (SELECT TRIM(BOTH '<>' FROM arrayJoin(splitByString(',', P.Tags))) AS TagName) AS TagArray ON TRUE
+        (SELECT TRIM(BOTH '<>' FROM arrayJoin(splitByString(',', assumeNotNull(P.Tags)))) AS TagName) AS TagArray ON TRUE
     LEFT JOIN 
         Tags T ON T.TagName = TagArray.TagName
     WHERE 

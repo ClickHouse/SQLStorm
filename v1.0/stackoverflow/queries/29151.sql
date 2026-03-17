@@ -41,7 +41,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('<>', p.Tags)) AS tag ON TRUE
+        arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 

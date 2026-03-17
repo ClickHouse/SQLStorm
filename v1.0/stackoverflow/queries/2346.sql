@@ -15,7 +15,7 @@ WITH RankedPosts AS (
 UserActivity AS (
     SELECT 
         u.Id AS UserId,
-        any(u.DisplayName),
+        u.DisplayName,
         COUNT(p.Id) AS PostCount,
         SUM(COALESCE(v.BountyAmount, 0)) AS TotalBounty
     FROM 

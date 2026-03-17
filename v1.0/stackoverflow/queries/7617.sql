@@ -24,7 +24,7 @@ PostDetail AS (
     LEFT JOIN PostVoteCounts v ON p.Id = v.PostId
     LEFT JOIN (
         SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagName
-        FROM arrayJoin(splitByString('><', p.Tags)) AS tag
+        FROM arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag
         JOIN Tags t ON t.TagName = tag
     ) AS t ON TRUE
     WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'

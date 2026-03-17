@@ -36,7 +36,7 @@ PostDetail AS (
         END AS PostType,
         (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
          FROM Tags t 
-         WHERE t.Id IN (SELECT DISTINCT CAST(arrayJoin(splitByString('>', p.Tags)) AS INTEGER) 
+         WHERE t.Id IN (SELECT DISTINCT CAST(arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS INTEGER) 
                         FROM Posts p 
                         WHERE p.Id = r.PostId)
                        AND p.PostTypeId = 1) AS TagsList

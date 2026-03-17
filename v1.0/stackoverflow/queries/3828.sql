@@ -20,7 +20,7 @@ PostStats AS (
         p.Title,
         COALESCE(p.AcceptedAnswerId, -1) AS AcceptedAnswerId,
         COUNT(c.Id) AS CommentCount,
-        DENSE_RANK() OVER (ORDER BY any(p.Score) DESC) AS RankByScore
+        DENSE_RANK() OVER (ORDER BY p.Score DESC) AS RankByScore
     FROM 
         Posts p
     LEFT JOIN 

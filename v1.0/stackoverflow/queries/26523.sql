@@ -1,6 +1,6 @@
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -51,7 +51,7 @@ UserTagEngagement AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     JOIN 
-        TopTags tt ON tt.Tag = ANY(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)))
+        TopTags tt ON tt.Tag = ANY(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))))
     WHERE 
         p.PostTypeId = 1
     GROUP BY 

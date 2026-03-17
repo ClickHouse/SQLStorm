@@ -48,7 +48,7 @@ FROM
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('><', tp.Tags)) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(tp.Tags))) AS TagName
     ) t ON TRUE
 GROUP BY 
     tp.Title, tp.OwnerDisplayName, tp.AnswerCount, tp.Score

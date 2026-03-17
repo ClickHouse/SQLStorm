@@ -44,7 +44,7 @@ PostsWithTags AS (
     FROM FilteredPosts FP
     LEFT JOIN Posts P ON FP.PostId = P.Id
     LEFT JOIN (
-        SELECT arrayJoin(splitByString('><', P.Tags)) AS TagName
+        SELECT arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS TagName
     ) T ON TRUE
     GROUP BY FP.PostId, FP.Title, FP.Body, FP.CreationDate, FP.OwnerDisplayName, FP.CommentCount, FP.UpVoteCount, FP.DownVoteCount
 )

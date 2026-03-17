@@ -17,5 +17,5 @@ LEFT JOIN
 GROUP BY 
     p.Id, p.Title, u.DisplayName
 ORDER BY 
-    any(p.CreationDate) DESC
+    p.CreationDate DESC
 LIMIT 10;

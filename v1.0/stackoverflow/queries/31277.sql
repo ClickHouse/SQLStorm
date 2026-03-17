@@ -10,7 +10,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_array ON true
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag_array ON true
     LEFT JOIN 
         Tags t ON t.TagName = tag_array
     WHERE 

@@ -18,14 +18,14 @@ WITH RECURSIVE TrendingPosts AS (
 ),
 ScorePerTag AS (
     SELECT 
-        arrayJoin(splitByString('>', p.Tags)) AS Tag,
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS Tag,
         SUM(p.Score) AS TotalScore
     FROM 
         Posts p
     WHERE 
         p.Score IS NOT NULL
     GROUP BY 
-        arrayJoin(splitByString('>', p.Tags))
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags)))
 ),
 PopularTags AS (
     SELECT 

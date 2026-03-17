@@ -32,7 +32,7 @@ PostMetrics AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', P.Tags)) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
     GROUP BY 
         P.Id, P.Title, P.Body, P.Tags, P.OwnerUserId, P.Score, P.ViewCount
 ),

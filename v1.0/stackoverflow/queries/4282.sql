@@ -32,7 +32,7 @@ UserActivity AS (
         u.Reputation > 1000
     GROUP BY 
         u.Id
-, u.DisplayName, u.Reputation),
+),
 TopUsers AS (
     SELECT 
         ua.UserId,

@@ -35,7 +35,7 @@ FilteredPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', CleanedTags)) AS Tag, 
+        arrayJoin(splitByString('><', assumeNotNull(CleanedTags))) AS Tag, 
         COUNT(*) AS TagCount
     FROM 
         FilteredPosts

@@ -20,7 +20,7 @@ PostDetails AS (
         COALESCE(pb.BadgeCount, 0) AS OwnerBadgeCount,
         COALESCE(pb.BadgeNames, 'None') AS OwnerBadges,
         toUnixTimestamp(TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate) AS AgeInSeconds,
-        length(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)), 1) AS TagCount
+        length(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))), 1) AS TagCount
     FROM 
         Posts p
     JOIN 

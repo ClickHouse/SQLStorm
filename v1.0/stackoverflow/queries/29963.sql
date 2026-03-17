@@ -62,7 +62,7 @@ FROM
 LEFT JOIN 
     Posts post ON tp.PostId = post.Id
 LEFT JOIN 
-    arrayJoin(splitByString('><', post.Tags)) AS tag_name ON tag_name IS NOT NULL
+    arrayJoin(splitByString('><', assumeNotNull(post.Tags))) AS tag_name ON tag_name IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag_name
 WHERE 

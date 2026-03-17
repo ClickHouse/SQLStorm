@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         (
             SELECT 
-                arrayJoin(splitByString('>.<', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
+                arrayJoin(splitByString('>.<', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName
         ) AS t ON TRUE
     WHERE 
         p.PostTypeId = 1 AND  

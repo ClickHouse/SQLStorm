@@ -19,9 +19,9 @@ PostMetrics AS (
         p.Id AS PostId,
         p.OwnerUserId,
         p.PostTypeId,
-        COALESCE(any(p.ViewCount), 0) AS TotalViews,
-        COALESCE(any(p.AnswerCount), 0) AS TotalAnswers,
-        COALESCE(any(p.CommentCount), 0) AS TotalComments,
+        COALESCE(p.ViewCount, 0) AS TotalViews,
+        COALESCE(p.AnswerCount, 0) AS TotalAnswers,
+        COALESCE(p.CommentCount, 0) AS TotalComments,
         MAX(ph.CreationDate) AS LastEdited,
         COUNT(DISTINCT ph.Id) FILTER (WHERE ph.PostHistoryTypeId IN (4, 5, 6)) AS EditCount
     FROM Posts p

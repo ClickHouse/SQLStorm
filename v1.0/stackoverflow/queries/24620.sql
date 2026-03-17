@@ -1,7 +1,7 @@
 WITH UserBadges AS (
     SELECT 
         U.Id AS UserId,
-        any(U.DisplayName),
+        U.DisplayName,
         COUNT(B.Id) AS BadgeCount,
         SUM(CASE WHEN B.Class = 1 THEN 1 ELSE 0 END) AS GoldBadges,
         SUM(CASE WHEN B.Class = 2 THEN 1 ELSE 0 END) AS SilverBadges,

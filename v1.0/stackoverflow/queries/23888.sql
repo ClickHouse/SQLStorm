@@ -29,7 +29,7 @@ CommentsWithTags AS (
     LEFT JOIN 
         Posts P ON C.PostId = P.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', P.Tags)) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
     GROUP BY 
         C.Id, C.PostId, C.Text, C.UserDisplayName
 ),

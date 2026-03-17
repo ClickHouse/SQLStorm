@@ -38,7 +38,7 @@ MostDiscussed AS (
 
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('>', Tags)) AS TagName,
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS TagPostCount,
         SUM(CASE WHEN AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswers
     FROM 
@@ -46,7 +46,7 @@ TagStats AS (
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('>', Tags))
+        arrayJoin(splitByString('>', assumeNotNull(Tags)))
 ),
 
 AggregatedTags AS (

@@ -21,7 +21,7 @@ PostTags AS (
     FROM 
         Posts P
     JOIN 
-        arrayJoin(splitByString('><', TRIM(BOTH '{}' FROM P.Tags))) AS Tag ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(TRIM(BOTH '{}' FROM P.Tags)))) AS Tag ON TRUE
     JOIN 
         Tags T ON T.TagName = Tag
     GROUP BY 

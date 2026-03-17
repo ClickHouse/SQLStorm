@@ -45,7 +45,7 @@ FROM
 LEFT JOIN 
     Posts p ON fp.PostId = p.Id
 LEFT JOIN 
-    arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag ON TRUE
+    arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag ON TRUE
 LEFT JOIN 
     Tags t ON tag = t.TagName
 GROUP BY 

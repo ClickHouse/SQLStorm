@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.AnswerCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS TotalUpVotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS TotalDownVotes,
-        ROW_NUMBER() OVER(PARTITION BY any(p.OwnerUserId) ORDER BY p.Score DESC, p.CreationDate DESC) AS UserPostRank
+        ROW_NUMBER() OVER(PARTITION BY p.OwnerUserId ORDER BY p.Score DESC, p.CreationDate DESC) AS UserPostRank
     FROM 
         Posts p
     LEFT JOIN 

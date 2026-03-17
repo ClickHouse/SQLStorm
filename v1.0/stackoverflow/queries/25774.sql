@@ -28,7 +28,7 @@ PostScoreSummary AS (
     FROM FilteredPosts fp
     JOIN Posts p ON fp.Id = p.Id
     JOIN (
-        SELECT arrayJoin(splitByString(',', fp.Tags)) AS TagName
+        SELECT arrayJoin(splitByString(',', assumeNotNull(fp.Tags))) AS TagName
     ) AS t ON TRUE 
     GROUP BY t.TagName
 )

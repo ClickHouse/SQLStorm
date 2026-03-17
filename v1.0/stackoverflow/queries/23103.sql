@@ -20,7 +20,7 @@ PostStatistics AS (
         p.Score,
         p.ViewCount,
         COUNT(c.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY any(p.CreationDate) DESC) AS RecentPostRank
+        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RecentPostRank
     FROM 
         Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId

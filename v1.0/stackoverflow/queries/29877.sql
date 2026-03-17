@@ -18,14 +18,14 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)))
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))))
     ORDER BY 
         TagCount DESC
     LIMIT 10

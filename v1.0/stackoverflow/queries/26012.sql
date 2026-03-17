@@ -18,14 +18,14 @@ WITH RankedPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2)))) AS Tag,
         COUNT(*) AS PostCount,
         SUM(ViewCount) AS TotalViews,
         SUM(Score) AS TotalScore
     FROM 
         RankedPosts
     GROUP BY 
-        arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2))))
 ),
 TopTags AS (
     SELECT 

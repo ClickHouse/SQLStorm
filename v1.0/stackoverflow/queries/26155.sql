@@ -20,8 +20,8 @@ WITH PostMetrics AS (
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
-    LEFT JOIN 
-        (SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName) t ON TRUE
+
+        LEFT ARRAY JOIN splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName
     WHERE 
         p.PostTypeId = 1  
     GROUP BY 

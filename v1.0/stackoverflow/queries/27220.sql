@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM
         Posts
@@ -60,7 +60,7 @@ SELECT
 FROM
     TagCounts tc
 JOIN
-    Posts p ON tc.TagName = ANY(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
+    Posts p ON tc.TagName = ANY(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))))
 JOIN
     ActiveUsers au ON p.OwnerUserId = au.UserId
 JOIN

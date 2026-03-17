@@ -28,7 +28,7 @@ PostTags AS (
         P.Id AS PostId,
         arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM Posts P
-    LEFT JOIN (SELECT arrayJoin(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2))) AS TagName) AS TagArray ON TRUE
+    LEFT JOIN (SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2)))) AS TagName) AS TagArray ON TRUE
     LEFT JOIN Tags T ON T.TagName = TagArray.TagName
     GROUP BY P.Id
 ),

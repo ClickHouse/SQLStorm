@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     JOIN 
-        arrayJoin(splitByString('> <', substring(p.Tags, 2, length(p.Tags)-2))) AS t(TagName) ON true
+        arrayJoin(splitByString('> <', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS t(TagName) ON true
     WHERE 
         p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY 

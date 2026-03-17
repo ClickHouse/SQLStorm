@@ -66,7 +66,7 @@ SELECT
     ai.movie_count
 FROM 
     top_movies tm
-LEFT JOIN actor_info ai ON tm.title = ANY(splitByString(', ', ai.movies))
+LEFT JOIN actor_info ai ON tm.title = ANY(splitByString(', ', assumeNotNull(ai.movies)))
 ORDER BY 
     tm.cast_count DESC, 
     ai.movie_count DESC;

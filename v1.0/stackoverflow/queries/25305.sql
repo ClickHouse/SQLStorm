@@ -20,14 +20,14 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', Tags)) AS TagName,
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 /* Only questions */
     GROUP BY 
-        arrayJoin(splitByString('>', Tags))
+        arrayJoin(splitByString('>', assumeNotNull(Tags)))
     HAVING 
         COUNT(*) > 5 /* Tags used more than 5 times */
 ),
@@ -73,7 +73,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString('>', rp.Tags))
+    PopularTags pt ON pt.TagName = ANY(splitByString('>', assumeNotNull(rp.Tags)))
 LEFT JOIN 
     PostWithComments pc ON pc.PostId = rp.PostId
 LEFT JOIN 

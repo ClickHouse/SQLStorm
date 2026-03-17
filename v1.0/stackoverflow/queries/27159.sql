@@ -20,7 +20,7 @@ TagDetails AS (
         p.Id AS PostId,
         TRIM(BOTH '>' FROM Tag) AS Tag
     FROM Posts p
-    CROSS JOIN arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag
+    ARRAY JOIN splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag
     WHERE p.Tags IS NOT NULL
 ),
 
@@ -57,7 +57,7 @@ SELECT
 FROM RankedPosts rp
 JOIN TopTags tt ON tt.Tag IN (
     SELECT TRIM(BOTH '>' FROM Tag) 
-    FROM arrayJoin(splitByString('><', SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2))) AS Tag
+    FROM arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2)))) AS Tag
 )
 JOIN TagStats ts ON tt.Tag = ts.Tag
 WHERE rp.RankByScore = 1 AND tt.TagRank <= 5 

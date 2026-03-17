@@ -5,7 +5,7 @@ WITH PostWithTags AS (
         p.CreationDate,
         p.Score,
         p.Tags,
-        length(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         p.AnswerCount,
         p.ViewCount,
@@ -25,7 +25,7 @@ WITH PostWithTags AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag,
         COUNT(*) AS TagUsage
     FROM 
         PostWithTags
@@ -59,7 +59,7 @@ PostsWithTopTags AS (
     FROM 
         PostWithTags pwt
     JOIN 
-        TopTags tt ON tt.Tag = ANY(splitByString('><', substring(pwt.Tags, 2, length(pwt.Tags)-2)))
+        TopTags tt ON tt.Tag = ANY(splitByString('><', assumeNotNull(substring(pwt.Tags, 2, length(pwt.Tags)-2))))
 )
 SELECT 
     p.PostId,

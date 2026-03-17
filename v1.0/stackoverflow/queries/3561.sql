@@ -9,7 +9,7 @@ WITH UserActivity AS (
         COUNT(c.Id) AS CommentsCount,
         COUNT(DISTINCT p.Id) AS PostsCount,
         COUNT(DISTINCT p.AcceptedAnswerId) AS AcceptedAnswersCount,
-        ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY any(u.CreationDate) DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY u.CreationDate DESC) AS Rank
     FROM 
         Users u
     LEFT JOIN 

@@ -48,7 +48,7 @@ SELECT
 FROM 
     TagStats ts
 LEFT JOIN 
-    RecentActivity ra ON ts.TagName = ANY(splitByString(',', (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ',') FROM Tags t)))
+    RecentActivity ra ON ts.TagName = ANY(splitByString(',', assumeNotNull((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ',') FROM Tags t))))
 ORDER BY 
     ts.TotalQuestions DESC, ts.TotalPosts DESC
 LIMIT 10;

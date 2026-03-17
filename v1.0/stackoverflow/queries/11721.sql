@@ -18,7 +18,7 @@ WITH PostStats AS (
     LEFT JOIN
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN
-        arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
     GROUP BY
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount, 
         p.CommentCount, p.FavoriteCount, p.AcceptedAnswerId, p.OwnerUserId, 

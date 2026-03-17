@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
         PostTypeId,
         Id AS PostId,
         OwnerUserId

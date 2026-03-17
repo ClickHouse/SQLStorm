@@ -23,7 +23,7 @@ ProcessedTags AS (
         Tag
     FROM 
         RankedPosts pt,
-        arrayJoin(splitByString('>', SUBSTRING(pt.Tags, 2, LENGTH(pt.Tags) - 2))) AS Tag
+        arrayJoin(splitByString('>', assumeNotNull(SUBSTRING(pt.Tags, 2, LENGTH(pt.Tags) - 2)))) AS Tag
 ),
 TagStatistics AS (
     SELECT 

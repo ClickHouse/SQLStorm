@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_name ON tag_name IS NOT NULL
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag_name ON tag_name IS NOT NULL
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
@@ -29,7 +29,7 @@ TopTags AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_name ON tag_name IS NOT NULL
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag_name ON tag_name IS NOT NULL
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
@@ -70,7 +70,7 @@ FROM
 LEFT JOIN 
     PostHistoryAggregates pga ON rp.PostId = pga.PostId
 JOIN 
-    TopTags rt ON rt.TagName = ANY(splitByString(', ', rp.Tags))
+    TopTags rt ON rt.TagName = ANY(splitByString(', ', assumeNotNull(rp.Tags)))
 WHERE 
     rp.Rank <= 5 
 ORDER BY 

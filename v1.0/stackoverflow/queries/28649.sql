@@ -15,7 +15,7 @@ WITH FilteredPosts AS (
     LEFT JOIN 
         PostHistory rev ON p.Id = rev.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_name ON tag_name IS NOT NULL
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag_name ON tag_name IS NOT NULL
     LEFT JOIN 
         Tags t ON tag_name = t.TagName
     WHERE 

@@ -25,7 +25,7 @@ RecentPosts AS (
     FROM 
         Posts p
     JOIN 
-        (SELECT DISTINCT arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName 
+        (SELECT DISTINCT arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS TagName 
          FROM Posts) t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' 

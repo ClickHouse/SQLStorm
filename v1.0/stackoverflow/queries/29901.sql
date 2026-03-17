@@ -55,7 +55,7 @@ FROM
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('><', substring(fp.Body, 2, length(fp.Body)-2))) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(substring(fp.Body, 2, length(fp.Body)-2)))) AS TagName
     ) AS t ON TRUE
 GROUP BY 
     fp.PostId, fp.Title, fp.Score, fp.CommentCount, fp.VoteCount

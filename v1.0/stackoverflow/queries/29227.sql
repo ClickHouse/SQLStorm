@@ -47,7 +47,7 @@ WITH PostStats AS (
     ) cl ON p.Id = cl.PostId
     LEFT JOIN (
         SELECT 
-            arrayJoin(splitByString('>', substring(Tags, 2, length(Tags) - 2))) AS TagName,
+            arrayJoin(splitByString('>', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
             p.Id
         FROM 
             Posts p

@@ -45,7 +45,7 @@ PostDetails AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 

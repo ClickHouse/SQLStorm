@@ -25,7 +25,7 @@ WITH RankedPosts AS (
 FilteredTags AS (
     SELECT 
         p.PostId,
-        TRIM(arrayJoin(splitByString(',', p.Tags))) AS Tag
+        TRIM(arrayJoin(splitByString(',', assumeNotNull(p.Tags)))) AS Tag
     FROM 
         RankedPosts p
     WHERE 

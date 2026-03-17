@@ -38,7 +38,7 @@ SELECT
     T.DownVoteCount,
     COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(TG.TagName)), ', ') 
               FROM Tags TG 
-              JOIN (SELECT arrayJoin(splitByString(',', P.Tags)) AS TagName) AS SubTags ON SubTags.TagName = TG.TagName 
+              JOIN (SELECT arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS TagName) AS SubTags ON SubTags.TagName = TG.TagName 
               WHERE P.Id = T.PostId), '') AS Tags
 FROM 
     TopPosts T

@@ -34,14 +34,14 @@ UserScore AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS Tag,
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS Tag,
         COUNT(p.Id) AS PostCount
     FROM 
         Posts p
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 
-        arrayJoin(splitByString(',', Tags))
+        arrayJoin(splitByString(',', assumeNotNull(Tags)))
     ORDER BY 
         PostCount DESC
     LIMIT 10
@@ -68,7 +68,7 @@ LEFT JOIN
         FROM 
             PopularTags 
         WHERE 
-            Tag = ANY(splitByString(',', ps.Tags))
+            Tag = ANY(splitByString(',', assumeNotNull(ps.Tags)))
     )
 WHERE 
     ps.Rank = 1

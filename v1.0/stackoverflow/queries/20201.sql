@@ -43,7 +43,7 @@ DistinctTagCounts AS (
         COUNT(DISTINCT TRIM(value)) AS TagCount
     FROM 
         Posts p,
-        arrayJoin(splitByString('<>', p.Tags)) AS value
+        arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS value
     GROUP BY 
         p.Id
 ),

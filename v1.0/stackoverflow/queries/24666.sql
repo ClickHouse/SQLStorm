@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     LEFT JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE 
         p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '90 days'
     GROUP BY 

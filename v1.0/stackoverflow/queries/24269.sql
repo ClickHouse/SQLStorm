@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8 
     LEFT JOIN 
-        (SELECT * FROM arrayJoin(splitByString('>', p.Tags)) AS t(TagName)) AS t ON TRUE
+        (SELECT * FROM arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName)) AS t ON TRUE
     WHERE 
         p.LastActivityDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 

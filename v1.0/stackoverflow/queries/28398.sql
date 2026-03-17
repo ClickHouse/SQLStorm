@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -57,7 +57,7 @@ PostDetails AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     JOIN 
-        FrequentTags CA ON CA.TagName = ANY(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2)))
+        FrequentTags CA ON CA.TagName = ANY(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2))))
     WHERE 
         P.PostTypeId = 1  
 ),

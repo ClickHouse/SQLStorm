@@ -8,7 +8,7 @@ WITH PostMetrics AS (
         COALESCE(p.AnswerCount, 0) AS AnswerCount,
         COALESCE(p.CommentCount, 0) AS CommentCount,
         COALESCE(p.FavoriteCount, 0) AS FavoriteCount,
-        length(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         u.Reputation AS OwnerReputation
     FROM 

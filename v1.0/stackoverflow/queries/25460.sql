@@ -36,7 +36,7 @@ WITH RankedPosts AS (
 ExplodedTags AS (
     SELECT 
         rp.Id AS PostId,
-        arrayJoin(splitByString(',', rp.Tags)) AS Tag
+        arrayJoin(splitByString(',', assumeNotNull(rp.Tags))) AS Tag
     FROM 
         RankedPosts rp
     WHERE 

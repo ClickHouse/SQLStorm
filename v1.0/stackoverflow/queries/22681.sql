@@ -12,7 +12,7 @@ WITH TaggedPosts AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS t(TagName) ON t.TagName IS NOT NULL
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE 
         p.PostTypeId = 1 AND 
         p.Score > 0

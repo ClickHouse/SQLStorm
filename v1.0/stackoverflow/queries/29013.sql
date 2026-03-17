@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.AnswerCount,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY any(p.PostTypeId) ORDER BY p.ViewCount DESC) AS RankByViews
+        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.ViewCount DESC) AS RankByViews
     FROM 
         Posts p
     LEFT JOIN 

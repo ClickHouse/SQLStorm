@@ -28,7 +28,7 @@ WITH PostDetails AS (
 
 TagUsage AS (
     SELECT 
-        arrayJoin(splitByString(',', P.Tags)) AS TagName,
+        arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS TagName,
         COUNT(*) AS UsageCount
     FROM 
         Posts P
@@ -66,7 +66,7 @@ SELECT
 FROM 
     PostDetails PD
 JOIN 
-    TagStatistics TS ON TS.TagName = ANY(splitByString(',', PD.Tags))
+    TagStatistics TS ON TS.TagName = ANY(splitByString(',', assumeNotNull(PD.Tags)))
 ORDER BY 
     PD.Score DESC, 
     PD.ViewCount DESC;

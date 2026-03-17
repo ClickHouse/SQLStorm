@@ -53,7 +53,7 @@ SELECT
     fp.AnswerCount,
     fp.CommentCount,
     fp.CommentText,
-    length(splitByString(',', fp.Tags), 1) AS TagCount,
+    length(splitByString(',', assumeNotNull(fp.Tags)), 1) AS TagCount,
     CASE 
         WHEN fp.ViewCount > 1000 THEN 'High View Count' 
         WHEN fp.ViewCount BETWEEN 500 AND 1000 THEN 'Moderate View Count' 

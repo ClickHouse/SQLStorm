@@ -30,7 +30,7 @@ PopularTags AS (
         t.TagName,
         COUNT(*) AS TagCount
     FROM 
-        (SELECT arrayJoin(splitByString('>', Tags)) AS TagName FROM Posts WHERE Tags IS NOT NULL) AS t
+        (SELECT arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TagName FROM Posts WHERE Tags IS NOT NULL) AS t
     GROUP BY 
         t.TagName
     ORDER BY 

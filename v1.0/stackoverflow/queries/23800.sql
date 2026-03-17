@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         (
             SELECT 
-                arrayJoin(splitByString('<>,>', p.Tags)) AS TagName
+                arrayJoin(splitByString('<>,>', assumeNotNull(p.Tags))) AS TagName
         ) t ON TRUE
     WHERE 
         p.PostTypeId IN (1, 2) 

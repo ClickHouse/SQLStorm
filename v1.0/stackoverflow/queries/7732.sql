@@ -21,7 +21,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        DISTINCT arrayJoin(splitByString('><', T.Tags)) AS Tag
+        DISTINCT arrayJoin(splitByString('><', assumeNotNull(T.Tags))) AS Tag
     FROM 
         Posts T
     WHERE 

@@ -34,14 +34,14 @@ TopPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        TRIM(BOTH '<>' FROM arrayJoin(splitByString('>', Tags))) AS TagName, 
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('>', assumeNotNull(Tags)))) AS TagName, 
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        TRIM(BOTH '<>' FROM arrayJoin(splitByString('>', Tags)))
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('>', assumeNotNull(Tags))))
 ),
 TopTags AS (
     SELECT 
@@ -61,7 +61,7 @@ SELECT
 FROM 
     TopPosts tp
 JOIN 
-    TopTags tt ON tt.TagName = ANY(splitByString('>', tp.Tags))
+    TopTags tt ON tt.TagName = ANY(splitByString('>', assumeNotNull(tp.Tags)))
 ORDER BY 
     tp.Score DESC, 
     tp.ViewCount DESC;

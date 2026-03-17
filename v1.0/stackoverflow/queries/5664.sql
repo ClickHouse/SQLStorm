@@ -15,7 +15,7 @@ PopularTags AS (
     SELECT T.TagName, 
            COUNT(*) AS UsageCount
     FROM Tags T
-    JOIN Posts P ON T.Id = ANY(splitByString(',', P.Tags)::int[])
+    JOIN Posts P ON T.Id = ANY(splitByString(',', assumeNotNull(P.Tags))::int[])
     WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY T.TagName
     ORDER BY UsageCount DESC

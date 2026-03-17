@@ -10,7 +10,7 @@ WITH TagStatistics AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS TAG ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS TAG ON TRUE
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     WHERE 

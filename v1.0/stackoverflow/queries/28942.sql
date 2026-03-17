@@ -17,7 +17,7 @@ WITH RankedPosts AS (
 ),
 TagUsage AS (
     SELECT 
-        arrayJoin(splitByString('><', TRIM(BOTH '<>' FROM Tags))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(TRIM(BOTH '<>' FROM Tags)))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts
@@ -38,7 +38,7 @@ JOIN
 LEFT JOIN 
     Comments c ON p.Id = c.PostId
 JOIN 
-    TagUsage tu ON tu.TagName = ANY(splitByString('><', TRIM(BOTH '<>' FROM p.Tags)))
+    TagUsage tu ON tu.TagName = ANY(splitByString('><', assumeNotNull(TRIM(BOTH '<>' FROM p.Tags))))
 WHERE 
     p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
 GROUP BY 

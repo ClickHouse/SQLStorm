@@ -17,7 +17,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', p.Tags))) AS TagName,
+        TRIM(arrayJoin(splitByString('><', assumeNotNull(p.Tags)))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -69,7 +69,7 @@ LEFT JOIN
 LEFT JOIN 
     Posts p ON rp.PostId = p.Id
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString('><', p.Tags))
+    PopularTags pt ON pt.TagName = ANY(splitByString('><', assumeNotNull(p.Tags)))
 WHERE 
     rp.Rank <= 5
 GROUP BY 

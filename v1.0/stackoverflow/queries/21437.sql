@@ -20,7 +20,7 @@ PostWithTagCounts AS (
     LEFT JOIN (
         SELECT 
             P.Id AS PostId,
-            arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2)))) AS TagName
         FROM Posts P
     ) T ON P.Id = T.PostId
     GROUP BY P.Id, P.Title, P.Score, P.OwnerUserId, P.ClosedDate

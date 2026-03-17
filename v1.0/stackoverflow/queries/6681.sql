@@ -23,7 +23,7 @@ PostTags AS (
     FROM 
         Posts P
     JOIN 
-        arrayJoin(splitByString('<>', P.Tags)) AS T(TagName) ON T.TagName IS NOT NULL
+        arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS T(TagName) ON T.TagName IS NOT NULL
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 

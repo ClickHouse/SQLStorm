@@ -22,7 +22,7 @@ WITH PostAnalytics AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS t(TagName) ON t.TagName IS NOT NULL
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)))) AS t(TagName) ON t.TagName IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.Body, p.CreationDate, u.DisplayName
 ),

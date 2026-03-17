@@ -25,7 +25,7 @@ TagStats AS (
         COUNT(t.Tag) AS TagCount
     FROM Posts p
     LEFT JOIN (
-        SELECT DISTINCT arrayJoin(splitByString('><', p.Tags)) AS Tag
+        SELECT DISTINCT arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS Tag
     ) t ON true
     WHERE p.OwnerUserId IS NOT NULL
     GROUP BY p.OwnerUserId

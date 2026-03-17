@@ -51,7 +51,7 @@ PostDetails AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', p.Tags)) AS tg(TagName) ON true
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tg(TagName) ON true
     GROUP BY 
         trp.PostId, trp.Title, trp.CreationDate, trp.Score, trp.ViewCount, trp.AnswerCount, trp.CommentCount, trp.Author
 )

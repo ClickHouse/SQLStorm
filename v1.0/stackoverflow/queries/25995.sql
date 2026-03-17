@@ -25,7 +25,7 @@ WITH RecentPosts AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag
     FROM 
         RecentPosts
 ),
@@ -52,7 +52,7 @@ SELECT
 FROM 
     RecentPosts rp
 JOIN 
-    TagStatistics tt ON tt.Tag = ANY(splitByString('><', rp.Tags))
+    TagStatistics tt ON tt.Tag = ANY(splitByString('><', assumeNotNull(rp.Tags)))
 GROUP BY 
     rp.PostId, rp.Title, rp.OwnerName, rp.CommentCount, rp.UpVotes, rp.DownVotes
 ORDER BY 

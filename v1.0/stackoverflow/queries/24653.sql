@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (2, 3) 
     LEFT JOIN 
-        (SELECT splitByString('>', p.Tags) AS TagArray) AS ta ON TRUE
+        (SELECT splitByString('>', assumeNotNull(p.Tags)) AS TagArray) AS ta ON TRUE
     LEFT ARRAY JOIN ta.TagArray AS TagName
     WHERE 
         p.PostTypeId = 1 

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN Users u ON p.OwnerUserId = u.Id
     WHERE p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
 ), PopularTags AS (
-    SELECT arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
+    SELECT arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS TagName,
            COUNT(*) AS TagCount
     FROM Posts
     WHERE Tags IS NOT NULL

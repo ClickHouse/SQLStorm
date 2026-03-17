@@ -1,7 +1,7 @@
 
 WITH TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag,
         COUNT(*) AS PostCount,
         SUM(CASE WHEN PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
@@ -83,7 +83,7 @@ SELECT
 FROM 
     TopTags tr
 JOIN 
-    UserRanking ur ON tr.Tag = ANY(splitByString(' ', ur.DisplayName)) 
+    UserRanking ur ON tr.Tag = ANY(splitByString(' ', assumeNotNull(ur.DisplayName))) 
 WHERE 
     tr.TagRank <= 5 
 ORDER BY 

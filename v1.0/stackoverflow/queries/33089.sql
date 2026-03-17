@@ -51,7 +51,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            TRIM(arrayJoin(splitByString(',', p.Tags))) AS TagName
+            TRIM(arrayJoin(splitByString(',', assumeNotNull(p.Tags)))) AS TagName
         FROM 
             Posts p
         WHERE 

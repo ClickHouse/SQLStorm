@@ -35,7 +35,7 @@ RecentQuestions AS (
 ),
 KeywordTagCount AS (
     SELECT 
-        arrayJoin(splitByString(',', t.TagName)) AS Tag,
+        arrayJoin(splitByString(',', assumeNotNull(t.TagName))) AS Tag,
         COUNT(pt.Id) AS PostCount
     FROM 
         Tags t

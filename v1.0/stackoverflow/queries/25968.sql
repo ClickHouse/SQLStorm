@@ -55,7 +55,7 @@ FROM
 JOIN 
     UserReputation ur ON ts.TagName IN (
         SELECT 
-            arrayJoin(splitByString(', ', ts.Contributors)) 
+            arrayJoin(splitByString(', ', assumeNotNull(ts.Contributors))) 
     )
 ORDER BY 
     ts.PostCount DESC, ts.TotalScore DESC

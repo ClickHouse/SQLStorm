@@ -14,7 +14,7 @@ WITH UserReputation AS (
         Badges b ON u.Id = b.UserId
     GROUP BY 
         u.Id
-, u.DisplayName, u.Reputation, u.Location),
+),
 PostStats AS (
     SELECT
         p.OwnerUserId,

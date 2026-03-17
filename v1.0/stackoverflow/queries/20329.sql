@@ -63,7 +63,7 @@ FROM
     JOIN Users u ON fp.PostId = u.Id
     LEFT JOIN UserBadges ub ON u.Id = ub.UserId
     LEFT JOIN (
-        SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName
+        SELECT arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
         FROM Posts p
         WHERE p.Id = fp.PostId
     ) tg ON TRUE

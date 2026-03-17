@@ -19,7 +19,7 @@ WITH RecentPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         RecentPosts
@@ -74,7 +74,7 @@ FROM
 JOIN 
     PostHistory ph ON rp.PostId = ph.PostId
 JOIN 
-    TopTags t ON t.TagName = ANY(splitByString('><', rp.Tags))
+    TopTags t ON t.TagName = ANY(splitByString('><', assumeNotNull(rp.Tags)))
 JOIN 
     TopUsers tu ON rp.Owner = tu.DisplayName
 WHERE 

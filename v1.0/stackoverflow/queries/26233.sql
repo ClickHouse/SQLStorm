@@ -40,7 +40,7 @@ WITH RankedPosts AS (
 
 FrequentTags AS (
     SELECT 
-        TRIM(BOTH '<>' FROM arrayJoin(splitByString('>', Tags))) AS Tag,
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('>', assumeNotNull(Tags)))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts

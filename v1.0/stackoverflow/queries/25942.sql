@@ -47,7 +47,7 @@ PostTags AS (
     FROM 
         Posts p
     JOIN 
-        (SELECT arrayJoin(splitByString('<>', p.Tags)) AS TagName) AS tag ON TRUE
+        (SELECT arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS TagName) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag.TagName
     GROUP BY 

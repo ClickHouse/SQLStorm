@@ -28,7 +28,7 @@ UserReputation AS (
         Votes v ON u.Id = v.UserId
     GROUP BY 
         u.Id, b.Name
-, u.Reputation),
+),
 TopPosts AS (
     SELECT 
         rp.Id,

@@ -22,7 +22,7 @@ TagsList AS (
         arrayStringConcat(groupArray(assumeNotNull(TRIM(tag))), ', ') AS Tags
     FROM 
         Posts p,
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag
     GROUP BY 
         p.Id
 ),

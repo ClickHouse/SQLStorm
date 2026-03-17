@@ -33,7 +33,7 @@ PostWithTags AS (
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(NULLIF(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)), '{}')) AS t(TagName) ON TRUE
+        arrayJoin(NULLIF(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))), '{}')) AS t(TagName) ON TRUE
     WHERE
         p.PostTypeId = 1 
     GROUP BY

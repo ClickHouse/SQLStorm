@@ -43,6 +43,6 @@ SELECT
 FROM 
     part_summary ps
 JOIN 
-    customer_orders co ON ps.p_brand = ANY(splitByString(', ', co.c_mktsegment))
+    customer_orders co ON ps.p_brand = ANY(splitByString(', ', assumeNotNull(co.c_mktsegment)))
 ORDER BY 
     total_spent DESC, total_available_qty DESC;

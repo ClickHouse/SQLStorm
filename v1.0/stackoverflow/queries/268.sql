@@ -42,8 +42,8 @@ ActivePosts AS (
         Posts P
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId
-    LEFT JOIN 
-        (SELECT arrayJoin(splitByString('<>', P.Tags)) AS TagName) T ON TRUE
+
+        LEFT ARRAY JOIN splitByString('<>', assumeNotNull(P.Tags)) AS TagName
     WHERE 
         P.CreationDate > CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 

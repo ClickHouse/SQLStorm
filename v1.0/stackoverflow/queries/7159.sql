@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         p.CommentCount,
         u.DisplayName AS OwnerDisplayName,
         COALESCE(MAX(v.CreationDate) FILTER (WHERE v.VoteTypeId = 2), p.CreationDate) AS LastUpvoteDate,
-        RANK() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY p.Score DESC) AS UserScoreRank
+        RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS UserScoreRank
     FROM 
         Posts p
     JOIN 

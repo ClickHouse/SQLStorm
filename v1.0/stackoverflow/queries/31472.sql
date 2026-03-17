@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON TRUE
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1 AND 
         p.LastActivityDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'

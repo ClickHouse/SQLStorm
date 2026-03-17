@@ -2,7 +2,7 @@
 WITH TagSplits AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', TRIM(BOTH '<>' FROM p.Tags))) AS TagName
+        arrayJoin(splitByString('><', assumeNotNull(TRIM(BOTH '<>' FROM p.Tags)))) AS TagName
     FROM 
         Posts p
     WHERE 
@@ -76,7 +76,7 @@ LEFT JOIN
 LEFT JOIN 
     PopularTags pt ON pt.TagName IN (
         SELECT 
-            arrayJoin(splitByString('><', TRIM(BOTH '<>' FROM p.Tags))) 
+            arrayJoin(splitByString('><', assumeNotNull(TRIM(BOTH '<>' FROM p.Tags)))) 
         FROM 
             Posts p 
         WHERE 

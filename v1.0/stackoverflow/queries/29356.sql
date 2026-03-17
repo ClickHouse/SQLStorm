@@ -33,7 +33,7 @@ TopPosts AS (
 ProcessedTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('> <', trim(both '<>' from p.Tags))) AS TagName 
+        arrayJoin(splitByString('> <', assumeNotNull(trim(both '<>' from p.Tags)))) AS TagName 
     FROM 
         Posts p
     WHERE 

@@ -38,7 +38,7 @@ SELECT
     (SELECT 
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Posts p
-     JOIN arrayJoin(splitByString(', ', p.Tags)) AS tagArray ON tagArray IS NOT NULL
+     JOIN arrayJoin(splitByString(', ', assumeNotNull(p.Tags))) AS tagArray ON tagArray IS NOT NULL
      JOIN Tags t ON t.TagName = TRIM(tagArray)
      WHERE p.OwnerUserId = tu.UserId) AS UserTags,
     (SELECT 

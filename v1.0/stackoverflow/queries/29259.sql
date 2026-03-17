@@ -40,7 +40,7 @@ FilteredPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('>', rp.Tags)) AS TagName,
+        arrayJoin(splitByString('>', assumeNotNull(rp.Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         FilteredPosts rp
@@ -60,7 +60,7 @@ SELECT
 FROM 
     FilteredPosts fp
 JOIN 
-    TagStats ts ON ts.TagName = ANY(splitByString('>', fp.Tags))
+    TagStats ts ON ts.TagName = ANY(splitByString('>', assumeNotNull(fp.Tags)))
 ORDER BY 
     fp.UpVotes DESC, 
     fp.TotalComments DESC;

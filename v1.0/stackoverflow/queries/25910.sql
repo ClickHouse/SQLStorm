@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         CASE 
             WHEN p.PostTypeId = 1 THEN 'Question'

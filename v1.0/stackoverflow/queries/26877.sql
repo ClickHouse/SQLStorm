@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', p.Tags)) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS Tag
     FROM 
         Posts p
 ),

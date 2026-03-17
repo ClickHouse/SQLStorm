@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 
 TagStatistics AS (
     SELECT 
-        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2)))) AS TagName,
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2))))) AS TagName,
         COUNT(*) AS TagCount,
         SUM(CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswerCount
     FROM 
@@ -32,7 +32,7 @@ TagStatistics AS (
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 
-        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))))
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))))
 ),
 
 UserBadges AS (

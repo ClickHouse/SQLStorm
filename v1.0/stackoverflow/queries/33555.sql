@@ -48,7 +48,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString(',', p.Tags)) AS TagName
+            arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
     ) t ON TRUE
 LEFT JOIN 
     UserReputationCTE ur ON u.Id = ur.UserId

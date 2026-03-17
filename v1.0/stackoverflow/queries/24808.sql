@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     CROSS JOIN 
-        (SELECT arrayJoin(splitByString('>', Tags)) AS TaggedName) AS t
+        (SELECT arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TaggedName) AS t
 ),
 UserBadges AS (
     SELECT 

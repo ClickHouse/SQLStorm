@@ -41,7 +41,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('<>', p.Tags)) AS TagName
+            arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS TagName
     ) t ON true
 LEFT JOIN 
     RankedPosts rp ON p.Id = rp.Id

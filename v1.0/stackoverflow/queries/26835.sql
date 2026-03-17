@@ -62,7 +62,7 @@ FROM
 LEFT JOIN 
     PostHistoryInfo pht ON rp.PostId = pht.PostId
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString(',', rp.Tags))
+    PopularTags pt ON pt.TagName = ANY(splitByString(',', assumeNotNull(rp.Tags)))
 WHERE 
     rp.rn = 1  
 ORDER BY 

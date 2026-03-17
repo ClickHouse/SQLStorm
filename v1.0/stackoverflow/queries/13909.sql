@@ -26,5 +26,5 @@ WHERE
 GROUP BY
     p.Id, p.Title, pt.Name, u.DisplayName, u.Reputation
 ORDER BY
-    any(p.Score) DESC
+    p.Score DESC
 LIMIT 100;

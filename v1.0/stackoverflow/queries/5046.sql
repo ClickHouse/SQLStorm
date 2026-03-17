@@ -44,7 +44,7 @@ SELECT
     TP.CommentCount,
     (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
      FROM Tags T 
-     JOIN arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2))) AS tag ON T.TagName = tag 
+     JOIN arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags)-2)))) AS tag ON T.TagName = tag 
      WHERE P.Id = TP.PostId) AS TagsList
 FROM 
     TopPosts TP

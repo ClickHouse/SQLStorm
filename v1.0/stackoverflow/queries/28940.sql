@@ -21,7 +21,7 @@ ActivePosts AS (
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId
     LEFT JOIN (
-        SELECT arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2))) AS TagName
+        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags)-2)))) AS TagName
     ) T ON TRUE
     WHERE P.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY P.Id, P.Title, P.CreationDate

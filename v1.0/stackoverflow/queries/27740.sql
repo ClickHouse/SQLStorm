@@ -1,7 +1,7 @@
 
 WITH TagPostCount AS (
     SELECT
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
         COUNT(Id) AS PostCount
     FROM
         Posts
@@ -50,7 +50,7 @@ JOIN
         WHERE p.PostTypeId = 1 AND p.OwnerUserId IS NOT NULL
         AND EXISTS (
             SELECT 1 
-            FROM arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag
+            FROM arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag
             WHERE Tag = T.Tag
         )
     )

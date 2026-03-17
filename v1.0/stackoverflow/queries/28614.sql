@@ -15,7 +15,7 @@ WITH PostDetails AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', p.Tags)) AS tag ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON tag = t.TagName
     LEFT JOIN 

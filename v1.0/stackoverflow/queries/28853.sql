@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 ),
 FrequentTags AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag
     FROM 
         Posts
     WHERE 

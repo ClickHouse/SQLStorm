@@ -16,7 +16,7 @@ WITH RecentPosts AS (
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN
         (SELECT
-            arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
+            arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS TagName,
             Id
         FROM
             Posts) t ON p.Id = t.Id

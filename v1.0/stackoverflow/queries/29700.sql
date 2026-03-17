@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 ),
 TagPostCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', substr(Tags, 2, length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substr(Tags, 2, length(Tags) - 2)))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts

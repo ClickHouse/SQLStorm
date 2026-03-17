@@ -63,7 +63,7 @@ FROM UserPostBadge UPB
 JOIN Users U ON UPB.UserId = U.Id
 LEFT JOIN Posts P ON UPB.UserId = P.OwnerUserId
 LEFT JOIN (
-    SELECT DISTINCT arrayJoin(splitByString('><', P.Tags)) AS TagName
+    SELECT DISTINCT arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS TagName
 ) AS tags ON TRUE
 GROUP BY UPB.UserId, U.DisplayName, UPB.PostCount, UPB.RecentCommentCount, UPB.BadgeCount, UPB.GoldBadgeCount, UPB.SilverBadgeCount, UPB.BronzeBadgeCount
 ORDER BY UPB.BadgeCount DESC, UPB.PostCount DESC

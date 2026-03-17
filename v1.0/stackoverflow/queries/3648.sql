@@ -70,7 +70,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString(',', p.Tags)) AS TagName
+            arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
     ) t ON t.TagName IS NOT NULL
 GROUP BY 
     pi.PostId, pi.Title, pi.CreationDate, pi.Score, pi.DisplayName, pi.TotalBounty, pi.TotalUpVotes, pi.TotalDownVotes, pi.DaysSinceCreation

@@ -1,6 +1,6 @@
 WITH TagFilter AS (
     SELECT DISTINCT
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS TagName,
         p.Id AS PostId
     FROM Posts p
     WHERE PostTypeId = 1 

@@ -28,7 +28,7 @@ WITH PostDetails AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('>', TRIM(BOTH '<>' FROM Tags))) AS TagName,
+        arrayJoin(splitByString('>', assumeNotNull(TRIM(BOTH '<>' FROM Tags)))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts

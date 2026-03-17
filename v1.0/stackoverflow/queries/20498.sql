@@ -26,7 +26,7 @@ PostDetails AS (
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN (
-        SELECT arrayJoin(splitByString('><', p.Tags)) AS TagName
+        SELECT arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
     ) t ON TRUE
     GROUP BY p.Id, p.Title, p.CreationDate, p.AcceptedAnswerId
 ),

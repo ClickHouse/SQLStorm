@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag(TagName) ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 

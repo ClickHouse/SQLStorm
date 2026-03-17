@@ -22,7 +22,7 @@ PostDetails AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        COALESCE(MAX(ph.CreationDate), any(p.CreationDate)) AS LastEditDate,
+        COALESCE(MAX(ph.CreationDate), p.CreationDate) AS LastEditDate,
         COUNT(DISTINCT c.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId

@@ -18,7 +18,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    (SELECT TRIM(BOTH ' ' FROM arrayJoin(splitByString(',', p.Tags))) AS tag) AS tag ON tag IS NOT NULL
+    (SELECT TRIM(BOTH ' ' FROM arrayJoin(splitByString(',', assumeNotNull(p.Tags)))) AS tag) AS tag ON tag IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag
 WHERE 

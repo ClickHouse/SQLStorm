@@ -5,7 +5,7 @@ WITH PostStats AS (
         COUNT(C.Id) AS TotalComments,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpvotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownvotes,
-        ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY any(P.CreationDate) DESC) AS PostRank
+        ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM 
         Posts P
     LEFT JOIN 

@@ -14,7 +14,7 @@ JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    arrayJoin(splitByString('<>', p.Tags)) AS tag ON tag IS NOT NULL
+    arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS tag ON tag IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag
 WHERE 

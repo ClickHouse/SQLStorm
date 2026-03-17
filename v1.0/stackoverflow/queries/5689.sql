@@ -40,7 +40,7 @@ PostDetails AS (
     LEFT JOIN 
         (
             SELECT 
-                arrayJoin(splitByString(', ', Posts.Tags)) AS TagName,
+                arrayJoin(splitByString(', ', assumeNotNull(Posts.Tags))) AS TagName,
                 Posts.Id AS PostId
             FROM 
                 Posts

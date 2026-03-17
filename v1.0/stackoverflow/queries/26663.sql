@@ -6,7 +6,7 @@ WITH RecentPosts AS (
         p.Body,
         p.CreationDate,
         u.DisplayName AS OwnerName,
-        length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1) AS TagCount,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS VoteCount,
         p.ViewCount

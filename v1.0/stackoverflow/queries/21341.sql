@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Badges ba ON p.OwnerUserId = ba.UserId
     LEFT JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON TRIM(tag) = t.TagName
     WHERE 

@@ -32,7 +32,7 @@ PostTags AS (
     FROM 
         Posts p
     JOIN 
-        (SELECT arrayJoin(splitByString('><', substring(p.Tags FROM 2 FOR length(p.Tags) - 2))) AS tag) AS tag ON TRUE
+        (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags FROM 2 FOR length(p.Tags) - 2)))) AS tag) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 

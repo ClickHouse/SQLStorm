@@ -29,7 +29,7 @@ TopTaggedPosts AS (
     FROM 
         RankedPosts rp
     JOIN 
-        arrayJoin(splitByString('<>', rp.Tags)) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('<>', assumeNotNull(rp.Tags))) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
     WHERE 

@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString('|', p.Tags)) AS tag_array ON TRUE
+        arrayJoin(splitByString('|', assumeNotNull(p.Tags))) AS tag_array ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag_array)
     WHERE 

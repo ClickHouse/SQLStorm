@@ -14,7 +14,7 @@ WITH RankedPosts AS (
                                               WHEN p.PostTypeId = 2 THEN 'Answer'
                                               ELSE 'Other'
                                           END ORDER BY p.Score DESC) AS Rank,
-        CARDINALITY(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagCount
+        CARDINALITY(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS TagCount
     FROM 
         Posts p
     JOIN 

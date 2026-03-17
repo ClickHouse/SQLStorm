@@ -19,7 +19,7 @@ PopularPosts AS (
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    LEFT JOIN arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS t(TagName) ON TRUE
+    LEFT JOIN arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS t(TagName) ON TRUE
     WHERE p.PostTypeId = 1 
     GROUP BY p.Id, p.Title, p.OwnerDisplayName, p.Score, p.ViewCount
     ORDER BY p.Score DESC, p.ViewCount DESC

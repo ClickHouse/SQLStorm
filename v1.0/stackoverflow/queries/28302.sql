@@ -16,7 +16,7 @@ WITH UserPostStatistics AS (
     LEFT JOIN 
         Badges B ON U.Id = B.UserId
     LEFT JOIN 
-        arrayJoin(splitByString('><', P.Tags)) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
     GROUP BY 
         U.Id, U.DisplayName
 ),

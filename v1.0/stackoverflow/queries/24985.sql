@@ -17,7 +17,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', p.Tags)) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -58,7 +58,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString(' ', rp.Title)) 
+    PopularTags pt ON pt.TagName = ANY(splitByString(' ', assumeNotNull(rp.Title))) 
 LEFT JOIN 
     ClosedPosts cp ON rp.PostId = cp.PostId
 WHERE 

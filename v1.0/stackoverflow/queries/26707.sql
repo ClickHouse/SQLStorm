@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', P.Tags)) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
     WHERE 
         P.CreationDate >= DATE '2024-10-01' - INTERVAL '30 days' 
     GROUP BY 
@@ -56,7 +56,7 @@ FROM
 LEFT JOIN 
     Posts P ON PA.PostId = P.Id
 LEFT JOIN 
-    arrayJoin(splitByString('><', P.Tags)) AS T(TagName) ON TRUE
+    arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
 GROUP BY 
     PA.PostId, PA.Title, PA.ViewCount, PA.UpVotes, PA.DownVotes, PA.CommentCount, PA.ViewRank, PA.UpVoteRank, PA.CommentRank
 ORDER BY 

@@ -25,7 +25,7 @@ WITH RankedPosts AS (
 
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName,
         COUNT(p.Id) AS TagCount,
         AVG(p.Score) AS AvgScore,
         COUNT(DISTINCT p.Id) AS QuestionCount
@@ -76,7 +76,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    TagStatistics ts ON ts.TagName IN (SELECT arrayJoin(splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2))))
+    TagStatistics ts ON ts.TagName IN (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags) - 2)))))
 LEFT JOIN 
     UserEngagement ue ON ue.UserId = (SELECT OwnerUserId FROM Posts WHERE AcceptedAnswerId = rp.PostId LIMIT 1)
 WHERE 

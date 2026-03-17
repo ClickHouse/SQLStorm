@@ -36,7 +36,7 @@ PopularTags AS (
         COUNT(*) AS TagCount
     FROM 
         Posts p,
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
@@ -57,7 +57,7 @@ FROM
 JOIN 
     Posts p ON tp.PostId = p.Id
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))
+    PopularTags pt ON pt.TagName = ANY(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))))
 WHERE 
     tp.RankByViewCount <= 10 
 ORDER BY 

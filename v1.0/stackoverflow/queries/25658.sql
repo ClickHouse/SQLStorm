@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -65,7 +65,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    PopularTags pt ON pt.Tag = ANY (splitByString('><', SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags) - 2)))
+    PopularTags pt ON pt.Tag = ANY (splitByString('><', assumeNotNull(SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags) - 2))))
 LEFT JOIN 
     PostHistoryAnalysis pha ON pha.PostId = rp.PostId
 WHERE 

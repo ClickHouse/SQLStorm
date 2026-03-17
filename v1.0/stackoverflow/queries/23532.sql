@@ -11,8 +11,8 @@ WITH RankedPosts AS (
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
-    LEFT JOIN 
-        (SELECT arrayJoin(splitByString(',', p.Tags)) as TagName) t ON TRUE
+
+        LEFT ARRAY JOIN splitByString(',', assumeNotNull(p.Tags)) AS TagName
     WHERE 
         p.Score IS NOT NULL
 ), UserActivity AS (

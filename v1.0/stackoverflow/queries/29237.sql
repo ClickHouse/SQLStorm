@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
         COUNT(*) AS QuestionCount
     FROM
         Posts
@@ -36,7 +36,7 @@ UserReputation AS (
     LEFT JOIN
         Votes V ON P.Id = V.PostId
     LEFT JOIN
-        arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2)))) AS T(TagName) ON TRUE
     GROUP BY
         U.Id, U.DisplayName, U.Reputation
 ),

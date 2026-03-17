@@ -22,7 +22,7 @@ TaggedPosts AS (
         p.Id AS PostId,
         arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM Posts p
-    CROSS JOIN arrayJoin(splitByString('><', p.Tags)) AS tag
+    ARRAY JOIN splitByString('><', assumeNotNull(p.Tags)) AS tag
     JOIN Tags t ON t.TagName = tag
     GROUP BY p.Id
 )

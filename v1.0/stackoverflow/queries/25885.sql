@@ -10,7 +10,7 @@ WITH FilteredPosts AS (
         p.AnswerCount, 
         p.ViewCount, 
         p.CommentCount,
-        length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount
+        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1) AS TagCount
     FROM 
         Posts p 
     WHERE 

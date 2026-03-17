@@ -17,7 +17,7 @@ JOIN
 LEFT JOIN 
     Comments co ON p.Id = co.PostId
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString('><', p.Tags)) AS tag) AS tag ON true
+    (SELECT arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag) AS tag ON true
 LEFT JOIN 
     Tags t ON t.TagName = tag
 WHERE 

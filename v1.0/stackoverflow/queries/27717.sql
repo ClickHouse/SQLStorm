@@ -66,7 +66,7 @@ SELECT
 FROM 
     TagCounts tc
 JOIN 
-    RecentActivity ra ON tc.TagName = ANY(splitByString(' ', ra.Title)) 
+    RecentActivity ra ON tc.TagName = ANY(splitByString(' ', assumeNotNull(ra.Title))) 
 JOIN 
     TopUsers tu ON ra.OwnerDisplayName = tu.DisplayName
 ORDER BY 

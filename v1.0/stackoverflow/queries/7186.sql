@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.CreationDate,
         p.Tags,
-        ROW_NUMBER() OVER (PARTITION BY any(p.PostTypeId) ORDER BY p.Score DESC) AS Rank,
+        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
         COALESCE(COUNT(a.Id) FILTER (WHERE a.PostTypeId = 2), 0) AS AnswerCount,
         p.OwnerUserId
     FROM 

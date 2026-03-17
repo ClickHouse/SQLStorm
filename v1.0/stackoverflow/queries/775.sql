@@ -46,7 +46,7 @@ JOIN UserReputation ur ON uri.UserId = ur.UserId
 LEFT JOIN Posts p ON uri.UserId = p.OwnerUserId
 LEFT JOIN (
     SELECT 
-        arrayJoin(splitByString(',', p.Tags)) AS TagName
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
 ) AS t ON true
 WHERE uri.TotalPosts > 0
 GROUP BY 

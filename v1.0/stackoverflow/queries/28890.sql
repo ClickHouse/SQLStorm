@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         p.Score,
-        length(splitByString('><', p.Tags), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(p.Tags)), 1) AS TagCount,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankByScore
     FROM 
         Posts p

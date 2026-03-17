@@ -29,7 +29,7 @@ ActivePosts AS (
     FROM Posts p
     LEFT JOIN PostHistory Ph ON p.Id = Ph.PostId
     LEFT JOIN (
-        SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS TagName
+        SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS TagName
     ) t ON TRUE
     GROUP BY p.Id, p.Title, p.Score, p.AnswerCount, p.CommentCount, p.CreationDate, p.ViewCount, p.OwnerUserId
 ),

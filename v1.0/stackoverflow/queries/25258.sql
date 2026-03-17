@@ -21,12 +21,12 @@ WITH RecentPosts AS (
 ),
 TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('>', substring(Tags, 2, length(Tags)-2))) AS Tag,
+        arrayJoin(splitByString('>', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         RecentPosts
     GROUP BY 
-        arrayJoin(splitByString('>', substring(Tags, 2, length(Tags)-2)))
+        arrayJoin(splitByString('>', assumeNotNull(substring(Tags, 2, length(Tags)-2))))
 ),
 TopTags AS (
     SELECT 

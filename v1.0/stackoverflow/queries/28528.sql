@@ -21,7 +21,7 @@ WITH TagData AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString(',', TagList)) AS TagName,
+        arrayJoin(splitByString(',', assumeNotNull(TagList))) AS TagName,
         COUNT(PostId) AS PostCount,
         SUM(CommentCount) AS TotalComments,
         SUM(UpVotes) AS TotalUpVotes,

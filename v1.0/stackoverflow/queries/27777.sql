@@ -49,7 +49,7 @@ TaggedPosts AS (
     FROM 
         TopPosts tp
     JOIN 
-        Tags t ON t.TagName = ANY(splitByString('><', tp.Tags))
+        Tags t ON t.TagName = ANY(splitByString('><', assumeNotNull(tp.Tags)))
     GROUP BY 
         tp.PostId, tp.Title, tp.Body, tp.Tags, tp.CommentCount, tp.UpVotes, tp.DownVotes, tp.CreationDate
 )

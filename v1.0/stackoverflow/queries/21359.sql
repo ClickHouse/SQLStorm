@@ -30,8 +30,8 @@ TopPosts AS (
         Posts p ON p.Id = rp.PostId
     LEFT JOIN 
         Badges b ON b.UserId = p.OwnerUserId
-    LEFT JOIN 
-        (SELECT arrayJoin(splitByString('><', p.Tags)) AS TagName) t ON TRUE
+
+        LEFT ARRAY JOIN splitByString('><', assumeNotNull(p.Tags)) AS TagName
     WHERE 
         rp.Rank <= 10
     GROUP BY 

@@ -9,7 +9,7 @@ WITH RankedPosts AS (
     FROM Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
-    LEFT JOIN arrayJoin(splitByString(',', p.Tags)) AS tag_names(tag) ON true
+    LEFT JOIN arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag_names(tag) ON true
     LEFT JOIN Tags t ON t.TagName = tag_names.tag
     WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName

@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tags_array ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tags_array ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(BOTH ' ' FROM tags_array)
     WHERE 

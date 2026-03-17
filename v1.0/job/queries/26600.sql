@@ -40,8 +40,8 @@ FilteredMovies AS (
     FROM 
         MovieDetails
     WHERE 
-        length(splitByString(', ', production_companies), 1) > 2 
-        AND length(splitByString(', ', related_people), 1) > 5
+        length(splitByString(', ', assumeNotNull(production_companies)), 1) > 2 
+        AND length(splitByString(', ', assumeNotNull(related_people)), 1) > 5
 ),
 RankedMovies AS (
     SELECT 

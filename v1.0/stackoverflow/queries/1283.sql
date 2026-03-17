@@ -56,7 +56,7 @@ LEFT JOIN PostDetails pd ON ur.Id = pd.OwnerUserId
 LEFT JOIN Posts p ON pd.PostId = p.Id
 LEFT JOIN (
     SELECT 
-        arrayJoin(splitByString('>', p.Tags)) AS TagName
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
 ) AS t ON true
 GROUP BY 
     ur.DisplayName, 

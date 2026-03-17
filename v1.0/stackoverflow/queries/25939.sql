@@ -3,7 +3,7 @@ WITH PostTagCounts AS (
     SELECT
         p.Id AS PostId,
         p.Title,
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName,
         COUNT(v.Id) AS VoteCount
     FROM
         Posts p

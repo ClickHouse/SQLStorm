@@ -12,7 +12,7 @@ WITH UserBadges AS (
         Badges B ON U.Id = B.UserId
     GROUP BY 
         U.Id
-, U.DisplayName),
+),
 PostStatistics AS (
     SELECT 
         P.OwnerUserId,

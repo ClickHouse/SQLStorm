@@ -14,7 +14,7 @@ WITH UserActivity AS (
     LEFT JOIN Votes v ON u.Id = v.UserId
     LEFT JOIN PostHistory ph ON ph.UserId = u.Id
     LEFT JOIN Posts p ON ph.PostId = p.Id
-    LEFT JOIN arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON TRUE
+    LEFT JOIN arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
     GROUP BY 
         u.Id, u.DisplayName
 ),

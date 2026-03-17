@@ -22,7 +22,7 @@ UserEngagement AS (
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN (
-        SELECT arrayJoin(splitByString('>', p.Tags)) AS TagName
+        SELECT arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
     ) AS t ON TRUE
     GROUP BY u.Id, u.DisplayName
 ),

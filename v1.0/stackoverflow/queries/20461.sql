@@ -47,7 +47,7 @@ PostsWithTags AS (
         arrayStringConcat(groupArray(assumeNotNull(TRIM(tag))), ', ') AS CombinedTags
     FROM 
         Posts p,
-        arrayJoin(splitByString('>', p.Tags)) AS tag
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag
     GROUP BY 
         p.Id
 )

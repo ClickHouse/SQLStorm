@@ -50,7 +50,7 @@ LEFT JOIN
         SELECT 
             arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagName
         FROM 
-            arrayJoin(splitByString(' ', tp.Title)) AS tag
+            arrayJoin(splitByString(' ', assumeNotNull(tp.Title))) AS tag
         JOIN 
             Tags t ON t.TagName = tag
     ) t ON TRUE

@@ -45,7 +45,7 @@ SELECT
 FROM RankedPosts rp
 LEFT JOIN (
     SELECT 
-        arrayJoin(splitByString('>,<', rp.Tags)) AS TagName
+        arrayJoin(splitByString('>,<', assumeNotNull(rp.Tags))) AS TagName
 ) AS tag ON TRUE
 WHERE rp.PostRank <= 10 
 GROUP BY 

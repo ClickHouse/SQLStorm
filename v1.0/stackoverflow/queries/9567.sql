@@ -38,7 +38,7 @@ PostDetailWithTags AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('<>', p.Tags)) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
     GROUP BY 
         p.Id, pt.Name
 )

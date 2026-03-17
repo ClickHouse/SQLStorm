@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ProcessedTags AS (
     SELECT 
         PostId,
-        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS Tag
     FROM 
         RankedPosts
     WHERE 

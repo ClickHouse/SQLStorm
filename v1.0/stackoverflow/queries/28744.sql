@@ -2,7 +2,7 @@ WITH RecursiveTags AS (
     
     SELECT 
         p.Id AS PostId, 
-        splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)) AS TagsArray
+        splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))) AS TagsArray
     FROM 
         Posts p
     WHERE 

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN Users U1 ON p.OwnerUserId = U1.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    LEFT JOIN arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag ON TRUE
+    LEFT ARRAY JOIN splitByString('><', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag
     INNER JOIN Tags t ON tag = t.TagName
     WHERE
         p.PostTypeId = 1  

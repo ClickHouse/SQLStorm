@@ -35,7 +35,7 @@ UserVoteStats AS (
         Votes v ON u.Id = v.UserId
     GROUP BY 
         u.Id
-, u.DisplayName),
+),
 PostComments AS (
     SELECT 
         p.Id AS PostId,

@@ -25,7 +25,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('> <', substring(Tags, 2, length(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('> <', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
         COUNT(*) AS UseCount
     FROM 
         Posts

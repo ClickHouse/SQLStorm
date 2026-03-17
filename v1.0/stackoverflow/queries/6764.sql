@@ -53,12 +53,12 @@ LEFT JOIN
     PostLinks pl ON p.Id = pl.PostId
 LEFT JOIN 
     (SELECT 
-         arrayJoin(splitByString(',', Tags)) AS TagName,
+         arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
          COUNT(*) AS TagCount 
      FROM 
          Posts 
      GROUP BY 
-         arrayJoin(splitByString(',', Tags)) 
+         arrayJoin(splitByString(',', assumeNotNull(Tags))) 
      ORDER BY 
          TagCount DESC 
      LIMIT 1) bnt ON true

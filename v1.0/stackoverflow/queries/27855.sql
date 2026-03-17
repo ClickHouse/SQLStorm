@@ -27,12 +27,12 @@ WITH FilteredPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         FilteredPosts
     GROUP BY 
-        arrayJoin(splitByString('><', Tags))
+        arrayJoin(splitByString('><', assumeNotNull(Tags)))
     ORDER BY 
         TagCount DESC
     LIMIT 10

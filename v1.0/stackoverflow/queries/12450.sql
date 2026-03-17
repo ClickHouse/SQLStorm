@@ -21,7 +21,7 @@ WITH PostStats AS (
   LEFT JOIN 
     Votes v ON p.Id = v.PostId
   LEFT JOIN 
-    arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS tag ON TRUE
+    arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS tag ON TRUE
   LEFT JOIN 
     Tags t ON tag = t.TagName
   GROUP BY 

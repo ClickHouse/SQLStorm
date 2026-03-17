@@ -20,7 +20,7 @@ TopTagUsers AS (
         COUNT(T.Tag) AS TagCount
     FROM Users U
     JOIN Posts P ON U.Id = P.OwnerUserId
-    CROSS JOIN (SELECT arrayJoin(splitByString('><', P.Tags)) AS Tag) T
+    CROSS JOIN (SELECT arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS Tag) T
     GROUP BY U.Id, U.DisplayName
     HAVING COUNT(T.Tag) > 10
 ),

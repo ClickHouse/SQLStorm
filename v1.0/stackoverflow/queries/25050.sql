@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 AggregatedTags AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag
     FROM 
         RankedPosts
 ),
@@ -76,7 +76,7 @@ FROM
 JOIN 
     PostEngagement pe ON rp.PostId = pe.PostId
 JOIN 
-    TopTags te ON te.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
+    TopTags te ON te.Tag = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags)-2))))
 WHERE 
     rp.Rank <= 5
 ORDER BY 

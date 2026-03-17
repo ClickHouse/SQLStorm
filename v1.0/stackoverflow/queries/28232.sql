@@ -26,7 +26,7 @@ WITH RankedPosts AS (
 
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -67,6 +67,6 @@ FROM
 JOIN 
     PostHistorySummary pts ON rp.PostId = pts.PostId
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2)))
+    PopularTags pt ON pt.TagName = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags) - 2))))
 ORDER BY 
     rp.VoteCount DESC, rp.CommentCount DESC;

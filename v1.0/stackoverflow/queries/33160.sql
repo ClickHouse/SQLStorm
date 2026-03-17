@@ -30,7 +30,7 @@ RecentPosts AS (
     FROM Posts p
     LEFT JOIN Comments c ON c.PostId = p.Id
     LEFT JOIN Votes v ON v.PostId = p.Id AND v.VoteTypeId IN (2, 3) 
-    LEFT JOIN arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
+    LEFT JOIN arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE p.CreationDate > CURRENT_DATE - INTERVAL '30 days'
     GROUP BY p.Id, p.Title, p.ViewCount, p.Score
 ),

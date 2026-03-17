@@ -22,7 +22,7 @@ PostStats AS (
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS TotalComments,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes,
-        ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY any(P.CreationDate) DESC) AS RecentPostRank
+        ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RecentPostRank
     FROM 
         Posts P
     LEFT JOIN 

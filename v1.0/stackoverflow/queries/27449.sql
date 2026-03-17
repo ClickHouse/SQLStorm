@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Score,
         p.AnswerCount,
         p.CreationDate,
-        length(splitByString('><', p.Tags), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(p.Tags)), 1) AS TagCount,
         RANK() OVER (ORDER BY p.Score DESC, p.ViewCount DESC) AS RankScore,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotesCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotesCount

@@ -45,7 +45,7 @@ SELECT
 FROM 
     AggregatedInfo ai
 JOIN 
-    customer_demographics cd ON cd.cd_demo_sk IN (SELECT c.c_current_cdemo_sk FROM customer c WHERE CONCAT(c.c_first_name, ' ', c.c_last_name) IN (SELECT arrayJoin(splitByString(', ', ai.top_customers))))
+    customer_demographics cd ON cd.cd_demo_sk IN (SELECT c.c_current_cdemo_sk FROM customer c WHERE CONCAT(c.c_first_name, ' ', c.c_last_name) IN (SELECT arrayJoin(splitByString(', ', assumeNotNull(ai.top_customers)))))
 GROUP BY 
     ai.cd_gender, ai.customer_count, ai.top_customers
 ORDER BY 

@@ -35,7 +35,7 @@ LEFT JOIN
 LEFT JOIN 
     RankedPosts bp ON u.Id = bp.OwnerUserId AND bp.ScoreRank <= 5
 LEFT JOIN 
-    arrayJoin(splitByString('><', SUBSTRING(bp.Tags, 2, LENGTH(bp.Tags) - 2))) AS t(TagName) ON true
+    arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(bp.Tags, 2, LENGTH(bp.Tags) - 2)))) AS t(TagName) ON true
 WHERE 
     u.Reputation > 1000
 GROUP BY 

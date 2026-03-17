@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
     LEFT JOIN (
         SELECT 
-            arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)))) AS TagName
     ) AS t ON TRUE
     WHERE p.PostTypeId = 1 
     GROUP BY p.Id, u.DisplayName

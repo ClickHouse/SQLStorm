@@ -17,7 +17,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags)-2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags)-2)))) AS TagName,
         COUNT(*) AS QuestionCount,
         SUM(BodyLength) AS TotalBodyLength,
         AVG(BodyLength) AS AvgBodyLength
@@ -26,7 +26,7 @@ TagStatistics AS (
     WHERE 
         rn = 1
     GROUP BY 
-        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags)-2)))
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags)-2))))
 ),
 TopTags AS (
     SELECT 

@@ -54,7 +54,7 @@ SELECT
 FROM 
     TopPosts tp
 LEFT JOIN 
-    Tags t ON t.TagName = ANY(splitByString(', ', tp.Tags))
+    Tags t ON t.TagName = ANY(splitByString(', ', assumeNotNull(tp.Tags)))
 GROUP BY 
     tp.PostId, tp.OwnerDisplayName, tp.Title, tp.CreationDate, tp.Score, tp.ViewCount, tp.CommentCount, tp.UpVoteCount, tp.DownVoteCount
 ORDER BY 

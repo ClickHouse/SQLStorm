@@ -42,7 +42,7 @@ SELECT
 FROM 
     TopPosts tp
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName, p.Id 
+    (SELECT arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName, p.Id 
      FROM Posts p) AS tag_arr ON tp.PostId = tag_arr.Id
 LEFT JOIN 
     Tags t ON t.TagName = tag_arr.TagName

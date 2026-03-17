@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
     LEFT JOIN 
-        arrayJoin(splitByString('><', substr(p.Tags, 2, length(p.Tags) - 2))) AS tag ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(substr(p.Tags, 2, length(p.Tags) - 2)))) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON tag = t.TagName
     WHERE 

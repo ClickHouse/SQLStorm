@@ -67,7 +67,7 @@ UserActivityRanked AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('|', tags.Tags)) AS TagName,
+        arrayJoin(splitByString('|', assumeNotNull(tags.Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -94,7 +94,7 @@ FROM
 LEFT JOIN 
     HighScoringPosts ht ON ht.OwnerDisplayName = ua.DisplayName
 LEFT JOIN 
-    PopularTags pt ON pt.TagName IN (SELECT arrayJoin(splitByString(' ', ht.Title)))
+    PopularTags pt ON pt.TagName IN (SELECT arrayJoin(splitByString(' ', assumeNotNull(ht.Title))))
 WHERE 
     ua.PostRank < 11
 ORDER BY 

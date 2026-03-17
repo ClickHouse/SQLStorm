@@ -30,7 +30,7 @@ TagStatistics AS (
            AVG(OwnerReputation) AS AvgReputation,
            MAX(CreationDate) AS LatestPostDate
     FROM RecentPosts
-    CROSS JOIN arrayJoin(splitByString('><', Tags)) AS TagName
+    ARRAY JOIN splitByString('><', assumeNotNull(Tags)) AS TagName
     GROUP BY TagName
 )
 SELECT ts.TagName,
@@ -40,6 +40,6 @@ SELECT ts.TagName,
        arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS TopTitles,
        arrayStringConcat(groupArray(assumeNotNull(rp.Body)), '; ') AS TopBodies
 FROM TagStatistics ts
-JOIN RecentPosts rp ON ts.TagName = ANY(splitByString('><', rp.Tags))
+JOIN RecentPosts rp ON ts.TagName = ANY(splitByString('><', assumeNotNull(rp.Tags)))
 GROUP BY ts.TagName, ts.PostCount, ts.AvgReputation, ts.LatestPostDate
 ORDER BY ts.PostCount DESC, ts.AvgReputation DESC;

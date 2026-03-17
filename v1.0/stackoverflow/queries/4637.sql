@@ -17,7 +17,7 @@ PostDetails AS (
         p.Title,
         p.ViewCount,
         COALESCE(COUNT(c.Id), 0) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY any(p.CreationDate) DESC) AS PostRank,
+        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank,
         p.OwnerUserId
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId

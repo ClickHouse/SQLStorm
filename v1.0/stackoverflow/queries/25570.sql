@@ -53,7 +53,7 @@ SELECT
 FROM 
     FilteredPosts f
 JOIN 
-    arrayJoin(splitByString(',', f.Tags)) AS tag_ids ON TRUE
+    arrayJoin(splitByString(',', assumeNotNull(f.Tags))) AS tag_ids ON TRUE
 JOIN 
     Tags t ON t.TagName = TRIM(BOTH '"' FROM tag_ids)
 GROUP BY 

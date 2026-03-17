@@ -7,7 +7,7 @@ WITH PostTagCounts AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS Tag(t) ON true
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS Tag(t) ON true
     JOIN 
         Tags t ON t.TagName = Tag.t
     GROUP BY 

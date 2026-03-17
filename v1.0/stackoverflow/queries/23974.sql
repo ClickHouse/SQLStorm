@@ -57,7 +57,7 @@ LEFT JOIN
 LEFT JOIN 
     TagStatistics ts ON ts.TagName IN (
         SELECT 
-            arrayJoin(splitByString('><', rp.Tags)) 
+            arrayJoin(splitByString('><', assumeNotNull(rp.Tags))) 
         FROM 
             RankedPosts 
         WHERE 

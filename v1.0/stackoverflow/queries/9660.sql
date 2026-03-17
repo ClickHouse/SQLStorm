@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     PostTypes pt ON p.PostTypeId = pt.Id
 LEFT JOIN 
-    arrayJoin(splitByString(',', p.Tags)) AS tag(TagName) ON TRUE
+    arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag(TagName) ON TRUE
 WHERE 
     u.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 GROUP BY 

@@ -29,7 +29,7 @@ FROM
 LEFT JOIN 
     Posts p ON rp.Id = p.Id
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName) AS t ON true
+    (SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS TagName) AS t ON true
 WHERE 
     rp.rn <= 5 AND 
     (rp.Score > 0 OR rp.CommentCount > 5)

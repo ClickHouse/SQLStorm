@@ -2,7 +2,7 @@
 WITH RankedPosts AS (
     SELECT
         p.Id AS PostId,
-        any(p.Title),
+        p.Title,
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,

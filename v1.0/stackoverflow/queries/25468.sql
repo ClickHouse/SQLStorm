@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.CommentCount,
         u.DisplayName AS OwnerDisplayName,
-        ROW_NUMBER() OVER (PARTITION BY splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)) ORDER BY p.ViewCount DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))) ORDER BY p.ViewCount DESC) AS Rank
     FROM 
         Posts p
     JOIN 
@@ -21,7 +21,7 @@ WITH RankedPosts AS (
 
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag
     FROM 
         RankedPosts
     WHERE 
@@ -54,7 +54,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    MostCommonTags mc ON mc.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
+    MostCommonTags mc ON mc.Tag = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags)-2))))
 WHERE 
     rp.Rank <= 10
 ORDER BY 

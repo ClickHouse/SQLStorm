@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         (
             SELECT 
-                arrayJoin(splitByString('>', p.Tags)) AS TagName
+                arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
         ) t ON TRUE
     WHERE 
         p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
@@ -67,7 +67,7 @@ SELECT
         ELSE 'Needs Attention'
     END AS EngagementLevel,
     CASE 
-        WHEN tp.Tags IS NOT NULL THEN length(splitByString(', ', tp.Tags), 1) 
+        WHEN tp.Tags IS NOT NULL THEN length(splitByString(', ', assumeNotNull(tp.Tags)), 1) 
         ELSE 0 
     END AS TagCount
 FROM 

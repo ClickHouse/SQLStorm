@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS Tag,
         COUNT(*) AS PostCount,
         SUM(p.ViewCount) AS TotalViews,
         AVG(p.Score) AS AverageScore
@@ -28,7 +28,7 @@ TagStats AS (
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))))
 ),
 TopTags AS (
     SELECT 
@@ -81,7 +81,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TopTags tt ON tt.Tag = ANY (splitByString('><', SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2)))
+    TopTags tt ON tt.Tag = ANY (splitByString('><', assumeNotNull(SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2))))
 JOIN 
     TopUsers tu ON tu.UserRank <= 10
 WHERE 

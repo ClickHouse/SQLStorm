@@ -19,7 +19,7 @@ PostDetails AS (
         p.CreationDate,
         COALESCE(p.ClosedDate, CAST('1970-01-01' AS TIMESTAMP)) AS ClosureDate,
         DENSE_RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank,
-        length(splitByString(',', p.Tags), 1) AS TagCount,
+        length(splitByString(',', assumeNotNull(p.Tags)), 1) AS TagCount,
         EXTRACT(YEAR FROM p.CreationDate) AS CreationYear
     FROM Posts p
 ),

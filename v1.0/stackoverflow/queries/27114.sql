@@ -25,7 +25,7 @@ WITH RecentPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS TagName,
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         RecentPosts

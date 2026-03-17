@@ -22,11 +22,11 @@ WITH PostDetails AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('>,<', Tags)) AS TagName,
+        arrayJoin(splitByString('>,<', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts
     WHERE Tags IS NOT NULL
-    GROUP BY arrayJoin(splitByString('>,<', Tags))
+    GROUP BY arrayJoin(splitByString('>,<', assumeNotNull(Tags)))
 ),
 TopTags AS (
     SELECT TagName, PostCount

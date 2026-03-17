@@ -31,14 +31,14 @@ TopUsers AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS TagName,
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString(',', Tags))
+        arrayJoin(splitByString(',', assumeNotNull(Tags)))
     HAVING 
         COUNT(*) > 5
 )
@@ -56,7 +56,7 @@ FROM
 LEFT JOIN 
     PopularTags pt ON pt.TagName IN (
         SELECT 
-            arrayJoin(splitByString(',', Tags))
+            arrayJoin(splitByString(',', assumeNotNull(Tags)))
         FROM 
             Posts
         WHERE 

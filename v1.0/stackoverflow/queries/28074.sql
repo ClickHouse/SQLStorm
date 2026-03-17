@@ -1,14 +1,14 @@
 
 WITH TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag,
         COUNT(*) AS PostCount,
         SUM(CASE WHEN PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount
     FROM 
         Posts
     GROUP BY 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2)))
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2))))
 ),
 UserStats AS (
     SELECT 

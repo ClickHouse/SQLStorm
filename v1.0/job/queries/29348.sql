@@ -36,8 +36,8 @@ WITH movie_details AS (
         keywords,
         LENGTH(title) AS title_length,
         LENGTH(company_name) AS company_length,
-        length(splitByString(', ', actors), 1) AS actor_count,
-        length(splitByString(', ', keywords), 1) AS keyword_count
+        length(splitByString(', ', assumeNotNull(actors)), 1) AS actor_count,
+        length(splitByString(', ', assumeNotNull(keywords)), 1) AS keyword_count
     FROM 
         movie_details
 )

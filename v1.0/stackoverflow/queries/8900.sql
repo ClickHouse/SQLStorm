@@ -57,7 +57,7 @@ JOIN
     PostTypes pt ON tp.PostId IN (SELECT PostId FROM Posts WHERE PostTypeId = pt.Id)
 LEFT JOIN 
     (SELECT 
-         splitByString('><', SUBSTRING(pp.Tags, 2, LENGTH(pp.Tags) - 2)) AS TagName,
+         splitByString('><', assumeNotNull(SUBSTRING(pp.Tags, 2, LENGTH(pp.Tags) - 2))) AS TagName,
          pp.Id AS PostId
      FROM 
          Posts pp) AS t ON t.PostId = tp.PostId

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON a.ParentId = p.Id AND a.PostTypeId = 2
     LEFT JOIN 
-        arrayJoin(splitByString('>', p.Tags)) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
     WHERE 

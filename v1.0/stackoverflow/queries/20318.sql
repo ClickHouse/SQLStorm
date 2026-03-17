@@ -30,7 +30,7 @@ PostWithTags AS (
         RankedPosts rp
     LEFT JOIN 
         (SELECT 
-                      arrayJoin(splitByString(',', p.Tags)) AS TagName 
+                      arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName 
                   FROM 
                       Posts p WHERE p.Id = rp.PostId) t ON true
     GROUP BY 

@@ -26,7 +26,7 @@ PostStatistics AS (
     FROM 
         Posts P
     LEFT JOIN 
-        arrayJoin(splitByString(',', P.Tags)) AS T(TagName) ON TRUE 
+        arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE 
     GROUP BY 
         P.OwnerUserId
 ),

@@ -41,7 +41,7 @@ TopQuestions AS (
 ),
 TagFrequency AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('>', Tags))) AS Tag,
+        TRIM(arrayJoin(splitByString('>', assumeNotNull(Tags)))) AS Tag,
         COUNT(*) AS Frequency
     FROM 
         Posts

@@ -18,14 +18,14 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2))))
 ),
 TopUsers AS (
     SELECT 
@@ -54,7 +54,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStatistics ts ON ts.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2)))
+    TagStatistics ts ON ts.Tag = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags) - 2))))
 JOIN 
     TopUsers tu ON rp.OwnerUserId = tu.UserId
 WHERE 

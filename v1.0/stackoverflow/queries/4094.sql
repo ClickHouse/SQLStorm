@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', p.Tags)) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = TRIM(both '<>' FROM tag)
     GROUP BY 

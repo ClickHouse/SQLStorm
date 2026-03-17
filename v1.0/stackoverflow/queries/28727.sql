@@ -52,7 +52,7 @@ SELECT
     fp.UpVotes,
     fp.DownVotes,
     CONCAT('Upvotes: ', fp.UpVotes, ', Downvotes: ', fp.DownVotes) AS VoteSummary,
-    length(splitByString(' ', fp.Body), 1) AS WordCount,
+    length(splitByString(' ', assumeNotNull(fp.Body)), 1) AS WordCount,
     datePart('year', AGE(fp.CreationDate)) AS AgeInYears,
     CASE
         WHEN fp.UpVotes > fp.DownVotes THEN 'Positive Engagement'

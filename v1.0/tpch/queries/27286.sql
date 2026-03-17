@@ -28,7 +28,7 @@ SELECT
     e.total_spent,
     e.region_name,
     CHAR_LENGTH(e.s_name) AS name_length,
-    SPLIT_PART(e.s_name, ' ', length(splitByString(' ', e.s_name), 1)) AS last_name_part,
+    SPLIT_PART(e.s_name, ' ', length(splitByString(' ', assumeNotNull(e.s_name)), 1)) AS last_name_part,
     CONCAT(e.s_name, ' - ', e.c_name) AS supplier_customer_combined
 FROM EnhancedInfo e
 WHERE e.total_parts > 20

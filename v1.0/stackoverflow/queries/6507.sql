@@ -22,7 +22,7 @@ PostDetails AS (
         arrayDistinct(groupArray(assumeNotNull(TAG.TagName))) AS Tags
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    LEFT JOIN arrayJoin(splitByString('><', P.Tags)) AS TAG(TagName) ON TRUE
+    LEFT JOIN arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS TAG(TagName) ON TRUE
     GROUP BY P.Id, P.Title, P.Score, P.ViewCount
 ),
 TopUsers AS (

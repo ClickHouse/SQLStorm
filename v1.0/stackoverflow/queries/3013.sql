@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS rn,
-        length(splitByString(',', p.Tags), 1) AS TagCount
+        length(splitByString(',', assumeNotNull(p.Tags)), 1) AS TagCount
     FROM 
         Posts p
     JOIN 

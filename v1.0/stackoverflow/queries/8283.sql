@@ -18,7 +18,7 @@ WITH LatestPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', p.Tags)) AS tag_name(tag) ON tag_name.tag IS NOT NULL
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag_name(tag) ON tag_name.tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag_name.tag
     WHERE 

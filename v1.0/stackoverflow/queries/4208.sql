@@ -27,7 +27,7 @@ UserStatistics AS (
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (9, 8)  
     GROUP BY 
         u.Id
-, u.DisplayName),
+),
 TopContributors AS (
     SELECT 
         us.UserId,

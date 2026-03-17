@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tag ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -29,7 +29,7 @@ PopularTags AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tag ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 

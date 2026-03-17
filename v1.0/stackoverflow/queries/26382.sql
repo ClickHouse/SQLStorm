@@ -24,7 +24,7 @@ FilteredTags AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS pt(TagName) ON true
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS pt(TagName) ON true
     WHERE 
         p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
     GROUP BY 
@@ -44,7 +44,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    FilteredTags ft ON ft.TagName = ANY (splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2)))
+    FilteredTags ft ON ft.TagName = ANY (splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags) - 2))))
 WHERE 
     rp.Rank = 1
 ORDER BY 

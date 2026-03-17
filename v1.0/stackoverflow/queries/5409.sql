@@ -17,8 +17,8 @@ WITH RecentPosts AS (
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
-    LEFT JOIN 
-        (SELECT arrayJoin(splitByString('><', p.Tags)) AS TagName) t ON TRUE
+
+        LEFT ARRAY JOIN splitByString('><', assumeNotNull(p.Tags)) AS TagName
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 

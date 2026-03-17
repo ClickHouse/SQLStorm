@@ -24,14 +24,14 @@ WITH RankedPosts AS (
 
 TagCount AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('>', P.Tags))) AS Tag,
+        TRIM(arrayJoin(splitByString('>', assumeNotNull(P.Tags)))) AS Tag,
         COUNT(*) AS TagFrequency
     FROM 
         Posts P
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 
-        TRIM(arrayJoin(splitByString('>', P.Tags)))
+        TRIM(arrayJoin(splitByString('>', assumeNotNull(P.Tags))))
     ORDER BY 
         TagFrequency DESC
     LIMIT 10
@@ -73,7 +73,7 @@ SELECT
 FROM 
     RankedPosts RP
 LEFT JOIN 
-    TagCount TC ON TC.Tag = ANY(splitByString('>', RP.Tags))
+    TagCount TC ON TC.Tag = ANY(splitByString('>', assumeNotNull(RP.Tags)))
 LEFT JOIN 
     PopularAuthors PA ON RP.AuthorName = PA.DisplayName
 WHERE 

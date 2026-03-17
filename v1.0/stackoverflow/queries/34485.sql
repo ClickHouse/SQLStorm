@@ -54,8 +54,8 @@ FROM
     TopPosts tp
 LEFT JOIN 
     Posts p ON tp.PostId = p.Id
-LEFT JOIN 
-    (SELECT arrayJoin(splitByString('>', p.Tags)) AS TagName) t ON true
+
+    LEFT ARRAY JOIN splitByString('>', assumeNotNull(p.Tags)) AS TagName
 WHERE 
     tp.ScoreRank <= 10  
 GROUP BY 

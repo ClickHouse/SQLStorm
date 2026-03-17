@@ -51,6 +51,6 @@ SELECT
 FROM 
     AggregatedData a
 JOIN 
-    PostTypes pt ON CARDINALITY(splitByString(', ', a.Tags)) = pt.Id
+    PostTypes pt ON CARDINALITY(splitByString(', ', assumeNotNull(a.Tags))) = pt.Id
 ORDER BY 
     a.TotalScore DESC, a.PostCount DESC;

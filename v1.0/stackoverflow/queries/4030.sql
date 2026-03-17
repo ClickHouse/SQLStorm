@@ -18,7 +18,7 @@ PostStatistics AS (
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (8, 9) 
-    LEFT JOIN (SELECT arrayJoin(splitByString('>', P.Tags)) AS TagName, P.Id FROM Posts P) AS TAGS ON TAGS.Id = P.Id
+    LEFT JOIN (SELECT arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS TagName, P.Id FROM Posts P) AS TAGS ON TAGS.Id = P.Id
     GROUP BY P.Id, P.OwnerUserId, P.Title
 ), 
 PostHistoryDetails AS (

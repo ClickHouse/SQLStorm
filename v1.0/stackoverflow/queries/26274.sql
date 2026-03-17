@@ -1,7 +1,7 @@
 
 WITH TagFrequency AS (
     SELECT
-        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS Tag,
         COUNT(*) AS Frequency
     FROM
         Posts

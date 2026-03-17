@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         u.DisplayName AS Author,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.UserId) FILTER (WHERE vt.Name = 'UpMod') AS UpVoteCount,
-        ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY any(p.CreationDate) DESC) AS rn
+        ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.CreationDate DESC) AS rn
     FROM 
         Posts p 
     LEFT JOIN 

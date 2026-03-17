@@ -3,7 +3,7 @@ WITH RankedPosts AS (
         p.Id AS PostId,
         p.Title,
         SUBSTRING(p.Body, 1, 200) AS ShortBody,
-        length(splitByString('>', p.Tags), 1) AS TagCount,
+        length(splitByString('>', assumeNotNull(p.Tags)), 1) AS TagCount,
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         ROW_NUMBER() OVER(PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS Rank

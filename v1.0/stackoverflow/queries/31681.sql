@@ -22,7 +22,7 @@ UserBadges AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(b.Id) AS BadgeCount,
-        AVG(any(u.Reputation)) OVER () AS AvgReputation
+        AVG(u.Reputation) OVER () AS AvgReputation
     FROM 
         Users u
     LEFT JOIN 

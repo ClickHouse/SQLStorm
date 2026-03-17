@@ -28,7 +28,7 @@ QuestionDetails AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
-        (SELECT * FROM arrayJoin(splitByString('>', P.Tags)) AS T(TagName)) AS T ON TRUE
+        (SELECT * FROM arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS T(TagName)) AS T ON TRUE
     WHERE 
         P.PostTypeId = 1  
     GROUP BY 

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN Users u ON p.OwnerUserId = u.Id
     JOIN PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (2, 3) 
-    LEFT JOIN arrayJoin(splitByString('><', p.Tags)) AS tag ON tag IS NOT NULL
+    LEFT ARRAY JOIN splitByString('><', assumeNotNull(p.Tags)) AS tag
     LEFT JOIN Tags t ON t.TagName = tag
     WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.DisplayName, pt.Name

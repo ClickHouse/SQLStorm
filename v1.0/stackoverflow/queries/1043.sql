@@ -29,7 +29,7 @@ UserReputation AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', Tags))) AS Tag
+        TRIM(arrayJoin(splitByString('><', assumeNotNull(Tags)))) AS Tag
     FROM 
         Posts
     WHERE 

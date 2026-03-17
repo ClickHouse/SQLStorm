@@ -21,14 +21,14 @@ WITH PostDetails AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2))))
 ),
 TopTags AS (
     SELECT 
@@ -56,7 +56,7 @@ RankedPosts AS (
     JOIN 
         TagStatistics ts ON EXISTS (
             SELECT 1 
-            FROM arrayJoin(splitByString('><', substring(pd.Tags, 2, LENGTH(pd.Tags) - 2))) AS tbl(Tag) 
+            FROM arrayJoin(splitByString('><', assumeNotNull(substring(pd.Tags, 2, LENGTH(pd.Tags) - 2)))) AS tbl(Tag) 
             WHERE tbl.Tag = ts.Tag
         )
     JOIN 

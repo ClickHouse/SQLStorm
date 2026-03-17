@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         LEFT JOIN Comments c ON p.Id = c.PostId
         LEFT JOIN Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2 
         LEFT JOIN (
-            SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName
+            SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS TagName
         ) t ON true
     WHERE 
         p.PostTypeId = 1 

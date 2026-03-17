@@ -45,7 +45,7 @@ PostDetails AS (
     LEFT JOIN 
         (SELECT 
             p.Id AS PostId, 
-            arrayJoin(splitByString('><', p.Tags)) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
           FROM 
             Posts p) tag ON tp.PostId = tag.PostId
     GROUP BY 

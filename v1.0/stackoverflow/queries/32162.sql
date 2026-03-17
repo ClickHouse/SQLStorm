@@ -61,7 +61,7 @@ LEFT JOIN
     PostStats PS ON PS.LastEdited = U.LastPostDate
 LEFT JOIN 
     RecursiveTagHierarchy RTH ON RTH.Id IN (
-        SELECT DISTINCT CAST(arrayJoin(splitByString(' ', PS.Title)) AS INT)
+        SELECT DISTINCT CAST(arrayJoin(splitByString(' ', assumeNotNull(PS.Title))) AS INT)
     ) 
 WHERE 
     U.TotalPosts > 0

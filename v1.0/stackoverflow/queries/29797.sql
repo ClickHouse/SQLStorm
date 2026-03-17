@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     JOIN 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag ON TRUE
     WHERE 
         p.PostTypeId = 1  
         AND p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'  
@@ -43,7 +43,7 @@ TagSummary AS (
         COUNT(*) AS PostCount
     FROM 
         Posts,
-        arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2))) AS tag
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2)))) AS tag
     GROUP BY 
         TRIM(tag)
 )

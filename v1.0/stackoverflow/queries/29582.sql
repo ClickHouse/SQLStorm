@@ -17,7 +17,7 @@ WITH PostTagStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        Tags t ON t.TagName = ANY(splitByString('>', TRIM(BOTH '<>' FROM REPLACE(p.Tags, '><', '>'))))
+        Tags t ON t.TagName = ANY(splitByString('>', assumeNotNull(TRIM(BOTH '<>' FROM REPLACE(p.Tags, '><', '>')))))
     LEFT JOIN 
         PostLinks pl ON p.Id = pl.PostId
     LEFT JOIN 

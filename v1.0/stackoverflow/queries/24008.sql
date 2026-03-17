@@ -31,7 +31,7 @@ PostTagData AS (
     FROM 
         Posts p
     JOIN 
-        (SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS tag) AS tag ON TRUE
+        (SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS tag) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

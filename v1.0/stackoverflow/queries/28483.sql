@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN (
-        SELECT arrayJoin(splitByString('>', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS TagName
+        SELECT arrayJoin(splitByString('>', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS TagName
     ) t ON true
     WHERE p.PostTypeId = 1  
     GROUP BY p.Id, p.Title, p.Body, p.CreationDate, p.Score, u.DisplayName

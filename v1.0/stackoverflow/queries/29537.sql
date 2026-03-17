@@ -54,7 +54,7 @@ FROM
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('>', tp.Tags)) AS TagName
+            arrayJoin(splitByString('>', assumeNotNull(tp.Tags))) AS TagName
     ) t ON TRUE
 WHERE 
     Rank <= 10  

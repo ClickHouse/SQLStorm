@@ -6,7 +6,7 @@ WITH KeywordCounts AS (
     FROM 
         Posts P
     JOIN 
-        arrayJoin(splitByString('>', substring(P.Tags, 2, length(P.Tags)-2))) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('>', assumeNotNull(substring(P.Tags, 2, length(P.Tags)-2)))) AS T(TagName) ON TRUE
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 

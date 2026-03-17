@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 
 TagAnalytics AS (
     SELECT 
-        TRIM(both '>' FROM arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS Tag,
+        TRIM(both '>' FROM arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -45,7 +45,7 @@ HighViewPost AS (
     FROM 
         RankedPosts rp 
     JOIN 
-        TagAnalytics ta ON ta.Tag IN (SELECT arrayJoin(splitByString('><', SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2))))
+        TagAnalytics ta ON ta.Tag IN (SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2)))))
     WHERE 
         rp.PostRank = 1 
 )

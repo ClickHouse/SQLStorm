@@ -22,7 +22,7 @@ PostDetails AS (
         COALESCE(UPV.UpVoteCount, 0) AS UpVoteCount,
         COALESCE(DNV.DownVoteCount, 0) AS DownVoteCount,
         COUNT(C.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY any(P.OwnerUserId) ORDER BY any(P.CreationDate) DESC) AS PostRank
+        ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank
     FROM 
         Posts P
     LEFT JOIN (

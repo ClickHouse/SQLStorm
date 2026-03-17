@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Votes v ON p.Id = v.PostId
     LEFT JOIN
-        arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE
         p.PostTypeId = 1 
     GROUP BY
@@ -31,7 +31,7 @@ PopularTags AS (
     FROM
         Posts p
     JOIN
-        arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName IS NOT NULL
     GROUP BY
         t.TagName
     ORDER BY

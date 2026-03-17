@@ -58,7 +58,7 @@ LEFT JOIN
         SELECT 
             SUBSTRING(tag FROM 2 FOR LENGTH(tag) - 2) AS TagName
         FROM 
-            arrayJoin(splitByString('<tag>', f.Body)) AS tag
+            arrayJoin(splitByString('<tag>', assumeNotNull(f.Body))) AS tag
     ) AS t ON TRUE
 GROUP BY 
     f.PostId, f.Title, f.Body, f.CreationDate, f.ViewCount, f.Owner, f.CommentCount, f.AnswerCount

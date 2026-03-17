@@ -61,7 +61,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT 
         p.OwnerUserId, 
-        TRIM(arrayJoin(splitByString(',', p.Tags))) AS TagName
+        TRIM(arrayJoin(splitByString(',', assumeNotNull(p.Tags)))) AS TagName
      FROM 
         Posts p) AS t ON t.OwnerUserId = u.Id
 WHERE 

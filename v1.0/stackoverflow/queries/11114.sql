@@ -27,7 +27,7 @@ PostTags AS (
         Posts p
     JOIN 
         Tags t ON t.TagName IN (
-            SELECT arrayJoin(splitByString('><', p.Tags))
+            SELECT arrayJoin(splitByString('><', assumeNotNull(p.Tags)))
         )
     GROUP BY 
         p.Id

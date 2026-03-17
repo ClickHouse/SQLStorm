@@ -18,7 +18,7 @@ WITH UserPostAnalytics AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     LEFT JOIN 
-        arrayJoin(splitByString('><', p.Tags)) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
     WHERE 
         u.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY 

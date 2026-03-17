@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -44,7 +44,7 @@ TopUsers AS (
         UserReputation U
     JOIN 
         PopularTags T ON T.Tag IN (
-            SELECT arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) 
+            SELECT arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2)))) 
             FROM Posts P 
             WHERE P.PostTypeId = 1
         )
@@ -62,7 +62,7 @@ FROM
     TopUsers U
 JOIN 
     PopularTags T ON T.Tag IN (
-        SELECT arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) 
+        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2)))) 
         FROM Posts P 
         JOIN Users U2 ON P.OwnerUserId = U2.Id 
         WHERE U2.Id = U.UserId AND P.PostTypeId = 1

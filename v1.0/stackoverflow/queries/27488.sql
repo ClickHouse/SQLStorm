@@ -37,7 +37,7 @@ TagStats AS (
     FROM 
         Tags t
     LEFT JOIN 
-        Posts p ON t.Id = ANY (splitByString('><', p.Tags)::int[])
+        Posts p ON t.Id = ANY (splitByString('><', assumeNotNull(p.Tags))::int[])
     GROUP BY 
         t.TagName
 ),
@@ -68,7 +68,7 @@ JOIN
 JOIN 
     (SELECT 
          trp.PostId, 
-         arrayJoin(splitByString('><', trp.Tags)) AS TagName
+         arrayJoin(splitByString('><', assumeNotNull(trp.Tags))) AS TagName
      FROM 
          TopRankedPosts trp) AS pTags ON trp.PostId = pTags.PostId
 JOIN 

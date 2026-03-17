@@ -47,7 +47,7 @@ SELECT
     TU.*, 
     (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
      FROM Posts P 
-     JOIN arrayJoin(splitByString(',', P.Tags)) AS T(TagName) ON P.OwnerUserId = TU.UserId) AS PopularTags,
+     JOIN arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS T(TagName) ON P.OwnerUserId = TU.UserId) AS PopularTags,
     COALESCE(B.BadgeCount, 0) AS BadgeCount
 FROM 
     TopUsers TU

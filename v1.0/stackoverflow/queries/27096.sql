@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        Tags t ON t.TagName IN (SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))))
+        Tags t ON t.TagName IN (SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))))
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 

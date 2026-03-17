@@ -8,7 +8,7 @@ WITH UserReputation AS (
     JOIN UserReputation U ON P.OwnerUserId = U.Id
     WHERE P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' AND P.Score > 0
 ), PostTags AS (
-    SELECT P.Id AS PostId, arrayJoin(splitByString('><', P.Tags)) AS Tag
+    SELECT P.Id AS PostId, arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS Tag
     FROM Posts P
     WHERE P.PostTypeId = 1
 ), TagPopularity AS (

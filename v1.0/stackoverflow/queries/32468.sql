@@ -50,7 +50,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('<>', P.Tags)) AS TagName
+            arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS TagName
     ) T ON TRUE
 WHERE 
     U.Reputation > 100

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('> <', p.Tags)) AS tagArray ON TRUE
+        arrayJoin(splitByString('> <', assumeNotNull(p.Tags))) AS tagArray ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tagArray
     WHERE 

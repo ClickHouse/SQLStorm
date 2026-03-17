@@ -31,7 +31,7 @@ TextAnalytics AS (
         CommentCount,
         HasAcceptedAnswer,
         LENGTH(Body) - LENGTH(REPLACE(Body, ' ', '')) + 1 AS WordCount,
-        COALESCE(NULLIF(length(splitByString(' ', Tags), 1), 0), 1) AS TagCount
+        COALESCE(NULLIF(length(splitByString(' ', assumeNotNull(Tags)), 1), 0), 1) AS TagCount
     FROM RankedPosts
 ),
 Benchmark AS (

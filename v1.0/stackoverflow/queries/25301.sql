@@ -52,7 +52,7 @@ FROM
     TopPosts t
 LEFT JOIN
     (SELECT 
-        DISTINCT arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS TagName
+        DISTINCT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TagName
      FROM 
         Posts) tr ON tr.TagName ILIKE '%' || t.Tags || '%'
 GROUP BY

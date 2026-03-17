@@ -30,7 +30,7 @@ PostScoreStats AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', p.Tags)) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -55,7 +55,7 @@ LEFT JOIN
     PostScoreStats ps ON u.Id = ps.OwnerUserId
 LEFT JOIN 
     PopularTags pt ON pt.TagName IN (
-        SELECT arrayJoin(splitByString('><', p.Tags))
+        SELECT arrayJoin(splitByString('><', assumeNotNull(p.Tags)))
         FROM Posts p
         WHERE p.OwnerUserId = u.Id
         AND p.PostTypeId = 1

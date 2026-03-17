@@ -22,7 +22,7 @@ WITH RankedPosts AS (
         AND p.PostTypeId = 1 
     GROUP BY 
         p.Id, u.DisplayName
-, p.Title, p.Tags, p.Body, p.PostTypeId),
+),
 FilteredPosts AS (
     SELECT 
         rp.PostId,

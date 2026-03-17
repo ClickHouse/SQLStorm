@@ -44,7 +44,7 @@ PostsWithTags AS (
             SELECT 
                 t.TagName 
             FROM 
-                arrayJoin(splitByString('>', p.Tags)) AS tags_array(tag) 
+                arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tags_array(tag) 
             JOIN 
                 Tags t ON t.TagName = tags_array.tag
         ) t ON true

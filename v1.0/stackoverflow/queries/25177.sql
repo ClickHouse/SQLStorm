@@ -5,7 +5,7 @@ WITH TagFrequency AS (
         COUNT(*) AS tag_count
     FROM (
         SELECT 
-            TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS tag
+            TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2))))) AS tag
         FROM 
             Posts
         WHERE 
@@ -54,7 +54,7 @@ TagContributions AS (
         Posts p ON u.Id = p.OwnerUserId
     JOIN 
         (SELECT 
-            DISTINCT TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS tag
+            DISTINCT TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2))))) AS tag
         FROM 
             Posts 
         WHERE 

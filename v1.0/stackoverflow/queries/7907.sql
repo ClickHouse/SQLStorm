@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
     JOIN PostTypes pt ON p.PostTypeId = pt.Id
-    LEFT JOIN arrayJoin(splitByString('><', p.Tags)) AS tag_name ON TRUE
+    LEFT ARRAY JOIN splitByString('><', assumeNotNull(p.Tags)) AS tag_name
     LEFT JOIN Tags t ON tag_name = t.TagName
     WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount, p.CommentCount, p.FavoriteCount, u.DisplayName, pt.Name

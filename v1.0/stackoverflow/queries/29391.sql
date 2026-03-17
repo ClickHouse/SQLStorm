@@ -18,7 +18,7 @@ FrequentTags AS (
     FROM 
         Tags T
     JOIN 
-        Posts P ON T.Id = ANY(splitByString('><', P.Tags)::int[])
+        Posts P ON T.Id = ANY(splitByString('><', assumeNotNull(P.Tags))::int[])
     GROUP BY 
         T.TagName
     HAVING 

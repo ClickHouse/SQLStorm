@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM
         Posts
@@ -64,7 +64,7 @@ CombinedData AS (
     LEFT JOIN
         UserBadges pb ON u.Id = pb.UserId
     JOIN
-        PopularTags pt ON pt.TagName = ANY(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
+        PopularTags pt ON pt.TagName = ANY(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))))
     WHERE
         p.PostTypeId = 1 
 )

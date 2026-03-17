@@ -21,7 +21,7 @@ WITH RankedPosts AS (
 ),
 FilteredTags AS (
     SELECT 
-        arrayJoin(splitByString('><', TRIM(BOTH '<>' FROM Tags))) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(TRIM(BOTH '<>' FROM Tags)))) AS Tag
     FROM 
         RankedPosts
     GROUP BY 

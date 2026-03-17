@@ -83,7 +83,7 @@ LEFT JOIN
 LEFT JOIN
     Posts p ON pd.PostId = p.Id
 LEFT JOIN
-    arrayJoin(splitByString(', ', p.Tags)) AS t(TagName) ON TRUE 
+    arrayJoin(splitByString(', ', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE 
 GROUP BY
     pd.PostId, pd.Title, pd.Score, pd.AnswerCount, pd.CreationDate,
     pd.UserDisplayName, pd.UpVotes, pd.DownVotes, pd.TotalVotes, pd.BadgeStatus, ph.Comment

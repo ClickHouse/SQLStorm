@@ -24,7 +24,7 @@ FilteredPosts AS (
 ), 
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag
     FROM FilteredPosts
 ), 
 TagRanking AS (
@@ -47,5 +47,5 @@ SELECT
     tr.Tag,
     tr.TagCount
 FROM FilteredPosts fp
-JOIN TagRanking tr ON tr.Tag = ANY(splitByString('><', fp.Tags))
+JOIN TagRanking tr ON tr.Tag = ANY(splitByString('><', assumeNotNull(fp.Tags)))
 ORDER BY fp.AnswerCount DESC, tr.TagCount DESC;

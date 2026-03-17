@@ -8,7 +8,7 @@ WITH PostAggregate AS (
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownvoteCount,
         COUNT(DISTINCT B.Id) AS BadgeCount,
         PT.Name AS PostType,
-        COALESCE(MAX(PH.CreationDate), any(P.CreationDate)) AS LastModified
+        COALESCE(MAX(PH.CreationDate), P.CreationDate) AS LastModified
     FROM 
         Posts P
     LEFT JOIN 

@@ -30,12 +30,12 @@ UserEngagement AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', Tags)) AS TagName,
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     GROUP BY 
-        arrayJoin(splitByString('>', Tags))
+        arrayJoin(splitByString('>', assumeNotNull(Tags)))
     HAVING 
         COUNT(*) > 5
 ),
@@ -83,7 +83,7 @@ FROM
 LEFT JOIN 
     UserEngagement ue ON ue.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = rp.PostId)
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString('>', rp.Tags))
+    PopularTags pt ON pt.TagName = ANY(splitByString('>', assumeNotNull(rp.Tags)))
 LEFT JOIN 
     PostComments pc ON pc.PostId = rp.PostId
 WHERE 

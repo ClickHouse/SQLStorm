@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString('> <', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_ids 
+        arrayJoin(splitByString('> <', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag_ids 
         ON TRUE
     LEFT JOIN 
         Tags t ON t.Id = CAST(tag_ids AS INT)

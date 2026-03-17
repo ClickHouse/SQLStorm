@@ -32,7 +32,7 @@ ClosedPostStatistics AS (
     JOIN
         PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     JOIN
-        Tags t ON t.TagName IN (SELECT arrayJoin(splitByString(', ', p.Tags)))
+        Tags t ON t.TagName IN (SELECT arrayJoin(splitByString(', ', assumeNotNull(p.Tags))))
     WHERE
         pht.Name = 'Post Closed'
     GROUP BY
@@ -54,7 +54,7 @@ CombinedStatistics AS (
     FROM
         TagStatistics ts
     LEFT JOIN
-        ClosedPostStatistics cps ON ts.TagName IN (SELECT arrayJoin(splitByString(', ', cps.Tags)))
+        ClosedPostStatistics cps ON ts.TagName IN (SELECT arrayJoin(splitByString(', ', assumeNotNull(cps.Tags))))
 )
 SELECT
     TagName,

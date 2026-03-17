@@ -27,7 +27,7 @@ WITH RankedPosts AS (
 ),
 PostTagCounts AS (
     SELECT 
-        Unnest(splitByString(',', Tags)) AS Tag,
+        Unnest(splitByString(',', assumeNotNull(Tags))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts

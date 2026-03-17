@@ -1,14 +1,14 @@
 
 WITH TagPostCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2)))
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2))))
 ),
 HighReputationUsers AS (
     SELECT 
@@ -75,7 +75,7 @@ JOIN
 JOIN 
     HighReputationUsers U ON P.OwnerUserId = U.UserId
 JOIN 
-    PopularTags T ON T.Tag = ANY(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2)))
+    PopularTags T ON T.Tag = ANY(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags)-2))))
 WHERE 
     P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year' 
 ORDER BY 

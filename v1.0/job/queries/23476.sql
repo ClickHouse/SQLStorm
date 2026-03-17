@@ -58,7 +58,7 @@ SELECT
     END AS era,
     (SELECT AVG(word_length) 
      FROM (SELECT LENGTH(word) AS word_length 
-           FROM arrayJoin(splitByString(' ', cmd.title)) AS word) AS lengths) AS avg_word_length,
+           FROM arrayJoin(splitByString(' ', assumeNotNull(cmd.title))) AS word) AS lengths) AS avg_word_length,
     CASE 
         WHEN cmd.role_count IS NULL THEN 'No Roles Detected'
         ELSE 'Roles Detected'

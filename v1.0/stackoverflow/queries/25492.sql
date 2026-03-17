@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS Tag,
         COUNT(*) AS TotalCount,
         SUM(p.ViewCount) AS TotalViews
     FROM 
@@ -27,7 +27,7 @@ TagStatistics AS (
         p.PostTypeId = 1 
         AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))))
 ),
 TopTags AS (
     SELECT 
@@ -49,7 +49,7 @@ SELECT
 FROM 
     TopTags tp
 JOIN 
-    RankedPosts rp ON tp.Tag = ANY(splitByString('><', SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2)))
+    RankedPosts rp ON tp.Tag = ANY(splitByString('><', assumeNotNull(SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2))))
 WHERE 
     tp.Rank <= 10
     AND rp.TagRank = 1

@@ -81,7 +81,7 @@ SELECT
 FROM 
     PostStats ps
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString('<>', p.TAGS)) AS TagName, p.Id FROM Posts p) AS t ON ps.PostId = t.Id
+    (SELECT arrayJoin(splitByString('<>', assumeNotNull(p.TAGS))) AS TagName, p.Id FROM Posts p) AS t ON ps.PostId = t.Id
 GROUP BY 
     ps.PostId, ps.Title, ps.ViewCount, ps.Score, ps.Level, ps.DisplayName, ps.Reputation, ps.UpVotes, ps.DownVotes, ps.BadgeCount
 ORDER BY 

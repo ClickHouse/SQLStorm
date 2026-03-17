@@ -74,7 +74,7 @@ SELECT
         WHEN CloseReopenedCount > 0 THEN 'Reopened Post'
         ELSE 'Post Status Normal'
     END AS PostStatus,
-    ARRAY_TO_STRING(splitByString(',', Tags), ', ') AS FormattedTags
+    ARRAY_TO_STRING(splitByString(',', assumeNotNull(Tags)), ', ') AS FormattedTags
 FROM 
     QuestionsWithAnswerDetails
 LEFT JOIN (

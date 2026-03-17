@@ -30,7 +30,7 @@ BadgeCounts AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString(',', Tags))) AS TagName,
+        TRIM(arrayJoin(splitByString(',', assumeNotNull(Tags)))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -58,7 +58,7 @@ FROM
 LEFT JOIN 
     BadgeCounts bc ON us.UserId = bc.UserId
 JOIN 
-    PopularTags pt ON pt.TagName IN (SELECT TRIM(arrayJoin(splitByString(' ', us.DisplayName))))
+    PopularTags pt ON pt.TagName IN (SELECT TRIM(arrayJoin(splitByString(' ', assumeNotNull(us.DisplayName)))))
 ORDER BY 
     us.UpVotes DESC, us.PostCount DESC
 LIMIT 100;

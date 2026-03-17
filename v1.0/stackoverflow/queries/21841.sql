@@ -27,7 +27,7 @@ WITH UserBadges AS (
         v.UserId
 ), PopularPostTags AS (
     SELECT 
-        arrayJoin(splitByString(',', p.Tags)) AS Tag,
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS Tag,
         COUNT(p.Id) AS PostCount
     FROM 
         Posts p
@@ -77,7 +77,7 @@ WITH UserBadges AS (
         FROM 
             Posts p
         JOIN 
-            PopularPostTags pt ON pt.Tag = ANY(splitByString(',', p.Tags))
+            PopularPostTags pt ON pt.Tag = ANY(splitByString(',', assumeNotNull(p.Tags)))
         GROUP BY 
             p.OwnerUserId) pt ON u.Id = pt.OwnerUserId
 )

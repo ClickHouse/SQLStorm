@@ -2,7 +2,7 @@
 WITH PostTagCounts AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', trim(both '<>' FROM p.Tags))) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(trim(both '<>' FROM p.Tags)))) AS Tag
     FROM 
         Posts p
     WHERE 

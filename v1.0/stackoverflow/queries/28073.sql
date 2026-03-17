@@ -49,7 +49,7 @@ PostDetails AS (
     FROM 
         TopPosts tp
     LEFT JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(tp.Tags, 2, LENGTH(tp.Tags)-2))) AS tag_array ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(tp.Tags, 2, LENGTH(tp.Tags)-2)))) AS tag_array ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_array
     GROUP BY 

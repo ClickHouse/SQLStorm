@@ -17,7 +17,7 @@ WITH RankedPosts AS (
 ),
 TagSummary AS (
     SELECT
-        arrayJoin(splitByString('><', Trim(Both '<>' FROM Tags))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(Trim(Both '<>' FROM Tags)))) AS TagName,
         COUNT(*) AS PostCount
     FROM
         Posts
@@ -72,7 +72,7 @@ SELECT
 FROM
     RankedPosts rp
 LEFT JOIN
-    TagSummary ts ON ts.TagName = ANY (splitByString('><', Trim(Both '<>' FROM rp.Tags))) 
+    TagSummary ts ON ts.TagName = ANY (splitByString('><', assumeNotNull(Trim(Both '<>' FROM rp.Tags)))) 
 LEFT JOIN
     HighScorePosts hs ON hs.Id = rp.PostId
 LEFT JOIN

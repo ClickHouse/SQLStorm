@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT
-        arrayJoin(splitByString('> <', substring(Tags, 2, length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('> <', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
         COUNT(*) AS PostCount,
         SUM(p.Score) AS TotalScore
     FROM 
@@ -28,7 +28,7 @@ TagStatistics AS (
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 
-        arrayJoin(splitByString('> <', substring(Tags, 2, length(Tags) - 2)))
+        arrayJoin(splitByString('> <', assumeNotNull(substring(Tags, 2, length(Tags) - 2))))
 ),
 TopTags AS (
     SELECT 
@@ -50,7 +50,7 @@ SELECT
 FROM 
     TopTags tp
 JOIN 
-    RankedPosts rp ON tp.Tag = ANY(splitByString('> <', substring(rp.Tags, 2, length(rp.Tags) - 2)))
+    RankedPosts rp ON tp.Tag = ANY(splitByString('> <', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags) - 2))))
 WHERE 
     tp.ScoreRank <= 5 
     AND rp.Rank = 1 

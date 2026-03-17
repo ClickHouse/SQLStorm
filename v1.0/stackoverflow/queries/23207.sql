@@ -40,7 +40,7 @@ UserPostStats AS (
     JOIN Posts P ON U.Id = P.OwnerUserId
     LEFT JOIN (
         SELECT 
-            arrayJoin(splitByString(',', P.Tags)) AS TagName
+            arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS TagName
     ) AS T ON TRUE
     GROUP BY U.DisplayName
 )

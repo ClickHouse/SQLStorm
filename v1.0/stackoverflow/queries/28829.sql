@@ -1,7 +1,7 @@
 
 WITH TagFrequency AS (
     SELECT
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
         COUNT(*) AS Frequency
     FROM
         Posts
@@ -56,7 +56,7 @@ ActivitySummary AS (
     FROM
         RecentActivity R
     JOIN
-        TagFrequency TF ON TF.Tag IN (SELECT arrayJoin(splitByString('><', substring(R.Title, 2, length(R.Title) - 2))))
+        TagFrequency TF ON TF.Tag IN (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(R.Title, 2, length(R.Title) - 2)))))
 )
 SELECT
     TU.Rank,

@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         COUNT(c.Id) AS CommentCount,
-        RANK() OVER (PARTITION BY any(p.PostTypeId) ORDER BY p.ViewCount DESC) AS RankByViews
+        RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.ViewCount DESC) AS RankByViews
     FROM 
         Posts p
     LEFT JOIN 

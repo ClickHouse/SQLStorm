@@ -13,7 +13,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tagId ON tagId IS NOT NULL
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tagId ON tagId IS NOT NULL
     LEFT JOIN
         Tags t ON t.Id::varchar = tagId
     WHERE 

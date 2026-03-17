@@ -49,7 +49,7 @@ UserBadgeStats AS (
 PostTagStats AS (
     SELECT 
         rp.PostId,
-        arrayJoin(splitByString('>', rp.Tags)) AS TagName
+        arrayJoin(splitByString('>', assumeNotNull(rp.Tags))) AS TagName
     FROM 
         RankedPosts rp
 ),

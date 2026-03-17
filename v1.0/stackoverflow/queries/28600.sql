@@ -49,7 +49,7 @@ SELECT
 FROM 
     TopPosts tp
 LEFT JOIN 
-    arrayJoin(splitByString('><', tp.Tags)) AS tag ON TRUE
+    arrayJoin(splitByString('><', assumeNotNull(tp.Tags))) AS tag ON TRUE
 LEFT JOIN 
     Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
 GROUP BY 

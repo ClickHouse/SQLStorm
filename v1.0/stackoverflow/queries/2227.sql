@@ -61,7 +61,7 @@ LEFT JOIN
             COUNT(*) AS TagCount
         FROM 
             Posts p,
-            arrayJoin(splitByString('><', p.Tags)) AS t(TagName)
+            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS t(TagName)
         GROUP BY 
             p.OwnerUserId, t.TagName
         ORDER BY 

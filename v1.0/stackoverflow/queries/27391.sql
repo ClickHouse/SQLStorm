@@ -35,7 +35,7 @@ TagStatistics AS (
     FROM 
         PostDetails pd
     LEFT JOIN 
-        arrayJoin(splitByString(',', pd.Tags)) AS tag ON true
+        arrayJoin(splitByString(',', assumeNotNull(pd.Tags))) AS tag ON true
     JOIN 
         Tags t ON TRIM(tag) = t.TagName
     GROUP BY 

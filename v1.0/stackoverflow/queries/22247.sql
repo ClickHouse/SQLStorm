@@ -41,8 +41,8 @@ PostStatistics AS (
         Posts P
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
-    LEFT JOIN 
-        (SELECT arrayJoin(splitByString(','::text, P.Tags)) AS TagName) Tags ON TRUE
+
+        LEFT ARRAY JOIN splitByString(','::text, assumeNotNull(P.Tags)) AS TagName
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 

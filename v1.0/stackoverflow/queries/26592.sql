@@ -26,7 +26,7 @@ WITH RecentPosts AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2))) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2)))) AS Tag
     FROM 
         RecentPosts
 ),

@@ -12,7 +12,7 @@ WITH RelevantPosts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag_name ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag_name ON TRUE
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 

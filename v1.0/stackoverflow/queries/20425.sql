@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     LEFT JOIN (
         SELECT 
             Id,
-            (SELECT COUNT(*) FROM arrayJoin(splitByString('><', Tags)) AS tag_table) AS TagCount
+            (SELECT COUNT(*) FROM arrayJoin(splitByString('><', assumeNotNull(Tags))) AS tag_table) AS TagCount
         FROM Posts 
         WHERE Tags IS NOT NULL
     ) TH ON p.Id = TH.Id

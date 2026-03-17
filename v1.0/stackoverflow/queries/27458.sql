@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
         (SELECT 
-             arrayJoin(splitByString('>', Tags)) AS TagName, 
+             arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TagName, 
              Id 
          FROM 
              Posts) AS t ON p.Id = t.Id

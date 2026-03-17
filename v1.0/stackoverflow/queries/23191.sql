@@ -67,7 +67,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('><', p.Tags)) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
     ) t ON TRUE
 GROUP BY 
     ps.PostId, ps.Title, ps.CreationDate, ps.ViewCount, ps.Score, ps.VoteCount, ps.UpVotes, ps.DownVotes, ps.Status

@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags FROM 2 FOR length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags FROM 2 FOR length(Tags) - 2)))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts

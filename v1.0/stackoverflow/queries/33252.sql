@@ -50,7 +50,7 @@ SELECT
     FU.UserRank,
     (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
      FROM Posts P 
-     JOIN arrayJoin(splitByString(',', P.Tags)) AS T(TagName) ON T.TagName = P.Tags 
+     JOIN arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS T(TagName) ON T.TagName = P.Tags 
      WHERE P.OwnerUserId = FU.UserId) AS TagsUsed,
     (SELECT COUNT(*) 
      FROM Comments C 

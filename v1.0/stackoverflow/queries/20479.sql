@@ -18,7 +18,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName) AS tag ON true
+        (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName) AS tag ON true
     LEFT JOIN 
         Tags t ON t.TagName = tag.TagName
     WHERE 

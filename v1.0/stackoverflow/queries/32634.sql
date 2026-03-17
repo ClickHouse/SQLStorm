@@ -28,7 +28,7 @@ UserPostStats AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', Tags)) AS Tag,
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS Tag,
         COUNT(p.Id) AS TagCount
     FROM 
         Posts p
@@ -55,7 +55,7 @@ JOIN
 JOIN 
     Posts p ON lp.PostId = p.Id
 LEFT JOIN 
-    PopularTags pt ON pt.Tag = ANY(splitByString('>', p.Tags))
+    PopularTags pt ON pt.Tag = ANY(splitByString('>', assumeNotNull(p.Tags)))
 WHERE 
     ups.NumberOfPosts > 0
 GROUP BY 

@@ -1,14 +1,14 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('> <', substring(Tags, 2, length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('> <', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1  
     GROUP BY 
-        arrayJoin(splitByString('> <', substring(Tags, 2, length(Tags) - 2)))
+        arrayJoin(splitByString('> <', assumeNotNull(substring(Tags, 2, length(Tags) - 2))))
 ),
 MostActiveUsers AS (
     SELECT 
@@ -38,7 +38,7 @@ TagDetails AS (
         TagCounts tc
     JOIN 
         (SELECT 
-            DISTINCT arrayJoin(splitByString('> <', substring(Tags, 2, length(Tags) - 2))) AS Tag,
+            DISTINCT arrayJoin(splitByString('> <', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
             OwnerUserId
          FROM 
             Posts

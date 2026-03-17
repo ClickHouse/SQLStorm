@@ -40,7 +40,7 @@ PopularTags AS (
         COUNT(*) AS TagCount
     FROM 
         Posts,
-        arrayJoin(splitByString(',', Tags)) AS value
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS value
     WHERE 
         Tags IS NOT NULL
     GROUP BY 

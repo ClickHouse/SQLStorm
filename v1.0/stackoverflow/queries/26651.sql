@@ -23,7 +23,7 @@ StringProcessedPosts AS (
         rp.OwnerDisplayName,
         rp.CreationDate,
         rp.ViewCount,
-        length(splitByString('>', rp.Tags), 1) AS TagCount,
+        length(splitByString('>', assumeNotNull(rp.Tags)), 1) AS TagCount,
         REPLACE(REPLACE(rp.Body, '<p>', ''), '</p>', '') AS ProcessedBody 
     FROM 
         RankedPosts rp

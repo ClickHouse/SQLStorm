@@ -36,7 +36,7 @@ PostMetadata AS (
     JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN (
         SELECT 
-            arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS TagName
     ) AS tag ON TRUE
     GROUP BY p.Id, u.DisplayName
 ),

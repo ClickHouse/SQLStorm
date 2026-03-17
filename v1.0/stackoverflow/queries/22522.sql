@@ -18,7 +18,7 @@ PostStats AS (
     FROM Posts p
     LEFT JOIN Votes vote ON p.Id = vote.PostId
     LEFT JOIN (
-        SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS TagName
+        SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS TagName
     ) AS t ON TRUE
     GROUP BY p.Id, p.PostTypeId, p.AnswerCount, p.ViewCount
 ),

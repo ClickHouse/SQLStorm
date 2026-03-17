@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         p.CreationDate,
         pt.Name AS PostType,
-        length(splitByString('><', p.Tags), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(p.Tags)), 1) AS TagCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank
     FROM
         Posts p

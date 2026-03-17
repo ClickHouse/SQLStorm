@@ -36,7 +36,7 @@ FilteredPosts AS (
         
         EXISTS (
             SELECT 1
-            FROM arrayJoin(splitByString('>', rp.Tags)) AS tag
+            FROM arrayJoin(splitByString('>', assumeNotNull(rp.Tags))) AS tag
             WHERE tag IN ('sql', 'postgresql', 'database')
         )
 )

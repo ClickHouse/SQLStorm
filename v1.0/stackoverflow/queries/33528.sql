@@ -36,7 +36,7 @@ PostTagCTE AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS t(TagName) ON TRUE
     GROUP BY 
         p.Id
 ),

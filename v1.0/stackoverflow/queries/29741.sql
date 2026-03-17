@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', Tags))) AS TagName
+        TRIM(arrayJoin(splitByString('><', assumeNotNull(Tags)))) AS TagName
     FROM 
         Posts 
     WHERE 
@@ -53,7 +53,7 @@ SELECT
 FROM 
     RankedPosts RP
 JOIN 
-    TagPopularity TP ON TP.TagName = ANY(splitByString('><', RP.Tags)) 
+    TagPopularity TP ON TP.TagName = ANY(splitByString('><', assumeNotNull(RP.Tags))) 
 WHERE 
     RP.Rank <= 3 
 ORDER BY 

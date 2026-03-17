@@ -11,7 +11,7 @@ WITH RecentPosts AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS t(TagName) ON TRUE
     WHERE 
         p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY 

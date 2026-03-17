@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         p.AnswerCount,
         p.CommentCount,
-        length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         u.Reputation AS OwnerReputation,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankByScore

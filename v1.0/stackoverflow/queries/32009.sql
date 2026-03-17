@@ -67,7 +67,7 @@ FROM
     PostDetails pd
 LEFT JOIN 
     (SELECT 
-                  arrayJoin(splitByString('>', p.Tags)) AS TagName 
+                  arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName 
               FROM 
                   Posts p 
               WHERE 

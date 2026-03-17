@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY Tag ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p,
-        arrayJoin(splitByString('>', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag
+        arrayJoin(splitByString('>', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS Tag
     WHERE 
         p.PostTypeId = 1 
 ), 
@@ -40,7 +40,7 @@ PostStatistics AS (
     FROM 
         TopRankedPosts tp
     CROSS JOIN 
-        arrayJoin(splitByString('>', tp.Tags)) AS Tag
+        arrayJoin(splitByString('>', assumeNotNull(tp.Tags))) AS Tag
     GROUP BY 
         Tag
 )

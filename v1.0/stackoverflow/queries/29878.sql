@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('> <', trim(both '<>' FROM p.Tags))) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString('> <', assumeNotNull(trim(both '<>' FROM p.Tags)))) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 

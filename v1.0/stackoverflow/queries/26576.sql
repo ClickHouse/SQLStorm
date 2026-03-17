@@ -1,6 +1,6 @@
 WITH TagUsage AS (
     SELECT 
-        arrayJoin(splitByString('>', Tags)) AS Tag,
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS Tag,
         p.Id AS PostId,
         p.Title,
         p.ViewCount,

@@ -63,7 +63,7 @@ LEFT JOIN (
 JOIN 
     PopularTags P ON P.TagName IN (
         SELECT 
-            arrayJoin(splitByString(',', Tags)) 
+            arrayJoin(splitByString(',', assumeNotNull(Tags))) 
         FROM 
             Posts 
         WHERE 

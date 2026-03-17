@@ -48,7 +48,7 @@ SELECT
 FROM 
     Tags t
 JOIN 
-    TagMetrics tm ON t.TagName = ANY(splitByString(',', tm.Tags))
+    TagMetrics tm ON t.TagName = ANY(splitByString(',', assumeNotNull(tm.Tags)))
 ORDER BY 
     tm.TotalUpVotes DESC, 
     tm.AvgAnswers DESC;

@@ -9,7 +9,7 @@ WITH UserTagCounts AS (
     JOIN 
         Posts P ON U.Id = P.OwnerUserId
     JOIN 
-        (SELECT arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2))) AS TagName) T
+        (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags)-2)))) AS TagName) T
         ON TRUE
     WHERE 
         P.PostTypeId = 1 

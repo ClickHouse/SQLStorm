@@ -5,7 +5,7 @@ WITH TaggedPosts AS (
         p.Body,
         p.CreationDate,
         p.Tags,
-        length(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         COALESCE(pc.CommentCount, 0) AS CommentCount,
         COALESCE(pa.AnswerCount, 0) AS AnswerCount,

@@ -1,7 +1,7 @@
 
 WITH TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
         COUNT(DISTINCT Id) AS PostCount,
         COUNT(DISTINCT OwnerUserId) AS UserCount
     FROM 
@@ -9,7 +9,7 @@ WITH TagStats AS (
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2))))
 ), ClosedQuestions AS (
     SELECT 
         Posts.Id AS PostId,

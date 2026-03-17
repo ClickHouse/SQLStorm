@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -49,7 +49,7 @@ PostStatistics AS (
     LEFT JOIN 
         Comments c ON rp.PostId = c.PostId
     JOIN 
-        TopTags tt ON tt.TagName = ANY(splitByString('><', SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2)))
+        TopTags tt ON tt.TagName = ANY(splitByString('><', assumeNotNull(SUBSTRING(rp.Tags FROM 2 FOR LENGTH(rp.Tags) - 2))))
     GROUP BY 
         rp.PostId, rp.Title, rp.Body, rp.CreationDate, rp.ViewCount, rp.Score, rp.OwnerDisplayName, tt.TagName, tt.TagCount
 )

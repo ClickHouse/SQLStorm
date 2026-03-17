@@ -2,7 +2,7 @@
 WITH ProcessedTags AS (
     SELECT 
         P.Id AS PostId,
-        arrayJoin(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2)))) AS TagName,
         P.Title,
         P.Body,
         P.CreationDate

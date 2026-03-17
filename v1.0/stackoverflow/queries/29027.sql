@@ -36,7 +36,7 @@ TagStatistics AS (
     FROM 
         FilteredPosts fp
     JOIN 
-        (SELECT DISTINCT arrayJoin(splitByString('>', fp.Tags)) AS TagName FROM FilteredPosts fp) t ON t.TagName = ANY(splitByString('>', fp.Tags))
+        (SELECT DISTINCT arrayJoin(splitByString('>', assumeNotNull(fp.Tags))) AS TagName FROM FilteredPosts fp) t ON t.TagName = ANY(splitByString('>', assumeNotNull(fp.Tags)))
     GROUP BY 
         t.TagName
 )

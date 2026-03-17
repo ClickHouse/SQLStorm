@@ -64,7 +64,7 @@ SELECT
        AND v.VoteTypeId = 3) AS TotalDownVotes
 FROM 
     FilteredPosts fp
-    LEFT JOIN arrayJoin(splitByString(',', fp.Tags)) AS tag_name ON true
+    LEFT ARRAY JOIN splitByString(',', assumeNotNull(fp.Tags)) AS tag_name
     LEFT JOIN Tags t ON t.TagName = tag_name
 GROUP BY 
     fp.PostId, fp.Title, fp.OwnerDisplayName, fp.CreationDate, fp.Score, fp.ViewCount, fp.Tags

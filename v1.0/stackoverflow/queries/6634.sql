@@ -31,7 +31,7 @@ TaggedPosts AS (
     FROM 
         RankedPosts rp
     JOIN 
-        (SELECT arrayJoin(splitByString(' ', rp.Title)) AS TagName) t ON t.TagName IS NOT NULL
+        (SELECT arrayJoin(splitByString(' ', assumeNotNull(rp.Title))) AS TagName) t ON t.TagName IS NOT NULL
     GROUP BY 
         rp.Id, rp.Title, rp.OwnerDisplayName, rp.CreationDate, rp.Score, rp.ViewCount, rp.AnswerCount, rp.RankScore
 )

@@ -25,7 +25,7 @@ WITH RankedPosts AS (
 ),
 TagStats AS (
     SELECT 
-        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', p.Tags))) AS Tag,
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', assumeNotNull(p.Tags)))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts p
@@ -57,7 +57,7 @@ TopPostsByTag AS (
     JOIN 
         Posts p ON rp.PostID = p.Id
     JOIN 
-        arrayJoin(splitByString('><', p.Tags)) AS rt(Tag) ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS rt(Tag) ON TRUE
     JOIN 
         TopTags tt ON rt.Tag = tt.Tag
     WHERE 

@@ -56,7 +56,7 @@ FROM
     LEFT JOIN Posts p ON tp.PostId = p.Id
     LEFT JOIN (
         SELECT 
-            arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName
     ) t ON true
 GROUP BY 
     tp.Title, tp.OwnerName, tp.CreationDate, tp.AnswerCount, tp.CommentCount, tp.VoteCount, tp.ViewCount

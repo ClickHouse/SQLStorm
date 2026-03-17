@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag
     FROM 
         RankedPosts
     WHERE 

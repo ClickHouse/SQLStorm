@@ -36,7 +36,7 @@ FROM
 LEFT JOIN 
     (SELECT 
          p.Id,
-         arrayJoin(splitByString('>', p.Tags)) AS TagName
+         arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
      FROM 
          Posts p) t ON rp.PostId = t.Id
 WHERE 

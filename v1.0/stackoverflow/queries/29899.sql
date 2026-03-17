@@ -55,7 +55,7 @@ SELECT
 FROM 
     FilteredPosts p
 LEFT JOIN 
-    Tags t ON t.TagName IN (SELECT arrayJoin(splitByString(', ', p.Tags))) 
+    Tags t ON t.TagName IN (SELECT arrayJoin(splitByString(', ', assumeNotNull(p.Tags)))) 
 GROUP BY 
     p.PostId, p.Title, p.OwnerDisplayName, p.CreationDate, p.AnswerCount, p.CommentCount, p.VoteCount
 ORDER BY 

@@ -46,7 +46,7 @@ StringProcessing AS (
     LEFT JOIN 
         (
             SELECT 
-                arrayJoin(splitByString('<>', rp.Tags)) AS TagName
+                arrayJoin(splitByString('<>', assumeNotNull(rp.Tags))) AS TagName
         ) AS tag ON TRUE
     GROUP BY 
         rp.PostId, rp.Title, rp.Body, rp.OwnerDisplayName, rp.CreationDate, rp.CommentCount, rp.VoteCount

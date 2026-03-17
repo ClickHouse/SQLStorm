@@ -38,7 +38,7 @@ TopRanked AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS Tag,
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS Tag,
         COUNT(*) AS PostCount,
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositiveVotes
     FROM 

@@ -38,7 +38,7 @@ TaggedPosts AS (
     FROM 
         Posts p 
     JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON TRUE
     JOIN 
         Tags t ON TRIM(tag) = t.TagName
     GROUP BY 

@@ -46,7 +46,7 @@ LEFT JOIN
      FROM 
          Posts pt
      JOIN 
-         arrayJoin(splitByString(',', pt.Tags)) AS tag ON TRUE
+         arrayJoin(splitByString(',', assumeNotNull(pt.Tags))) AS tag ON TRUE
      JOIN 
          Tags t ON t.TagName = tag
      GROUP BY 

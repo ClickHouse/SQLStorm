@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag
     FROM 
         RankedPosts
     WHERE 
@@ -33,7 +33,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TopTags rt ON rt.Tag = ANY(splitByString('><', rp.Tags))
+    TopTags rt ON rt.Tag = ANY(splitByString('><', assumeNotNull(rp.Tags)))
 GROUP BY 
     rt.Tag
 ORDER BY 

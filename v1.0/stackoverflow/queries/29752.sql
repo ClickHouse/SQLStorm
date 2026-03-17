@@ -4,7 +4,7 @@ WITH PostStatistics AS (
         P.Id AS PostId,
         P.Title,
         P.Body,
-        length(splitByString('>', P.Tags), 1) AS TagCount,
+        length(splitByString('>', assumeNotNull(P.Tags)), 1) AS TagCount,
         COALESCE(AC.AnswerCount, 0) AS AnswerCount,
         COALESCE(SUM(V.BountyAmount), 0) AS TotalBounties
     FROM 

@@ -57,7 +57,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('><', SUBSTR(fp.Tags, 2, LENGTH(fp.Tags)-2))) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(SUBSTR(fp.Tags, 2, LENGTH(fp.Tags)-2)))) AS TagName
     ) t ON TRUE
 GROUP BY 
     fp.OwnerDisplayName, fp.Title, fp.CommentCount, fp.UpVoteCount, fp.DownVoteCount

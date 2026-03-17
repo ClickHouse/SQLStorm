@@ -19,7 +19,7 @@ PostTags AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        length(splitByString('<>', p.Tags), 1) AS TagCount
+        length(splitByString('<>', assumeNotNull(p.Tags)), 1) AS TagCount
     FROM 
         Posts p
 )

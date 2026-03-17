@@ -36,7 +36,7 @@ WITH RankedPosts AS (
         rp.AnswerCount,
         rp.UpVoteCount,
         rp.DownVoteCount,
-        COALESCE(length(splitByString('>', rp.Tags), 1), 0) AS TagCount
+        COALESCE(length(splitByString('>', assumeNotNull(rp.Tags)), 1), 0) AS TagCount
     FROM 
         RankedPosts rp
     WHERE 

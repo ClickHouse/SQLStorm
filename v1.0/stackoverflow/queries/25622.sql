@@ -2,7 +2,7 @@
 WITH PostTagCounts AS (
     SELECT
         p.Id AS PostId,
-        length(splitByString('>', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)), 1) AS TagCount,
+        length(splitByString('>', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))), 1) AS TagCount,
         COUNT(co.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes

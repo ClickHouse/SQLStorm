@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate, 
         u.DisplayName AS OwnerDisplayName, 
         COUNT(c.Id) AS CommentCount, 
-        ROW_NUMBER() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY p.CreationDate DESC) AS OwnerPostRank
+        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS OwnerPostRank
     FROM 
         Posts p
     JOIN 

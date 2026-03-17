@@ -4,7 +4,7 @@ WITH RankedPosts AS (
         p.Title,
         p.Score,
         p.ViewCount,
-        length(splitByString('>', p.Tags), 1) AS TagCount,
+        length(splitByString('>', assumeNotNull(p.Tags)), 1) AS TagCount,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.UserId) FILTER (WHERE v.VoteTypeId = 2) AS UpVoteCount,
         COUNT(DISTINCT v.UserId) FILTER (WHERE v.VoteTypeId = 3) AS DownVoteCount,

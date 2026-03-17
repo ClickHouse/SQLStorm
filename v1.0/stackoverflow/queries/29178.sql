@@ -34,7 +34,7 @@ FilteredPosts AS (
 PostTags AS (
     SELECT 
         fp.PostId,
-        arrayJoin(splitByString('><', substring(fp.Tags, 2, length(fp.Tags)-2))) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(substring(fp.Tags, 2, length(fp.Tags)-2)))) AS Tag
     FROM 
         FilteredPosts fp
 ),

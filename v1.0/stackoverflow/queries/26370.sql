@@ -44,7 +44,7 @@ QuestionTags AS (
     FROM 
         FilteredPosts f
     JOIN 
-        arrayJoin(splitByString(',', f.Tags)) AS tagArray ON tagArray IS NOT NULL
+        arrayJoin(splitByString(',', assumeNotNull(f.Tags))) AS tagArray ON tagArray IS NOT NULL
     JOIN 
         Tags t ON t.TagName = TRIM(tagArray)
     GROUP BY 

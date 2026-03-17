@@ -25,7 +25,7 @@ PostInfo AS (
         ROW_NUMBER() OVER(PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    LEFT JOIN arrayJoin(splitByString('><', p.Tags)) AS tag ON TRUE
+    LEFT ARRAY JOIN splitByString('><', assumeNotNull(p.Tags)) AS tag
     LEFT JOIN Tags t ON tag = t.TagName
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
 ),

@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        TRIM(REGEXP_REPLACE(arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))), '<[^>]+', '', 'g')) AS TagName, 
+        TRIM(REGEXP_REPLACE(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))), '<[^>]+', '', 'g')) AS TagName, 
         COUNT(*) AS PostCount
     FROM 
         Posts

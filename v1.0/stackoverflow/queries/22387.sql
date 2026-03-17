@@ -72,7 +72,7 @@ SELECT
         WHEN FP.Reputation BETWEEN 500 AND 1000 THEN 'Medium Reputation'
         ELSE 'Low Reputation'
     END AS ReputationCategory,
-    length(splitByString(', ', FP.HistoryTypes), 1) AS HistoryTypeCount
+    length(splitByString(', ', assumeNotNull(FP.HistoryTypes)), 1) AS HistoryTypeCount
 FROM 
     FilteredPosts FP
 WHERE 

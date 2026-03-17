@@ -52,7 +52,7 @@ PostDetails AS (
     LEFT JOIN 
         Votes v ON tp.PostId = v.PostId
     LEFT JOIN 
-        Tags t ON t.TagName = ANY(splitByString('><', tp.Tags)) 
+        Tags t ON t.TagName = ANY(splitByString('><', assumeNotNull(tp.Tags))) 
     GROUP BY 
         tp.PostId, tp.Title, tp.Body, tp.CreationDate, tp.Author, tp.Score, tp.ViewCount, tp.Tags
 )

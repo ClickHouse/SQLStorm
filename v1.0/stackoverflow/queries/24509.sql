@@ -56,7 +56,7 @@ PostDetails AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON TRUE
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
     GROUP BY 
         tp.PostId, tp.Title, tp.CreationDate, tp.Score, tp.ViewCount, tp.UpVotes, tp.DownVotes, u.DisplayName
 ),

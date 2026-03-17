@@ -50,7 +50,7 @@ SELECT
 FROM 
     detailed_movies dm
 JOIN 
-    aka_name ak ON ak.name IN (SELECT arrayJoin(splitByString(', ', dm.keywords)))
+    aka_name ak ON ak.name IN (SELECT arrayJoin(splitByString(', ', assumeNotNull(dm.keywords))))
 GROUP BY 
     dm.movie_title, dm.production_year, dm.keywords
 ORDER BY 

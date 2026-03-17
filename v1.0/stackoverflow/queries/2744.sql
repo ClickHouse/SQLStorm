@@ -54,7 +54,7 @@ SELECT
      FROM 
         Tags t 
      JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS tag ON t.TagName = tag) AS TagsUsed
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON t.TagName = tag) AS TagsUsed
 FROM 
     PostWithComments pwc
 JOIN 

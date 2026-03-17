@@ -40,7 +40,7 @@ PostTagCount AS (
     FROM 
         FilteredPosts fp
     CROSS JOIN 
-        arrayJoin(splitByString('><', substring(fp.Tags, 2, length(fp.Tags)-2))) AS tag
+        arrayJoin(splitByString('><', assumeNotNull(substring(fp.Tags, 2, length(fp.Tags)-2)))) AS tag
     GROUP BY 
         fp.PostId
 )

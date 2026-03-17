@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.Title, 
         p.CreationDate, 
         p.Score, 
-        length(splitByString('>', p.Tags), 1) AS TagCount,
+        length(splitByString('>', assumeNotNull(p.Tags)), 1) AS TagCount,
         COALESCE((SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id), 0) AS CommentCount,
         COALESCE((SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2), 0) AS Upvotes,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.CreationDate DESC) AS RecentPostRank,

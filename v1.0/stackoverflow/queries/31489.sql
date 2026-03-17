@@ -78,7 +78,7 @@ LEFT JOIN
 LEFT JOIN 
     PopularPosts PP ON PP.PostId IN (SELECT V.PostId FROM Votes V WHERE V.UserId = U.Id)
 LEFT JOIN 
-    TopTags TT ON TT.TagName IN (SELECT arrayJoin(splitByString(' ', PP.Title)))
+    TopTags TT ON TT.TagName IN (SELECT arrayJoin(splitByString(' ', assumeNotNull(PP.Title))))
 WHERE 
     U.Reputation > 100
 ORDER BY 

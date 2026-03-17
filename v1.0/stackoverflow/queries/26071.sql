@@ -23,7 +23,7 @@ WITH RankedPosts AS (
         p.Id, p.Title, p.Body, p.Tags, u.DisplayName
 ), PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS TagName,
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS Count
     FROM 
         RankedPosts
@@ -45,7 +45,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString(',', rp.Tags))
+    PopularTags pt ON pt.TagName = ANY(splitByString(',', assumeNotNull(rp.Tags)))
 WHERE 
     rp.Score > 0 
 ORDER BY 

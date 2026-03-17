@@ -22,7 +22,7 @@ LEFT JOIN
 LEFT JOIN
     PostTypes pt ON p.PostTypeId = pt.Id
 LEFT JOIN
-    arrayJoin(splitByString('>', p.Tags)) AS tagId ON tagId IS NOT NULL
+    arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tagId ON tagId IS NOT NULL
 LEFT JOIN
     Tags t ON t.TagName = tagId
 GROUP BY

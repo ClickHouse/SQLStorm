@@ -28,7 +28,7 @@ UserReputation AS (
         Votes v ON u.Id = v.UserId
     GROUP BY 
         u.Id
-, u.Reputation),
+),
 CloseReasonCount AS (
     SELECT 
         ph.PostId, 

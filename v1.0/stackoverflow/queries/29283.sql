@@ -48,7 +48,7 @@ SELECT
     P.PostId,
     P.Title,
     LENGTH(P.Body) AS BodyLength,
-    length(splitByString('>', P.Tags), 1) AS TagCount,
+    length(splitByString('>', assumeNotNull(P.Tags)), 1) AS TagCount,
     P.CommentCount,
     P.UpVotes,
     P.DownVotes,

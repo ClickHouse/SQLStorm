@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', p.Tags)) AS TagName
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
     FROM 
         Posts p
     WHERE 
@@ -41,7 +41,7 @@ PostStatistics AS (
     FROM 
         RankedPosts rp
     LEFT JOIN 
-        PopularTags pt ON pt.TagName = ANY(splitByString('>', rp.Tags))
+        PopularTags pt ON pt.TagName = ANY(splitByString('>', assumeNotNull(rp.Tags)))
     WHERE 
         rp.PostRank <= 5
     GROUP BY 

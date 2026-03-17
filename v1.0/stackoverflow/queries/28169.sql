@@ -25,7 +25,7 @@ KeywordCounts AS (
         COUNT(*) AS KeywordCount
     FROM 
         RankedPosts rp,
-        arrayJoin(splitByString(' ', lower(rp.Body))) AS rg(value) 
+        arrayJoin(splitByString(' ', assumeNotNull(lower(rp.Body)))) AS rg(value) 
     WHERE 
         rg.value NOT IN ('the', 'is', 'at', 'which', 'on', 'for', 'by', 'to', 'and', 'a', 'an') 
     GROUP BY 

@@ -49,5 +49,5 @@ SELECT
     p.Score AS RecentPostScore
 FROM TagStatistics ts
 JOIN TopUsers u ON ts.PostCount > 1
-JOIN RecentPosts p ON ts.TagName IN (SELECT arrayJoin(splitByString(', ', p.Tags)))
+JOIN RecentPosts p ON ts.TagName IN (SELECT arrayJoin(splitByString(', ', assumeNotNull(p.Tags))))
 ORDER BY ts.TotalViews DESC, u.Reputation DESC, p.CreationDate DESC;

@@ -38,7 +38,7 @@ TagStats AS (
         COUNT(*) AS TagCount
     FROM (
         SELECT 
-            arrayJoin(splitByString('> <', Trim(both '<>' FROM Tags))) AS Tag
+            arrayJoin(splitByString('> <', assumeNotNull(Trim(both '<>' FROM Tags)))) AS Tag
         FROM 
             FilteredRankedPosts
     ) AS TagArray

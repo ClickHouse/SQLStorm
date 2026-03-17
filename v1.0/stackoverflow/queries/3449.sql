@@ -12,7 +12,7 @@ TopPosts AS (
     FROM Posts P
     LEFT JOIN PostLinks PL ON P.Id = PL.PostId
     LEFT JOIN Comments C ON P.Id = C.PostId
-    LEFT JOIN (SELECT arrayJoin(splitByString(',', P.Tags)) AS TagName) T ON TRUE
+    ARRAY JOIN splitByString(',', assumeNotNull(P.Tags)) AS TagName
     WHERE P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY P.Id, P.Title, P.ViewCount, P.Score, PL.RelatedPostId
     HAVING COUNT(DISTINCT T.TagName) > 2

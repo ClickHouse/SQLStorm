@@ -29,7 +29,7 @@ WITH RankedPosts AS (
 FilteredPosts AS (
     SELECT 
         rp.*,
-        ARRAY_TO_STRING(splitByString('<>', rp.Tags), ', ') AS FormattedTags
+        ARRAY_TO_STRING(splitByString('<>', assumeNotNull(rp.Tags)), ', ') AS FormattedTags
     FROM 
         RankedPosts rp
     WHERE 

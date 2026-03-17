@@ -37,7 +37,7 @@ UserActivity AS (
 
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts

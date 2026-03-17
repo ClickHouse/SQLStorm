@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts
     WHERE PostTypeId = 1 
@@ -35,7 +35,7 @@ UserTopTags AS (
         TT.PostCount
     FROM UserStats U
     JOIN Posts P ON U.UserId = P.OwnerUserId
-    JOIN TagCounts TC ON TC.TagName = ANY(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2)))
+    JOIN TagCounts TC ON TC.TagName = ANY(splitByString('><', assumeNotNull(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2))))
     JOIN TopTags TT ON TC.TagName = TT.TagName
     WHERE U.TotalPosts > 0
 ),

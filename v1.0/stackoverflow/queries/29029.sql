@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS t(TagName) ON t.TagName LIKE CONCAT('%', t.TagName, '%')
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)))) AS t(TagName) ON t.TagName LIKE CONCAT('%', t.TagName, '%')
     WHERE 
         p.PostTypeId IN (1, 2) 
     GROUP BY 

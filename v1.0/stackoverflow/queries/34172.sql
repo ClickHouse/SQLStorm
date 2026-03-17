@@ -13,7 +13,7 @@ WITH RecentPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', p.Tags)) AS tag ON true
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag ON true
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 

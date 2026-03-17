@@ -5,7 +5,7 @@ WITH TagCount AS (
         COUNT(*) AS PostCount
     FROM (
         SELECT 
-            arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS tag
+            arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS tag
         FROM 
             Posts
         WHERE 
@@ -45,7 +45,7 @@ TagUsage AS (
         Posts.Id AS PostId,
         Posts.Title,
         Posts.CreationDate,
-        arrayJoin(splitByString('><', SUBSTRING(Posts.Tags FROM 2 FOR LENGTH(Posts.Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Posts.Tags FROM 2 FOR LENGTH(Posts.Tags) - 2)))) AS TagName,
         Users.DisplayName AS Owner
     FROM 
         Posts

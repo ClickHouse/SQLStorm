@@ -40,7 +40,7 @@ TagStats AS (
         COUNT(*) AS TagCount
     FROM (
         SELECT 
-            arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName
         FROM 
             Posts
         WHERE 
@@ -67,7 +67,7 @@ CombinedStats AS (
     JOIN 
         PostActivity pa ON rp.PostId = pa.PostId
     LEFT JOIN 
-        TagStats ts ON ts.TagName = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2)))
+        TagStats ts ON ts.TagName = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags) - 2))))
     WHERE 
         rp.PostRank = 1 
 )

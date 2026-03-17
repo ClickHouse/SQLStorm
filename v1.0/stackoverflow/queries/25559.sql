@@ -23,7 +23,7 @@ WITH RankedPosts AS (
             SELECT 
                 TRIM(value) AS TagName 
             FROM 
-                arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR CHAR_LENGTH(p.Tags) - 2))) AS value
+                arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR CHAR_LENGTH(p.Tags) - 2)))) AS value
         ) T ON TRUE
     WHERE 
         p.PostTypeId = 1 

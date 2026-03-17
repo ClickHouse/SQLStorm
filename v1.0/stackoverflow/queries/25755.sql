@@ -42,14 +42,14 @@ TopRatedPosts AS (
 ),
 TagSummary AS (
     SELECT
-        arrayJoin(splitByString('><', Tags)) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS PostCount
     FROM
         Posts
     WHERE
         PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('><', Tags)) 
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) 
 ),
 TopTags AS (
     SELECT

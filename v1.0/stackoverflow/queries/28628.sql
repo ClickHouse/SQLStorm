@@ -7,7 +7,7 @@ WITH PostTagCounts AS (
     FROM 
         Posts P
     JOIN 
-        (SELECT Id, arrayJoin(splitByString('><', trim(both '<>' FROM Tags))) AS TagName FROM Posts) T ON P.Id = T.Id
+        (SELECT Id, arrayJoin(splitByString('><', assumeNotNull(trim(both '<>' FROM Tags)))) AS TagName FROM Posts) T ON P.Id = T.Id
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 

@@ -51,7 +51,7 @@ TagsExploded AS (
     FROM 
         Posts p
     JOIN (
-        SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
+        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName
     ) AS t ON true
 )
 SELECT 

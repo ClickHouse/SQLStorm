@@ -62,7 +62,7 @@ FROM
     TopTags T
 LEFT JOIN 
     ClosedPostDetails CP ON T.TagName IN (
-        SELECT arrayJoin(splitByString('>', Posts.Tags)) 
+        SELECT arrayJoin(splitByString('>', assumeNotNull(Posts.Tags))) 
         FROM Posts 
         WHERE Posts.PostTypeId = 1
     )

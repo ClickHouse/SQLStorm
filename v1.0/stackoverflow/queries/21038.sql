@@ -17,7 +17,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', TRIM(BOTH '{}' FROM Tags))) AS Tag
+        arrayJoin(splitByString(',', assumeNotNull(TRIM(BOTH '{}' FROM Tags)))) AS Tag
     FROM RankedPosts
     WHERE Rank <= 3
 ),

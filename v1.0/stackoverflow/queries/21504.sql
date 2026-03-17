@@ -6,7 +6,7 @@ WITH PostStatistics AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS Downvotes,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT CASE WHEN b.UserId IS NOT NULL THEN b.UserId END) AS BadgeCount,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY any(p.CreationDate) DESC) AS PostRank,
+        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank,
         p.OwnerUserId
     FROM 
         Posts p

@@ -45,7 +45,7 @@ PostAnalytics AS (
 FilteredAnalytics AS (
     SELECT 
         pa.*,
-        length(splitByString('>', pa.Tags), 1) AS TagCount
+        length(splitByString('>', assumeNotNull(pa.Tags)), 1) AS TagCount
     FROM 
         PostAnalytics pa
     WHERE 

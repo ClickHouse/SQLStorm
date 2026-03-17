@@ -27,7 +27,7 @@ PopularTags AS (
         TRIM(tag) AS Tag
     FROM
         Posts b,
-        arrayJoin(splitByString(',', b.Tags)) AS tag
+        arrayJoin(splitByString(',', assumeNotNull(b.Tags))) AS tag
     WHERE
         b.PostTypeId = 1  
 ),

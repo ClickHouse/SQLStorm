@@ -15,7 +15,7 @@ WITH TaggedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tag) AS tags ON TRUE
+        (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag) AS tags ON TRUE
     LEFT JOIN 
         Tags ts ON ts.TagName = tags.tag
     WHERE 

@@ -86,7 +86,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('><', P.Tags)) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS TagName
     ) T ON TRUE
 GROUP BY 
     TU.UserId, TU.DisplayName, TU.BadgeCount, TU.PostCount, TU.TotalScore, TU.NetVotes

@@ -38,7 +38,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('>', P.Tags)) AS TagName
+            arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS TagName
     ) T ON TRUE
 LEFT JOIN 
     PostTypes PT ON P.PostTypeId = PT.Id

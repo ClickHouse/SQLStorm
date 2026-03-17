@@ -49,7 +49,7 @@ ComputedTags AS (
     FROM 
         (SELECT 
             PostId,
-            arrayJoin(splitByString('<>', Tags)) AS tag
+            arrayJoin(splitByString('<>', assumeNotNull(Tags))) AS tag
         FROM 
             FilteredPosts) AS TagList
     GROUP BY 

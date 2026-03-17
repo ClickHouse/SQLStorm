@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, CHAR_LENGTH(Tags) - 2)))) AS Tag,
+        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, CHAR_LENGTH(Tags) - 2))))) AS Tag,
         COUNT(*) AS PostCount,
         SUM(CASE WHEN AnswerCount > 0 THEN 1 ELSE 0 END) AS QuestionsWithAnswers,
         AVG(ViewCount) AS AverageViews
@@ -27,7 +27,7 @@ TagStatistics AS (
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, CHAR_LENGTH(Tags) - 2))))
+        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, CHAR_LENGTH(Tags) - 2)))))
 ),
 TopTags AS (
     SELECT 

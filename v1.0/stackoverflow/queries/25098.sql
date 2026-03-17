@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS Rank,
-        length(splitByString('>', substring(p.Tags, 2, LENGTH(p.Tags) - 2)), 1) AS TagCount,
+        length(splitByString('>', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2))), 1) AS TagCount,
         p.ViewCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVoteCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVoteCount

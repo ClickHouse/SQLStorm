@@ -45,7 +45,7 @@ TaggedPosts AS (
     JOIN 
         (
             SELECT 
-                arrayJoin(splitByString('<tag>', hp.Body)) AS TagName 
+                arrayJoin(splitByString('<tag>', assumeNotNull(hp.Body))) AS TagName 
         ) t ON true
     GROUP BY 
         hp.PostId, hp.Title, hp.Body, hp.CreationDate, hp.ViewCount, hp.Score, hp.OwnerDisplayName, hp.CommentCount

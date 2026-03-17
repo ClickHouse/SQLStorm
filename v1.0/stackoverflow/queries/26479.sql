@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        Tags t ON t.TagName IN (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))))
+        Tags t ON t.TagName IN (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))))
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month' 
     GROUP BY 

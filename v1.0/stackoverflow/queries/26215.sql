@@ -5,7 +5,7 @@ WITH TagCount AS (
     FROM
         Posts p
     JOIN
-        Tags t ON t.TagName = ANY(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
+        Tags t ON t.TagName = ANY(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))))
     GROUP BY
         p.Id
 ),

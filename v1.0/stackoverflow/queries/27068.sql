@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('<>', Tags)) AS TagName,
+        arrayJoin(splitByString('<>', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts
@@ -53,7 +53,7 @@ PostDetails AS (
     FROM 
         RankedPosts rp
     JOIN 
-        PopularTags pt ON pt.TagName IN (SELECT * FROM arrayJoin(splitByString('<>', rp.Tags)))
+        PopularTags pt ON pt.TagName IN (SELECT * FROM arrayJoin(splitByString('<>', assumeNotNull(rp.Tags))))
 )
 SELECT 
     pd.OwnerDisplayName,

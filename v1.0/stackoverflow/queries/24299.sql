@@ -69,7 +69,7 @@ LEFT JOIN
 LEFT JOIN 
     UserBadges ub ON u.Id = ub.UserId
 LEFT JOIN 
-    (SELECT Id, arrayJoin(splitByString('>', Tags)) AS TagName FROM Posts) t ON fp.PostId = t.Id
+    (SELECT Id, arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TagName FROM Posts) t ON fp.PostId = t.Id
 GROUP BY 
     fp.PostId, fp.Title, fp.Score, ub.BadgeCount, ub.HighestBadgeClass, u.Reputation, fp.CommentCount
 ORDER BY 

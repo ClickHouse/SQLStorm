@@ -67,7 +67,7 @@ TopPosts AS (
     LEFT JOIN 
         (
             SELECT 
-                arrayJoin(splitByString('<>', rp.Tags)) AS TagName
+                arrayJoin(splitByString('<>', assumeNotNull(rp.Tags))) AS TagName
         ) AS t ON TRUE
     WHERE 
         rp.Rank <= 10

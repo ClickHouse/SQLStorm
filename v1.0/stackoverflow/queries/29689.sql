@@ -34,7 +34,7 @@ ExpandedTags AS (
     FROM 
         RankedPosts
     CROSS JOIN 
-        arrayJoin(splitByString(',', post_tags)) AS tag
+        arrayJoin(splitByString(',', assumeNotNull(post_tags))) AS tag
 ),
 AggregatedData AS (
     SELECT 

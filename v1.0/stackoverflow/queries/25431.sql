@@ -23,7 +23,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         (
             SELECT 
-                arrayJoin(splitByString('<>', p.Tags)) AS TagName
+                arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS TagName
         ) t ON TRUE
     WHERE 
         p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' AND

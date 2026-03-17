@@ -10,7 +10,7 @@ TopTags AS (
         SUM(PostCount) as TotalPosts
     FROM TagCounts
     JOIN (
-        SELECT arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName
+        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName
     ) AS Tag ON Tags LIKE '%' || Tag.TagName || '%'
     GROUP BY TagName
     ORDER BY TotalPosts DESC

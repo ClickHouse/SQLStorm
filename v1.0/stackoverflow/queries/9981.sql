@@ -16,7 +16,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', p.Tags)) AS Tag,
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS Tag,
         COUNT(*) AS Popularity
     FROM Posts p
     WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
@@ -35,6 +35,6 @@ SELECT
     pt.Tag,
     pt.Popularity
 FROM RankedPosts rp
-JOIN PopularTags pt ON pt.Tag = ANY(splitByString(' ', rp.Title))
+JOIN PopularTags pt ON pt.Tag = ANY(splitByString(' ', assumeNotNull(rp.Title)))
 WHERE rp.Rank <= 5
 ORDER BY rp.ViewCount DESC, rp.Score DESC;

@@ -55,7 +55,7 @@ TagStatistics AS (
     FROM 
         Posts p
     CROSS JOIN 
-        (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName) AS tag
+        (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName) AS tag
     WHERE 
         p.PostTypeId = 1  
     GROUP BY 
@@ -76,7 +76,7 @@ SELECT
 FROM 
     FilteredPosts fp
 LEFT JOIN 
-    TagStatistics ts ON ts.TagName = ANY(splitByString('><', substring(fp.Tags, 2, length(fp.Tags)-2)))
+    TagStatistics ts ON ts.TagName = ANY(splitByString('><', assumeNotNull(substring(fp.Tags, 2, length(fp.Tags)-2))))
 ORDER BY 
     fp.Score DESC, 
     fp.ViewCount DESC;

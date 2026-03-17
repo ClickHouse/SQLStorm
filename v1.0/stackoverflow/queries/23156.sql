@@ -52,7 +52,7 @@ HighScorePosts AS (
     JOIN 
         Users AS U ON P.OwnerUserId = U.Id
     LEFT JOIN 
-        arrayJoin(splitByString(',', P.Tags)) AS tag_name ON TRUE
+        arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS tag_name ON TRUE
     LEFT JOIN 
         Tags AS T ON T.TagName = TRIM(tag_name)
     WHERE 

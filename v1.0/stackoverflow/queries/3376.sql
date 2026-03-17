@@ -27,7 +27,7 @@ PostMetrics AS (
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
     LEFT JOIN (
-        SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName
+        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName
     ) t ON TRUE
     GROUP BY p.Id, p.Title
 ),

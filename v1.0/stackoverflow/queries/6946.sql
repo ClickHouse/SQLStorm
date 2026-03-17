@@ -46,8 +46,8 @@ FROM
     TopUsers T
 LEFT JOIN 
     Posts P ON T.UserId = P.OwnerUserId
-LEFT JOIN 
-    (SELECT arrayJoin(splitByString('<>', P.Tags)) AS TagName) TAG ON TRUE
+
+    LEFT ARRAY JOIN splitByString('<>', assumeNotNull(P.Tags)) AS TagName
 WHERE 
     T.Rank <= 10
 GROUP BY 

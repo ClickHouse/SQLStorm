@@ -25,7 +25,7 @@ TagStats AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('<>', p.Tags)) AS t(TagName) ON true
+        arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS t(TagName) ON true
     GROUP BY 
         p.Id
 )

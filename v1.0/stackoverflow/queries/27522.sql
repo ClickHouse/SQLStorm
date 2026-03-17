@@ -4,7 +4,7 @@ WITH TagFrequency AS (
         COUNT(*) AS Frequency
     FROM (
         SELECT 
-            arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS tag
+            arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS tag
         FROM 
             Posts
         WHERE 
@@ -66,7 +66,7 @@ SELECT
     TU.Downvotes,
     (SELECT groupArray(assumeNotNull(T.TagName)) 
      FROM PopularTags T 
-     JOIN Posts P ON T.TagName = ANY(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2)))
+     JOIN Posts P ON T.TagName = ANY(splitByString('><', assumeNotNull(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2))))
      WHERE 
          P.OwnerUserId = TU.UserId) AS PopularTags
 FROM 

@@ -34,7 +34,7 @@ AggregatedData AS (
 ),
 PopularTags AS (
     SELECT 
-        DISTINCT arrayJoin(splitByString('><', RP.Tags)) AS Tag
+        DISTINCT arrayJoin(splitByString('><', assumeNotNull(RP.Tags))) AS Tag
     FROM 
         RankedPosts RP
     WHERE 

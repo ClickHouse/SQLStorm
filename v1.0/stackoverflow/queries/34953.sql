@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString('>', p.Tags)) AS tag) AS tag ON tag IS NOT NULL
+        (SELECT arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

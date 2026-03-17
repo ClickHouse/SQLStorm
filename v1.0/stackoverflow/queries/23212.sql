@@ -24,7 +24,7 @@ PostStatistics AS (
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN (
         SELECT 
-            DISTINCT TRIM(arrayJoin(splitByString('>', P.Tags))) AS TagName 
+            DISTINCT TRIM(arrayJoin(splitByString('>', assumeNotNull(P.Tags)))) AS TagName 
     ) T ON TRUE
     GROUP BY P.Id, P.Title, P.PostTypeId
 ),

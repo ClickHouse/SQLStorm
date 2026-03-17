@@ -33,7 +33,7 @@ PostEngagement AS (
     FROM 
         Posts P
     LEFT JOIN 
-        arrayJoin(splitByString('<>', P.Tags)) AS Tag ON TRUE
+        arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS Tag ON TRUE
     JOIN 
         Tags T ON T.TagName = Tag
     WHERE 

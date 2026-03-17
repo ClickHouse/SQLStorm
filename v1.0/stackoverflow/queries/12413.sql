@@ -15,7 +15,7 @@ FROM
 JOIN 
     Users u ON p.OwnerUserId = u.Id
 LEFT JOIN 
-    Tags t ON EXISTS (SELECT 1 FROM arrayJoin(splitByString('<>', p.Tags)) AS tag WHERE tag::text = t.Id::text)
+    Tags t ON EXISTS (SELECT 1 FROM arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS tag WHERE tag::text = t.Id::text)
 LEFT JOIN 
     Comments c ON p.Id = c.PostId
 WHERE 

@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN (
         SELECT 
-            arrayJoin(splitByString('>', p.Tags)) AS TagName
+            arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
     ) t ON TRUE
     WHERE p.PostTypeId = 1 
     GROUP BY p.Id, p.Title, p.CreationDate, p.OwnerUserId, p.Score, p.ViewCount, p.AnswerCount, t.TagName

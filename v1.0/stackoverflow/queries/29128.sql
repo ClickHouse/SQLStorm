@@ -57,6 +57,6 @@ SELECT
     pt.TagName AS RelatedTag
 FROM RankedPosts rp
 JOIN PostInteraction pi ON rp.PostId = pi.PostId
-LEFT JOIN PopularTags pt ON pt.TagName = ANY(splitByString('>', rp.Tags))
+LEFT JOIN PopularTags pt ON pt.TagName = ANY(splitByString('>', assumeNotNull(rp.Tags)))
 WHERE rp.Rank <= 5
 ORDER BY rp.Score DESC, pi.UpVoteCount DESC;

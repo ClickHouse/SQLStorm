@@ -31,7 +31,7 @@ UserStats AS (
         u.Reputation > 100
     GROUP BY 
         u.Id
-, u.DisplayName),
+),
 AggregatedData AS (
     SELECT 
         us.UserId,

@@ -48,7 +48,7 @@ SELECT
     END AS RankCategory,
     (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ',') 
      FROM Tags t 
-     JOIN arrayJoin(splitByString(',', p.Tags)) AS tag ON t.TagName = tag
+     JOIN arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON t.TagName = tag
      WHERE p.Id = r.PostId) AS Tags
 FROM 
     RankedPosts r

@@ -37,7 +37,7 @@ TagMetrics AS (
     JOIN 
         Posts p ON pm.PostId = p.Id
     JOIN 
-        (SELECT TRIM(tagname) AS TagName FROM arrayJoin(splitByString(',', p.Tags)) AS tag(tagname)) AS tag ON TRUE
+        (SELECT TRIM(tagname) AS TagName FROM arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag(tagname)) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag.TagName
     GROUP BY 

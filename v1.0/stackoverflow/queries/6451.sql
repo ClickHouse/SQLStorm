@@ -17,7 +17,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS TagName
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName
     FROM 
         Posts 
     WHERE 
@@ -48,7 +48,7 @@ PostWithTopTags AS (
     JOIN 
         Posts p ON rp.PostId = p.Id
     JOIN 
-        TopTags rt ON rt.TagName = ANY (splitByString(',', p.Tags))
+        TopTags rt ON rt.TagName = ANY (splitByString(',', assumeNotNull(p.Tags)))
 )
 SELECT 
     pwap.*,

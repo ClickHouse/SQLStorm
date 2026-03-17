@@ -30,7 +30,7 @@ PostDetails AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags)-2))) AS tag_name ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags)-2)))) AS tag_name ON TRUE
     LEFT JOIN 
         Tags T ON tag_name = T.TagName
     WHERE 

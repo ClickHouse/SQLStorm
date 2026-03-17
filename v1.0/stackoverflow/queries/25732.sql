@@ -23,7 +23,7 @@ PostTags AS (
     FROM 
         FilteredPosts p
     CROSS JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Body FROM 2 FOR LENGTH(p.Body) - 2))) AS tags
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Body FROM 2 FOR LENGTH(p.Body) - 2)))) AS tags
     JOIN 
         Tags t ON t.TagName = tags
     GROUP BY 

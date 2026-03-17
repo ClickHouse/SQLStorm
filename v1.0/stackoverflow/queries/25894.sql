@@ -44,7 +44,7 @@ JOIN
             Id = rp.PostId
     )
 LEFT JOIN 
-    arrayJoin(splitByString('><', rp.Tags)) AS tagArray ON TRUE
+    arrayJoin(splitByString('><', assumeNotNull(rp.Tags))) AS tagArray ON TRUE
 JOIN 
     Tags t ON t.TagName = tagArray 
 WHERE 

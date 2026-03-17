@@ -42,7 +42,7 @@ TaggedPosts AS (
     LEFT JOIN 
         (
             SELECT 
-                TRIM(arrayJoin(splitByString('><', rp.Tags))) AS TagName
+                TRIM(arrayJoin(splitByString('><', assumeNotNull(rp.Tags)))) AS TagName
         ) t ON TRUE
     GROUP BY 
         rp.PostId, rp.Title, rp.Body, rp.Tags, rp.ViewCount, rp.CreationDate, rp.OwnerDisplayName, rp.OwnerUserId, rp.AcceptedAnswerId, rp.CommentCount

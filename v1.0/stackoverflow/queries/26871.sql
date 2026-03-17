@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 FilteredTags AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS Tag 
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS Tag 
     FROM 
         RankedPosts
     WHERE 

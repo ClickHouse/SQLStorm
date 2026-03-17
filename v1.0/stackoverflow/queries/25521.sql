@@ -25,7 +25,7 @@ UsersWithTopTags AS (
     LEFT JOIN Posts p ON p.OwnerUserId = u.Id
     LEFT JOIN (
         SELECT 
-            arrayJoin(splitByString('><', p.Tags)) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
     ) AS tag ON true
     LEFT JOIN Tags t ON t.TagName = tag.TagName
     GROUP BY u.Id, u.DisplayName

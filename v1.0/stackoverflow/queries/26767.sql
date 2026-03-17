@@ -23,7 +23,7 @@ WITH PostStats AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS TagName,
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts 
@@ -58,7 +58,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStats ts ON ts.TagName = ANY(splitByString(',', rp.Tags))
+    TagStats ts ON ts.TagName = ANY(splitByString(',', assumeNotNull(rp.Tags)))
 WHERE 
     rp.Rank <= 10
 ORDER BY 

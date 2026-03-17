@@ -4,7 +4,7 @@ WITH Tag_List AS (
         COUNT(*) AS TagCount
     FROM (
         SELECT 
-            arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS tag,
+            arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS tag,
             Id
         FROM Posts
         WHERE PostTypeId = 1  

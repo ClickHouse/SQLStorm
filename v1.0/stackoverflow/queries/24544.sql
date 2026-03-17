@@ -24,7 +24,7 @@ WITH RankedPosts AS (
         AND p.Body <> ''
     GROUP BY 
         p.Id, pt.Name
-, p.Title, p.PostTypeId),
+),
 TopPosts AS (
     SELECT 
         rp.PostId,

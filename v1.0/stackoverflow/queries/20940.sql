@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         (
             SELECT 
-                arrayJoin(splitByString('><', p.Tags)) AS TagName
+                arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
         ) AS t ON TRUE
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
@@ -77,7 +77,7 @@ JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('><', p.Tags)) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
     ) AS t ON TRUE
 WHERE 
     ps.ScorePerView IS NOT NULL

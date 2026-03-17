@@ -32,7 +32,7 @@ FilteredPosts AS (
 TagCount AS (
     SELECT 
         p.Id AS PostId,
-        length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount
+        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1) AS TagCount
     FROM 
         Posts p
     WHERE 

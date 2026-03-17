@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        length(splitByString('><', p.Tags), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(p.Tags)), 1) AS TagCount,
         COUNT(DISTINCT c.Id) AS CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RecentPostRank
     FROM 

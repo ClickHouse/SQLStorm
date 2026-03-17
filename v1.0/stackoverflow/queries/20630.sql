@@ -32,7 +32,7 @@ TaggedPosts AS (
     LEFT JOIN 
         (SELECT pt.PostId, t.TagName, COUNT(t.TagName) AS TagCount
          FROM 
-             (SELECT PostId, arrayJoin(splitByString('><', Tags)) AS TagName FROM Posts) pt
+             (SELECT PostId, arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName FROM Posts) pt
          JOIN 
              Tags t ON pt.TagName = t.TagName
          GROUP BY pt.PostId, t.TagName

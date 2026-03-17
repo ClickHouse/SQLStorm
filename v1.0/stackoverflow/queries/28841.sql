@@ -3,7 +3,7 @@ WITH TagCounts AS (
         TRIM(REGEXP_REPLACE(tag, '[<>]', '', 'g')) AS TagName, 
         COUNT(*) AS Count
     FROM (
-        SELECT arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2))) AS tag
+        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2)))) AS tag
         FROM Posts
         WHERE PostTypeId = 1
     ) AS TagsList

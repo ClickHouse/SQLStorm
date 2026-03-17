@@ -18,7 +18,7 @@ WITH StringProcessing AS (
 ),
 TagAnalysis AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag,
         COUNT(*) AS UsageCount
     FROM 
         StringProcessing
@@ -49,7 +49,7 @@ Engagement AS (
     LEFT JOIN 
         RecentComments rc ON sp.PostId = rc.PostId
     LEFT JOIN 
-        TagAnalysis ta ON ta.Tag = ANY(splitByString('><', sp.Tags))
+        TagAnalysis ta ON ta.Tag = ANY(splitByString('><', assumeNotNull(sp.Tags)))
 ),
 Ranking AS (
     SELECT 

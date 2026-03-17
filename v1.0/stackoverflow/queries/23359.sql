@@ -22,7 +22,7 @@ QuestionPosts AS (
             WHEN P.AcceptedAnswerId IS NOT NULL THEN 1 
             ELSE 0 
         END AS HasAcceptedAnswer,
-        ARRAY_TO_STRING(splitByString('>', P.Tags), ', ') AS TagsArray
+        ARRAY_TO_STRING(splitByString('>', assumeNotNull(P.Tags)), ', ') AS TagsArray
     FROM Posts P
     WHERE P.PostTypeId = 1
 ),

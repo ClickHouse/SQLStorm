@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '5 years'
     GROUP BY 

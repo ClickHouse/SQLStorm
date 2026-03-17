@@ -67,7 +67,7 @@ FROM
 LEFT JOIN 
     most_valuable_actors m ON m.movie_count > 5
 JOIN 
-    company_movie_details cm ON m.actor_name = ANY(splitByString(', ', cm.titles))
+    company_movie_details cm ON m.actor_name = ANY(splitByString(', ', assumeNotNull(cm.titles)))
 WHERE 
     r.year_rank <= 5
 ORDER BY 

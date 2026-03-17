@@ -56,7 +56,7 @@ TopUsers AS (
 ),
 TagStatistics AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('<>', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS Tag,
+        TRIM(arrayJoin(splitByString('<>', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts

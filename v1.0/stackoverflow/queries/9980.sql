@@ -19,7 +19,7 @@ WITH PostStats AS (
     LEFT JOIN 
         PostHistory ph ON ph.PostId = p.Id
     LEFT JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS tag_name ON TRUE
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(tag_name)
     WHERE 

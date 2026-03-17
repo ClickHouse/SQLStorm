@@ -35,14 +35,14 @@ QuestionStats AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', p.Tags)) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS Tag,
         COUNT(p.Id) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('><', p.Tags))
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags)))
     HAVING 
         COUNT(p.Id) > 10
 )
@@ -64,7 +64,7 @@ LEFT JOIN
 LEFT JOIN 
     PopularTags pt ON pt.Tag IN (
         SELECT 
-            arrayJoin(splitByString('><', p.Tags)) 
+            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) 
         FROM 
             Posts p 
         WHERE 

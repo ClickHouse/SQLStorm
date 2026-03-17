@@ -12,7 +12,7 @@ WITH PostDetails AS (
     JOIN
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN
-        (SELECT arrayJoin(splitByString('>', p.Tags)) AS TagName) t
+        (SELECT arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName) t
     ON true
 )
 

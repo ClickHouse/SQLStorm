@@ -33,7 +33,7 @@ TopUsers AS (
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        arrayJoin(splitByString('<>', P.Tags)) AS Tag
+        arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS Tag
     FROM 
         Posts P
     WHERE 

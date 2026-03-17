@@ -42,7 +42,7 @@ PostInteraction AS (
         (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
          FROM Tags t 
          JOIN (
-             SELECT arrayJoin(splitByString(' ', fp.Title)) AS Tag 
+             SELECT arrayJoin(splitByString(' ', assumeNotNull(fp.Title))) AS Tag 
          ) AS split_tags ON t.TagName = split_tags.Tag) AS TagsList
     FROM 
         FilteredPosts fp

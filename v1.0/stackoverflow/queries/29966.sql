@@ -16,14 +16,14 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))))
 ),
 TopBadges AS (
     SELECT 
@@ -63,7 +63,7 @@ JOIN
     Users pu ON rp.OwnerUserId = pu.Id
 LEFT JOIN 
     TagStatistics ts ON ts.Tag IN (
-        SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
+        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))))
         FROM Posts p WHERE p.Id = rp.PostId
     )
 LEFT JOIN 

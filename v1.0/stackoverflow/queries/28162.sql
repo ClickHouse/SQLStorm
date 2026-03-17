@@ -47,7 +47,7 @@ FROM
 LEFT JOIN 
     Posts p ON fp.PostId = p.Id
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName) AS t ON TRUE
+    (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS TagName) AS t ON TRUE
 LEFT JOIN 
     PostHistory ph ON p.Id = ph.PostId
 LEFT JOIN 

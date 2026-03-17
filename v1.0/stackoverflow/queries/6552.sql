@@ -25,14 +25,14 @@ WITH UserActivity AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS TagName, 
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName, 
         COUNT(*) AS TagUsageCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        arrayJoin(splitByString(',', Tags))
+        arrayJoin(splitByString(',', assumeNotNull(Tags)))
 )
 SELECT 
     ua.UserId, 

@@ -41,7 +41,7 @@ FilteredPosts AS (
     LEFT JOIN 
         Posts p ON rp.PostId = p.Id
     LEFT JOIN 
-        Tags t ON t.TagName = ANY(splitByString('>', rp.Tags))
+        Tags t ON t.TagName = ANY(splitByString('>', assumeNotNull(rp.Tags)))
     WHERE 
         rp.ViewCount > 100  
     GROUP BY 

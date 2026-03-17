@@ -33,7 +33,7 @@ UserActivity AS (
 ),
 FrequentTags AS (
     SELECT 
-        arrayJoin(splitByString(',', p.Tags)) AS TagName
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
     FROM 
         Posts p
     WHERE 
@@ -79,7 +79,7 @@ FROM
 JOIN 
     UserActivity ua ON ua.UserId = rp.PostId 
 JOIN 
-    TopTags ta ON ta.TagName = ANY (splitByString(',', rp.Tags))
+    TopTags ta ON ta.TagName = ANY (splitByString(',', assumeNotNull(rp.Tags)))
 WHERE 
     rp.ScoreRank <= 5
 ORDER BY 

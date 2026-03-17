@@ -21,7 +21,7 @@ WITH PostStats AS (
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, u.DisplayName
-, p.Title), 
+), 
 ClosedPosts AS (
     SELECT 
         ph.PostId,

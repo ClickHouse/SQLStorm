@@ -50,7 +50,7 @@ FROM Users u
 LEFT JOIN UserHierarchy uh ON u.Id = uh.Id
 LEFT JOIN UserBadges ub ON u.Id = ub.UserId
 LEFT JOIN TagUsage tu ON tu.TagName IN (
-    SELECT DISTINCT arrayJoin(splitByString('><', p.Tags))
+    SELECT DISTINCT arrayJoin(splitByString('><', assumeNotNull(p.Tags)))
     FROM Posts p
     WHERE p.OwnerUserId = u.Id
 ) 

@@ -72,7 +72,7 @@ FROM
 LEFT JOIN 
     Posts p ON pd.PostId = p.Id
 LEFT JOIN 
-    arrayJoin(splitByString('><', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
+    arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName IS NOT NULL
 WHERE 
     pd.Score >= 0 
     AND (pd.CloseCount IS NULL OR pd.CloseCount < 10)

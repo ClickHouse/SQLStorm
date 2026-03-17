@@ -33,7 +33,7 @@ UserReputation AS (
 
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('>', Tags)) AS TagName,
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS QuestionCount
     FROM 
         Posts
@@ -52,7 +52,7 @@ UserTags AS (
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     JOIN 
-        arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
@@ -78,7 +78,7 @@ JOIN
 JOIN 
     UserTags ut ON rp.OwnerUserId = ut.UserId
 JOIN 
-    TagStatistics ts ON ts.TagName = ANY(splitByString('>', rp.Tags))
+    TagStatistics ts ON ts.TagName = ANY(splitByString('>', assumeNotNull(rp.Tags)))
 WHERE 
     rp.Rank <= 5 
 ORDER BY 

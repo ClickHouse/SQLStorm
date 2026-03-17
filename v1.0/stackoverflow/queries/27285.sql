@@ -42,7 +42,7 @@ SELECT
     fp.PostId,
     fp.Title,
     fp.Body,
-    TRIM(LEADING '<' FROM TRIM(TRAILING '>' FROM arrayJoin(splitByString('>', fp.Tags)))) AS CleanedTag,
+    TRIM(LEADING '<' FROM TRIM(TRAILING '>' FROM arrayJoin(splitByString('>', assumeNotNull(fp.Tags))))) AS CleanedTag,
     fp.OwnerName,
     fp.AnswerCount,
     fp.CommentCount,

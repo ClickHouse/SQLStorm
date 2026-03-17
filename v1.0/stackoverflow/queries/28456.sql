@@ -23,7 +23,7 @@ WITH RelevantPosts AS (
 
 TagSummary AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         RelevantPosts

@@ -29,7 +29,7 @@ UserActivity AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS tag_name ON TRUE
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     GROUP BY 

@@ -70,7 +70,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString(',', P.Tags)) AS TagName
+            arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS TagName
     ) AS T ON TRUE
 GROUP BY 
     FPI.PostId, FPI.Title, FPI.EditorName, FPI.TotalUserVotes

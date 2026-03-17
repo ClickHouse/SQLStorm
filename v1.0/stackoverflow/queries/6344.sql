@@ -14,7 +14,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON u.Id = b.UserId
 LEFT JOIN 
-    arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
+    arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON TRUE
 LEFT JOIN 
     Tags t ON TRIM(tag) = t.TagName
 WHERE 

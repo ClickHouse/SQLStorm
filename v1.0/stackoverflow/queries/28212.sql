@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -25,7 +25,7 @@ LatestPostDetails AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        TagCounts tc ON tc.TagName = ANY (splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
+        TagCounts tc ON tc.TagName = ANY (splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))))
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'  
     GROUP BY 

@@ -26,7 +26,7 @@ SELECT
     rm.movie_title,
     rm.production_year,
     rm.actor_count,
-    length(splitByString(', ', rm.actor_names), 1) AS number_of_actors,
+    length(splitByString(', ', assumeNotNull(rm.actor_names)), 1) AS number_of_actors,
     (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.title))), ', ') 
      FROM title t 
      JOIN movie_link ml ON t.id = ml.linked_movie_id 

@@ -45,7 +45,7 @@ FROM
 JOIN 
     Users u ON tp.PostId IN (SELECT p.Id FROM Posts p WHERE p.OwnerUserId = u.Id)
 LEFT JOIN 
-    arrayJoin(splitByString(',', (SELECT p.Tags FROM Posts p WHERE p.Id = tp.PostId))) AS tag ON TRUE
+    arrayJoin(splitByString(',', assumeNotNull((SELECT p.Tags FROM Posts p WHERE p.Id = tp.PostId)))) AS tag ON TRUE
 LEFT JOIN 
     Tags t ON tag = t.TagName
 GROUP BY 

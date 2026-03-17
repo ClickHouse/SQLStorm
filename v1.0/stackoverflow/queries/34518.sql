@@ -54,7 +54,7 @@ PopularTags AS (
     FROM 
         Posts P
     JOIN 
-        arrayJoin(splitByString(',', P.Tags)) AS T(TagName) ON TRUE
+        arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
     WHERE 
         P.PostTypeId = 1
     GROUP BY 

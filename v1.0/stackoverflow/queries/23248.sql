@@ -7,7 +7,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositiveVotes,
         SUM(CASE WHEN p.Score < 0 THEN 1 ELSE 0 END) AS NegativeVotes,
         AVG(COALESCE(p.ViewCount, 0)) AS AvgViews,
-        ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY any(u.CreationDate) DESC) AS UserRow
+        ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY u.CreationDate DESC) AS UserRow
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     GROUP BY u.Id, u.DisplayName

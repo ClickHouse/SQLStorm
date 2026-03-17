@@ -15,7 +15,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -50,7 +50,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStatistics ts ON ts.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2)))
+    TagStatistics ts ON ts.Tag = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags) - 2))))
 JOIN 
     VotingStats vs ON rp.PostId = vs.PostId
 WHERE 

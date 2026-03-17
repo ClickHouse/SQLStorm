@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        length(splitByString('>', p.Tags), 1) AS TagCount,
+        length(splitByString('>', assumeNotNull(p.Tags)), 1) AS TagCount,
         COALESCE(u.DisplayName, 'Community User') AS OwnerDisplayName,
         COALESCE(b.BadgeCount, 0) AS BadgeCount
     FROM 

@@ -21,14 +21,14 @@ WITH RankedPosts AS (
 
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag, 
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag, 
         COUNT(*) AS PostCount,
         AVG(ViewCount) AS AvgViewCount,
         AVG(Score) AS AvgScore
     FROM 
         RankedPosts
     GROUP BY 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2))))
 ),
 
 TopTags AS (
@@ -55,7 +55,7 @@ PopularPosts AS (
     FROM 
         RankedPosts rp
     JOIN 
-        TopTags tt ON tt.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2)))
+        TopTags tt ON tt.Tag = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags) - 2))))
     WHERE 
         rp.TagRank <= 3 
 )

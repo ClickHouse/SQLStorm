@@ -16,7 +16,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges B ON U.Id = B.UserId
 LEFT JOIN 
-    (SELECT DISTINCT arrayJoin(splitByString('><', P.Tags)) AS TagName) T ON TRUE
+    (SELECT DISTINCT arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS TagName) T ON TRUE
 WHERE 
     U.Reputation > 100
 GROUP BY 

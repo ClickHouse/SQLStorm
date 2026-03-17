@@ -52,7 +52,7 @@ PostScoreAnalysis AS (
     JOIN 
         PostTypes pt ON pt.Id = rp.PostTypeId
     JOIN 
-        arrayJoin(splitByString(' ', rp.Body)) AS word ON LOWER(word) NOT IN ('the', 'is', 'and', 'or', 'to', 'of', 'in')  
+        arrayJoin(splitByString(' ', assumeNotNull(rp.Body))) AS word ON LOWER(word) NOT IN ('the', 'is', 'and', 'or', 'to', 'of', 'in')  
     JOIN 
         PopularTags t ON t.TagName LIKE '%' || word || '%'
 )

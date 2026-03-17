@@ -55,7 +55,7 @@ FROM
 LEFT JOIN
     (
         SELECT
-            arrayJoin(splitByString('><', substring(TP.Title, 2, length(TP.Title) - 2))) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(substring(TP.Title, 2, length(TP.Title) - 2)))) AS TagName
     ) T ON TRUE
 ORDER BY
     TP.Score DESC;

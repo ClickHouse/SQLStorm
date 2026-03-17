@@ -16,7 +16,7 @@ PostMetrics AS (
         p.OwnerUserId,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) - SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS Score,
         COALESCE(COUNT(c.Id), 0) AS CommentCount,
-        COALESCE(any(p.ViewCount), 0) AS ViewCount
+        COALESCE(p.ViewCount, 0) AS ViewCount
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN Comments c ON p.Id = c.PostId

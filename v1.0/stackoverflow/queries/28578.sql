@@ -47,7 +47,7 @@ SELECT
     FP.CommentsCount,
     FP.Upvotes,
     FP.Downvotes,
-    length(splitByString(',', FP.Tags), 1) AS TagCount,  
+    length(splitByString(',', assumeNotNull(FP.Tags)), 1) AS TagCount,  
     CASE WHEN FP.Upvotes - FP.Downvotes > 0 THEN 'Positive' ELSE 'Negative' END AS VoteSentiment
 FROM 
     FilteredPosts FP

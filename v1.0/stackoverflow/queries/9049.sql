@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2  
     LEFT JOIN 
-        arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON TRUE
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
     WHERE 
         p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
     GROUP BY 

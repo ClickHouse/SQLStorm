@@ -26,14 +26,14 @@ WITH RankedPosts AS (
 
 AggregatedByTags AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))))
 ),
 
 PostWithTopTags AS (

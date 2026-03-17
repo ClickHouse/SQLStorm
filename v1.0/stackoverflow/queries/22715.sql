@@ -64,7 +64,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('><', p.Tags)) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
     ) AS t ON TRUE
 WHERE 
     p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'

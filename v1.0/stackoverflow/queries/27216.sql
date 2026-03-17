@@ -12,7 +12,7 @@ WITH UserTagStats AS (
     LEFT JOIN (
         SELECT 
             pt.Id, 
-            arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS TagName
         FROM Posts p
         JOIN PostTypes pt ON p.PostTypeId = pt.Id
         WHERE p.PostTypeId = 1

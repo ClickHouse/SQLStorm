@@ -61,7 +61,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory ph ON p.Id = ph.PostId
 LEFT JOIN 
-    arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON TRUE
+    arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
 GROUP BY 
     up.UserId, up.DisplayName, up.TotalQuestions, up.TotalAnswers, up.TotalViews, up.TotalGoldBadges, up.TotalSilverBadges, up.TotalBronzeBadges, up.ContributorStatus
 HAVING 

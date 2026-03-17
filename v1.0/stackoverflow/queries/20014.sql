@@ -71,7 +71,7 @@ FROM
 LEFT JOIN 
     (SELECT 
          PostId, 
-         arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS TagName
+         arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TagName
      FROM 
          Posts) t ON pd.PostId = t.PostId
 GROUP BY 

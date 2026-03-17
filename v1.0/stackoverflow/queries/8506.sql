@@ -42,7 +42,7 @@ PostTags AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON TRUE
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
     GROUP BY 
         p.Id
 )

@@ -39,7 +39,7 @@ RecentPostDetails AS (
         ROW_NUMBER() OVER (PARTITION BY U.Id ORDER BY P.CreationDate DESC) AS RecentPostRank
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    JOIN (SELECT arrayJoin(splitByString('><', P.Tags)) AS TagName, P.Id FROM Posts P) T ON T.Id = P.Id
+    JOIN (SELECT arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS TagName, P.Id FROM Posts P) T ON T.Id = P.Id
 )
 SELECT 
     TU.UserId,

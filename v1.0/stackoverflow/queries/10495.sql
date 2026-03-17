@@ -20,7 +20,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes V ON P.Id = V.PostId
 LEFT JOIN 
-    arrayJoin(splitByString('> <', SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2))) AS T(TagName) ON T.TagName IS NOT NULL
+    arrayJoin(splitByString('> <', assumeNotNull(SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2)))) AS T(TagName) ON T.TagName IS NOT NULL
 WHERE 
     P.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'
 GROUP BY 

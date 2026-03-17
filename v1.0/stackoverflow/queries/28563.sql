@@ -39,7 +39,7 @@ StringProcessing AS (
         CommentCount,
         UpvoteCount,
         DownvoteCount,
-        length(splitByString(',', CleanedTags), 1) AS TagCount,
+        length(splitByString(',', assumeNotNull(CleanedTags)), 1) AS TagCount,
         LOWER(Title) AS LowercaseTitle,
         UPPER(OwnerDisplayName) AS UppercaseOwner,
         LENGTH(Body) AS BodyLength

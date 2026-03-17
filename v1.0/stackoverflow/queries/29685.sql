@@ -19,7 +19,7 @@ WITH PostStatistics AS (
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
         (
-            SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS TagName
+            SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS TagName
         ) AS t ON TRUE
     WHERE 
         p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 

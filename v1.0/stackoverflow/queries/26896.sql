@@ -9,7 +9,7 @@ WITH TagAggregation AS (
         Posts p
     JOIN 
         (SELECT DISTINCT 
-            arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS TNAME 
+            arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TNAME 
         FROM 
             Posts) AS tag ON p.Tags LIKE '%' || tag.TNAME || '%'
     JOIN 

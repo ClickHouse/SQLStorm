@@ -18,7 +18,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    (SELECT DISTINCT p.Id, arrayJoin(splitByString('<>', p.Tags)) AS tag_id FROM Posts p) AS tag_id ON p.Id = tag_id.Id
+    (SELECT DISTINCT p.Id, arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS tag_id FROM Posts p) AS tag_id ON p.Id = tag_id.Id
 LEFT JOIN 
     Tags t ON tag_id.tag_id = t.TagName
 WHERE 

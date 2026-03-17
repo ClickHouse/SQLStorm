@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
         DENSE_RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankScore,
-        length(splitByString('><', p.Tags), 1) AS TagCount
+        length(splitByString('><', assumeNotNull(p.Tags)), 1) AS TagCount
     FROM 
         Posts p
     JOIN 

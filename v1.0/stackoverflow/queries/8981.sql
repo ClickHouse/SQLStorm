@@ -13,7 +13,7 @@ WITH UserStats AS (
     GROUP BY u.Id, u.DisplayName
 ),
 TopTags AS (
-    SELECT arrayJoin(splitByString('><', Tags)) AS TagName,
+    SELECT arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
            COUNT(*) AS TagCount
     FROM Posts
     WHERE Tags IS NOT NULL

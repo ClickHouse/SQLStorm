@@ -16,7 +16,7 @@ WITH RecentPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS tag ON tag IS NOT NULL
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = TRIM(tag)  
     WHERE 

@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('> <', substring(p.Tags, 2, length(p.Tags)-2))) AS tag ON 
+        arrayJoin(splitByString('> <', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS tag ON 
         p.PostTypeId = 1  
     JOIN 
         Tags t ON t.TagName = tag

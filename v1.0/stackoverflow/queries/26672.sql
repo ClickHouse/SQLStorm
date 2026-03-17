@@ -20,7 +20,7 @@ TopQuestions AS (
         rp.CreationDate,
         rp.ViewCount,
         rp.Score,
-        length(splitByString('>', rp.Tags), 1) AS TagCount
+        length(splitByString('>', assumeNotNull(rp.Tags)), 1) AS TagCount
     FROM 
         RankedPosts rp
     WHERE 

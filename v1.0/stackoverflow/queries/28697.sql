@@ -1,14 +1,14 @@
 
 WITH TagUsage AS (
     SELECT
-        TRIM(arrayJoin(splitByString('> <', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS TagName,
+        TRIM(arrayJoin(splitByString('> <', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))))) AS TagName,
         COUNT(*) AS PostCount
     FROM
         Posts
     WHERE
         PostTypeId = 1  
     GROUP BY
-        TRIM(arrayJoin(splitByString('> <', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))))
+        TRIM(arrayJoin(splitByString('> <', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))))
 ),
 PopularTags AS (
     SELECT

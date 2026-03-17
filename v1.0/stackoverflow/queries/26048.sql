@@ -48,7 +48,7 @@ SELECT
     rp.DownVotes,
     COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
                FROM Posts AS p2 
-               CROSS JOIN (SELECT arrayJoin(splitByString(',', p2.Tags)) AS TagName) AS t
+               CROSS JOIN (SELECT arrayJoin(splitByString(',', assumeNotNull(p2.Tags))) AS TagName) AS t
                WHERE p2.Id = rp.PostId 
                AND t.TagName IS NOT NULL), 
                'No Tags') AS Tags,

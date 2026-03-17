@@ -22,14 +22,14 @@ WITH RankedPosts AS (
 ),
 TagPostCounts AS (
     SELECT 
-        arrayJoin(splitByString('> <', Tags)) AS TagName, 
+        arrayJoin(splitByString('> <', assumeNotNull(Tags))) AS TagName, 
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         Tags IS NOT NULL 
     GROUP BY 
-        arrayJoin(splitByString('> <', Tags))
+        arrayJoin(splitByString('> <', assumeNotNull(Tags)))
 ),
 PopularTags AS (
     SELECT 

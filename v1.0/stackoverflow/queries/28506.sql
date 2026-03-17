@@ -41,7 +41,7 @@ PostTags AS (
     FROM 
         Posts p
     CROSS JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS tag
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS tag
     GROUP BY 
         p.Id
 )

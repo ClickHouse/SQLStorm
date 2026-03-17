@@ -42,7 +42,7 @@ SELECT
     tu.TotalScore,
     (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
      FROM Posts p 
-     JOIN arrayJoin(splitByString(',', p.Tags)) AS tag ON TRUE
+     JOIN arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON TRUE
      JOIN Tags t ON t.TagName = tag 
      WHERE p.OwnerUserId = tu.UserId) AS AssociatedTags
 FROM 

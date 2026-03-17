@@ -32,7 +32,7 @@ TopPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('> <', Tags)) AS Tag, 
+        arrayJoin(splitByString('> <', assumeNotNull(Tags))) AS Tag, 
         COUNT(*) AS TagCount
     FROM 
         TopPosts
@@ -52,6 +52,6 @@ SELECT
 FROM 
     TagStatistics ts
 JOIN 
-    TopPosts tp ON ts.Tag = ANY(splitByString('> <', tp.Tags))
+    TopPosts tp ON ts.Tag = ANY(splitByString('> <', assumeNotNull(tp.Tags)))
 ORDER BY 
     ts.TagCount DESC, tp.Score DESC;

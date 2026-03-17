@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, LENGTH(p.Tags) - 2))) AS TagName, p.Id AS PostId FROM Posts p) AS tag ON p.Id = tag.PostId
+        (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS TagName, p.Id AS PostId FROM Posts p) AS tag ON p.Id = tag.PostId
     LEFT JOIN 
         Tags t ON t.TagName = tag.TagName
     WHERE 
@@ -26,7 +26,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2))) AS TagName
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2)))) AS TagName
     FROM 
         Posts
     WHERE 

@@ -44,7 +44,7 @@ ActiveQuestions AS (
     LEFT JOIN 
         PostHistory PH ON P.Id = PH.PostId AND PH.PostHistoryTypeId IN (10, 11) 
     JOIN 
-        arrayJoin(splitByString(',', P.Tags)) AS TagArray ON TRUE 
+        arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS TagArray ON TRUE 
     JOIN 
         Tags T ON T.TagName = TagArray
     WHERE 

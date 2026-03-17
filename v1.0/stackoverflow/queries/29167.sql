@@ -1,7 +1,7 @@
 
 WITH TagUsage AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
         Id AS PostId
     FROM 
         Posts
@@ -59,7 +59,7 @@ FinalStats AS (
     JOIN 
         TopTags tt ON tt.Rank <= 10 
     WHERE 
-        tt.Tag = ANY(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
+        tt.Tag = ANY(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))))
 )
 SELECT 
     fs.Tag,

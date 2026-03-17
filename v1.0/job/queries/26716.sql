@@ -28,7 +28,7 @@ WITH enriched_movie_data AS (
 ),
 average_keywords AS (
     SELECT 
-        AVG(COALESCE(NULLIF(length(splitByString(', ', keywords), 1), 0), 0)) AS avg_keywords_per_movie
+        AVG(COALESCE(NULLIF(length(splitByString(', ', assumeNotNull(keywords)), 1), 0), 0)) AS avg_keywords_per_movie
     FROM 
         enriched_movie_data
 )

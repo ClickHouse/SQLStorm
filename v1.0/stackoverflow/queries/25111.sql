@@ -30,7 +30,7 @@ TrimmedTags AS (
     FROM 
         RankedPosts rp
     CROSS JOIN 
-        arrayJoin(splitByString('>', rp.Tags)) AS raw_tags(tag)
+        arrayJoin(splitByString('>', assumeNotNull(rp.Tags))) AS raw_tags(tag)
     JOIN 
         Tags t ON TRIM(raw_tags.tag) = t.TagName
     GROUP BY 

@@ -71,7 +71,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString(',', p.Tags)) AS TagName
+            arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
     ) t ON true
 WHERE 
     p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'

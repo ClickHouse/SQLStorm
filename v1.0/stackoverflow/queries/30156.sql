@@ -16,7 +16,7 @@ RecentPostActivity AS (
         COUNT(C.Id) AS CommentCount,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpvoteCount,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownvoteCount,
-        ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY any(P.CreationDate) DESC) AS RecentPostRank
+        ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS RecentPostRank
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
     LEFT JOIN Votes V ON P.Id = V.PostId

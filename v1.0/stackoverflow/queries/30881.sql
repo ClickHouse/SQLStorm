@@ -53,7 +53,7 @@ LEFT JOIN
         FROM 
             Tags t
         WHERE 
-            t.TagName = ANY(splitByString(',', p.Tags))
+            t.TagName = ANY(splitByString(',', assumeNotNull(p.Tags)))
     ) AS t ON TRUE
 WHERE 
     (u.Reputation > 1000 OR u.DisplayName IS NOT NULL)

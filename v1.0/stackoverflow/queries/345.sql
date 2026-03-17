@@ -33,7 +33,7 @@ PostsWithTags AS (
     FROM 
         Posts p
     LEFT JOIN 
-        Tags t ON t.Id = ANY(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))::int[])
+        Tags t ON t.Id = ANY(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))::int[])
     GROUP BY 
         p.Id, p.Tags
 ),

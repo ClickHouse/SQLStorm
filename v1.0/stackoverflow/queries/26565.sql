@@ -56,7 +56,7 @@ SELECT
 FROM 
     TagStatistics ts
 LEFT JOIN 
-    ClosedPostStatistics cps ON ts.TagName IN (SELECT arrayJoin(splitByString(', ', cps.ClosedReasonNames)))
+    ClosedPostStatistics cps ON ts.TagName IN (SELECT arrayJoin(splitByString(', ', assumeNotNull(cps.ClosedReasonNames))))
 LEFT JOIN 
     UserActivity ua ON ua.TotalPosts > 0
 ORDER BY 

@@ -38,7 +38,7 @@ HighEngagementQuestions AS (
 ), 
 TopTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS TagName,
+        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p

@@ -47,7 +47,7 @@ SELECT
      FROM Tags tag 
      INNER JOIN (
          SELECT 
-             arrayJoin(splitByString(' ', t.Title)) AS TagName 
+             arrayJoin(splitByString(' ', assumeNotNull(t.Title))) AS TagName 
      ) AS split_tags ON tag.TagName = split_tags.TagName
     ) AS AssociatedTags
 FROM 

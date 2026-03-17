@@ -16,7 +16,7 @@ WITH PostAggregates AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2 
     LEFT JOIN 
-        arrayJoin(splitByString('><', p.Tags)) AS tag_names ON tag_names IS NOT NULL 
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag_names ON tag_names IS NOT NULL 
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag_names)
     WHERE 

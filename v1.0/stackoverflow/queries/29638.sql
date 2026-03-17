@@ -43,7 +43,7 @@ TopPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('>', Tags))) AS TagName,
+        TRIM(arrayJoin(splitByString('>', assumeNotNull(Tags)))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         TopPosts

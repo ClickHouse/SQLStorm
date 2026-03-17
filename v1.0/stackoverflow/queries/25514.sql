@@ -25,7 +25,7 @@ PostTagStats AS (
         COUNT(DISTINCT T.TagName) AS TagCount,
         arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
     FROM Posts P
-    JOIN arrayJoin(splitByString('>', P.Tags)) AS T(TagName) 
+    JOIN arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS T(TagName) 
     ON T.TagName IS NOT NULL
     GROUP BY P.Id
 ),

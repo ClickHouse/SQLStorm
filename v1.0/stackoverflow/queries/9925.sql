@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         u.Reputation AS OwnerReputation,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpVotes,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3) AS DownVotes,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') FROM Tags t WHERE t.Id IN (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))::int[]))) AS TagsList
+        (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') FROM Tags t WHERE t.Id IN (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))::int[]))) AS TagsList
     FROM 
         Posts p
     JOIN 

@@ -17,7 +17,7 @@ WITH UserEngagement AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (8, 9) 
     LEFT JOIN
-        (SELECT Id, arrayJoin(splitByString('><', Tags)) AS TagName FROM Posts WHERE Tags IS NOT NULL) T ON T.Id = P.Id
+        (SELECT Id, arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName FROM Posts WHERE Tags IS NOT NULL) T ON T.Id = P.Id
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation
 ),

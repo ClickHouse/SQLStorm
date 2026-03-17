@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         LEFT JOIN Users u ON p.OwnerUserId = u.Id
         LEFT JOIN Comments c ON p.Id = c.PostId
         LEFT JOIN Votes v ON p.Id = v.PostId
-        LEFT JOIN (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag) AS tag ON TRUE
+        LEFT JOIN (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS tag) AS tag ON TRUE
         JOIN Tags t ON tag.tag = t.TagName
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'

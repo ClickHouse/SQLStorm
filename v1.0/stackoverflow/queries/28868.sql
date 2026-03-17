@@ -43,7 +43,7 @@ TopPosts AS (
 ),
 PostTagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', rp.Tags)) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(rp.Tags))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         TopPosts rp

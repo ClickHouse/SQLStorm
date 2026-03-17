@@ -15,7 +15,7 @@ WITH UserPerformance AS (
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Votes v ON p.Id = v.PostId
-    LEFT JOIN arrayJoin(splitByString('>', p.Tags)) AS t(TagName) ON t.TagName <> ''
+    LEFT JOIN arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName <> ''
     WHERE u.Reputation > 0
     GROUP BY u.Id, u.DisplayName, u.Reputation
 ),

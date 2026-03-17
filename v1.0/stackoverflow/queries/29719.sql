@@ -20,14 +20,14 @@ WITH RankedPosts AS (
 ),
 TagSummary AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS TagName,
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS PostCount,
         SUM(CASE WHEN Score > 0 THEN 1 ELSE 0 END) AS UpvotedCount,
         AVG(Score) AS AverageScore
     FROM 
         RankedPosts
     GROUP BY 
-        arrayJoin(splitByString(',', Tags))
+        arrayJoin(splitByString(',', assumeNotNull(Tags)))
 ),
 TopTags AS (
     SELECT 

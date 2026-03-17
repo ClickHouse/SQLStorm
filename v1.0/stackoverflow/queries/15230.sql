@@ -9,5 +9,5 @@ JOIN Users u ON p.OwnerUserId = u.Id
 LEFT JOIN Comments c ON p.Id = c.PostId
 WHERE p.PostTypeId = 1 
 GROUP BY p.Id, p.Title, p.CreationDate, u.DisplayName
-ORDER BY any(p.Score) DESC
+ORDER BY p.Score DESC
 FETCH FIRST 10 ROWS ONLY;

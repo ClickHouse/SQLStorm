@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS RankByScore,
         COUNT(c.Id) OVER (PARTITION BY p.Id) AS CommentCount,
         SUBSTRING(p.Body, 1, 100) AS PreviewBody,
-        length(splitByString(',', p.Tags), 1) AS TagCount
+        length(splitByString(',', assumeNotNull(p.Tags)), 1) AS TagCount
     FROM 
         Posts p
     LEFT JOIN 

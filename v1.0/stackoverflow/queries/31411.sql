@@ -74,7 +74,7 @@ LEFT JOIN (
     FROM 
         Posts pt
     CROSS JOIN 
-        arrayJoin(splitByString('><', pt.Tags)) AS t(TagName)
+        arrayJoin(splitByString('><', assumeNotNull(pt.Tags))) AS t(TagName)
 ) tags ON tags.Id = (
     SELECT 
         p.Id

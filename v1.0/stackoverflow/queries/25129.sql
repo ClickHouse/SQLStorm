@@ -63,7 +63,7 @@ JOIN
 LEFT JOIN 
     Posts p ON p.OwnerUserId = u.Id
 LEFT JOIN 
-    arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
+    arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName IS NOT NULL
 WHERE 
     u.Reputation >= 1000  
 GROUP BY 

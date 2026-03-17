@@ -1,7 +1,7 @@
 
 WITH TagStats AS (
     SELECT
-        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TagName,
+        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2))))) AS TagName,
         COUNT(*) AS PostCount,
         SUM(CASE WHEN PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount

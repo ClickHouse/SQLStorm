@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount,
         AVG(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS AverageUpVotes,
         AVG(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS AverageDownVotes,
-        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY any(p.CreationDate) DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS Rank
     FROM 
         Posts p
     LEFT JOIN 

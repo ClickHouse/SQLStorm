@@ -31,7 +31,7 @@ WITH RankedPosts AS (
         ph.PostId
 ), TopTags AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS TagName
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName
     FROM 
         RankedPosts
     WHERE 
@@ -51,7 +51,7 @@ FROM
 LEFT JOIN 
     CloseStats ct ON rp.PostId = ct.PostId
 JOIN 
-    TopTags tt ON tt.TagName = ANY(splitByString(',', rp.Tags))
+    TopTags tt ON tt.TagName = ANY(splitByString(',', assumeNotNull(rp.Tags)))
 WHERE 
     rp.TagRank = 1
 ORDER BY 

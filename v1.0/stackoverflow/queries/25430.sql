@@ -11,7 +11,7 @@ WITH FilteredPosts AS (
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId
-    LEFT JOIN arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS t(TagName) ON TRUE
+    LEFT JOIN arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS t(TagName) ON TRUE
     WHERE p.CreationDate >= DATE('2024-10-01') - INTERVAL '3 months'
       AND p.ViewCount > 100
     GROUP BY p.Id, p.Title, p.Body, p.CreationDate, u.DisplayName

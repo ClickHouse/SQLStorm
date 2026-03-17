@@ -44,7 +44,7 @@ FROM
 LEFT JOIN 
     Posts p ON rp.PostID = p.Id
 LEFT JOIN 
-    Tags t ON t.TagName IN (SELECT arrayJoin(splitByString(',', rp.Tags)))
+    Tags t ON t.TagName IN (SELECT arrayJoin(splitByString(',', assumeNotNull(rp.Tags))))
 WHERE 
     rp.Rank <= 10
 GROUP BY 

@@ -41,7 +41,7 @@ PopularPosts AS (
     JOIN 
         (
             SELECT 
-                arrayJoin(splitByString('><', p.Tags)) AS TagName
+                arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
         ) pd ON true
     WHERE 
         p.Score > 50

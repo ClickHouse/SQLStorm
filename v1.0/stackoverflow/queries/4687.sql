@@ -15,7 +15,7 @@ PostMetrics AS (
         COALESCE((SELECT COUNT(*) FROM Comments C WHERE C.PostId = P.Id), 0) AS CommentCount,
         COALESCE(SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
         COALESCE(SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
-        COALESCE(CASE WHEN any(P.AcceptedAnswerId) IS NOT NULL THEN 1 ELSE 0 END, 0) AS IsAccepted
+        COALESCE(CASE WHEN P.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END, 0) AS IsAccepted
     FROM Posts P
     LEFT JOIN Votes V ON P.Id = V.PostId
     GROUP BY P.Id, P.Title, P.OwnerUserId

@@ -29,7 +29,7 @@ PostStatistics AS (
     FROM 
         Posts p
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName) AS tags ON TRUE
+        (SELECT arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName) AS tags ON TRUE
     WHERE 
         p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
 )

@@ -91,7 +91,7 @@ LEFT JOIN
     (
         SELECT 
             p.OwnerUserId,
-            arrayJoin(splitByString('>', p.Tags)) AS TagName
+            arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
         FROM 
             Posts p
         WHERE 

@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        (SELECT Id, arrayJoin(splitByString('><', Tags)) AS TagName FROM Posts WHERE Tags IS NOT NULL) t ON p.Id = t.Id
+        (SELECT Id, arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName FROM Posts WHERE Tags IS NOT NULL) t ON p.Id = t.Id
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     WHERE 

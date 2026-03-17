@@ -24,7 +24,7 @@ RecentPosts AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('><', P.Tags)) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS Tag,
         COUNT(*) AS TagCount
     FROM Posts P
     WHERE P.PostTypeId = 1
@@ -52,7 +52,7 @@ SELECT
 FROM RecursiveUserStats U
 LEFT JOIN RecentPosts RP ON U.UserId = RP.OwnerUserId AND RP.RecentPostRank = 1
 LEFT JOIN PostCommentsCount PC ON RP.PostId = PC.PostId
-LEFT JOIN TopTags TT ON TT.Tag = ANY(splitByString('><', COALESCE(RP.Tags, '')))
+LEFT JOIN TopTags TT ON TT.Tag = ANY(splitByString('><', assumeNotNull(COALESCE(RP.Tags, ''))))
 WHERE U.Reputation > 1000
 ORDER BY U.Reputation DESC, TT.TagCount DESC NULLS LAST
 LIMIT 100;

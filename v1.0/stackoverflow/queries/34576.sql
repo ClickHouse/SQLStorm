@@ -17,7 +17,7 @@ FrequentTags AS (
         arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags,
         COUNT(*) AS PostCount
     FROM Posts P
-    JOIN arrayJoin(splitByString('>', P.Tags)) AS TagList ON TRUE
+    JOIN arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS TagList ON TRUE
     JOIN Tags T ON T.TagName = TRIM(BOTH '<>' FROM TagList)
     GROUP BY P.OwnerUserId
 ),

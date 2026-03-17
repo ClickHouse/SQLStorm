@@ -18,7 +18,7 @@ WITH PostStatistics AS (
     FROM Posts p
     JOIN Users U ON p.OwnerUserId = U.Id
     LEFT JOIN (
-        SELECT arrayJoin(splitByString('>', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName
+        SELECT arrayJoin(splitByString('>', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName
     ) AS t ON TRUE
     WHERE p.PostTypeId = 1  
     GROUP BY p.Id, p.Title, p.ViewCount, p.Score, p.AnswerCount, p.CommentCount, U.DisplayName

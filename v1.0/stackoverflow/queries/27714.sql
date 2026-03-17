@@ -21,7 +21,7 @@ TopTags AS (
         COUNT(*) AS PostCount
     FROM (
         SELECT 
-            arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag
+            arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag
         FROM 
             Posts
         WHERE 
@@ -51,7 +51,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagRankings tr ON tr.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2))) 
+    TagRankings tr ON tr.Tag = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags)-2)))) 
 WHERE 
     rp.RankByScore <= 5 
 ORDER BY 

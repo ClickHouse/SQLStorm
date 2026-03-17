@@ -17,14 +17,14 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', p.Tags)) AS Tag,
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('>', p.Tags))
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags)))
     ORDER BY 
         TagCount DESC
     LIMIT 5
@@ -53,7 +53,7 @@ FROM
 JOIN 
     PostHistorySummary ph ON rp.PostId = ph.PostId
 JOIN 
-    PopularTags pts ON pts.Tag = ANY(splitByString('>', rp.Tags))
+    PopularTags pts ON pts.Tag = ANY(splitByString('>', assumeNotNull(rp.Tags)))
 WHERE 
     rp.RankByViews <= 10
 ORDER BY 

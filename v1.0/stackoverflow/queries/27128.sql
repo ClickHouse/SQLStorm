@@ -50,7 +50,7 @@ SELECT
     tp.ViewCount,
     tp.CommentCount,
     tp.VoteCount,
-    ARRAY(SELECT DISTINCT arrayJoin(splitByString('><', tp.Tags)) AS Tag) AS ParsedTags,
+    ARRAY(SELECT DISTINCT arrayJoin(splitByString('><', assumeNotNull(tp.Tags))) AS Tag) AS ParsedTags,
     (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' (Reputation: ', u.Reputation, ')')))), ', ')
      FROM Users u
      WHERE u.Id IN (SELECT DISTINCT c.UserId FROM Comments c WHERE c.PostId = tp.PostId)) AS Commenters

@@ -83,7 +83,7 @@ LEFT JOIN
      FROM 
         Posts P
      LEFT JOIN 
-        arrayJoin(splitByString(',', P.Tags)) AS tag_array ON tag_array IS NOT NULL
+        arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS tag_array ON tag_array IS NOT NULL
      LEFT JOIN 
         Tags T ON T.TagName = TRIM(tag_array)
      GROUP BY 

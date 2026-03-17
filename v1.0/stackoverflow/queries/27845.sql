@@ -4,7 +4,7 @@ WITH TagDetails AS (
         p.Id AS PostId,
         p.Title,
         p.Tags,
-        splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)) AS SplitTags
+        splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))) AS SplitTags
     FROM
         Posts p
     WHERE

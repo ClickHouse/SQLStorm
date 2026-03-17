@@ -46,7 +46,7 @@ SELECT
     END AS ContributorStatus,
     COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ')
                FROM Posts p
-               JOIN arrayJoin(splitByString(',', p.Tags)) AS t(TagName) ON t.TagName IS NOT NULL
+               JOIN arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName IS NOT NULL
                WHERE p.OwnerUserId = tu.UserId AND p.PostTypeId = 1), 'No Tags') AS TagsUsed
 FROM 
     TopUsers tu

@@ -39,7 +39,7 @@ PostTagStats AS (
     FROM 
         Posts P
     JOIN 
-        (SELECT TRIM(tag) AS tag FROM arrayJoin(splitByString('>', P.Tags)) AS tag) AS tag ON tag IS NOT NULL
+        (SELECT TRIM(tag) AS tag FROM arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS tag) AS tag ON tag IS NOT NULL
     JOIN 
         Tags T ON T.TagName = tag.tag
     GROUP BY 

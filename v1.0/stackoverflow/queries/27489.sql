@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         p.Tags,
-        length(splitByString('>', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
+        length(splitByString('>', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))), 1) AS TagCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank,
         u.Reputation AS UserReputation,
         u.DisplayName AS UserDisplayName
@@ -21,7 +21,7 @@ WITH RankedPosts AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('>', substring(p.Tags, 2, length(p.Tags)-2))) AS TagName,
+        arrayJoin(splitByString('>', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName,
         COUNT(*) AS TagUsage
     FROM 
         Posts p
@@ -63,7 +63,7 @@ FROM
 LEFT JOIN 
     PostComments pc ON r.PostId = pc.PostId
 LEFT JOIN 
-    TopTags tt ON tt.TagName = ANY(splitByString('>', substring(r.Tags, 2, length(r.Tags)-2)))
+    TopTags tt ON tt.TagName = ANY(splitByString('>', assumeNotNull(substring(r.Tags, 2, length(r.Tags)-2))))
 WHERE 
     r.PostRank = 1 
 ORDER BY 

@@ -17,7 +17,7 @@ WITH TaggedPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS tag_names ON TRUE
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS tag_names ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag_names
     WHERE 

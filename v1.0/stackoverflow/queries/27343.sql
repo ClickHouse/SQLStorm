@@ -55,7 +55,7 @@ FROM
 LEFT JOIN
     (SELECT 
          Id, 
-         arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName
+         arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS TagName
      FROM 
          Posts) t ON t.Id = tp.PostId
 GROUP BY

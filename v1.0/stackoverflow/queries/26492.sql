@@ -25,7 +25,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', p.Tags))) AS TagName,
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', assumeNotNull(p.Tags)))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -66,7 +66,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagDetails tt ON tt.TagName = ANY (splitByString(' ', rp.Body))  
+    TagDetails tt ON tt.TagName = ANY (splitByString(' ', assumeNotNull(rp.Body)))  
 WHERE 
     rp.OwnerPostRank <= 5  
 ORDER BY 

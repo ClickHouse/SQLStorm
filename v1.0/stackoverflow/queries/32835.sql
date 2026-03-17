@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
-        ROW_NUMBER() OVER (PARTITION BY any(p.PostTypeId) ORDER BY p.Score DESC) AS Rank,
+        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
         COUNT(DISTINCT v.UserId) AS VoteCount
     FROM 
         Posts p

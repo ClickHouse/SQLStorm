@@ -33,7 +33,7 @@ PostActivity AS (
         p.Title,
         COUNT(c.Id) AS CommentCount,
         p.ViewCount,
-        COALESCE(MAX(ph.CreationDate), any(p.CreationDate)) AS LastActivityDate
+        COALESCE(MAX(ph.CreationDate), p.CreationDate) AS LastActivityDate
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId

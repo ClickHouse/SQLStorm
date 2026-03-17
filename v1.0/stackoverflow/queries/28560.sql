@@ -41,7 +41,7 @@ SELECT
 FROM 
     FilteredPosts fp
 LEFT JOIN 
-    Tags t ON t.TagName = ANY(splitByString('><', fp.Tags)) 
+    Tags t ON t.TagName = ANY(splitByString('><', assumeNotNull(fp.Tags))) 
 GROUP BY 
     fp.PostId, fp.Title, fp.Tags, fp.OwnerDisplayName, fp.CommentCount, fp.UpVoteCount, fp.DownVoteCount
 ORDER BY 

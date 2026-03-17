@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>,<', LOWER(rp.Tags))) AS Tag,
+        arrayJoin(splitByString('>,<', assumeNotNull(LOWER(rp.Tags)))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts rp
@@ -73,7 +73,7 @@ JOIN
 JOIN 
     UserReputation ur ON ur.UserId = u.Id
 LEFT JOIN 
-    PopularTags pt ON LOWER(pt.Tag) IN (SELECT arrayJoin(splitByString('>,<', LOWER(rp.Tags))))
+    PopularTags pt ON LOWER(pt.Tag) IN (SELECT arrayJoin(splitByString('>,<', assumeNotNull(LOWER(rp.Tags)))))
 WHERE 
     rp.PostRank = 1
     AND (ur.Reputation > 100 OR ur.GoldBadges > 0)

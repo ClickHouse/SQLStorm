@@ -6,7 +6,7 @@ WITH QualifiedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        length(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         COALESCE((
             SELECT COUNT(*)

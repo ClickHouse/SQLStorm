@@ -67,7 +67,7 @@ FROM
 LEFT JOIN 
     Posts p ON p.OwnerDisplayName = UM.OwnerName
 LEFT JOIN 
-    arrayJoin(splitByString('><', p.Tags)) AS t(TagName) ON TRUE
+    arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
 GROUP BY 
     UM.OwnerName, UM.PostCount, UM.TotalViews, UM.TotalScore, UM.BadgeCount
 ORDER BY 

@@ -55,7 +55,7 @@ LEFT JOIN (
         PostHistory ph ON ph.PostId = p.Id AND ph.PostHistoryTypeId IN (4, 5, 6)  
     GROUP BY 
         p.Tags
-) AS PH ON tt.TagName IN (SELECT arrayJoin(splitByString(', ', PH.Tags)))
+) AS PH ON tt.TagName IN (SELECT arrayJoin(splitByString(', ', assumeNotNull(PH.Tags))))
 JOIN 
     PostTypes PT ON pt.Id = (SELECT DISTINCT p.PostTypeId FROM Posts p WHERE p.Tags LIKE CONCAT('%', tt.TagName, '%'))
 ORDER BY 

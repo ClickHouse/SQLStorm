@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString(', ', p.Tags)) AS tag) AS tag ON true
+        (SELECT arrayJoin(splitByString(', ', assumeNotNull(p.Tags))) AS tag) AS tag ON true
     JOIN 
         Tags tags ON tags.TagName = TRIM(BOTH '"' FROM tag.tag)
     WHERE 

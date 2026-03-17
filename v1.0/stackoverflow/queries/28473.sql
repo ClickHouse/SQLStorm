@@ -21,7 +21,7 @@ WITH UserStats AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (8, 9)  
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString(',', P.Tags)) AS TagName, P.Id AS PostId FROM Posts P) AS T ON P.Id = T.PostId
+        (SELECT arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS TagName, P.Id AS PostId FROM Posts P) AS T ON P.Id = T.PostId
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation, U.Views
 )

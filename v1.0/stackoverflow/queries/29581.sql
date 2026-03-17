@@ -35,7 +35,7 @@ TopTags AS (
         COUNT(*) AS TagCount
     FROM (
         SELECT 
-            arrayJoin(splitByString('>', Tags)) AS TagName
+            arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TagName
         FROM 
             Posts
         WHERE 
@@ -62,7 +62,7 @@ FROM
 JOIN 
     UserReputation ur ON rp.PostId = ur.UserId
 JOIN 
-    TopTags tt ON tt.TagName = ANY(splitByString('>', rp.Tags))
+    TopTags tt ON tt.TagName = ANY(splitByString('>', assumeNotNull(rp.Tags)))
 WHERE 
     rp.UserPostRank <= 3 
 ORDER BY 

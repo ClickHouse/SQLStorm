@@ -22,8 +22,8 @@ UserVotes AS (
 OpenQuestions AS (
     SELECT 
         PQ.Id AS QuestionId,
-        any(PQ.Title),
-        any(PQ.AcceptedAnswerId),
+        PQ.Title,
+        PQ.AcceptedAnswerId,
         COUNT(A.Id) AS AnswerCount,
         COALESCE(PH.Comment, 'No close reason') AS CloseReason
     FROM Posts PQ

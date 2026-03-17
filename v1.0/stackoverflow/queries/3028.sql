@@ -45,7 +45,7 @@ LEFT JOIN
     Posts p ON tu.UserId = p.OwnerUserId
 LEFT JOIN 
     (SELECT 
-                  DISTINCT arrayJoin(splitByString('><', p.Tags)) AS TagName 
+                  DISTINCT arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName 
               ) t ON true
 GROUP BY 
     tu.UserId, tu.DisplayName, tu.Reputation, tu.PostCount, tu.UpVotes, tu.DownVotes, tu.ReputationCategory

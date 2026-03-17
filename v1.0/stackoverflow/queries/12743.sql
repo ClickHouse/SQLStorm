@@ -21,5 +21,5 @@ LEFT JOIN
 GROUP BY 
     p.Id, p.Title, pt.Name
 ORDER BY 
-    any(p.CreationDate) DESC
+    p.CreationDate DESC
 LIMIT 100;

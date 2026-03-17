@@ -49,7 +49,7 @@ SELECT
     tu.DisplayName AS TopUser,
     tu.NetVotes,
     rp.Score AS PostScore,
-    length(splitByString('><', rp.Tags), 1) AS TagCount
+    length(splitByString('><', assumeNotNull(rp.Tags)), 1) AS TagCount
 FROM
     RankedPosts rp
 JOIN

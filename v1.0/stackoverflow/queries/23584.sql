@@ -74,7 +74,7 @@ FROM
     LEFT JOIN Posts p ON epi.PostId = p.Id
     LEFT JOIN (
         SELECT 
-            arrayJoin(splitByString(', ', p.Tags)) AS TagName
+            arrayJoin(splitByString(', ', assumeNotNull(p.Tags))) AS TagName
     ) t ON TRUE
 GROUP BY 
     epi.PostId, epi.Title, epi.CreationDate, epi.Score, epi.CloseOpenCount, epi.DeletionCount, epi.OwnerReputation

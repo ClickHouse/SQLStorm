@@ -76,7 +76,7 @@ LEFT JOIN
 LEFT JOIN 
     ClosedPosts cp ON rp.PostId = cp.PostId
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString(' ', rp.LatestBody))
+    PopularTags pt ON pt.TagName = ANY(splitByString(' ', assumeNotNull(rp.LatestBody)))
 WHERE 
     rp.Score > 5
     AND rp.CommentCount > 5

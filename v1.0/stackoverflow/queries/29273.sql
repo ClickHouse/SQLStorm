@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 ),
 FrequentTags AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -60,7 +60,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    FrequentTags ft ON ft.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
+    FrequentTags ft ON ft.Tag = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags)-2))))
 LEFT JOIN 
     ClosedPosts cp ON rp.Id = cp.Id
 GROUP BY 

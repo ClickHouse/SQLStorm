@@ -26,7 +26,7 @@ TagDetails AS (
         MIN(PostId) AS SampleTagId
     FROM (
         SELECT 
-            arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
+            arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS TagName,
             p.Id AS PostId
         FROM 
             Posts p

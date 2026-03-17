@@ -59,7 +59,7 @@ LEFT JOIN
 LEFT JOIN 
     PostVoteDetails PD ON P.Id = PD.PostId
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString(',', P.Tags)) AS TagName) AS TagArray ON true
+    (SELECT arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS TagName) AS TagArray ON true
 LEFT JOIN 
     Tags T ON T.TagName = TagArray.TagName
 GROUP BY 

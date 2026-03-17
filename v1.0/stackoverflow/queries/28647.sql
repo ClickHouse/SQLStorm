@@ -36,7 +36,7 @@ TopPosts AS (
 PostTags AS (
     SELECT 
         tp.PostId,
-        arrayJoin(splitByString('><', tp.Tags)) AS TagName
+        arrayJoin(splitByString('><', assumeNotNull(tp.Tags))) AS TagName
     FROM 
         TopPosts tp
 )

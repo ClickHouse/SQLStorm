@@ -62,7 +62,7 @@ SELECT dp.PostId,
        END AS PostStatus,
        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS RelatedTags
 FROM DetailedPosts dp
-LEFT JOIN Tags t ON t.TagName = ANY(splitByString(',', dp.Tags))
+LEFT JOIN Tags t ON t.TagName = ANY(splitByString(',', assumeNotNull(dp.Tags)))
 WHERE dp.OwnerReputation > (SELECT AVG(Reputation) FROM Users)
 GROUP BY dp.PostId, dp.Title, dp.Score, dp.ViewCount, dp.OwnerDisplayName, dp.OwnerReputation,
          dp.CloseCount, dp.DeleteCount, dp.LastEventDate, dp.Tags

@@ -42,8 +42,8 @@ UserPostActivity AS (
         Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN 
         PostStatistics ps ON p.Id = ps.PostId
-    LEFT JOIN 
-        (SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName) t ON TRUE
+
+        LEFT ARRAY JOIN splitByString(',', assumeNotNull(p.Tags)) AS TagName
     GROUP BY 
         u.Id
 )

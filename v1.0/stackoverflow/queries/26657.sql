@@ -12,7 +12,7 @@ WITH UserTags AS (
     JOIN 
         (SELECT 
             P.Id, 
-            arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2)))) AS TagName
          FROM 
             Posts P 
          WHERE 

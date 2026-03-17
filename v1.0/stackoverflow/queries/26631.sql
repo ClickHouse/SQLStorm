@@ -4,7 +4,7 @@ WITH BasePosts AS (
         p.Id AS PostId,
         p.Title,
         p.Body,
-        splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)) AS TagsArray,
+        splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))) AS TagsArray,
         p.CreationDate,
         p.Score,
         u.DisplayName AS OwnerDisplayName,

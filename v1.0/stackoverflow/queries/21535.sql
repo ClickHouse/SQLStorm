@@ -38,7 +38,7 @@ WITH RankedPosts AS (
 ), CountTags AS (
     SELECT 
         p.Id AS PostId,
-        CARDINALITY(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))) AS TagCount
+        CARDINALITY(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagCount
     FROM 
         Posts p
     WHERE 

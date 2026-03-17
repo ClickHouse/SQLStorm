@@ -27,7 +27,7 @@ UserStats AS (
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (8, 9)  
     GROUP BY 
         u.Id
-, u.DisplayName, u.Reputation),
+),
 PostsWithComments AS (
     SELECT 
         p.Id AS PostId,

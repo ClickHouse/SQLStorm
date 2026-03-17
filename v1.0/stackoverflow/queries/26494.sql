@@ -45,7 +45,7 @@ TagsAggregated AS (
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(LOWER(TRIM(value))))), ', ') AS Tags
     FROM 
         Posts p,
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags)-2))) AS value
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags)-2)))) AS value
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 

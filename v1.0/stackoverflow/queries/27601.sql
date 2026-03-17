@@ -48,7 +48,7 @@ TagCounts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        Tags t ON t.TagName IN (SELECT arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2))))
+        Tags t ON t.TagName IN (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))))
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 

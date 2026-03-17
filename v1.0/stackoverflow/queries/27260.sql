@@ -32,7 +32,7 @@ WITH PostDetails AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS TagName,
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -53,7 +53,7 @@ TagStats AS (
     JOIN 
         Posts p ON pd.PostId = p.Id
     JOIN 
-        TopTags tt ON tt.TagName = ANY(splitByString(',', p.Tags))
+        TopTags tt ON tt.TagName = ANY(splitByString(',', assumeNotNull(p.Tags)))
     GROUP BY 
         pd.PostId
 )

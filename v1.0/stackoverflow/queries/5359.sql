@@ -46,7 +46,7 @@ LEFT JOIN
     (SELECT p.Id, arrayStringConcat(groupArray(assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))), '>') AS tag_list 
      FROM Posts p GROUP BY p.Id) AS tag_list ON tag_list.Id = tp.PostId
 LEFT JOIN 
-    Tags t ON t.TagName = ANY(splitByString('><', tag_list.tag_list))
+    Tags t ON t.TagName = ANY(splitByString('><', assumeNotNull(tag_list.tag_list)))
 GROUP BY 
     tp.PostId, tp.Title, tp.OwnerName, tp.ViewCount, tp.Score, tp.UpVotes, tp.DownVotes, tp.AnswerCount, tp.CommentCount
 ORDER BY 

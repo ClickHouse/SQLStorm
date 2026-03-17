@@ -71,7 +71,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    TagStats ts ON ts.TagName IN (SELECT arrayJoin(splitByString('>', rp.Tags)))
+    TagStats ts ON ts.TagName IN (SELECT arrayJoin(splitByString('>', assumeNotNull(rp.Tags))))
 LEFT JOIN 
     RecentEdits re ON re.PostId = rp.PostId
 WHERE 

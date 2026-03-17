@@ -16,7 +16,7 @@ WITH RankedPosts AS (
 ),
 TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS TagName
     FROM RankedPosts
 ),
 TagFrequency AS (
@@ -42,7 +42,7 @@ SELECT
     tt.TagName,
     tt.TagUsage
 FROM RankedPosts rp
-JOIN TopTags tt ON tt.TagName = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
+JOIN TopTags tt ON tt.TagName = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags)-2))))
 WHERE rp.PostRank <= 5 
 AND tt.TagRank <= 10 
 ORDER BY rp.OwnerDisplayName, tt.TagUsage DESC;

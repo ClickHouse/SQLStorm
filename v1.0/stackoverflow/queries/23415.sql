@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.AcceptedAnswerId,
         COUNT(c.Id) AS CommentCount,
-        DENSE_RANK() OVER (PARTITION BY any(p.PostTypeId) ORDER BY p.CreationDate DESC) AS RankByDate
+        DENSE_RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS RankByDate
     FROM 
         Posts p
     LEFT JOIN 

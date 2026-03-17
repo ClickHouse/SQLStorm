@@ -27,7 +27,7 @@ PostTags AS (
         p.Id AS PostId,
         arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
     FROM Posts p
-    JOIN arrayJoin(splitByString('><', p.Tags)) AS tag ON TRUE
+    JOIN arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag ON TRUE
     JOIN Tags t ON t.TagName = TRIM(BOTH ' ' FROM tag)
     GROUP BY p.Id
 )

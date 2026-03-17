@@ -50,7 +50,7 @@ FROM
 LEFT JOIN 
     Posts p ON tp.PostId = p.Id
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS TagName) AS tc ON TRUE
+    (SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)))) AS TagName) AS tc ON TRUE
 WHERE 
     tp.Ranking <= 10 
 GROUP BY 

@@ -19,14 +19,14 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', Tags)) AS TagName, 
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TagName, 
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         Tags IS NOT NULL
     GROUP BY 
-        arrayJoin(splitByString('>', Tags))
+        arrayJoin(splitByString('>', assumeNotNull(Tags)))
     HAVING 
         COUNT(*) > 5
 ),
@@ -57,7 +57,7 @@ FROM
 LEFT JOIN 
     UserReputation ut ON rp.PostId = (SELECT p.Id FROM Posts p WHERE p.OwnerUserId = ut.UserId LIMIT 1)
 LEFT JOIN 
-    PopularTags pt ON pt.TagName IN (SELECT arrayJoin(splitByString(' ', rp.Title))) 
+    PopularTags pt ON pt.TagName IN (SELECT arrayJoin(splitByString(' ', assumeNotNull(rp.Title)))) 
 WHERE 
     rp.RankScore <= 10
 ORDER BY 

@@ -19,7 +19,7 @@ WITH RecentPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(' ', REPLACE(REPLACE(Tags, '<', ''), '>', ''))) AS Tag
+        arrayJoin(splitByString(' ', assumeNotNull(REPLACE(REPLACE(Tags, '<', ''), '>', '')))) AS Tag
     FROM 
         RecentPosts
 ),
@@ -57,7 +57,7 @@ PostWithTopTags AS (
     FROM 
         RecentPosts rp
     JOIN 
-        TopTags tt ON tt.Tag = ANY(splitByString(' ', REPLACE(REPLACE(rp.Tags, '<', ''), '>', '')))
+        TopTags tt ON tt.Tag = ANY(splitByString(' ', assumeNotNull(REPLACE(REPLACE(rp.Tags, '<', ''), '>', ''))))
     GROUP BY 
         rp.PostId, rp.Title, rp.OwnerDisplayName, rp.CreationDate, rp.ViewCount, rp.Score, rp.CommentCount, rp.AnswerCount
 )

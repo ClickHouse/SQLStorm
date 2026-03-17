@@ -8,7 +8,7 @@ WITH StringStats AS (
         U.DisplayName AS OwnerDisplayName,
         LENGTH(P.Body) AS BodyLength,
         LENGTH(P.Title) AS TitleLength,
-        CARDINALITY(splitByString('><', SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2))) AS TagCount,
+        CARDINALITY(splitByString('><', assumeNotNull(SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2)))) AS TagCount,
         COUNT(DISTINCT C.Id) AS CommentCount,
         COUNT(DISTINCT V.Id) AS VoteCount
     FROM 

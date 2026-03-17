@@ -29,7 +29,7 @@ RecentPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -56,6 +56,6 @@ SELECT
 FROM 
     RecentPosts rp
 JOIN 
-    FrequentTags ft ON ft.TagName = ANY (splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
+    FrequentTags ft ON ft.TagName = ANY (splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags)-2))))
 ORDER BY 
     rp.CreationDate DESC;

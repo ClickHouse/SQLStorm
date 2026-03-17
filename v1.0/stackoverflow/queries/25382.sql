@@ -1,7 +1,7 @@
 
 WITH TagFrequency AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -50,7 +50,7 @@ UserTagEngagement AS (
     JOIN 
         Posts P ON UA.UserId = P.OwnerUserId
     JOIN 
-        TopTags TT ON TT.TagName = ANY(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2)))
+        TopTags TT ON TT.TagName = ANY(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2))))
     WHERE 
         UA.QuestionCount > 0
 )

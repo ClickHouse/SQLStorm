@@ -52,7 +52,7 @@ PostDetails AS (
         WHERE 
             pb.Id = ps.PostId
     ) AS tagData ON TRUE
-    LEFT JOIN arrayJoin(splitByString('><', tagData.Tags)) AS t(TagName) ON TRUE
+    LEFT JOIN arrayJoin(splitByString('><', assumeNotNull(tagData.Tags))) AS t(TagName) ON TRUE
     GROUP BY 
         ps.PostId, ps.OwnerUserId, ps.CommentCount, ps.UpVoteCount, ps.DownVoteCount, ps.TotalBounty, pt.Name
 )

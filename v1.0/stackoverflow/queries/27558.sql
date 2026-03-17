@@ -1,14 +1,14 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))))
 ),
 UserReputation AS (
     SELECT 
@@ -47,7 +47,7 @@ UserActivity AS (
     JOIN 
         Posts p ON ur.UserId = p.OwnerUserId
     JOIN 
-        TopTags tt ON tt.TagName = ANY(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
+        TopTags tt ON tt.TagName = ANY(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))))
 )
 SELECT 
     ua.UserId,

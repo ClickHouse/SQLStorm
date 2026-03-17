@@ -5,7 +5,7 @@ WITH PostStatistics AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        length(splitByString('><', p.Tags), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(p.Tags)), 1) AS TagCount,
         COALESCE(a.AnswerCount, 0) AS AnswerCount,
         COALESCE(c.CommentCount, 0) AS CommentCount,
         COALESCE(substring(p.Body, 1, 100), '') AS Snippet

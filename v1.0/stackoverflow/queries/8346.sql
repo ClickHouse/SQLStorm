@@ -49,7 +49,7 @@ FROM
         SELECT 
             arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Name
         FROM 
-            arrayJoin(splitByString(',', p.Tags)) AS tag
+            arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag
             JOIN Tags t ON TRIM(tag) = t.TagName
     ) AS t
 WHERE 

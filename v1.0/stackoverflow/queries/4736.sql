@@ -21,7 +21,7 @@ PostStats AS (
         COUNT(C.CreationDate) AS CommentCount,
         SUM(CASE WHEN P.Score > 0 THEN 1 ELSE 0 END) AS PositiveScores,
         AVG(P.Score) AS AverageScore,
-        ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY any(P.CreationDate) DESC) AS Rn
+        ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS Rn
     FROM 
         Posts P
     LEFT JOIN 

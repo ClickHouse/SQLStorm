@@ -24,5 +24,5 @@ WHERE
 GROUP BY 
     p.Id, p.Title, p.CreationDate, u.DisplayName
 ORDER BY 
-    any(p.Score) DESC, p.CreationDate DESC
+    p.Score DESC, p.CreationDate DESC
 LIMIT 100;

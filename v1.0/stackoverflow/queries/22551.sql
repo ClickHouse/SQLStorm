@@ -19,7 +19,7 @@ RecentPosts AS (
         P.ViewCount,
         P.Score,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.CreationDate DESC) AS PostRank,
-        CARDINALITY(splitByString('<>', P.Tags)) AS TagCount
+        CARDINALITY(splitByString('<>', assumeNotNull(P.Tags))) AS TagCount
     FROM Posts P
     WHERE P.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
 ),

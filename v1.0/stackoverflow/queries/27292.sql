@@ -23,7 +23,7 @@ PostSummary AS (
     JOIN 
         Users U ON P.OwnerUserId = U.Id
     JOIN 
-        arrayJoin(splitByString('>', P.Tags)) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
     WHERE 
         P.PostTypeId = 1 
 ),

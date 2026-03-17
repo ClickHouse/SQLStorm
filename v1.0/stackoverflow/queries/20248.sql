@@ -61,7 +61,7 @@ LEFT JOIN VoteTypes vt ON v.VoteTypeId = vt.Id
 LEFT JOIN (
     SELECT 
         t.TagName
-    FROM arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS t(TagName)
+    FROM arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS t(TagName)
 ) t ON true
 GROUP BY ua.Id, ua.DisplayName, ua.Reputation, ua.BadgeCount, ua.TotalPosts, ua.Questions, ua.Answers, ua.AverageViews, ua.LastPostDate
 HAVING COUNT(DISTINCT p.Id) > 0

@@ -52,7 +52,7 @@ FROM
     FilteredPosts fp
 LEFT JOIN 
     (SELECT 
-                  arrayJoin(splitByString('>', fp.Tags)) AS TagName) AS t ON TRUE
+                  arrayJoin(splitByString('>', assumeNotNull(fp.Tags))) AS TagName) AS t ON TRUE
 GROUP BY 
     fp.PostId, fp.Title, fp.OwnerName, fp.CreationDate, fp.UpVotes, fp.DownVotes, fp.CommentCount
 ORDER BY 

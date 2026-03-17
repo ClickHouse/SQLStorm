@@ -25,7 +25,7 @@ WITH RankedPosts AS (
 ),
 TagSummary AS (
     SELECT 
-        arrayJoin(splitByString('>', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('>', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS Tag,
         COUNT(rp.PostId) AS PostCount,
         SUM(rp.CommentCount) AS TotalComments,
         SUM(rp.UpvoteCount) AS TotalUpvotes,

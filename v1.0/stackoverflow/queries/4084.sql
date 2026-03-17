@@ -39,7 +39,7 @@ SELECT
     U.ReopenedPosts,
     (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
      FROM Posts P 
-     JOIN arrayJoin(splitByString(',', P.Tags)) AS Tag ON TRUE
+     JOIN arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS Tag ON TRUE
      JOIN Tags T ON Tag = T.TagName
      WHERE P.OwnerUserId = U.UserId) AS TagsUsed,
     CASE 

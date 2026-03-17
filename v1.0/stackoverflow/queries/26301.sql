@@ -56,7 +56,7 @@ TaggedPosts AS (
 
 PopularTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('>', Tags))) AS TagName,
+        TRIM(arrayJoin(splitByString('>', assumeNotNull(Tags)))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         TaggedPosts

@@ -78,7 +78,7 @@ FROM
 JOIN Users u ON u.Id = rp.PostID 
 LEFT JOIN UserEngagement ueng ON ueng.UserID = u.Id
 LEFT JOIN RecentActivity ra ON ra.PostId = rp.PostID
-LEFT JOIN TagStatistics ts ON ts.TagName = ANY(splitByString(' ', rp.Title)) 
+LEFT JOIN TagStatistics ts ON ts.TagName = ANY(splitByString(' ', assumeNotNull(rp.Title))) 
 WHERE 
     rp.CommentCount > 5 
     AND (u.Reputation BETWEEN 100 AND 1000 OR 

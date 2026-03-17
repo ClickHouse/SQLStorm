@@ -56,7 +56,7 @@ FROM
 LEFT JOIN 
     Posts p ON tu.UserId = p.OwnerUserId
 LEFT JOIN 
-    Tags t ON t.Id = ANY(splitByString(',', p.Tags)::int[])
+    Tags t ON t.Id = ANY(splitByString(',', assumeNotNull(p.Tags))::int[])
 WHERE 
     tu.TotalComments >= 5
 GROUP BY 

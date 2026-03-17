@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('>', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS TagName,
         COUNT(*) AS NumberOfPosts
     FROM 
         Posts
@@ -66,7 +66,7 @@ SELECT
 FROM 
     TopTenPosts ttp
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString('>', SUBSTRING(ttp.Title FROM 2 FOR LENGTH(ttp.Title) - 2))) 
+    PopularTags pt ON pt.TagName = ANY(splitByString('>', assumeNotNull(SUBSTRING(ttp.Title FROM 2 FOR LENGTH(ttp.Title) - 2)))) 
 WHERE 
     ttp.OverallRanking <= 10 
 ORDER BY 

@@ -33,7 +33,7 @@ TopUsers AS (
 ),
 TagPostStats AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS Tag,
         COUNT(p.Id) AS PostCount,
         SUM(p.ViewCount) AS TotalViews,
         AVG(p.Score) AS AvgScore
@@ -42,7 +42,7 @@ TagPostStats AS (
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))))
 ),
 PopularTags AS (
     SELECT 

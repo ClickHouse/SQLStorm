@@ -17,8 +17,8 @@ WITH UserStatistics AS (
         Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
-    LEFT JOIN 
-        (SELECT arrayJoin(splitByString('><', p.Tags)) AS TagName) t ON TRUE
+
+        LEFT ARRAY JOIN splitByString('><', assumeNotNull(p.Tags)) AS TagName
     WHERE 
         u.Reputation > 100
     GROUP BY 

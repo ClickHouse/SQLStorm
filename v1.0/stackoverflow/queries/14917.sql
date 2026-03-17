@@ -21,4 +21,4 @@ LEFT JOIN
 GROUP BY 
     P.Id, P.Title, P.CreationDate, U.DisplayName
 ORDER BY 
-    any(P.Score) DESC;
+    P.Score DESC;

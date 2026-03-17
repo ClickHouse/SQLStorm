@@ -44,7 +44,7 @@ SELECT
     (SELECT ARRAY(SELECT DISTINCT TagName FROM Tags WHERE TagName IN 
         (
             SELECT 
-                arrayJoin(splitByString('>', P.Tags)) 
+                arrayJoin(splitByString('>', assumeNotNull(P.Tags))) 
             FROM 
                 Posts P 
             WHERE 

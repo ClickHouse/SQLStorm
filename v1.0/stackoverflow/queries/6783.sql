@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         Posts p
         JOIN PostTypes pt ON p.PostTypeId = pt.Id
         LEFT JOIN Comments c ON p.Id = c.PostId
-        LEFT JOIN (SELECT arrayJoin(splitByString('<>', p.Tags)) AS tag FROM Posts p) AS tag ON TRUE 
+        LEFT JOIN (SELECT arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS tag FROM Posts p) AS tag ON TRUE 
         JOIN Tags t ON tag = t.TagName
     WHERE 
         p.CreationDate > '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year' 

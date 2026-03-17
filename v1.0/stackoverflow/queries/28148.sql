@@ -45,7 +45,7 @@ SELECT
 FROM 
     FilteredPosts FP
 LEFT JOIN 
-    arrayJoin(splitByString('<>', FP.Tags)) AS Tag ON Tag IS NOT NULL
+    arrayJoin(splitByString('<>', assumeNotNull(FP.Tags))) AS Tag ON Tag IS NOT NULL
 LEFT JOIN 
     Tags T ON T.TagName = Tag
 GROUP BY 

@@ -38,7 +38,7 @@ WordsCount AS (
         COUNT(DISTINCT TRIM(value)) AS UniqueWordCount
     FROM 
         FilteredPosts fp,
-        arrayJoin(splitByString(' ', fp.Body)) AS value
+        arrayJoin(splitByString(' ', assumeNotNull(fp.Body))) AS value
     GROUP BY 
         fp.PostId
 ),

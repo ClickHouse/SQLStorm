@@ -22,8 +22,8 @@ PostMetrics AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        COALESCE(any(p.Score), 0) AS Score,
-        COALESCE(any(p.ViewCount), 0) AS ViewCount,
+        COALESCE(p.Score, 0) AS Score,
+        COALESCE(p.ViewCount, 0) AS ViewCount,
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,

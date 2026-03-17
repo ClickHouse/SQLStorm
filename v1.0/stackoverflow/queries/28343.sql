@@ -32,7 +32,7 @@ SELECT
     rp.CommentCount,
     rp.UpvoteCount,
     rp.DownvoteCount,
-    length(splitByString('><', rp.Tags), 1) AS TagCount,
+    length(splitByString('><', assumeNotNull(rp.Tags)), 1) AS TagCount,
     CASE 
         WHEN rp.Rank <= 5 THEN 'Top Posts'
         ELSE 'Other Posts'

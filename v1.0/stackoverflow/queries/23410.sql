@@ -40,7 +40,7 @@ PostSummary AS (
         P.Score,
         COALESCE(PT.Name, 'Unknown') AS TypeNameFallback, 
         (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(TagName))), ', ') 
-         FROM Tags T WHERE T.Id IN (SELECT arrayJoin(splitByString(',', P.Tags))::int)) AS TagList
+         FROM Tags T WHERE T.Id IN (SELECT arrayJoin(splitByString(',', assumeNotNull(P.Tags)))::int)) AS TagList
     FROM 
         Posts P
     LEFT JOIN 

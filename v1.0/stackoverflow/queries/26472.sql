@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        length(splitByString('>', p.Tags), 1) AS TagCount,
+        length(splitByString('>', assumeNotNull(p.Tags)), 1) AS TagCount,
         u.DisplayName AS AuthorName,
         COUNT(c.Id) AS CommentCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpvoteCount,
@@ -23,7 +23,7 @@ WITH RankedPosts AS (
         p.PostTypeId = 1 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, 
-        length(splitByString('>', p.Tags), 1), u.DisplayName
+        length(splitByString('>', assumeNotNull(p.Tags)), 1), u.DisplayName
 ),
 AggregatedResults AS (
     SELECT 

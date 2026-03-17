@@ -48,7 +48,7 @@ PostStats AS (
     LEFT JOIN 
         Votes v ON tp.PostId = v.PostId
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString(',', Tags)) AS TagName, Id FROM Posts) AS tag ON tp.PostId = tag.Id
+        (SELECT arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName, Id FROM Posts) AS tag ON tp.PostId = tag.Id
     GROUP BY 
         tp.PostId, tp.Title, tp.OwnerDisplayName, tp.CreationDate, tp.Score, tp.ViewCount
 )

@@ -34,7 +34,7 @@ PostTags AS (
     FROM Posts p
     LEFT JOIN (
         SELECT 
-            arrayJoin(splitByString('<>', p.Tags)) AS TagName
+            arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS TagName
     ) t ON TRUE
     GROUP BY p.Id
 )

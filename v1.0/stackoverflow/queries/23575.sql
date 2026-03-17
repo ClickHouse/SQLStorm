@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Posts p
     JOIN 
         (
-            SELECT DISTINCT arrayJoin(splitByString('<>', p.Tags)) AS TagName
+            SELECT DISTINCT arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS TagName
         ) t ON true
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, p.LastActivityDate, p.PostTypeId

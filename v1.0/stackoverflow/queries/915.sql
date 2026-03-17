@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.Title,
         p.CreationDate,
         p.Score,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY any(p.LastActivityDate) DESC) AS UserPostRank,
+        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.LastActivityDate DESC) AS UserPostRank,
         COUNT(c.Id) AS CommentCount
     FROM 
         Posts p

@@ -1,6 +1,6 @@
 WITH TagStats AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TagName,
+        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2))))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts

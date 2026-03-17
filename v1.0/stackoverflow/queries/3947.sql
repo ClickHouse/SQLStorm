@@ -6,7 +6,7 @@ WITH UserPostStats AS (
         COUNT(p.Id) AS TotalPosts,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(CASE WHEN p.PostTypeId = 1 THEN p.Score ELSE 0 END) AS TotalQuestionScore,
-        AVG(any(u.Reputation)) OVER (PARTITION BY u.Location) AS AvgReputationByLocation
+        AVG(u.Reputation) OVER (PARTITION BY u.Location) AS AvgReputationByLocation
     FROM 
         Users u
     LEFT JOIN 

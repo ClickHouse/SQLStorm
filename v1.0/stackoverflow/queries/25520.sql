@@ -35,7 +35,7 @@ TopPosts AS (
 ),
 TagOccurrences AS (
     SELECT 
-        arrayJoin(splitByString('>', Tags)) AS Tag
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS Tag
     FROM 
         TopPosts
 ),

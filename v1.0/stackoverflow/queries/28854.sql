@@ -27,7 +27,7 @@ TopTags AS (
         TRIM(SUBSTRING(tag FROM 2 FOR LENGTH(tag) -2)) AS TagName
     FROM 
         RankedPosts,
-        arrayJoin(splitByString('><', Tags)) AS tag
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS tag
 ),
 MostCommonTags AS (
     SELECT 

@@ -44,7 +44,7 @@ TaggedPosts AS (
         tp.OwnerDisplayName,
         tp.CommentCount,
         tp.VoteCount,
-        arrayJoin(splitByString(',', tp.Tags)) AS TagName
+        arrayJoin(splitByString(',', assumeNotNull(tp.Tags))) AS TagName
     FROM 
         TopPosts tp
 )

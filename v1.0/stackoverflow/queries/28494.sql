@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('>', P.Tags)) AS TagName,
+        arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS TagName,
         COUNT(*) AS PostCount,
         AVG(P.Score) AS AverageScore
     FROM 
@@ -39,7 +39,7 @@ TopPosts AS (
     FROM 
         RankedPosts RP
     JOIN 
-        TagStatistics T ON T.TagName = ANY(splitByString('>', RP.Tags))
+        TagStatistics T ON T.TagName = ANY(splitByString('>', assumeNotNull(RP.Tags)))
     WHERE 
         RP.RankScore <= 5 
 )

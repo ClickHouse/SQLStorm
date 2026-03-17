@@ -3,7 +3,7 @@ WITH TagFrequency AS (
         trim(split_part(tag, '>', 1)) AS TagName,
         COUNT(*) AS Frequency
     FROM (
-        SELECT arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS tag
+        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS tag
         FROM Posts
         WHERE PostTypeId = 1
     ) AS TagList

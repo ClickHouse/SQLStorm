@@ -31,7 +31,7 @@ TagStatistics AS (
     FROM 
         Posts p
     CROSS JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS tag(tagname)
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag(tagname)
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
@@ -64,7 +64,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TopTags tt ON tt.CleanedTag = ANY(splitByString('><', SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags) - 2)))
+    TopTags tt ON tt.CleanedTag = ANY(splitByString('><', assumeNotNull(SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags) - 2))))
 WHERE 
     rp.Rank <= 3 
 ORDER BY 

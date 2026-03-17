@@ -26,9 +26,9 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', p.Tags)) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName,
         COUNT(*) AS PostsCount,
-        AVG(length(splitByString('><', p.Tags), 1)) AS AvgTagsPerPost
+        AVG(length(splitByString('><', assumeNotNull(p.Tags)), 1)) AS AvgTagsPerPost
     FROM 
         Posts p
     WHERE 

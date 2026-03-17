@@ -39,7 +39,7 @@ TopPosts AS (
 ProcessedTags AS (
     SELECT 
         PostId,
-        arrayJoin(splitByString(',', Tags)) AS Tag
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS Tag
     FROM 
         TopPosts
 )

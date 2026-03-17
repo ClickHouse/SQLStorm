@@ -20,7 +20,7 @@ RecentPosts AS (
         P.Score,
         P.OwnerUserId,
         COALESCE(COUNT(C.Id) FILTER (WHERE C.Id IS NOT NULL), 0) AS CommentCount,
-        COALESCE(any(P.ViewCount), 0) AS ViewCount
+        COALESCE(P.ViewCount, 0) AS ViewCount
     FROM 
         Posts P
     LEFT JOIN 

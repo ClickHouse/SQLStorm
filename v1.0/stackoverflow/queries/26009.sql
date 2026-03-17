@@ -47,7 +47,7 @@ PopularTags AS (
         COUNT(*) AS TagCount
     FROM (
         SELECT 
-            arrayJoin(splitByString('><', Tags)) AS TagName  
+            arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName  
         FROM 
             Posts 
         WHERE 
@@ -71,6 +71,6 @@ SELECT
 FROM 
     TopQuestions tq
 JOIN 
-    PopularTags pt ON pt.TagName IN (SELECT arrayJoin(splitByString('><', tq.Tags)))  
+    PopularTags pt ON pt.TagName IN (SELECT arrayJoin(splitByString('><', assumeNotNull(tq.Tags))))  
 ORDER BY 
     tq.Score DESC, tq.CreationDate DESC;

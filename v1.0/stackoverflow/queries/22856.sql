@@ -71,7 +71,7 @@ SELECT
         WHEN PD.ViewCount IS NULL THEN 'Unobserved Views' 
         ELSE 'Observed Views'
     END AS ViewObservation,
-    length(splitByString('; ', PD.EditComments), 1) AS NumberOfDistinctComments,
+    length(splitByString('; ', assumeNotNull(PD.EditComments)), 1) AS NumberOfDistinctComments,
     (
         SELECT COUNT(*)
         FROM Comments C 

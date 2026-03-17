@@ -71,7 +71,7 @@ LEFT JOIN PostHistoryDetail phd ON phd.PostId = rp.PostId
 LEFT JOIN PostVoteStats pvs ON pvs.PostId = rp.PostId
 LEFT JOIN (
     SELECT 
-        DISTINCT arrayJoin(splitByString(',', p.Tags)) AS TagName
+        DISTINCT arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
     FROM Posts p 
     WHERE p.Id = rp.PostId
 ) AS t ON TRUE

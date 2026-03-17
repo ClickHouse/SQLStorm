@@ -17,7 +17,7 @@ WITH RankedQuestions AS (
     LEFT JOIN 
         (
             SELECT 
-                TRIM(arrayJoin(splitByString('><', SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2)))) AS TagName
+                TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2))))) AS TagName
         ) T ON TRUE
     WHERE 
         P.PostTypeId = 1 

@@ -13,7 +13,7 @@ WITH UserStats AS (
     LEFT JOIN Votes V ON P.Id = V.PostId
     WHERE U.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY U.Id
-, U.DisplayName, U.Reputation), BadgeStats AS (
+), BadgeStats AS (
     SELECT 
         B.UserId,
         COUNT(B.Id) AS BadgeCount,

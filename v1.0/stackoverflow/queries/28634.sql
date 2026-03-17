@@ -23,7 +23,7 @@ PostTags AS (
         arrayStringConcat(groupArray(assumeNotNull(TRIM(TAG.TagName))), ', ') AS TagList
     FROM 
         Posts P
-    CROSS JOIN (SELECT arrayJoin(splitByString('><', SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2))) AS TagName) AS TAG
+    CROSS JOIN (SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2)))) AS TagName) AS TAG
     GROUP BY 
         P.Id
 ),

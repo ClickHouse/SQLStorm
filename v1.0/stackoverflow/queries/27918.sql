@@ -23,7 +23,7 @@ PostDetail AS (
         p.Title,
         p.ViewCount,
         p.CreationDate,
-        ARRAY_TO_STRING(splitByString('>', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)), ', ') AS ExtractedTags,
+        ARRAY_TO_STRING(splitByString('>', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))), ', ') AS ExtractedTags,
         COALESCE(phh.Comment, 'No closure reason') AS ClosureReason
     FROM 
         Posts p

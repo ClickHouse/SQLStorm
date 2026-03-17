@@ -26,7 +26,7 @@ PostTagStats AS (
         P.Score
     FROM 
         Posts P
-        LEFT JOIN arrayJoin(splitByString('>', P.Tags)) AS TagTag(TagName) ON true
+        LEFT JOIN arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS TagTag(TagName) ON true
         LEFT JOIN Tags T ON T.TagName = TRIM(TagTag.TagName)
     GROUP BY 
         P.Id, P.Title, P.AcceptedAnswerId, P.CreationDate, P.ViewCount, P.AnswerCount, P.Score

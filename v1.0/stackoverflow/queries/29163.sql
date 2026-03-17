@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('> <', TRIM(BOTH '<>' FROM p.Tags))) AS TagName,
+        arrayJoin(splitByString('> <', assumeNotNull(TRIM(BOTH '<>' FROM p.Tags)))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -49,7 +49,7 @@ PostStatistics AS (
     LEFT JOIN 
         Posts p ON rp.PostId = p.Id
     LEFT JOIN 
-        arrayJoin(splitByString('> <', TRIM(BOTH '<>' FROM p.Tags))) AS pt(TagName) ON TRUE
+        arrayJoin(splitByString('> <', assumeNotNull(TRIM(BOTH '<>' FROM p.Tags)))) AS pt(TagName) ON TRUE
     WHERE 
         pt.TagName IN (SELECT TagName FROM PopularTags)
     GROUP BY 

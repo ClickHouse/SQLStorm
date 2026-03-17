@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.Tags,
         u.DisplayName AS OwnerDisplayName,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS Rank,
-        length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount
+        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1) AS TagCount
     FROM 
         Posts p
     JOIN 

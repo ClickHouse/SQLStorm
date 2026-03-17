@@ -29,7 +29,7 @@ PostsWithTags AS (
     FROM Posts P
     LEFT JOIN (
         SELECT 
-            arrayJoin(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2))) AS TagName
+            arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2)))) AS TagName
     ) T ON TRUE
     GROUP BY P.Id
 ),

@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 TrendingTags AS (
     SELECT 
-        arrayJoin(splitByString('><', p.Tags)) AS Tag 
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS Tag 
     FROM 
         Posts p 
     WHERE 

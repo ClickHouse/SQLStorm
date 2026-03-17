@@ -20,7 +20,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    arrayJoin(splitByString('>', p.Tags)) AS tag_ids ON true
+    arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag_ids ON true
 LEFT JOIN 
     Tags t ON t.TagName = tag_ids
 LEFT JOIN 

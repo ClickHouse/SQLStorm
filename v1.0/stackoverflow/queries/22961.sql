@@ -20,7 +20,7 @@ PostStats AS (
         p.ViewCount,
         p.CreationDate,
         p.AcceptedAnswerId,
-        COALESCE(length(splitByString('><', p.Tags), 1), 0) AS TagCount,
+        COALESCE(length(splitByString('><', assumeNotNull(p.Tags)), 1), 0) AS TagCount,
         ROW_NUMBER() OVER (ORDER BY p.CreationDate DESC) AS RecentPostRank
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId

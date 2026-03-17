@@ -25,7 +25,7 @@ PostMeta AS (
         p.ViewCount,
         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
     FROM Posts p
-    LEFT JOIN arrayJoin(splitByString('<>', p.Tags)) AS tag ON true
+    LEFT ARRAY JOIN splitByString('<>', assumeNotNull(p.Tags)) AS tag
     JOIN Tags t ON t.TagName = tag
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount
 ),

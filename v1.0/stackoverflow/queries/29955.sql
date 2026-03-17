@@ -33,7 +33,7 @@ FilteredPosts AS (
 ),
 TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', Trim(Both ' ' FROM rp.Tags))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(Trim(Both ' ' FROM rp.Tags)))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         FilteredPosts rp
@@ -68,7 +68,7 @@ SELECT
 FROM 
     FilteredPosts fp
 LEFT JOIN 
-    PopularTags pt ON pt.Tag = ANY(splitByString('><', Trim(Both ' ' FROM fp.Tags)))
+    PopularTags pt ON pt.Tag = ANY(splitByString('><', assumeNotNull(Trim(Both ' ' FROM fp.Tags))))
 GROUP BY 
     fp.PostId, fp.Title, fp.Body, fp.CommentCount, fp.VoteCount
 ORDER BY 

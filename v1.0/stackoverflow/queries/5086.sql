@@ -47,7 +47,7 @@ FROM
 LEFT JOIN 
     Posts P ON TU.UserId = P.OwnerUserId
 LEFT JOIN 
-    arrayJoin(splitByString(',', P.Tags)) AS T(TagName) ON TRUE
+    arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
 GROUP BY 
     TU.UserId, TU.Reputation, TU.TotalPosts, TU.TotalComments, TU.TotalUpvotes, TU.TotalDownvotes, TU.ReputationRank
 ORDER BY 

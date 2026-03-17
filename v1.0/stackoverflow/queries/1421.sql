@@ -33,7 +33,7 @@ SELECT
     T.Rank,
     (SELECT arrayStringConcat(groupArray(assumeNotNull(TT.TagName)), ', ') 
      FROM Tags TT 
-     WHERE TT.Id IN (SELECT DISTINCT CAST(arrayJoin(splitByString('<>', P.Tags)) AS INTEGER))
+     WHERE TT.Id IN (SELECT DISTINCT CAST(arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS INTEGER))
                     AND P.OwnerUserId IS NOT NULL
                     AND P.AnswerCount > 0) AS Tags
 FROM 

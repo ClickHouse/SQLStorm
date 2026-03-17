@@ -50,7 +50,7 @@ SELECT
     (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Tags t 
      JOIN (
-        SELECT arrayJoin(splitByString('><', Tags)) AS TagName
+        SELECT arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName
         FROM Posts
         WHERE Id = ps.PostId
      ) AS tmp ON t.TagName = tmp.TagName) AS TagList

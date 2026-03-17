@@ -58,7 +58,7 @@ LEFT JOIN
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
     (
-        SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName
+        SELECT arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
     ) t ON TRUE
 WHERE 
     p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year'

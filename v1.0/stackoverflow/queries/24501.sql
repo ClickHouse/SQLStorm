@@ -42,7 +42,7 @@ QuestionStats AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS Tag ON true
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS Tag ON true
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM Tag)
     WHERE 

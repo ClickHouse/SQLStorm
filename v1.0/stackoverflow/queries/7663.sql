@@ -33,7 +33,7 @@ PostWithTagCounts AS (
     FROM
         Posts p
     LEFT JOIN
-        Tags t ON t.TagName IN (SELECT TRIM(tag) FROM arrayJoin(splitByString(',', p.Tags)) AS tag)
+        Tags t ON t.TagName IN (SELECT TRIM(tag) FROM arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag)
     GROUP BY
         p.Id
 )

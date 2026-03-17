@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.Title,
         p.Score,
         p.CreationDate,
-        ROW_NUMBER() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY p.Score DESC) AS Rank,
+        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
         COALESCE(COUNT(c.Id) FILTER (WHERE c.Score > 0), 0) AS PositiveComments
     FROM 
         Posts p

@@ -5,7 +5,7 @@ WITH PostTagCounts AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('> <', substring(p.Tags, 2, length(p.Tags)-2))) AS tag_name ON TRUE
+        arrayJoin(splitByString('> <', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS tag_name ON TRUE
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 

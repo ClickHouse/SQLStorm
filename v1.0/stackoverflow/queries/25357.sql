@@ -21,7 +21,7 @@ WITH RankedPosts AS (
 ),
 TagAnalysis AS (
     SELECT 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS Tag,
         COUNT(*) AS PostCount,
         AVG(p.ViewCount) AS AverageViewCount,
         AVG(p.Score) AS AverageScore
@@ -30,7 +30,7 @@ TagAnalysis AS (
     WHERE 
         p.Tags IS NOT NULL
     GROUP BY 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))))
 )
 SELECT 
     ra.OwnerDisplayName,

@@ -29,7 +29,7 @@ WITH RankedPosts AS (
          FROM 
             (SELECT 
                p.Id AS PostId, 
-               TRIM(arrayJoin(splitByString('><', p.Tags))) AS TagName 
+               TRIM(arrayJoin(splitByString('><', assumeNotNull(p.Tags)))) AS TagName 
              FROM Posts p) AS t
          GROUP BY PostId) t ON p.Id = t.PostId
     GROUP BY 

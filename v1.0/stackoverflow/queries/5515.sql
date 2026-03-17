@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -44,7 +44,7 @@ TopPostDetails AS (
     JOIN 
         Posts p ON rp.PostId = p.Id
     JOIN 
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))) AS pt(TagName) ON pt.TagName IN (SELECT TagName FROM PopularTags)
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS pt(TagName) ON pt.TagName IN (SELECT TagName FROM PopularTags)
     WHERE 
         rp.RankWithinUser = 1
     GROUP BY 

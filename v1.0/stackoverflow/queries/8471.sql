@@ -32,14 +32,14 @@ TopUsers AS (
 ), 
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('><', Tags))
+        arrayJoin(splitByString('><', assumeNotNull(Tags)))
     ORDER BY 
         TagCount DESC
     LIMIT 5

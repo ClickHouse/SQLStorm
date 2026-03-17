@@ -39,7 +39,7 @@ FilteredPosts AS (
     FROM 
         RecentPosts rp
     LEFT JOIN 
-        arrayJoin(splitByString('<>', rp.Tags)) AS tag ON 
+        arrayJoin(splitByString('<>', assumeNotNull(rp.Tags))) AS tag ON 
         tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = tag

@@ -17,7 +17,7 @@ WITH UserActivity AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2)))) AS TagName,
+        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2))))) AS TagName,
         COUNT(P.Id) AS TagUsageCount
     FROM 
         Posts P

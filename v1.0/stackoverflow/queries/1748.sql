@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         p.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
         p.Id
-, p.Title, p.CreationDate, p.Score), UserBadges AS (
+), UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,

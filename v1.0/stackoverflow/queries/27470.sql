@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('<>', P.Tags)) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
     WHERE 
         P.PostTypeId = 1  
     GROUP BY 

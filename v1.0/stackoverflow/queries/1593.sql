@@ -38,7 +38,7 @@ SELECT
     ru.TotalBadges,
     (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
      FROM Posts p2 
-     LEFT JOIN arrayJoin(splitByString(',', p2.Tags)) AS tag ON TRUE 
+     LEFT ARRAY JOIN splitByString(',', assumeNotNull(p2.Tags)) AS tag
      LEFT JOIN Tags t ON t.TagName = tag 
      WHERE p2.OwnerUserId = ru.UserId) AS PopularTags
 FROM 

@@ -8,7 +8,7 @@ WITH RecentActivities AS (
         COUNT(c.Id) AS CommentCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS Upvotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS Downvotes,
-        ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY any(p.LastActivityDate) DESC) AS rn
+        ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.LastActivityDate DESC) AS rn
     FROM 
         Posts p
         LEFT JOIN Users u ON p.OwnerUserId = u.Id

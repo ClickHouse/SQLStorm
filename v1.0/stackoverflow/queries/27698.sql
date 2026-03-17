@@ -35,7 +35,7 @@ TopPosts AS (
 ), 
 TagStats AS (
     SELECT 
-        LOWER(TRIM(arrayJoin(splitByString('>', Tags)))) AS Tag,
+        LOWER(TRIM(arrayJoin(splitByString('>', assumeNotNull(Tags))))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         TopPosts

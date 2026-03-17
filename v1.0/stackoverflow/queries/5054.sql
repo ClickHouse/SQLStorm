@@ -26,7 +26,7 @@ LEFT JOIN
      GROUP BY 
          UserId) b ON u.Id = b.UserId
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName, p.Id FROM Posts p) t ON p.Id = t.Id
+    (SELECT arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName, p.Id FROM Posts p) t ON p.Id = t.Id
 WHERE 
     p.CreationDate >= '2022-01-01' 
     AND p.PostTypeId = 1

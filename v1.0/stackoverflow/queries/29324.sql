@@ -11,7 +11,7 @@ WITH TagStatistics AS (
         Posts p
     JOIN 
         (SELECT 
-             arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS tag,
+             arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS tag,
              Id
          FROM 
              Posts

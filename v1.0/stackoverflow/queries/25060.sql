@@ -83,7 +83,7 @@ LEFT JOIN
 LEFT JOIN 
     MostActiveUsers mau ON mau.UserId IN (SELECT OwnerUserId FROM Posts WHERE Id = rp.PostId)
 JOIN 
-    TopTags tt ON tt.TagName = ANY(splitByString(',', rp.Tags))
+    TopTags tt ON tt.TagName = ANY(splitByString(',', assumeNotNull(rp.Tags)))
 WHERE 
     rp.TagRank <= 5
 ORDER BY 

@@ -9,7 +9,7 @@ FROM
 JOIN 
     Users u ON p.OwnerUserId = u.Id
 LEFT JOIN 
-    arrayJoin(splitByString('> <', p.Tags)) AS tag_name ON TRUE
+    arrayJoin(splitByString('> <', assumeNotNull(p.Tags))) AS tag_name ON TRUE
 JOIN 
     Tags t ON TRIM(tag_name) = t.TagName
 WHERE 

@@ -37,7 +37,7 @@ TopPostOwners AS (
 
 TopTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('>', Tags))::text) AS Tag,
+        TRIM(arrayJoin(splitByString('>', assumeNotNull(Tags)))::text) AS Tag,
         COUNT(*) AS UsageCount
     FROM 
         Posts

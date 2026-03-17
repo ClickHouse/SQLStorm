@@ -28,7 +28,7 @@ WITH CombinedPostData AS (
 PostTagCounts AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString(',', p.Tags)) AS TagName
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
     FROM 
         Posts p
 ),

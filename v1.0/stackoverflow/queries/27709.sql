@@ -33,6 +33,6 @@ SELECT
     PS.AverageUserReputation,
     PS.TotalTags,
     
-    (SELECT COUNT(*) FROM TagData WHERE length(splitByString('>', Tags), 1) > 3) AS PostsWithComplexTags
+    (SELECT COUNT(*) FROM TagData WHERE length(splitByString('>', assumeNotNull(Tags)), 1) > 3) AS PostsWithComplexTags
 FROM 
     PostStats PS;

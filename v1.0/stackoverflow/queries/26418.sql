@@ -25,7 +25,7 @@ WITH PostStats AS (
 
 TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -58,7 +58,7 @@ SELECT
 FROM 
     PostStats ps
 JOIN 
-    (SELECT DISTINCT p.Id, arrayJoin(splitByString('><', p.Tags)) AS TagName
+    (SELECT DISTINCT p.Id, arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
      FROM Posts p WHERE p.Tags IS NOT NULL) AS TagLinks 
 ON 
     ps.PostId = TagLinks.Id

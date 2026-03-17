@@ -26,7 +26,7 @@ PostSummary AS (
     LEFT JOIN Votes V ON P.Id = V.PostId
     LEFT JOIN PostHistory PH ON P.Id = PH.PostId AND PH.PostHistoryTypeId IN (4, 5, 6)
     LEFT JOIN (
-        SELECT arrayJoin(splitByString('><', P.Tags)) AS TagName
+        SELECT arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS TagName
     ) T ON TRUE
     GROUP BY P.Id, P.Title, P.PostTypeId
 ),

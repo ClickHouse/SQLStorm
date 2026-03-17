@@ -84,7 +84,7 @@ FROM
     PostAggregates pa 
 LEFT JOIN 
     (SELECT 
-         arrayJoin(splitByString('><', p.Tags)) AS TagName,
+         arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName,
          p.Id as PostId
      FROM 
          Posts p

@@ -50,7 +50,7 @@ FROM
 LEFT JOIN 
     Posts p ON p.Id = tp.PostId
 LEFT JOIN 
-    Tags t ON t.TagName = ANY(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
+    Tags t ON t.TagName = ANY(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))))
 GROUP BY 
     tp.PostId, tp.Title, tp.UserDisplayName, tp.CommentCount, tp.UpVoteCount
 ORDER BY 

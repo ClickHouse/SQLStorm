@@ -11,7 +11,7 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', trim(both '{}' FROM p.Tags))) AS t(TagName) ON true
+        arrayJoin(splitByString('><', assumeNotNull(trim(both '{}' FROM p.Tags)))) AS t(TagName) ON true
     WHERE 
         p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 

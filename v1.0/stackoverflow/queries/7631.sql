@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        RANK() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY p.Score DESC, p.CreationDate DESC) AS ScoreRank
+        RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC, p.CreationDate DESC) AS ScoreRank
     FROM 
         Posts p
     JOIN 

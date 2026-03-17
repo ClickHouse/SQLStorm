@@ -14,7 +14,7 @@ WITH UserPosts AS (
     LEFT JOIN 
         Posts P ON U.Id = P.OwnerUserId
     LEFT JOIN 
-        arrayJoin(splitByString('>', P.Tags)) AS T(TagName) ON TRUE
+        arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
     WHERE 
         U.Reputation > 1000
     GROUP BY 

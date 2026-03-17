@@ -1,6 +1,6 @@
 
 WITH TagCounts AS (
-    SELECT arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
+    SELECT arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
            COUNT(*) AS PostCount
     FROM Posts
     WHERE PostTypeId = 1 

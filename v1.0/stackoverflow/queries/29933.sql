@@ -25,7 +25,7 @@ TagStatistics AS (
         AVG(Score) AS AverageScore
     FROM (
         SELECT 
-            arrayJoin(splitByString('>tag<', Trim(Both '<>' FROM Tags))) AS tag,
+            arrayJoin(splitByString('>tag<', assumeNotNull(Trim(Both '<>' FROM Tags)))) AS tag,
             ViewCount,
             Score
         FROM 

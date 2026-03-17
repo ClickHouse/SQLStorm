@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.OwnerUserId,
-        ROW_NUMBER() OVER (PARTITION BY any(p.PostTypeId) ORDER BY p.CreationDate DESC) AS Rank,
+        ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS Rank,
         COUNT(c.Id) AS CommentCount,
         COALESCE(UPPER(p.Tags), 'NO TAGS') AS FormattedTags
     FROM 

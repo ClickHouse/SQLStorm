@@ -33,14 +33,14 @@ FilteredPosts AS (
 ),
 PostTagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))))
 )
 SELECT 
     ft.Title,
@@ -52,7 +52,7 @@ SELECT
 FROM 
     FilteredPosts ft
 JOIN 
-    PostTagCounts pt ON pt.TagName = ANY(splitByString('><', SUBSTRING(ft.Tags FROM 2 FOR LENGTH(ft.Tags) - 2)))
+    PostTagCounts pt ON pt.TagName = ANY(splitByString('><', assumeNotNull(SUBSTRING(ft.Tags FROM 2 FOR LENGTH(ft.Tags) - 2))))
 ORDER BY 
     pt.PostCount DESC, 
     ft.Score DESC

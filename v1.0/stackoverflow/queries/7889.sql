@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (2, 3) 
     LEFT JOIN 
-        (SELECT DISTINCT arrayJoin(splitByString('><', p.Tags)) AS tag_name) AS tag_name ON TRUE
+        (SELECT DISTINCT arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag_name) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag_name)
     WHERE 

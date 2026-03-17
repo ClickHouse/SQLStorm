@@ -19,7 +19,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName) AS t ON TRUE
+    (SELECT arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName) AS t ON TRUE
 WHERE 
     p.PostTypeId = 1 
 GROUP BY 

@@ -57,7 +57,7 @@ FinalBenchmark AS (
 )
 SELECT *,
        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
-        FROM arrayJoin(splitByString('><', p.Tags)) AS tag
+        FROM arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag
         LEFT JOIN Tags t ON t.TagName = tag
         WHERE t.IsModeratorOnly IS FALSE) AS RelevantTags
 FROM FinalBenchmark fb

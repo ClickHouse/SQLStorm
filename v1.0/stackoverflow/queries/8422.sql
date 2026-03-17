@@ -19,7 +19,7 @@ WITH PostDetails AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     JOIN 
-        arrayJoin(splitByString('<>', p.Tags)) AS tag ON true
+        arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS tag ON true
     JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

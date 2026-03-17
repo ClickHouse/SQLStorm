@@ -1,7 +1,7 @@
 
 WITH TagStats AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS Tag,
+        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2))))) AS Tag,
         COUNT(Id) AS PostCount,
         COUNT(DISTINCT OwnerUserId) AS UniqueUsers,
         SUM(ViewCount) AS TotalViews

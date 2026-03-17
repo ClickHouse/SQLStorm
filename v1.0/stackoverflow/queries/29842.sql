@@ -7,7 +7,7 @@ WITH PostDetails AS (
         p.CreationDate,
         u.DisplayName AS AuthorDisplayName,
         u.Reputation AS AuthorReputation,
-        length(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2)), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1) AS TagCount,
         COALESCE(a.AnswerCount, 0) AS AnswerCount,
         COALESCE(v.UpVoteCount, 0) AS UpVoteCount
     FROM 

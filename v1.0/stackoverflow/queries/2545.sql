@@ -26,7 +26,7 @@ UserStats AS (
         Votes v ON u.Id = v.UserId
     GROUP BY 
         u.Id
-, u.DisplayName),
+),
 RecentTopPosts AS (
     SELECT 
         rp.PostId,

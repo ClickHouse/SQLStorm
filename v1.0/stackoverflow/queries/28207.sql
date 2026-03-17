@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', p.Tags)) AS tag(TagName) ON true
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag(TagName) ON true
     LEFT JOIN 
         Tags t ON tag.TagName = t.TagName
     WHERE 

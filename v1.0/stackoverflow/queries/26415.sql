@@ -15,7 +15,7 @@ WITH PostStatistics AS (
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
         (SELECT 
-            arrayJoin(splitByString('><', substring(Tags, 2, LENGTH(Tags) - 2))) AS TagName,
+            arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2)))) AS TagName,
             PostId 
          FROM 
             Posts) T ON P.Id = T.PostId

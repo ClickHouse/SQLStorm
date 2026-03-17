@@ -40,7 +40,7 @@ PostTags AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', p.Tags)) AS tag ON tag <> '' 
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag ON tag <> '' 
     JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

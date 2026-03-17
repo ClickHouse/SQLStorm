@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag
     FROM 
         RankedPosts
     WHERE 
@@ -52,7 +52,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    PopularTags pt ON pt.Tag = ANY(splitByString('><', rp.Tags))
+    PopularTags pt ON pt.Tag = ANY(splitByString('><', assumeNotNull(rp.Tags)))
 WHERE 
     rp.PostRank = 1
 GROUP BY 

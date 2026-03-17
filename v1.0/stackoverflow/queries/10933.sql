@@ -19,7 +19,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('<>', p.Tags)) AS TagName
+            arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS TagName
     ) t ON true
 WHERE 
     p.CreationDate >= DATE '2023-01-01' 

@@ -17,7 +17,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS TagName
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS TagName
     FROM 
         Posts
     WHERE 
@@ -47,7 +47,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagPopularity tp ON tp.TagName = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags)-2)))
+    TagPopularity tp ON tp.TagName = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags)-2))))
 WHERE 
     rp.PostRank = 1
 ORDER BY 

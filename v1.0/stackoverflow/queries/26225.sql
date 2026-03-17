@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT
-        arrayJoin(splitByString('><', SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts
     WHERE PostTypeId = 1 
@@ -23,7 +23,7 @@ PostsWithTopTags AS (
         tt.TagName,
         tt.PostCount
     FROM Posts p
-    JOIN TopTags tt ON tt.TagName = ANY(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))
+    JOIN TopTags tt ON tt.TagName = ANY(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))))
     WHERE tt.Rank <= 10 
 ),
 PostComments AS (

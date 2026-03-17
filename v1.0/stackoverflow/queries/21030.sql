@@ -28,7 +28,7 @@ UserBadges AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', p.Tags)) AS TagName,
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName,
         COUNT(*) AS UsageCount
     FROM 
         Posts p

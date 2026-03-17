@@ -24,13 +24,13 @@ WITH RankedPosts AS (
 ),
 TagSummary AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS TagName,
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS PostCount,
         SUM(Score) AS TotalScore
     FROM 
         RankedPosts
     GROUP BY 
-        arrayJoin(splitByString(',', Tags)) -- added here to ensure compatibility
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) -- added here to ensure compatibility
 ),
 TopTags AS (
     SELECT 

@@ -34,7 +34,7 @@ UserStats AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('>', Tags)) AS TagName, 
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TagName, 
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -63,7 +63,7 @@ FROM
 JOIN 
     UserStats us ON rp.OwnerUserId = us.UserId
 JOIN 
-    TopTags tt ON tt.TagName = ANY(splitByString(' ', rp.Title))  
+    TopTags tt ON tt.TagName = ANY(splitByString(' ', assumeNotNull(rp.Title)))  
 WHERE 
     rp.PostRank = 1
 ORDER BY 

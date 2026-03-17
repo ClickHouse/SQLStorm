@@ -54,7 +54,7 @@ SELECT
         SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ')
         FROM Tags t
         JOIN (
-            SELECT arrayJoin(splitByString('><', p.Tags)) AS tag
+            SELECT arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag
         ) AS split_tags ON t.TagName = split_tags.tag
         WHERE p.Id = ps.PostId
     ), 'No Tags') AS Tags

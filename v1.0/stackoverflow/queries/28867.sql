@@ -24,7 +24,7 @@ WITH FilteredPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString(',', Tags)) AS Tag
+        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS Tag
     FROM 
         FilteredPosts
 ),
@@ -50,7 +50,7 @@ SELECT
 FROM 
     FilteredPosts fp
 LEFT JOIN 
-    TagAggregate ta ON ta.Tag = ANY(splitByString(',', fp.Tags))
+    TagAggregate ta ON ta.Tag = ANY(splitByString(',', assumeNotNull(fp.Tags)))
 GROUP BY 
     fp.PostId, fp.Title, fp.CreationDate, fp.Author, fp.CommentCount, fp.UpVotes, fp.DownVotes
 ORDER BY 

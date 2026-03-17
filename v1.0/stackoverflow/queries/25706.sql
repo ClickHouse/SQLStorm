@@ -26,7 +26,7 @@ PostDiversity AS (
     FROM
         RankedPosts rp
     CROSS JOIN
-        (SELECT TRIM(both '<>' FROM arrayJoin(splitByString(',', rp.Tags))) AS Tag) AS tag
+        (SELECT TRIM(both '<>' FROM arrayJoin(splitByString(',', assumeNotNull(rp.Tags)))) AS Tag) AS tag
     INNER JOIN
         Tags tg ON tg.TagName = tag.Tag
     GROUP BY

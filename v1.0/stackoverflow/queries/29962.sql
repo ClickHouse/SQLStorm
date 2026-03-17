@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags)-2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -61,7 +61,7 @@ CombinedStats AS (
     FROM 
         RankedPosts ru
     LEFT JOIN 
-        TagStats ts ON ts.Tag = ANY (splitByString('><', substring(ru.Tags, 2, length(ru.Tags)-2)))
+        TagStats ts ON ts.Tag = ANY (splitByString('><', assumeNotNull(substring(ru.Tags, 2, length(ru.Tags)-2))))
     LEFT JOIN 
         TopUsers tu ON ru.Owner = tu.DisplayName
 )

@@ -57,7 +57,7 @@ SELECT
 FROM 
     TopPosts tp
 LEFT JOIN 
-    arrayJoin(splitByString('> <', substring(tp.Body, 2, length(tp.Body)-2))) AS tag ON tag LIKE 'tag-%'  
+    arrayJoin(splitByString('> <', assumeNotNull(substring(tp.Body, 2, length(tp.Body)-2)))) AS tag ON tag LIKE 'tag-%'  
 LEFT JOIN 
     Tags t ON LOWER(t.TagName) = LOWER(tag)  
 GROUP BY 

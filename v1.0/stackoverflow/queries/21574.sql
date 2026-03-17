@@ -65,7 +65,7 @@ LEFT JOIN
 LEFT JOIN 
     Posts p ON rp.PostId = p.Id
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString('><', p.Tags)) AS TagName) AS t ON TRUE
+    (SELECT arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName) AS t ON TRUE
 WHERE 
     up.Reputation >= 1000
 GROUP BY 

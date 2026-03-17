@@ -50,7 +50,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString('<>', p.TAGS)) AS TagName
+            arrayJoin(splitByString('<>', assumeNotNull(p.TAGS))) AS TagName
         FROM 
             Posts p
         WHERE 

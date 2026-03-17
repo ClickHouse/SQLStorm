@@ -16,5 +16,5 @@ LEFT JOIN
 GROUP BY 
     p.Id, p.Title, u.DisplayName
 ORDER BY 
-    any(p.CreationDate) DESC
+    p.CreationDate DESC
 FETCH FIRST 10 ROWS ONLY;

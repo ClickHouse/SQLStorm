@@ -18,7 +18,7 @@ LEFT JOIN Comments c ON p.Id = c.PostId
 LEFT JOIN Votes v ON p.Id = v.PostId
 LEFT JOIN (
     SELECT 
-        arrayJoin(splitByString('><', p.Tags)) AS TagName
+        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
 ) t ON true
 WHERE p.PostTypeId = 1 
 GROUP BY p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, u.DisplayName

@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('>', Tags)) AS Tag,
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS Tag,
         COUNT(*) AS TotalPosts,
         SUM(CASE WHEN Score > 0 THEN 1 ELSE 0 END) AS UpvotedPosts,
         SUM(CASE WHEN Score < 0 THEN 1 ELSE 0 END) AS DownvotedPosts
@@ -28,7 +28,7 @@ TagStatistics AS (
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('>', Tags)) -- Group by the Tag from the UNNEST function
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) -- Group by the Tag from the UNNEST function
 ),
 PostHistoryStats AS (
     SELECT 
@@ -58,7 +58,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStatistics ts ON ts.Tag = ANY(splitByString('>', rp.Tags))
+    TagStatistics ts ON ts.Tag = ANY(splitByString('>', assumeNotNull(rp.Tags)))
 JOIN 
     PostHistoryStats phs ON phs.PostId = rp.PostId
 WHERE 

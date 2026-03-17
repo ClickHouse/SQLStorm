@@ -48,7 +48,7 @@ LEFT JOIN
 LEFT JOIN 
     Posts p ON tq.PostId = p.Id
 LEFT JOIN 
-    arrayJoin(splitByString('<>', tq.Tags)) AS tag ON tag IS NOT NULL
+    arrayJoin(splitByString('<>', assumeNotNull(tq.Tags))) AS tag ON tag IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag
 LEFT JOIN 

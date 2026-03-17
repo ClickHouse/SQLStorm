@@ -25,7 +25,7 @@ PopularTags AS (
         COUNT(*) AS TagCount
     FROM (
         SELECT 
-            arrayJoin(splitByString('>', p.Tags)) AS tag
+            arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag
         FROM 
             Posts p
         WHERE 
@@ -61,7 +61,7 @@ FROM
 LEFT JOIN 
     UserBadges ut ON rp.Id = ut.UserId
 LEFT JOIN 
-    PopularTags pt ON pt.Tag IN (SELECT arrayJoin(splitByString(' ', rp.Title)))
+    PopularTags pt ON pt.Tag IN (SELECT arrayJoin(splitByString(' ', assumeNotNull(rp.Title))))
 WHERE 
     rp.Score >= 10 AND 
     rp.CommentCount > 5

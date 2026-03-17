@@ -11,7 +11,7 @@ PostAnalytics AS (
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-        AVG(any(p.Score)) OVER (PARTITION BY p.OwnerUserId) AS AvgScoreByUser,
+        AVG(p.Score) OVER (PARTITION BY p.OwnerUserId) AS AvgScoreByUser,
         p.OwnerUserId,
         p.CreationDate,
         pt.Name AS PostTypeName

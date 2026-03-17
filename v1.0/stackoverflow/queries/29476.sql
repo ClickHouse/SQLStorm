@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('>', Tags))) AS TagName,
+        TRIM(arrayJoin(splitByString('>', assumeNotNull(Tags)))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -62,7 +62,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStatistics ts ON ts.TagName = ANY (splitByString('>', rp.Tags))
+    TagStatistics ts ON ts.TagName = ANY (splitByString('>', assumeNotNull(rp.Tags)))
 JOIN 
     UserReputation ur ON rp.OwnerDisplayName = ur.DisplayName
 WHERE 

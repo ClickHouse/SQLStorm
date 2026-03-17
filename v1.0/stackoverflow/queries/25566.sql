@@ -28,7 +28,7 @@ TaggedPosts AS (
     FROM 
         RankedPosts rp
     CROSS JOIN 
-        (SELECT DISTINCT arrayJoin(splitByString('><', rp.Tags)) AS TagName FROM RankedPosts) t 
+        (SELECT DISTINCT arrayJoin(splitByString('><', assumeNotNull(rp.Tags))) AS TagName FROM RankedPosts) t 
     WHERE 
         rp.RankInLocation <= 5 
 ),

@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         COUNT(c.Id) AS CommentCount,
-        ROW_NUMBER() OVER (PARTITION BY any(p.OwnerUserId) ORDER BY p.Score DESC) AS RankByScore
+        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS RankByScore
     FROM 
         Posts p 
     LEFT JOIN 

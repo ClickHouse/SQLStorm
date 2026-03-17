@@ -37,7 +37,7 @@ PostStatistics AS (
     LEFT JOIN 
         Votes v ON rp.PostId = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString(',', rp.Tags)) AS t(TagName) ON TRUE
+        arrayJoin(splitByString(',', assumeNotNull(rp.Tags))) AS t(TagName) ON TRUE
     WHERE 
         rp.rn = 1  
     GROUP BY 

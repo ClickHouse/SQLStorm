@@ -19,7 +19,7 @@ WITH UserStats AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString(',', T.Tags)) AS TagName,
+        arrayJoin(splitByString(',', assumeNotNull(T.Tags))) AS TagName,
         COUNT(DISTINCT P.Id) AS TagCount
     FROM 
         Posts P

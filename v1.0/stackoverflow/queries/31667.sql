@@ -48,7 +48,7 @@ LEFT JOIN (
         t.TagName
     FROM Tags t
     JOIN (
-        SELECT arrayJoin(splitByString('>', p.Tags)) AS Tag
+        SELECT arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS Tag
     ) AS tag_array ON t.TagName = tag_array.Tag
 ) AS t ON TRUE
 WHERE p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '60 days'

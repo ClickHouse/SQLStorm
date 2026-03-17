@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         P.CreationDate,
         P.Score,
         P.ViewCount,
-        ROW_NUMBER() OVER (PARTITION BY any(P.PostTypeId) ORDER BY P.Score DESC) AS Rank,
+        ROW_NUMBER() OVER (PARTITION BY P.PostTypeId ORDER BY P.Score DESC) AS Rank,
         COUNT(CASE WHEN V.VoteTypeId = 2 THEN 1 END) AS UpVoteCount,
         COUNT(CASE WHEN V.VoteTypeId = 3 THEN 1 END) AS DownVoteCount
     FROM Posts P

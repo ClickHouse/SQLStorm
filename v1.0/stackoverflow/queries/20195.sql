@@ -34,7 +34,7 @@ PopulatedTags AS (
     FROM 
         Posts P
     LEFT JOIN 
-        arrayJoin(splitByString('<>', P.Tags)) AS T(TagName) ON P.Id = P.Id
+        arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS T(TagName) ON P.Id = P.Id
     GROUP BY 
         P.Id
 ),

@@ -39,7 +39,7 @@ SELECT
     fp.PostId,
     fp.Title,
     fp.Body,
-    ARRAY_TO_STRING(splitByString('<>', fp.Tags), ', ') AS ProcessedTags,
+    ARRAY_TO_STRING(splitByString('<>', assumeNotNull(fp.Tags)), ', ') AS ProcessedTags,
     fp.ViewCount,
     fp.OwnerDisplayName,
     fp.CommentCount,

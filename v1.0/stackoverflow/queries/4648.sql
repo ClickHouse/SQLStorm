@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', Tags)) AS TagName,
+        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -61,7 +61,7 @@ JOIN
 LEFT JOIN 
     UserBadges b ON u.Id = b.UserId
 JOIN 
-    PopularTags t ON t.TagName = ANY(splitByString('><', r.Tags))
+    PopularTags t ON t.TagName = ANY(splitByString('><', assumeNotNull(r.Tags)))
 WHERE 
     r.PostRank <= 3
 ORDER BY 

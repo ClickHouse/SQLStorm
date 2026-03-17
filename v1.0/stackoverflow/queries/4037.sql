@@ -51,7 +51,7 @@ SELECT
         WHEN ps.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 'Older'
         ELSE 'Recent'
     END AS PostAge,
-    length(splitByString(' ', ps.Title), 1) AS TitleWordCount
+    length(splitByString(' ', assumeNotNull(ps.Title)), 1) AS TitleWordCount
 FROM 
     PostStats ps
 WHERE 

@@ -63,7 +63,7 @@ FROM
 LEFT JOIN 
     Posts P ON FU.UserId = P.OwnerUserId
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString(', ', P.Tags)) AS TagName) AS T ON true
+    (SELECT arrayJoin(splitByString(', ', assumeNotNull(P.Tags))) AS TagName) AS T ON true
 GROUP BY 
     FU.UserId, FU.DisplayName, FU.Reputation, FU.UpVotesCount, FU.DownVotesCount, FU.TotalPosts, FU.TotalComments
 ORDER BY 

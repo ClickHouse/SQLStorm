@@ -44,7 +44,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            arrayJoin(splitByString(',', p.Tags)) AS TagName
+            arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
     ) t ON true
 WHERE 
     u.LastAccessDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'  

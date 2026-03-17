@@ -41,7 +41,7 @@ SELECT
     customer_names,
     UPPER(gender_marital_status) AS upper_gender_marital_status,
     LENGTH(customer_names) AS names_length,
-    length(splitByString(', ', customer_names), 1) AS names_array_length
+    length(splitByString(', ', assumeNotNull(customer_names)), 1) AS names_array_length
 FROM 
     AggregatedData
 ORDER BY 

@@ -4,7 +4,7 @@ WITH StringProcessedData AS (
         p.Id AS PostId,
         p.Title,
         p.Body,
-        length(splitByString('><', substring(p.Tags, 2, length(p.Tags)-2)), 1) AS TagCount,
+        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))), 1) AS TagCount,
         COALESCE((
             SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') 
             FROM Users u

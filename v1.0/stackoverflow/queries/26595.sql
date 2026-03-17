@@ -22,7 +22,7 @@ WITH RankedPosts AS (
         p.Id, p.Title, p.Body, p.Tags, p.Score, p.CreationDate, u.DisplayName
 ), TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('> <', substring(p.Tags, 2, length(p.Tags) - 2))) AS TagName,
+        arrayJoin(splitByString('> <', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts p
     WHERE p.PostTypeId = 1

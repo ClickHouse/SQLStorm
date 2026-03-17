@@ -55,7 +55,7 @@ LEFT JOIN
 LEFT JOIN 
     (
         SELECT 
-            TRIM(arrayJoin(splitByString('<>', p.Tags))) AS TagName
+            TRIM(arrayJoin(splitByString('<>', assumeNotNull(p.Tags)))) AS TagName
     ) t ON TRUE
 GROUP BY 
     fp.PostId, fp.Title, fp.CreationDate, fp.Score, fp.ViewCount, fp.UpVotes, fp.DownVotes, fp.CommentCount

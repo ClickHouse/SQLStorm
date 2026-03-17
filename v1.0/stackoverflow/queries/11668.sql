@@ -24,7 +24,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory ph ON p.Id = ph.PostId
 LEFT JOIN 
-    arrayJoin(splitByString(',', p.Tags)) AS tag(tagname) ON TRUE
+    arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag(tagname) ON TRUE
 LEFT JOIN 
     Tags t ON tag.tagname = t.TagName
 WHERE 

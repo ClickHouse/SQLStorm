@@ -3,7 +3,7 @@ WITH ProcessedTags AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))) AS Tag
+        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS Tag
     FROM 
         Posts p
     WHERE 

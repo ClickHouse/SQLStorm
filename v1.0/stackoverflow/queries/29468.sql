@@ -19,14 +19,14 @@ WITH RankedPosts AS (
 ),
 TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('>', Tags)) AS Tag,
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS Tag,
         COUNT(*) AS TagFrequency
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('>', Tags))
+        arrayJoin(splitByString('>', assumeNotNull(Tags)))
 ),
 ClosedPosts AS (
     SELECT 

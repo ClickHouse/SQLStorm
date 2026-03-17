@@ -37,7 +37,7 @@ TagStats AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString(',', p.Tags)) AS tagList ON TRUE
+        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tagList ON TRUE
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH ' ' FROM tagList) AND t.Count > 10
     GROUP BY 

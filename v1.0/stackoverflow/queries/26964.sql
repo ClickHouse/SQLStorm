@@ -1,7 +1,7 @@
 
 WITH TagStats AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS Tag,
+        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2))))) AS Tag,
         COUNT(*) AS PostCount,
         SUM(ViewCount) AS TotalViews,
         AVG(Score) AS AverageScore
@@ -10,7 +10,7 @@ WITH TagStats AS (
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        TRIM(arrayJoin(splitByString('><', SUBSTRING(Tags, 2, LENGTH(Tags) - 2))))
+        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))))
 ),
 UserBadges AS (
     SELECT 

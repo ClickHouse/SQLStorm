@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.LastActivityDate,
         p.OwnerUserId,
-        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY any(p.Score) DESC) AS UserPostRank
+        ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS UserPostRank
     FROM 
         Posts p
     LEFT JOIN 

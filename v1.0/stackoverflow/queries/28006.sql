@@ -24,14 +24,14 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS Tag,
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY
-        arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2)))
+        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2))))
 ),
 TopTags AS (
     SELECT
@@ -56,7 +56,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    TopTags tt ON tt.Tag = ANY(splitByString('><', substring(rp.Tags, 2, length(rp.Tags) - 2)))
+    TopTags tt ON tt.Tag = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags) - 2))))
 WHERE 
     rp.Rank <= 10
 ORDER BY 

@@ -61,7 +61,7 @@ SELECT
         WHEN md.info_count > 0 THEN 'Has Info'
         ELSE 'No Info'
     END AS info_status,
-    length(ARRAY_REMOVE(splitByString('; ', md.info_details), NULL), 1) AS num_info_entries
+    length(ARRAY_REMOVE(splitByString('; ', assumeNotNull(md.info_details)), NULL), 1) AS num_info_entries
 FROM 
     movie_data md
 WHERE 

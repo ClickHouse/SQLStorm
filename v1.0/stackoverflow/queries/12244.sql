@@ -22,7 +22,7 @@ LEFT JOIN
 JOIN 
     PostTypes pt ON p.PostTypeId = pt.Id
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString(',', p.Tags)) AS TagName) AS t ON TRUE
+    (SELECT arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName) AS t ON TRUE
 GROUP BY 
     p.Id, p.Title, p.CreationDate, p.Score, u.DisplayName, pt.Name
 ORDER BY 

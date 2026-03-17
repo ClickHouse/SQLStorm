@@ -59,7 +59,7 @@ FROM
 LEFT JOIN 
     Posts P ON FP.PostId = P.Id
 LEFT JOIN 
-    (SELECT DISTINCT arrayJoin(splitByString('>', P.Tags)) AS TagName FROM Posts P) T ON TRUE
+    (SELECT DISTINCT arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS TagName FROM Posts P) T ON TRUE
 GROUP BY 
     FP.PostId, FP.Title, FP.Author, FP.CreationDate, FP.ViewCount, FP.CommentCount, FP.UpvoteCount, FP.DownvoteCount
 ORDER BY 

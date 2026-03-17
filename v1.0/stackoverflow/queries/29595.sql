@@ -15,7 +15,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
     LEFT JOIN 
-        arrayJoin(splitByString('>', p.Tags)) AS tag ON true
+        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag ON true
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
     WHERE 

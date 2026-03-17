@@ -37,7 +37,7 @@ FilteredPosts AS (
     LEFT JOIN 
         Posts p ON p.Id = rp.PostId
     JOIN 
-        arrayJoin(splitByString('><', substring(p.Tags, 2, length(p.Tags) - 2))) AS tag(TagName) ON tag.TagName IS NOT NULL
+        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag(TagName) ON tag.TagName IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag.TagName
     WHERE 

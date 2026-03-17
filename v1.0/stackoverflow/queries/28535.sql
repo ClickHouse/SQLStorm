@@ -1,10 +1,10 @@
 
 WITH TagCounts AS (
-    SELECT arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2))) AS TagName,
+    SELECT arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
            COUNT(*) AS PostCount
     FROM Posts
     WHERE PostTypeId = 1 
-    GROUP BY arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2)))
+    GROUP BY arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2))))
 ),
 TopTags AS (
     SELECT TagName,
@@ -34,7 +34,7 @@ PopularPosts AS (
            arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS Tags
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
-    JOIN TagCounts T ON T.TagName = ANY(splitByString('><', substring(P.Tags, 2, length(P.Tags) - 2)))
+    JOIN TagCounts T ON T.TagName = ANY(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2))))
     WHERE P.PostTypeId = 1
     GROUP BY P.Id, U.DisplayName
     HAVING COUNT(DISTINCT T.TagName) > 1

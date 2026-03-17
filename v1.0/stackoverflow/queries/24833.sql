@@ -48,7 +48,7 @@ FilteredPosts AS (
             arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') AS TagName
          FROM 
             Posts,
-            arrayJoin(splitByString(',', Tags)) AS TagName
+            arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName
          GROUP BY 
             PostId) T ON RP.PostId = T.PostId
     WHERE 

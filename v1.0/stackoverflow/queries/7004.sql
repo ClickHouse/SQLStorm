@@ -47,7 +47,7 @@ FROM
 LEFT JOIN 
     Comments c ON tp.PostId = c.PostId
 LEFT JOIN 
-    arrayJoin(splitByString(' ', tp.Title)) AS tag ON tag IS NOT NULL
+    arrayJoin(splitByString(' ', assumeNotNull(tp.Title))) AS tag ON tag IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag
 GROUP BY 

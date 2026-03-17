@@ -59,7 +59,7 @@ FROM
 LEFT JOIN 
     PostHistoryWithCounts PHT ON RP.PostId = PHT.PostId
 LEFT JOIN 
-    PopularTags PT ON PT.TagName IN (SELECT arrayJoin(splitByString(' ', RP.Title))) 
+    PopularTags PT ON PT.TagName IN (SELECT arrayJoin(splitByString(' ', assumeNotNull(RP.Title)))) 
 WHERE 
     COALESCE(PHT.PostHistoryTypeId, 0) IN (1, 4, 10) 
 ORDER BY 

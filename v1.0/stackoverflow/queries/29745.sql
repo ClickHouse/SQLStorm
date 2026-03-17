@@ -1,7 +1,7 @@
 
 WITH TagFrequency AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', substring(Tags, 2, length(Tags) - 2)))) AS Tag,
+        TRIM(arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2))))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts

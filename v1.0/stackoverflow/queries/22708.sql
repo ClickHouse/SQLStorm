@@ -34,7 +34,7 @@ UserStats AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', Tags)) AS Tag,
+        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS Tag,
         COUNT(*) AS TagUsage
     FROM 
         Posts

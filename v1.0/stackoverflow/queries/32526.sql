@@ -33,7 +33,7 @@ PostTags AS (
         p.Id AS PostId,
         arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
     FROM Posts p
-    JOIN arrayJoin(splitByString('>', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags)-2))) AS tag ON tag IS NOT NULL
+    JOIN arrayJoin(splitByString('>', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags)-2)))) AS tag ON tag IS NOT NULL
     JOIN Tags t ON t.TagName = tag
     GROUP BY p.Id
 )

@@ -30,7 +30,7 @@ TopRankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        LOWER(TRIM(arrayJoin(splitByString('><', SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))))) AS Tag,
+        LOWER(TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -53,7 +53,7 @@ FROM
 LEFT JOIN 
     PostTypes pt ON trp.PostId IN (SELECT p.Id FROM Posts p WHERE p.PostTypeId = pt.Id)
 LEFT JOIN 
-    PopularTags pgt ON pgt.Tag = ANY(splitByString('><', SUBSTRING(trp.Tags FROM 2 FOR LENGTH(trp.Tags) - 2)))
+    PopularTags pgt ON pgt.Tag = ANY(splitByString('><', assumeNotNull(SUBSTRING(trp.Tags FROM 2 FOR LENGTH(trp.Tags) - 2))))
 GROUP BY 
     trp.PostId, trp.Title, trp.ViewCount, trp.Score
 ORDER BY 

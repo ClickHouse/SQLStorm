@@ -46,7 +46,7 @@ WITH RankedPosts AS (
     FROM 
         PostAggregates ta
     JOIN 
-        Tags t ON t.TagName = ANY(splitByString('>', ta.Tags))  
+        Tags t ON t.TagName = ANY(splitByString('>', assumeNotNull(ta.Tags)))  
 )
 SELECT 
     td.FormattedTagName,

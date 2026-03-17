@@ -43,7 +43,7 @@ SELECT
     fp.UpVoteCount,
     fp.DownVoteCount,
     (fp.UpVoteCount - fp.DownVoteCount) AS NetVoteScore,
-    length(splitByString('><', fp.Tags), 1) AS TagCount,
+    length(splitByString('><', assumeNotNull(fp.Tags)), 1) AS TagCount,
     CASE
         WHEN fp.UpVoteCount > fp.DownVoteCount THEN 'Positive'
         WHEN fp.UpVoteCount < fp.DownVoteCount THEN 'Negative'

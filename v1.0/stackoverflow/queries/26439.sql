@@ -40,7 +40,7 @@ TaggedPosts AS (
     JOIN 
         (
             SELECT 
-                arrayJoin(splitByString(',', rp.Tags)) AS TagName
+                arrayJoin(splitByString(',', assumeNotNull(rp.Tags))) AS TagName
         ) t ON TRUE
     GROUP BY 
         rp.PostId, rp.Title, rp.Body, rp.Tags, rp.CreationDate, rp.LastActivityDate, rp.Author, rp.AnswerCount, rp.AvgBounty

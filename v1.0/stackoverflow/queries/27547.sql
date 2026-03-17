@@ -9,7 +9,7 @@ WITH PostStats AS (
         COALESCE((SELECT COUNT(VoteTypeId) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2), 0) AS Upvotes,
         COALESCE((SELECT COUNT(VoteTypeId) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3), 0) AS Downvotes,
         COALESCE((SELECT COUNT(*) FROM Badges b WHERE b.UserId = p.OwnerUserId), 0) AS BadgeCount,
-        ARRAY_TO_STRING(splitByString('><', p.Tags), ', ') AS FormattedTags
+        ARRAY_TO_STRING(splitByString('><', assumeNotNull(p.Tags)), ', ') AS FormattedTags
     FROM Posts p
     WHERE p.PostTypeId = 1 
       AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 YEAR' 
