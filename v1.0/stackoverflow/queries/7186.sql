@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         p.CreationDate > DATE '2024-10-01' - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, p.Tags, p.OwnerUserId
-),
+, p.PostTypeId),
 UserReputation AS (
     SELECT 
         u.Id AS UserId,

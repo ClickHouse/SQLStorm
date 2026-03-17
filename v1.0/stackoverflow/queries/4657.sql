@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         P.Score > 0
     GROUP BY 
         P.Id, P.Title, P.Score, P.ViewCount, U.DisplayName
-),
+, P.CreationDate, P.OwnerUserId),
 RecentPosts AS (
     SELECT 
         PostId, Title, Score, ViewCount, OwnerName, UpVotes, DownVotes

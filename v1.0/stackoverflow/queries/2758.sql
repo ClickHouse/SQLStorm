@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.PostTypeId
-), HighScorePosts AS (
+, p.CreationDate), HighScorePosts AS (
     SELECT 
         rp.PostId,
         rp.Title,

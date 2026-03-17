@@ -13,7 +13,7 @@ WITH UserPostStats AS (
         Posts p ON u.Id = p.OwnerUserId
     GROUP BY 
         u.Id, u.DisplayName, u.Location
-),
+, u.Reputation),
 PostLinksCounts AS (
     SELECT 
         pl.PostId,

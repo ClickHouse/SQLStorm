@@ -19,7 +19,7 @@ WITH PostStats AS (
         p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year' 
     GROUP BY 
         p.Id, u.Reputation
-),
+, p.Title, p.CreationDate, p.ViewCount, p.Score, p.AnswerCount, p.CommentCount),
 
 PopularPosts AS (
     SELECT 

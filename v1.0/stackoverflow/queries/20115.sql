@@ -30,7 +30,7 @@ UserActivity AS (
         Votes vBounty ON p.Id = vBounty.PostId AND vBounty.VoteTypeId IN (8, 9)
     GROUP BY 
         u.Id
-),
+, u.DisplayName),
 
 PostActivity AS (
     SELECT 

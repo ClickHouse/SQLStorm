@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         p.CreationDate >= '2023-01-01' 
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, u.DisplayName
-),
+, p.OwnerUserId),
 TopUsers AS (
     SELECT 
         OwnerDisplayName, 

@@ -22,7 +22,7 @@ WITH UserActivity AS (
         u.Reputation > 100 
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation
-),
+, u.CreationDate),
 
 RecentContributions AS (
     SELECT 

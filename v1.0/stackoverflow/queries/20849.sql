@@ -22,7 +22,7 @@ WITH RankedPosts AS (
         p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY 
         p.Id, p.Title, u.DisplayName, p.Body, p.CreationDate
-),
+, p.PostTypeId),
 PostHistoryWithVotes AS (
     SELECT 
         ph.PostId,

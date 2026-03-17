@@ -22,7 +22,7 @@ WITH RankedPosts AS (
         AND p.CreationDate >= CURRENT_TIMESTAMP - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, u.DisplayName
-),
+, p.OwnerUserId),
 
 PopularPosts AS (
     SELECT 

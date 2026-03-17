@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         p.CreationDate > CURRENT_DATE - INTERVAL '30 days' 
     GROUP BY 
         p.Id, p.Title, u.DisplayName
-),
+, p.CreationDate, p.PostTypeId),
 PopularPosts AS (
     SELECT 
         PostId,

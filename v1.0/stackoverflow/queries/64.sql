@@ -19,7 +19,7 @@ WITH UserActivity AS (
         Votes V ON P.Id = V.PostId
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation
-),
+, U.CreationDate),
 UserBadges AS (
     SELECT 
         U.Id AS UserId,

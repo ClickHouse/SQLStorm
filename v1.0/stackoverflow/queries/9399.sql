@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, u.DisplayName
-),
+, p.PostTypeId),
 TopPosts AS (
     SELECT 
         rp.PostId,

@@ -22,7 +22,7 @@ WITH RankedPosts AS (
         AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.Title, u.DisplayName
-),
+, p.CreationDate),
 UserBadges AS (
     SELECT 
         b.UserId,

@@ -24,7 +24,7 @@ WITH RankedPosts AS (
         AND p.Score IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, u.DisplayName
-), FilteredPosts AS (
+, p.OwnerUserId), FilteredPosts AS (
     SELECT * 
     FROM RankedPosts 
     WHERE Rank <= 5

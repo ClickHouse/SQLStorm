@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 YEAR'
     GROUP BY 
         p.Id, p.OwnerUserId
-),
+, p.Title),
 TopUsers AS (
     SELECT 
         u.Id AS UserId,

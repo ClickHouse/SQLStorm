@@ -14,7 +14,7 @@ WITH RankedPosts AS (
         P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         P.Id
-),
+, P.Title, P.ViewCount, P.OwnerUserId),
 ClosedAndEditedPosts AS (
     SELECT 
         PH.PostId,

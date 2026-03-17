@@ -16,7 +16,7 @@ WITH PostStats AS (
         P.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 
         P.Id, P.Title, P.OwnerUserId
-),
+, P.CreationDate),
 UserRankings AS (
     SELECT 
         U.Id AS UserId,

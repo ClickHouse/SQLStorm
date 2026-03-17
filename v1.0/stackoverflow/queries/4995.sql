@@ -15,7 +15,7 @@ WITH PostEngagement AS (
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 YEAR'
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.AnswerCount
-),
+, p.PostTypeId),
 PostHistoryCounts AS (
     SELECT 
         ph.PostId,

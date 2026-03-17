@@ -27,7 +27,7 @@ RecentPosts AS (
         p.CreationDate > CURRENT_TIMESTAMP - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.OwnerUserId, p.Score, p.Title, p.Tags
-),
+, p.CreationDate),
 PostStatistics AS (
     SELECT 
         rp.PostId,

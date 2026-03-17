@@ -19,7 +19,7 @@ WITH PostMetrics AS (
         p.PostTypeId = 1 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.LastActivityDate
-),
+, p.ClosedDate),
 AverageMetrics AS (
     SELECT 
         AVG(PostAgeInSeconds) AS AveragePostAge,

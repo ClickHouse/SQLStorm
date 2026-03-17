@@ -21,7 +21,7 @@ RecentPosts AS (
     LEFT JOIN Comments C ON P.Id = C.PostId
     WHERE P.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days')
     GROUP BY P.Id, P.OwnerUserId, P.Title, P.CreationDate, P.Score, P.ViewCount
-),
+, P.AcceptedAnswerId),
 TopPosts AS (
     SELECT 
         RP.PostId,

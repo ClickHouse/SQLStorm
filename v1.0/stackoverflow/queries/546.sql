@@ -15,7 +15,7 @@ WITH UserScores AS (
         Posts P ON U.Id = P.OwnerUserId
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation, U.CreationDate
-),
+, U.UpVotes, U.DownVotes),
 TopUsers AS (
     SELECT 
         UserId,

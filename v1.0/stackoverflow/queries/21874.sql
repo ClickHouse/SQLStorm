@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         AND p.Score IS NOT NULL
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score
-),
+, p.OwnerUserId),
 UserBadges AS (
     SELECT 
         u.Id AS UserId,

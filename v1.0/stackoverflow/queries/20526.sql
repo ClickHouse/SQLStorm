@@ -27,7 +27,7 @@ PostMetrics AS (
     FROM Posts p
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
     GROUP BY p.Id, p.OwnerUserId, p.PostTypeId
-),
+, p.ViewCount, p.AnswerCount, p.CommentCount),
 PostWithMetrics AS (
     SELECT 
         pm.PostId,

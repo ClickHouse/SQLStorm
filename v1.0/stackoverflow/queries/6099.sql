@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         p.Score > 0
     GROUP BY 
         p.Id, p.Title, p.Score, p.CreationDate, p.ViewCount, p.OwnerUserId
-), UserEngagement AS (
+, p.PostTypeId), UserEngagement AS (
     SELECT 
         u.Id AS UserId,
         COUNT(DISTINCT p.Id) AS PostCount,

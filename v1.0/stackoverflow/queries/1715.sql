@@ -11,7 +11,7 @@ WITH UserPostStats AS (
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     GROUP BY u.Id, u.DisplayName, u.Location
-),
+, u.Reputation),
 PostVoteCounts AS (
     SELECT 
         p.Id AS PostId,

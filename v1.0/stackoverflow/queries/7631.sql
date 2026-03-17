@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         p.CreationDate >= '2020-01-01' 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, u.DisplayName
-),
+, p.OwnerUserId),
 TopRankedPosts AS (
     SELECT * 
     FROM RankedPosts

@@ -25,7 +25,7 @@ WITH RankedPosts AS (
         Posts p ON u.Id = p.OwnerUserId AND p.PostTypeId = 1
     GROUP BY 
         u.Id
-), BadgeCount AS (
+, u.DisplayName), BadgeCount AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS TotalBadges

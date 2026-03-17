@@ -15,7 +15,7 @@ WITH UserVoteStatistics AS (
         Votes V ON U.Id = V.UserId
     GROUP BY 
         U.Id
-),
+, U.DisplayName),
 PostStatistics AS (
     SELECT 
         P.Id AS PostId,

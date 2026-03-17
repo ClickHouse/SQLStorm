@@ -19,7 +19,7 @@ PostMetrics AS (
     FROM Posts P
     LEFT JOIN Votes V ON P.Id = V.PostId
     GROUP BY P.Id, P.Title, P.OwnerUserId
-),
+, P.AcceptedAnswerId),
 PostHistoryAggregates AS (
     SELECT 
         PH.PostId,

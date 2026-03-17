@@ -24,7 +24,7 @@ WITH RankedPosts AS (
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 
         p.Id, u.DisplayName, p.CreationDate
-),
+, p.Title, p.OwnerUserId),
 TopContributors AS (
     SELECT 
         Author,

@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         p.PostTypeId IN (1, 2) 
     GROUP BY 
         p.Id, p.Title, p.Score, u.DisplayName
-),
+, p.CreationDate, p.PostTypeId),
 TopPosts AS (
     SELECT 
         rp.* 

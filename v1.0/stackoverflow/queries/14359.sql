@@ -18,7 +18,7 @@ WITH PostStatistics AS (
         Badges b ON p.OwnerUserId = b.UserId
     GROUP BY 
         p.Id, p.PostTypeId
-),
+, p.CreationDate),
 UserStatistics AS (
     SELECT 
         u.Id AS UserId,

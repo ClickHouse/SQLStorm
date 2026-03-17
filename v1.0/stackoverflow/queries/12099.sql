@@ -18,7 +18,7 @@ WITH PostStats AS (
         Votes v ON p.Id = v.PostId
     GROUP BY 
         p.Id, p.Title, p.PostTypeId
-),
+, p.CreationDate),
 TopPosts AS (
     SELECT 
         ps.PostId,

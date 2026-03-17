@@ -25,7 +25,7 @@ WITH PostAggregate AS (
         P.CreationDate >= '2023-01-01'
     GROUP BY 
         P.Id, P.Title, PT.Name
-), RankedPosts AS (
+, P.CreationDate), RankedPosts AS (
     SELECT 
         PA.*,
         ROW_NUMBER() OVER (ORDER BY (UpvoteCount - DownvoteCount) DESC, CommentCount DESC, LastModified DESC) AS Rank

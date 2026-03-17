@@ -26,7 +26,7 @@ UserActivity AS (
         Votes v ON v.UserId = u.Id
     GROUP BY 
         u.Id
-),
+, u.DisplayName),
 PostStatistics AS (
     SELECT 
         p.Id AS PostId,

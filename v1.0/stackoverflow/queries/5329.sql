@@ -12,7 +12,7 @@ WITH UserReputation AS (
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Votes v ON p.Id = v.PostId
     GROUP BY u.Id
-),
+, u.DisplayName, u.Reputation, u.CreationDate),
 HighReputationUsers AS (
     SELECT 
         UserId,

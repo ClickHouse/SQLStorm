@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         p.PostTypeId = 1 
     GROUP BY 
         p.Id, u.DisplayName, p.CreationDate, p.Score, p.OwnerUserId, p.LastActivityDate
-),
+, p.Title),
 TopUsers AS (
     SELECT 
         OwnerDisplayName,

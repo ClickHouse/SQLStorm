@@ -16,7 +16,7 @@ WITH RankedPosts AS (
         Votes v ON p.Id = v.PostId
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.AnswerCount
-),
+, p.OwnerUserId),
 UserStats AS (
     SELECT 
         u.Id AS UserId,

@@ -18,7 +18,7 @@ WITH RecentActivities AS (
         p.CreationDate > cast('2024-10-01' as date) - INTERVAL '30 days'
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.CreationDate, u.DisplayName
-),
+, p.LastActivityDate),
 FilteredPosts AS (
     SELECT 
         ra.*,

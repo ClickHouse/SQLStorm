@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.Score, p.Title, p.CreationDate, p.ViewCount, p.OwnerUserId, p.Tags
-),
+, p.PostTypeId),
 UserReputation AS (
     SELECT 
         u.Id AS UserId,

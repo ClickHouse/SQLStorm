@@ -22,7 +22,7 @@ WITH RankedPosts AS (
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year' 
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.ViewCount, p.Score, p.AnswerCount, p.CommentCount, u.DisplayName
-), FilteredPosts AS (
+, p.OwnerUserId), FilteredPosts AS (
     SELECT 
         rp.*,
         ROW_NUMBER() OVER (ORDER BY rp.ViewCount DESC, rp.Score DESC) AS PostRank

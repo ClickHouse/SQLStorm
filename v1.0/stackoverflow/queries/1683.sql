@@ -17,7 +17,7 @@ WITH UserStats AS (
         Posts p ON u.Id = p.OwnerUserId
     GROUP BY 
         u.Id, u.DisplayName, u.Reputation, u.Views
-),
+, u.UpVotes, u.DownVotes),
 ClosedPosts AS (
     SELECT 
         ph.UserId,

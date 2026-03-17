@@ -15,7 +15,7 @@ WITH RankedPosts AS (
         p.Score > 0 AND p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
-),
+, p.LastActivityDate),
 FilteredPosts AS (
     SELECT 
         rp.PostId,

@@ -23,7 +23,7 @@ WITH PostActivity AS (
         AND p.PostTypeId = 1 
     GROUP BY
         p.Id, p.Title, p.CreationDate, p.LastActivityDate, u.DisplayName
-),
+, p.OwnerUserId),
 TopUsers AS (
     SELECT 
         Owner, 

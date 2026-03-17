@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         p.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '1 year'
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.LastActivityDate, p.OwnerUserId
-),
+, p.Score),
 UserReputation AS (
     SELECT 
         u.Id AS UserId,

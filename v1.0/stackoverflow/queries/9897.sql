@@ -18,7 +18,7 @@ WITH RankedPosts AS (
         AND p.PostTypeId IN (1, 2) 
     GROUP BY 
         p.Id, p.Title, p.ViewCount, u.DisplayName, p.Score
-),
+, p.PostTypeId),
 TopRankedPosts AS (
     SELECT 
         PostId,

@@ -20,7 +20,7 @@ WITH RankedPosts AS (
         AND p.Score > 10
     GROUP BY 
         p.Id, p.Title, p.ViewCount, p.CreationDate
-),
+, p.OwnerUserId),
 TopPosts AS (
     SELECT 
         rp.PostId,
