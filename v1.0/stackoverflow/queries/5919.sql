@@ -13,14 +13,14 @@ WITH PostStats AS (
         p.OwnerUserId,
         u.DisplayName AS OwnerDisplayName,
         pt.Name AS PostType,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
         LEFT JOIN Comments c ON c.PostId = p.Id
         LEFT JOIN Votes v ON v.PostId = p.Id
         LEFT JOIN Users u ON p.OwnerUserId = u.Id
         LEFT JOIN PostTypes pt ON p.PostTypeId = pt.Id
-        LEFT JOIN (SELECT arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS TagName) AS t ON TRUE
+        LEFT JOIN (SELECT UNNEST(string_to_array(p.Tags, '<>')) AS TagName) AS t ON TRUE
     WHERE 
         p.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 

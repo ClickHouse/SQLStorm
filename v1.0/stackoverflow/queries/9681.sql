@@ -17,9 +17,9 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2
     INNER JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
+                unnest(string_to_array(p.Tags, ',')) AS TagName
         ) AS t ON TRUE
     WHERE 
         p.PostTypeId = 1 AND 

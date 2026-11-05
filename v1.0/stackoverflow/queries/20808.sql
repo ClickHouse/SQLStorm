@@ -29,9 +29,9 @@ RecentVotes AS (
 PostHistoryWithReason AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId = 10 
+        STRING_AGG(CASE WHEN ph.PostHistoryTypeId = 10 
                       THEN 'Closed Reason: ' || (SELECT Name FROM CloseReasonTypes cr WHERE cr.Id = CAST(ph.Comment AS INT))
-                      ELSE NULL END)), ', ') AS CloseReasons,
+                      ELSE NULL END, ', ') AS CloseReasons,
         COUNT(CASE WHEN ph.PostId IS NOT NULL THEN 1 END) AS EditCount
     FROM 
         PostHistory ph

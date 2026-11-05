@@ -42,7 +42,7 @@ UserBadges AS (
 CloseReasons AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CR.Name)), ', ') AS CloseReasonNames,
+        STRING_AGG(CR.Name, ', ') AS CloseReasonNames,
         COUNT(*) AS CloseCount
     FROM PostHistory PH
     JOIN CloseReasonTypes CR ON PH.Comment::int = CR.Id

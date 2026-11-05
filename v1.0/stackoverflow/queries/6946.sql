@@ -41,13 +41,13 @@ SELECT
     T.UpVotes,
     T.DownVotes,
     T.Rank,
-    arrayDistinct(groupArray(assumeNotNull(TAG.TagName))) AS ExpertiseTags
+    ARRAY_AGG(DISTINCT TAG.TagName) AS ExpertiseTags
 FROM 
     TopUsers T
 LEFT JOIN 
     Posts P ON T.UserId = P.OwnerUserId
-
-    LEFT ARRAY JOIN splitByString('<>', assumeNotNull(P.Tags)) AS TagName
+LEFT JOIN 
+    LATERAL (SELECT unnest(string_to_array(P.Tags, '<>')) AS TagName) TAG ON TRUE
 WHERE 
     T.Rank <= 10
 GROUP BY 

@@ -56,7 +56,7 @@ SELECT
 FROM 
     TopPosts TP
 JOIN 
-    TopTags TT ON TT.TagName = ANY (splitByString(' ', assumeNotNull(TP.Title))) 
+    TopTags TT ON TT.TagName = ANY (string_to_array(TP.Title, ' ')) 
 ORDER BY 
     TP.Score DESC, 
     TT.PostCount DESC;

@@ -3,7 +3,7 @@ WITH PostTagCounts AS (
         p.Id AS PostId,
         p.Title,
         p.Tags,
-        COALESCE(length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1), 0) AS TagCount
+        COALESCE(array_length(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'), 1), 0) AS TagCount
     FROM 
         Posts p
     WHERE 

@@ -59,7 +59,7 @@ SELECT
     CommentCount,
     UpVotes,
     DownVotes,
-    arrayStringConcat(groupArray(assumeNotNull(PostHistory)), ', ') AS RecentActions
+    STRING_AGG(PostHistory, ', ') AS RecentActions
 FROM 
     PostStats
 GROUP BY 

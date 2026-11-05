@@ -6,7 +6,7 @@ WITH PostDetails AS (
         p.Body,
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
+        STRING_AGG(t.TagName, ', ') AS Tags,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS VoteCount
     FROM 
@@ -18,7 +18,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS t(TagName) ON true
+        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS t(TagName) ON true
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 

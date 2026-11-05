@@ -6,12 +6,12 @@ WITH RecentPostStats AS (
         p.Score,
         p.AnswerCount,
         p.CommentCount,
-        COALESCE(groupArray(assumeNotNull(t.TagName)), ARRAY[]::text[]) AS Tags,
+        COALESCE(ARRAY_AGG(t.TagName), ARRAY[]::text[]) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM 
         Posts p
     LEFT JOIN 
-        (SELECT DISTINCT arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName
+        (SELECT DISTINCT unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName
          FROM Posts) t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'

@@ -21,7 +21,7 @@ WITH RankedPosts AS (
 PostHistoryAggregates AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryTypeNames,
+        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryTypeNames,
         COUNT(CASE WHEN PH.PostHistoryTypeId IN (10, 11) THEN 1 END) AS CloseReopenCount,
         MAX(PH.CreationDate) AS LastChangeDate
     FROM 

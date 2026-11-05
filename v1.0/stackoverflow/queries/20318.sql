@@ -25,12 +25,12 @@ PostWithTags AS (
         rp.CreationDate, 
         rp.NetVotes, 
         rp.CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         RankedPosts rp
     LEFT JOIN 
-        (SELECT 
-                      arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName 
+        LATERAL (SELECT 
+                      UNNEST(string_to_array(p.Tags, ',')) AS TagName 
                   FROM 
                       Posts p WHERE p.Id = rp.PostId) t ON true
     GROUP BY 

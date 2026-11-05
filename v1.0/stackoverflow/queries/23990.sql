@@ -29,7 +29,7 @@ WITH RecentPosts AS (
     SELECT
         PH.PostId,
         COUNT(PH.Id) AS EditCount,
-        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS EditTypes
+        STRING_AGG(PHT.Name, ', ') AS EditTypes
     FROM 
         PostHistory PH
     JOIN 

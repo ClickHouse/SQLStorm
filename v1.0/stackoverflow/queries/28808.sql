@@ -33,7 +33,7 @@ RecentPosts AS (
         p.Id AS PostId,
         p.Title,
         p.CreationDate,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     JOIN 

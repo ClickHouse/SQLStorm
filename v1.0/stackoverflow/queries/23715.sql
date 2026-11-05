@@ -64,7 +64,7 @@ SELECT
     cp.UserId AS CloseByUserId,
     COALESCE(cp.Comment, 'No Comment') AS CloseComment,
     COUNT(DISTINCT upl.RelatedPostId) AS RelatedLinks,
-    arrayStringConcat(groupArray(assumeNotNull(upl.LinkType)), ', ') AS LinkTypes
+    STRING_AGG(upl.LinkType, ', ') AS LinkTypes
 FROM 
     RankedPosts rp
 LEFT JOIN 

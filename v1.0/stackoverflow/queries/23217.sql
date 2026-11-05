@@ -35,7 +35,7 @@ PostHistoryInfo AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         MIN(ph.CreationDate) AS FirstActionDate,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT('User:', ph.UserId, ' Action:', ph.Comment))), '; ') AS HistoryComments
+        STRING_AGG(CONCAT('User:', ph.UserId, ' Action:', ph.Comment), '; ') AS HistoryComments
     FROM 
         PostHistory ph
     GROUP BY 

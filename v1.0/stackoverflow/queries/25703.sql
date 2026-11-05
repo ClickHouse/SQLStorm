@@ -39,7 +39,7 @@ TopTags AS (
         COUNT(*) AS TagCount
     FROM 
         Posts p,
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag
+        UNNEST(string_to_array(p.Tags, '>')) AS tag
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
@@ -67,7 +67,7 @@ JOIN
 JOIN 
     UserEngagement ue ON u.Id = ue.UserId
 JOIN 
-    TopTags tt ON tt.TagName = ANY(splitByString('>', assumeNotNull(rp.Tags)))
+    TopTags tt ON tt.TagName = ANY(string_to_array(rp.Tags, '>'))
 WHERE 
     rp.RankByViewCount <= 5 
     AND rp.RankByUserActivity <= 3

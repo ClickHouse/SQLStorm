@@ -1,7 +1,7 @@
 
 WITH TagUsage AS (
     SELECT 
-        arrayJoin(splitByString('>_<', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS Tag,
+        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '>_<')) AS Tag,
         Id AS PostId
     FROM 
         Posts

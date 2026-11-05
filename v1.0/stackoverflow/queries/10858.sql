@@ -8,7 +8,7 @@ WITH UserMetrics AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        AVG(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate))) AS AvgPostAgeInSeconds
+        AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - p.CreationDate))) AS AvgPostAgeInSeconds
     FROM 
         Users u
     LEFT JOIN 

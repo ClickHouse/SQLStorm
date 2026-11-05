@@ -5,7 +5,7 @@ WITH TagStatistics AS (
         COUNT(DISTINCT C.Id) AS CommentCount,
         SUM(P.ViewCount) AS TotalViews,
         SUM(P.Score) AS TotalScore,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS TopContributors
+        STRING_AGG(DISTINCT U.DisplayName, ', ') AS TopContributors
     FROM
         Tags T
     LEFT JOIN

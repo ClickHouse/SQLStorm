@@ -65,7 +65,7 @@ SELECT
         WHEN UA.Reputation BETWEEN 500 AND 1000 THEN 'Intermediate' 
         ELSE 'Novice' 
     END AS ExpertiseLevel,
-    arrayDistinct(groupArray(assumeNotNull(B.Name))) AS BadgeNames
+    ARRAY_AGG(DISTINCT B.Name) AS BadgeNames
 FROM 
     UserActivity UA
 LEFT JOIN 

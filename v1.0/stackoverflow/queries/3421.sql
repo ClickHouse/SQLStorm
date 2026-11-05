@@ -61,7 +61,7 @@ SELECT
         ELSE 'Bronze'
     END AS ReputationTier,
     (SELECT COUNT(*) FROM Posts p WHERE p.OwnerUserId = us.UserId) AS PostCount,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
      FROM Posts p 
      JOIN Tags t ON p.Tags LIKE CONCAT('%', t.TagName, '%')
      WHERE p.OwnerUserId = us.UserId) AS UsedTags

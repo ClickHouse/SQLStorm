@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         COUNT(c.Id) AS CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
-        arrayStringConcat(groupArray(assumeNotNull(tags.TagName)), ', ') AS Tags
+        STRING_AGG(tags.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString(', ', assumeNotNull(p.Tags))) AS tag) AS tag ON true
+        LATERAL (SELECT unnest(string_to_array(p.Tags, ', ')) AS tag) AS tag ON true
     JOIN 
         Tags tags ON tags.TagName = TRIM(BOTH '"' FROM tag.tag)
     WHERE 

@@ -43,7 +43,7 @@ SELECT
     fp.ScoreCategory,
     fp.CommentCategory,
     CONCAT('Votes: ', COALESCE(fp.UpVoteCount, 0), ' up, ', COALESCE(fp.DownVoteCount, 0), ' down') AS VoteSummary,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ')
+    (SELECT STRING_AGG(tag.TagName, ', ')
      FROM Tags tag
      WHERE tag.WikiPostId = fp.PostId) AS TagsList,
     CASE

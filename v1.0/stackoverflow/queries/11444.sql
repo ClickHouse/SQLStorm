@@ -24,7 +24,7 @@ SELECT
     COUNT(*) AS TotalHistoryEntries,
     MIN(HistoryCreationDate) AS FirstEntryDate,
     MAX(HistoryCreationDate) AS LastEntryDate,
-    AVG(toUnixTimestamp(HistoryCreationDate - PostCreationDate)) AS AvgTimeToHistoryEntry
+    AVG(EXTRACT(EPOCH FROM HistoryCreationDate - PostCreationDate)) AS AvgTimeToHistoryEntry
 FROM 
     Benchmark
 GROUP BY 

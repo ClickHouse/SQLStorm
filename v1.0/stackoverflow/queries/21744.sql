@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS CloseReasons,
+        STRING_AGG(ph.Comment, '; ') AS CloseReasons,
         COUNT(*) AS CloseCount
     FROM 
         PostHistory ph

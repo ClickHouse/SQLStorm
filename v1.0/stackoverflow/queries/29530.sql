@@ -37,7 +37,7 @@ SELECT
     tq.OwnerDisplayName,
     tq.CreationDate,
     tq.ViewCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags,
+    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags,
     COUNT(c.Id) AS CommentCount,
     COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
     COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes
@@ -48,7 +48,7 @@ LEFT JOIN
 LEFT JOIN 
     Posts p ON tq.PostId = p.Id
 LEFT JOIN 
-    arrayJoin(splitByString('<>', assumeNotNull(tq.Tags))) AS tag ON tag IS NOT NULL
+    UNNEST(STRING_TO_ARRAY(tq.Tags, '<>')) AS tag ON tag IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag
 LEFT JOIN 

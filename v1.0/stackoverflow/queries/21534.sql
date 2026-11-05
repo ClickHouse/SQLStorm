@@ -44,7 +44,7 @@ UserContribution AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS ChangeTypes,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS ChangeTypes,
         MIN(ph.CreationDate) AS FirstChangeDate
     FROM 
         PostHistory ph

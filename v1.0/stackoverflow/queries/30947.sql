@@ -44,7 +44,7 @@ RecentBadgers AS (
         B.UserId,
         U.DisplayName,
         COUNT(B.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM Badges B
     JOIN Users U ON B.UserId = U.Id
     WHERE B.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '6 MONTH'

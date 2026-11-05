@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.ViewCount DESC) AS ViewRank,
         COUNT(c.Id) AS CommentCount,
         AVG(v.BountyAmount) AS AvgBountyAmount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
     FROM 
         Posts p
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 8 
     LEFT JOIN 
-        (SELECT * FROM arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName)) AS t ON TRUE
+        LATERAL (SELECT * FROM unnest(string_to_array(p.Tags, '>')) AS t(TagName)) AS t ON TRUE
     WHERE 
         p.LastActivityDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 

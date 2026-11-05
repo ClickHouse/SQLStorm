@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 ), RecentActivities AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.UserDisplayName || ' ' || ph.Comment)), '; ') AS ModComments,
+        STRING_AGG(ph.UserDisplayName || ' ' || ph.Comment, '; ') AS ModComments,
         COUNT(*) AS ModificationCount
     FROM 
         PostHistory ph

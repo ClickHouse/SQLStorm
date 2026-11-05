@@ -49,7 +49,7 @@ PostStatistics AS (
             WHEN TP.UpVotes < TP.DownVotes THEN 'Negative'
             ELSE 'Neutral'
         END AS VoteSentiment,
-        datePart('year', TIMESTAMP '2024-10-01 12:34:56' - TP.CreationDate) AS AgeInYears,
+        DATE_PART('year', TIMESTAMP '2024-10-01 12:34:56' - TP.CreationDate) AS AgeInYears,
         (
             SELECT COUNT(*) 
             FROM Comments C 

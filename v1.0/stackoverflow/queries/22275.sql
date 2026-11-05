@@ -25,7 +25,7 @@ PostVoteSummary AS (
 ClosedPostReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(c.Name)), ', ') AS CloseReasons
+        STRING_AGG(c.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -49,7 +49,7 @@ SELECT
         WHEN rp.RecentPostRank = 2 THEN 'Second Most Recent Post'
         ELSE 'Older Post'
     END AS PostAgeCategory,
-    toUnixTimestamp(cast('2024-10-01 12:34:56' as timestamp) - rp.CreationDate) AS AgeInSeconds
+    EXTRACT(EPOCH FROM cast('2024-10-01 12:34:56' as timestamp) - rp.CreationDate) AS AgeInSeconds
 FROM 
     RankedPosts rp
 LEFT JOIN 

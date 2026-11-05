@@ -58,7 +58,7 @@ PostHistorySummary AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.HistoryAction))), ', ') AS Actions
+        STRING_AGG(DISTINCT ph.HistoryAction, ', ') AS Actions
     FROM 
         PostHistories ph
     GROUP BY 

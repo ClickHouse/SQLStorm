@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.Score,
         U.DisplayName AS OwnerDisplayName,
         ROW_NUMBER() OVER (PARTITION BY p.Tags ORDER BY p.Score DESC) AS RankByScore,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(U.DisplayName, ' (', p.Title, ')'))), '; ') AS UserContributions
+        STRING_AGG(CONCAT(U.DisplayName, ' (', p.Title, ')'), '; ') AS UserContributions
     FROM 
         Posts p
     JOIN 

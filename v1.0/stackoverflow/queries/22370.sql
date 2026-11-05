@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsAggregated
+        STRING_AGG(t.TagName, ', ') AS TagsAggregated
     FROM 
         Posts p
     LEFT JOIN 

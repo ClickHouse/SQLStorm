@@ -39,7 +39,7 @@ RecentPostHistory AS (
     SELECT 
         ph.PostId,
         COUNT(DISTINCT ph.Id) AS HistoryCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
+        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
     FROM 
         PostHistory ph
     INNER JOIN 

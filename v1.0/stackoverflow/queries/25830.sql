@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         u.DisplayName AS Author,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         COUNT(c.Id) AS CommentCount,
         ROW_NUMBER() OVER (ORDER BY p.Score DESC, p.ViewCount DESC) AS Rank
     FROM 
@@ -32,7 +32,7 @@ PostHistoryInfo AS (
         p.Id AS PostId,
         MAX(ph.CreationDate) AS LastEdited,
         COUNT(ph.Id) AS EditCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS EditTypes
+        STRING_AGG(DISTINCT pht.Name, ', ') AS EditTypes
     FROM 
         Posts p
     JOIN 

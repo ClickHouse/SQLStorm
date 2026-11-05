@@ -39,7 +39,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN pht.Name = 'Post Closed' THEN 'Closed' ELSE 'Edited' END))), ', ') AS ChangeTypes
+        STRING_AGG(DISTINCT CASE WHEN pht.Name = 'Post Closed' THEN 'Closed' ELSE 'Edited' END, ', ') AS ChangeTypes
     FROM 
         PostHistory ph
     JOIN 

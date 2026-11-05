@@ -30,7 +30,7 @@ WITH PostStats AS (
 PostHistorySummary AS (
     SELECT
         PH.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryTypes,
+        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryTypes,
         COUNT(*) AS EditCount
     FROM
         PostHistory PH
@@ -45,7 +45,7 @@ BadgedUsers AS (
     SELECT
         U.Id AS UserId,
         COUNT(DISTINCT B.Id) AS BadgeCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(B.Name))), ', ') AS BadgeNames
+        STRING_AGG(DISTINCT B.Name, ', ') AS BadgeNames
     FROM
         Users U
     LEFT JOIN

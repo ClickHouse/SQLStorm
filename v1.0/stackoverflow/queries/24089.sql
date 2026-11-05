@@ -32,7 +32,7 @@ FrequentBadges AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM 
         Users U
     JOIN 

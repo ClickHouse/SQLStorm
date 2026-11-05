@@ -25,7 +25,7 @@ WITH RankedPosts AS (
 ),
 FrequentTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag,
+        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -57,7 +57,7 @@ SELECT
     pd.DisplayName,
     pd.PostType,
     pd.CommentCount,
-    arrayDistinct(groupArray(assumeNotNull(pd.Tag))) AS Tags,
+    ARRAY_AGG(DISTINCT pd.Tag) AS Tags,
     SUM(pd.TagCount) AS TotalTagCount
 FROM 
     PostDetails pd

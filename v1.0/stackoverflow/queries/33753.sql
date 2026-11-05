@@ -23,7 +23,7 @@ RecentBadges AS (
 UserBadges AS (
     SELECT 
         rb.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(rb.BadgeName)), ', ') AS BadgeList
+        STRING_AGG(rb.BadgeName, ', ') AS BadgeList
     FROM RecentBadges rb
     WHERE rb.rn <= 3 
     GROUP BY rb.UserId

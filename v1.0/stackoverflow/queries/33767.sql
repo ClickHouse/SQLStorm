@@ -18,7 +18,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -52,7 +52,7 @@ SELECT
         WHEN phd.PostId IS NOT NULL THEN 'Yes' 
         ELSE 'No' 
     END AS RecentlyEdited,
-    groupArray(assumeNotNull(phd.Comment)) AS RecentComments
+    ARRAY_AGG(phd.Comment) AS RecentComments
 FROM 
     RankedPosts rp
 JOIN 

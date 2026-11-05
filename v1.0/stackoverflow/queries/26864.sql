@@ -10,7 +10,7 @@ WITH RankedPosts AS (
             WHEN p.PostTypeId = 2 THEN 'Answer'
             ELSE 'Other'
         END AS PostType,
-        ARRAY(SELECT TRIM(arrayJoin(splitByString('>', assumeNotNull(p.Tags))))) AS TagList,
+        ARRAY(SELECT TRIM(unnest(string_to_array(p.Tags, '>')))) AS TagList,
         COALESCE(p.AcceptedAnswerId, 0) AS AcceptedAnswer,
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
@@ -29,7 +29,7 @@ WITH RankedPosts AS (
 PostHistoryAggregated AS (
     SELECT 
         ph.PostId,
-        arrayDistinct(groupArray(assumeNotNull(pht.Name))) AS HistoryTypes,
+        ARRAY_AGG(DISTINCT pht.Name) AS HistoryTypes,
         COUNT(*) AS EditCount,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 

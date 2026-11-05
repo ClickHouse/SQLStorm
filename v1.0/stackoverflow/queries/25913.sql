@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         p.Tags,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS RankByScore,
         COUNT(c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagList
+        ARRAY_AGG(DISTINCT t.TagName) AS TagList
     FROM 
         Posts p
     JOIN 
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS t(TagName) ON t.TagName IS NOT NULL
+        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE 
         p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 YEAR'
     GROUP BY 

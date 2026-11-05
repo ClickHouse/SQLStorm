@@ -29,7 +29,7 @@ AggregatedUserStats AS (
 CloseReasons AS (
     SELECT 
         ph.PostId, 
-        arrayDistinct(groupArray(assumeNotNull(crt.Name))) AS CloseReasons
+        ARRAY_AGG(DISTINCT crt.Name) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

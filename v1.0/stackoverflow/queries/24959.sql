@@ -78,12 +78,12 @@ SELECT
         WHEN f.TotalPosts BETWEEN 1 AND 10 THEN 'Few Posts'
         ELSE 'Active User' 
     END AS UserActivityStatus,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+    STRING_AGG(t.TagName, ', ') AS Tags
 FROM FilteredResults f
 LEFT JOIN Posts p ON f.UserId = p.OwnerUserId
-LEFT JOIN (
+LEFT JOIN LATERAL (
     SELECT 
-        DISTINCT TRIM(arrayJoin(splitByRegexp('><', p.Tags))) AS TagName 
+        DISTINCT TRIM(UNNEST(REGEXP_SPLIT_TO_ARRAY(p.Tags, '><'))) AS TagName 
     ) t ON true 
 WHERE f.PostScore > 100
 GROUP BY 

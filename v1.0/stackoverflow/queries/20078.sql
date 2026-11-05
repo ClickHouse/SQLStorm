@@ -31,9 +31,9 @@ PostHistoryStats AS (
         MIN(ph.CreationDate) AS FirstEditedDate,
         MAX(ph.CreationDate) AS LastEditedDate,
         COUNT(*) AS EditCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId = 4 THEN 'Edited Title'
+        STRING_AGG(DISTINCT CASE WHEN ph.PostHistoryTypeId = 4 THEN 'Edited Title'
                                  WHEN ph.PostHistoryTypeId = 5 THEN 'Edited Body'
-                                 ELSE 'Other' END))), ', ') AS EditTypes
+                                 ELSE 'Other' END, ', ') AS EditTypes
     FROM PostHistory ph
     GROUP BY ph.PostId
 ),
@@ -42,7 +42,7 @@ UserPostInfo AS (
         u.Id AS UserId,
         COUNT(ap.PostId) AS ActivePostCount,
         SUM(ph.EditCount) AS TotalEdits,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.EditTypes))), '; ') AS EditTypesSummary,
+        STRING_AGG(DISTINCT ph.EditTypes, '; ') AS EditTypesSummary,
         MAX(r.UserRank) AS HighestUserRank
     FROM Users u
     LEFT JOIN ActivePosts ap ON u.Id = ap.OwnerUserId

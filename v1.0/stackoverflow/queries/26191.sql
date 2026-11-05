@@ -9,7 +9,7 @@ WITH FilteredPosts AS (
         u.Reputation,
         ph.CreationDate AS LastEditDate,
         p.ViewCount,
-        CARDINALITY(splitByRegexp('>', SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))) AS TagCount,
+        CARDINALITY(REGEXP_SPLIT_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '>')) AS TagCount,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT b.Id) AS BadgeCount
     FROM 
@@ -62,7 +62,7 @@ SELECT
     tp.CommentCount,
     tp.BadgeCount,
     (SELECT 
-         arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.UserDisplayName))), ', ') 
+         STRING_AGG(DISTINCT c.UserDisplayName, ', ') 
      FROM 
          Comments c 
      WHERE 

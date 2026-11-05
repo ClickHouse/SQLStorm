@@ -9,7 +9,7 @@ WITH PostStats AS (
         COALESCE(a.AvgAnswerScore, 0) AS AvgAnswerScore,
         COALESCE(c.CommentCount, 0) AS CommentCount,
         COALESCE(cl.CloseReason, 'Not Closed') AS CloseReason,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN (
@@ -35,7 +35,7 @@ WITH PostStats AS (
     LEFT JOIN (
         SELECT 
             ph.PostId, 
-            arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReason
+            STRING_AGG(cr.Name, ', ') AS CloseReason
         FROM 
             PostHistory ph
         JOIN 
@@ -47,7 +47,7 @@ WITH PostStats AS (
     ) cl ON p.Id = cl.PostId
     LEFT JOIN (
         SELECT 
-            arrayJoin(splitByString('>', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
+            unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '>')) AS TagName,
             p.Id
         FROM 
             Posts p
@@ -76,7 +76,7 @@ SELECT
 FROM
     PostStats ps
 WHERE
-    length(ps.Tags, 1) > 0 
+    ARRAY_LENGTH(ps.Tags, 1) > 0 
 ORDER BY
     ps.LastActivityDate DESC,
     ps.AvgAnswerScore DESC;

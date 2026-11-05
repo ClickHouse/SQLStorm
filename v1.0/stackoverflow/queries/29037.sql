@@ -2,11 +2,11 @@ WITH KeywordCounts AS (
     SELECT 
         P.Id AS PostId,
         COUNT(*) AS KeywordCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
     FROM 
         Posts P
     JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(substring(P.Tags, 2, length(P.Tags)-2)))) AS T(TagName) ON TRUE
+        LATERAL unnest(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '>')) AS T(TagName) ON TRUE
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 

@@ -75,4 +75,4 @@ FROM PostSummaries PS
 WHERE PS.AvgScore IS NOT NULL
 ORDER BY PS.AvgScore DESC, PS.CommentCount DESC
 LIMIT 100
-OFFSET (SELECT FLOOR(rand() * COUNT(*)) FROM Posts WHERE PostTypeId = 1);
+OFFSET (SELECT FLOOR(RANDOM() * COUNT(*)) FROM Posts WHERE PostTypeId = 1);

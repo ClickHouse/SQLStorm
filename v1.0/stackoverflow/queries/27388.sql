@@ -49,15 +49,15 @@ SELECT
     fp.UpVoteCount,
     fp.DownVoteCount,
     COUNT(DISTINCT b.Id) AS BadgeCount,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsAggregated
+    STRING_AGG(t.TagName, ', ') AS TagsAggregated
 FROM 
     FilteredPosts fp
 LEFT JOIN 
     Badges b ON fp.OwnerUserId = b.UserId
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(SUBSTR(fp.Tags, 2, LENGTH(fp.Tags)-2)))) AS TagName
+            unnest(string_to_array(SUBSTR(fp.Tags, 2, LENGTH(fp.Tags)-2), '><')) AS TagName
     ) t ON TRUE
 GROUP BY 
     fp.OwnerDisplayName, fp.Title, fp.CommentCount, fp.UpVoteCount, fp.DownVoteCount

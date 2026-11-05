@@ -26,9 +26,9 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName,
+        UNNEST(string_to_array(p.Tags, '><')) AS TagName,
         COUNT(*) AS PostsCount,
-        AVG(length(splitByString('><', assumeNotNull(p.Tags)), 1)) AS AvgTagsPerPost
+        AVG(array_length(string_to_array(p.Tags, '><'), 1)) AS AvgTagsPerPost
     FROM 
         Posts p
     WHERE 
@@ -40,7 +40,7 @@ PostClosureReasons AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS ClosureCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS Reasons
+        STRING_AGG(DISTINCT crt.Name, ', ') AS Reasons
     FROM 
         PostHistory ph
     JOIN 

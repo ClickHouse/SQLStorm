@@ -35,7 +35,7 @@ TopUsers AS (
 PostHistorySummaries AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryActions,
+        STRING_AGG(PHT.Name, ', ') AS HistoryActions,
         COUNT(PH.Id) AS TotalHistoryEvents
     FROM 
         PostHistory PH

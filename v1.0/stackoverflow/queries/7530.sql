@@ -69,7 +69,7 @@ SELECT
     pd.UpVoteCount,
     pd.DownVoteCount,
     pd.CreationDate,
-    toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - pd.CreationDate)) / 3600 AS HoursSincePosted
+    EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - pd.CreationDate)) / 3600 AS HoursSincePosted
 FROM
     PostDetails pd
 ORDER BY

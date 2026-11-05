@@ -31,7 +31,7 @@ FinalData AS (
            rp.CommentCount,
            rp.TotalVotes,
            COALESCE(cp.CloseRank, 0) AS CloseRank,
-           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagList
+           STRING_AGG(DISTINCT t.TagName, ', ') AS TagList
     FROM RankedPosts rp
     LEFT JOIN ClosedPostDetails cp ON rp.PostId = cp.PostId
     LEFT JOIN Posts p ON rp.PostId = p.Id 

@@ -52,7 +52,7 @@ PostHistorySummary AS (
         ph.UserDisplayName,
         ph.CreationDate,
         COUNT(*) AS EditCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 'Closed' ELSE 'Edited' END))), ', ') AS EditTypes
+        STRING_AGG(DISTINCT CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 'Closed' ELSE 'Edited' END, ', ') AS EditTypes
     FROM 
         PostHistory ph
     WHERE 

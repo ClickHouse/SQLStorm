@@ -32,7 +32,7 @@ PostHistoryResult AS (
         MAX(ph.CreationDate) AS LastEditDate, 
         MAX(CASE WHEN ph.PostHistoryTypeId = 4 THEN ph.CreationDate END) AS LastTitleEditDate,
         MAX(CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.CreationDate END) AS LastClosedDate,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS EditComments
+        STRING_AGG(ph.Comment, '; ') AS EditComments
     FROM 
         PostHistory ph
     GROUP BY 

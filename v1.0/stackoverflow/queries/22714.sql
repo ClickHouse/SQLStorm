@@ -52,7 +52,7 @@ SELECT
     rp.DownVotes,
     cp.FirstClosedDate,
     cp.CloseCount,
-    arrayStringConcat(groupArray(assumeNotNull(td.TagName)), ', ') AS Tags,
+    STRING_AGG(td.TagName, ', ') AS Tags,
     CASE 
         WHEN cp.CloseCount > 0 THEN 'Closed' 
         ELSE 'Active' 

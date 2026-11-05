@@ -8,7 +8,7 @@ WITH RecentPostActivities AS (
         ph.UserDisplayName AS LastEditor,
         ph.CreationDate AS LastEditDate,
         ph.Comment AS EditComment,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tg.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT tg.TagName, ', ') AS Tags,
         COUNT(c.Id) AS CommentCount
     FROM 
         Posts p

@@ -25,7 +25,7 @@ LEFT JOIN
 LEFT JOIN 
     (SELECT 
         pt.Id, 
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagName
+        STRING_AGG(t.TagName, ', ') AS TagName
      FROM 
         Posts p
      JOIN 

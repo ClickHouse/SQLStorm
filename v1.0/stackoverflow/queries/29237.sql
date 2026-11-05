@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
+        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName,
         COUNT(*) AS QuestionCount
     FROM
         Posts
@@ -28,7 +28,7 @@ UserReputation AS (
         COUNT(DISTINCT P.Id) AS TotalQuestions,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagsUsed
+        STRING_AGG(DISTINCT T.TagName, ', ') AS TagsUsed
     FROM
         Users U
     JOIN
@@ -36,7 +36,7 @@ UserReputation AS (
     LEFT JOIN
         Votes V ON P.Id = V.PostId
     LEFT JOIN
-        arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2)))) AS T(TagName) ON TRUE
+        LATERAL unnest(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) AS T(TagName) ON TRUE
     GROUP BY
         U.Id, U.DisplayName, U.Reputation
 ),

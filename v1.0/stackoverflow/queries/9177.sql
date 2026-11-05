@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray,
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.CreationDate ASC) AS PostRank
     FROM 
         Posts p
@@ -17,7 +17,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+        UNNEST(string_to_array(p.Tags, '<>')) AS t(TagName) ON TRUE
     WHERE 
         p.CreationDate >= DATE('2024-10-01') - INTERVAL '30 days'
     GROUP BY 

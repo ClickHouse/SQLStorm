@@ -25,7 +25,7 @@ RecentPosts AS (
         p.Id,
         p.Title,
         p.CreationDate,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM Posts p
     JOIN Tags t ON p.Tags LIKE '%' || t.TagName || '%'
     WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'

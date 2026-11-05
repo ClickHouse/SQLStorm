@@ -9,15 +9,15 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.Score,
         COALESCE(u.DisplayName, 'Community User') AS OwnerName,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString('>.<', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName
+                unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '>.<')) AS TagName
         ) AS t ON TRUE
     WHERE 
         p.PostTypeId = 1 AND  

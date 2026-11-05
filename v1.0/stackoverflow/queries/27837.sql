@@ -19,7 +19,7 @@ TaggedPosts AS (
         Posts.CreationDate,
         Posts.Score,
         Posts.ViewCount,
-        arrayDistinct(groupArray(assumeNotNull(Tags.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT Tags.TagName) AS Tags
     FROM 
         Posts
     JOIN 

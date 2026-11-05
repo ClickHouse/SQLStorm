@@ -60,7 +60,7 @@ SELECT
     pwc.Score,
     COALESCE(pwc.CommentCount, 0) AS TotalComments,
     pwc.LastCommentDate,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypeNames
+    STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypeNames
 FROM 
     PostWithComments pwc
 JOIN 

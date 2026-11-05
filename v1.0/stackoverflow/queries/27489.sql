@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         p.Tags,
-        length(splitByString('>', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '>'), 1) AS TagCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank,
         u.Reputation AS UserReputation,
         u.DisplayName AS UserDisplayName
@@ -21,7 +21,7 @@ WITH RankedPosts AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName,
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '>')) AS TagName,
         COUNT(*) AS TagUsage
     FROM 
         Posts p
@@ -38,7 +38,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.UserDisplayName))), ', ') AS CommentAuthors
+        STRING_AGG(DISTINCT c.UserDisplayName, ', ') AS CommentAuthors
     FROM 
         Comments c
     GROUP BY 
@@ -63,7 +63,7 @@ FROM
 LEFT JOIN 
     PostComments pc ON r.PostId = pc.PostId
 LEFT JOIN 
-    TopTags tt ON tt.TagName = ANY(splitByString('>', assumeNotNull(substring(r.Tags, 2, length(r.Tags)-2))))
+    TopTags tt ON tt.TagName = ANY(string_to_array(substring(r.Tags, 2, length(r.Tags)-2), '>'))
 WHERE 
     r.PostRank = 1 
 ORDER BY 

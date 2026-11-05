@@ -7,11 +7,11 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag ON TRUE
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 

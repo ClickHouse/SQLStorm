@@ -25,11 +25,11 @@ WITH RankedPosts AS (
 ), ProcessedTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)))) AS tag ON TRUE
+        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 

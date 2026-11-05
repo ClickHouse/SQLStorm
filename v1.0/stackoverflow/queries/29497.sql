@@ -44,7 +44,7 @@ TopPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substr(p.Tags, 2, length(p.Tags) - 2)))) AS TagName,
+        unnest(string_to_array(substr(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName,
         COUNT(*) AS PostsWithTag
     FROM 
         Posts p

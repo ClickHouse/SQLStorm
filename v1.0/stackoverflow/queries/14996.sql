@@ -24,7 +24,7 @@ LEFT JOIN
      JOIN 
          (SELECT 
              p.Id AS PostId, 
-             arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS Tag 
+             unnest(string_to_array(p.Tags, '>')) AS Tag 
          FROM 
              Posts p) AS pt ON t.TagName = pt.Tag) t ON p.Id = t.PostId
 WHERE 

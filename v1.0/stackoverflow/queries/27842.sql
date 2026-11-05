@@ -4,7 +4,7 @@ WITH RecursiveTagCounts AS (
         P.Id AS PostId,
         P.Title,
         P.Tags,
-        length(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2))), 1) AS TagCount
+        ARRAY_LENGTH(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><'), 1) AS TagCount
     FROM 
         Posts P
     WHERE 

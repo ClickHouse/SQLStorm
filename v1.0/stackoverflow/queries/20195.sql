@@ -30,11 +30,11 @@ PostScoreDetails AS (
 PopulatedTags AS (
     SELECT 
         P.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagsList
+        STRING_AGG(T.TagName, ', ') AS TagsList
     FROM 
         Posts P
     LEFT JOIN 
-        arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS T(TagName) ON P.Id = P.Id
+        UNNEST(STRING_TO_ARRAY(P.Tags, '<>')) AS T(TagName) ON P.Id = P.Id
     GROUP BY 
         P.Id
 ),

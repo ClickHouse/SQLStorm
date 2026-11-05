@@ -7,16 +7,16 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         u.DisplayName AS Author,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS TagName
+                unnest(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS TagName
         ) t ON TRUE
     WHERE 
         p.PostTypeId = 1  

@@ -38,7 +38,7 @@ PostsWithComments AS (
         COUNT(c.Id) AS CommentCount,
         CASE 
             WHEN COUNT(c.Id) = 0 THEN 'No Comments'
-            ELSE arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') 
+            ELSE STRING_AGG(c.Text, '; ') 
         END AS CommentText
     FROM 
         FilteredPosts fp

@@ -37,10 +37,10 @@ CloseReasonSummary AS (
     SELECT 
         PH.UserId,
         COUNT(PH.Id) AS CloseCount,
-        arrayStringConcat(groupArray(assumeNotNull(CASE 
+        STRING_AGG(CASE 
                       WHEN CRT.Name IS NOT NULL THEN CRT.Name 
                       ELSE 'Unknown' 
-                   END)), ', ') AS CloseReasons
+                   END, ', ') AS CloseReasons
     FROM 
         PostHistory PH
         LEFT JOIN CloseReasonTypes CRT ON CAST(PH.Comment AS INTEGER) = CRT.Id

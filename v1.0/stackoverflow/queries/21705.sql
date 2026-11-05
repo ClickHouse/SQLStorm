@@ -35,11 +35,11 @@ PostHistorySummary AS (
 TaggedPosts AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        (SELECT DISTINCT arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName FROM Posts) t ON p.Id IS NOT NULL
+        (SELECT DISTINCT UNNEST(string_to_array(Tags, '><')) AS TagName FROM Posts) t ON p.Id IS NOT NULL
     GROUP BY 
         p.Id
 )

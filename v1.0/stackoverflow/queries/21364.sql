@@ -32,7 +32,7 @@ PostHistoryDetails AS (
     SELECT 
         PH.PostId,
         COUNT(CASE WHEN PH.PostHistoryTypeId IN (10, 12) THEN 1 END) AS Changes,
-        arrayStringConcat(groupArray(assumeNotNull(PH.Comment)), '; ') AS Comments
+        STRING_AGG(PH.Comment, '; ') AS Comments
     FROM 
         PostHistory PH
     WHERE 

@@ -32,11 +32,11 @@ ClosedPosts AS (
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        groupArray(assumeNotNull(T.TagName)) AS Tags
+        ARRAY_AGG(T.TagName) AS Tags
     FROM 
         Posts P
     LEFT JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
+        LATERAL UNNEST(STRING_TO_ARRAY(P.Tags, '>')) AS T(TagName) ON TRUE
     GROUP BY 
         P.Id
 ),
@@ -44,7 +44,7 @@ UserBadges AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 

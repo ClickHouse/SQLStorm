@@ -49,7 +49,7 @@ SELECT
     END AS ActivityLevel,
     COALESCE((
         SELECT 
-            arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
+            STRING_AGG(b.Name, ', ') 
         FROM 
             Badges b 
         WHERE 

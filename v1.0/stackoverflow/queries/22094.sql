@@ -58,7 +58,7 @@ SELECT
         WHEN cs.AvgViewCount BETWEEN 100 AND 1000 THEN 'Moderate Engagement'
         ELSE 'Low Engagement'
     END AS EngagementLevel,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
+    (SELECT STRING_AGG(b.Name, ', ') 
      FROM Badges b 
      WHERE b.UserId = cs.UserId 
      AND b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' 

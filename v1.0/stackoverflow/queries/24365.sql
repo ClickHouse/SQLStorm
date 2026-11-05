@@ -44,7 +44,7 @@ SELECT
         ELSE 'Not Active' 
     END AS PostStatus,
     SUM(CASE WHEN c.UserId IS NOT NULL THEN 1 ELSE 0 END) OVER (PARTITION BY tp.PostId) AS CommentCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ') 
+    (SELECT STRING_AGG(tag.TagName, ', ') 
      FROM Tags tag 
      INNER JOIN Posts p ON tag.ExcerptPostId = p.Id 
      WHERE p.Id = tp.PostId

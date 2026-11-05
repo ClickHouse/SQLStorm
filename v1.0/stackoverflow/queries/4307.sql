@@ -33,7 +33,7 @@ SELECT
     COUNT(DISTINCT ap.PostId) AS ActivePostCount,
     AVG(ap.ViewCount) AS AvgViews,
     COALESCE(SUM(CASE WHEN ph.ClosureHistory > 0 THEN 1 ELSE 0 END), 0) AS ClosureCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ap.Title))), ', ') AS PostTitles,
+    STRING_AGG(DISTINCT ap.Title, ', ') AS PostTitles,
     RANK() OVER (ORDER BY SUM(up.Reputation) DESC) AS UserRank
 FROM UserReputation up
 JOIN ActivePosts ap ON up.UserId = ap.OwnerUserId

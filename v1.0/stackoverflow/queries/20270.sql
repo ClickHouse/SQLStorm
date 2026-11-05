@@ -35,7 +35,7 @@ WITH RankedPosts AS (
         ph.PostId,
         MIN(ph.CreationDate) AS FirstClosedDate,
         COUNT(*) AS CloseCount,
-        arrayDistinct(groupArray(assumeNotNull(crt.Name))) AS CloseReasons
+        ARRAY_AGG(DISTINCT crt.Name) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

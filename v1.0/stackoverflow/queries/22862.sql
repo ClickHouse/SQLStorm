@@ -43,7 +43,7 @@ VoteSummary AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(pt.Name, ' by ', ph.UserDisplayName))), ', ') AS History,
+        STRING_AGG(CONCAT(pt.Name, ' by ', ph.UserDisplayName), ', ') AS History,
         MAX(ph.CreationDate) AS LastModified
     FROM 
         PostHistory ph

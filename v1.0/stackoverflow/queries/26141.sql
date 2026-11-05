@@ -20,14 +20,14 @@ WITH RankedPosts AS (
 ), 
 TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags FROM 2 FOR length(Tags) - 2)))) AS TagName,
+        unnest(string_to_array(substring(Tags FROM 2 FOR length(Tags) - 2), '><')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags FROM 2 FOR length(Tags) - 2))))
+        unnest(string_to_array(substring(Tags FROM 2 FOR length(Tags) - 2), '><'))
 ), 
 TopTags AS (
     SELECT 

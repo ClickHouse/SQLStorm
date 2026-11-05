@@ -19,14 +19,14 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName,
+        UNNEST(string_to_array(p.Tags, ',')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) 
+        UNNEST(string_to_array(p.Tags, ',')) 
     ORDER BY 
         TagCount DESC
     LIMIT 5
@@ -46,7 +46,7 @@ FROM
 JOIN 
     Posts p ON rp.PostId = p.Id
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString(',', assumeNotNull(p.Tags)))
+    PopularTags pt ON pt.TagName = ANY(string_to_array(p.Tags, ','))
 WHERE 
     rp.Rank <= 3
 ORDER BY 

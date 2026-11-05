@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS RankByScore,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 

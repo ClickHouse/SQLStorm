@@ -59,7 +59,7 @@ SELECT
     COALESCE(cb.CloseCount, 0) AS CloseCount,
     COALESCE(ub.BadgeCount, 0) AS BadgeCount,
     COUNT(DISTINCT rp.PostId) AS TopPostsCount,
-    arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS TopPostTitles
+    STRING_AGG(rp.Title, '; ') AS TopPostTitles
 FROM 
     Users u
 LEFT JOIN 

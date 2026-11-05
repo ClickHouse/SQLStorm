@@ -46,9 +46,9 @@ SELECT
         WHEN r.Rank <= 10 THEN 'Top 10'
         ELSE 'Other'
     END AS RankCategory,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ',') 
+    (SELECT STRING_AGG(DISTINCT t.TagName, ',') 
      FROM Tags t 
-     JOIN arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON t.TagName = tag
+     JOIN LATERAL UNNEST(string_to_array(p.Tags, ',')) AS tag ON t.TagName = tag
      WHERE p.Id = r.PostId) AS Tags
 FROM 
     RankedPosts r

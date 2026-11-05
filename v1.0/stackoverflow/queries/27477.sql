@@ -56,7 +56,7 @@ SELECT
     U.TotalDownVotes,
     U.TotalFavorites,
     COALESCE(Eng.EngagementScore, 0) AS EngagementScore,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
+    (SELECT STRING_AGG(T.TagName, ', ') 
      FROM TopTags T) AS TopTags
 FROM 
     UserEngagement U

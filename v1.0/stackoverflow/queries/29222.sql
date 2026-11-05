@@ -3,7 +3,7 @@ WITH TaggedPosts AS (
     SELECT 
         p.Id AS PostId, 
         p.Title AS PostTitle, 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS Tag
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag
     FROM 
         Posts p
     WHERE 

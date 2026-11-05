@@ -17,7 +17,7 @@ RecentPosts AS (
         p.Title,
         p.CreationDate,
         p.OwnerUserId,
-        datePart('day', cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate) AS DaysOld
+        DATE_PART('day', cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate) AS DaysOld
     FROM 
         Posts p
     WHERE 

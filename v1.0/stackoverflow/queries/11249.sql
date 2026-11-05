@@ -8,7 +8,7 @@ WITH PostStats AS (
         p.AnswerCount,
         p.CommentCount,
         p.FavoriteCount,
-        toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) AS AgeInSeconds,
+        EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) AS AgeInSeconds,
         u.Reputation AS OwnerReputation
     FROM 
         Posts p

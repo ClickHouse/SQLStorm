@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         p.ViewCount,
         p.Score,
-        length(splitByString('> <', assumeNotNull(p.Tags)), 1) AS TagCount,
+        ARRAY_LENGTH(STRING_TO_ARRAY(p.Tags, '> <'), 1) AS TagCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank
     FROM 
         Posts p

@@ -45,11 +45,11 @@ JOIN
 LEFT JOIN 
     (SELECT 
         p.Id,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
      FROM 
         Posts p
      JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagArray ON TRUE
+        UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS TagArray ON TRUE
      JOIN 
         Tags t ON t.TagName = TagArray
      GROUP BY 

@@ -50,13 +50,13 @@ SELECT
     tu.BadgeCount,
     tu.UserRank,
     tu.TotalComments,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagList
+    STRING_AGG(DISTINCT t.TagName, ', ') AS TagList
 FROM 
     TopUsers tu
 LEFT JOIN 
     Posts p ON tu.UserId = p.OwnerUserId
 LEFT JOIN 
-    Tags t ON t.Id = ANY(splitByString(',', assumeNotNull(p.Tags))::int[])
+    Tags t ON t.Id = ANY(STRING_TO_ARRAY(p.Tags, ',')::int[])
 WHERE 
     tu.TotalComments >= 5
 GROUP BY 

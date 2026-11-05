@@ -62,7 +62,7 @@ FinalResults AS (
             WHEN phs.CloseCount > 0 THEN 'Closed'
             ELSE 'Active'
         END AS PostStatus,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(pt.TagName)), ', ') FROM PopularTags pt 
+        (SELECT STRING_AGG(pt.TagName, ', ') FROM PopularTags pt 
          WHERE pt.PostCount = (SELECT MAX(PostCount) FROM PopularTags)) AS MostPopularTags,
         DENSE_RANK() OVER (ORDER BY rp.Score DESC) AS RankByScore
     FROM 

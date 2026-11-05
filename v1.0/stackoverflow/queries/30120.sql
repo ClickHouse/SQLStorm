@@ -57,7 +57,7 @@ FinalReport AS (
         rp.VoteCount,
         COALESCE(pa.CloseCount, 0) AS CloseCount,
         COALESCE(pa.ReopenCount, 0) AS ReopenCount,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(pt.TagName)), ', ') 
+        (SELECT STRING_AGG(pt.TagName, ', ') 
          FROM PopularTags pt
          JOIN Posts p ON p.Tags LIKE '%' || pt.TagName || '%'
          WHERE p.Id = rp.PostId) AS PopularTags

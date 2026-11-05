@@ -28,7 +28,7 @@ PostVotes AS (
 PostHistoryDetails AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes,
+        STRING_AGG(PHT.Name, ', ') AS HistoryTypes,
         COUNT(*) AS RevisionCount
     FROM 
         PostHistory PH

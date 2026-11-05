@@ -31,7 +31,7 @@ TopUsers AS (
 PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.UserDisplayName || ': ' || ph.Comment)), ', ') AS EditComments,
+        STRING_AGG(ph.UserDisplayName || ': ' || ph.Comment, ', ') AS EditComments,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph

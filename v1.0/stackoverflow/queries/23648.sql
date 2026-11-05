@@ -26,7 +26,7 @@ UserVotes AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag
+        UNNEST(string_to_array(Tags, '><')) AS Tag
     FROM 
         Posts
     WHERE 

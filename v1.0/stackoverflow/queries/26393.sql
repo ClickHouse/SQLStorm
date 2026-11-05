@@ -30,13 +30,13 @@ SELECT
     rp.Author,
     rp.CommentCount,
     rp.UpVoteCount,
-    groupArray(assumeNotNull(t.TagName)) AS Tags
+    ARRAY_AGG(t.TagName) AS Tags
 FROM 
     RankedPosts rp
 LEFT JOIN 
     (SELECT 
          p.Id,
-         arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
+         unnest(string_to_array(p.Tags, '>')) AS TagName
      FROM 
          Posts p) t ON rp.PostId = t.Id
 WHERE 

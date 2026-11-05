@@ -25,10 +25,10 @@ RecentVotes AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE 
+        STRING_AGG(CASE 
             WHEN ph.PostHistoryTypeId IN (10, 11) THEN 'Closed/Reopened' 
             ELSE CAST(ph.CreationDate AS varchar) 
-        END)), ', ') AS PostHistory,
+        END, ', ') AS PostHistory,
         COUNT(DISTINCT ph.Id) AS RevisionCount
     FROM 
         PostHistory ph

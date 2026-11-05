@@ -5,7 +5,7 @@ WITH TagCounts AS (
         COUNT(*) AS PostCount
     FROM (
         SELECT 
-            arrayJoin(splitByString('> <', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS tag
+            UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '> <')) AS tag
         FROM 
             Posts
         WHERE 
@@ -63,7 +63,7 @@ PostHistoryInfo AS (
         p.Title,
         MAX(ph.CreationDate) AS LastEdited,
         COUNT(DISTINCT ph.Id) AS EditCount,
-        arrayDistinct(groupArray(assumeNotNull(ph.UserDisplayName))) AS Editors
+        ARRAY_AGG(DISTINCT ph.UserDisplayName) AS Editors
     FROM 
         Posts p
     LEFT JOIN 

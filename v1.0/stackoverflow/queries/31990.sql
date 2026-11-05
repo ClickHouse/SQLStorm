@@ -32,7 +32,7 @@ RecentBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS TotalBadges,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 

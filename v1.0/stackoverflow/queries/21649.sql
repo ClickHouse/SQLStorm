@@ -36,7 +36,7 @@ PostHistoryDetails AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         ph.CreationDate,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS Comments,
+        STRING_AGG(ph.Comment, ', ') AS Comments,
         COUNT(*) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11, 12)) AS ChangeCount
     FROM 
         PostHistory ph

@@ -66,13 +66,13 @@ SELECT
         WHEN pd.CloseCount > 5 AND pd.Score < 0 THEN 'High Close Rate with Low Score'
         ELSE 'Normal Activity'
     END AS ActivityDescription,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     PostDetails pd
 LEFT JOIN 
     Posts p ON pd.PostId = p.Id
 LEFT JOIN 
-    arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName IS NOT NULL
+    UNNEST(string_to_array(p.Tags, '><')) AS t(TagName) ON t.TagName IS NOT NULL
 WHERE 
     pd.Score >= 0 
     AND (pd.CloseCount IS NULL OR pd.CloseCount < 10)

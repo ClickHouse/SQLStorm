@@ -21,7 +21,7 @@ RecentPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsUsed
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsUsed
     FROM 
         Posts p
     JOIN 

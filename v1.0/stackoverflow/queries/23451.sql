@@ -14,7 +14,7 @@ ActiveUserPosts AS (
         p.OwnerUserId,
         p.PostTypeId,
         p.CreationDate,
-        toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) / 3600 AS AgeInHours,
+        EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) / 3600 AS AgeInHours,
         COUNT(c.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId

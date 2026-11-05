@@ -40,7 +40,7 @@ TopQuestions AS (
 
 TagsUsage AS (
     SELECT 
-        TRIM(arrayJoin(splitByString(',', assumeNotNull(LOWER(rp.Tags))))) AS TagName,
+        TRIM(UNNEST(STRING_TO_ARRAY(LOWER(rp.Tags), ','))) AS TagName,
         COUNT(*) AS UsageCount
     FROM 
         TopQuestions rp

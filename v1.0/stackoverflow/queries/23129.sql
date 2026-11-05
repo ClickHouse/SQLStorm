@@ -44,7 +44,7 @@ SELECT
         WHEN fp.CommentCount > 5 THEN 'Highly Discussed'
         ELSE 'Normal'
     END AS PostCategory,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     FilteredPosts fp
 LEFT JOIN 

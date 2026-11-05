@@ -7,13 +7,13 @@ WITH RankedPosts AS (
         p.LastActivityDate,
         p.Score,
         COUNT(c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tagId ON tagId IS NOT NULL
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tagId ON tagId IS NOT NULL
     LEFT JOIN
         Tags t ON t.Id::varchar = tagId
     WHERE 
@@ -57,14 +57,16 @@ SELECT
     hd.LastEditDate,
     hd.ClosureDate,
     hd.ClosureDate IS NOT NULL AS IsClosed,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag))), ', ') AS AllTags
+    STRING_AGG(DISTINCT tag, ', ') AS AllTags
 FROM 
     RankedPosts rp
 JOIN 
     PostVotes pv ON rp.PostId = pv.PostId
 JOIN 
     PostHistoryDetails hd ON rp.PostId = hd.PostId
-ARRAY JOIN rp.Tags AS tagWHERE 
+CROSS JOIN LATERAL 
+    unnest(rp.Tags) AS tag
+WHERE 
     rp.LastActivityDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'
 GROUP BY 
     rp.PostId, rp.Title, rp.CreationDate, rp.LastActivityDate, 

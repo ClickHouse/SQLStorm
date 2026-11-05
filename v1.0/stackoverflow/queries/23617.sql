@@ -78,7 +78,7 @@ SELECT
         ELSE 'Needs Attention' 
     END AS PostStatus,
     COALESCE(
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') FILTER (WHERE b.Class = 1), 
+        STRING_AGG(b.Name, ', ') FILTER (WHERE b.Class = 1), 
         'No Gold Badges'
     ) AS GoldBadges
 FROM 

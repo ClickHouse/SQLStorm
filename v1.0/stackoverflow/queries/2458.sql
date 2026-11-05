@@ -32,7 +32,7 @@ TopPosts AS (
 PostHistoryAggregates AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS Comments,
+        STRING_AGG(ph.Comment, '; ') AS Comments,
         COUNT(ph.Id) AS HistoryCount
     FROM 
         PostHistory ph

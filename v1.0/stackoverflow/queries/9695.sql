@@ -40,7 +40,7 @@ SELECT
     tp.ViewCount,
     tp.OwnerReputation,
     COUNT(DISTINCT b.Id) AS BadgeCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS Badges
+    STRING_AGG(DISTINCT b.Name, ', ') AS Badges
 FROM 
     TopPosts tp
 LEFT JOIN 

@@ -17,14 +17,14 @@ WITH UserStats AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
+        UNNEST(string_to_array(Tags, '><')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         Posts.PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('><', assumeNotNull(Tags)))
+        UNNEST(string_to_array(Tags, '><'))
 ),
 TopUsers AS (
     SELECT 

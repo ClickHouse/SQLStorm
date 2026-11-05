@@ -23,7 +23,7 @@ WITH RelevantPosts AS (
 
 TagSummary AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag,
+        UNNEST(string_to_array(Tags, '><')) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         RelevantPosts
@@ -48,7 +48,7 @@ OwnerActivity AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        arrayDistinct(groupArray(assumeNotNull(pht.Name))) AS HistoryTypes
+        ARRAY_AGG(DISTINCT pht.Name) AS HistoryTypes
     FROM 
         PostHistory ph
         JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id

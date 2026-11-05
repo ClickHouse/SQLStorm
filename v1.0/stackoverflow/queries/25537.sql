@@ -27,7 +27,7 @@ WITH PostDetails AS (
 PostTagCounts AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS Tag
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -54,7 +54,7 @@ PostBenchmarks AS (
         pd.ViewCount,
         pd.CommentCount,
         pd.LastBadgeDate,
-        groupArray(assumeNotNull(tp.Tag)) AS PopularTags
+        ARRAY_AGG(tp.Tag) AS PopularTags
     FROM 
         PostDetails pd
     JOIN 

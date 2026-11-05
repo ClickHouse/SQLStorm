@@ -52,7 +52,7 @@ SELECT
     p.DownVotes,
     COALESCE(ROUND((CAST(p.UpVotes AS FLOAT) / NULLIF((p.UpVotes + p.DownVotes), 0)) * 100, 2), 0) AS UpVotePercentage,
     COALESCE(ROUND((CAST(p.DownVotes AS FLOAT) / NULLIF((p.UpVotes + p.DownVotes), 0)) * 100, 2), 0) AS DownVotePercentage,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') 
+    (SELECT STRING_AGG(c.Text, ' | ') 
      FROM Comments c 
      WHERE c.PostId = p.PostId) AS CommentSummary
 FROM 

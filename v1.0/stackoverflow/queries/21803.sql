@@ -55,7 +55,7 @@ SELECT
     pm.Score,
     pm.UserSentiment,
     ph.Comment AS LastEditComment,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostHistoryTypes 
+    STRING_AGG(DISTINCT pt.Name, ', ') AS PostHistoryTypes 
 FROM 
     PostMetrics pm
 LEFT JOIN 

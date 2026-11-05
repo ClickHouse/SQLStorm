@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         COALESCE(
             (SELECT COUNT(*) 
              FROM Comments c 
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        arrayJoin(splitByString('> <', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS t(TagName) ON true
+        LATERAL unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '> <')) AS t(TagName) ON true
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 

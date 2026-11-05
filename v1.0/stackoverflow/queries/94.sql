@@ -33,7 +33,7 @@ UserScores AS (
 ClosedPostHistory AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS CloseComments,
+        STRING_AGG(ph.Comment, '; ') AS CloseComments,
         COUNT(*) AS CloseCount
     FROM 
         PostHistory ph

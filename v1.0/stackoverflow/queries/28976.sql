@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Tags,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS RankByScore,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.ViewCount DESC) AS RankByViews,
-        length(splitByString('>', assumeNotNull(p.Tags)), 1) AS TagCount
+        ARRAY_LENGTH(string_to_array(p.Tags, '>'), 1) AS TagCount
     FROM 
         Posts p
     JOIN 
@@ -23,7 +23,7 @@ SELECT
     AVG(rp.ViewCount) AS AvgViewCount,
     AVG(rp.Score) AS AvgScore,
     SUM(rp.TagCount) AS TotalTags,
-    arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS Titles,
+    STRING_AGG(rp.Title, '; ') AS Titles,
     MAX(rp.CreationDate) AS MostRecentPostDate
 FROM 
     RankedPosts rp

@@ -20,7 +20,7 @@ UserStats AS (
         COUNT(b.Id) AS BadgeCount,
         SUM(v.BountyAmount) AS TotalBounties,
         COALESCE(SUM(CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END), 0) AS AcceptedAnswers,
-        AVG(COALESCE(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - u.LastAccessDate)) / 3600.0, 0)) AS AvgOfflineHours
+        AVG(COALESCE(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - u.LastAccessDate)) / 3600.0, 0)) AS AvgOfflineHours
     FROM 
         Users u
     LEFT JOIN 
@@ -38,7 +38,7 @@ UserStats AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        groupArray(assumeNotNull(cr.Name)) AS CloseReasons
+        ARRAY_AGG(cr.Name) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

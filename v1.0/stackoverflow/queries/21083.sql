@@ -1,9 +1,9 @@
 
 WITH UserBadges AS (
     SELECT UserId, COUNT(*) AS BadgeCount,
-           arrayStringConcat(groupArray(assumeNotNull(CASE WHEN Class = 1 THEN Name ELSE NULL END)), ', ') AS GoldBadges,
-           arrayStringConcat(groupArray(assumeNotNull(CASE WHEN Class = 2 THEN Name ELSE NULL END)), ', ') AS SilverBadges,
-           arrayStringConcat(groupArray(assumeNotNull(CASE WHEN Class = 3 THEN Name ELSE NULL END)), ', ') AS BronzeBadges
+           STRING_AGG(CASE WHEN Class = 1 THEN Name ELSE NULL END, ', ') AS GoldBadges,
+           STRING_AGG(CASE WHEN Class = 2 THEN Name ELSE NULL END, ', ') AS SilverBadges,
+           STRING_AGG(CASE WHEN Class = 3 THEN Name ELSE NULL END, ', ') AS BronzeBadges
     FROM Badges
     GROUP BY UserId
 ),

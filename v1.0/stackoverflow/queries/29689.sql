@@ -34,7 +34,7 @@ ExpandedTags AS (
     FROM 
         RankedPosts
     CROSS JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(post_tags))) AS tag
+        UNNEST(string_to_array(post_tags, ',')) AS tag
 ),
 AggregatedData AS (
     SELECT 
@@ -44,7 +44,7 @@ AggregatedData AS (
         SUM(comment_count) AS total_comments,
         SUM(upvote_count) AS total_upvotes,
         SUM(downvote_count) AS total_downvotes,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag))), ', ') AS unique_tags
+        STRING_AGG(DISTINCT tag, ', ') AS unique_tags
     FROM 
         ExpandedTags
     GROUP BY 
@@ -56,7 +56,7 @@ SELECT
     SUM(total_comments) AS comment_count,
     SUM(total_upvotes) AS upvote_count,
     SUM(total_downvotes) AS downvote_count,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(unique_tags))), '; ') AS tag_summary
+    STRING_AGG(DISTINCT unique_tags, '; ') AS tag_summary
 FROM 
     AggregatedData
 GROUP BY 

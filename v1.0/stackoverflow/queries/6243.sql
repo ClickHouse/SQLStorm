@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS Tag
+        UNNEST(string_to_array(p.Tags, '><')) AS Tag
     FROM 
         Posts p
     WHERE 

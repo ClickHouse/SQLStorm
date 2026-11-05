@@ -29,7 +29,7 @@ CommentsStats AS (
 BadgesSummary AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
+        STRING_AGG(b.Name, ', ') AS BadgeNames,
         COUNT(b.Id) AS BadgeCount
     FROM 
         Badges b
@@ -39,7 +39,7 @@ BadgesSummary AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS Reasons
+        STRING_AGG(cr.Name, ', ') AS Reasons
     FROM 
         PostHistory ph
     JOIN 

@@ -57,7 +57,7 @@ SELECT
         WHEN us.UpVoteCount < us.DownVoteCount THEN 'Net Negative Voting'
         ELSE 'Neutral Voting'
     END AS VoteStatus,
-    arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostTypeNames
+    STRING_AGG(pt.Name, ', ') AS PostTypeNames
 FROM UserStats us
 JOIN Posts p ON us.UserId = p.OwnerUserId
 LEFT JOIN RecentPostHistory ph ON p.Id = ph.PostId AND ph.Rn = 1

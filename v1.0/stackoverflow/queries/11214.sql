@@ -2,7 +2,7 @@ WITH PostsSummary AS (
     SELECT 
         pt.Name AS PostType,
         COUNT(p.Id) AS TotalPosts,
-        AVG(toUnixTimestamp((COALESCE(p.ClosedDate, cast('2024-10-01 12:34:56' as timestamp)) - p.CreationDate))) AS AvgLifecycleDurationInSeconds,
+        AVG(EXTRACT(EPOCH FROM (COALESCE(p.ClosedDate, cast('2024-10-01 12:34:56' as timestamp)) - p.CreationDate))) AS AvgLifecycleDurationInSeconds,
         SUM(p.ViewCount) AS TotalViews,
         SUM(p.Score) AS TotalScore
     FROM 

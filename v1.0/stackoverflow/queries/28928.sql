@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 RelevantTags AS (
     SELECT 
         PostId,
-        arrayJoin(splitByString('><', assumeNotNull(Substring(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS Tag
+        UNNEST(string_to_array(Substring(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS Tag
     FROM 
         RankedPosts
 ),
@@ -56,7 +56,7 @@ SELECT
     tp.ViewCount,
     tp.OwnerDisplayName,
     tp.PostTypeName,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tc.Tag))), ', ') AS RelatedTags
+    STRING_AGG(DISTINCT tc.Tag, ', ') AS RelatedTags
 FROM 
     TopPosts tp
 JOIN 

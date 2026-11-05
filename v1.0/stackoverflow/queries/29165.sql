@@ -17,9 +17,9 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS Tag,
+        UNNEST(string_to_array(Tags, '>')) AS Tag,
         COUNT(*) AS PostCount,
-        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - CreationDate))) AS AvgAgeInSeconds
+        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - CreationDate))) AS AvgAgeInSeconds
     FROM 
         RankedPosts
     GROUP BY 
@@ -53,7 +53,7 @@ SELECT
 FROM 
     RankedPosts rs
 JOIN 
-    TagStatistics ts ON ts.Tag = ANY(splitByString('>', assumeNotNull(rs.Tags)))
+    TagStatistics ts ON ts.Tag = ANY(string_to_array(rs.Tags, '>'))
 JOIN 
     UserReputation ur ON ur.UserId = rs.OwnerUserId
 WHERE 

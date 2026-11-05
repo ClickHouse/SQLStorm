@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS TotalComments,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS RankByScore,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.ViewCount DESC) AS RankByViews
     FROM 

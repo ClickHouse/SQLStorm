@@ -21,7 +21,7 @@ PostHistoryStats AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(pht.Name, 'Unknown')))), ', ') AS HistoryTypes,
+        STRING_AGG(DISTINCT COALESCE(pht.Name, 'Unknown'), ', ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LatestEdit
     FROM 
         PostHistory ph
@@ -33,7 +33,7 @@ PostHistoryStats AS (
 PostWithFurtherLinks AS (
     SELECT 
         p.PostId,
-        arrayDistinct(groupArray(assumeNotNull(pl.RelatedPostId))) AS RelatedPosts
+        ARRAY_AGG(DISTINCT pl.RelatedPostId) AS RelatedPosts
     FROM 
         PostLinks pl
     JOIN 

@@ -73,7 +73,7 @@ FinalResults AS (
             WHEN fp.Score BETWEEN 50 AND 99 THEN 'Medium Score'
             ELSE 'Low Score'
         END AS ScoreCategory,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lt.Name))), ', ') AS LinkTypes
+        STRING_AGG(DISTINCT lt.Name, ', ') AS LinkTypes
     FROM 
         FilteredPosts fp
     LEFT JOIN 

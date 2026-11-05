@@ -21,10 +21,10 @@ LatestEdits AS (
 )
 SELECT r.OwnerName, 
        COUNT(*) AS TotalQuestions, 
-       AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - r.CreationDate)) / 3600) AS AvgHoursSinceCreated,
+       AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - r.CreationDate)) / 3600) AS AvgHoursSinceCreated,
        SUM(r.ViewCount) AS TotalViewCount,
-       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.Title))), ', ') AS EditedTitles,
-       arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(r.Tags))), ', ') AS UniqueTags,
+       STRING_AGG(DISTINCT r.Title, ', ') AS EditedTitles,
+       STRING_AGG(DISTINCT r.Tags, ', ') AS UniqueTags,
        COUNT(DISTINCT r.LastEditComment) AS DistinctEditComments
 FROM LatestEdits r
 GROUP BY r.OwnerName

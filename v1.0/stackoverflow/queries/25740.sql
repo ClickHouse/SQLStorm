@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         P.Score,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
         COUNT(DISTINCT V.UserId) AS UpVoteCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagList
+        STRING_AGG(DISTINCT T.TagName, ', ') AS TagList
     FROM 
         Posts P
     JOIN 

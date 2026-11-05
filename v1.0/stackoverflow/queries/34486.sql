@@ -35,7 +35,7 @@ PopularUsers AS (
 ClosedPostReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId = 10 THEN cr.Name END)), ', ') AS ClosedReasons
+        STRING_AGG(CASE WHEN ph.PostHistoryTypeId = 10 THEN cr.Name END, ', ') AS ClosedReasons
     FROM 
         PostHistory ph
     LEFT JOIN 

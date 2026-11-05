@@ -44,7 +44,7 @@ SELECT
     tp.UpVotes,
     tp.DownVotes,
     SUM(b.Class) AS TotalBadgeClass,
-    arrayDistinct(groupArray(assumeNotNull(b.Name))) AS BadgeNames
+    ARRAY_AGG(DISTINCT b.Name) AS BadgeNames
 FROM 
     TopPosts tp
 LEFT JOIN 

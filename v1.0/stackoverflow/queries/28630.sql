@@ -21,14 +21,14 @@ WITH RecentPosts AS (
 
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2)))) AS Tag,
+        unnest(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><')) AS Tag,
         COUNT(*) AS PostCount,
         SUM(CASE WHEN Score > 0 THEN 1 ELSE 0 END) AS PositiveScorePosts,
         AVG(Score) AS AverageScore
     FROM 
         RecentPosts
     GROUP BY 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2))))
+        unnest(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><'))
 ),
 
 TopTags AS (

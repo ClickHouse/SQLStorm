@@ -57,7 +57,7 @@ SELECT
     u.Reputation,
     SUM(p.ViewCount) AS TotalPostViews,
     COUNT(p.Id) AS TotalPosts,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), ', ') AS RecentPostTitles
+    STRING_AGG(DISTINCT p.Title, ', ') AS RecentPostTitles
 FROM 
     TopRankedUsers u
 JOIN 

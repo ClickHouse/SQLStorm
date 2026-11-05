@@ -49,11 +49,11 @@ SELECT
     f.DownVotes,
     f.CreationDate,
     f.LastActivityDate,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS RelatedTags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS RelatedTags
 FROM 
     FilteredPosts f
 JOIN 
-    arrayJoin(splitByString(',', assumeNotNull(f.Tags))) AS tag_ids ON TRUE
+    UNNEST(STRING_TO_ARRAY(f.Tags, ',')) AS tag_ids ON TRUE
 JOIN 
     Tags t ON t.TagName = TRIM(BOTH '"' FROM tag_ids)
 GROUP BY 

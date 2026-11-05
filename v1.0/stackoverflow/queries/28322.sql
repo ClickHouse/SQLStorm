@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Score,
         COALESCE(NULLIF(p.Body, ''), 'No content available') AS PostBody,
         COUNT(c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank,
         p.OwnerUserId,
         p.CreationDate
@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Comments c ON p.Id = c.PostId
     LEFT JOIN
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag ON TRUE
+        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag ON TRUE
     LEFT JOIN
         Tags t ON t.TagName = tag
     WHERE

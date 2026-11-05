@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         CASE 
             WHEN p.PostTypeId = 1 THEN 'Question'
@@ -52,8 +52,8 @@ SELECT
     tp.OwnerDisplayName,
     tp.PostType,
     COUNT(c.Id) AS CommentCount,
-    arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
-    arrayDistinct(groupArray(assumeNotNull(linked.LinkTypeId))) AS LinkTypeIds
+    STRING_AGG(b.Name, ', ') AS BadgeNames,
+    ARRAY_AGG(DISTINCT linked.LinkTypeId) AS LinkTypeIds
 FROM 
     TopPosts tp
 LEFT JOIN 

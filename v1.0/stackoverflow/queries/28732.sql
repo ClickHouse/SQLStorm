@@ -30,7 +30,7 @@ PostScoreStats AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName,
+        UNNEST(STRING_TO_ARRAY(p.Tags, '><')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -48,14 +48,14 @@ SELECT
     ps.TotalQuestions,
     ps.AvgViewCount,
     ps.AcceptedAnswersCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.TagName))), ', ') AS PopularTags
+    STRING_AGG(DISTINCT pt.TagName, ', ') AS PopularTags
 FROM 
     Users u
 LEFT JOIN 
     PostScoreStats ps ON u.Id = ps.OwnerUserId
 LEFT JOIN 
     PopularTags pt ON pt.TagName IN (
-        SELECT arrayJoin(splitByString('><', assumeNotNull(p.Tags)))
+        SELECT UNNEST(STRING_TO_ARRAY(p.Tags, '><'))
         FROM Posts p
         WHERE p.OwnerUserId = u.Id
         AND p.PostTypeId = 1

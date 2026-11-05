@@ -22,7 +22,7 @@ WITH PostDetails AS (
 )
 
 SELECT 
-    AVG(toUnixTimestamp((CURRENT_TIMESTAMP - PostCreationDate)) / 60.0) AS AvgResponseTimeInMinutes,
+    AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - PostCreationDate)) / 60.0) AS AvgResponseTimeInMinutes,
     SUM(CommentCount) AS TotalComments,
     SUM(VoteCount) AS TotalVotes
 FROM 

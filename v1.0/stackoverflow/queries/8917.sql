@@ -29,7 +29,7 @@ WITH RecentPosts AS (
 ),
 TopTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString(',', assumeNotNull(Tags)))) AS TagName
+        TRIM(UNNEST(string_to_array(Tags, ','))) AS TagName
     FROM 
         RecentPosts
 ),

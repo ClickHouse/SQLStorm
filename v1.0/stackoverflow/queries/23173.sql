@@ -22,7 +22,7 @@ RecentBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
@@ -33,7 +33,7 @@ RecentBadges AS (
 PostHistoryAggregates AS (
     SELECT 
         h.PostId,
-        arrayDistinct(groupArray(assumeNotNull(h.UserDisplayName))) AS Editors,
+        ARRAY_AGG(DISTINCT h.UserDisplayName) AS Editors,
         COUNT(h.Id) FILTER (WHERE h.PostHistoryTypeId = 10) AS CloseCount,
         COUNT(h.Id) FILTER (WHERE h.PostHistoryTypeId = 11) AS ReopenCount
     FROM 

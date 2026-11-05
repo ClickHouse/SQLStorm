@@ -19,14 +19,14 @@ WITH RankedPosts AS (
 
 TagStats AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(Tags)))) AS TagName,
+        TRIM(UNNEST(string_to_array(Tags, '><'))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(Tags))))
+        TRIM(UNNEST(string_to_array(Tags, '><')))
 )
 
 SELECT 
@@ -42,7 +42,7 @@ SELECT
 FROM 
     RankedPosts r
 JOIN 
-    TagStats ts ON ts.TagName = ANY(splitByString('><', assumeNotNull(r.Tags)))
+    TagStats ts ON ts.TagName = ANY(string_to_array(r.Tags, '><'))
 WHERE 
     r.Rank = 1 
 ORDER BY 

@@ -1,7 +1,7 @@
 WITH ParsedTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS Tag
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -49,8 +49,8 @@ SELECT
     AVG(Score) AS AverageScore,
     MIN(CreationDate) AS EarliestCreation,
     MAX(CreationDate) AS LatestCreation,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Title))), '; ') AS RelatedPostTitles,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(OwnerDisplayName))), '; ') AS Contributors
+    STRING_AGG(DISTINCT Title, '; ') AS RelatedPostTitles,
+    STRING_AGG(DISTINCT OwnerDisplayName, '; ') AS Contributors
 FROM
     TagDetails
 GROUP BY 

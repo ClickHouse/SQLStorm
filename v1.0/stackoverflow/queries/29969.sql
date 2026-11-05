@@ -24,7 +24,7 @@ PopularTags AS (
     FROM 
         RankedPosts
     CROSS JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS value
+        UNNEST(STRING_TO_ARRAY(Tags, '>')) AS value
     GROUP BY 
         TRIM(SUBSTRING(value, 2, LENGTH(value) - 2))
 ),
@@ -47,7 +47,7 @@ SELECT
     COUNT(DISTINCT rp.PostId) AS QuestionCount,
     COALESCE(SUM(pma.TotalAnswers), 0) AS TotalAnswers,
     AVG(rp.ViewCount) AS AvgViewCount,
-    AVG(toUnixTimestamp((CURRENT_TIMESTAMP - rp.CreationDate)) / 60) AS AvgTimeSinceCreation
+    AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - rp.CreationDate)) / 60) AS AvgTimeSinceCreation
 FROM 
     PopularTags pt
 JOIN 

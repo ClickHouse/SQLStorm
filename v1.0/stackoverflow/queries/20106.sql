@@ -32,7 +32,7 @@ PostVoteSummary AS (
 ClosedPostReasons AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PH.PostHistoryTypeId = 10 THEN CR.Name END)), ', ') AS CloseReasons
+        STRING_AGG(CASE WHEN PH.PostHistoryTypeId = 10 THEN CR.Name END, ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 

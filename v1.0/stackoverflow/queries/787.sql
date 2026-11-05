@@ -34,7 +34,7 @@ PostDetails AS (
         P.Title,
         P.CreationDate AS PostCreationDate,
         P.Score AS PostScore,
-        groupArray(assumeNotNull(T.TagName)) AS PostTags
+        ARRAY_AGG(T.TagName) AS PostTags
     FROM 
         Posts P
     LEFT JOIN 

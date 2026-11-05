@@ -24,7 +24,7 @@ SELECT
     rp.Score,
     rp.Tags,
     rp.AuthorName,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Text))), ' | ') AS Comments,
+    STRING_AGG(DISTINCT c.Text, ' | ') AS Comments,
     COUNT(DISTINCT b.Id) AS BadgeCount
 FROM 
     RankedPosts rp

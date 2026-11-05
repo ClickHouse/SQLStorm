@@ -48,7 +48,7 @@ SELECT
     tp.OwnerDisplayName,
     tp.CommentCount,
     tp.VoteCount,
-    COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+    COALESCE((SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
                FROM Tags t 
                JOIN Posts p ON p.Tags LIKE CONCAT('%', t.TagName, '%') 
                WHERE p.Id = tp.PostId), 'No Tags') AS RelatedTags

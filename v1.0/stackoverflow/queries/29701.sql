@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS Tag
+        unnest(string_to_array(Tags, '>')) AS Tag
     FROM 
         RankedPosts 
     WHERE 
@@ -56,7 +56,7 @@ SELECT
 FROM 
     TopTags t
 JOIN 
-    RankedPosts r ON t.Tag = ANY(splitByString('>', assumeNotNull(r.Tags)))
+    RankedPosts r ON t.Tag = ANY(string_to_array(r.Tags, '>'))
 WHERE 
     t.PopularityRank <= 10 
 ORDER BY 

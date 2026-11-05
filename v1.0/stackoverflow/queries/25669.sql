@@ -40,7 +40,7 @@ RecentEdits AS (
     SELECT 
         ph.PostId,
         ph.CreationDate AS EditDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.UserDisplayName))), ', ') AS Editors
+        STRING_AGG(DISTINCT ph.UserDisplayName, ', ') AS Editors
     FROM 
         PostHistory ph
     WHERE 
@@ -71,7 +71,7 @@ SELECT
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    TagStats ts ON ts.TagName IN (SELECT arrayJoin(splitByString('>', assumeNotNull(rp.Tags))))
+    TagStats ts ON ts.TagName IN (SELECT unnest(string_to_array(rp.Tags, '>')))
 LEFT JOIN 
     RecentEdits re ON re.PostId = rp.PostId
 WHERE 

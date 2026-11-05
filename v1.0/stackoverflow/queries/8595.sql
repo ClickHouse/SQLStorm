@@ -20,7 +20,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS ClosedDate,
-        arrayStringConcat(groupArray(assumeNotNull(ct.Name)), ', ') AS CloseReasons
+        STRING_AGG(ct.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

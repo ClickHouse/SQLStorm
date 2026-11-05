@@ -26,7 +26,7 @@ PostHistoryDetails AS (
         PH.PostId,
         PHT.Name AS ChangeType,
         COUNT(*) AS ChangeCount,
-        arrayDistinct(groupArray(assumeNotNull(PH.UserDisplayName))) AS UsersInvolved
+        ARRAY_AGG(DISTINCT PH.UserDisplayName) AS UsersInvolved
     FROM 
         PostHistory PH
     JOIN 

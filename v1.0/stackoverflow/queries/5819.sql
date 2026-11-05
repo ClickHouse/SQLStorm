@@ -46,7 +46,7 @@ SELECT
     trp.CommentCount,
     trp.AnswerCount,
     COALESCE(b.Name, 'No Badge') AS UserBadge,
-    toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - trp.CreationDate)) / 3600 AS AgeInHours
+    EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - trp.CreationDate)) / 3600 AS AgeInHours
 FROM 
     TopRankedPosts trp
 LEFT JOIN 

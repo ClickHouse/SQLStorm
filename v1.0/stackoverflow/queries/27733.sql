@@ -26,7 +26,7 @@ PopularTagStats AS (
     FROM 
         RankedPosts RP
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(RP.Tags))) AS T(TagName) 
+        UNNEST(string_to_array(RP.Tags, '><')) AS T(TagName) 
     ON 
         RP.TagRank = 1 
     GROUP BY 

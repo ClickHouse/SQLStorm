@@ -49,7 +49,7 @@ WorstClosedPosts AS (
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(TRIM(t.TagName))), ', ') AS Tags
+        STRING_AGG(TRIM(t.TagName), ', ') AS Tags
     FROM 
         Posts P
     JOIN 

@@ -3,7 +3,7 @@ WITH UserBadges AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges
+        STRING_AGG(b.Name, ', ') AS Badges
     FROM 
         Users u
     LEFT JOIN 
@@ -20,11 +20,11 @@ PostStatistics AS (
         p.Score,
         p.AnswerCount,
         p.CommentCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag ON tag IS NOT NULL
+        unnest(string_to_array(p.Tags, '>')) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

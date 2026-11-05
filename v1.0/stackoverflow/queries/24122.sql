@@ -23,7 +23,7 @@ PostDetails AS (
         p.ViewCount, 
         p.AnswerCount, 
         COALESCE(p.AcceptedAnswerId, -1) AS AcceptedAnswerId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM Posts p
     LEFT JOIN Tags t ON t.ExcerptPostId = p.Id
     WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'

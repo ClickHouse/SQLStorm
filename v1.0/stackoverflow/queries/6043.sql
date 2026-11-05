@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS Tag,
+        UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts p

@@ -14,7 +14,7 @@ WITH QuestionData AS (
 ResponseTime AS (
     SELECT 
         q.QuestionId,
-        toUnixTimestamp((a.CreationDate - q.CreationDate)) AS ResponseTimeInSeconds
+        EXTRACT(EPOCH FROM (a.CreationDate - q.CreationDate)) AS ResponseTimeInSeconds
     FROM 
         QuestionData q
     LEFT JOIN 

@@ -3,7 +3,7 @@ WITH UserBadges AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
+        STRING_AGG(b.Name, ', ') AS BadgeNames,
         MAX(b.Date) AS LastBadgeDate
     FROM 
         Users u

@@ -62,7 +62,7 @@ SELECT
         WHEN pa.Score BETWEEN 5 AND 10 THEN 'Moderately Engaged'
         ELSE 'Low Engagement'
     END AS EngagementLevel,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
     SUM(COALESCE(v.BountyAmount, 0)) AS TotalBounties
 FROM 
     PostAnalytics pa

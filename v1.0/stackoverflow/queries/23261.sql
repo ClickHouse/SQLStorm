@@ -3,7 +3,7 @@ WITH UserBadges AS (
     SELECT 
         u.Id AS UserId, 
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -63,15 +63,15 @@ SELECT
         WHEN up.TotalBadges > 0 THEN 'Badges: ' || up.TotalBadges 
         ELSE 'No Badges' 
     END AS BadgeSummary,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT tag.TagName, ', ') AS Tags
 FROM 
     UserPostStats up
 LEFT JOIN 
     Posts p ON up.PostId = p.Id
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
+            unnest(string_to_array(p.Tags, '><')) AS TagName
     ) AS tag ON TRUE
 GROUP BY 
     up.DisplayName, up.PostId, up.Score, up.ViewCount, up.CommentCount, up.UpVotes, up.DownVotes, up.TotalBadges

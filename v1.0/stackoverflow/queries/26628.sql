@@ -53,7 +53,7 @@ SELECT
     fp.Score,
     fp.ViewCount,
     fp.Tags,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList,
+    STRING_AGG(t.TagName, ', ') AS TagsList,
     (SELECT COUNT(*) 
      FROM Votes v 
      WHERE v.PostId = fp.PostId 
@@ -64,7 +64,7 @@ SELECT
        AND v.VoteTypeId = 3) AS TotalDownVotes
 FROM 
     FilteredPosts fp
-    LEFT ARRAY JOIN splitByString(',', assumeNotNull(fp.Tags)) AS tag_name
+    LEFT JOIN unnest(string_to_array(fp.Tags, ',')) AS tag_name ON true
     LEFT JOIN Tags t ON t.TagName = tag_name
 GROUP BY 
     fp.PostId, fp.Title, fp.OwnerDisplayName, fp.CreationDate, fp.Score, fp.ViewCount, fp.Tags

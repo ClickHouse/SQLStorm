@@ -24,7 +24,7 @@ WITH FilteredPosts AS (
 TagArray AS (
     SELECT 
         PostId,
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag
+        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag
     FROM 
         FilteredPosts
 ),
@@ -51,7 +51,7 @@ SELECT
     ts.TagCount,
     ts.AvgViewCount,
     ts.AvgScore,
-    arrayStringConcat(groupArray(assumeNotNull(fp.Title)), '; ') AS QuestionTitles  
+    STRING_AGG(fp.Title, '; ') AS QuestionTitles  
 FROM 
     TagStats ts
 JOIN 

@@ -24,7 +24,7 @@ ClosedPostHistory AS (
         PH.PostId,
         PH.Comment,
         MAX(PH.CreationDate) AS LatestCloseDate,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PHT.Name IS NOT NULL THEN PHT.Name ELSE 'Unknown' END)), ', ') AS CloseReasons
+        STRING_AGG(CASE WHEN PHT.Name IS NOT NULL THEN PHT.Name ELSE 'Unknown' END, ', ') AS CloseReasons
     FROM
         PostHistory PH
     LEFT JOIN

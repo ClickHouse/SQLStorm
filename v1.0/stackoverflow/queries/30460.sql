@@ -57,7 +57,7 @@ SELECT
     UPS.UserName,
     UPS.Title,
     UPS.NetScore,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(BadgeName)), ', ') 
+    (SELECT STRING_AGG(BadgeName, ', ') 
      FROM UserBadges UB 
      WHERE UB.UserId = U.Id AND UB.BadgeRank <= 3) AS TopBadges 
 FROM 

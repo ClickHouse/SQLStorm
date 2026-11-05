@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 ), 
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('> <', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag,
+        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '> <')) AS Tag,
         COUNT(*) AS UsageCount
     FROM 
         Posts
@@ -60,7 +60,7 @@ SELECT
     rp.AnswerCount,
     pt.Tag AS PopularTag,
     (SELECT COUNT(*) FROM PostHistoryDetails phd WHERE phd.PostId = rp.PostId) AS RecentHistoryCount,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(phd.UserDisplayName))), ', ') FROM PostHistoryDetails phd WHERE phd.PostId = rp.PostId) AS Editors
+    (SELECT STRING_AGG(DISTINCT phd.UserDisplayName, ', ') FROM PostHistoryDetails phd WHERE phd.PostId = rp.PostId) AS Editors
 FROM 
     RankedPosts rp
 JOIN 

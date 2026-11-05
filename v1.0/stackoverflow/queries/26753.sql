@@ -9,13 +9,13 @@ WITH RankedPosts AS (
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.ViewCount DESC, p.Score DESC) AS PostRank,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS tag ON TRUE
+        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 

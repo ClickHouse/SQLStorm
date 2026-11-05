@@ -38,7 +38,7 @@ PostLinkStats AS (
     SELECT
         pl.PostId,
         COUNT(pl.RelatedPostId) AS RelatedPostCount,
-        arrayStringConcat(groupArray(assumeNotNull(rpt.TagName)), ', ') AS RelatedPostTags
+        STRING_AGG(rpt.TagName, ', ') AS RelatedPostTags
     FROM PostLinks pl
     LEFT JOIN Posts rp ON pl.RelatedPostId = rp.Id
     LEFT JOIN Tags rpt ON rp.Tags LIKE CONCAT('%', rpt.TagName, '%') 

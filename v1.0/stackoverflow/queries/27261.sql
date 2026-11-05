@@ -44,7 +44,7 @@ TopScoringPosts AS (
 FullDetails AS (
     SELECT 
         tsp.*,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         TopScoringPosts tsp
     LEFT JOIN 

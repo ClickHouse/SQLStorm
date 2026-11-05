@@ -41,11 +41,11 @@ SELECT
         WHEN rp.AcceptedAnswerId IS NOT NULL THEN 'Accepted'
         ELSE 'Not Accepted'
     END AS AnswerStatus,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag.TagName))), ', ') AS TagsList
+    STRING_AGG(DISTINCT tag.TagName, ', ') AS TagsList
 FROM RankedPosts rp
-LEFT JOIN (
+LEFT JOIN LATERAL (
     SELECT 
-        arrayJoin(splitByString('>,<', assumeNotNull(rp.Tags))) AS TagName
+        unnest(string_to_array(rp.Tags, '>,<')) AS TagName
 ) AS tag ON TRUE
 WHERE rp.PostRank <= 10 
 GROUP BY 

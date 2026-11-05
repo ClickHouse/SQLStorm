@@ -33,11 +33,11 @@ RecentVotes AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag ON TRUE
+        UNNEST(STRING_TO_ARRAY(p.Tags, '><')) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
     GROUP BY 

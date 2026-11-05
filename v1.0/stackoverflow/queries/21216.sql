@@ -83,7 +83,7 @@ SELECT
         ELSE 'Inactive User' 
     END) AS UserActivityStatus,
     (SELECT 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(t.TagName, 'No Tags')))), ', ') 
+        STRING_AGG(DISTINCT COALESCE(t.TagName, 'No Tags'), ', ') 
      FROM 
         Posts p 
      LEFT JOIN 

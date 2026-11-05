@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS Author,
         p.Score,
         p.ViewCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS VoteCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.ViewCount DESC) AS Rank
@@ -17,7 +17,7 @@ WITH RankedPosts AS (
         LEFT JOIN Users u ON p.OwnerUserId = u.Id
         LEFT JOIN Comments c ON p.Id = c.PostId
         LEFT JOIN Votes v ON p.Id = v.PostId
-        LEFT JOIN (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS tag) AS tag ON TRUE
+        LEFT JOIN LATERAL (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag) AS tag ON TRUE
         JOIN Tags t ON tag.tag = t.TagName
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
@@ -49,10 +49,10 @@ SELECT
     tp.Score,
     tp.CommentCount,
     tp.VoteCount,
-    arrayStringConcat(groupArray(assumeNotNull(tag_name)), ', ') AS TagList
+    STRING_AGG(tag_name, ', ') AS TagList
 FROM 
     TopPosts tp
-    LEFT ARRAY JOIN tp.Tags AS tag_name
+    LEFT JOIN UNNEST(tp.Tags) AS tag_name ON TRUE
 GROUP BY 
     tp.PostId, tp.Title, tp.Author, tp.CreationDate, tp.ViewCount, tp.Score, tp.CommentCount, tp.VoteCount
 ORDER BY 

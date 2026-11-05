@@ -48,10 +48,10 @@ SELECT
      FROM Users Owner 
      JOIN Posts p ON p.OwnerUserId = Owner.Id 
      WHERE p.Id = tp.PostId) AS AverageOwnerReputation,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
      FROM Tags t 
-     JOIN (
-         SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR length(p.Tags) - 2)))) AS tag 
+     JOIN LATERAL (
+         SELECT UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR length(p.Tags) - 2), '><')) AS tag 
          FROM Posts p
          WHERE p.Id = tp.PostId
      ) tags ON t.TagName = tags.tag) AS TagsList

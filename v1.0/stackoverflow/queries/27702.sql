@@ -17,7 +17,7 @@ WITH RankedPosts AS (
 ),
 TagOccurrence AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag,
+        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts
@@ -43,8 +43,8 @@ PostStats AS (
         rp.Score,
         rp.ViewCount,
         COUNT(c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypeNames,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypes
+        ARRAY_AGG(DISTINCT pt.Name) AS PostTypeNames,
+        STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypes
     FROM 
         RankedPosts rp
     LEFT JOIN 

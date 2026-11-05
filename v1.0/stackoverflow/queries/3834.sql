@@ -21,11 +21,11 @@ WITH PostStats AS (
 PostWithTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON TRUE
+        LATERAL UNNEST(string_to_array(p.Tags, ',')) AS tag ON TRUE
     JOIN 
         Tags t ON TRIM(tag) = t.TagName
     GROUP BY 
@@ -40,7 +40,7 @@ SELECT
     pwt.Tags,
     CASE 
         WHEN ps.LastActivity IS NOT NULL THEN 
-            toUnixTimestamp((CAST('2024-10-01 12:34:56' AS TIMESTAMP) - ps.LastActivity)) / 3600 
+            EXTRACT(EPOCH FROM (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - ps.LastActivity)) / 3600 
         ELSE NULL 
     END AS HoursSinceLastActivity
 FROM 

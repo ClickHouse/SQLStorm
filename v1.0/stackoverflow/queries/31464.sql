@@ -26,7 +26,7 @@ PostHistoryAggregated AS (
         ph.PostId,
         COUNT(DISTINCT ph.UserId) AS UniqueEditors,
         MAX(ph.CreationDate) AS LastEditedDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), ', ') AS EditComments
+        STRING_AGG(DISTINCT ph.Comment, ', ') AS EditComments
     FROM 
         PostHistory ph
     WHERE 

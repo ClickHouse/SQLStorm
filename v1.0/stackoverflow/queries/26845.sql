@@ -8,7 +8,7 @@ WITH RecentPosts AS (
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         u.Reputation,
-        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'), 1) AS TagCount,
         COUNT(c.Id) AS CommentCount,
         COALESCE((SELECT COUNT(*)
                   FROM Votes v

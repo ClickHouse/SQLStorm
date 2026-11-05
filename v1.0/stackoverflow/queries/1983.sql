@@ -15,7 +15,7 @@ WITH UserActivity AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS Tag,
+        unnest(string_to_array(p.Tags, ',')) AS Tag,
         COUNT(p.Id) AS TagCount
     FROM Posts p
     WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'

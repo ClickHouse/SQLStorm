@@ -40,9 +40,9 @@ PostDetails AS (
     FROM 
         RankedPosts rp
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
+                unnest(string_to_array(p.Tags, '><')) AS TagName
             FROM 
                 Posts p
             WHERE 
@@ -61,7 +61,7 @@ SELECT
     pd.CommentCount,
     pd.Upvotes,
     pd.Downvotes,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pd.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT pd.TagName, ', ') AS Tags
 FROM 
     PostDetails pd
 GROUP BY 

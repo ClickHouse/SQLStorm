@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM 
         Posts p

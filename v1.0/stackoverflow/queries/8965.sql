@@ -42,7 +42,7 @@ SELECT
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = trp.PostId AND v.VoteTypeId = 2) AS Upvotes,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = trp.PostId AND v.VoteTypeId = 3) AS Downvotes,
     (SELECT COUNT(*) FROM Badges b WHERE b.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = trp.PostId)) AS BadgeCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') FROM Tags t WHERE t.ExcerptPostId = trp.PostId) AS Tags
+    (SELECT STRING_AGG(t.TagName, ', ') FROM Tags t WHERE t.ExcerptPostId = trp.PostId) AS Tags
 FROM 
     TopRankedPosts trp
 ORDER BY 

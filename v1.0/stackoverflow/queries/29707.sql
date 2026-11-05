@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         p.Tags,
-        ROW_NUMBER() OVER (PARTITION BY TRIM(BOTH '><' FROM arrayJoin(splitByString('><', assumeNotNull(p.Tags)))) ORDER BY p.CreationDate DESC) AS Rank
+        ROW_NUMBER() OVER (PARTITION BY TRIM(BOTH '><' FROM UNNEST(STRING_TO_ARRAY(p.Tags, '><'))) ORDER BY p.CreationDate DESC) AS Rank
     FROM 
         Posts p
     JOIN 
@@ -64,7 +64,7 @@ SELECT
     Score,
     Tags,
     VoteCount,
-    'Popular Tag: ' || (SELECT DISTINCT ON (tag) tag FROM arrayJoin(splitByString('><', assumeNotNull(TRIM(BOTH '><' FROM Tags)))) AS tag LIMIT 1) AS PopularTag
+    'Popular Tag: ' || (SELECT DISTINCT ON (tag) tag FROM UNNEST(STRING_TO_ARRAY(TRIM(BOTH '><' FROM Tags), '><')) AS tag LIMIT 1) AS PopularTag
 FROM 
     FinalResults
 ORDER BY 

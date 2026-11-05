@@ -73,13 +73,13 @@ SELECT
     ep.PostStatus,
     ep.UserReputation,
     ep.EngagementScore,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     EngagedPosts ep
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName
+            unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName
         FROM 
             Posts p
         WHERE 

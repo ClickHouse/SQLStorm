@@ -4,7 +4,7 @@ WITH UserBadges AS (
         U.DisplayName,
         COUNT(B.Id) AS BadgeCount,
         SUM(B.Class) AS BadgeClassSum,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 

@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS Upvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS Downvotes,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank,
-        groupArray(assumeNotNull(t.TagName)) AS TagsList
+        ARRAY_AGG(t.TagName) AS TagsList
     FROM 
         Posts p
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS TagName) AS t ON true
+        (SELECT unnest(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS TagName) AS t ON true
     WHERE 
         p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY 

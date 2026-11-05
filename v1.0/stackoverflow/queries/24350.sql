@@ -19,7 +19,7 @@ WITH RecentPosts AS (
         COUNT(DISTINCT p.Id) AS TotalPosts,
         SUM(COALESCE(vs.VoteScore, 0)) AS TotalScore, 
         SUM(CASE WHEN b.Id IS NOT NULL THEN 1 ELSE 0 END) AS BadgeCount,
-        arrayDistinct(groupArray(assumeNotNull(b.Name))) AS Badges
+        ARRAY_AGG(DISTINCT b.Name) AS Badges
     FROM 
         Users u
     LEFT JOIN 

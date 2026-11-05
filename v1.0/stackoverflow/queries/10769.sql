@@ -18,7 +18,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON TRUE
+    UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag ON TRUE
 LEFT JOIN 
     Tags t ON tag = t.TagName
 WHERE 

@@ -27,7 +27,7 @@ PostHistories AS (
         ph.PostId,
         COUNT(*) AS EditCount,
         MAX(ph.CreationDate) AS LastEditDate,
-        arrayDistinct(groupArray(assumeNotNull(ph.UserDisplayName))) AS Editors
+        ARRAY_AGG(DISTINCT ph.UserDisplayName) AS Editors
     FROM 
         PostHistory ph
     WHERE 
@@ -43,7 +43,7 @@ CombinedData AS (
         rp.ViewCount,
         COALESCE(pv.VoteScore, 0) AS VoteScore,
         COALESCE(ph.EditCount, 0) AS EditCount,
-        length(ph.Editors, 1) AS UniqueEditorsCount,
+        ARRAY_LENGTH(ph.Editors, 1) AS UniqueEditorsCount,
         CASE 
             WHEN rp.AnswerCount > 0 THEN 'Answered'
             ELSE 'Unanswered'

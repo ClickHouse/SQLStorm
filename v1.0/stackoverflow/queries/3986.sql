@@ -48,7 +48,7 @@ SELECT
     us.DisplayName,
     us.FastAchieverBadges,
     us.Score,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), ', ') AS RelatedPosts,
+    STRING_AGG(DISTINCT p.Title, ', ') AS RelatedPosts,
     MAX(pa.CommentCount) AS MaxCommentedPost,
     COUNT(DISTINCT pa.PostId) AS TotalPosts,
     CASE 

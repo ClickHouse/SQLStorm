@@ -21,14 +21,14 @@ FilteredPosts AS (
 ),
 PostScoreSummary AS (
     SELECT 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
         COUNT(fp.Id) AS QuestionCount,
         SUM(fp.Score) AS TotalScore,
         AVG(fp.ViewCount) AS AverageViewCount
     FROM FilteredPosts fp
     JOIN Posts p ON fp.Id = p.Id
-    JOIN (
-        SELECT arrayJoin(splitByString(',', assumeNotNull(fp.Tags))) AS TagName
+    JOIN LATERAL (
+        SELECT unnest(string_to_array(fp.Tags, ',')) AS TagName
     ) AS t ON TRUE 
     GROUP BY t.TagName
 )

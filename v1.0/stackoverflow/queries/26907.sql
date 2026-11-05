@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag
+        UNNEST(string_to_array(Tags, '><')) AS Tag
     FROM 
         RankedPosts
     WHERE 
@@ -29,11 +29,11 @@ SELECT
     COUNT(*) AS TotalTopPosts,
     AVG(rp.ViewCount) AS AvgViews,
     AVG(rp.Score) AS AvgScore,
-    arrayDistinct(groupArray(assumeNotNull(rp.OwnerDisplayName))) AS UniqueAuthors
+    ARRAY_AGG(DISTINCT rp.OwnerDisplayName) AS UniqueAuthors
 FROM 
     RankedPosts rp
 JOIN 
-    TopTags rt ON rt.Tag = ANY(splitByString('><', assumeNotNull(rp.Tags)))
+    TopTags rt ON rt.Tag = ANY(string_to_array(rp.Tags, '><'))
 GROUP BY 
     rt.Tag
 ORDER BY 

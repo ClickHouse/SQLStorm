@@ -44,7 +44,7 @@ SELECT
         WHERE c.PostId = fp.PostId AND c.UserId IS NOT NULL
     ) AS HasComments,
     (SELECT 
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
+        STRING_AGG(b.Name, ', ') 
      FROM 
         Badges b 
      WHERE 

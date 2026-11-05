@@ -8,7 +8,7 @@ SELECT
     COUNT(c.Id) AS CommentCount,
     COUNT(v.Id) AS VoteCount,
     COUNT(DISTINCT b.Id) AS BadgeCount,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
     MAX(ph.CreationDate) AS LastHistoryChange
 FROM 
     Posts p

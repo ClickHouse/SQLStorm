@@ -15,7 +15,7 @@ UserBadges AS (
     SELECT 
         B.UserId,
         COUNT(B.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM 
         Badges B
     GROUP BY 
@@ -81,7 +81,7 @@ SELECT
         WHEN CS.TotalScore > 0 THEN 'Contributor'
         ELSE 'New User'
     END AS ContributionLevel,
-    arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS PopularTags
+    ARRAY_AGG(DISTINCT T.TagName) AS PopularTags
 FROM 
     CombinedStats CS
 LEFT JOIN 

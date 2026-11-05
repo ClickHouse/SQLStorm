@@ -8,11 +8,11 @@ TopPosts AS (
     SELECT P.Id, P.Title, P.ViewCount, P.Score, 
            COALESCE(PL.RelatedPostId, -1) AS RelatedPostId,
            COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
-           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
+           STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
     FROM Posts P
     LEFT JOIN PostLinks PL ON P.Id = PL.PostId
     LEFT JOIN Comments C ON P.Id = C.PostId
-    ARRAY JOIN splitByString(',', assumeNotNull(P.Tags)) AS TagName
+    LEFT JOIN LATERAL (SELECT unnest(string_to_array(P.Tags, ',')) AS TagName) T ON TRUE
     WHERE P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY P.Id, P.Title, P.ViewCount, P.Score, PL.RelatedPostId
     HAVING COUNT(DISTINCT T.TagName) > 2

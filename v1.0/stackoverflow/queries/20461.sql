@@ -44,10 +44,10 @@ PostClosed AS (
 PostsWithTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(TRIM(tag))), ', ') AS CombinedTags
+        STRING_AGG(TRIM(tag), ', ') AS CombinedTags
     FROM 
         Posts p,
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag
+        UNNEST(string_to_array(p.Tags, '>')) AS tag
     GROUP BY 
         p.Id
 )

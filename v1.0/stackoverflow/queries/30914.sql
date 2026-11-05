@@ -31,7 +31,7 @@ MergingTags AS (
         t.Id,
         t.TagName,
         COUNT(po.Id) AS PostCount,
-        arrayStringConcat(groupArray(assumeNotNull(po.Title)), ', ') AS PostTitles
+        STRING_AGG(po.Title, ', ') AS PostTitles
     FROM 
         Tags t
     LEFT JOIN 

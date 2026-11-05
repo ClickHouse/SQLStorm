@@ -21,7 +21,7 @@ ClosedPosts AS (
         PH.PostId,
         PH.Comment AS CloseReason,
         PH.CreationDate AS CloseDate,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(PH.UserDisplayName, ' ', PH.CreationDate))), '; ') AS ClosedBy
+        STRING_AGG(CONCAT(PH.UserDisplayName, ' ', PH.CreationDate), '; ') AS ClosedBy
     FROM 
         PostHistory PH
     WHERE 

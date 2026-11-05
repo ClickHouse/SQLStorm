@@ -31,8 +31,8 @@ RecentEdits AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.UserDisplayName))), ', ') AS Editors,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS EditComments
+        STRING_AGG(DISTINCT ph.UserDisplayName, ', ') AS Editors,
+        STRING_AGG(DISTINCT ph.Comment, '; ') AS EditComments
     FROM 
         PostHistory ph
     WHERE 

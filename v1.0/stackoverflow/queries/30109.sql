@@ -59,7 +59,7 @@ FROM
 LEFT JOIN (
     SELECT 
         PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(UserDisplayName, ': ', Comment))), '; ') AS HistoryComments
+        STRING_AGG(CONCAT(UserDisplayName, ': ', Comment), '; ') AS HistoryComments
     FROM 
         RecentPostHistory
     WHERE 

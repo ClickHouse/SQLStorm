@@ -30,7 +30,7 @@ WITH RECURSIVE UserPostHierarchy AS (
 SELECT 
     uph.UserId,
     uph.DisplayName,
-    arrayStringConcat(groupArray(assumeNotNull(uph.Title)), '; ') AS PostTitles,
+    STRING_AGG(uph.Title, '; ') AS PostTitles,
     COUNT(uph.PostId) AS TotalPosts,
     MAX(uph.CreationDate) AS LastPostDate,
     SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositiveScorePosts,

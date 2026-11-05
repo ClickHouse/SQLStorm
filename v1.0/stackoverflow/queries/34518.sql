@@ -32,7 +32,7 @@ TopAnsweredPosts AS (
     LEFT JOIN (
         SELECT 
             PH.PostId,
-            arrayStringConcat(groupArray(assumeNotNull(CRT.Name)), ', ') AS CloseReason
+            STRING_AGG(CRT.Name, ', ') AS CloseReason
         FROM 
             PostHistory PH
         JOIN 
@@ -54,7 +54,7 @@ PopularTags AS (
     FROM 
         Posts P
     JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
+        UNNEST(STRING_TO_ARRAY(P.Tags, ',')) AS T(TagName) ON TRUE
     WHERE 
         P.PostTypeId = 1
     GROUP BY 

@@ -42,7 +42,7 @@ SELECT
     pd.CommentCount,
     pd.VoteCount,
     pd.AnswerCount,
-    arrayStringConcat(groupArray(assumeNotNull(td.TagName)), ', ') AS Tags
+    STRING_AGG(td.TagName, ', ') AS Tags
 FROM 
     PostDetails pd
 LEFT JOIN 

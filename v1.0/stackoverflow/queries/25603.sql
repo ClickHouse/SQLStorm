@@ -37,7 +37,7 @@ TagCounts AS (
         COUNT(*) AS Count
     FROM 
         FilteredPosts,
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS tag
+        UNNEST(string_to_array(Tags, ',')) AS tag
     GROUP BY 
         TRIM(tag)
 ),
@@ -58,7 +58,7 @@ SELECT
 FROM 
     PopularTags pt
 JOIN 
-    FilteredPosts fp ON pt.TagName = ANY(splitByString(',', assumeNotNull(fp.Tags)))
+    FilteredPosts fp ON pt.TagName = ANY(string_to_array(fp.Tags, ','))
 WHERE 
     pt.TagRank <= 10  
 GROUP BY 

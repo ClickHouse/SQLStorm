@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
+        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -56,7 +56,7 @@ UserEngagement AS (
     JOIN 
         Posts P ON UA.UserId = P.OwnerUserId
     JOIN 
-        PopularTags PT ON PT.Tag = ANY(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2))))
+        PopularTags PT ON PT.Tag = ANY(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><'))
     JOIN 
         TagCounts PCT ON PT.Tag = PCT.Tag
 )
@@ -67,7 +67,7 @@ SELECT
     UE.CommentsCount,
     SUM(UE.UpVotesReceived - UE.DownVotesReceived) AS NetVotes,
     SUM(UE.TotalViews) AS TotalViews,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(UE.Tag))), ', ') AS RelatedTags,
+    STRING_AGG(DISTINCT UE.Tag, ', ') AS RelatedTags,
     COUNT(DISTINCT UE.Tag) AS UniqueTagsEngaged
 FROM 
     UserEngagement UE

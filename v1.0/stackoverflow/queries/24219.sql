@@ -22,7 +22,7 @@ ActivePosts AS (
         p.CreationDate,
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
-        toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) / 3600 AS AgeInHours,
+        EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) / 3600 AS AgeInHours,
         COUNT(c.Id) AS CommentCount
     FROM Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
@@ -35,7 +35,7 @@ TrendingPosts AS (
         ap.PostId,
         ap.Title,
         ap.ViewCount,
-        (ap.CommentCount * 0.5 + GREATEST(ap.ViewCount / NULLIF(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - ap.CreationDate)) / 3600, 0), 1) * 0.5) AS EngagementScore
+        (ap.CommentCount * 0.5 + GREATEST(ap.ViewCount / NULLIF(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - ap.CreationDate)) / 3600, 0), 1) * 0.5) AS EngagementScore
     FROM ActivePosts ap
 )
 SELECT 

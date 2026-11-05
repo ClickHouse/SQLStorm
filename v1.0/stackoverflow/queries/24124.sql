@@ -86,7 +86,7 @@ SELECT
     SUM(tp.CommentCount) AS TotalComments,
     SUM(tp.UpVoteCount) AS TotalUpVotes,
     SUM(tp.DownVoteCount) AS TotalDownVotes,
-    arrayStringConcat(groupArray(assumeNotNull(tt.TagName)), ', ') AS TopTags
+    STRING_AGG(tt.TagName, ', ') AS TopTags
 FROM 
     Users u
 LEFT JOIN 

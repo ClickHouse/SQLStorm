@@ -49,7 +49,7 @@ SELECT
     COALESCE(phs.EditCount, 0) AS EditCount,
     phs.LastEditDate,
     (SELECT 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.UserDisplayName))), ', ') 
+        string_agg(DISTINCT c.UserDisplayName, ', ') 
      FROM 
         Comments c 
      WHERE 

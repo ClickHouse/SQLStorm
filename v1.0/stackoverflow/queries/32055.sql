@@ -92,7 +92,7 @@ SELECT
     SUM(ViewCount) AS TotalViews,
     SUM(TotalComments) AS TotalComments,
     AVG(PostScore) AS AveragePostScore,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ScoreCategory))), ', ') AS ScoreCategories
+    STRING_AGG(DISTINCT ScoreCategory, ', ') AS ScoreCategories
 FROM 
     FinalResults
 GROUP BY 

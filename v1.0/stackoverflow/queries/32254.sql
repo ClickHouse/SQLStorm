@@ -49,7 +49,7 @@ SELECT
      FROM Comments C 
      WHERE C.PostId = R.Id) AS TotalCommentsOnPost,
     (SELECT 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
+        STRING_AGG(DISTINCT T.TagName, ', ') 
      FROM 
         Posts P 
      JOIN 

@@ -31,7 +31,7 @@ VoteStats AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS Comments,
+        STRING_AGG(ph.Comment, ', ') AS Comments,
         MAX(CASE WHEN pht.Name = 'Post Closed' THEN ph.CreationDate END) AS LastClosedDate
     FROM PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id

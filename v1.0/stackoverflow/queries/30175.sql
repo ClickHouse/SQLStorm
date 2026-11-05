@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        groupArray(assumeNotNull(cr.Name)) AS CloseReasons
+        ARRAY_AGG(cr.Name) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

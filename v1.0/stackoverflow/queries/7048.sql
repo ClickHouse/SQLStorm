@@ -39,7 +39,7 @@ SELECT
     tp.ViewCount, 
     tp.CommentCount, 
     tp.OwnerDisplayName, 
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+    STRING_AGG(t.TagName, ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 

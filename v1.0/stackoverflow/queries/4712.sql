@@ -27,7 +27,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseCount,
-        arrayDistinct(groupArray(assumeNotNull(c.Name))) AS CloseReasons
+        ARRAY_AGG(DISTINCT c.Name) AS CloseReasons
     FROM PostHistory ph
     JOIN CloseReasonTypes c ON CAST(ph.Comment AS INTEGER) = c.Id
     WHERE ph.PostHistoryTypeId IN (10, 11) 

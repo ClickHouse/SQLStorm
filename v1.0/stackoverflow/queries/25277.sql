@@ -44,7 +44,7 @@ SELECT
     fp.Score,
     fp.CommentCount,
     fp.BadgeName,
-    arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS AllComments
+    STRING_AGG(c.Text, '; ') AS AllComments
 FROM 
     FilteredPosts fp
 LEFT JOIN 

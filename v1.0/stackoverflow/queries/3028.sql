@@ -38,14 +38,14 @@ SELECT
     tu.PostCount,
     tu.UpVotes - tu.DownVotes AS NetVotes,
     tu.ReputationCategory,
-    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', '), 'No Tags') AS TagsUsed
+    COALESCE(STRING_AGG(DISTINCT t.TagName, ', '), 'No Tags') AS TagsUsed
 FROM 
     TopUsers tu
 LEFT JOIN 
     Posts p ON tu.UserId = p.OwnerUserId
 LEFT JOIN 
-    (SELECT 
-                  DISTINCT arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName 
+    LATERAL (SELECT 
+                  DISTINCT UNNEST(string_to_array(p.Tags, '><')) AS TagName 
               ) t ON true
 GROUP BY 
     tu.UserId, tu.DisplayName, tu.Reputation, tu.PostCount, tu.UpVotes, tu.DownVotes, tu.ReputationCategory

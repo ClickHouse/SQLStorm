@@ -25,7 +25,7 @@ WITH RecentPosts AS (
 ),
 TagAnalysis AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS Tag,
+        unnest(string_to_array(Tags, '>')) AS Tag,
         p.ViewCount,
         p.CommentCount,
         p.UpVotes,

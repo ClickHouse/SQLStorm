@@ -30,7 +30,7 @@ TopRankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        LOWER(TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))))) AS Tag,
+        LOWER(TRIM(UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')))) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -46,14 +46,14 @@ SELECT
     trp.Title,
     trp.ViewCount,
     trp.Score,
-    arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypes,
-    arrayDistinct(groupArray(assumeNotNull(pgt.Tag))) AS PopularTags
+    ARRAY_AGG(DISTINCT pt.Name) AS PostTypes,
+    ARRAY_AGG(DISTINCT pgt.Tag) AS PopularTags
 FROM 
     TopRankedPosts trp
 LEFT JOIN 
     PostTypes pt ON trp.PostId IN (SELECT p.Id FROM Posts p WHERE p.PostTypeId = pt.Id)
 LEFT JOIN 
-    PopularTags pgt ON pgt.Tag = ANY(splitByString('><', assumeNotNull(SUBSTRING(trp.Tags FROM 2 FOR LENGTH(trp.Tags) - 2))))
+    PopularTags pgt ON pgt.Tag = ANY(string_to_array(SUBSTRING(trp.Tags FROM 2 FOR LENGTH(trp.Tags) - 2), '><'))
 GROUP BY 
     trp.PostId, trp.Title, trp.ViewCount, trp.Score
 ORDER BY 

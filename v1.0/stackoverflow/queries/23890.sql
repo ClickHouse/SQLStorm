@@ -47,7 +47,7 @@ CommentActivity AS (
     SELECT 
         p.Id AS PostId,
         COUNT(c.Id) AS TotalComments,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS SampleComments
+        STRING_AGG(c.Text, '; ') AS SampleComments
     FROM 
         Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId

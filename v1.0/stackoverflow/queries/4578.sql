@@ -34,7 +34,7 @@ ClosedPostStats AS (
         ph.PostId,
         MAX(ph.CreationDate) AS LastClosedDate,
         COUNT(*) AS CloseReasonCount,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS CloseComments
+        STRING_AGG(ph.Comment, ', ') AS CloseComments
     FROM 
         PostHistory ph
     WHERE 

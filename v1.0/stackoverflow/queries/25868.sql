@@ -48,17 +48,17 @@ SELECT
     f.Owner,
     f.CommentCount,
     f.AnswerCount,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags
 FROM 
     FilteredPosts f
 LEFT JOIN 
     Posts p ON p.Id = f.PostId 
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
             SUBSTRING(tag FROM 2 FOR LENGTH(tag) - 2) AS TagName
         FROM 
-            arrayJoin(splitByString('<tag>', assumeNotNull(f.Body))) AS tag
+            unnest(string_to_array(f.Body, '<tag>')) AS tag
     ) AS t ON TRUE
 GROUP BY 
     f.PostId, f.Title, f.Body, f.CreationDate, f.ViewCount, f.Owner, f.CommentCount, f.AnswerCount

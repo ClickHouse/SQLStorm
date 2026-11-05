@@ -44,10 +44,10 @@ PostHistoryStats AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE 
+        STRING_AGG(DISTINCT CASE 
             WHEN ph.PostHistoryTypeId = 10 THEN 'Closed' 
             WHEN ph.PostHistoryTypeId = 11 THEN 'Reopened' 
-            ELSE NULL END))), ', ') AS HistoryTypes
+            ELSE NULL END, ', ') AS HistoryTypes
     FROM PostHistory ph
     GROUP BY ph.PostId
 ),

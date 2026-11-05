@@ -38,7 +38,7 @@ PopularPosts AS (
 ),
 TagStats AS (
     SELECT
-        arrayJoin(splitByString('><', assumeNotNull(rp.Tags))) AS Tag,  
+        unnest(string_to_array(rp.Tags, '><')) AS Tag,  
         COUNT(*) AS PostCount
     FROM
         PopularPosts rp

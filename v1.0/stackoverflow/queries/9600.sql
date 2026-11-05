@@ -37,7 +37,7 @@ PostDetails AS (
         p.Score,
         u.DisplayName AS OwnerDisplayName,
         pt.Name AS PostType,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        array_agg(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     JOIN 
@@ -45,7 +45,7 @@ PostDetails AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName IS NOT NULL
+        unnest(string_to_array(p.Tags, '>')) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days'
     GROUP BY 

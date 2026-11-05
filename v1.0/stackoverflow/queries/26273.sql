@@ -27,7 +27,7 @@ WITH RankedPosts AS (
 RecentActivity AS (
     SELECT 
         p.Id AS PostId,
-        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' (', h.CreationDate, ')')))), '; ') 
+        (SELECT STRING_AGG(DISTINCT CONCAT(u.DisplayName, ' (', h.CreationDate, ')'), '; ') 
          FROM PostHistory h 
          JOIN Users u ON h.UserId = u.Id 
          WHERE h.PostId = p.Id 

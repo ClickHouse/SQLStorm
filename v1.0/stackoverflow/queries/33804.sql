@@ -27,7 +27,7 @@ PostDetails AS (
         rp.DownVotesCount,
         rp.Tags,
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = rp.PostId) AS CommentCount,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
+        (SELECT STRING_AGG(b.Name, ', ') 
          FROM Badges b 
          WHERE b.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = rp.PostId)) AS UserBadges
     FROM 
@@ -38,7 +38,7 @@ PostDetails AS (
 PostHistoryAggregated AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS CommentsHistory,
+        STRING_AGG(ph.Comment, '; ') AS CommentsHistory,
         COUNT(*) AS EditCount
     FROM 
         PostHistory ph

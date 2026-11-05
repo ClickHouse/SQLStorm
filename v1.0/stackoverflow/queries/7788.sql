@@ -34,7 +34,7 @@ CommentsAggregate AS (
     SELECT 
         p.Id AS PostId,
         COUNT(c.Id) AS CommentCount,
-        groupArray(assumeNotNull(c.Text ORDER BY c.CreationDate DESC)) AS LatestComments
+        ARRAY_AGG(c.Text ORDER BY c.CreationDate DESC) AS LatestComments
     FROM 
         Posts p
     LEFT JOIN 

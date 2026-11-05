@@ -49,7 +49,7 @@ CTE_ActiveUsers AS (
         COALESCE(ua.AvgBountyAmount, 0) AS AvgBounty,
         CASE 
             WHEN ua.FirstVoteDate IS NOT NULL AND ua.LastVoteDate IS NOT NULL THEN 
-                datePart('day', ua.LastVoteDate - ua.FirstVoteDate) 
+                DATE_PART('day', ua.LastVoteDate - ua.FirstVoteDate) 
             ELSE 
                 NULL 
         END AS VoteSpanDays

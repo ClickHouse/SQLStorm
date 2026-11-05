@@ -8,7 +8,7 @@ WITH PostTagCounts AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS t(TagName) ON p.Id = p.Id
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS t(TagName) ON p.Id = p.Id
     GROUP BY 
         p.Id, p.Title, p.CreationDate, t.TagName
 ),

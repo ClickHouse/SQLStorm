@@ -13,11 +13,11 @@ RecentPostStats AS (
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         AVG(P.Score) AS AverageScore,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagsUsed
+        STRING_AGG(DISTINCT T.TagName, ', ') AS TagsUsed
     FROM Posts P
-    JOIN (
+    JOIN LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS TagName
+            unnest(string_to_array(P.Tags, '><')) AS TagName
     ) T ON TRUE
     WHERE P.LastActivityDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
     GROUP BY P.OwnerUserId

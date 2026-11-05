@@ -36,7 +36,7 @@ SELECT
         WHEN ru.UserRank <= 3 THEN 'Top 3 Users'
         ELSE 'Regular User'
     END AS UserType,
-    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+    COALESCE((SELECT STRING_AGG(t.TagName, ', ') 
               FROM Tags t 
               JOIN Posts p ON t.ExcerptPostId = p.Id 
               WHERE p.OwnerUserId = ru.UserId), 'No Tags') AS UserTags

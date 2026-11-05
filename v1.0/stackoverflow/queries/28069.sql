@@ -20,7 +20,7 @@ HighScoreComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS CommentTexts
+        STRING_AGG(c.Text, ' | ') AS CommentTexts
     FROM 
         Comments c
     JOIN 

@@ -43,11 +43,11 @@ SELECT
      WHERE v.PostId = t.PostId 
      AND v.VoteTypeId IN (2, 3, 7) 
     ) AS VoteCount,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag.TagName))), ', ') 
+    (SELECT STRING_AGG(DISTINCT tag.TagName, ', ') 
      FROM Tags tag 
-     INNER JOIN (
+     INNER JOIN LATERAL (
          SELECT 
-             arrayJoin(splitByString(' ', assumeNotNull(t.Title))) AS TagName 
+             unnest(string_to_array(t.Title, ' ')) AS TagName 
      ) AS split_tags ON tag.TagName = split_tags.TagName
     ) AS AssociatedTags
 FROM 

@@ -28,7 +28,7 @@ TopPosts AS (
         rp.OwnerDisplayName,
         rp.ViewCount,
         rp.Score,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Text))), ' | ') AS CommentTexts
+        STRING_AGG(DISTINCT c.Text, ' | ') AS CommentTexts
     FROM 
         RankedPosts rp
         LEFT JOIN Comments c ON rp.PostId = c.PostId

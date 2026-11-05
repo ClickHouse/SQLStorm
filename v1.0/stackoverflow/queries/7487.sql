@@ -49,7 +49,7 @@ SELECT
     tp.BadgeCount,
     pht.Name AS PostHistoryType,
     COUNT(ph.Id) AS HistoryEntries,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.Name))), ', ') AS CloseReasons
+    STRING_AGG(DISTINCT ct.Name, ', ') AS CloseReasons
 FROM 
     TopPosts tp
 LEFT JOIN 

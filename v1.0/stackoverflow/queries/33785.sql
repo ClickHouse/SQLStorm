@@ -28,7 +28,7 @@ UserBadges AS (
 PostHistoryTags AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostHistoryTypes
+        STRING_AGG(pt.Name, ', ') AS PostHistoryTypes
     FROM 
         PostHistory ph
     JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id

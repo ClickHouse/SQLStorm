@@ -42,7 +42,7 @@ ClosedPostComments AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseComments,
-        arrayDistinct(groupArray(assumeNotNull(ph.Comment))) AS CloseReasonComments
+        ARRAY_AGG(DISTINCT ph.Comment) AS CloseReasonComments
     FROM 
         PostHistory ph
     WHERE 

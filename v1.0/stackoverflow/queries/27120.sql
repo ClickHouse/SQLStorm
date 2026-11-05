@@ -34,7 +34,7 @@ TagCounts AS (
     FROM 
         FilteredPosts fp
     CROSS JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(fp.Tags))) AS t(TagName)  
+        UNNEST(string_to_array(fp.Tags, '>')) AS t(TagName)  
     GROUP BY 
         PostId
 )

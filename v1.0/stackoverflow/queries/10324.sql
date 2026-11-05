@@ -10,7 +10,7 @@ SELECT
     u.Reputation AS OwnerReputation,
     u.DisplayName AS OwnerDisplayName,
     pt.Name AS PostTypeName,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags
 FROM
     Posts p
 LEFT JOIN
@@ -22,7 +22,7 @@ LEFT JOIN
 LEFT JOIN
     PostTypes pt ON p.PostTypeId = pt.Id
 LEFT JOIN
-    arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tagId ON tagId IS NOT NULL
+    UNNEST(string_to_array(p.Tags, '>')) AS tagId ON tagId IS NOT NULL
 LEFT JOIN
     Tags t ON t.TagName = tagId
 GROUP BY

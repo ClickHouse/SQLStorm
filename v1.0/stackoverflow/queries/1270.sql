@@ -32,7 +32,7 @@ SELECT
     us.TotalViewCount,
     us.TotalScore,
     COUNT(DISTINCT rp.PostId) AS TopPostsCount,
-    arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS TopPostTitles,
+    STRING_AGG(rp.Title, '; ') AS TopPostTitles,
     MAX(rp.Score) AS MaxScorePost,
     MIN(rp.Score) AS MinScorePost,
     AVG(rp.Score) AS AvgScorePost

@@ -39,13 +39,13 @@ HighScorePosts AS (
 TaggedPosts AS (
     SELECT 
         hp.*,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         HighScorePosts hp
     JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString('<tag>', assumeNotNull(hp.Body))) AS TagName 
+                unnest(string_to_array(hp.Body, '<tag>')) AS TagName 
         ) t ON true
     GROUP BY 
         hp.PostId, hp.Title, hp.Body, hp.CreationDate, hp.ViewCount, hp.Score, hp.OwnerDisplayName, hp.CommentCount

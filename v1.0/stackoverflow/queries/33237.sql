@@ -39,7 +39,7 @@ TopPosts AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS HistoryComments,
+        STRING_AGG(ph.Comment, '; ') AS HistoryComments,
         MIN(ph.CreationDate) AS FirstEditedDate
     FROM 
         PostHistory ph

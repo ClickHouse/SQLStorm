@@ -19,7 +19,7 @@ SELECT
     COUNT(DISTINCT r.PostId) AS TotalPosts,
     SUM(r.Score) AS TotalScore,
     AVG(r.ViewCount) AS AverageViews,
-    arrayStringConcat(groupArray(assumeNotNull(CONCAT(r.Title, ' (Score: ', r.Score, ')'))), ', ') AS PostTitles
+    STRING_AGG(CONCAT(r.Title, ' (Score: ', r.Score, ')'), ', ') AS PostTitles
 FROM 
     RankedPosts r
 WHERE 

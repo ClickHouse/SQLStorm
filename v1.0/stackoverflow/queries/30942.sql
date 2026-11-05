@@ -21,7 +21,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryCount,
-        arrayStringConcat(groupArray(assumeNotNull(cht.Name)), ', ') AS ChangeTypes
+        STRING_AGG(cht.Name, ', ') AS ChangeTypes
     FROM 
         PostHistory ph
     JOIN 

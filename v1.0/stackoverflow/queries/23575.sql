@@ -11,12 +11,12 @@ WITH RankedPosts AS (
             WHEN p.CreationDate < cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year' THEN 'Old Post'
             ELSE 'Recent Post'
         END AS PostAgeCategory,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        array_agg(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     JOIN 
-        (
-            SELECT DISTINCT arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS TagName
+        LATERAL (
+            SELECT DISTINCT unnest(string_to_array(p.Tags, '<>')) AS TagName
         ) t ON true
     GROUP BY 
         p.Id, p.Title, p.Score, p.ViewCount, p.CreationDate, p.LastActivityDate, p.PostTypeId
@@ -48,7 +48,7 @@ RecentBadges AS (
 PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LastActionDate,
         COUNT(CASE WHEN ph.PostHistoryTypeId = 10 THEN 1 END) AS ClosedCount
     FROM 

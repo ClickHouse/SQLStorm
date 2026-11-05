@@ -40,13 +40,13 @@ SELECT
     uri.TotalScore,
     ur.Reputation,
     ur.ReputationRank,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsAssociated
+    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsAssociated
 FROM UserPostInfo uri 
 JOIN UserReputation ur ON uri.UserId = ur.UserId
 LEFT JOIN Posts p ON uri.UserId = p.OwnerUserId
-LEFT JOIN (
+LEFT JOIN LATERAL (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
+        unnest(string_to_array(p.Tags, ',')) AS TagName
 ) AS t ON true
 WHERE uri.TotalPosts > 0
 GROUP BY 

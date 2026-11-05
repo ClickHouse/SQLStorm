@@ -40,7 +40,7 @@ PostHistoryDetails AS (
         ph.CreationDate AS HistoryDate,
         ph.UserId AS EditorUserId,
         ph.Comment,
-        arrayStringConcat(groupArray(assumeNotNull(COALESCE(pht.Name, 'Unknown'))), ', ') AS HistoryTypeNames
+        STRING_AGG(COALESCE(pht.Name, 'Unknown'), ', ') AS HistoryTypeNames
     FROM 
         PostHistory ph
     LEFT JOIN 

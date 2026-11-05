@@ -6,7 +6,7 @@ WITH PostTagCounts AS (
     FROM
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS tag_name ON true
+        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag_name ON true
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
@@ -56,7 +56,7 @@ SELECT
     ur.GoldBadges,
     ur.SilverBadges,
     ur.BronzeBadges,
-    arrayDistinct(groupArray(assumeNotNull(pr.ActionType))) AS RevisionActions,
+    ARRAY_AGG(DISTINCT pr.ActionType) AS RevisionActions,
     COUNT(pr.Comment) AS RevisionComments
 FROM 
     Posts p

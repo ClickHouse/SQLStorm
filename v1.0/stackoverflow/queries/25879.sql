@@ -9,13 +9,13 @@ WITH RecentPosts AS (
         p.Score,
         p.OwnerUserId,
         u.DisplayName AS OwnerDisplayName,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS t(TagName) ON TRUE
+        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS t(TagName) ON TRUE
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 

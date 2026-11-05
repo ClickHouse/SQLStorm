@@ -54,7 +54,7 @@ SELECT
     rp.Score,
     rp.ViewCount,
     rp.CommentCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ') 
+    (SELECT STRING_AGG(tag.TagName, ', ') 
         FROM PopularTags tag 
         JOIN Posts post ON post.Tags LIKE '%' || tag.TagName || '%'
         WHERE post.Id = rp.PostId) AS PopularTags,

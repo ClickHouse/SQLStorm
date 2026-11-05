@@ -56,7 +56,7 @@ SELECT
     ups.TotalDownVotes,
     ups.AcceptedPosts,
     COUNT(rph.PostId) AS RecentEdits,
-    arrayStringConcat(groupArray(assumeNotNull(rph.Title)), ', ') AS RecentEditedTitles
+    STRING_AGG(rph.Title, ', ') AS RecentEditedTitles
 FROM Users u
 LEFT JOIN UserReputation ur ON u.Id = ur.UserId
 LEFT JOIN UserPostStats ups ON u.Id = ups.UserId

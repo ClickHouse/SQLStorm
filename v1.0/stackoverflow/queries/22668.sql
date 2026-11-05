@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC, p.ViewCount DESC) AS ScoreRank,
         COALESCE(NULLIF(p.Title, ''), '(No Title)') AS DisplayTitle,
-        ARRAY(SELECT DISTINCT arrayJoin(splitByString('>', assumeNotNull(p.Tags))) ORDER BY 1) AS TagList
+        ARRAY(SELECT DISTINCT UNNEST(string_to_array(p.Tags, '>')) ORDER BY 1) AS TagList
     FROM 
         Posts p
     WHERE 

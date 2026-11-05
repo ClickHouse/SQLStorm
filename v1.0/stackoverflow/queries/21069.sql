@@ -32,7 +32,7 @@ TopUsers AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TagName,
+        unnest(string_to_array(Tags, '>')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -47,7 +47,7 @@ PostHistoryStats AS (
     SELECT 
         ph.PostId, 
         COUNT(ph.Id) AS HistoryCount,
-        arrayDistinct(groupArray(assumeNotNull(ph.Comment))) AS Comments
+        ARRAY_AGG(DISTINCT ph.Comment) AS Comments
     FROM 
         PostHistory ph
     WHERE 
@@ -75,7 +75,7 @@ JOIN
 JOIN 
     TopUsers th ON u.Id = th.Id
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString('>', assumeNotNull(p.Tags)))
+    PopularTags pt ON pt.TagName = ANY(string_to_array(p.Tags, '>'))
 LEFT JOIN 
     PostHistoryStats phs ON p.Id = phs.PostId
 WHERE 

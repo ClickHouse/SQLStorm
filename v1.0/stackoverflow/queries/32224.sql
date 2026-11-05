@@ -38,7 +38,7 @@ ClosedPostStats AS (
         ph.PostId,
         ph.CreationDate,
         COUNT(ph.Id) AS CloseCount,
-        arrayStringConcat(groupArray(assumeNotNull(pr.Name)), ', ') AS CloseReasons
+        STRING_AGG(pr.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

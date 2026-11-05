@@ -57,7 +57,7 @@ SELECT
     COALESCE(av.DownVotes, 0) AS DownVotes,
     cd.CommentCount,
     cd.LastCommentDate,
-    toUnixTimestamp(CURRENT_TIMESTAMP - rp.CreationDate) / 3600 AS AgeInHours,
+    EXTRACT(EPOCH FROM CURRENT_TIMESTAMP - rp.CreationDate) / 3600 AS AgeInHours,
     CASE 
         WHEN php.LastEditDate IS NOT NULL THEN 'Edited'
         ELSE 'Not Edited'

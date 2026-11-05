@@ -9,8 +9,8 @@ WITH PostStats AS (
         p.AnswerCount,
         COALESCE(u.DisplayName, 'Community User') AS OwnerDisplayName,
         COUNT(DISTINCT c.Id) AS CommentCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypeNames
+        STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames,
+        STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypeNames
     FROM Posts p
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
     LEFT JOIN Comments c ON p.Id = c.PostId

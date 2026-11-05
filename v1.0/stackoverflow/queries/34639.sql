@@ -13,7 +13,7 @@ WITH RankedPosts AS (
         COUNT(v.Id) AS VoteCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString(', ', assumeNotNull(p.Tags))) AS tag_name ON tag_name IS NOT NULL
+        unnest(string_to_array(p.Tags, ', ')) AS tag_name ON tag_name IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 

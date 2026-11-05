@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS ChangeTypes,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS ChangeTypes,
         MIN(ph.CreationDate) AS FirstChangeDate,
         MAX(ph.CreationDate) AS LastChangeDate,
         COUNT(*) AS ChangeCount
@@ -48,7 +48,7 @@ CombinedData AS (
             WHEN phs.ChangeCount > 10 THEN 'Highly Active Post'
             ELSE 'Activity Moderate'
         END AS ActivityLevel,
-        (toUnixTimestamp((COALESCE(phs.LastChangeDate, cast('2024-10-01 12:34:56' as timestamp)) - rp.CreationDate)) / 3600.0) AS HoursSinceCreation
+        (EXTRACT(EPOCH FROM (COALESCE(phs.LastChangeDate, cast('2024-10-01 12:34:56' as timestamp)) - rp.CreationDate)) / 3600.0) AS HoursSinceCreation
     FROM RankedPosts rp
     LEFT JOIN PostHistorySummary phs ON rp.PostId = phs.PostId
 )

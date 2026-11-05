@@ -61,7 +61,7 @@ SELECT
         WHEN rp.TotalDownvotes > 3 THEN 'Content Issues'
         ELSE 'Moderate User'
     END AS UserActivityStatus,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS RelatedPostTypes
+    STRING_AGG(DISTINCT pt.Name, ', ') AS RelatedPostTypes
 FROM 
     RecentPosts rp
 LEFT JOIN 

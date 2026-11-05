@@ -33,7 +33,7 @@ SELECT PDT.PostId, PDT.Title, PDT.OwnerName, PDT.CreationDate,
            WHEN PDT.UpVotes < PDT.DownVotes THEN 'Negative' 
            ELSE 'Neutral' 
        END AS Sentiment,
-       (SELECT arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') 
+       (SELECT STRING_AGG(Name, ', ') 
         FROM PostHistory PH 
         JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id 
         WHERE PH.PostId = PDT.PostId) AS HistoryTypes

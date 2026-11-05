@@ -38,8 +38,8 @@ TaggedPostStatistics AS (
         AVG(P.Score) AS AverageScore
     FROM 
         Posts P
-
-        ARRAY JOIN splitByString(',', assumeNotNull(P.Tags)) AS tag
+    JOIN 
+        LATERAL (SELECT unnest(string_to_array(P.Tags, ',')) AS tag) tag ON TRUE
     JOIN 
         Tags PT ON tag = PT.TagName
     GROUP BY 

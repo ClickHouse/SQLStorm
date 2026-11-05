@@ -37,7 +37,7 @@ PostHistoryStats AS (
         h.PostId,
         h.PostHistoryTypeId,
         COUNT(h.Id) AS HistoryCount,
-        arrayStringConcat(groupArray(assumeNotNull(h.Comment)), '; ') AS Comments
+        STRING_AGG(h.Comment, '; ') AS Comments
     FROM 
         PostHistory h
     GROUP BY 

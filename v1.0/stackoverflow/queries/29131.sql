@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT
-        arrayJoin(splitByString('>', assumeNotNull(Posts.Tags))) AS Tag,
+        UNNEST(string_to_array(Posts.Tags, '>')) AS Tag,
         COUNT(*) AS PostCount
     FROM
         Posts

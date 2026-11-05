@@ -67,7 +67,7 @@ SELECT
     COUNT(*) AS TotalFilteredPosts,
     AVG(fs.ViewCount) AS AverageViewCount,
     SUM(fs.Score) AS TotalScoreFromFilteredPosts,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fs.Title))), '; ') AS PostTitles
+    STRING_AGG(DISTINCT fs.Title, '; ') AS PostTitles
 FROM 
     FilteredPostSummary fs
 LEFT JOIN UserReputation ur ON fs.ReputationTier = ur.ReputationTier

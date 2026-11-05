@@ -42,7 +42,7 @@ SELECT
     tp.Score,
     tp.CommentCount,
     tp.VoteCount,
-    COALESCE(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ARRAY[]::TEXT[]) AS Tags
+    COALESCE(ARRAY_AGG(DISTINCT t.TagName), ARRAY[]::TEXT[]) AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 

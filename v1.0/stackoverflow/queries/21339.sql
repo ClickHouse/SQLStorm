@@ -75,7 +75,7 @@ SELECT
     tu.TotalPoints,
     tu.PostsCount,
     COALESCE((SELECT 
-                arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') 
+                STRING_AGG(c.Text, '; ') 
                FROM 
                 Comments c 
                WHERE 

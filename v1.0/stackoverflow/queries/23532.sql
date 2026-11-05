@@ -6,13 +6,13 @@ WITH RankedPosts AS (
         p.Score,
         ROW_NUMBER() OVER(PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) as rn,
         COUNT(c.Id) OVER(PARTITION BY p.Id) as CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') FILTER (WHERE t.TagName IS NOT NULL) OVER(PARTITION BY p.Id) as Tags
+        STRING_AGG(t.TagName, ', ') FILTER (WHERE t.TagName IS NOT NULL) OVER(PARTITION BY p.Id) as Tags
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
-
-        LEFT ARRAY JOIN splitByString(',', assumeNotNull(p.Tags)) AS TagName
+    LEFT JOIN 
+        LATERAL (SELECT unnest(string_to_array(p.Tags, ',')) as TagName) t ON TRUE
     WHERE 
         p.Score IS NOT NULL
 ), UserActivity AS (

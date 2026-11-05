@@ -8,7 +8,7 @@ WITH UserActivity AS (
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownvotes,
         SUM(CASE WHEN b.Id IS NOT NULL THEN 1 ELSE 0 END) AS TotalBadges,
-        AVG(toUnixTimestamp((COALESCE(p.LastActivityDate, cast('2024-10-01 12:34:56' as timestamp)) - p.CreationDate))) AS AvgPostAge
+        AVG(extract(epoch from (COALESCE(p.LastActivityDate, cast('2024-10-01 12:34:56' as timestamp)) - p.CreationDate))) AS AvgPostAge
     FROM 
         Users u
     LEFT JOIN 

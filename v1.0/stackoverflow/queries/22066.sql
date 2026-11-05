@@ -47,7 +47,7 @@ PostHistoryAggregates AS (
     SELECT 
         ph.PostId,
         COUNT(DISTINCT ph.PostHistoryTypeId) AS HistoryTypeCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(pt.Name, ': ', ph.Comment)))), '; ') AS EditComments
+        STRING_AGG(DISTINCT CONCAT(pt.Name, ': ', ph.Comment), '; ') AS EditComments
     FROM 
         PostHistory ph
     JOIN 

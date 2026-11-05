@@ -9,7 +9,7 @@ WITH DetailedPostInfo AS (
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
         u.Reputation AS OwnerReputation,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount
     FROM 
@@ -21,7 +21,7 @@ WITH DetailedPostInfo AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2 
     LEFT JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS t(TagName) ON TRUE
+        LATERAL unnest(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '>')) AS t(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 

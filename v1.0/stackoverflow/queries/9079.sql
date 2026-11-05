@@ -65,7 +65,7 @@ SELECT
         WHEN pm.LastAction = 11 THEN 'Reopened'
         ELSE 'Active'
     END AS PostStatus,
-    toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - pm.LastActionDate)) / 3600 AS HoursSinceLastAction
+    EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - pm.LastActionDate)) / 3600 AS HoursSinceLastAction
 FROM 
     PostMetrics pm
 ORDER BY 

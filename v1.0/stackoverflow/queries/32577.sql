@@ -17,12 +17,12 @@ UserEngagement AS (
         SUM(CASE WHEN p.OwnerUserId IS NOT NULL THEN 1 ELSE 0 END) AS PostCount,
         SUM(CASE WHEN c.UserId IS NOT NULL THEN 1 ELSE 0 END) AS CommentCount,
         SUM(COALESCE(p.ViewCount, 0)) AS TotalViews,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM Users u
     LEFT JOIN Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN Comments c ON p.Id = c.PostId
-    LEFT JOIN (
-        SELECT arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
+    LEFT JOIN LATERAL (
+        SELECT unnest(string_to_array(p.Tags, '>')) AS TagName
     ) AS t ON TRUE
     GROUP BY u.Id, u.DisplayName
 ),

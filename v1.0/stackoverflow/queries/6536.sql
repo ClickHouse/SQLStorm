@@ -41,7 +41,7 @@ TopPosts AS (
 SELECT 
     TP.*,
     (SELECT COUNT(*) FROM PostHistory PH WHERE PH.PostId = TP.PostId) AS HistoryCount,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') FROM Posts P JOIN Tags T ON P.Tags LIKE CONCAT('%', T.TagName, '%') WHERE P.Id = TP.PostId) AS AssociatedTags
+    (SELECT STRING_AGG(DISTINCT T.TagName, ', ') FROM Posts P JOIN Tags T ON P.Tags LIKE CONCAT('%', T.TagName, '%') WHERE P.Id = TP.PostId) AS AssociatedTags
 FROM 
     TopPosts TP
 ORDER BY 

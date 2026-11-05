@@ -59,7 +59,7 @@ SELECT
     pe.NetVotes,
     pe.EngagementType,
     COUNT(b.Id) AS BadgeCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames
+    STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames
 FROM 
     PostEngagements pe
 LEFT JOIN 

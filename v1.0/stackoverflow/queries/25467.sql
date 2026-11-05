@@ -31,7 +31,7 @@ TagDetails AS (
     FROM 
         RankedPosts RP
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(RP.Tags))) AS T(TagName) ON true
+        UNNEST(string_to_array(RP.Tags, '><')) AS T(TagName) ON true
     GROUP BY 
         T.TagName
 )

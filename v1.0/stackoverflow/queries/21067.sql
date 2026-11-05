@@ -24,10 +24,10 @@ WITH RankedPosts AS (
 ClosedPostReasons AS (
     SELECT 
         Ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE 
+        STRING_AGG(CASE 
             WHEN Ph.PostHistoryTypeId = 10 THEN CR.Name 
             ELSE 'Other' 
-        END)), ', ') AS CloseReasons
+        END, ', ') AS CloseReasons
     FROM 
         PostHistory Ph
     JOIN 

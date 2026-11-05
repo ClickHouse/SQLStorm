@@ -9,8 +9,8 @@ TopTags AS (
         TagName,
         SUM(PostCount) as TotalPosts
     FROM TagCounts
-    JOIN (
-        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName
+    JOIN LATERAL (
+        SELECT unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName
     ) AS Tag ON Tags LIKE '%' || Tag.TagName || '%'
     GROUP BY TagName
     ORDER BY TotalPosts DESC
@@ -35,7 +35,7 @@ PostHistoryActivity AS (
     SELECT 
         PH.PostHistoryTypeId,
         COUNT(*) as ActivityCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') as UsersInvolved
+        STRING_AGG(DISTINCT U.DisplayName, ', ') as UsersInvolved
     FROM PostHistory PH
     JOIN Users U ON PH.UserId = U.Id
     GROUP BY PH.PostHistoryTypeId

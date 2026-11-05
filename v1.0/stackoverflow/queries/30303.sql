@@ -25,7 +25,7 @@ WITH RankedPosts AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LastModifiedDate
     FROM 
         PostHistory ph

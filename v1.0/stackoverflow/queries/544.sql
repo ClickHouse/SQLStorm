@@ -42,7 +42,7 @@ UserEngagement AS (
 SELECT ue.*, 
        CASE WHEN ue.Answers > 0 THEN (ue.Questions::decimal / ue.Answers) ELSE NULL END AS QuestionToAnswerRatio,
        CASE WHEN ue.LastPostDate IS NOT NULL THEN 
-           toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - ue.LastPostDate)) / 86400 
+           EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - ue.LastPostDate)) / 86400 
        ELSE NULL 
        END AS DaysSinceLastPost
 FROM UserEngagement ue

@@ -29,9 +29,9 @@ WITH RankedPosts AS (
 
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
+        UNNEST(string_to_array(Tags, '><')) AS TagName,
         COUNT(*) AS PostCount,
-        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - CreationDate))) AS AvgTimeSinceLastPost
+        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - CreationDate))) AS AvgTimeSinceLastPost
     FROM 
         Posts
     WHERE 

@@ -31,7 +31,7 @@ PostWithBadge AS (
 PostHistoryInfo AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS EditComments,
+        STRING_AGG(ph.Comment, '; ') AS EditComments,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph

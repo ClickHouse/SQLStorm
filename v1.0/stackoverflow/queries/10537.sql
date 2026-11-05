@@ -17,7 +17,7 @@ VoteCount AS (
 ),
 AvgResponseTime AS (
     SELECT 
-        AVG(toUnixTimestamp((FirstAnswer.CreationDate - Q.CreationDate))) AS AvgTimeToFirstAnswer
+        AVG(EXTRACT(EPOCH FROM (FirstAnswer.CreationDate - Q.CreationDate))) AS AvgTimeToFirstAnswer
     FROM 
         Posts Q
     LEFT JOIN 

@@ -1,6 +1,6 @@
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
+        UNNEST(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag,
         Id AS PostId
     FROM 
         Posts

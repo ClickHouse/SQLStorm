@@ -38,7 +38,7 @@ SELECT
     Score,
     ViewCount,
     Body,
-    (toUnixTimestamp((LastActivityDate - CreationDate)) / 60) AS TimeToActivityMinutes,
+    (EXTRACT(EPOCH FROM (LastActivityDate - CreationDate)) / 60) AS TimeToActivityMinutes,
     (ViewCount / NULLIF(CommentCount, 0)) AS ViewPerComment,
     (Score / NULLIF(ViewCount, 0)) AS ScorePerView
 FROM 

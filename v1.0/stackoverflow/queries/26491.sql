@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS TagName,
+        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS TagName,
         COUNT(*) AS TotalPosts,
         SUM(Score) AS TotalScore,
         SUM(ViewCount) AS TotalViews

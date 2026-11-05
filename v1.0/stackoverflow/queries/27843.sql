@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.OwnerUserId,
         u.DisplayName AS OwnerName,
-        length(splitByString('><', assumeNotNull(p.Tags)), 1) AS TagCount,
+        ARRAY_LENGTH(STRING_TO_ARRAY(p.Tags, '><'), 1) AS TagCount,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM 
         Posts p

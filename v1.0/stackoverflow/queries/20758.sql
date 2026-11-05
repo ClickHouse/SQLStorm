@@ -24,7 +24,7 @@ UserStats AS (
 PostHistoryAnalysis AS (
     SELECT PH.PostId,
            COUNT(*) AS EditCount,
-           arrayDistinct(groupArray(assumeNotNull(PH.PostHistoryTypeId))) AS EditTypes
+           ARRAY_AGG(DISTINCT PH.PostHistoryTypeId) AS EditTypes
     FROM PostHistory PH
     WHERE PH.PostHistoryTypeId IN (4, 5, 6) 
     GROUP BY PH.PostId

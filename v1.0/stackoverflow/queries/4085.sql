@@ -44,7 +44,7 @@ SELECT
     up.TotalViews,
     up.PositiveScore,
     COALESCE(cp.CloseCount, 0) AS CloseCount,
-    groupArray(assumeNotNull(rp.Title)) AS TopPosts
+    ARRAY_AGG(rp.Title) AS TopPosts
 FROM 
     UserPostStats up
 LEFT JOIN 

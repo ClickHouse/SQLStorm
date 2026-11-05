@@ -12,7 +12,7 @@ SELECT
     u.Reputation,
     v.VoteTypeId,
     COUNT(v.Id) AS VoteCount,
-    AVG(toUnixTimestamp((v.CreationDate - p.CreationDate))) AS AvgTimeToVote
+    AVG(EXTRACT(EPOCH FROM (v.CreationDate - p.CreationDate))) AS AvgTimeToVote
 FROM 
     Posts p
 JOIN 

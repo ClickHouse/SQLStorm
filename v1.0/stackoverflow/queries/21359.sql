@@ -21,7 +21,7 @@ TopPosts AS (
         rp.Score,
         COUNT(c.Id) AS CommentCount,
         COALESCE(MAX(b.Class), 0) AS HighestBadge,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
     FROM 
         RankedPosts rp
     LEFT JOIN 
@@ -30,8 +30,8 @@ TopPosts AS (
         Posts p ON p.Id = rp.PostId
     LEFT JOIN 
         Badges b ON b.UserId = p.OwnerUserId
-
-        LEFT ARRAY JOIN splitByString('><', assumeNotNull(p.Tags)) AS TagName
+    LEFT JOIN 
+        LATERAL (SELECT unnest(string_to_array(p.Tags, '><')) AS TagName) t ON TRUE
     WHERE 
         rp.Rank <= 10
     GROUP BY 

@@ -52,7 +52,7 @@ SELECT
     COUNT(DISTINCT rp.PostId) AS UniquePostsEdited,
     SUM(tu.TotalScore) AS TotalScore,
     SUM(tu.TotalViews) AS TotalViews,
-    arrayDistinct(groupArray(assumeNotNull(ph.EditDate ORDER BY ph.EditDate DESC))) AS RecentEdits
+    ARRAY_AGG(DISTINCT ph.EditDate ORDER BY ph.EditDate DESC) AS RecentEdits
 FROM 
     TopUsers tu
 LEFT JOIN 

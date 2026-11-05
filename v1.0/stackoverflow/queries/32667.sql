@@ -42,7 +42,7 @@ RecentActivity AS (
         ph.CreationDate AS HistoryDate,
         p.LastActivityDate,
         p.LastEditorDisplayName,
-        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostHistoryTypes
+        STRING_AGG(pt.Name, ', ') AS PostHistoryTypes
     FROM 
         Posts p
         INNER JOIN PostHistory ph ON p.Id = ph.PostId

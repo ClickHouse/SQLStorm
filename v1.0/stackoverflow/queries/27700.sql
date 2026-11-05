@@ -9,14 +9,14 @@ WITH RecentPosts AS (
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id) AS CommentCount,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpVotes,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = p.Id AND v.VoteTypeId = 3) AS DownVotes,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        string_agg(DISTINCT t.TagName, ', ') AS Tags
     FROM
         Posts p
     JOIN
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN
         (SELECT
-            arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS TagName,
+            unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName,
             Id
         FROM
             Posts) t ON p.Id = t.Id

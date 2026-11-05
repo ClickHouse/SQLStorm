@@ -84,7 +84,7 @@ SELECT
     fr.TotalVotes,
     fr.CommentCount,
     MAX(fr.HistoryDate) AS LastHistoryDate,
-    arrayStringConcat(groupArray(assumeNotNull(fr.HistoryAction)), ', ') AS Actions,
+    STRING_AGG(fr.HistoryAction, ', ') AS Actions,
     CASE 
         WHEN COUNT(DISTINCT ph.UserDisplayName) > 0 THEN 'Has Editors'
         ELSE 'No Editors'

@@ -4,7 +4,7 @@ WITH RankedPosts AS (
         p.Id AS PostId,
         p.Title,
         p.Body,
-        length(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'), 1) AS TagCount,
         COALESCE(COUNT(c.Id), 0) AS CommentCount
     FROM
         Posts AS p

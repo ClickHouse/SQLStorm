@@ -53,7 +53,7 @@ SELECT
         WHEN phs.ClosureStatus = 1 THEN 'Closed' 
         ELSE 'Open' 
     END AS PostStatus,
-    datePart('day', CURRENT_DATE - rp.CreationDate) AS DaysSinceCreation
+    DATE_PART('day', CURRENT_DATE - rp.CreationDate) AS DaysSinceCreation
 FROM 
     RankedPosts rp
 JOIN 

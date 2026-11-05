@@ -24,7 +24,7 @@ CloseReasonStatistics AS (
         P.Id AS PostId,
         H.PostHistoryTypeId,
         COUNT(H.Id) AS CloseReasonCount,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN H.PostHistoryTypeId = 10 THEN CR.Name END)), ', ') AS CloseReasons
+        STRING_AGG(CASE WHEN H.PostHistoryTypeId = 10 THEN CR.Name END, ', ') AS CloseReasons
     FROM 
         Posts P
     JOIN 

@@ -22,11 +22,11 @@ PostStatistics AS (
         COUNT(DISTINCT P.Id) AS PostCount,
         COUNT(DISTINCT COALESCE(P.AcceptedAnswerId, -1)) AS AcceptedAnswerCount,
         SUM(P.Score) AS TotalScore,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS AssociatedTags
+        STRING_AGG(DISTINCT T.TagName, ', ') AS AssociatedTags
     FROM 
         Posts P
     LEFT JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE 
+        UNNEST(STRING_TO_ARRAY(P.Tags, ',')) AS T(TagName) ON TRUE 
     GROUP BY 
         P.OwnerUserId
 ),

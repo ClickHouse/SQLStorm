@@ -5,14 +5,14 @@ WITH RecentPosts AS (
         p.Body,
         p.CreationDate,
         COUNT(c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray,
-        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') 
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray,
+        (SELECT STRING_AGG(DISTINCT u.DisplayName, ', ') 
          FROM Users u 
          JOIN Votes v ON v.UserId = u.Id 
          WHERE v.PostId = p.Id AND v.VoteTypeId = 2) AS UpVotedUsers
     FROM Posts p
     LEFT JOIN Comments c ON c.PostId = p.Id
-    LEFT JOIN arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+    LEFT JOIN LATERAL unnest(string_to_array(p.Tags, '><')) AS t(TagName) ON TRUE
     WHERE p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
     GROUP BY p.Id
 ),

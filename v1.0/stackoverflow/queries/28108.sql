@@ -36,7 +36,7 @@ TopRankedPosts AS (
 
 TagAnalytics AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS Tag,
+        unnest(string_to_array(Tags, ',')) AS Tag,
         COUNT(*) AS PostCount,
         SUM(ViewCount) AS TotalViews,
         SUM(Score) AS TotalScore

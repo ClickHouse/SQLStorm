@@ -33,7 +33,7 @@ TopPosts AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT('Type: ', pht.Name, ' by: ', ph.UserDisplayName, ' on: ', ph.CreationDate))), '; ') AS HistoryInfo,
+        STRING_AGG(CONCAT('Type: ', pht.Name, ' by: ', ph.UserDisplayName, ' on: ', ph.CreationDate), '; ') AS HistoryInfo,
         COUNT(*) AS HistoryCount
     FROM 
         PostHistory ph

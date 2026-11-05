@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 PostTagCounts AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS Tag
+        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -45,7 +45,7 @@ TagUsage AS (
 TopPosts AS (
     SELECT 
         rp.*,
-        arrayStringConcat(groupArray(assumeNotNull(t.Tag)), ', ') AS UsedTags
+        STRING_AGG(t.Tag, ', ') AS UsedTags
     FROM 
         RankedPosts rp
     JOIN 

@@ -23,7 +23,7 @@ WITH RankedPosts AS (
         p.Id, p.Title, p.CreationDate, p.ViewCount, u.DisplayName, pt.Name
 ), PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS TagName,
+        unnest(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -40,7 +40,7 @@ SELECT
     rp.OwnerDisplayName,
     rp.PostTypeName,
     rp.VoteCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') FROM PopularTags) AS PopularTags,
+    (SELECT STRING_AGG(TagName, ', ') FROM PopularTags) AS PopularTags,
     rp.Rank
 FROM 
     RankedPosts rp

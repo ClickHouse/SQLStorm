@@ -53,9 +53,9 @@ SELECT
 FROM
     TopPosts TP
 LEFT JOIN
-    (
+    LATERAL (
         SELECT
-            arrayJoin(splitByString('><', assumeNotNull(substring(TP.Title, 2, length(TP.Title) - 2)))) AS TagName
+            unnest(string_to_array(substring(TP.Title, 2, length(TP.Title) - 2), '><')) AS TagName
     ) T ON TRUE
 ORDER BY
     TP.Score DESC;

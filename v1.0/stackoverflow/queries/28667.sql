@@ -9,7 +9,7 @@ WITH FilteredPosts AS (
             FROM Comments c
             WHERE c.PostId = p.Id
         ), 0) AS CommentCount,
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS Tag
+        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS Tag
     FROM 
         Posts p
     WHERE 

@@ -60,7 +60,7 @@ PostAnalysis AS (
     LEFT JOIN (
         SELECT 
             ph.PostId,
-            arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS Reason
+            STRING_AGG(cr.Name, ', ') AS Reason
         FROM 
             PostHistory ph
         JOIN 

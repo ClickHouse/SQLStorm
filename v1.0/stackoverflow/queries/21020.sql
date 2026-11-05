@@ -41,7 +41,7 @@ SELECT
     COALESCE(RP.RN, 0) AS RecentPostCount,  -- Adjusted to use RP.RN
     PV.UpVotes,
     PV.DownVotes,
-    arrayStringConcat(groupArray(assumeNotNull(P.TAGS)), ', ') AS TagsAggregated
+    STRING_AGG(P.TAGS, ', ') AS TagsAggregated
 FROM 
     Users U
 JOIN 

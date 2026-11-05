@@ -62,12 +62,12 @@ SELECT
     pd.HierarchyLevel,
     pd.BadgeStatus,
     pd.TotalBounty,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+    STRING_AGG(t.TagName, ', ') AS Tags
 FROM 
     PostDetails pd
 LEFT JOIN 
-    (SELECT 
-                  arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName 
+    LATERAL (SELECT 
+                  unnest(string_to_array(p.Tags, '>')) AS TagName 
               FROM 
                   Posts p 
               WHERE 

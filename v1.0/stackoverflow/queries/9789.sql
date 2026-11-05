@@ -9,7 +9,7 @@ SELECT
     COUNT(c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes,
-    arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypes,
+    ARRAY_AGG(DISTINCT pt.Name) AS PostTypes,
     ht.Name AS LastHistoryType,
     ph.CreationDate AS LastHistoryDate
 FROM 

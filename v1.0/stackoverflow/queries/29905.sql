@@ -27,7 +27,7 @@ WITH RankedPosts AS (
 
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS Tag
+        UNNEST(string_to_array(p.Tags, '><')) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -61,7 +61,7 @@ SELECT
     rp.UpVotes,
     rp.DownVotes,
     (SELECT COUNT(*) FROM PostLinks pl WHERE pl.PostId = rp.PostId) AS RelatedLinksCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
+    (SELECT STRING_AGG(b.Name, ', ') 
      FROM Badges b 
      JOIN Users u ON b.UserId = u.Id 
      WHERE u.Id IN (SELECT DISTINCT OwnerUserId FROM Posts WHERE Id = rp.PostId)) AS OwnerBadges

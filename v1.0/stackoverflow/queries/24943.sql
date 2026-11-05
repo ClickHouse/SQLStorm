@@ -38,7 +38,7 @@ UserStats AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(SPLIT_PART(Tags, '><', NULL)::TEXT[]) AS Tag
+        UNNEST(SPLIT_PART(Tags, '><', NULL)::TEXT[]) AS Tag
     FROM 
         Posts
     WHERE 

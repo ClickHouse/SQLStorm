@@ -56,8 +56,8 @@ FinalBenchmark AS (
     ORDER BY uvs.UpVotesCount DESC, uvs.TotalVotesCount DESC
 )
 SELECT *,
-       (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
-        FROM arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag
+       (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
+        FROM UNNEST(string_to_array(p.Tags, '><')) AS tag
         LEFT JOIN Tags t ON t.TagName = tag
         WHERE t.IsModeratorOnly IS FALSE) AS RelevantTags
 FROM FinalBenchmark fb

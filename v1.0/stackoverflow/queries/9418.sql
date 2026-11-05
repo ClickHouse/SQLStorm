@@ -28,7 +28,7 @@ WITH RankedPosts AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS Comments
+        STRING_AGG(c.Text, ' | ') AS Comments
     FROM 
         Comments c
     GROUP BY 
@@ -36,7 +36,7 @@ WITH RankedPosts AS (
 ), PostBadges AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeList
+        STRING_AGG(b.Name, ', ') AS BadgeList
     FROM 
         Badges b
     INNER JOIN 

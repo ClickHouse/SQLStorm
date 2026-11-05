@@ -94,13 +94,13 @@ SELECT
         WHEN ps.ClosedCount > 0 THEN 'This post has been closed.'
         ELSE 'This post is open for discussion.'
     END AS PostStatusDescription,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     PostStatistics ps
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName
+            unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName
         FROM 
             Posts p
         WHERE 

@@ -16,7 +16,7 @@ WITH UserStatistics AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
+        UNNEST(STRING_TO_ARRAY(Tags, '><')) AS TagName,
         COUNT(*) AS TagUsage
     FROM 
         Posts

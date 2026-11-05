@@ -25,7 +25,7 @@ PostDetails AS (
         END AS PostCategory,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rp.PostId AND v.VoteTypeId = 2) AS UpVotes,
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = rp.PostId AND v.VoteTypeId = 3) AS DownVotes,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') FROM Comments c WHERE c.PostId = rp.PostId) AS CommentSummaries
+        (SELECT STRING_AGG(c.Text, '; ') FROM Comments c WHERE c.PostId = rp.PostId) AS CommentSummaries
     FROM 
         RankedPosts rp
     WHERE 
@@ -43,7 +43,7 @@ FinalReport AS (
         pd.DownVotes,
         COALESCE(pd.CommentSummaries, 'No comments') AS CommentSummaries,
         COALESCE((
-            SELECT arrayStringConcat(groupArray(assumeNotNull(pht.Name)), ', ') 
+            SELECT STRING_AGG(pht.Name, ', ') 
             FROM PostHistory ph
             JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
             WHERE ph.PostId = pd.PostId 

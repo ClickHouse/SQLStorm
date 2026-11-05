@@ -29,7 +29,7 @@ UserReputation AS (
 CommentSummary AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(c.UserDisplayName)), ', ') AS CommentAuthors,
+        STRING_AGG(c.UserDisplayName, ', ') AS CommentAuthors,
         COUNT(c.Id) AS CommentCount
     FROM 
         Posts p

@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     CROSS JOIN 
-        (SELECT arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName) AS t
+        LATERAL (SELECT unnest(string_to_array(p.Tags, '><')) AS TagName) AS t
     WHERE 
         p.PostTypeId = 1 AND
         p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'

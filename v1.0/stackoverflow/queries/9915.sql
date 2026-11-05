@@ -21,14 +21,14 @@ WITH RankedPosts AS (
 ), 
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS Tag,
+        UNNEST(string_to_array(Tags, '>')) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.CreationDate > DATE('2024-10-01') - INTERVAL '30 days'
     GROUP BY 
-        arrayJoin(splitByString('>', assumeNotNull(Tags)))
+        UNNEST(string_to_array(Tags, '>'))
 )
 
 SELECT 

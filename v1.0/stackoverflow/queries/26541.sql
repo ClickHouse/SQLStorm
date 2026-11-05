@@ -30,7 +30,7 @@ TagStatistics AS (
         LOWER(TRIM(tag)) AS CleanedTag,
         COUNT(*) AS PostCount
     FROM 
-        PostDetails, arrayJoin(splitByString(',', assumeNotNull(Tags))) AS tag
+        PostDetails, UNNEST(string_to_array(Tags, ',')) AS tag
     GROUP BY 
         LOWER(TRIM(tag))
 )

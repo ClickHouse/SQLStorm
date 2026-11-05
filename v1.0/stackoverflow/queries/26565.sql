@@ -19,7 +19,7 @@ ClosedPostStatistics AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS ClosureCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS ClosedReasonNames
+        STRING_AGG(DISTINCT ctr.Name, ', ') AS ClosedReasonNames
     FROM 
         PostHistory ph
     JOIN 
@@ -56,7 +56,7 @@ SELECT
 FROM 
     TagStatistics ts
 LEFT JOIN 
-    ClosedPostStatistics cps ON ts.TagName IN (SELECT arrayJoin(splitByString(', ', assumeNotNull(cps.ClosedReasonNames))))
+    ClosedPostStatistics cps ON ts.TagName IN (SELECT unnest(string_to_array(cps.ClosedReasonNames, ', ')))
 LEFT JOIN 
     UserActivity ua ON ua.TotalPosts > 0
 ORDER BY 

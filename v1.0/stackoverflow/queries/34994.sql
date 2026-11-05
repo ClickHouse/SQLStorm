@@ -72,7 +72,7 @@ TopUsers AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS Tag
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -95,7 +95,7 @@ SELECT
     th.PostsCount,
     th.TotalUpVotes,
     th.TotalDownVotes,
-    groupArray(assumeNotNull(ts.TagName)) AS PopularTags,
+    ARRAY_AGG(ts.TagName) AS PopularTags,
     ROW_NUMBER() OVER (ORDER BY u.Reputation DESC) AS UserRank
 FROM 
     TopUsers th

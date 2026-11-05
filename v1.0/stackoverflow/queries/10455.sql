@@ -7,8 +7,8 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     COUNT(DISTINCT c.Id) AS CommentCount,
     COUNT(DISTINCT v.Id) AS VoteCount,
-    arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostType,
-    arrayDistinct(groupArray(assumeNotNull(lt.Name))) AS LinkType
+    ARRAY_AGG(DISTINCT pt.Name) AS PostType,
+    ARRAY_AGG(DISTINCT lt.Name) AS LinkType
 FROM 
     Posts p
 LEFT JOIN 

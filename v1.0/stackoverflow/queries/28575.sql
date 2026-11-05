@@ -25,7 +25,7 @@ SELECT
     rp.CreationDate,
     rp.ViewCount,
     rp.Score,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS AssociatedTags,
+    ARRAY_AGG(DISTINCT t.TagName) AS AssociatedTags,
     ch.Comment AS LastEditComment,
     COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVotes,
     COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVotes

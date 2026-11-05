@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.ViewCount DESC) AS PopularityRank,
         COUNT(DISTINCT v.Id) AS VoteCount,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM
         Posts AS p
     LEFT JOIN
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN
         Comments AS c ON p.Id = c.PostId
     LEFT JOIN
-        arrayJoin(splitByString('> <', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS t (TagName) ON TRUE
+        UNNEST(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '> <')) AS t (TagName) ON TRUE
     WHERE
         p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY
@@ -57,7 +57,7 @@ PostStats AS (
         fp.CommentCount,
         pa.FirstActivityDate,
         pa.LastActivityDate,
-        toUnixTimestamp((pa.LastActivityDate - pa.FirstActivityDate)) AS ActivityDuration
+        EXTRACT(EPOCH FROM (pa.LastActivityDate - pa.FirstActivityDate)) AS ActivityDuration
     FROM
         FilteredPosts AS fp
     LEFT JOIN

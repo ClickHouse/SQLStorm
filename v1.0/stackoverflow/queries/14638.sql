@@ -10,7 +10,7 @@ WITH PostMetrics AS (
         p.FavoriteCount,
         COALESCE(p.ClosedDate, '1900-01-01') AS ClosedDate,
         COALESCE(p.LastActivityDate, '1900-01-01') AS LastActivityDate,
-        toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) AS PostAgeInSeconds
+        EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) AS PostAgeInSeconds
     FROM 
         Posts p
     WHERE 

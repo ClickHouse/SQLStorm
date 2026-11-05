@@ -4,7 +4,7 @@ WITH FilteredPosts AS (
         p.Title,
         p.ViewCount,
         p.Tags,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagList,
+        STRING_AGG(t.TagName, ', ') AS TagList,
         U.DisplayName AS OwnerDisplayName
     FROM
         Posts p

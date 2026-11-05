@@ -44,7 +44,7 @@ UserBadges AS (
     SELECT
         UB.UserId,
         COUNT(UB.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM Badges UB
     JOIN Users U ON UB.UserId = U.Id
     JOIN (

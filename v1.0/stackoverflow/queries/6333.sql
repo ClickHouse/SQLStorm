@@ -60,7 +60,7 @@ SELECT
     p.ViewCount, 
     p.CommentCount, 
     p.BadgeCount,
-    arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostTypeNames
+    STRING_AGG(pt.Name, ', ') AS PostTypeNames
 FROM 
     PostsWithBadges p
 JOIN 

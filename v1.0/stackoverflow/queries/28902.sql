@@ -42,7 +42,7 @@ SELECT
     fp.UpVoteCount,
     fp.DownVoteCount,
     COUNT(DISTINCT ph.Id) AS EditHistoryCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostHistoryTypes
+    STRING_AGG(DISTINCT pt.Name, ', ') AS PostHistoryTypes
 FROM 
     FilteredPosts fp
 LEFT JOIN 

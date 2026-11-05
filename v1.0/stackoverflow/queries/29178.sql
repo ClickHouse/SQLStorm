@@ -34,7 +34,7 @@ FilteredPosts AS (
 PostTags AS (
     SELECT 
         fp.PostId,
-        arrayJoin(splitByString('><', assumeNotNull(substring(fp.Tags, 2, length(fp.Tags)-2)))) AS Tag
+        unnest(string_to_array(substring(fp.Tags, 2, length(fp.Tags)-2), '><')) AS Tag
     FROM 
         FilteredPosts fp
 ),
@@ -58,7 +58,7 @@ SELECT
     tu.PostCount,
     tu.AvgViews,
     tu.AvgScore,
-    arrayStringConcat(groupArray(assumeNotNull(fp.Title)), ', ' ORDER BY fp.ViewCount DESC) AS RelatedPosts
+    STRING_AGG(fp.Title, ', ' ORDER BY fp.ViewCount DESC) AS RelatedPosts
 FROM 
     TagUsage tu
 JOIN 

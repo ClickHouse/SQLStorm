@@ -27,7 +27,7 @@ VoteSummary AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        groupArray(assumeNotNull(t.TagName)) AS Tags
+        ARRAY_AGG(t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 

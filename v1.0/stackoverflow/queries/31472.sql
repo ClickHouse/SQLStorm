@@ -12,7 +12,7 @@ WITH RankedPosts AS (
         COUNT(c.Id) OVER (PARTITION BY p.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) OVER (PARTITION BY p.Id) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) OVER (PARTITION BY p.Id) AS DownVotes,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') OVER (PARTITION BY p.Id) AS Tags
+        STRING_AGG(t.TagName, ', ') OVER (PARTITION BY p.Id) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+        UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS t(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1 AND 
         p.LastActivityDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'

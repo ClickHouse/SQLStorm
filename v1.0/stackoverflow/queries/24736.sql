@@ -7,7 +7,7 @@ WITH RankedPosts AS (
            p.OwnerUserId,
            ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS ScoreRank,
            COALESCE(NULLIF(p.Body, ''), 'No content available') AS BodyContent,
-           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
+           STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
     FROM Posts p
     LEFT JOIN Tags t ON t.WikiPostId = p.Id OR t.ExcerptPostId = p.Id
     WHERE p.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')

@@ -23,7 +23,7 @@ UserActivity AS (
         u.DisplayName,
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounties,
         SUM(CASE WHEN v.VoteTypeId IN (2, 3) THEN 1 ELSE 0 END) AS VoteCount,
-        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - u.LastAccessDate)) / 3600) AS AvgHoursSinceLastAccess
+        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - u.LastAccessDate)) / 3600) AS AvgHoursSinceLastAccess
     FROM 
         Users u
     LEFT JOIN 

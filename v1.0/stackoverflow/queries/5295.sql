@@ -59,7 +59,7 @@ SELECT
     dpi.Score,
     dpi.ViewCount,
     dpi.CommentCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(dpi.PostHistoryType))), ', ') AS PostHistoryTypes
+    STRING_AGG(DISTINCT dpi.PostHistoryType, ', ') AS PostHistoryTypes
 FROM 
     DetailedPostInfo dpi
 GROUP BY 

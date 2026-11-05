@@ -50,7 +50,7 @@ TopPosts AS (
         ub.BadgeCount,
         pvc.UpVotes,
         pvc.DownVotes,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
     FROM 
         RankedPosts rp
     LEFT JOIN 
@@ -65,9 +65,9 @@ TopPosts AS (
     LEFT JOIN 
         PostVoteCounts pvc ON rp.PostId = pvc.PostId
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString('<>', assumeNotNull(rp.Tags))) AS TagName
+                unnest(string_to_array(rp.Tags, '<>')) AS TagName
         ) AS t ON TRUE
     WHERE 
         rp.Rank <= 10

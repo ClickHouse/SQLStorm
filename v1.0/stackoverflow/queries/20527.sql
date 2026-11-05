@@ -76,7 +76,7 @@ SELECT
         WHEN cs.Score IS NULL THEN 'No Score Available'
         ELSE (
             SELECT
-                arrayStringConcat(groupArray(assumeNotNull(CAST(t.TagName AS VARCHAR))), ', ')
+                STRING_AGG(CAST(t.TagName AS VARCHAR), ', ')
             FROM
                 Posts p
             JOIN Tags t ON t.ExcerptPostId = p.Id

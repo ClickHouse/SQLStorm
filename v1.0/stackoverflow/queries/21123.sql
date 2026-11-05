@@ -17,7 +17,7 @@ WITH RankedPosts AS (
 UserBadges AS (
     SELECT 
         b.UserId, 
-        groupArray(assumeNotNull(b.Name)) AS BadgeNames,
+        ARRAY_AGG(b.Name) AS BadgeNames,
         COUNT(*) AS BadgeCount
     FROM 
         Badges b
@@ -42,9 +42,9 @@ CloseReasonCounts AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseCount,
-        arrayStringConcat(groupArray(assumeNotNull(CASE 
+        STRING_AGG(CASE 
             WHEN ph.Comment IS NOT NULL THEN ph.Comment
-            ELSE 'No Comment' END)), ', ') AS CloseReasons
+            ELSE 'No Comment' END, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     WHERE 

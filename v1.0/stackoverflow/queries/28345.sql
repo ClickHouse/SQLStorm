@@ -56,7 +56,7 @@ SELECT
         PH.PostHistoryTypeId IN (10, 11) 
     ) AS CloseReopenCount,
     (SELECT 
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') 
+        STRING_AGG(B.Name, ', ') 
      FROM 
         Badges B 
      JOIN 

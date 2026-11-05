@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
+        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -60,7 +60,7 @@ FROM
     TopTags T
 JOIN 
     MostActiveUsers U ON T.Tag = ANY((
-        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(Posts.Tags, 2, length(Posts.Tags) - 2))))
+        SELECT unnest(string_to_array(substring(Posts.Tags, 2, length(Posts.Tags) - 2), '><'))
         FROM Posts 
         WHERE OwnerUserId = U.UserId AND PostTypeId = 1
     ))

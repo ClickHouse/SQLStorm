@@ -28,12 +28,12 @@ ClosedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(tags))) AS Tag,
+        unnest(string_to_array(tags, '>')) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
     GROUP BY 
-        arrayJoin(splitByString('>', assumeNotNull(tags)))
+        unnest(string_to_array(tags, '>'))
     ORDER BY 
         TagCount DESC
 )
@@ -52,7 +52,7 @@ FROM
 LEFT JOIN 
     ClosedPosts cp ON rp.PostId = cp.PostId AND cp.CloseRank = 1
 LEFT JOIN 
-    PopularTags pt ON pt.Tag = ANY(splitByString('>', assumeNotNull(rp.Tags)))
+    PopularTags pt ON pt.Tag = ANY(string_to_array(rp.Tags, '>'))
 WHERE 
     rp.PostRank <= 5
     AND (rp.OwnerReputation IS NULL OR rp.OwnerReputation > 0)

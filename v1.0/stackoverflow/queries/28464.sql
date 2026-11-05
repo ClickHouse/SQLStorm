@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Body,
         p.CreationDate,
         p.ViewCount,
-        CARDINALITY(splitByString('><', assumeNotNull(p.Tags))) AS TagCount,
+        CARDINALITY(string_to_array(p.Tags, '><')) AS TagCount,
         COALESCE((
             SELECT COUNT(*)
             FROM Comments c

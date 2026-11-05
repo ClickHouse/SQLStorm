@@ -24,11 +24,11 @@ WITH PostStatistics AS (
 UniqueTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag ON TRUE
+        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 

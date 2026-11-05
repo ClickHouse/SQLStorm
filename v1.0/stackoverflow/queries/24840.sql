@@ -19,7 +19,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         COUNT(CASE WHEN ph.PostHistoryTypeId = 10 THEN 1 END) AS TotalCloseVotes,
-        arrayDistinct(groupArray(assumeNotNull(ph.Comment))) AS CloseReasons
+        ARRAY_AGG(DISTINCT ph.Comment) AS CloseReasons
     FROM 
         PostHistory ph
     WHERE 
@@ -30,7 +30,7 @@ ClosedPosts AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
+        STRING_AGG(b.Name, ', ') AS BadgeNames,
         COUNT(*) AS BadgeCount
     FROM 
         Badges b

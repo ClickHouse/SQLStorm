@@ -25,7 +25,7 @@ PostHistoryData AS (
     SELECT 
         ph.PostId,
         ph.UserId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ph.Comment, ' (', pht.Name, ')')))), ', ') AS HistoryComments
+        STRING_AGG(DISTINCT CONCAT(ph.Comment, ' (', pht.Name, ')'), ', ') AS HistoryComments
     FROM 
         PostHistory ph
     JOIN 

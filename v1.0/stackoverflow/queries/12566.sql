@@ -36,7 +36,7 @@ SELECT
     PS.VoteCount,
     PS.UpVoteCount,
     PS.DownVoteCount,
-    (toUnixTimestamp(TIMESTAMP '2024-10-01 12:34:56' - PS.CreationDate) / 3600) AS HoursSinceCreation  
+    (EXTRACT(EPOCH FROM TIMESTAMP '2024-10-01 12:34:56' - PS.CreationDate) / 3600) AS HoursSinceCreation  
 FROM 
     PostStats PS
 ORDER BY 

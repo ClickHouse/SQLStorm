@@ -5,7 +5,7 @@ WITH RecentQuestions AS (
         p.CreationDate,
         p.OwnerUserId,
         p.Body,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 

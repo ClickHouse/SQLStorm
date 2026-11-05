@@ -75,7 +75,7 @@ SELECT
     pd.TotalVotes,
     pd.BadgeStatus,
     COALESCE(ph.Comment, 'No Close Reason') AS CloseReason,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM
     PostDetails pd
 LEFT JOIN
@@ -83,7 +83,7 @@ LEFT JOIN
 LEFT JOIN
     Posts p ON pd.PostId = p.Id
 LEFT JOIN
-    arrayJoin(splitByString(', ', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE 
+    UNNEST(string_to_array(p.Tags, ', ')) AS t(TagName) ON TRUE 
 GROUP BY
     pd.PostId, pd.Title, pd.Score, pd.AnswerCount, pd.CreationDate,
     pd.UserDisplayName, pd.UpVotes, pd.DownVotes, pd.TotalVotes, pd.BadgeStatus, ph.Comment

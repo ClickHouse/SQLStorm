@@ -48,7 +48,7 @@ PostSummary AS (
         Posts P
     LEFT JOIN 
         (SELECT 
-             PostId, arrayStringConcat(groupArray(assumeNotNull(Comment)), '; ') AS Summary 
+             PostId, STRING_AGG(Comment, '; ') AS Summary 
          FROM 
              PostHistory 
          WHERE 

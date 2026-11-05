@@ -25,7 +25,7 @@ PostHistoryData AS (
         ph.PostHistoryTypeId,
         ph.CreationDate,
         MAX(ph.CreationDate) OVER (PARTITION BY ph.PostId) AS MaxHistoryDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.Comment END))), ', ') AS CloseReasons
+        STRING_AGG(DISTINCT CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.Comment END, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     GROUP BY 

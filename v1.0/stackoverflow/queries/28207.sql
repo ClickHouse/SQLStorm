@@ -8,8 +8,8 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         COUNT(v.Id) AS VoteCount,
         COUNT(c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray,
-        ROW_NUMBER() OVER (PARTITION BY COALESCE(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ARRAY[]::text[]) ORDER BY p.CreationDate DESC) AS rn
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray,
+        ROW_NUMBER() OVER (PARTITION BY COALESCE(ARRAY_AGG(DISTINCT t.TagName), ARRAY[]::text[]) ORDER BY p.CreationDate DESC) AS rn
     FROM 
         Posts p
     JOIN 
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag(TagName) ON true
+        LATERAL unnest(string_to_array(p.Tags, '><')) AS tag(TagName) ON true
     LEFT JOIN 
         Tags t ON tag.TagName = t.TagName
     WHERE 

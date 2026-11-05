@@ -32,7 +32,7 @@ SELECT
     P.VoteCount,
     P.ClosureCount,
     P.BadgeCount,
-    toUnixTimestamp((P.LastActivityDate - P.CreationDate)) AS ActiveDuration
+    EXTRACT(EPOCH FROM (P.LastActivityDate - P.CreationDate)) AS ActiveDuration
 FROM 
     PostActivity P
 ORDER BY 

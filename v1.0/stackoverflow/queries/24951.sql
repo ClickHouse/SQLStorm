@@ -47,7 +47,7 @@ SELECT
     rp.Title,
     rp.Score,
     rp.ViewCount,
-    arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') FILTER (WHERE ph.Comment IS NOT NULL) AS PostComments,
+    STRING_AGG(ph.Comment, '; ') FILTER (WHERE ph.Comment IS NOT NULL) AS PostComments,
     COUNT(DISTINCT CASE WHEN pht.Name = 'Post Closed' THEN ph.Id END) AS ClosedPosts
 FROM 
     MostActiveUsers rau

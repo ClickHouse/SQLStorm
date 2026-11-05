@@ -31,7 +31,7 @@ WITH UserStatistics AS (
         Ph.PostId,
         COUNT(*) AS EditCount,
         MAX(Ph.CreationDate) AS LastEditDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS EditTypes
+        STRING_AGG(DISTINCT PHT.Name, ', ') AS EditTypes
     FROM PostHistory Ph
     JOIN PostHistoryTypes PHT ON Ph.PostHistoryTypeId = PHT.Id
     GROUP BY Ph.PostId

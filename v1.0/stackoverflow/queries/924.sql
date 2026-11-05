@@ -25,7 +25,7 @@ RecentActivities AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.UserDisplayName, ': ', ph.Comment))), '; ') AS EditComments
+        STRING_AGG(CONCAT(ph.UserDisplayName, ': ', ph.Comment), '; ') AS EditComments
     FROM 
         PostHistory ph
     WHERE 

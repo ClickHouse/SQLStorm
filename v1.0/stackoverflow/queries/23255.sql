@@ -30,7 +30,7 @@ PostStats AS (
 PostHistoryAggregates AS (
     SELECT 
         PH.PostId,
-        arrayDistinct(groupArray(assumeNotNull(PHT.Name))) AS HistoryTypes,
+        ARRAY_AGG(DISTINCT PHT.Name) AS HistoryTypes,
         COUNT(PH.Id) AS HistoryCount,
         MAX(PH.CreationDate) AS LastEditDate
     FROM PostHistory PH

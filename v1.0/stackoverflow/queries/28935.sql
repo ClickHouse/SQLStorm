@@ -38,8 +38,8 @@ SELECT
     ps.AverageScore,
     ps.TotalViews,
     ps.MostRecentPost,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(bh.Name))), ', ') AS BadgeNames,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(v.Name))), ', ') AS VoteTypes
+    STRING_AGG(DISTINCT bh.Name, ', ') AS BadgeNames,
+    STRING_AGG(DISTINCT v.Name, ', ') AS VoteTypes
 FROM 
     PostStatistics ps
 LEFT JOIN 

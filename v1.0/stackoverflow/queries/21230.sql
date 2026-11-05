@@ -43,7 +43,7 @@ AggPostData AS (
         f.Title,
         SUM(f.Score) AS TotalScore,
         AVG(f.UpVotes - f.DownVotes) AS AvgVoteDifference,
-        arrayStringConcat(groupArray(assumeNotNull(f.Sentiment)), ', ') AS SentimentList
+        STRING_AGG(f.Sentiment, ', ') AS SentimentList
     FROM 
         FilteredPosts f
     GROUP BY 

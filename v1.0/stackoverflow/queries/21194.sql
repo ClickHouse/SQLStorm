@@ -28,7 +28,7 @@ PostActivity AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS HistoryActionCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(ph.CreationDate, ': ', ph.Comment)))), '; ') AS ActionDetails
+        STRING_AGG(DISTINCT CONCAT(ph.CreationDate, ': ', ph.Comment), '; ') AS ActionDetails
     FROM 
         PostHistory ph
     WHERE 

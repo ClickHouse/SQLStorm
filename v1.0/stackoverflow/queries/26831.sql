@@ -2,7 +2,7 @@
 WITH PostTags AS (
     SELECT
         p.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS Tag
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag
     FROM
         Posts p
     WHERE
@@ -25,7 +25,7 @@ RecentUserActivity AS (
         u.DisplayName,
         COUNT(DISTINCT p.Id) AS QuestionCount,
         SUM(CASE WHEN p.LastActivityDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 1 ELSE 0 END) AS RecentActivityCount,
-        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))) AS AvgPostAge
+        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))) AS AvgPostAge
     FROM
         Users u
         JOIN Posts p ON p.OwnerUserId = u.Id

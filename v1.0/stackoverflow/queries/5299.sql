@@ -39,7 +39,7 @@ SELECT
     tp.UpVoteCount,
     tp.DownVoteCount,
     pt.Name AS PostTypeName,
-    groupArray(assumeNotNull(t.TagName)) AS Tags
+    ARRAY_AGG(t.TagName) AS Tags
 FROM TopPosts tp
 JOIN PostTypes pt ON pt.Id = (SELECT PostTypeId FROM Posts WHERE Id = tp.PostId)
 LEFT JOIN Tags t ON t.ExcerptPostId = tp.PostId

@@ -49,7 +49,7 @@ UserBadges AS (
     SELECT 
         ub.UserId,
         COUNT(*) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges ub
     JOIN 

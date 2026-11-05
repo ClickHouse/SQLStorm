@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TagName,
+        UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -38,13 +38,13 @@ TopPostDetails AS (
         rp.OwnerDisplayName,
         rp.Score,
         rp.ViewCount,
-        groupArray(assumeNotNull(pt.TagName)) AS Tags
+        ARRAY_AGG(pt.TagName) AS Tags
     FROM 
         RankedPosts rp
     JOIN 
         Posts p ON rp.PostId = p.Id
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS pt(TagName) ON pt.TagName IN (SELECT TagName FROM PopularTags)
+        LATERAL UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS pt(TagName) ON pt.TagName IN (SELECT TagName FROM PopularTags)
     WHERE 
         rp.RankWithinUser = 1
     GROUP BY 

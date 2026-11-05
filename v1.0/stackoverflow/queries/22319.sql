@@ -66,7 +66,7 @@ SELECT
         WHEN us.Reputation BETWEEN 500 AND 1000 THEN 'Intermediate'
         ELSE 'Novice'
     END AS UserLevel,
-    groupArray(assumeNotNull(CONCAT_WS(' - ', ps.Title, ps.Sentiment))) AS PostSummaries
+    ARRAY_AGG(CONCAT_WS(' - ', ps.Title, ps.Sentiment)) AS PostSummaries
 FROM UserStats us
 LEFT JOIN PostSummary ps ON us.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = ps.PostId)
 GROUP BY us.UserId, us.DisplayName, us.Reputation, us.GoldBadges, us.SilverBadges, us.BronzeBadges, us.PostsCount, us.PositivePosts, us.NegativePosts

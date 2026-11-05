@@ -31,9 +31,10 @@ DetailedPostHistory AS (
 DistinctTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
     FROM Posts p
-    LEFT JOIN (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName) AS t ON TRUE
+    LEFT JOIN LATERAL 
+        (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName) AS t ON TRUE
     WHERE p.PostTypeId = 1
     GROUP BY p.Id
 )

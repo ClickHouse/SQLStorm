@@ -22,14 +22,14 @@ WITH RankedPosts AS (
 
 TagAggregation AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS Tag, 
+        UNNEST(string_to_array(Tags, ',')) AS Tag, 
         SUM(CommentCount) AS TotalComments,
         SUM(UpVotes) AS TotalUpvotes,
         SUM(DownVotes) AS TotalDownvotes
     FROM 
         RankedPosts
     GROUP BY 
-        arrayJoin(splitByString(',', assumeNotNull(Tags)))
+        UNNEST(string_to_array(Tags, ','))
 ),
 
 FinalReport AS (

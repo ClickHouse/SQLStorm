@@ -19,7 +19,7 @@ WITH RecentPosts AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        groupArray(assumeNotNull(b.Name)) AS BadgeNames
+        ARRAY_AGG(b.Name) AS BadgeNames
     FROM 
         Badges b
     GROUP BY 

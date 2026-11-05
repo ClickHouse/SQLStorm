@@ -37,7 +37,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -47,7 +47,7 @@ PostLinksInfo AS (
     SELECT 
         pl.PostId,
         COUNT(pl.RelatedPostId) AS LinkCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lt.Name))), ', ') AS LinkTypeNames
+        STRING_AGG(DISTINCT lt.Name, ', ') AS LinkTypeNames
     FROM 
         PostLinks pl
     JOIN 

@@ -8,8 +8,8 @@ SELECT
     MIN(p.CreationDate) AS FirstPostDate,
     MAX(p.CreationDate) AS LatestPostDate,
     COUNT(DISTINCT b.Id) AS BadgeCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypes,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tag.TagName))), ', ') AS UsedTags
+    STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypes,
+    STRING_AGG(DISTINCT tag.TagName, ', ') AS UsedTags
 FROM 
     Users u
 JOIN 
@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     PostTypes pt ON p.PostTypeId = pt.Id
 LEFT JOIN 
-    arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag(TagName) ON TRUE
+    UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag(TagName) ON TRUE
 WHERE 
     u.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
 GROUP BY 

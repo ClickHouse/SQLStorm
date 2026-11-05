@@ -27,7 +27,7 @@ PostMetrics AS (
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
         MAX(P.Score) AS HighestScore,
         AVG(P.ViewCount) AS AvgViews,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
     FROM 
         Posts P
     LEFT JOIN 

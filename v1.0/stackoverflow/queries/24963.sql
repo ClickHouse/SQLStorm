@@ -79,12 +79,12 @@ SELECT
         WHEN pa.CloseCount > 0 THEN 'Closed'
         ELSE 'Active'
     END AS PostStatus,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags
 FROM 
     PostAggregates pa 
 LEFT JOIN 
     (SELECT 
-         arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName,
+         unnest(string_to_array(p.Tags, '><')) AS TagName,
          p.Id as PostId
      FROM 
          Posts p

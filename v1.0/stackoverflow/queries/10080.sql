@@ -8,8 +8,8 @@ WITH PostStats AS (
         p.Score,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypeNames,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT pt.Name) AS PostTypeNames,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         p.OwnerUserId
     FROM 
         Posts p
@@ -20,7 +20,7 @@ WITH PostStats AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag ON TRUE
+        LATERAL unnest(string_to_array(p.Tags, '>')) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON tag = t.TagName
     GROUP BY 

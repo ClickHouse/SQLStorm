@@ -71,7 +71,7 @@ SELECT
     COUNT(PostId) AS ActivePostCount,
     SUM(ViewCount) AS TotalViews,
     AVG(Score) AS AverageScore,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CloseReason))), ', ') AS CloseReasons,
+    STRING_AGG(DISTINCT CloseReason, ', ') AS CloseReasons,
     ContributorType
 FROM 
     FinalReport

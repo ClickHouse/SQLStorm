@@ -44,7 +44,7 @@ SELECT
     tp.CreationDate,
     tp.CommentCount,
     tp.VoteCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS RelatedTags,
+    STRING_AGG(DISTINCT t.TagName, ', ') AS RelatedTags,
     CASE 
         WHEN tp.VoteCount > 10 THEN 'Highly Voted'
         WHEN tp.VoteCount BETWEEN 5 AND 10 THEN 'Moderately Voted'
@@ -55,7 +55,7 @@ FROM
 LEFT JOIN
     (SELECT 
          Id, 
-         arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS TagName
+         UNNEST(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS TagName
      FROM 
          Posts) t ON t.Id = tp.PostId
 GROUP BY

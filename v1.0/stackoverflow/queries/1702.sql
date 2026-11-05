@@ -49,7 +49,7 @@ PostDetails AS (
     LEFT JOIN 
         (SELECT 
             PostId, 
-            arrayStringConcat(groupArray(assumeNotNull(Text)), ' ') AS Body 
+            STRING_AGG(Text, ' ') AS Body 
          FROM 
             PostHistory 
          WHERE 

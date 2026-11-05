@@ -60,7 +60,7 @@ SELECT
 FROM 
     UserStats us
 LEFT JOIN 
-    TagStats ts ON us.UserId = (SELECT OwnerUserId FROM Posts ORDER BY rand() LIMIT 1) 
+    TagStats ts ON us.UserId = (SELECT OwnerUserId FROM Posts ORDER BY RANDOM() LIMIT 1) 
 LEFT JOIN 
     RecentActivity ra ON us.UserId = ra.UserId
 WHERE 

@@ -30,7 +30,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS CommentText
+        STRING_AGG(c.Text, ' | ') AS CommentText
     FROM 
         Comments c
     JOIN 
@@ -42,7 +42,7 @@ PostBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     JOIN 

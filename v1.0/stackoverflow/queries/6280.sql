@@ -43,7 +43,7 @@ SELECT
     ps.TopPostCount,
     ps.TotalScore,
     ps.TotalViews,
-    groupArray(assumeNotNull(tp.TagName)) AS AssociatedTags
+    ARRAY_AGG(tp.TagName) AS AssociatedTags
 FROM 
     PostSummary ps
 LEFT JOIN 

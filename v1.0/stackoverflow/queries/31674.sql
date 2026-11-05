@@ -39,7 +39,7 @@ PostDetails AS (
 PostHistoryAggregates AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS HistoryTypes,
+        STRING_AGG(pt.Name, ', ') AS HistoryTypes,
         COUNT(*) AS HistoryCount,
         MIN(ph.CreationDate) AS FirstActionDate,
         MAX(ph.CreationDate) AS LastActionDate

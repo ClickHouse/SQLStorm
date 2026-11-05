@@ -62,7 +62,7 @@ FinalResults AS (
         ph.LastEdited,
         ph.CloseReason,
         ph.EditCount,
-        length(splitByString(',', assumeNotNull(rp.Tags)), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(rp.Tags, ','), 1) AS TagCount,
         CASE 
             WHEN EXISTS (SELECT 1 FROM PostLinks pl WHERE pl.PostId = rp.PostId) 
             THEN TRUE 

@@ -23,7 +23,7 @@ PopularTags AS (
 ),
 PostHistoryStats AS (
     SELECT ph.PostId, MAX(ph.CreationDate) AS LastEditedDate,
-           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pp.Name))), ', ') AS PostHistoryTypes
+           STRING_AGG(DISTINCT pp.Name, ', ') AS PostHistoryTypes
     FROM PostHistory ph
     JOIN PostHistoryTypes pp ON pp.Id = ph.PostHistoryTypeId
     GROUP BY ph.PostId

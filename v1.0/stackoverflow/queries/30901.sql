@@ -27,7 +27,7 @@ UserWithBadges AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
+        unnest(string_to_array(Tags, ',')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -71,7 +71,7 @@ LEFT JOIN
 LEFT JOIN
     PostHistorySummary phs ON phs.PostId = p.Id
 LEFT JOIN 
-    PopularTags tp ON tp.TagName = ANY(splitByString(',', assumeNotNull(p.Tags)))
+    PopularTags tp ON tp.TagName = ANY(string_to_array(p.Tags, ','))
 LEFT JOIN 
     RankedPosts rp ON rp.PostId = p.Id
 WHERE

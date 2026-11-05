@@ -57,7 +57,7 @@ SELECT
         ELSE 'Neutral'
     END AS VoteCategory,
     COALESCE(pwz.CommentCount, 0) AS TotalComments,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS PostHistoryTypes
+    STRING_AGG(DISTINCT pht.Name, ', ') AS PostHistoryTypes
 FROM 
     PostsWithVotes pwv
 LEFT JOIN 

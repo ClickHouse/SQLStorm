@@ -29,7 +29,7 @@ PostActivity AS (
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN ph.PostHistoryTypeId = 10 THEN 1 ELSE 0 END) AS CloseCount,
         SUM(CASE WHEN ph.PostHistoryTypeId = 11 THEN 1 ELSE 0 END) AS ReopenCount,
-        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate))) AS AverageResponseTime
+        AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate))) AS AverageResponseTime
     FROM 
         Posts p
     LEFT JOIN 

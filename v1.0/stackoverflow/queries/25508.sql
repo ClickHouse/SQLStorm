@@ -36,7 +36,7 @@ SELECT
     trp.OwnerDisplayName,
     trp.Tags,
     SUBSTRING(p.Body FROM 1 FOR 300) AS ShortBody, /* Preview of Body, first 300 chars */
-    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') 
+    COALESCE((SELECT STRING_AGG(c.Text, ' | ') 
               FROM Comments c 
               WHERE c.PostId = trp.PostId), 'No comments') AS CommentPreview
 FROM 

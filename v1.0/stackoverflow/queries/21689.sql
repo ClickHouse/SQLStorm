@@ -35,7 +35,7 @@ RecentEdits AS (
         PH.UserId,
         PH.CreationDate AS EditDate,
         PH.PostHistoryTypeId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(PH.UserDisplayName, ': ', PH.Comment))), '; ') AS EditComments
+        STRING_AGG(CONCAT(PH.UserDisplayName, ': ', PH.Comment), '; ') AS EditComments
     FROM 
         PostHistory PH
     JOIN 

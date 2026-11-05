@@ -42,7 +42,7 @@ SELECT
         WHEN fp.Reputation BETWEEN 500 AND 1000 THEN 'Medium Reputation'
         ELSE 'Low Reputation'
     END AS ReputationCategory,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fp.PostTypeName))), ', ') AS PostTypeNames
+    STRING_AGG(DISTINCT fp.PostTypeName, ', ') AS PostTypeNames
 FROM 
     FilteredPosts fp
 JOIN 

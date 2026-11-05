@@ -25,7 +25,7 @@ WITH RecentPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
+        UNNEST(string_to_array(Tags, ',')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         RecentPosts
@@ -61,7 +61,7 @@ SELECT
     CommentCount,
     UpVotes,
     DownVotes,
-    arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') AS Tags
+    STRING_AGG(TagName, ', ') AS Tags
 FROM 
     PostSummary
 GROUP BY 

@@ -35,13 +35,13 @@ SELECT
     rp.CommentCount,
     rp.AnswerCount,
     rp.UpVoteCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS RelatedTags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS RelatedTags
 FROM 
     RankedPosts rp
 LEFT JOIN 
     (SELECT 
          Id, 
-         arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName 
+         unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName 
      FROM 
          Posts) AS t ON t.Id = rp.PostId
 WHERE 

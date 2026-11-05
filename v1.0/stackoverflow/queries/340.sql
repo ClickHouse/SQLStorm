@@ -45,7 +45,7 @@ SELECT
         WHEN au.TotalViews BETWEEN 500 AND 1000 THEN 'Moderate Activity'
         ELSE 'Low Activity'
     END AS ActivityLevel,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ht.Name))), ', ') AS HistoryTypes
+    STRING_AGG(DISTINCT ht.Name, ', ') AS HistoryTypes
 FROM 
     ActiveUsers au
 LEFT JOIN 

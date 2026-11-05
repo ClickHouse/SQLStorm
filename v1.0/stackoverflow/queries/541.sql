@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 RecentPostHistory AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull('Edited by ' || ph.UserDisplayName || ' on ' || CAST(ph.CreationDate AS DATE)))), '; ') AS EditHistory
+        STRING_AGG(DISTINCT 'Edited by ' || ph.UserDisplayName || ' on ' || CAST(ph.CreationDate AS DATE), '; ') AS EditHistory
     FROM 
         PostHistory ph
     WHERE 

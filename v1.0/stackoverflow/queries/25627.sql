@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         U.DisplayName AS OwnerDisplayName,
         P.CreationDate,
         P.Score,
-        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT T.TagName) AS Tags,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
         ROW_NUMBER() OVER (ORDER BY P.Score DESC, P.CreationDate ASC) AS Rank
     FROM 
@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS TagId ON TRUE
+        UNNEST(string_to_array(P.Tags, '>')) AS TagId ON TRUE
     LEFT JOIN 
         Tags T ON T.TagName = TagId
     WHERE 
@@ -29,7 +29,7 @@ TaggedPostHistory AS (
         PH.PostHistoryTypeId,
         PH.CreationDate AS HistoryDate,
         COUNT(*) AS HistoryCount,
-        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes
+        STRING_AGG(PHT.Name, ', ') AS HistoryTypes
     FROM 
         PostHistory PH
     JOIN 

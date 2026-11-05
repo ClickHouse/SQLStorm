@@ -33,15 +33,15 @@ SELECT
         WHEN ru.Reputation > 1000 THEN 'Experienced User'
         ELSE 'New User'
     END AS UserCategory,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed
+    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed
 FROM 
     RecentUsers ru
 LEFT JOIN 
     Posts p ON ru.UserId = p.OwnerUserId AND p.PostTypeId = 1
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS TagName
+            UNNEST(string_to_array(p.Tags, '<>')) AS TagName
     ) t ON true
 LEFT JOIN 
     RankedPosts rp ON p.Id = rp.Id

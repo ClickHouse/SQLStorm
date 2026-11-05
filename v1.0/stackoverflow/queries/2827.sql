@@ -30,7 +30,7 @@ RecentPosts AS (
 ClosingReasons AS (
     SELECT 
         PH.PostId,
-        arrayDistinct(groupArray(assumeNotNull(CR.Name))) AS CloseReasons
+        ARRAY_AGG(DISTINCT CR.Name) AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 

@@ -17,7 +17,7 @@ PostMetrics AS (
         P.ViewCount,
         P.Score,
         COALESCE(P.AnswerCount, 0) AS AnswerCount,
-        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT T.TagName) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY P.OwnerUserId ORDER BY P.LastActivityDate DESC) AS RN,
         P.OwnerUserId
     FROM Posts P

@@ -70,7 +70,7 @@ FROM
 LEFT JOIN (
     SELECT 
         PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS UserIds,
+        STRING_AGG(DISTINCT u.DisplayName, ', ') AS UserIds,
         COUNT(*) AS VoteCount
     FROM 
         Votes v

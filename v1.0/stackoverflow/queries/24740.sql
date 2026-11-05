@@ -39,7 +39,7 @@ ClosedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(', ', assumeNotNull(p.Tags))) as TagName
+        UNNEST(string_to_array(p.Tags, ', ')) as TagName
     FROM 
         Posts p
     WHERE 

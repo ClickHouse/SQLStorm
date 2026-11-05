@@ -50,8 +50,8 @@ TagsExploded AS (
         ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.CreationDate DESC) AS TagPosition
     FROM 
         Posts p
-    JOIN (
-        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName
+    JOIN LATERAL (
+        SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName
     ) AS t ON true
 )
 SELECT 

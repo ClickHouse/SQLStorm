@@ -52,7 +52,7 @@ SELECT
     COALESCE(up.UpVotes, 0) AS UserUpVotes,
     COALESCE(up.DownVotes, 0) AS UserDownVotes,
     cp.FirstClosedDate,
-    toUnixTimestamp((cp.FirstClosedDate - pd.CreationDate)) AS TimeToClose 
+    EXTRACT(EPOCH FROM (cp.FirstClosedDate - pd.CreationDate)) AS TimeToClose 
 FROM 
     PostDetails pd
 LEFT JOIN 

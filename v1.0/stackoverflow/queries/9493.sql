@@ -7,7 +7,7 @@ SELECT
     COUNT(DISTINCT c.Id) AS TotalComments,
     COALESCE(SUM(CASE WHEN bh.UserId IS NOT NULL THEN 1 ELSE 0 END), 0) AS TotalBadges,
     AVG(u.Reputation) AS AverageUserReputation,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
 FROM 
     Posts p
 JOIN 
@@ -19,7 +19,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges bh ON u.Id = bh.UserId
 LEFT JOIN 
-    arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag_name ON tag_name IS NOT NULL
+    UNNEST(string_to_array(p.Tags, ',')) AS tag_name ON tag_name IS NOT NULL
 JOIN 
     Tags t ON t.TagName = TRIM(tag_name)
 WHERE 

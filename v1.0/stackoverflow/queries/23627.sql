@@ -22,7 +22,7 @@ ClosedPostHistory AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseCount,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PH.Comment IS NOT NULL THEN PH.Comment ELSE 'No Comment' END)), '; ') AS ClosingComments,
+        STRING_AGG(CASE WHEN PH.Comment IS NOT NULL THEN PH.Comment ELSE 'No Comment' END, '; ') AS ClosingComments,
         MAX(PH.CreationDate) AS LastCloseDate
     FROM 
         PostHistory PH
@@ -34,7 +34,7 @@ ClosedPostHistory AS (
 ValidCloseReasons AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN CR.Name IS NOT NULL THEN CR.Name ELSE 'Unknown Reason' END)), ', ') AS CloseReasons
+        STRING_AGG(CASE WHEN CR.Name IS NOT NULL THEN CR.Name ELSE 'Unknown Reason' END, ', ') AS CloseReasons
     FROM 
         PostHistory PH
     LEFT JOIN 

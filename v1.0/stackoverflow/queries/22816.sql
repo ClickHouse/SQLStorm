@@ -58,7 +58,7 @@ SELECT
     fp.DownVotes,
     fp.ScoreCategory,
     COALESCE(fp.UserBadgeCount, 0) AS BadgeCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') 
+    (SELECT STRING_AGG(pt.Name, ', ') 
      FROM PostHistory ph 
      JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id 
      WHERE ph.PostId = fp.PostId) AS PostHistoryTypes,

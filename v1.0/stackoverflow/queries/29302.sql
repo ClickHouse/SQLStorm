@@ -45,7 +45,7 @@ SELECT
     rp.Title AS RecentPostTitle,
     rp.CreationDate AS RecentPostDate,
     rp.Tags,
-    arrayStringConcat(groupArray(assumeNotNull(rp.Body)), ' ') AS CombinedBody
+    STRING_AGG(rp.Body, ' ') AS CombinedBody
 FROM 
     UserStats us
 LEFT JOIN 

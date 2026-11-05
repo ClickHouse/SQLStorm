@@ -41,7 +41,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         ph.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS EditComments,
+        STRING_AGG(ph.Comment, '; ') AS EditComments,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph

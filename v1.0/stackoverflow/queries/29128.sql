@@ -18,11 +18,11 @@ WITH RankedPosts AS (
 ),
 TagSummary AS (
     SELECT 
-        LOWER(TRIM(splitByRegexp('>', p.Tags))) AS TagName,
+        LOWER(TRIM(regexp_split_to_table(p.Tags, '>'))) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts p
     WHERE p.PostTypeId = 1
-    GROUP BY LOWER(TRIM(splitByRegexp('>', p.Tags)))
+    GROUP BY LOWER(TRIM(regexp_split_to_table(p.Tags, '>')))
 ),
 PopularTags AS (
     SELECT 
@@ -57,6 +57,6 @@ SELECT
     pt.TagName AS RelatedTag
 FROM RankedPosts rp
 JOIN PostInteraction pi ON rp.PostId = pi.PostId
-LEFT JOIN PopularTags pt ON pt.TagName = ANY(splitByString('>', assumeNotNull(rp.Tags)))
+LEFT JOIN PopularTags pt ON pt.TagName = ANY(STRING_TO_ARRAY(rp.Tags, '>'))
 WHERE rp.Rank <= 5
 ORDER BY rp.Score DESC, pi.UpVoteCount DESC;

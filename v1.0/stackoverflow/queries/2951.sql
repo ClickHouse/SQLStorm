@@ -56,7 +56,7 @@ SELECT
     END AS CommentLevel,
     (SELECT COUNT(*) FROM Votes V WHERE V.PostId = PD.PostId AND V.VoteTypeId = 2) AS UpVotes,
     (SELECT COUNT(*) FROM Votes V WHERE V.PostId = PD.PostId AND V.VoteTypeId = 3) AS DownVotes,
-    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
+    COALESCE((SELECT STRING_AGG(T.TagName, ', ') 
               FROM Tags T 
               JOIN Posts P ON T.ExcerptPostId = P.Id 
               WHERE P.Id = PD.PostId), 'No Tags') AS Tags

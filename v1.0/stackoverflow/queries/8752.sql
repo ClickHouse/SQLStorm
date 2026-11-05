@@ -39,7 +39,7 @@ SELECT
     tp.Score,
     tp.OwnerDisplayName,
     tp.VoteCount,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
+    STRING_AGG(t.TagName, ', ') AS Tags,
     COUNT(c.Id) AS CommentCount,
     COUNT(ph.Id) AS EditHistoryCount
 FROM 

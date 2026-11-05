@@ -29,7 +29,7 @@ SELECT UserId, DisplayName, Reputation, ReputationQuartile,
        COUNT(PostId) AS TotalPosts, 
        SUM(UpVotes) AS TotalUpVotes,
        SUM(DownVotes) AS TotalDownVotes,
-       arrayStringConcat(groupArray(assumeNotNull(Title)), '; ') AS PostTitles
+       STRING_AGG(Title, '; ') AS PostTitles
 FROM UserPostData
 WHERE ReputationQuartile = 1
 GROUP BY UserId, DisplayName, Reputation, ReputationQuartile

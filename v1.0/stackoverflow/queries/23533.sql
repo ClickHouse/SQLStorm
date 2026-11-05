@@ -28,7 +28,7 @@ UserBadges AS (
 PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.Comment, ' (', pht.Name, ')'))), '; ') AS Comments,
+        STRING_AGG(CONCAT(ph.Comment, ' (', pht.Name, ')'), '; ') AS Comments,
         MAX(ph.CreationDate) AS LastUpdate
     FROM 
         PostHistory ph

@@ -18,7 +18,7 @@ WITH FrequentUsers AS (
 UserBadges AS (
     SELECT 
         B.UserId,
-        groupArray(assumeNotNull(B.Name)) AS BadgeNames
+        ARRAY_AGG(B.Name) AS BadgeNames
     FROM 
         Badges B
     GROUP BY 

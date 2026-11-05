@@ -31,7 +31,7 @@ PostAnalysis AS (
 ClosePostReasons AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
+        STRING_AGG(cr.Name, ', ') AS CloseReasons
     FROM 
         Posts p 
         LEFT JOIN PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (10, 11)

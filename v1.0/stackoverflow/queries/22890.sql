@@ -22,7 +22,7 @@ WITH UserBadgeCounts AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseReasonCount,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.Comment IS NOT NULL THEN ph.Comment END)), ', ') AS Reasons
+        STRING_AGG(CASE WHEN ph.Comment IS NOT NULL THEN ph.Comment END, ', ') AS Reasons
     FROM PostHistory ph
     WHERE ph.PostHistoryTypeId = 10
     GROUP BY ph.PostId

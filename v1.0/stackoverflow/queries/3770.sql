@@ -49,7 +49,7 @@ SELECT
     cs.TotalViews,
     cs.AverageScore,
     cs.BadgeCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN p.Tags IS NOT NULL THEN p.Tags END))), ', ') AS TagsUsed
+    STRING_AGG(DISTINCT CASE WHEN p.Tags IS NOT NULL THEN p.Tags END, ', ') AS TagsUsed
 FROM CombinedStats cs
 LEFT JOIN Posts p ON cs.UserId = p.OwnerUserId
 GROUP BY 

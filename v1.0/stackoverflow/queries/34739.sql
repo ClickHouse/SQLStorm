@@ -37,7 +37,7 @@ SELECT up.DisplayName AS UserDisplayName,
        phs.SuggestionAppliedCount
 FROM UserReputation up
 INNER JOIN ActivePosts ap ON ap.OwnerDisplayName = up.DisplayName
-LEFT JOIN HotTopics ht ON ht.Tags LIKE '%' || (SELECT arrayStringConcat(groupArray(assumeNotNull(Tags)), ',') FROM (SELECT DISTINCT Tags FROM Posts LIMIT 3)) || '%'
+LEFT JOIN HotTopics ht ON ht.Tags LIKE '%' || (SELECT STRING_AGG(Tags, ',') FROM (SELECT DISTINCT Tags FROM Posts LIMIT 3)) || '%'
 LEFT JOIN PostHistoryStats phs ON phs.PostId = ap.Id
 WHERE up.Reputation > 100 AND phs.LastClosedDate IS NULL
 ORDER BY up.Rank DESC, ap.ViewCount DESC

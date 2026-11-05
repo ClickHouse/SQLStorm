@@ -73,7 +73,7 @@ SELECT
     dpi.OwnerDisplayName,
     dpi.UserActivityStatus,
     dpi.CommentStatus,
-    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(h.Comment)), ', ') 
+    COALESCE((SELECT STRING_AGG(h.Comment, ', ') 
                FROM PostHistory h 
                WHERE h.PostId = dpi.PostId 
                  AND h.PostHistoryTypeId IN (4, 5)), 'No Edits') AS RecentEdits

@@ -48,9 +48,9 @@ SELECT
     FU.QuestionCount,
     FU.TotalVotes,
     FU.UserRank,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
+    (SELECT STRING_AGG(T.TagName, ', ') 
      FROM Posts P 
-     JOIN arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS T(TagName) ON T.TagName = P.Tags 
+     JOIN UNNEST(STRING_TO_ARRAY(P.Tags, ',')) AS T(TagName) ON T.TagName = P.Tags 
      WHERE P.OwnerUserId = FU.UserId) AS TagsUsed,
     (SELECT COUNT(*) 
      FROM Comments C 

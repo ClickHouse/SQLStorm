@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag,
+        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag,
         COUNT(*) AS PostCount
     FROM Posts
     WHERE PostTypeId = 1
@@ -33,7 +33,7 @@ PostHistorySummary AS (
         COUNT(*) AS HistoryCount,
         MIN(ph.CreationDate) AS FirstHistoryDate,
         MAX(ph.CreationDate) AS LastHistoryDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), ', ') AS Comments
+        STRING_AGG(DISTINCT ph.Comment, ', ') AS Comments
     FROM Posts p
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
     GROUP BY p.Id, ph.PostHistoryTypeId

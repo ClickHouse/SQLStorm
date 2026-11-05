@@ -47,10 +47,10 @@ SELECT
     ps.CommentCount,
     ps.EditCount,
     CASE WHEN tp.TopRank IS NOT NULL THEN 'Top' ELSE 'Regular' END AS PostCategory,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
      FROM Tags t 
      JOIN (
-        SELECT arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName
+        SELECT unnest(string_to_array(Tags, '><')) AS TagName
         FROM Posts
         WHERE Id = ps.PostId
      ) AS tmp ON t.TagName = tmp.TagName) AS TagList

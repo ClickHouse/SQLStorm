@@ -36,7 +36,7 @@ ClosedPostHistory AS (
 AggregateCloseReasons AS (
     SELECT
         PH.PostId,
-        arrayDistinct(groupArray(assumeNotNull(CRT.Name))) AS CloseReasons
+        ARRAY_AGG(DISTINCT CRT.Name) AS CloseReasons
     FROM PostHistory PH
     JOIN CloseReasonTypes CRT ON PH.Comment = CAST(CRT.Id AS VARCHAR) AND PH.PostHistoryTypeId = 10
     GROUP BY PH.PostId

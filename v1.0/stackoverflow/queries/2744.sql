@@ -50,11 +50,11 @@ SELECT
         ELSE 'Less Discussed'
     END AS DiscussionLevel,
     (SELECT 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+        STRING_AGG(DISTINCT t.TagName, ', ') 
      FROM 
         Tags t 
      JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON t.TagName = tag) AS TagsUsed
+        UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag ON t.TagName = tag) AS TagsUsed
 FROM 
     PostWithComments pwc
 JOIN 

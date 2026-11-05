@@ -17,7 +17,7 @@ UserMetrics AS (
         u.Id AS UserId,
         COUNT(DISTINCT p.Id) AS TotalPosts,
         SUM(COALESCE(p.Score, 0)) AS TotalScore,
-        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - u.CreationDate)) / 86400) AS AvgDaysSinceCreation
+        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - u.CreationDate)) / 86400) AS AvgDaysSinceCreation
     FROM 
         Users u
     LEFT JOIN 

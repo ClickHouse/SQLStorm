@@ -48,7 +48,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId, 
         ph.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(ctr.Name)), ', ') AS CloseReasons
+        STRING_AGG(ctr.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -69,7 +69,7 @@ SELECT
         WHEN r.PostRank <= 5 THEN 'Top Post'
         ELSE 'Regular Post'
     END AS PostCategory,
-    arrayDistinct(groupArray(assumeNotNull(cp.CloseReasons))) AS ReasonsForClosure
+    ARRAY_AGG(DISTINCT cp.CloseReasons) AS ReasonsForClosure
 FROM 
     RankedPosts r
 JOIN 

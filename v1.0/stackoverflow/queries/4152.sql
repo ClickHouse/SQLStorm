@@ -20,14 +20,14 @@ WITH UserStatistics AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName,
+        unnest(string_to_array(p.Tags, '>')) AS TagName,
         COUNT(p.Id) AS TagCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags)))
+        unnest(string_to_array(p.Tags, '>'))
     ORDER BY 
         TagCount DESC
     LIMIT 10

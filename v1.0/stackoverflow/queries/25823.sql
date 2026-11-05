@@ -34,7 +34,7 @@ SELECT
     EUS.TotalAnswers,
     EUS.QuestionCount,
     EUS.AnswerCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
+    (SELECT STRING_AGG(T.TagName, ', ') 
      FROM Tags T 
      JOIN Posts P ON P.Tags LIKE '%' || T.TagName || '%'
      WHERE P.OwnerUserId = EUS.UserId) AS PopularTags

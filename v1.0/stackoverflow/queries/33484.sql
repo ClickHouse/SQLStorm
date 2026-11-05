@@ -7,7 +7,7 @@ WITH UserPostActivity AS (
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount,
         SUM(COALESCE(v.BountyAmount, 0)) AS TotalBounty,
-        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate))) / 3600 AS AvgHoursSincePost 
+        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate))) / 3600 AS AvgHoursSincePost 
     FROM 
         Users u
     LEFT JOIN 

@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 TopComments AS (
     SELECT 
         pc.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(pc.Text)), ' | ') AS TopCommentTexts
+        STRING_AGG(pc.Text, ' | ') AS TopCommentTexts
     FROM 
         (SELECT 
              c.PostId,

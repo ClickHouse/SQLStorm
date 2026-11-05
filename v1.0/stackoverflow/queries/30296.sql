@@ -21,7 +21,7 @@ PostWithTags AS (
         P.Title,
         P.CreationDate,
         P.Score,
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
+        STRING_AGG(T.TagName, ', ') AS Tags
     FROM 
         Posts P
         LEFT JOIN Tags T ON P.Tags LIKE '%' || T.TagName || '%'

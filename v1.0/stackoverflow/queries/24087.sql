@@ -31,7 +31,7 @@ UserBadges AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons,
+        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons,
         ph.CreationDate AS ClosedDate
     FROM 
         PostHistory ph

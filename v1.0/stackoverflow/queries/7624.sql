@@ -52,7 +52,7 @@ SELECT
     tp.UpVotes,
     tp.DownVotes,
     COALESCE((
-        SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+        SELECT STRING_AGG(t.TagName, ', ') 
         FROM Tags t 
         WHERE t.ExcerptPostId = tp.PostId
     ), 'No Tags') AS Tags

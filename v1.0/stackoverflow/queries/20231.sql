@@ -25,7 +25,7 @@ FilteredRankedPosts AS (
         rp.ViewCount,
         rp.PostRank,
         rp.CommentCount,
-        COALESCE(datePart('epoch', rp.LatestBadge), 0) AS BadgeTimestamp
+        COALESCE(DATE_PART('epoch', rp.LatestBadge), 0) AS BadgeTimestamp
     FROM 
         RankedPosts rp
     WHERE 

@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         MAX(v.CreationDate) AS LastVoteDate,
         COUNT(DISTINCT CASE WHEN v.VoteTypeId = 1 THEN v.Id END) AS AcceptCount,
         COUNT(DISTINCT CASE WHEN v.VoteTypeId = 2 THEN v.Id END) AS UpVoteCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
     FROM 
         Posts p
     LEFT JOIN 
@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     LEFT JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName IS NOT NULL
+        unnest(string_to_array(p.Tags, ',')) AS t(TagName) ON t.TagName IS NOT NULL
     WHERE 
         p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '90 days'
     GROUP BY 

@@ -8,7 +8,7 @@ WITH PostsStats AS (
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
         COUNT(CASE WHEN v.VoteTypeId = 2 THEN 1 END) AS UpVoteCount,
         COUNT(CASE WHEN v.VoteTypeId = 3 THEN 1 END) AS DownVoteCount,
-        AVG(COALESCE(toUnixTimestamp((p.LastActivityDate - p.CreationDate)), 0)) AS AvgResponseTime
+        AVG(COALESCE(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)), 0)) AS AvgResponseTime
     FROM 
         Posts p
     LEFT JOIN 

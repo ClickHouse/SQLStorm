@@ -19,14 +19,14 @@ PostTagStats AS (
         P.Id AS PostId,
         P.Title,
         P.AcceptedAnswerId,
-        arrayDistinct(groupArray(assumeNotNull(TRIM(T.TagName)))) AS Tags,
+        ARRAY_AGG(DISTINCT TRIM(T.TagName)) AS Tags,
         P.CreationDate,
         P.ViewCount,
         P.AnswerCount,
         P.Score
     FROM 
         Posts P
-        LEFT JOIN arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS TagTag(TagName) ON true
+        LEFT JOIN UNNEST(string_to_array(P.Tags, '>')) AS TagTag(TagName) ON true
         LEFT JOIN Tags T ON T.TagName = TRIM(TagTag.TagName)
     GROUP BY 
         P.Id, P.Title, P.AcceptedAnswerId, P.CreationDate, P.ViewCount, P.AnswerCount, P.Score

@@ -36,7 +36,7 @@ PostHistoryData AS (
         ph.PostId,
         ph.UserId,
         ph.CreationDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
         COUNT(*) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11)) AS ClosureCount 
     FROM 
         PostHistory ph

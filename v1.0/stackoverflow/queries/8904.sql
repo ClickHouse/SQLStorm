@@ -43,7 +43,7 @@ SELECT
     tp.OwnerDisplayName,
     tp.CommentCount,
     COUNT(DISTINCT b.Id) AS BadgeCount,
-    arrayDistinct(groupArray(assumeNotNull(bt.Name))) AS BadgeNames
+    ARRAY_AGG(DISTINCT bt.Name) AS BadgeNames
 FROM 
     TopPosts tp
 LEFT JOIN 

@@ -47,7 +47,7 @@ SELECT
     tp.CreationDate,
     tp.Score,
     tp.ViewCount,
-    toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - tp.CreationDate)) / 3600 AS AgeInHours
+    EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - tp.CreationDate)) / 3600 AS AgeInHours
 FROM 
     TopPosts tp
 ORDER BY 

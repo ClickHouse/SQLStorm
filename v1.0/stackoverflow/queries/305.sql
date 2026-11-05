@@ -64,7 +64,7 @@ SELECT
         WHEN CM.AnswerCount > 0 AND CM.Score < 0 THEN 'Unpopular'
         ELSE 'Popular'
     END AS PostPopularity,
-    (toUnixTimestamp(CM.LastUpdateDate) - toUnixTimestamp(CM.CreationDate)) / 60 AS MinutesSinceLastUpdate
+    (EXTRACT(EPOCH FROM CM.LastUpdateDate) - EXTRACT(EPOCH FROM CM.CreationDate)) / 60 AS MinutesSinceLastUpdate
 FROM 
     CombinedMetrics CM
 ORDER BY 

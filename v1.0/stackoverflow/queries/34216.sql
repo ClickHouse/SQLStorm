@@ -45,7 +45,7 @@ PopularPosts AS (
 UserBadges AS (
     SELECT 
         B.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgesEarned
+        STRING_AGG(B.Name, ', ') AS BadgesEarned
     FROM 
         Badges B
     GROUP BY 

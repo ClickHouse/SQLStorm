@@ -6,7 +6,7 @@ WITH PostStats AS (
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpvoteCount,
         COUNT(DISTINCT v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownvoteCount,
-        COALESCE(CAST(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) / 86400 AS INT), 0) AS DaysSincePosted
+        COALESCE(CAST(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - p.CreationDate)) / 86400 AS INT), 0) AS DaysSincePosted
     FROM 
         Posts p
     LEFT JOIN 

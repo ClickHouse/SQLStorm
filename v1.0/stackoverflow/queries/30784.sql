@@ -35,7 +35,7 @@ TopPosts AS (
 UserBadges AS (
     SELECT 
         u.Id AS UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,  
+        STRING_AGG(b.Name, ', ') AS BadgeNames,  
         COUNT(b.Id) AS BadgeCount
     FROM 
         Users u

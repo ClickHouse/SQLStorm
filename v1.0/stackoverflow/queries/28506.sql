@@ -37,11 +37,11 @@ RecentPostHistories AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(TRIM(REGEXP_REPLACE(tag, '<([^>]+)>', '', 'g'))))), ', ') AS CleanedTags
+        STRING_AGG(DISTINCT TRIM(REGEXP_REPLACE(tag, '<([^>]+)>', '', 'g')), ', ') AS CleanedTags
     FROM 
         Posts p
     CROSS JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS tag
+        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag
     GROUP BY 
         p.Id
 )

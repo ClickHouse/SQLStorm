@@ -19,11 +19,11 @@ WITH RankedPosts AS (
 PostTags AS (
     SELECT 
         P.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
+        STRING_AGG(T.TagName, ', ') AS Tags
     FROM 
         Posts P
     JOIN 
-        arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS T(TagName) ON T.TagName IS NOT NULL
+        UNNEST(string_to_array(P.Tags, '<>')) AS T(TagName) ON T.TagName IS NOT NULL
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 

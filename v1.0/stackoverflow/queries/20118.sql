@@ -25,7 +25,7 @@ PostHistoryInfo AS (
         ph.PostId,
         ph.CreationDate AS HistoryDate,
         MAX(ph.CreationDate) OVER (PARTITION BY ph.PostId) AS MostRecentEdit,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
+        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
     FROM 
         PostHistory ph
     JOIN 
@@ -37,7 +37,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 

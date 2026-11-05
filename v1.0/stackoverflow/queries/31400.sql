@@ -14,7 +14,7 @@ RecentPosts AS (
            p.CreationDate,
            p.ViewCount,
            p.Score,
-           COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', '), 'No Tags') AS Tags,
+           COALESCE(STRING_AGG(DISTINCT t.TagName, ', '), 'No Tags') AS Tags,
            u.DisplayName AS Author
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id

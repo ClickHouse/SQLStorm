@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         COUNT(c.Id) AS CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.CreationDate DESC) AS Rank,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' (', u.Reputation, ')')))), ', ') AS Commenters
+        STRING_AGG(DISTINCT CONCAT(u.DisplayName, ' (', u.Reputation, ')'), ', ') AS Commenters
     FROM 
         Posts p
     LEFT JOIN 
@@ -35,7 +35,7 @@ RecentQuestions AS (
 ),
 KeywordTagCount AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(t.TagName))) AS Tag,
+        unnest(string_to_array(t.TagName, ',')) AS Tag,
         COUNT(pt.Id) AS PostCount
     FROM 
         Tags t

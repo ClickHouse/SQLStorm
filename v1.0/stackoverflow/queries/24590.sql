@@ -28,7 +28,7 @@ PostStatistics AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
+        STRING_AGG(b.Name, ', ') AS BadgeNames,
         COUNT(b.Id) AS TotalBadges,
         MAX(b.Class) AS HighestBadgeClass
     FROM 

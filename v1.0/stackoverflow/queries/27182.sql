@@ -24,7 +24,7 @@ TagAnalytics AS (
     FROM 
         RankedPosts
     CROSS JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS tag  
+        UNNEST(string_to_array(Tags, '><')) AS tag  
     WHERE 
         TagRank <= 5  
     GROUP BY 

@@ -42,7 +42,7 @@ SELECT
         ELSE 'Inactive'
     END AS ActivityStatus,
     rp.VoteCount,
-    toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - rp.CreationDate)) AS DaysSinceCreated
+    EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - rp.CreationDate)) AS DaysSinceCreated
 FROM 
     RankedPosts rp
 LEFT JOIN 

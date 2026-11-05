@@ -46,7 +46,7 @@ SELECT
     tp.OwnerDisplayName,
     tp.CommentCount,
     tp.VoteCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') 
+    (SELECT STRING_AGG(pt.Name, ', ') 
      FROM PostTypes pt 
      JOIN Posts p ON p.PostTypeId = pt.Id 
      WHERE p.Id = tp.PostId) AS PostType

@@ -31,13 +31,13 @@ FilteredPosts AS (
             WHEN rp.UpVoteCount < rp.DownVoteCount THEN 'Negative'
             ELSE 'Neutral'
         END AS Sentiment,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         RankedPosts rp
     LEFT JOIN 
         Posts p ON p.Id = rp.PostId
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag(TagName) ON tag.TagName IS NOT NULL
+        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag(TagName) ON tag.TagName IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag.TagName
     WHERE 

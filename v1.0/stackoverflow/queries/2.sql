@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS Rank,
         COALESCE(u.DisplayName, 'Anonymous') AS OwnerDisplayName,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes
@@ -21,8 +21,8 @@ WITH RankedPosts AS (
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
-
-        LEFT ARRAY JOIN splitByString('>', assumeNotNull(p.Tags)) AS TagName
+    LEFT JOIN 
+        LATERAL (SELECT unnest(string_to_array(p.Tags, '>')) AS TagName) t ON TRUE
     WHERE 
         p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY 
@@ -31,7 +31,7 @@ WITH RankedPosts AS (
 ClosedPosts AS (
     SELECT
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId = 10 THEN c.Name END)), ', ') AS CloseReasons
+        STRING_AGG(CASE WHEN ph.PostHistoryTypeId = 10 THEN c.Name END, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

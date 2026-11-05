@@ -34,7 +34,7 @@ SELECT
     RP.CommentCount,
     RP.VoteCount,
     RP.Tags,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') 
+    (SELECT STRING_AGG(B.Name, ', ') 
      FROM Badges B 
      WHERE B.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = RP.PostId)) AS OwnerBadges,
     PHT.Comment AS LastEditComment

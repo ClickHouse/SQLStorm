@@ -9,7 +9,7 @@ UserReputation AS (
     WHERE u.Reputation > 1000
 ),
 PostsWithTags AS (
-    SELECT p.Id, p.Title, length(splitByString('>', assumeNotNull(p.Tags)), 1) AS TagCount
+    SELECT p.Id, p.Title, array_length(string_to_array(p.Tags, '>'), 1) AS TagCount
     FROM Posts p
     WHERE p.Tags IS NOT NULL
 ),

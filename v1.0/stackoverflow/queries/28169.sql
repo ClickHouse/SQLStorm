@@ -25,7 +25,7 @@ KeywordCounts AS (
         COUNT(*) AS KeywordCount
     FROM 
         RankedPosts rp,
-        arrayJoin(splitByString(' ', assumeNotNull(lower(rp.Body)))) AS rg(value) 
+        unnest(string_to_array(lower(rp.Body), ' ')) AS rg(value) 
     WHERE 
         rg.value NOT IN ('the', 'is', 'at', 'which', 'on', 'for', 'by', 'to', 'and', 'a', 'an') 
     GROUP BY 
@@ -46,7 +46,7 @@ SELECT
     rp.OwnerDisplayName,
     rp.ViewCount,
     rp.CreationDate,
-    arrayStringConcat(groupArray(assumeNotNull(kw.Keyword || ': ' || kw.KeywordCount)), ', ') AS TopKeywords
+    STRING_AGG(kw.Keyword || ': ' || kw.KeywordCount, ', ') AS TopKeywords
 FROM 
     RankedPosts rp
 LEFT JOIN 

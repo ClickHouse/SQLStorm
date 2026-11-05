@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        length(splitByString('>', assumeNotNull(p.Tags)), 1) AS TagCount,
+        array_length(string_to_array(p.Tags, '>'), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RankByUser
     FROM 

@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
+        unnest(string_to_array(p.Tags, '>')) AS TagName
     FROM 
         Posts p
     WHERE 
@@ -37,11 +37,11 @@ PostStatistics AS (
         rp.Score,
         rp.ViewCount,
         rp.OwnerDisplayName,
-        groupArray(assumeNotNull(pt.TagName)) AS RelatedTags
+        ARRAY_AGG(pt.TagName) AS RelatedTags
     FROM 
         RankedPosts rp
     LEFT JOIN 
-        PopularTags pt ON pt.TagName = ANY(splitByString('>', assumeNotNull(rp.Tags)))
+        PopularTags pt ON pt.TagName = ANY(string_to_array(rp.Tags, '>'))
     WHERE 
         rp.PostRank <= 5
     GROUP BY 

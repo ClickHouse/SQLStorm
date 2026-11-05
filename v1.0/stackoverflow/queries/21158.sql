@@ -18,7 +18,7 @@ ClosedPosts AS (
         ph.PostId,
         MIN(ph.CreationDate) AS FirstClosedDate,
         COUNT(*) AS CloseCount,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.Comment IS NOT NULL THEN ph.Comment ELSE 'No comment' END)), '; ') AS CloseReason
+        STRING_AGG(CASE WHEN ph.Comment IS NOT NULL THEN ph.Comment ELSE 'No comment' END, '; ') AS CloseReason
     FROM PostHistory ph
     WHERE ph.PostHistoryTypeId IN (10, 11) 
     GROUP BY ph.PostId

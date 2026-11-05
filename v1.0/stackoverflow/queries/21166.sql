@@ -33,7 +33,7 @@ WITH RankedPosts AS (
         ph.PostId,
         MAX(CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.CreationDate END) AS LastClosedDate,
         MAX(CASE WHEN ph.PostHistoryTypeId = 11 THEN ph.CreationDate END) AS LastReopenedDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostHistoryTypes
+        STRING_AGG(DISTINCT pt.Name, ', ') AS PostHistoryTypes
     FROM 
         PostHistory ph
     LEFT JOIN 

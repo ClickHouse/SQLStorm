@@ -43,7 +43,7 @@ SELECT
     FP.ViewCount,
     FP.CommentCount,
     FP.VoteCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS RelatedTags
+    STRING_AGG(DISTINCT T.TagName, ', ') AS RelatedTags
 FROM 
     FilteredPosts FP
 LEFT JOIN 

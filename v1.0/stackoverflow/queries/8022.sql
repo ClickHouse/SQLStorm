@@ -35,7 +35,7 @@ SELECT
     tu.TotalPosts,
     tu.TotalViews,
     tu.TotalScore,
-    groupArray(assumeNotNull(p.Title ORDER BY p.Score DESC)) AS TopPostTitles
+    ARRAY_AGG(p.Title ORDER BY p.Score DESC) AS TopPostTitles
 FROM 
     TopUsers tu
 JOIN 

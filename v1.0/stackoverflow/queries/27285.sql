@@ -42,11 +42,11 @@ SELECT
     fp.PostId,
     fp.Title,
     fp.Body,
-    TRIM(LEADING '<' FROM TRIM(TRAILING '>' FROM arrayJoin(splitByString('>', assumeNotNull(fp.Tags))))) AS CleanedTag,
+    TRIM(LEADING '<' FROM TRIM(TRAILING '>' FROM UNNEST(string_to_array(fp.Tags, '>')))) AS CleanedTag,
     fp.OwnerName,
     fp.AnswerCount,
     fp.CommentCount,
-    toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - fp.CreationDate)) / 3600 AS AgeInHours
+    EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - fp.CreationDate)) / 3600 AS AgeInHours
 FROM 
     FilteredPosts fp
 ORDER BY 

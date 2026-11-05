@@ -19,12 +19,12 @@ PostStatistics AS (
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
         SUM(COALESCE(P.Score, 0)) AS TotalScore,
         MAX(P.CreationDate) as LatestDate,
-        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT T.TagName) AS Tags
     FROM Posts P
     LEFT JOIN Comments C ON P.Id = C.PostId
-    LEFT JOIN (
+    LEFT JOIN LATERAL (
         SELECT 
-            DISTINCT TRIM(arrayJoin(splitByString('>', assumeNotNull(P.Tags)))) AS TagName 
+            DISTINCT TRIM(UNNEST(string_to_array(P.Tags, '>'))) AS TagName 
     ) T ON TRUE
     GROUP BY P.Id, P.Title, P.PostTypeId
 ),

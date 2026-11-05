@@ -26,9 +26,9 @@ RecentPostHistories AS (
 ),
 PostTags AS (
     SELECT p.Id AS PostId,
-           arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+           STRING_AGG(t.TagName, ', ') AS Tags
     FROM Posts p
-    LEFT ARRAY JOIN splitByString('><', assumeNotNull(p.Tags)) AS tag
+    LEFT JOIN UNNEST(STRING_TO_ARRAY(p.Tags, '><')) AS tag ON true
     JOIN Tags t ON t.TagName = TRIM(tag)
     GROUP BY p.Id
 )

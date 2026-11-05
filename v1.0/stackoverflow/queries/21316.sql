@@ -27,7 +27,7 @@ WITH RankedPosts AS (
 PostHistoryAssessments AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), ', ') AS CloseReasons,
+        STRING_AGG(DISTINCT ph.Comment, ', ') AS CloseReasons,
         COUNT(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 1 END) AS CloseOpenCount
     FROM 
         PostHistory ph

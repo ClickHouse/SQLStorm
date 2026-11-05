@@ -78,15 +78,15 @@ SELECT
         WHEN TU.NetVotes BETWEEN 20 AND 50 THEN 'Moderately Voted'
         ELSE 'Low Votes'
     END AS VotingCategory,
-    COALESCE(arrayDistinct(groupArray(assumeNotNull(T.TagName))) FILTER (WHERE T.TagName IS NOT NULL), '{}') AS TagsContributed
+    COALESCE(ARRAY_AGG(DISTINCT T.TagName) FILTER (WHERE T.TagName IS NOT NULL), '{}') AS TagsContributed
 FROM 
     TopUsers TU
 LEFT JOIN 
     Posts P ON TU.UserId = P.OwnerUserId
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS TagName
+            UNNEST(string_to_array(P.Tags, '><')) AS TagName
     ) T ON TRUE
 GROUP BY 
     TU.UserId, TU.DisplayName, TU.BadgeCount, TU.PostCount, TU.TotalScore, TU.NetVotes

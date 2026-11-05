@@ -21,7 +21,7 @@ PostTagCounts AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON true
+        unnest(string_to_array(p.Tags, ',')) AS tag ON true
     JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

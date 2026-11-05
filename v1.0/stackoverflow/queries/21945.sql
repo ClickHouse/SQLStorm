@@ -36,7 +36,7 @@ CloseReasonVotes AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseVoteCount,
-        arrayStringConcat(groupArray(assumeNotNull(CAST(ph.Comment AS VARCHAR))), ', ') AS CloseReasons
+        STRING_AGG(CAST(ph.Comment AS VARCHAR), ', ') AS CloseReasons
     FROM 
         PostHistory ph
     WHERE 

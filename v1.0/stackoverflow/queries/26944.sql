@@ -8,7 +8,7 @@ WITH PostAggregates AS (
         p.ViewCount,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH PostAggregates AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId AND a.PostTypeId = 2 
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag_names ON tag_names IS NOT NULL 
+        UNNEST(string_to_array(p.Tags, '><')) AS tag_names ON tag_names IS NOT NULL 
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag_names)
     WHERE 

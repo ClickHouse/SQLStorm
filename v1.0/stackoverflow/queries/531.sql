@@ -29,7 +29,7 @@ UserBadges AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasonNames
+        STRING_AGG(cr.Name, ', ') AS CloseReasonNames
     FROM 
         PostHistory ph
     JOIN 

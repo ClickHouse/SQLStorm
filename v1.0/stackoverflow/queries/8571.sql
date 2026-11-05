@@ -39,13 +39,13 @@ SELECT
     tp.OwnerDisplayName,
     tp.CommentCount,
     tp.VoteCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
+    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
 FROM 
     TopPosts tp
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('<>', assumeNotNull(Tags))) AS TagName
+            unnest(string_to_array(Tags, '<>')) AS TagName
         FROM 
             Posts 
         WHERE 

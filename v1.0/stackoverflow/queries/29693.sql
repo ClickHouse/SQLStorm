@@ -36,7 +36,7 @@ SELECT
     COUNT(tq.PostId) AS TotalQuestions,
     AVG(tq.ViewCount) AS AverageViews,
     SUM(tq.Score) AS TotalScore,
-    arrayStringConcat(groupArray(assumeNotNull(tq.Title)), '; ') AS QuestionTitles
+    STRING_AGG(tq.Title, '; ') AS QuestionTitles
 FROM 
     TopQuestions tq
 GROUP BY 

@@ -37,7 +37,7 @@ TagUsage AS (
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS t(TagName) ON TRUE
+        LATERAL unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS t(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 

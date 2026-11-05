@@ -6,7 +6,7 @@ WITH RecurTagCounts AS (
     FROM (
         SELECT 
             Posts.Id AS PostId,
-            arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tags
+            UNNEST(string_to_array(Tags, '><')) AS Tags
         FROM 
             Posts
         WHERE 

@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         p.CreationDate,
         p.Score,
-        ROW_NUMBER() OVER (PARTITION BY arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') ORDER BY p.CreationDate DESC) AS TagRank
+        ROW_NUMBER() OVER (PARTITION BY STRING_AGG(t.TagName, ', ') ORDER BY p.CreationDate DESC) AS TagRank
     FROM 
         Posts p
     JOIN 

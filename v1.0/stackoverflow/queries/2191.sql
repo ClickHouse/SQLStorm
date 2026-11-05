@@ -29,7 +29,7 @@ UserStats AS (
 TopBadges AS (
     SELECT
         b.UserId,
-        groupArray(assumeNotNull(b.Name)) AS BadgeNames,
+        ARRAY_AGG(b.Name) AS BadgeNames,
         COUNT(*) AS BadgeCount
     FROM
         Badges b

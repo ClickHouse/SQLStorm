@@ -20,7 +20,7 @@ WITH RecentPosts AS (
 PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS EditHistory,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS EditHistory,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph

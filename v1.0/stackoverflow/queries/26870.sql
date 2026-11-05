@@ -2,7 +2,7 @@
 WITH ParsedTags AS (
     SELECT 
         p.Id AS PostId,
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2))))) AS Tag
+        TRIM(UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><'))) AS Tag
     FROM 
         Posts p
     WHERE 

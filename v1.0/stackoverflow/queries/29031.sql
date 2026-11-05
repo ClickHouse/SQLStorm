@@ -39,7 +39,7 @@ AggregateData AS (
         SUM(t.ViewCount) AS TotalViews,
         SUM(t.AnswerCount) AS TotalAnswers,
         SUM(t.CommentCount) AS TotalComments,
-        arrayStringConcat(groupArray(assumeNotNull(t.Title)), ', ') AS PostTitles 
+        STRING_AGG(t.Title, ', ') AS PostTitles 
     FROM 
         TopPosts t
     GROUP BY 

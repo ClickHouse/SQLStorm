@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         u.DisplayName AS OwnerDisplayName,
@@ -21,9 +21,9 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId 
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS TagName
+                unnest(string_to_array(p.Tags, '<>')) AS TagName
         ) t ON TRUE
     WHERE 
         p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' AND

@@ -47,7 +47,7 @@ SELECT
     fp.Score,
     fp.Upvotes - fp.Downvotes AS NetVotes,
     fp.CommentCount,
-    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' (', b.Name, ')'))), ', ')
+    COALESCE((SELECT STRING_AGG(CONCAT(u.DisplayName, ' (', b.Name, ')'), ', ')
                FROM Badges b 
                JOIN Users u ON u.Id = b.UserId
                WHERE u.Id = (SELECT OwnerUserId FROM Posts WHERE Id = fp.PostId)), 'No Badges') AS UserBadges

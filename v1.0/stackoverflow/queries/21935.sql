@@ -37,7 +37,7 @@ PostDetails AS (
         tp.Score,
         tp.CommentCount,
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounty,
-        arrayDistinct(groupArray(assumeNotNull(tag.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT tag.TagName) AS Tags
     FROM 
         TopPosts tp
     LEFT JOIN 
@@ -45,7 +45,7 @@ PostDetails AS (
     LEFT JOIN 
         (SELECT 
             p.Id AS PostId, 
-            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
+            unnest(string_to_array(p.Tags, '><')) AS TagName
           FROM 
             Posts p) tag ON tp.PostId = tag.PostId
     GROUP BY 
@@ -72,7 +72,7 @@ SELECT
     pd.Score, 
     pd.CommentCount,
     pd.TotalBounty,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
     COUNT(rph.EventType) FILTER (WHERE rph.EventType = 'Close/Reopen Event') AS CloseReopenCount,
     CASE 
         WHEN MAX(rph.MostRecentEventDate) IS NULL THEN 'No recent activity'
@@ -83,7 +83,8 @@ FROM
     PostDetails pd
 LEFT JOIN 
     RecentPostHistory rph ON pd.PostId = rph.PostId
-LEFT ARRAY JOIN pd.Tags AS TagName
+LEFT JOIN 
+    LATERAL (SELECT unnest(pd.Tags) AS TagName) t ON TRUE
 GROUP BY 
     pd.Title, pd.Score, pd.CommentCount, pd.TotalBounty
 ORDER BY 

@@ -43,7 +43,7 @@ PostDetails AS (
         rp.ViewCount,
         tc.UserId,
         tc.DisplayName,
-        COALESCE(NULLIF(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - rp.CreationDate)) / 86400, 0), 0) AS DaysOld,
+        COALESCE(NULLIF(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - rp.CreationDate)) / 86400, 0), 0) AS DaysOld,
         CASE 
             WHEN rp.Score > 0 THEN 'Positive'
             WHEN rp.Score < 0 THEN 'Negative'

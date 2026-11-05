@@ -44,10 +44,10 @@ PostHistoryInfo AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         ph.CreationDate,
-        arrayStringConcat(groupArray(assumeNotNull(CASE 
+        STRING_AGG(CASE 
                 WHEN ph.Comment IS NOT NULL THEN 'Comment: ' || ph.Comment 
                 ELSE 'No Comment' 
-            END)), '; ') AS HistoryComments
+            END, '; ') AS HistoryComments
     FROM 
         PostHistory ph
     WHERE 

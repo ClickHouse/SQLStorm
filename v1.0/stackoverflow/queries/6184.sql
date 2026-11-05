@@ -39,13 +39,13 @@ SELECT
     trp.AnswerCount,
     trp.CommentCount,
     trp.Score,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ',') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ',') AS Tags
 FROM 
     TopRankedPosts trp
 LEFT JOIN 
     ( 
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName, p.Id
+            unnest(string_to_array(p.Tags, '><')) AS TagName, p.Id
         FROM 
             Posts p
     ) t ON t.Id = trp.PostId

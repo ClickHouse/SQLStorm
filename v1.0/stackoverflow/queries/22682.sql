@@ -41,7 +41,7 @@ PostSummaries AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
+        STRING_AGG(b.Name, ', ') AS BadgeNames,
         COUNT(b.Id) FILTER (WHERE b.Class = 1) AS GoldBadges,
         COUNT(b.Id) FILTER (WHERE b.Class = 2) AS SilverBadges,
         COUNT(b.Id) FILTER (WHERE b.Class = 3) AS BronzeBadges

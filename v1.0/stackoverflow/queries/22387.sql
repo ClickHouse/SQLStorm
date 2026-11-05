@@ -31,7 +31,7 @@ PostHistoryDetails AS (
         PH.PostId,
         COUNT(*) AS EditCount,
         MAX(PH.CreationDate) AS LastEditDate,
-        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes
+        STRING_AGG(PHT.Name, ', ') AS HistoryTypes
     FROM 
         PostHistory PH
     JOIN 
@@ -72,7 +72,7 @@ SELECT
         WHEN FP.Reputation BETWEEN 500 AND 1000 THEN 'Medium Reputation'
         ELSE 'Low Reputation'
     END AS ReputationCategory,
-    length(splitByString(', ', assumeNotNull(FP.HistoryTypes)), 1) AS HistoryTypeCount
+    ARRAY_LENGTH(string_to_array(FP.HistoryTypes, ', '), 1) AS HistoryTypeCount
 FROM 
     FilteredPosts FP
 WHERE 

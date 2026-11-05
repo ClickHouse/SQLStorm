@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Body,
         p.Score,
         p.ViewCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC, p.CreationDate DESC) AS PostRank
     FROM 
         Posts p

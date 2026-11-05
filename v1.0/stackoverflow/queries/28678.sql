@@ -1,7 +1,7 @@
 
 WITH TagStats AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2))))) AS TagName,
+        TRIM(UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><'))) AS TagName,
         COUNT(*) AS PostCount,
         COUNT(DISTINCT OwnerUserId) AS UniqueUserCount
     FROM 
@@ -9,7 +9,7 @@ WITH TagStats AS (
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))))
+        TRIM(UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')))
 ),
 TopTags AS (
     SELECT 

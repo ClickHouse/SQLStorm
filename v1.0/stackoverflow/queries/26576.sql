@@ -1,6 +1,6 @@
 WITH TagUsage AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS Tag,
+        UNNEST(STRING_TO_ARRAY(Tags, '>')) AS Tag,
         p.Id AS PostId,
         p.Title,
         p.ViewCount,
@@ -32,7 +32,7 @@ PopularQuestions AS (
         p.AnswerCount,
         p.CommentCount,
         p.CreationDate,
-        arrayStringConcat(groupArray(assumeNotNull(t.Tag)), ', ') AS RelatedTags
+        STRING_AGG(t.Tag, ', ') AS RelatedTags
     FROM 
         Posts p
     JOIN 
@@ -55,7 +55,7 @@ SELECT
     q.CommentCount,
     q.CreationDate,
     q.RelatedTags,
-    ROUND((toUnixTimestamp(cast('2024-10-01 12:34:56' as timestamp) - q.CreationDate) / 86400), 2) AS AgeInDays
+    ROUND((EXTRACT(EPOCH FROM cast('2024-10-01 12:34:56' as timestamp) - q.CreationDate) / 86400), 2) AS AgeInDays
 FROM 
     PopularQuestions q
 ORDER BY 

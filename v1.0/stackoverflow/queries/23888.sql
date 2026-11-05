@@ -23,13 +23,13 @@ CommentsWithTags AS (
         C.PostId,
         C.Text,
         C.UserDisplayName,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
     FROM 
         Comments C
     LEFT JOIN 
         Posts P ON C.PostId = P.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
+        UNNEST(string_to_array(P.Tags, '><')) AS T(TagName) ON TRUE
     GROUP BY 
         C.Id, C.PostId, C.Text, C.UserDisplayName
 ),

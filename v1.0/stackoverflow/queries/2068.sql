@@ -22,7 +22,7 @@ PostMetrics AS (
 PostHistoryAggregates AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS ChangeTypes,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS ChangeTypes,
         MAX(ph.CreationDate) AS LastChangeDate
     FROM PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id

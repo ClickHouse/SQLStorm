@@ -37,7 +37,7 @@ PostWithTopVotes AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReason
+        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReason
     FROM 
         PostHistory ph
         JOIN CloseReasonTypes ctr ON CAST(ph.Comment AS INTEGER) = ctr.Id

@@ -26,7 +26,7 @@ UserReputation AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS EditComments,
+        STRING_AGG(ph.Comment, '; ') AS EditComments,
         COUNT(*) AS EditCount
     FROM 
         PostHistory ph

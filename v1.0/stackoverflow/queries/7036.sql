@@ -39,7 +39,7 @@ SELECT
     fp.OwnerDisplayName,
     fp.CommentCount,
     fp.AnswerCount,
-    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+    COALESCE((SELECT STRING_AGG(t.TagName, ', ') 
                FROM Tags t 
                WHERE t.WikiPostId IN (SELECT Id FROM Posts WHERE Id = fp.PostId)), 'No Tags') AS Tags
 FROM 

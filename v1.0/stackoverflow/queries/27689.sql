@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 ), PostLinksData AS (
     SELECT 
         pl.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT('Related Post ID: ', pl.RelatedPostId, ' (Link Type: ', lt.Name, ')'))), '; ') AS RelatedPosts
+        STRING_AGG(CONCAT('Related Post ID: ', pl.RelatedPostId, ' (Link Type: ', lt.Name, ')'), '; ') AS RelatedPosts
     FROM 
         PostLinks pl
     JOIN LinkTypes lt ON pl.LinkTypeId = lt.Id

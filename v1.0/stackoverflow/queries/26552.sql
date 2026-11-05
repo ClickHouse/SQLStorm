@@ -35,11 +35,11 @@ PostTagStats AS (
     SELECT 
         P.Id AS PostId,
         COUNT(DISTINCT T.TagName) AS TagCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
     FROM 
         Posts P
     JOIN 
-        (SELECT TRIM(tag) AS tag FROM arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS tag) AS tag ON tag IS NOT NULL
+        LATERAL (SELECT TRIM(tag) AS tag FROM UNNEST(string_to_array(P.Tags, '>')) AS tag) AS tag ON tag IS NOT NULL
     JOIN 
         Tags T ON T.TagName = tag.tag
     GROUP BY 

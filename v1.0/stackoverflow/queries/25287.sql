@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Tags,
         COALESCE((
             SELECT 
-                arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') 
+                STRING_AGG(c.Text, ' | ') 
             FROM 
                 Comments c 
             WHERE 
@@ -55,7 +55,7 @@ SELECT
         WHEN sp.VoteCount BETWEEN 1 AND 10 THEN 'Moderate'
         ELSE 'Unpopular'
     END AS Popularity,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(sp.CleanedTags))), ', ') AS UniqueTags
+    STRING_AGG(DISTINCT sp.CleanedTags, ', ') AS UniqueTags
 FROM 
     StringProcessed sp
 GROUP BY 

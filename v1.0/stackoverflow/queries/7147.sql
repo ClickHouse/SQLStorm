@@ -30,11 +30,11 @@ HighScoringPosts AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM Posts p
-    LEFT JOIN (
+    LEFT JOIN LATERAL (
         SELECT 
-            arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS TagName
+            UNNEST(string_to_array(p.Tags, '<>')) AS TagName
     ) t ON TRUE
     GROUP BY p.Id
 )

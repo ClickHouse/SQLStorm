@@ -5,11 +5,11 @@ WITH FilteredPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS tag_name
+        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag_name
     ON 
         true
     JOIN 
@@ -33,7 +33,7 @@ PostVoteCounts AS (
 PostBadges AS (
     SELECT 
         u.Id AS UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 

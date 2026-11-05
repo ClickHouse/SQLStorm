@@ -59,7 +59,7 @@ SELECT
         ELSE 'Neutral'
     END AS VoteSentiment,
     (SELECT 
-         arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
+         STRING_AGG(b.Name, ', ') 
      FROM 
          Badges b 
      WHERE 

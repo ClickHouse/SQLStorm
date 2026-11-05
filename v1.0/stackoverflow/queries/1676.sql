@@ -29,7 +29,7 @@ PostVoteCounts AS (
 PostHistoryAggregated AS (
     SELECT
         ph.PostId,
-        arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS HistoryTypeNames
+        ARRAY_AGG(DISTINCT pt.Name) AS HistoryTypeNames
     FROM
         PostHistory ph
     JOIN

@@ -20,7 +20,7 @@ BadgesWithCounts AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -29,7 +29,7 @@ BadgesWithCounts AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.Comment, ': ', ph.CreationDate::TEXT))), ' | ') AS HistoryComments,
+        STRING_AGG(CONCAT(ph.Comment, ': ', ph.CreationDate::TEXT), ' | ') AS HistoryComments,
         COUNT(ph.Id) AS HistoryCount
     FROM 
         PostHistory ph

@@ -32,7 +32,7 @@ PostsWithTags AS (
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagArray(Tag) ON TRUE
+        LATERAL UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS TagArray(Tag) ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(TagArray.Tag)
     LEFT JOIN 

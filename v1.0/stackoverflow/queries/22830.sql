@@ -35,7 +35,7 @@ TopUsers AS (
 ClosureReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons,
+        STRING_AGG(cr.Name, ', ') AS CloseReasons,
         COUNT(*) AS CloseCount
     FROM 
         PostHistory ph
@@ -49,7 +49,7 @@ ClosureReasons AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
+        STRING_AGG(b.Name, ', ') AS BadgeNames,
         COUNT(*) AS BadgeCount
     FROM 
         Badges b

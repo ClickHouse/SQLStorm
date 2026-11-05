@@ -6,12 +6,12 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankByScore,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsAggregate,
+        STRING_AGG(t.TagName, ', ') AS TagsAggregate,
         COALESCE(CAST(SUBSTRING(p.Body FROM '<p>(.*?)</p>') AS TEXT), 'No Body') AS ExtractedBody
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString('> <', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag_ids 
+        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '> <')) AS tag_ids 
         ON TRUE
     LEFT JOIN 
         Tags t ON t.Id = CAST(tag_ids AS INT)
@@ -41,7 +41,7 @@ ClosePostStats AS (
     SELECT 
         ph.UserId,
         COUNT(DISTINCT ph.PostId) AS ClosedPostsCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasonNames
+        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasonNames
     FROM 
         PostHistory ph
     JOIN 

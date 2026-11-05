@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         u.DisplayName AS Author,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS VoteCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY COUNT(DISTINCT v.Id) DESC) AS PostRank
     FROM 
         Posts p
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS tag ON TRUE
+        LATERAL unnest(string_to_array(p.Tags, '<>')) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 

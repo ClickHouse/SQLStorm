@@ -58,12 +58,12 @@ SELECT
         WHEN UPB.PostCount > 0 THEN 'Occasional Contributor'
         ELSE 'Non-Contributor'
     END AS ContributionLevel,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tags.TagName))), ', ') AS AssociatedTags
+    STRING_AGG(DISTINCT tags.TagName, ', ') AS AssociatedTags
 FROM UserPostBadge UPB
 JOIN Users U ON UPB.UserId = U.Id
 LEFT JOIN Posts P ON UPB.UserId = P.OwnerUserId
-LEFT JOIN (
-    SELECT DISTINCT arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS TagName
+LEFT JOIN LATERAL (
+    SELECT DISTINCT UNNEST(STRING_TO_ARRAY(P.Tags, '><')) AS TagName
 ) AS tags ON TRUE
 GROUP BY UPB.UserId, U.DisplayName, UPB.PostCount, UPB.RecentCommentCount, UPB.BadgeCount, UPB.GoldBadgeCount, UPB.SilverBadgeCount, UPB.BronzeBadgeCount
 ORDER BY UPB.BadgeCount DESC, UPB.PostCount DESC

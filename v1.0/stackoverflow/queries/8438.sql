@@ -50,11 +50,11 @@ SELECT
     tp.ViewCount,
     tp.CommentCount,
     (tp.UpVoteCount - tp.DownVoteCount) AS NetVoteCount,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS RelatedTags
+    STRING_AGG(t.TagName, ', ') AS RelatedTags
 FROM 
     TopPosts tp
 LEFT JOIN 
-    Tags t ON t.TagName = ANY(splitByString(', ', assumeNotNull(tp.Tags)))
+    Tags t ON t.TagName = ANY(STRING_TO_ARRAY(tp.Tags, ', '))
 GROUP BY 
     tp.PostId, tp.OwnerDisplayName, tp.Title, tp.CreationDate, tp.Score, tp.ViewCount, tp.CommentCount, tp.UpVoteCount, tp.DownVoteCount
 ORDER BY 

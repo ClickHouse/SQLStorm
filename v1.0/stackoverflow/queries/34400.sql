@@ -39,7 +39,7 @@ FilteredPosts AS (
 PostClosureDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS CloseReasons
+        STRING_AGG(DISTINCT ph.Comment, '; ') AS CloseReasons
     FROM 
         PostHistory ph
     WHERE 

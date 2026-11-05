@@ -42,7 +42,7 @@ SELECT
         ELSE 'Unpopular' 
     END AS Popularity,
     COALESCE(
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+        (SELECT STRING_AGG(t.TagName, ', ') 
          FROM Tags t 
          WHERE t.WikiPostId = rp.PostId),
         'No Tags') AS Tags

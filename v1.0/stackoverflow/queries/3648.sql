@@ -41,7 +41,7 @@ PostInteraction AS (
         us.TotalBounty,
         us.TotalUpVotes,
         us.TotalDownVotes,
-        toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - rp.CreationDate)) / 86400 AS DaysSinceCreation
+        EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - rp.CreationDate)) / 86400 AS DaysSinceCreation
     FROM 
         RankedPosts rp
     JOIN 
@@ -62,15 +62,15 @@ SELECT
         WHEN pi.Score BETWEEN 5 AND 10 THEN 'Moderate Impact'
         ELSE 'Low Impact'
     END AS ImpactCategory,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN t.TagName IS NOT NULL THEN t.TagName ELSE 'N/A' END))), ', ') AS AssociatedTags
+    STRING_AGG(DISTINCT CASE WHEN t.TagName IS NOT NULL THEN t.TagName ELSE 'N/A' END, ', ') AS AssociatedTags
 FROM 
     PostInteraction pi
 LEFT JOIN 
     Posts p ON pi.PostId = p.Id
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
+            unnest(string_to_array(p.Tags, ',')) AS TagName
     ) t ON t.TagName IS NOT NULL
 GROUP BY 
     pi.PostId, pi.Title, pi.CreationDate, pi.Score, pi.DisplayName, pi.TotalBounty, pi.TotalUpVotes, pi.TotalDownVotes, pi.DaysSinceCreation

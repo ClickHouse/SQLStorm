@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS Tag,
+        unnest(string_to_array(Tags, '>')) AS Tag,
         COUNT(*) AS PostCount,
         SUM(Score) AS TotalScore,
         AVG(ViewCount) AS AverageViews
@@ -28,7 +28,7 @@ TagStatistics AS (
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('>', assumeNotNull(Tags)))
+        unnest(string_to_array(Tags, '>'))
 ),
 TopTags AS (
     SELECT 
@@ -54,7 +54,7 @@ SELECT
 FROM 
     TopTags tp
 JOIN 
-    RankedPosts rp ON tp.Tag = ANY(splitByString('>', assumeNotNull(rp.Tags)))
+    RankedPosts rp ON tp.Tag = ANY(string_to_array(rp.Tags, '>'))
 WHERE 
     rp.RankByScore = 1 
 ORDER BY 

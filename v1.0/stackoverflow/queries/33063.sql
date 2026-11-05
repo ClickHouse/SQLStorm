@@ -68,7 +68,7 @@ FinalResults AS (
         PA.CloseCount,
         PA.CommentCount,
         RANK() OVER (ORDER BY PA.UpVotes DESC, PA.CommentCount DESC) AS PopularityRank,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') FROM PopularTags) AS TopTags
+        (SELECT STRING_AGG(TagName, ', ') FROM PopularTags) AS TopTags
     FROM 
         RankedPosts RP
     LEFT JOIN 

@@ -26,7 +26,7 @@ PostHistoryDetails AS (
         ph.CreationDate AS HistoryDate,
         pht.Name AS HistoryType,
         COUNT(*) OVER (PARTITION BY ph.PostId) AS HistoryCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS UserComments
+        STRING_AGG(DISTINCT ph.Comment, '; ') AS UserComments
     FROM 
         PostHistory ph
     JOIN 
@@ -39,7 +39,7 @@ PostHistoryDetails AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS CloseReasons
+        STRING_AGG(DISTINCT crt.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

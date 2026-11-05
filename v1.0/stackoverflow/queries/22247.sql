@@ -36,13 +36,13 @@ PostStatistics AS (
         P.Title,
         P.ViewCount,
         COALESCE(CAST(ROUND(AVG(CASE WHEN C.Text IS NOT NULL THEN C.Score END), 2) AS NUMERIC), 0) AS AvgCommentScore,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(Tags.TagName))), ', ') AS TagList
+        STRING_AGG(DISTINCT Tags.TagName, ', ') AS TagList
     FROM 
         Posts P
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
-
-        LEFT ARRAY JOIN splitByString(','::text, assumeNotNull(P.Tags)) AS TagName
+    LEFT JOIN 
+        LATERAL (SELECT unnest(string_to_array(P.Tags, ','::text)) AS TagName) Tags ON TRUE
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 

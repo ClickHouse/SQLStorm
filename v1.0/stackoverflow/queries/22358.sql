@@ -38,7 +38,7 @@ HighestScoredPosts AS (
 PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS PostHistoryTypes,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS PostHistoryTypes,
         COUNT(DISTINCT ph.Id) AS EditCount
     FROM 
         PostHistory ph

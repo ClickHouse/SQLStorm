@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.CommentCount,
         p.Tags,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagNames,
+        STRING_AGG(t.TagName, ', ') AS TagNames,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.ViewCount DESC) AS Rank
     FROM 
         Posts p

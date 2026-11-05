@@ -55,7 +55,7 @@ UserPostStats AS (
 UserBadges AS (
     SELECT 
         rb.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(rb.BadgeName)), ', ') AS Badges
+        STRING_AGG(rb.BadgeName, ', ') AS Badges
     FROM 
         RecentBadges rb
     WHERE 

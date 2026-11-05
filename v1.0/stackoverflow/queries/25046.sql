@@ -29,7 +29,7 @@ RecentPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM Posts p
     JOIN Tags t ON p.Tags LIKE CONCAT('%<', t.TagName, '>%')
     WHERE p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
@@ -49,5 +49,5 @@ SELECT
     p.Score AS RecentPostScore
 FROM TagStatistics ts
 JOIN TopUsers u ON ts.PostCount > 1
-JOIN RecentPosts p ON ts.TagName IN (SELECT arrayJoin(splitByString(', ', assumeNotNull(p.Tags))))
+JOIN RecentPosts p ON ts.TagName IN (SELECT UNNEST(STRING_TO_ARRAY(p.Tags, ', ')))
 ORDER BY ts.TotalViews DESC, u.Reputation DESC, p.CreationDate DESC;

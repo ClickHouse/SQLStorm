@@ -37,11 +37,11 @@ WITH RankedPosts AS (
 )
 SELECT 
     fp.*,
-    COALESCE(arrayDistinct(groupArray(assumeNotNull(t.TagName))) FILTER (WHERE t.TagName IS NOT NULL), '{}') AS RelatedTags
+    COALESCE(ARRAY_AGG(DISTINCT t.TagName) FILTER (WHERE t.TagName IS NOT NULL), '{}') AS RelatedTags
 FROM 
     FilteredPosts fp
 LEFT JOIN 
-    Tags t ON t.TagName = ANY(splitByString('><', assumeNotNull(fp.Tags))) 
+    Tags t ON t.TagName = ANY(string_to_array(fp.Tags, '><')) 
 GROUP BY 
     fp.PostId, fp.Title, fp.Tags, fp.OwnerDisplayName, fp.CommentCount, fp.UpVoteCount, fp.DownVoteCount
 ORDER BY 

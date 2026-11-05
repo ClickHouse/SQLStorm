@@ -24,7 +24,7 @@ PostHistoryAggregation AS (
     SELECT
         PH.UserId,
         COUNT(PH.Id) AS HistoryCount,
-        arrayDistinct(groupArray(assumeNotNull(PH.PostId))) AS RelatedPostIds,
+        ARRAY_AGG(DISTINCT PH.PostId) AS RelatedPostIds,
         MAX(PH.CreationDate) AS LastActivity
     FROM PostHistory PH
     WHERE PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'

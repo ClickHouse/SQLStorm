@@ -12,7 +12,7 @@ WITH RecursiveVoteCounts AS (
 UserBadges AS (
     SELECT u.Id AS UserId,
            COUNT(b.Id) AS TotalBadges,
-           arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+           STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM Users u
     LEFT JOIN Badges b ON u.Id = b.UserId
     GROUP BY u.Id

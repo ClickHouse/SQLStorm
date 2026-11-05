@@ -65,7 +65,7 @@ SELECT
     pa.DiscussionLevel,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = pa.PostId AND v.VoteTypeId = 6) AS CloseVoteCount,
     (SELECT COUNT(*) FROM PostHistory ph WHERE ph.PostId = pa.PostId AND ph.PostHistoryTypeId = 10) AS TotalCloseEvents,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(pht.Name)), ', ') 
+    (SELECT STRING_AGG(pht.Name, ', ') 
      FROM PostHistory h
      JOIN PostHistoryTypes pht ON h.PostHistoryTypeId = pht.Id
      WHERE h.PostId = pa.PostId) AS PostHistorySummary

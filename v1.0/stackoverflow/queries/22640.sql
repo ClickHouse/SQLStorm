@@ -75,7 +75,7 @@ SELECT
     END AS UserReputation,
     COALESCE(lp.Title, 'No Recent Post') AS LatestPostTitle,
     COALESCE(pld.LinkType, 'No Links') AS LinkType,
-    toUnixTimestamp((CAST('2024-10-01 12:34:56' AS TIMESTAMP) - pp.CreationDate)) / 60 AS AgeInMinutes
+    EXTRACT(EPOCH FROM (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - pp.CreationDate)) / 60 AS AgeInMinutes
 FROM 
     PopularPosts pp
 LEFT JOIN 

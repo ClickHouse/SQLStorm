@@ -32,13 +32,13 @@ PostDetailWithTags AS (
         p.ViewCount,
         p.Score,
         COALESCE(pt.Name, 'Unknown') AS PostType,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+        UNNEST(string_to_array(p.Tags, '<>')) AS t(TagName) ON TRUE
     GROUP BY 
         p.Id, pt.Name
 )

@@ -26,7 +26,7 @@ TaggedPosts AS (
         PP.ViewCount,
         PP.AnswerCount,
         PP.CommentCount,
-        arrayJoin(splitByString('>', assumeNotNull(PP.Tags))) AS Tag,
+        unnest(string_to_array(PP.Tags, '>')) AS Tag,
         PP.Author
     FROM 
         PopularPosts PP

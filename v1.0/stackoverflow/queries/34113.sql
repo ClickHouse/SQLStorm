@@ -18,7 +18,7 @@ WITH RECURSIVE UserReputation AS (
     SELECT 
         B.UserId,
         COUNT(*) AS TotalBadges,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM Badges B
     GROUP BY B.UserId
 )
@@ -50,7 +50,7 @@ SELECT
     COALESCE(PS.TotalScore, 0) AS TotalScore,
     COALESCE(PS.TotalPosts, 0) AS TotalPosts,
     COALESCE(PS.TotalViews, 0) AS TotalViews,
-    arrayStringConcat(groupArray(assumeNotNull(RUP.Title)), '; ') AS RecentPosts
+    STRING_AGG(RUP.Title, '; ') AS RecentPosts
 FROM Users U
 LEFT JOIN UserBadges UB ON U.Id = UB.UserId
 LEFT JOIN PostScores PS ON U.Id = PS.OwnerUserId

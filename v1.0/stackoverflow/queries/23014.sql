@@ -82,7 +82,7 @@ SELECT
         WHEN tp.UserTotalVotes BETWEEN 50 AND 100 THEN 'Moderately Engaged'
         ELSE 'Low Engagement'
     END AS EngagementCategory,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS UserTags
+    ARRAY_AGG(DISTINCT t.TagName) AS UserTags
 FROM 
     TopUsers tp
 JOIN 
@@ -91,7 +91,7 @@ LEFT JOIN
     (
         SELECT 
             p.OwnerUserId,
-            arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
+            unnest(string_to_array(p.Tags, '>')) AS TagName
         FROM 
             Posts p
         WHERE 

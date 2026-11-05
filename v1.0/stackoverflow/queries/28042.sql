@@ -37,11 +37,11 @@ UserStats AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagNames
+        STRING_AGG(t.TagName, ', ') AS TagNames
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+        UNNEST(string_to_array(p.Tags, '>')) AS t(TagName) ON TRUE
     GROUP BY 
         p.Id
 )

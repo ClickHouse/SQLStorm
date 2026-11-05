@@ -4,7 +4,7 @@ WITH TagSummary AS (
         COUNT(DISTINCT P.Id) AS PostCount,
         SUM(P.ViewCount) AS TotalViews,
         SUM(P.Score) AS TotalScore,
-        arrayDistinct(groupArray(assumeNotNull(U.DisplayName))) AS Contributors,
+        ARRAY_AGG(DISTINCT U.DisplayName) AS Contributors,
         AVG(P.CreationDate::date - U.CreationDate::date) AS AvgPostAge 
     FROM 
         Tags T

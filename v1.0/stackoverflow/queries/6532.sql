@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         COALESCE(CAST(p.OwnerDisplayName AS VARCHAR), 'Community') AS OwnerDisplayName,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        array_agg(DISTINCT t.TagName) AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT ph.Id) AS EditHistoryCount
     FROM 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+        UNNEST(string_to_array(p.Tags, '><')) AS t(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1 AND p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 

@@ -36,7 +36,7 @@ WITH RankedPosts AS (
         rp.AnswerCount,
         rp.UpVoteCount,
         rp.DownVoteCount,
-        COALESCE(length(splitByString('>', assumeNotNull(rp.Tags)), 1), 0) AS TagCount
+        COALESCE(ARRAY_LENGTH(string_to_array(rp.Tags, '>'), 1), 0) AS TagCount
     FROM 
         RankedPosts rp
     WHERE 
@@ -55,7 +55,7 @@ SELECT
     fp.UpVoteCount,
     fp.DownVoteCount,
     fp.TagCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') 
+    (SELECT STRING_AGG(Name, ', ') 
      FROM PostHistory ph 
      JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id 
      WHERE ph.PostId = fp.PostId 

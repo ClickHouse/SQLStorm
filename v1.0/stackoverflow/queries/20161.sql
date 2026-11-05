@@ -21,7 +21,7 @@ WITH RankedPosts AS (
 UserBadges AS (
     SELECT 
         u.Id AS UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
+        STRING_AGG(b.Name, ', ') AS BadgeNames,
         COUNT(b.Id) AS BadgeCount
     FROM 
         Users u
@@ -33,7 +33,7 @@ UserBadges AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), '; ') AS HistoryTypes,
+        STRING_AGG(DISTINCT pht.Name, '; ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LastHistoryDate
     FROM 
         PostHistory ph

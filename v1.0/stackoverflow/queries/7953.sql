@@ -41,7 +41,7 @@ SELECT
     trp.CommentCount,
     trp.UpVotes,
     trp.DownVotes,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+    (SELECT STRING_AGG(t.TagName, ', ') 
      FROM Tags t 
      JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%' 
      WHERE p.Id = trp.PostId) AS Tags

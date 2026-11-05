@@ -45,10 +45,10 @@ FilteredPosts AS (
     LEFT JOIN 
         (SELECT 
             PostId, 
-            arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') AS TagName
+            STRING_AGG(TagName, ', ') AS TagName
          FROM 
             Posts,
-            arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName
+            UNNEST(string_to_array(Tags, ',')) AS TagName
          GROUP BY 
             PostId) T ON RP.PostId = T.PostId
     WHERE 

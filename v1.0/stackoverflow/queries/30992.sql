@@ -29,7 +29,7 @@ RecentPosts AS (
 CloseReasons AS (
     SELECT ph.PostId, 
            MAX(ph.CreationDate) AS LastCloseDate, 
-           arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasonNames
+           STRING_AGG(cr.Name, ', ') AS CloseReasonNames
     FROM PostHistory ph
     JOIN CloseReasonTypes cr ON CAST(ph.Comment AS INTEGER) = cr.Id
     WHERE ph.PostHistoryTypeId = 10

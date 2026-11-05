@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         u.DisplayName AS Owner,
-        arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypeNames,
+        ARRAY_AGG(DISTINCT pt.Name) AS PostTypeNames,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankByScore
     FROM 
         Posts p
@@ -37,7 +37,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS Comments
+        STRING_AGG(c.Text, '; ') AS Comments
     FROM 
         Comments c
     GROUP BY 

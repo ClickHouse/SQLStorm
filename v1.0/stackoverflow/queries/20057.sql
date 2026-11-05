@@ -16,7 +16,7 @@ ClosedPosts AS (
         P.Title,
         COUNT(CASE WHEN PH.PostHistoryTypeId = 10 THEN 1 END) AS CloseVoteCount,
         MAX(PH.CreationDate) AS LastCloseDate,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PH.UserId IS NOT NULL THEN PH.UserDisplayName END)), ', ') AS Closers
+        STRING_AGG(CASE WHEN PH.UserId IS NOT NULL THEN PH.UserDisplayName END, ', ') AS Closers
     FROM Posts P
     JOIN PostHistory PH ON P.Id = PH.PostId
     WHERE PH.PostHistoryTypeId = 10

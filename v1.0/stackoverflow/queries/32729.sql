@@ -15,7 +15,7 @@ RecentUserPosts AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(r.PostId) AS RecentPostCount,
-        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - r.CreationDate)) / 3600) AS AvgAgeInHours
+        AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - r.CreationDate)) / 3600) AS AvgAgeInHours
     FROM 
         Users u
     LEFT JOIN 

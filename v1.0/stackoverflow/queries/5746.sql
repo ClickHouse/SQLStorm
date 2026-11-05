@@ -61,7 +61,7 @@ SELECT
     pd.UpVotes,
     pd.DownVotes,
     pd.BountyStarts,
-    toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - pd.CreationDate)) AS AgeInSeconds
+    EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - pd.CreationDate)) AS AgeInSeconds
 FROM 
     PostDetails pd
 ORDER BY 

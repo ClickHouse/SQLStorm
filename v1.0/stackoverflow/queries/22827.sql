@@ -20,7 +20,7 @@ WITH
     UserBadges AS (
         SELECT 
             b.UserId,
-            arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
+            STRING_AGG(b.Name, ', ') AS BadgeNames,
             COUNT(b.Id) AS BadgeCount,
             MAX(b.Date) AS LatestBadgeDate
         FROM 

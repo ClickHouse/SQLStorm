@@ -35,12 +35,12 @@ SELECT
     tu.QuestionCount,
     tu.AnswerCount,
     tu.BadgeCount,
-    COALESCE(arrayDistinct(groupArray(assumeNotNull(t.TagName))) FILTER (WHERE t.TagName IS NOT NULL), '{}') AS TopTags
+    COALESCE(ARRAY_AGG(DISTINCT t.TagName) FILTER (WHERE t.TagName IS NOT NULL), '{}') AS TopTags
 FROM TopUsers tu
 LEFT JOIN (
     SELECT 
         p.OwnerUserId,
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
+        UNNEST(string_to_array(p.Tags, ',')) AS TagName
     FROM Posts p
     WHERE p.Tags IS NOT NULL
 ) t ON tu.UserId = t.OwnerUserId

@@ -8,7 +8,7 @@ WITH PostStatistics AS (
         p.ViewCount,
         p.AnswerCount,
         p.CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList,
+        STRING_AGG(t.TagName, ', ') AS TagsList,
         COUNT(DISTINCT c.Id) AS TotalComments,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVotes,  
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVotes   

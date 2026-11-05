@@ -15,7 +15,7 @@ WITH PostStatistics AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS t(TagName) ON true
+        LATERAL unnest(string_to_array(p.Tags, '<>')) AS t(TagName) ON true
     WHERE 
         p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 

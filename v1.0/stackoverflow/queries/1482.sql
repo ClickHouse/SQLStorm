@@ -34,7 +34,7 @@ PostHistorySummary AS (
         ph.PostId,
         COUNT(*) AS EditCount,
         MAX(ph.CreationDate) AS LastEditDate,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ' ORDER BY ph.CreationDate) AS EditComments
+        STRING_AGG(ph.Comment, '; ' ORDER BY ph.CreationDate) AS EditComments
     FROM 
         PostHistory ph 
     WHERE 

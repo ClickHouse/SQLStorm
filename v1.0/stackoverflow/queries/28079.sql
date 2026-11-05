@@ -5,7 +5,7 @@ WITH PostTagCounts AS (
         P.Title,
         P.CreationDate,
         COUNT(T.Id) AS TagCount,
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagsList
+        STRING_AGG(T.TagName, ', ') AS TagsList
     FROM 
         Posts P
     LEFT JOIN 

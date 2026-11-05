@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.ViewCount DESC) AS RankByViews
     FROM 
         Posts p
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS TagName, p.Id AS PostId FROM Posts p) AS tag ON p.Id = tag.PostId
+        (SELECT unnest(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS TagName, p.Id AS PostId FROM Posts p) AS tag ON p.Id = tag.PostId
     LEFT JOIN 
         Tags t ON t.TagName = tag.TagName
     WHERE 
@@ -26,7 +26,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2)))) AS TagName
+        unnest(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><')) AS TagName
     FROM 
         Posts
     WHERE 

@@ -47,7 +47,7 @@ TopPosts AS (
         rp.CreationDate,
         rp.Score,
         rp.OwnerUserId,
-        (toUnixTimestamp(cast('2024-10-01 12:34:56' as timestamp)) - toUnixTimestamp(rp.CreationDate)) / 86400 AS AgeInDays,
+        (EXTRACT(EPOCH FROM cast('2024-10-01 12:34:56' as timestamp)) - EXTRACT(EPOCH FROM rp.CreationDate)) / 86400 AS AgeInDays,
         CASE 
             WHEN phs.EditCount IS NULL THEN 0
             ELSE phs.EditCount

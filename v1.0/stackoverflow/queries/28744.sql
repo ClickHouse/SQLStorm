@@ -2,7 +2,7 @@ WITH RecursiveTags AS (
     
     SELECT 
         p.Id AS PostId, 
-        splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))) AS TagsArray
+        string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><') AS TagsArray
     FROM 
         Posts p
     WHERE 
@@ -10,7 +10,9 @@ WITH RecursiveTags AS (
 ), UnnestTags AS (
     
     SELECT 
-        PostId ARRAY JOIN TagsArray AS TagFROM 
+        PostId, 
+        unnest(TagsArray) AS Tag
+    FROM 
         RecursiveTags
 ), TagCounts AS (
     

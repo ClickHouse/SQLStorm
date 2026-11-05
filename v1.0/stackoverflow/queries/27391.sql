@@ -29,13 +29,13 @@ WITH PostDetails AS (
 
 TagStatistics AS (
     SELECT 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
         AVG(pd.Score) AS AverageScore,
         AVG(pd.ViewCount) AS AverageViewCount
     FROM 
         PostDetails pd
     LEFT JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(pd.Tags))) AS tag ON true
+        UNNEST(STRING_TO_ARRAY(pd.Tags, ',')) AS tag ON true
     JOIN 
         Tags t ON TRIM(tag) = t.TagName
     GROUP BY 

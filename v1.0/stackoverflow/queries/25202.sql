@@ -20,7 +20,7 @@ WITH FilteredPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
+        unnest(string_to_array(Tags, '><')) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         FilteredPosts

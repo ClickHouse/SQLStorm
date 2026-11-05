@@ -24,7 +24,7 @@ PostEngagement AS (
         p.Title,
         p.Score,
         p.ViewCount,
-        datePart('day', TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate) AS AgeInDays,
+        DATE_PART('day', TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate) AS AgeInDays,
         COUNT(DISTINCT c.Id) AS CommentCount, 
         p.AcceptedAnswerId IS NOT NULL AS HasAcceptedAnswer
     FROM 
@@ -37,7 +37,7 @@ PostEngagement AS (
 ClosedPostReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(crt.Name))), ', ') AS CloseReasons
+        STRING_AGG(DISTINCT crt.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -60,7 +60,7 @@ UserPostStats AS (
     FROM 
         UserActivity ua
     LEFT JOIN 
-        PostEngagement pe ON ua.UserId = (SELECT OwnerUserId FROM Posts ORDER BY rand() LIMIT 1)
+        PostEngagement pe ON ua.UserId = (SELECT OwnerUserId FROM Posts ORDER BY RANDOM() LIMIT 1)
     LEFT JOIN 
         ClosedPostReasons cr ON pe.PostId = cr.PostId
 )

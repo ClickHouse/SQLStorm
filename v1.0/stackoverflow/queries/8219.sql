@@ -43,7 +43,7 @@ SELECT
     tp.CommentCount,
     pt.Name AS PostTypeName,
     COUNT(v.Id) AS VoteCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 

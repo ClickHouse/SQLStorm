@@ -49,7 +49,7 @@ SELECT
     fp.CommentCount,
     fp.UpVotes,
     fp.DownVotes,
-    length(splitByString('><', assumeNotNull(fp.Tags)), 1) AS TagCount, 
+    ARRAY_LENGTH(string_to_array(fp.Tags, '><'), 1) AS TagCount, 
     LENGTH(fp.Body) AS BodyLength, 
     CASE 
         WHEN fp.UpVotes > fp.DownVotes THEN 'Positive' 

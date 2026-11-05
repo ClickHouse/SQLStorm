@@ -45,7 +45,7 @@ SELECT
     T.Score,
     T.ViewCount,
     T.OwnerDisplayName,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PT.Name))), ', ') AS PostTypes,
+    STRING_AGG(DISTINCT PT.Name, ', ') AS PostTypes,
     COUNT(DISTINCT B.Id) AS BadgeCount,
     COALESCE(SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpvoteCount
 FROM 

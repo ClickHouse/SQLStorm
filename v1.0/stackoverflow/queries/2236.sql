@@ -6,7 +6,7 @@ WITH PostDetails AS (
         p.Score,
         p.AnswerCount,
         COALESCE(u.DisplayName, 'Anonymous') AS Owner,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount
     FROM 
         Posts p

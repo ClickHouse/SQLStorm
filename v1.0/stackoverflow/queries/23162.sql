@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RN,
         COALESCE(NULLIF(p.Body, ''), '[Empty]') AS BodySnippet, 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS RelatedTags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS RelatedTags
     FROM Posts p
     LEFT JOIN Tags t ON t.ExcerptPostId = p.Id
     WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '365 days'

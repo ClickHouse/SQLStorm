@@ -12,13 +12,13 @@ WITH PostStats AS (
         p.AcceptedAnswerId,
         p.OwnerUserId,
         u.Reputation AS OwnerReputation,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM
         Posts p
     LEFT JOIN
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+        UNNEST(string_to_array(p.Tags, '>')) AS t(TagName) ON TRUE
     GROUP BY
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount, 
         p.CommentCount, p.FavoriteCount, p.AcceptedAnswerId, p.OwnerUserId, 

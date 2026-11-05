@@ -40,7 +40,7 @@ PostHistoryClosed AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag
+        unnest(string_to_array(Tags, '><')) AS Tag
     FROM 
         Posts
     WHERE 

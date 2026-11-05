@@ -71,7 +71,7 @@ SELECT
     TU.TotalViews,
     TU.TotalScore,
     TU.UserStatus,
-    groupArray(assumeNotNull(RPH.UserId)) AS RecentEditors
+    ARRAY_AGG(RPH.UserId) AS RecentEditors
 FROM 
     TopUsers TU
 LEFT JOIN 

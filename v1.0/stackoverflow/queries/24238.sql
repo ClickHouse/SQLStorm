@@ -19,7 +19,7 @@ UserStats AS (
         COUNT(DISTINCT p.Id) AS QuestionCount,
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositiveScoreCount,
         SUM(CASE WHEN p.Score < 0 THEN 1 ELSE 0 END) AS NegativeScoreCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames
+        STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 

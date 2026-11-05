@@ -47,7 +47,7 @@ SELECT
     mu.DisplayName AS MostActiveUser,
     mu.PostCount,
     mu.TotalScore,
-    arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS TopPostTitles
+    STRING_AGG(rp.Title, '; ') AS TopPostTitles
 FROM 
     MostActiveUser mu
 JOIN 

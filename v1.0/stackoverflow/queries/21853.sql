@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.ViewCount DESC) AS RowNum,
-        groupArray(assumeNotNull(t.TagName)) AS TagsArray
+        ARRAY_AGG(t.TagName) AS TagsArray
     FROM 
         Posts p
     LEFT JOIN 
@@ -59,7 +59,7 @@ RankedMetrics AS (
 SELECT 
     rm.*,
     (SELECT COUNT(*) FROM PostHistory ph WHERE ph.PostId = rm.PostId AND ph.CreationDate > rm.CreationDate) AS PostHistoryCount,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Tag: ', tag)))), '; ') FROM arrayJoin(rm.TagsArray) AS tag) AS FormattedTags,
+    (SELECT STRING_AGG(DISTINCT CONCAT('Tag: ', tag), '; ') FROM UNNEST(rm.TagsArray) AS tag) AS FormattedTags,
     CASE 
         WHEN u.LastAccessDate IS NULL OR u.LastAccessDate < rm.CreationDate THEN 'Inactive'
         ELSE 'Active'

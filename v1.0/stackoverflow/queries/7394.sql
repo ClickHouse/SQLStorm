@@ -36,7 +36,7 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     u.Reputation,
     COUNT(v.Id) AS VoteCount,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags
 FROM 
     TopPosts tp
 JOIN 
@@ -46,7 +46,7 @@ JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2  
 LEFT JOIN 
-    arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag_name ON TRUE
+    LATERAL unnest(string_to_array(p.Tags, ',')) AS tag_name ON TRUE
 LEFT JOIN 
     Tags t ON t.TagName = tag_name
 GROUP BY 

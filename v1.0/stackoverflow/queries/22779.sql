@@ -68,7 +68,7 @@ SELECT
             END
         ELSE 'No Changes'
     END AS ActivityLevel,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
      FROM Tags t 
      JOIN Posts p2 ON p2.Tags LIKE '%' || t.TagName || '%' 
      WHERE p2.Id = tp.PostId) AS Tags

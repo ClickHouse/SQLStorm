@@ -28,7 +28,7 @@ UserReputation AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS TagName
+        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS TagName
     FROM 
         Posts p
     WHERE 
@@ -55,7 +55,7 @@ SELECT
     u.DisplayName AS OwnerDisplayName,
     ur.Reputation,
     COALESCE(cb.CloseCount, 0) AS ClosedRecently,
-    arrayStringConcat(groupArray(assumeNotNull(pt.TagName)), ', ') AS Tags,
+    STRING_AGG(pt.TagName, ', ') AS Tags,
     COUNT(DISTINCT c.Id) AS CommentCount
 FROM 
     RankedPosts rp

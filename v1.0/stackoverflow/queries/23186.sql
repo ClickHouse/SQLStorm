@@ -3,7 +3,7 @@ WITH UserBadges AS (
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
         MAX(b.Date) AS MostRecentBadgeDate,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM Users u
     LEFT JOIN Badges b ON u.Id = b.UserId
     GROUP BY u.Id
@@ -25,7 +25,7 @@ PostStatistics AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.PostHistoryTypeId = 10 THEN cr.Name END)), ', ') AS CloseReasons,
+        STRING_AGG(CASE WHEN ph.PostHistoryTypeId = 10 THEN cr.Name END, ', ') AS CloseReasons,
         MIN(ph.CreationDate) AS ClosedOn,
         COUNT(DISTINCT ph.UserId) FILTER (WHERE ph.PostHistoryTypeId = 10) AS UniqueCloseVoters
     FROM PostHistory ph

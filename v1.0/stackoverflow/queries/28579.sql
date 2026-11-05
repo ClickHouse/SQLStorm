@@ -52,7 +52,7 @@ SELECT
     END AS Sentiment,
     U.DisplayName AS AuthorName,
     COUNT(b.Id) AS BadgeCount,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS RelatedTags
+    ARRAY_AGG(DISTINCT t.TagName) AS RelatedTags
 FROM 
     TopPosts tp
 JOIN 
@@ -60,7 +60,7 @@ JOIN
 LEFT JOIN 
     Badges b ON U.Id = b.UserId
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString(',', assumeNotNull(tp.Tags))) AS TagName) AS tag ON true
+    LATERAL (SELECT UNNEST(string_to_array(tp.Tags, ',')) AS TagName) AS tag ON true
 LEFT JOIN 
     Tags t ON t.TagName = tag.TagName
 WHERE 

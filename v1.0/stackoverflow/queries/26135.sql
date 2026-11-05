@@ -32,7 +32,7 @@ ProcessedTags AS (
     
     SELECT 
         PostId,
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag
+        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag
     FROM 
         StringBenchmark
 ),

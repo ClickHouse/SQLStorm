@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
+        STRING_AGG(b.Name, ', ') AS BadgeNames,
         COUNT(CASE WHEN b.Class = 1 THEN 1 END) AS GoldCount,
         COUNT(CASE WHEN b.Class = 2 THEN 1 END) AS SilverCount,
         COUNT(CASE WHEN b.Class = 3 THEN 1 END) AS BronzeCount

@@ -30,7 +30,7 @@ ClosedPostReasons AS (
         ph.UserId,
         ph.Comment,
         COUNT(ph.Id) AS CloseCount,
-        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - ph.CreationDate))) AS AvgCloseTime
+        AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - ph.CreationDate))) AS AvgCloseTime
     FROM PostHistory ph
     WHERE ph.PostHistoryTypeId = 10
     GROUP BY ph.UserId, ph.Comment

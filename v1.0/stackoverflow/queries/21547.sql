@@ -39,12 +39,12 @@ PostDetails AS (
         ps.TotalBounty,
         ROW_NUMBER() OVER (PARTITION BY ps.OwnerUserId ORDER BY ps.CommentCount DESC) AS UserPostRank,
         pt.Name AS PostType,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         PostSummary ps
     JOIN PostTypes pt ON ps.PostTypeId = pt.Id
     LEFT JOIN Posts p ON ps.PostId = p.Id
-    LEFT JOIN (
+    LEFT JOIN LATERAL (
         SELECT 
             SUBSTRING(pb.Tags, 2, LENGTH(pb.Tags) - 2) AS Tags
         FROM 
@@ -52,7 +52,7 @@ PostDetails AS (
         WHERE 
             pb.Id = ps.PostId
     ) AS tagData ON TRUE
-    LEFT JOIN arrayJoin(splitByString('><', assumeNotNull(tagData.Tags))) AS t(TagName) ON TRUE
+    LEFT JOIN UNNEST(string_to_array(tagData.Tags, '><')) AS t(TagName) ON TRUE
     GROUP BY 
         ps.PostId, ps.OwnerUserId, ps.CommentCount, ps.UpVoteCount, ps.DownVoteCount, ps.TotalBounty, pt.Name
 )

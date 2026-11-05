@@ -13,12 +13,12 @@ WITH RankedPosts AS (
     FROM 
         Posts p
     CROSS JOIN 
-        (SELECT arrayJoin(splitByString('>', assumeNotNull(Tags))) AS TaggedName) AS t
+        LATERAL (SELECT unnest(string_to_array(Tags, '>')) AS TaggedName) AS t
 ),
 UserBadges AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ' ORDER BY b.Class) AS BadgeNames,
+        STRING_AGG(b.Name, ', ' ORDER BY b.Class) AS BadgeNames,
         MAX(b.Class) AS HighestBadgeClass
     FROM 
         Badges b
@@ -28,7 +28,7 @@ UserBadges AS (
 PostCloseReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasonNames
+        STRING_AGG(cr.Name, ', ') AS CloseReasonNames
     FROM 
         PostHistory ph
     LEFT JOIN 

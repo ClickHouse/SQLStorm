@@ -62,7 +62,7 @@ SELECT
     PD.TotalPosts,
     PD.AvgViews,
     PD.TotalScore,
-    arrayStringConcat(groupArray(assumeNotNull(PT.Name)), ', ') AS PostTypes
+    STRING_AGG(PT.Name, ', ') AS PostTypes
 FROM 
     PostDetail PD
 LEFT JOIN 

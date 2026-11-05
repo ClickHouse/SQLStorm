@@ -58,7 +58,7 @@ SELECT
     ad.TotalViews,
     ad.AvgComments,
     ad.AvgBadges,
-    arrayStringConcat(groupArray(assumeNotNull(tp.Title)), ', ') AS TopPostTitles
+    STRING_AGG(tp.Title, ', ') AS TopPostTitles
 FROM 
     AggregatedData ad
 JOIN 

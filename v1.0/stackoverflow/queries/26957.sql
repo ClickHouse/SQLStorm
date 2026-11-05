@@ -44,7 +44,7 @@ PostDetails AS (
         tp.OwnerDisplayName,
         tp.CommentCount,
         tp.UpvoteCount,
-        arrayJoin(splitByString('>', assumeNotNull(substring(tp.Body, 2, length(tp.Body)-2)))) AS TagName
+        unnest(string_to_array(substring(tp.Body, 2, length(tp.Body)-2), '>')) AS TagName
     FROM 
         TopPosts tp
 )
@@ -54,7 +54,7 @@ SELECT
     pd.OwnerDisplayName,
     pd.CommentCount,
     pd.UpvoteCount,
-    arrayDistinct(groupArray(assumeNotNull(pd.TagName))) AS Tags,
+    ARRAY_AGG(DISTINCT pd.TagName) AS Tags,
     COUNT(DISTINCT ph.Id) AS EditHistoryCount
 FROM 
     PostDetails pd

@@ -57,7 +57,7 @@ FROM
 LEFT JOIN 
     (SELECT DISTINCT Tags FROM (
         SELECT 
-            arrayJoin(splitByString('<>', assumeNotNull(Tags))) AS Tags 
+            unnest(string_to_array(Tags, '<>')) AS Tags 
         FROM 
             Posts) AS TagData
     ) AS DistinctTags ON true

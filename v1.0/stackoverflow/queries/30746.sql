@@ -37,7 +37,7 @@ PostHistoryAnalysis AS (
         ph.PostHistoryTypeId,
         COUNT(*) AS ChangeCount,
         MAX(ph.CreationDate) AS LastChangeDate,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS ChangeComments
+        STRING_AGG(ph.Comment, '; ') AS ChangeComments
     FROM 
         PostHistory ph
     WHERE 

@@ -36,13 +36,13 @@ TaggedPosts AS (
         rp.OwnerUserId,
         rp.AcceptedAnswerId,
         rp.CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS FormattedTags
+        STRING_AGG(t.TagName, ', ') AS FormattedTags
     FROM 
         RecentPosts rp
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT 
-                TRIM(arrayJoin(splitByString('><', assumeNotNull(rp.Tags)))) AS TagName
+                TRIM(UNNEST(STRING_TO_ARRAY(rp.Tags, '><'))) AS TagName
         ) t ON TRUE
     GROUP BY 
         rp.PostId, rp.Title, rp.Body, rp.Tags, rp.ViewCount, rp.CreationDate, rp.OwnerDisplayName, rp.OwnerUserId, rp.AcceptedAnswerId, rp.CommentCount
@@ -51,7 +51,7 @@ TaggedPosts AS (
 PostHistoryAggregated AS (
     SELECT
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
         COUNT(DISTINCT ph.Id) AS RevisionCount
     FROM 
         PostHistory ph

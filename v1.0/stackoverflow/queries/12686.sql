@@ -11,7 +11,7 @@ SELECT
     COUNT(DISTINCT c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-    arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+    STRING_AGG(b.Name, ', ') AS BadgeNames
 FROM 
     Posts p
 JOIN 

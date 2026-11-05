@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankScore,
-        COALESCE(UPPER(arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ')), 'No Post Type') AS PostTypeNames
+        COALESCE(UPPER(STRING_AGG(pt.Name, ', ')), 'No Post Type') AS PostTypeNames
     FROM 
         Posts p
     LEFT JOIN 
@@ -19,7 +19,7 @@ PostComments AS (
         c.PostId,
         COUNT(c.Id) AS CommentCount,
         MAX(c.CreationDate) AS LastCommentDate,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN CHAR_LENGTH(c.Text) < 40 THEN c.Text ELSE SUBSTRING(c.Text, 1, 37) || '...' END)), '; ') AS SampleComments
+        STRING_AGG(CASE WHEN CHAR_LENGTH(c.Text) < 40 THEN c.Text ELSE SUBSTRING(c.Text, 1, 37) || '...' END, '; ') AS SampleComments
     FROM 
         Comments c
     GROUP BY 
@@ -28,7 +28,7 @@ PostComments AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
         COUNT(ph.Id) AS TotalHistoryEntries,
         MAX(ph.CreationDate) AS LastHistoryChange
     FROM 

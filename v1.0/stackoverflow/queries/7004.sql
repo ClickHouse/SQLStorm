@@ -41,13 +41,13 @@ SELECT
     tp.CommentCount,
     tp.OwnerDisplayName,
     COUNT(c.Id) AS CommentCount,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
     Comments c ON tp.PostId = c.PostId
 LEFT JOIN 
-    arrayJoin(splitByString(' ', assumeNotNull(tp.Title))) AS tag ON tag IS NOT NULL
+    UNNEST(string_to_array(tp.Title, ' ')) AS tag ON tag IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag
 GROUP BY 

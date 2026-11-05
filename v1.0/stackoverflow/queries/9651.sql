@@ -47,7 +47,7 @@ SELECT
     tp.OwnerName, 
     tp.CommentCount, 
     tp.VoteCount, 
-    toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - tp.CreationDate)) AS AgeInSeconds
+    EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - tp.CreationDate)) AS AgeInSeconds
 FROM 
     TopPosts tp
 ORDER BY 

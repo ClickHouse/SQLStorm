@@ -32,7 +32,7 @@ RecentCloseReasons AS (
     SELECT 
         p.Id AS PostId,
         MAX(ph.CreationDate) AS LastClosed,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons
+        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

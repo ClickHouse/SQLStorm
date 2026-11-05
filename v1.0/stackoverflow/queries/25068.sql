@@ -42,13 +42,13 @@ SELECT
     tp.OwnerDisplayName,
     tp.AnswerCount,
     tp.Score,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(UPPER(t.TagName)))), ', ') AS UniqueTags 
+    STRING_AGG(DISTINCT UPPER(t.TagName), ', ') AS UniqueTags 
 FROM 
     TopPosts tp
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(tp.Tags))) AS TagName
+            UNNEST(string_to_array(tp.Tags, '><')) AS TagName
     ) t ON TRUE
 GROUP BY 
     tp.Title, tp.OwnerDisplayName, tp.AnswerCount, tp.Score

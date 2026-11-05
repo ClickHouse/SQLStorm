@@ -10,7 +10,7 @@ WITH UserPostAnalytics AS (
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositivePosts,
         SUM(CASE WHEN p.Score < 0 THEN 1 ELSE 0 END) AS NegativePosts,
         MAX(u.Reputation) AS MaxReputation,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS PopularTags
+        STRING_AGG(t.TagName, ', ') AS PopularTags
     FROM 
         Users u
     LEFT JOIN 
@@ -18,7 +18,7 @@ WITH UserPostAnalytics AS (
     LEFT JOIN 
         Badges b ON u.Id = b.UserId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+        UNNEST(string_to_array(p.Tags, '><')) AS t(TagName) ON TRUE
     WHERE 
         u.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY 

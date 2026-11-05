@@ -38,7 +38,7 @@ SELECT
     tp.CommentCount,
     tp.VoteScore,
     tp.PostRank,
-    toUnixTimestamp(cast('2024-10-01 12:34:56' as timestamp) - tp.CreationDate) AS AgeInSeconds
+    EXTRACT(EPOCH FROM cast('2024-10-01 12:34:56' as timestamp) - tp.CreationDate) AS AgeInSeconds
 FROM TopPosts tp
 WHERE tp.PostRank <= 10
 ORDER BY tp.PostRank;

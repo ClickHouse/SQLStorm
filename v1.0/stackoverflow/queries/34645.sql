@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
         DENSE_RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS RankScore,
-        length(splitByString('><', assumeNotNull(p.Tags)), 1) AS TagCount
+        ARRAY_LENGTH(string_to_array(p.Tags, '><'), 1) AS TagCount
     FROM 
         Posts p
     JOIN 
@@ -34,7 +34,7 @@ PostHistoryChanges AS (
         ph.PostId,
         COUNT(*) AS EditCount,
         MAX(ph.CreationDate) AS LastEditDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS ChangeTypes
+        STRING_AGG(DISTINCT pht.Name, ', ') AS ChangeTypes
     FROM 
         PostHistory ph
     JOIN 

@@ -36,13 +36,13 @@ SELECT
         ELSE 'Regular User'
     END AS UserCategory,
     (SELECT 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+        STRING_AGG(DISTINCT t.TagName, ', ') 
      FROM Posts p
-     JOIN arrayJoin(splitByString(', ', assumeNotNull(p.Tags))) AS tagArray ON tagArray IS NOT NULL
+     JOIN UNNEST(STRING_TO_ARRAY(p.Tags, ', ')) AS tagArray ON tagArray IS NOT NULL
      JOIN Tags t ON t.TagName = TRIM(tagArray)
      WHERE p.OwnerUserId = tu.UserId) AS UserTags,
     (SELECT 
-        COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Text))), '; '), 'No Comments') 
+        COALESCE(STRING_AGG(DISTINCT c.Text, '; '), 'No Comments') 
         FROM Comments c 
         WHERE c.UserId = tu.UserId) AS UserComments
 FROM TopUsers tu

@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 ), PostWithHistory AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
         COUNT(*) AS HistoryCount
     FROM PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id

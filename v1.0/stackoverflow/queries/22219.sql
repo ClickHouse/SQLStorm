@@ -42,10 +42,10 @@ ClosedPostDetails AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastClosedDate,
-        arrayStringConcat(groupArray(assumeNotNull(CASE 
+        STRING_AGG(CASE 
             WHEN ph.Comment IS NOT NULL THEN ph.Comment 
             ELSE 'No reason provided' 
-            END)), ', ') AS CloseReasons
+            END, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     WHERE 

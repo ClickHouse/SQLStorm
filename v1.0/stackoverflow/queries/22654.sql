@@ -64,7 +64,7 @@ SELECT
         WHEN phd.PostHistoryTypeId = 12 THEN 'Deleted'
         ELSE 'Active'
     END AS Status,
-    (p.ViewCount * 1.0) / NULLIF((toUnixTimestamp(CAST('2024-10-01 12:34:56' AS timestamp) - p.CreationDate) / 3600), 0) AS ViewsPerHour
+    (p.ViewCount * 1.0) / NULLIF((EXTRACT(EPOCH FROM CAST('2024-10-01 12:34:56' AS timestamp) - p.CreationDate) / 3600), 0) AS ViewsPerHour
 FROM 
     RankedPosts p
 JOIN 

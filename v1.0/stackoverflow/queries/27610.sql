@@ -1,7 +1,7 @@
 
 WITH TagStats AS (
     SELECT
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS Tag,
+        UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS Tag,
         COUNT(*) AS PostCount
     FROM
         Posts
@@ -56,7 +56,7 @@ FinalResults AS (
     SELECT
         tpm.PopularTag,
         COUNT(tpm.PostId) AS RelatedPostCount,
-        arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS RelatedPostTitles,
+        STRING_AGG(rp.Title, '; ') AS RelatedPostTitles,
         MAX(rp.CreationDate) AS LatestPostDate
     FROM
         TagPostMapping tpm

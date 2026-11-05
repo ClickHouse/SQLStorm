@@ -37,7 +37,7 @@ SELECT
     tp.CommentCount,
     tp.VoteCount,
     pt.Name AS PostType,
-    groupArray(assumeNotNull(b.Name)) AS UserBadges
+    ARRAY_AGG(b.Name) AS UserBadges
 FROM 
     TopPosts tp
 LEFT JOIN 

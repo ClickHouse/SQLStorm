@@ -45,13 +45,13 @@ SELECT
     tp.UpVoteCount,
     tp.DownVoteCount,
     ROUND((tp.UpVoteCount::decimal / NULLIF(tp.UpVoteCount + tp.DownVoteCount, 0)) * 100, 2) AS UpVotePercentage,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)))) AS TagName
+            UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS TagName
         FROM 
             Posts p 
         WHERE 

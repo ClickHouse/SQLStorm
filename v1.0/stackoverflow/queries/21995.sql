@@ -41,7 +41,7 @@ FilteredTopPosts AS (
         rp.VoteCount,
         COALESCE(rp.RankScore, 0) AS RankScore, 
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = rp.PostId) AS CommentCount,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(tag.TagName)), ', ') 
+        (SELECT STRING_AGG(tag.TagName, ', ') 
          FROM Tags tag
          INNER JOIN Posts p ON p.Tags LIKE CONCAT('%', tag.TagName, '%')
          WHERE p.Id = rp.PostId) AS TagsUsed

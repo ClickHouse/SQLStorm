@@ -22,7 +22,7 @@ PostStatistics AS (
         p.Score,
         p.CreationDate,
         LEAD(p.CreationDate) OVER (ORDER BY p.CreationDate) AS NextPostDate,
-        toUnixTimestamp((LEAD(p.CreationDate) OVER (ORDER BY p.CreationDate) - p.CreationDate)) AS TimeToNextPost
+        EXTRACT(EPOCH FROM (LEAD(p.CreationDate) OVER (ORDER BY p.CreationDate) - p.CreationDate)) AS TimeToNextPost
     FROM 
         Posts p
     WHERE 

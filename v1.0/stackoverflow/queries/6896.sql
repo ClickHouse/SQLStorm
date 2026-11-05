@@ -32,7 +32,7 @@ TopContributors AS (
 ),
 MostActivePostTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName, 
+        UNNEST(STRING_TO_ARRAY(p.Tags, '><')) AS TagName, 
         COUNT(*) AS PostCount
     FROM 
         Posts p

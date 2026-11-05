@@ -28,13 +28,13 @@ PostMetrics AS (
         p.ViewCount,
         p.Score,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag ON tag IS NOT NULL
+        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -66,7 +66,7 @@ SELECT
     COUNT(a.PostId) AS NumberOfPosts,
     SUM(a.ViewCount) AS TotalViews,
     AVG(a.Score) AS AvgScore,
-    arrayStringConcat(groupArray(assumeNotNull(a.Tags)), ', ') AS AssociatedTags
+    STRING_AGG(a.Tags, ', ') AS AssociatedTags
 FROM 
     ActiveUserPosts a
 GROUP BY 

@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         p.CommentCount,
         p.FavoriteCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM
         Posts p
     LEFT JOIN

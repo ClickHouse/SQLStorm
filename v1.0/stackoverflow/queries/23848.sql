@@ -29,11 +29,11 @@ TopUserVotes AS (
 PostWithTags AS (
     SELECT
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(NULLIF(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))), '{}')) AS t(TagName) ON TRUE
+        UNNEST(NULLIF(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><'), '{}')) AS t(TagName) ON TRUE
     WHERE
         p.PostTypeId = 1 
     GROUP BY

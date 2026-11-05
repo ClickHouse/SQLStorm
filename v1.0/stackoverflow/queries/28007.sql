@@ -4,7 +4,7 @@ WITH PostTagCounts AS (
         p.Title,
         p.CreationDate,
         p.OwnerUserId,
-        length(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2))), 1) AS TagCount
+        ARRAY_LENGTH(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><'), 1) AS TagCount
     FROM 
         Posts p
     WHERE 

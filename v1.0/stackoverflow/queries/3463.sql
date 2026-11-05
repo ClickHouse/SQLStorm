@@ -27,7 +27,7 @@ WITH RankedPosts AS (
 RecentBadges AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
@@ -39,7 +39,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         ph.PostHistoryTypeId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS Comments
+        STRING_AGG(ph.Comment, ', ') AS Comments
     FROM 
         PostHistory ph
     WHERE 

@@ -34,14 +34,14 @@ UserStats AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
+        UNNEST(string_to_array(Tags, '><')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         Tags IS NOT NULL
     GROUP BY 
-        arrayJoin(splitByString('><', assumeNotNull(Tags)))
+        UNNEST(string_to_array(Tags, '><'))
     ORDER BY 
         TagCount DESC
     LIMIT 5

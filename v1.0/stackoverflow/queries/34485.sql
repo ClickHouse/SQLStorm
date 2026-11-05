@@ -49,13 +49,13 @@ SELECT
     tp.CommentCount,
     tp.UpVotes,
     tp.DownVotes,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
     Posts p ON tp.PostId = p.Id
-
-    LEFT ARRAY JOIN splitByString('>', assumeNotNull(p.Tags)) AS TagName
+LEFT JOIN 
+    LATERAL (SELECT UNNEST(string_to_array(p.Tags, '>')) AS TagName) t ON true
 WHERE 
     tp.ScoreRank <= 10  
 GROUP BY 

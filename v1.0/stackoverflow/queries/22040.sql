@@ -53,7 +53,7 @@ SELECT
     TU.TotalDownVotes,
     ROUND(COALESCE((CAST(TU.TotalUpVotes AS FLOAT) / NULLIF(TU.TotalPosts, 0)) * 100, 0), 2) AS UpvotePercentage,
     (
-        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(P.Title))), ', ') 
+        SELECT STRING_AGG(DISTINCT P.Title, ', ') 
         FROM Posts P 
         WHERE P.OwnerUserId = TU.Id 
         AND P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'

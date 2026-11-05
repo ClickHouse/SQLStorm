@@ -65,7 +65,7 @@ SELECT
     pd.CommentCount,
     pd.OwnerDisplayName,
     pd.OwnerReputation,
-    arrayDistinct(groupArray(assumeNotNull(pd.BadgeName))) AS Badges,
+    ARRAY_AGG(DISTINCT pd.BadgeName) AS Badges,
     pd.VoteCount
 FROM 
     PostDetails pd

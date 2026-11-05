@@ -43,7 +43,7 @@ SELECT
     rp.Title AS RecentPostTitle,
     rp.CreationDate AS RecentPostDate,
     rp.Score AS RecentPostScore,
-    COALESCE(groupArray(assumeNotNull(c.Text ORDER BY c.CreationDate DESC)), '{}') AS RecentPostComments,
+    COALESCE(ARRAY_AGG(c.Text ORDER BY c.CreationDate DESC), '{}') AS RecentPostComments,
     pt.Name AS PostType
 FROM 
     TopUsers tu

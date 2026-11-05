@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Score,
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RN,
-        arrayDistinct(groupArray(assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS UniqueTags
+        ARRAY_AGG(DISTINCT SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)) AS UniqueTags
     FROM 
         Posts p
     WHERE 

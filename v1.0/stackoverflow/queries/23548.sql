@@ -22,12 +22,12 @@ PostDetails AS (
         L.LinkTypeId,
         PH.PostHistoryTypeId,
         PH.Comment,
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
+        STRING_AGG(T.TagName, ', ') AS Tags
     FROM Posts P
     LEFT JOIN PostLinks L ON P.Id = L.PostId
     LEFT JOIN PostHistory PH ON P.Id = PH.PostId
-    LEFT JOIN (
-        SELECT arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS TagName
+    LEFT JOIN LATERAL (
+        SELECT UNNEST(STRING_TO_ARRAY(P.Tags, '>')) AS TagName
     ) T ON TRUE
     WHERE P.ViewCount > 100 AND P.CreationDate < CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY P.Id, P.Title, P.Score, P.AnswerCount, P.ViewCount, P.CreationDate, P.ClosedDate, L.LinkTypeId, PH.PostHistoryTypeId, PH.Comment

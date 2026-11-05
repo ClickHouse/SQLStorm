@@ -9,7 +9,7 @@ WITH PostStats AS (
         COUNT(c.Id) AS CommentCount,
         MAX(b.Class) AS HighestBadgeClass,
         DENSE_RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS PostTags
+        ARRAY_AGG(DISTINCT t.TagName) AS PostTags
     FROM 
         Posts p
     LEFT JOIN 
@@ -17,7 +17,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Badges b ON p.OwnerUserId = b.UserId AND b.Date <= p.CreationDate
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT tag.TagName FROM Tags tag 
             WHERE tag.WikiPostId = p.Id OR tag.ExcerptPostId = p.Id
         ) AS t ON TRUE

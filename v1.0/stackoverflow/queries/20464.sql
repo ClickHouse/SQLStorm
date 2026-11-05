@@ -38,7 +38,7 @@ PostDetails AS (
 ApprovedComments AS (
     SELECT 
         c.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS Comments
+        STRING_AGG(c.Text, '; ') AS Comments
     FROM 
         Comments c
     WHERE 

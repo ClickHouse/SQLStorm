@@ -33,7 +33,7 @@ UserPerformance AS (
             WHEN COALESCE(PS.TotalQuestions, 0) > 0 AND COALESCE(PS.TotalAnswers, 0) > 0 THEN 'Active Contributor'
             ELSE 'Inactive or Passive'
         END AS ActivityLevel,
-        datePart('epoch', COALESCE(BC.LastBadgeDate, '1970-01-01'::timestamp)) AS LastBadgeEpoch
+        DATE_PART('epoch', COALESCE(BC.LastBadgeDate, '1970-01-01'::timestamp)) AS LastBadgeEpoch
     FROM Users U
     LEFT JOIN BadgeCounts BC ON U.Id = BC.UserId
     LEFT JOIN PostStats PS ON U.Id = PS.OwnerUserId

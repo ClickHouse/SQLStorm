@@ -45,15 +45,15 @@ SELECT
         WHEN rp.CommentCount > 5 THEN 'Popular'
         ELSE 'Standard' 
     END AS PostCategory,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ExtractedTags.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT ExtractedTags.TagName, ', ') AS Tags
 FROM 
     RankedPosts rp
 LEFT JOIN 
     RecentVotes rv ON rp.PostId = rv.PostId
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName
+            unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName
         FROM 
             Posts p WHERE p.Id = rp.PostId
     ) AS ExtractedTags ON TRUE

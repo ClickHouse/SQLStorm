@@ -50,7 +50,7 @@ PostLinkStats AS (
     SELECT 
         pl.PostId,
         COUNT(pl.RelatedPostId) AS RelatedPostCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lt.Name))), ', ') AS LinkTypeNames
+        STRING_AGG(DISTINCT lt.Name, ', ') AS LinkTypeNames
     FROM PostLinks pl
     INNER JOIN LinkTypes lt ON pl.LinkTypeId = lt.Id
     GROUP BY pl.PostId

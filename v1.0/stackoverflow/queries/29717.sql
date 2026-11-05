@@ -5,7 +5,7 @@ WITH TagStats AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(p.Score) AS TotalScore,
         AVG(p.ViewCount) AS AvgViews,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopContributors
+        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopContributors
     FROM 
         Tags t
     JOIN 
@@ -21,7 +21,7 @@ CloseReasonStats AS (
     SELECT 
         crt.Name AS CloseReason,
         COUNT(ph.PostId) AS CloseCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Title))), '; ') AS ClosedPosts
+        STRING_AGG(DISTINCT p.Title, '; ') AS ClosedPosts
     FROM 
         PostHistory ph
     JOIN 

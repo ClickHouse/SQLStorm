@@ -35,15 +35,15 @@ UserPostActivity AS (
         COUNT(DISTINCT p.Id) AS PostsCreated,
         SUM(p.ViewCount) AS TotalViews,
         AVG(ps.CommentCount) AS AverageComments,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed
     FROM 
         Users u
     JOIN 
         Posts p ON u.Id = p.OwnerUserId
     LEFT JOIN 
         PostStatistics ps ON p.Id = ps.PostId
-
-        LEFT ARRAY JOIN splitByString(',', assumeNotNull(p.Tags)) AS TagName
+    LEFT JOIN 
+        LATERAL (SELECT unnest(string_to_array(p.Tags, ',')) AS TagName) t ON TRUE
     GROUP BY 
         u.Id
 )

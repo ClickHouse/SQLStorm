@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 ),
 DistinctTags AS (
     SELECT
-        DISTINCT TRIM(splitByRegexp('>', p.Tags)) AS TagName,
+        DISTINCT TRIM(REGEXP_SPLIT_TO_TABLE(p.Tags, '>')) AS TagName,
         p.Id AS PostId
     FROM 
         Posts p

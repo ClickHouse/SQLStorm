@@ -52,7 +52,7 @@ SELECT
     aps.Questions,
     aps.Answers,
     aps.TotalScore,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(tt.TagName)), ', ') 
+    (SELECT STRING_AGG(tt.TagName, ', ') 
         FROM TopTags tt) AS CommonTags,
     COUNT(ap.Id) AS ActivePostsCount,
     SUM(ap.Upvotes) AS TotalUpvotes,

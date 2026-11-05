@@ -23,7 +23,7 @@ WITH RECURSIVE UserReputationCTE AS (
 PostTagsCTE AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag
+        unnest(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -63,7 +63,7 @@ SELECT
     COALESCE(hs.IsClosed, 0) AS IsClosed,
     COALESCE(hs.IsReopened, 0) AS IsReopened,
     COUNT(DISTINCT c.Id) AS CommentCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tt.Tag))), ', ') AS Tags,
+    STRING_AGG(DISTINCT tt.Tag, ', ') AS Tags,
     u.DisplayName,
     u.Reputation AS UserReputation
 FROM 

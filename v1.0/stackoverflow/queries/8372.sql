@@ -44,7 +44,7 @@ SELECT
     u.DisplayName AS Author,
     u.Reputation,
     (SELECT 
-        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') 
+        STRING_AGG(pt.Name, ', ') 
      FROM 
         PostTypes pt 
      WHERE 

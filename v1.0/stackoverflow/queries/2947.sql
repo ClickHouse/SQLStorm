@@ -48,7 +48,7 @@ SELECT
         WHEN t.Score > 100 THEN 'Hot Post' 
         ELSE 'Regular Post' 
     END AS PostStatus,
-    arrayStringConcat(groupArray(assumeNotNull(CONCAT('User: ', u.DisplayName, ' voted ', CASE WHEN v.VoteTypeId = 2 THEN 'up' ELSE 'down' END))), '; ') AS VoterDetails
+    STRING_AGG(CONCAT('User: ', u.DisplayName, ' voted ', CASE WHEN v.VoteTypeId = 2 THEN 'up' ELSE 'down' END), '; ') AS VoterDetails
 FROM 
     TopPosts t
 LEFT JOIN 

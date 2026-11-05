@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.Score,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS UpvoteCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagList
+        STRING_AGG(t.TagName, ', ') AS TagList
     FROM 
         Posts p
     JOIN 
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2  
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)))) AS tag ON true
+        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS tag ON true
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 

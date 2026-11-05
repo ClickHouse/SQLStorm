@@ -65,7 +65,7 @@ SELECT
     op.Score_Status,
     COUNT(DISTINCT phd.EditorId) AS TotalEditors,
     MAX(phd.EditDate) AS LastEditDate,
-    arrayStringConcat(groupArray(assumeNotNull(phd.EditComment)), '; ') AS EditorComments
+    STRING_AGG(phd.EditComment, '; ') AS EditorComments
 FROM 
     OpenPosts op
 LEFT JOIN 

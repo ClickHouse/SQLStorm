@@ -6,7 +6,7 @@ WITH FilteredPosts AS (
         p.Body,
         p.Tags,
         COALESCE(REPLACE(SUBSTRING(p.Body FROM '(<p>)(.*?)(</p>)'), '<p>', ''), '') AS CleanBody,
-        length(splitByString('><', assumeNotNull(p.Tags)), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(p.Tags, '><'), 1) AS TagCount,
         COUNT(c.Id) AS CommentCount
     FROM 
         Posts p

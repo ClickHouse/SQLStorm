@@ -19,10 +19,10 @@ WITH RankedPosts AS (
 TagsList AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(TRIM(tag))), ', ') AS Tags
+        STRING_AGG(TRIM(tag), ', ') AS Tags
     FROM 
         Posts p,
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag
+        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag
     GROUP BY 
         p.Id
 ),

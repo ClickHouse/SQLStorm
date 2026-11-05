@@ -45,11 +45,11 @@ SELECT
     fp.CreationDate,
     fp.CommentCount,
     fp.VoteCount,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS RelatedTags
+    STRING_AGG(t.TagName, ', ') AS RelatedTags
 FROM 
     FilteredPosts fp
 LEFT JOIN 
-    Tags t ON t.TagName = ANY(splitByString(',', assumeNotNull(fp.Tags)))
+    Tags t ON t.TagName = ANY(STRING_TO_ARRAY(fp.Tags, ','))
 GROUP BY 
     fp.OwnerDisplayName, fp.Title, fp.CreationDate, fp.CommentCount, fp.VoteCount
 ORDER BY 

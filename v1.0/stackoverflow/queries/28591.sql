@@ -32,7 +32,7 @@ FilteredPosts AS (
 ),
 TagStats AS (
     SELECT 
-        TRIM(splitByRegexp('><', Tags)) AS Tag,
+        TRIM(REGEXP_SPLIT_TO_TABLE(Tags, '><')) AS Tag,
         COUNT(*) AS PostCount,
         AVG(Score) AS AvgScore
     FROM 

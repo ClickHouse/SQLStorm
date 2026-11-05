@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         COALESCE(AVG(b.Class), 0) AS AverageBadgeClass

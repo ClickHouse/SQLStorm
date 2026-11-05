@@ -68,13 +68,13 @@ SELECT
         WHEN epi.OwnerReputation BETWEEN 500 AND 999 THEN 'Experienced' 
         ELSE 'Novice' 
     END AS UserCategory,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ' ORDER BY t.TagName) AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ' ORDER BY t.TagName) AS Tags
 FROM 
     EnhancedPostInfo epi
     LEFT JOIN Posts p ON epi.PostId = p.Id
-    LEFT JOIN (
+    LEFT JOIN LATERAL (
         SELECT 
-            arrayJoin(splitByString(', ', assumeNotNull(p.Tags))) AS TagName
+            UNNEST(STRING_TO_ARRAY(p.Tags, ', ')) AS TagName
     ) t ON TRUE
 GROUP BY 
     epi.PostId, epi.Title, epi.CreationDate, epi.Score, epi.CloseOpenCount, epi.DeletionCount, epi.OwnerReputation

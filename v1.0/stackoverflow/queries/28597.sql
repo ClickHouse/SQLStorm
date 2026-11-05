@@ -5,7 +5,7 @@ WITH TagAnalysis AS (
         p.CreationDate,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounty,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 

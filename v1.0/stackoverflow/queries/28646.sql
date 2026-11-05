@@ -53,7 +53,7 @@ SELECT
     tu.PostCount,
     tu.QuestionCount,
     tu.AnswerCount,
-    toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - tu.LastPostDate)) / 3600 AS HoursSinceLastPost
+    EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - tu.LastPostDate)) / 3600 AS HoursSinceLastPost
 FROM 
     TopUsers tu
 ORDER BY 

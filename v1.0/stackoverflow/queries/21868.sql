@@ -32,7 +32,7 @@ PostHistoryWithVoteCounts AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         COUNT(*) AS VoteCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.Name))), ', ') AS HistoryTypeNames
+        STRING_AGG(DISTINCT t.Name, ', ') AS HistoryTypeNames
     FROM 
         PostHistory ph
     JOIN 

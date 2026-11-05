@@ -16,7 +16,7 @@ WITH PostInfo AS (
     LEFT JOIN 
         PostHistory ph ON p.Id = ph.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS t(TagName) ON TRUE
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS t(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1  
 ),
@@ -35,7 +35,7 @@ AggregatedVotes AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ' | ') AS EditComments,
+        STRING_AGG(ph.Comment, ' | ') AS EditComments,
         MAX(ph.CreationDate) AS LastEditDate,
         MIN(ph.CreationDate) AS FirstEditDate,
         COUNT(*) AS EditCount

@@ -29,7 +29,7 @@ RecentActivity AS (
         ua.TotalQuestions,
         ua.TotalUpVotes,
         ua.TotalDownVotes,
-        datePart('day', TIMESTAMP '2024-10-01 12:34:56' - ua.LastPostDate) AS DaysSinceLastPost
+        DATE_PART('day', TIMESTAMP '2024-10-01 12:34:56' - ua.LastPostDate) AS DaysSinceLastPost
     FROM 
         UserActivity ua
     WHERE 

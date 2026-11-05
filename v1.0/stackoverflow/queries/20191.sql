@@ -46,7 +46,7 @@ SELECT
         ELSE 'Closed' 
     END AS PostStatus,
     (SELECT COUNT(*) FROM Comments C WHERE C.PostId = PD.PostId) AS CommentCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') FROM Tags T 
+    (SELECT STRING_AGG(T.TagName, ', ') FROM Tags T 
      JOIN Posts PS ON PS.Tags LIKE '%' || T.TagName || '%' 
      WHERE PS.Id = PD.PostId) AS AssociatedTags
 FROM 

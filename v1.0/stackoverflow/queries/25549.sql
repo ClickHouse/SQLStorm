@@ -41,7 +41,7 @@ SELECT
     tp.CommentCount,
     u.DisplayName AS OwnerDisplayName,
     u.Reputation AS OwnerReputation,
-    arrayDistinct(groupArray(assumeNotNull(tag.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT tag.TagName) AS Tags
 FROM 
     TopPosts tp
 JOIN 
@@ -51,7 +51,7 @@ JOIN
 LEFT JOIN 
     (SELECT 
         p.Id AS PostId,
-        splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))) AS TagName
+        string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><') AS TagName
     FROM 
         Posts p
     WHERE 

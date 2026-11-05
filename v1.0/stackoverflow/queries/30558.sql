@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 RecentPostHistory AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(pht.Name)), ', ') AS HistoryTypes,
+        STRING_AGG(pht.Name, ', ') AS HistoryTypes,
         COUNT(*) AS HistoryCount
     FROM 
         PostHistory ph

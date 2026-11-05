@@ -9,7 +9,7 @@ WITH PostSummary AS (
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.UserId) AS VoteCount,
         COUNT(DISTINCT CASE WHEN b.Id IS NOT NULL THEN b.Id END) AS BadgeCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 

@@ -52,7 +52,7 @@ SELECT
     COUNT(DISTINCT pa.PostId) AS TotalPosts,
     SUM(pa.UpVoteCount) AS TotalUpVotes,
     SUM(pa.DownVoteCount) AS TotalDownVotes,
-    AVG(toUnixTimestamp((CURRENT_TIMESTAMP - pa.CreationDate))) AS AvgPostAge
+    AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - pa.CreationDate))) AS AvgPostAge
 FROM 
     Users u
 LEFT JOIN PostActivity pa ON u.Id = pa.OwnerUserId

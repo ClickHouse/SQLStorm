@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.Score,
         u.DisplayName AS OwnerDisplayName,
         COUNT(a.Id) AS AnswerCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagList,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagList,
         ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.CreationDate DESC) AS rn
     FROM 
         Posts p
@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON a.ParentId = p.Id AND a.PostTypeId = 2
     LEFT JOIN 
-        arrayJoin(splitByString('> <', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)))) AS tag ON TRUE
+        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '> <')) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 

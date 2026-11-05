@@ -9,7 +9,7 @@ SELECT
     u.Reputation AS OwnerReputation,
     COUNT(c.Id) AS CommentCount,
     COUNT(v.Id) AS VoteCount,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags 
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags 
 FROM 
     Posts p 
 JOIN 
@@ -19,7 +19,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId 
 LEFT JOIN 
-    arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag ON true 
+    UNNEST(string_to_array(p.Tags, '>')) AS tag ON true 
 LEFT JOIN 
     Tags t ON tag = t.TagName 
 WHERE 

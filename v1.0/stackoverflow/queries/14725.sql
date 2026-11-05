@@ -8,7 +8,7 @@ SELECT
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownvotes,
     AVG(p.Score) AS AveragePostScore,
     AVG(p.ViewCount) AS AverageViewCount,
-    AVG(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate))) AS AveragePostAgeInSeconds
+    AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - p.CreationDate))) AS AveragePostAgeInSeconds
 FROM 
     Users u
 LEFT JOIN 

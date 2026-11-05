@@ -30,7 +30,7 @@ User_Badges AS (
         u.Id AS UserId, 
         u.DisplayName,
         COUNT(*) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 

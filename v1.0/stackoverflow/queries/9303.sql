@@ -16,7 +16,7 @@ WITH RecentPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON tag IS NOT NULL
+        UNNEST(string_to_array(p.Tags, ',')) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = TRIM(tag)  
     WHERE 
@@ -64,7 +64,7 @@ SELECT
     pa.FavoriteCount,
     pa.UpVotes,
     pa.DownVotes,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pa.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT pa.TagName, ', ') AS Tags
 FROM 
     PostAnalytics pa
 GROUP BY 

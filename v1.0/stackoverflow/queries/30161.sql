@@ -34,7 +34,7 @@ PostDetails AS (
 RecentBadges AS (
     SELECT 
         b.UserId,
-        groupArray(assumeNotNull(b.Name ORDER BY b.Date DESC)) AS BadgeNames,
+        ARRAY_AGG(b.Name ORDER BY b.Date DESC) AS BadgeNames,
         COUNT(b.Id) AS TotalBadges
     FROM 
         Badges b

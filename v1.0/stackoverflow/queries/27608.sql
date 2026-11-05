@@ -45,8 +45,8 @@ SELECT
     COUNT(t.PostId) as TotalQuestions,
     SUM(t.CommentCount) as TotalComments,
     ROUND(AVG(t.AverageVoteType), 2) as AvgVoteType,
-    arrayStringConcat(groupArray(assumeNotNull(t.Title)), '; ') as Titles,
-    arrayStringConcat(groupArray(assumeNotNull(t.Body)), ' ') as AllBodies
+    STRING_AGG(t.Title, '; ') as Titles,
+    STRING_AGG(t.Body, ' ') as AllBodies
 FROM 
     TopPosts t
 GROUP BY 

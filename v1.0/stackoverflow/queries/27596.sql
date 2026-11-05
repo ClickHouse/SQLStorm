@@ -56,7 +56,7 @@ SELECT
     CASE 
         WHEN ps.EditCount IS NOT NULL THEN 
             CASE 
-                WHEN datePart('day', CURRENT_DATE - ps.LatestEditDate) <= 30 THEN 'Recently Edited'
+                WHEN DATE_PART('day', CURRENT_DATE - ps.LatestEditDate) <= 30 THEN 'Recently Edited'
                 ELSE 'Edited More Than 30 Days Ago'
             END
         ELSE 'Never Edited'

@@ -52,7 +52,7 @@ SELECT
     pd.CommentCount, 
     pd.TotalBounties,
     pd.AnswerStatus,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypeNames
+    STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypeNames
 FROM RankedUsers ru
 JOIN PostDetails pd ON ru.Id = pd.PostId
 LEFT JOIN PostTypes pt ON pd.CommentCount > 0 AND pd.TotalBounties > 0

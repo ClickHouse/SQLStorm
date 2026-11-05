@@ -26,7 +26,7 @@ WITH RecentPosts AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2)))) AS Tag
+        unnest(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><')) AS Tag
     FROM 
         RecentPosts
 ),
@@ -64,7 +64,7 @@ SELECT
     tp.CommentCount,
     tp.ViewCount,
     tp.Score,
-    arrayDistinct(groupArray(assumeNotNull(tt.Tag))) AS TopTags
+    ARRAY_AGG(DISTINCT tt.Tag) AS TopTags
 FROM 
     TopPosts tp 
 JOIN 

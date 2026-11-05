@@ -47,7 +47,7 @@ SELECT
     trp.Tags,
     trp.CommentCount,
     trp.VoteCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(u.DisplayName, ': ', b.Name)))), '; ') AS UserBadges
+    STRING_AGG(DISTINCT CONCAT(u.DisplayName, ': ', b.Name), '; ') AS UserBadges
 FROM 
     TopRankedPosts trp
 LEFT JOIN 

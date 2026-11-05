@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         p.Tags,
         ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY p.Score DESC) AS RankByScore,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypeNames
+        STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypeNames
     FROM 
         Posts p
     JOIN 
@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS Tag
+        UNNEST(STRING_TO_ARRAY(p.Tags, '>')) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -49,7 +49,7 @@ UserStatistics AS (
         COUNT(DISTINCT p.Id) AS PostCount,
         SUM(CASE WHEN p.Score > 0 THEN 1 ELSE 0 END) AS PositivePosts,
         SUM(CASE WHEN p.Score <= 0 THEN 1 ELSE 0 END) AS NegativePosts,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgesEarned
+        STRING_AGG(DISTINCT b.Name, ', ') AS BadgesEarned
     FROM 
         Users u
     LEFT JOIN 

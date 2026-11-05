@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'), 1) AS TagCount,
         u.DisplayName AS OwnerDisplayName,
         u.Reputation AS OwnerReputation,
         RANK() OVER (ORDER BY p.Score DESC, p.ViewCount DESC) AS RankScore
@@ -64,7 +64,7 @@ SELECT
     pwv.UpVotes,
     pwv.DownVotes,
     (pwv.UpVotes - pwv.DownVotes) AS NetVotes,
-    (toUnixTimestamp(cast('2024-10-01 12:34:56' as timestamp) - pwv.CreationDate) / 3600) AS HoursSinceCreation
+    (EXTRACT(EPOCH FROM cast('2024-10-01 12:34:56' as timestamp) - pwv.CreationDate) / 3600) AS HoursSinceCreation
 FROM 
     PostWithVotes pwv
 WHERE 

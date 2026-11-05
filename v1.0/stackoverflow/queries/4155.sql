@@ -31,7 +31,7 @@ UserInteraction AS (
 SELECT ui.UserId, ui.DisplayName, ui.Reputation, 
        ui.BadgeCount, ui.TotalPosts, ui.QuestionCount,
        ui.AnswerCount, ui.AvgViews,
-       COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+       COALESCE((SELECT STRING_AGG(t.TagName, ', ') 
                  FROM Tags t 
                  JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%' 
                  WHERE p.OwnerUserId = ui.UserId), 'No Tags') AS TagsUsed,

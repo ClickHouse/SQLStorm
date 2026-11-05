@@ -74,7 +74,7 @@ SELECT
     PD.ViewCount,
     PD.CommentCount,
     PD.TotalBounty,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHC.PostHistoryType))), '; ') AS RecentChanges
+    STRING_AGG(DISTINCT PHC.PostHistoryType, '; ') AS RecentChanges
 FROM 
     PostDetails PD
 LEFT JOIN 

@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         p.Tags,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
         COALESCE(u.DisplayName, 'Community User') AS OwnerDisplayName,
-        toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) AS AgeInSeconds
+        EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) AS AgeInSeconds
     FROM 
         Posts p
     LEFT JOIN 
@@ -27,7 +27,7 @@ WITH RankedPosts AS (
 ),
 PostTagCounts AS (
     SELECT 
-        Unnest(splitByString(',', assumeNotNull(Tags))) AS Tag,
+        Unnest(string_to_array(Tags, ',')) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts

@@ -19,10 +19,10 @@ ClosedPosts AS (
     SELECT
         PH.PostId,
         COUNT(PH.Id) AS CloseCount,
-        arrayStringConcat(groupArray(assumeNotNull(CASE 
+        STRING_AGG(CASE 
             WHEN C.Name IS NOT NULL THEN C.Name 
             ELSE 'Undefined' 
-        END)), ', ') AS CloseReasons
+        END, ', ') AS CloseReasons
     FROM
         PostHistory PH
     LEFT JOIN
@@ -36,7 +36,7 @@ UserWithBadges AS (
     SELECT
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM
         Users U
     LEFT JOIN

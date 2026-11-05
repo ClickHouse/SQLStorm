@@ -23,7 +23,7 @@ PostStats AS (
         COUNT(p.Id) AS TotalPosts,
         SUM(p.Score) AS TotalScore,
         SUM(p.ViewCount) AS TotalViews,
-        AVG(toUnixTimestamp(p.CreationDate)) AS AveragePostDate
+        AVG(EXTRACT(EPOCH FROM p.CreationDate)) AS AveragePostDate
     FROM 
         Posts p
     JOIN 
@@ -46,7 +46,7 @@ SELECT
     ps.TotalPosts,
     ps.TotalScore,
     ps.TotalViews,
-    toDateTime64(ps.AveragePostDate, 6) AS AveragePostDate
+    TO_TIMESTAMP(ps.AveragePostDate) AS AveragePostDate
 FROM 
     RankedPosts r
 JOIN 

@@ -32,7 +32,7 @@ WITH RankedPosts AS (
 PostHistoryAggregated AS (
     SELECT 
         ph.PostId,
-        arrayDistinct(groupArray(assumeNotNull(ph.Comment))) AS CommentsAboutChanges,
+        ARRAY_AGG(DISTINCT ph.Comment) AS CommentsAboutChanges,
         COUNT(ph.Id) AS HistoryCount,
         MAX(ph.CreationDate) AS LastHistoryDate
     FROM 

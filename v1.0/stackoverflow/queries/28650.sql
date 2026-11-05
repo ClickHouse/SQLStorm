@@ -4,13 +4,13 @@ WITH UserTags AS (
         U.Id AS UserId,
         U.DisplayName,
         COUNT(DISTINCT T.TagName) AS TagCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
     FROM 
         Users U
     JOIN 
         Posts P ON U.Id = P.OwnerUserId
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2)))) AS T(TagName) ON TRUE
+        unnest(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) AS T(TagName) ON TRUE
     WHERE 
         P.PostTypeId = 1 
     GROUP BY 
@@ -23,7 +23,7 @@ PopularTags AS (
     FROM 
         Posts P
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2)))) AS T(TagName) ON TRUE
+        unnest(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) AS T(TagName) ON TRUE
     GROUP BY 
         T.TagName
     ORDER BY 

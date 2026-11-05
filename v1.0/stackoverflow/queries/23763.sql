@@ -23,7 +23,7 @@ ClosedPostAnalysis AS (
     SELECT 
         PH.PostId, 
         COUNT(*) AS CloseCount,
-        arrayStringConcat(groupArray(assumeNotNull(CAST(PH.CreationDate AS VARCHAR))), ', ' ORDER BY PH.CreationDate) AS CloseDates,
+        STRING_AGG(CAST(PH.CreationDate AS VARCHAR), ', ' ORDER BY PH.CreationDate) AS CloseDates,
         MAX(PH.CreationDate) AS LastCloseDate
     FROM 
         PostHistory PH

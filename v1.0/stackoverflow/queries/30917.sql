@@ -52,7 +52,7 @@ RecentPosts AS (
 PostHistorySummary AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes,
+        STRING_AGG(PHT.Name, ', ') AS HistoryTypes,
         COUNT(PH.Id) AS TotalHistoryEntries
     FROM 
         PostHistory PH

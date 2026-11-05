@@ -38,13 +38,13 @@ SELECT
     rp.VoteScore,
     rp.CommentCount,
     rp.BadgeCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS RelatedTags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS RelatedTags
 FROM 
     RankedPosts rp
 LEFT JOIN 
     Posts p ON rp.PostID = p.Id
 LEFT JOIN 
-    Tags t ON t.TagName IN (SELECT arrayJoin(splitByString(',', assumeNotNull(rp.Tags))))
+    Tags t ON t.TagName IN (SELECT UNNEST(string_to_array(rp.Tags, ',')))
 WHERE 
     rp.Rank <= 10
 GROUP BY 

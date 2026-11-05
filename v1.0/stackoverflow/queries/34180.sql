@@ -29,11 +29,11 @@ TopRankedPosts AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        groupArray(assumeNotNull(t.TagName)) AS Tags
+        array_agg(t.TagName) AS Tags
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag ON true
+        unnest(string_to_array(p.Tags, '><')) AS tag ON true
     JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

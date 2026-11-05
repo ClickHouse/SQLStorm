@@ -51,12 +51,12 @@ SELECT
     fp.UpVotes,
     fp.DownVotes,
     CONCAT('This post has ', fp.CommentCount, ' comments and ', fp.UpVotes, ' upvotes.') AS Summary,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
 FROM 
     FilteredPosts fp
-    LEFT JOIN (
+    LEFT JOIN LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(fp.Tags FROM 2 FOR LENGTH(fp.Tags) - 2)))) AS TagName
+            unnest(string_to_array(SUBSTRING(fp.Tags FROM 2 FOR LENGTH(fp.Tags) - 2), '><')) AS TagName
     ) AS t ON TRUE
 GROUP BY 
     fp.PostId, fp.Title, fp.Body, fp.Tags, fp.OwnerDisplayName, fp.CreationDate, fp.CommentCount, fp.UpVotes, fp.DownVotes

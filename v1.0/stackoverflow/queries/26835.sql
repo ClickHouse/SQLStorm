@@ -34,7 +34,7 @@ WITH RankedPosts AS (
 ), PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
         COUNT(ph.Id) AS EditCount
     FROM 
         PostHistory ph
@@ -62,7 +62,7 @@ FROM
 LEFT JOIN 
     PostHistoryInfo pht ON rp.PostId = pht.PostId
 JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString(',', assumeNotNull(rp.Tags)))
+    PopularTags pt ON pt.TagName = ANY(string_to_array(rp.Tags, ','))
 WHERE 
     rp.rn = 1  
 ORDER BY 

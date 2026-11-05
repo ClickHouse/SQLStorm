@@ -38,8 +38,8 @@ ClosedPostReasons AS (
     SELECT 
         ph.PostHistoryTypeId,
         COUNT(DISTINCT ph.PostId) AS ClosedPostCount,
-        arrayStringConcat(groupArray(assumeNotNull(p.Title)), '; ') AS ClosedPostTitles,
-        arrayStringConcat(groupArray(assumeNotNull(u.DisplayName)), '; ') AS UserDisplayNames
+        STRING_AGG(p.Title, '; ') AS ClosedPostTitles,
+        STRING_AGG(u.DisplayName, '; ') AS UserDisplayNames
     FROM 
         PostHistory ph
     JOIN 

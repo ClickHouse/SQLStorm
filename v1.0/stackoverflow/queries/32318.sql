@@ -19,7 +19,7 @@ RecentComments AS (
     SELECT 
         c.PostId, 
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS RecentCommentsText
+        STRING_AGG(c.Text, '; ') AS RecentCommentsText
     FROM 
         Comments c
     GROUP BY 

@@ -46,11 +46,11 @@ SELECT
 FROM 
     TopPosts tp
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagName
+            STRING_AGG(t.TagName, ', ') AS TagName
         FROM 
-            arrayJoin(splitByString(' ', assumeNotNull(tp.Title))) AS tag
+            UNNEST(string_to_array(tp.Title, ' ')) AS tag
         JOIN 
             Tags t ON t.TagName = tag
     ) t ON TRUE

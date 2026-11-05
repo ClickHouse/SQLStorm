@@ -56,7 +56,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        arrayStringConcat(groupArray(assumeNotNull(ph.PostHistoryTypeId::text || ': ' || ph.Comment)), '; ') AS EditComments
+        STRING_AGG(ph.PostHistoryTypeId::text || ': ' || ph.Comment, '; ') AS EditComments
     FROM 
         PostHistory ph
     GROUP BY 

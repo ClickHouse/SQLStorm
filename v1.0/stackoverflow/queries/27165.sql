@@ -25,7 +25,7 @@ WITH RankedPosts AS (
 ),
 FilteredTags AS (
     SELECT 
-        DISTINCT arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag
+        DISTINCT UNNEST(string_to_array(Tags, '><')) AS Tag
     FROM 
         RankedPosts
 )

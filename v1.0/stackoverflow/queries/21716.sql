@@ -16,7 +16,7 @@ UserStats AS (
         u.Id AS UserId,
         COUNT(DISTINCT p.Id) AS QuestionsAsked,
         SUM(CASE WHEN p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS AcceptedAnswers,
-        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - u.CreationDate)) / 86400) AS DaysActive
+        AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - u.CreationDate)) / 86400) AS DaysActive
     FROM 
         Users u
     LEFT JOIN 

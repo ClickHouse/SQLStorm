@@ -28,7 +28,7 @@ PostVoteCounts AS (
 ClosedPosts AS (
     SELECT p.Id AS PostId,
            MAX(ph.CreationDate) AS LastClosedDate,
-           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasons
+           STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasons
     FROM Posts p
     JOIN PostHistory ph ON p.Id = ph.PostId AND ph.PostHistoryTypeId IN (10, 11)
     LEFT JOIN CloseReasonTypes ctr ON ctr.Id = CAST(ph.Comment AS INT)

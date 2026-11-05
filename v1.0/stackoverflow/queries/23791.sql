@@ -66,7 +66,7 @@ SELECT
     ps.OwnerName,
     ps.TotalComments,
     ps.ScoreCategory,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ')
+    (SELECT STRING_AGG(pt.Name, ', ')
      FROM PostHistory ph
      JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
      WHERE ph.PostId = ps.PostId

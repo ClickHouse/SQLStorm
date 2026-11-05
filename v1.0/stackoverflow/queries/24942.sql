@@ -23,7 +23,7 @@ ClosedPosts AS (
         P.OwnerUserId,
         PH.CreationDate AS CloseCreationDate,
         COUNT(*) AS CloseCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(C.UserDisplayName))), ', ') AS ClosingUserNames
+        STRING_AGG(DISTINCT C.UserDisplayName, ', ') AS ClosingUserNames
     FROM PostHistory PH
     JOIN Posts P ON P.Id = PH.PostId
     LEFT JOIN Comments C ON C.PostId = PH.PostId

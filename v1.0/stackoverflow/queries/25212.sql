@@ -52,7 +52,7 @@ SELECT
     SUM(t.ViewCount) AS TotalViews,
     AVG(t.Score) AS AverageScore,
     SUM(t.CommentCount) AS TotalComments,
-    arrayStringConcat(groupArray(assumeNotNull(t.Title)), ', ') AS TopPostTitles
+    STRING_AGG(t.Title, ', ') AS TopPostTitles
 FROM 
     TopPosts t
 GROUP BY 

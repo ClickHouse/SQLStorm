@@ -14,7 +14,7 @@ WITH RankedPosts AS (
 ClosedPosts AS (
     SELECT ph.PostId, 
            COUNT(ph.Id) AS CloseCount,
-           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasons
+           STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasons
     FROM PostHistory ph
     JOIN CloseReasonTypes ctr ON ctr.Id::text = ph.Comment AND ph.PostHistoryTypeId = 10
     WHERE ph.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'

@@ -16,7 +16,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
@@ -43,7 +43,7 @@ DistinctTagCounts AS (
         COUNT(DISTINCT TRIM(value)) AS TagCount
     FROM 
         Posts p,
-        arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS value
+        UNNEST(string_to_array(p.Tags, '<>')) AS value
     GROUP BY 
         p.Id
 ),

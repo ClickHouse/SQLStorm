@@ -37,7 +37,7 @@ RecentComments AS (
 PostHistoryFiltered AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS HistoryComments
+        STRING_AGG(ph.Comment, ', ') AS HistoryComments
     FROM 
         PostHistory ph
     WHERE 

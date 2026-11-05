@@ -49,7 +49,7 @@ SELECT
     tp.CommentCount,
     tp.BadgeCount,
     (SELECT 
-         arrayStringConcat(groupArray(assumeNotNull(CONCAT('(', pt.Id, ') ', pt.Name))), ', ') 
+         STRING_AGG(CONCAT('(', pt.Id, ') ', pt.Name), ', ') 
      FROM 
          PostTypes pt 
      JOIN 

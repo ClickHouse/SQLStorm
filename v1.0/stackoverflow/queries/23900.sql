@@ -49,7 +49,7 @@ SELECT
         WHEN cd.UpVoteCount < cd.DownVoteCount THEN 'Negative Engagement'
         ELSE 'Neutral Engagement'
     END AS EngagementStatus,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') FROM Tags t INNER JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%' WHERE p.Id = cd.PostId) AS RelatedTags,
+    (SELECT STRING_AGG(t.TagName, ', ') FROM Tags t INNER JOIN Posts p ON p.Tags LIKE '%' || t.TagName || '%' WHERE p.Id = cd.PostId) AS RelatedTags,
     COALESCE(
         (SELECT COUNT(*) FROM Badges b WHERE b.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = cd.PostId)), 
         0) AS UserBadgeCount

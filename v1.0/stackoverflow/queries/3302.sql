@@ -49,7 +49,7 @@ SELECT
     UVS.TotalVotes,
     UVS.UpVotes,
     UVS.DownVotes,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(TT.TagName)), ', ') FROM TopTags TT) AS TopTags
+    (SELECT STRING_AGG(TT.TagName, ', ') FROM TopTags TT) AS TopTags
 FROM 
     RecentPosts RP
 JOIN 

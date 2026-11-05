@@ -31,11 +31,11 @@ UserReputation AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags 
+        STRING_AGG(t.TagName, ', ') AS Tags 
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag_name ON true
+        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag_name ON true
     JOIN 
         Tags t ON t.TagName = tag_name
     GROUP BY 

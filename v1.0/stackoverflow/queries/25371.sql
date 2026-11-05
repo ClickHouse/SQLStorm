@@ -49,13 +49,13 @@ SELECT
     fp.Score,
     fp.OwnerName,
     fp.CommentCount,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
+    string_agg(t.TagName, ', ') AS TagsList
 FROM 
     FilteredPosts fp
 LEFT JOIN 
     (SELECT 
          Id, 
-         arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName 
+         unnest(string_to_array(Tags, '><')) AS TagName 
      FROM 
          Posts) t ON t.Id = fp.PostId
 GROUP BY 

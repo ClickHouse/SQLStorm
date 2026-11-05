@@ -66,7 +66,7 @@ SELECT
                 ELSE 'Positive Score'
             END
     END AS ScoreStatus,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames
+    STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames
 FROM 
     RankedPosts rp
 LEFT JOIN 

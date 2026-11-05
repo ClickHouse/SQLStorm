@@ -8,13 +8,13 @@ WITH RankedPosts AS (
         p.AnswerCount,
         RANK() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RankByUser,
         COUNT(c.Id) AS CommentCount,
-        groupArray(assumeNotNull(t.TagName)) AS Tags
+        ARRAY_AGG(t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
-
-        LEFT ARRAY JOIN splitByString('>', assumeNotNull(p.Tags)) AS TagName
+    LEFT JOIN 
+        LATERAL (SELECT unnest(string_to_array(p.Tags, '>')) AS TagName) t ON true
     WHERE 
         p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '1 year'
     GROUP BY 
@@ -44,7 +44,7 @@ PostHistoryAnalysis AS (
     SELECT 
         p.Id AS PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS EditComments,
+        STRING_AGG(DISTINCT ph.Comment, '; ') AS EditComments,
         COUNT(DISTINCT CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.Id END) AS TotalCloseHistory
     FROM 
         Posts p

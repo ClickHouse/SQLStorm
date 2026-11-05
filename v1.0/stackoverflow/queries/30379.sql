@@ -3,7 +3,7 @@ WITH UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges
+        STRING_AGG(b.Name, ', ') AS Badges
     FROM Users u
     LEFT JOIN Badges b ON u.Id = b.UserId
     GROUP BY u.Id

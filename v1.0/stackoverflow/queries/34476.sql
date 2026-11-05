@@ -33,7 +33,7 @@ WITH RECURSIVE UserActivity AS (
     SELECT 
         B.UserId,
         COUNT(B.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM 
         Badges B
     GROUP BY 

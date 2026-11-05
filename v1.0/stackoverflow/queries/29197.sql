@@ -45,11 +45,11 @@ FilteredPosts AS (
 ComputedTags AS (
     SELECT 
         PostId,
-        arrayStringConcat(groupArray(assumeNotNull(tag)), ', ') AS FormattedTags
+        STRING_AGG(tag, ', ') AS FormattedTags
     FROM 
         (SELECT 
             PostId,
-            arrayJoin(splitByString('<>', assumeNotNull(Tags))) AS tag
+            unnest(string_to_array(Tags, '<>')) AS tag
         FROM 
             FilteredPosts) AS TagList
     GROUP BY 

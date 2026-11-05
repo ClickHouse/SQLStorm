@@ -34,7 +34,7 @@ QuestionTags AS (
     FROM 
         TopQuestions Q
     CROSS JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(Q.Tags))) AS T(TagName)
+        UNNEST(string_to_array(Q.Tags, '><')) AS T(TagName)
     GROUP BY 
         T.TagName
 ),

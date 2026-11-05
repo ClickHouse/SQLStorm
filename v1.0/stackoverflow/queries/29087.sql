@@ -27,7 +27,7 @@ WITH RankedPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(Trim(both '<>' from Tags)))) AS TagName,
+        unnest(string_to_array(Trim(both '<>' from Tags), '>')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts
@@ -54,7 +54,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TopTags tt ON tt.TagName = ANY (splitByString('>', assumeNotNull(rp.Tags)))
+    TopTags tt ON tt.TagName = ANY (string_to_array(rp.Tags, '>'))
 WHERE 
     tt.Rank <= 10 
 ORDER BY 

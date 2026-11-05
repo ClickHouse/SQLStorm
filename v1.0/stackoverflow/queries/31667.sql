@@ -39,16 +39,16 @@ SELECT
     p.ViewCount,
     COALESCE(vs.UpVotes, 0) AS TotalUpVotes,
     COALESCE(vs.DownVotes, 0) AS TotalDownVotes,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags
 FROM UserActivity ra
 JOIN Posts p ON ra.UserId = p.OwnerUserId
 LEFT JOIN VoteSummary vs ON vs.PostId = p.Id
-LEFT JOIN (
+LEFT JOIN LATERAL (
     SELECT
         t.TagName
     FROM Tags t
-    JOIN (
-        SELECT arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS Tag
+    JOIN LATERAL (
+        SELECT unnest(string_to_array(p.Tags, '>')) AS Tag
     ) AS tag_array ON t.TagName = tag_array.Tag
 ) AS t ON TRUE
 WHERE p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '60 days'

@@ -23,7 +23,7 @@ SELECT
     CASE 
         WHEN AVG(rp.ViewCount) IS NOT NULL THEN AVG(rp.ViewCount) 
         ELSE 0 END AS AverageViews,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsUsed,
+    ARRAY_AGG(DISTINCT t.TagName) AS TagsUsed,
     MAX(b.Date) FILTER (WHERE b.Class = 1) AS GoldBadgeDate 
 FROM 
     Users u

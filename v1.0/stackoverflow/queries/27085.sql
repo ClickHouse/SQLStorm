@@ -29,7 +29,7 @@ PopularPosts AS (
         p.ViewCount,
         p.Score,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts AS p
     LEFT JOIN 

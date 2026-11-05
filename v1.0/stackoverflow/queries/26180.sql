@@ -4,9 +4,9 @@ WITH StringProcessedData AS (
         p.Id AS PostId,
         p.Title,
         p.Body,
-        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'), 1) AS TagCount,
         COALESCE((
-            SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') 
+            SELECT STRING_AGG(DISTINCT u.DisplayName, ', ') 
             FROM Users u
             JOIN Posts p2 ON u.Id = p2.OwnerUserId 
             WHERE p2.Id = p.Id

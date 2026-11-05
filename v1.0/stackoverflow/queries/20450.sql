@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.ViewCount DESC) AS RankByScoreViewCount,
         COALESCE(uh.UpVotes, 0) - COALESCE(uh.DownVotes, 0) AS NetVotes,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -25,11 +25,11 @@ WITH RankedPosts AS (
     LEFT JOIN 
         (SELECT 
             PostId, 
-            arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') AS TagName 
+            STRING_AGG(TagName, ', ') AS TagName 
          FROM 
             (SELECT 
                p.Id AS PostId, 
-               TRIM(arrayJoin(splitByString('><', assumeNotNull(p.Tags)))) AS TagName 
+               TRIM(UNNEST(STRING_TO_ARRAY(p.Tags, '><'))) AS TagName 
              FROM Posts p) AS t
          GROUP BY PostId) t ON p.Id = t.PostId
     GROUP BY 

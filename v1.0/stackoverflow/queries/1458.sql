@@ -42,7 +42,7 @@ SELECT
         ELSE 'Neutral'
     END AS VoteSentiment,
     COALESCE(
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+        (SELECT STRING_AGG(t.TagName, ', ') 
          FROM Tags t 
          JOIN Posts p ON t.ExcerptPostId = p.Id 
          WHERE p.Id = tp.PostId), 

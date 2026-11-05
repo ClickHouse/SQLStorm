@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerName,
         pt.Name AS PostType,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS RankScore,
-        groupArray(assumeNotNull(t.TagName)) AS TagsList
+        ARRAY_AGG(t.TagName) AS TagsList
     FROM 
         Posts p
     JOIN 
@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+        unnest(string_to_array(p.Tags, '><')) AS t(TagName) ON TRUE
     WHERE 
         p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month' 
     GROUP BY 

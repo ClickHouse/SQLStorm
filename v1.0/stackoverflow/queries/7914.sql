@@ -38,7 +38,7 @@ PostMetrics AS (
         tp.OwnerDisplayName,
         COALESCE(AVG(c.Score), 0) AS AverageCommentScore,
         COUNT(v.Id) AS VoteCount,
-        COALESCE(stddevPop(v.BountyAmount), 0) AS AverageBountyAmount
+        COALESCE(STDDEV(v.BountyAmount), 0) AS AverageBountyAmount
     FROM 
         TopPosts tp
     LEFT JOIN 

@@ -8,8 +8,8 @@ SELECT
     u.DisplayName as OwnerDisplayName,
     COUNT(c.Id) as CommentCount,
     COUNT(v.Id) as VoteCount,
-    arrayDistinct(groupArray(assumeNotNull(pt.Name))) as PostTypeNames,
-    arrayDistinct(groupArray(assumeNotNull(ht.Name))) as PostHistoryTypeNames
+    ARRAY_AGG(DISTINCT pt.Name) as PostTypeNames,
+    ARRAY_AGG(DISTINCT ht.Name) as PostHistoryTypeNames
 FROM 
     Posts p
 JOIN 

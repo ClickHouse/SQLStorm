@@ -52,7 +52,7 @@ SELECT
     pd.Author,
     pd.CommentCount,
     pd.MaxBounty,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+    (SELECT STRING_AGG(t.TagName, ', ') 
      FROM Tags t 
      JOIN Posts p ON p.Tags LIKE CONCAT('%', t.TagName, '%') 
      WHERE p.Id = pd.PostId) AS Tags,

@@ -8,7 +8,7 @@ WITH PostStats AS (
         COUNT(DISTINCT com.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVotes,
         COUNT(DISTINCT v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVotes,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -18,7 +18,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag_elements(tag) ON TRUE
+        unnest(string_to_array(p.Tags, ',')) AS tag_elements(tag) ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(tag_elements.tag)
     WHERE 

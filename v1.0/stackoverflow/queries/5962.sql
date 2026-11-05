@@ -32,7 +32,7 @@ TopPosts AS (
 PostAnnotations AS (
     SELECT 
         H.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN H.PostHistoryTypeId = 10 THEN C.Name END)), ', ') AS CloseReasons,
+        STRING_AGG(CASE WHEN H.PostHistoryTypeId = 10 THEN C.Name END, ', ') AS CloseReasons,
         MAX(H.CreationDate) AS LastEdited,
         COUNT(C.Id) AS CommentCount
     FROM 

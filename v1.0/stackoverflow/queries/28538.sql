@@ -4,7 +4,7 @@ WITH RankedPosts AS (
         p.Title,
         p.Body,
         p.Tags,
-        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'), 1) AS TagCount,
         p.CreationDate,
         p.LastActivityDate,
         u.Reputation,

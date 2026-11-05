@@ -50,7 +50,7 @@ SELECT
     COUNT(DISTINCT pt.Id) AS PostTags,
     (
         SELECT 
-            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tg.TagName))), ', ') 
+            STRING_AGG(DISTINCT tg.TagName, ', ') 
         FROM 
             Tags tg 
         WHERE 

@@ -28,7 +28,7 @@ PostVoteSummary AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.UserDisplayName, ' (', ph.CreationDate, '): ', ph.Comment))), '; ') AS HistoryComments
+        STRING_AGG(CONCAT(ph.UserDisplayName, ' (', ph.CreationDate, '): ', ph.Comment), '; ') AS HistoryComments
     FROM 
         PostHistory ph
     WHERE 

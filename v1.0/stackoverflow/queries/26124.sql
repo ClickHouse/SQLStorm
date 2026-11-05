@@ -65,7 +65,7 @@ SELECT
     pd.AuthorName,
     pd.BadgeCount,
     pd.CommentCount,
-    arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostTypeNames
+    STRING_AGG(pt.Name, ', ') AS PostTypeNames
 FROM 
     PostDetails pd
 JOIN 

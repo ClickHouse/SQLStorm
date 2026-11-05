@@ -78,5 +78,5 @@ SELECT
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = ps.PostId AND v.VoteTypeId = 2) AS UpVoteCount,
     (SELECT COUNT(*) FROM Votes v WHERE v.PostId = ps.PostId AND v.VoteTypeId = 3) AS DownVoteCount
 FROM TopUsers tu
-JOIN PostsStatistics ps ON rand() < 0.1 
+JOIN PostsStatistics ps ON RANDOM() < 0.1 
 ORDER BY tu.ActivityRank, ps.EffectiveCreationDate DESC;

@@ -27,7 +27,7 @@ TagStatistics AS (
         SUM(ViewCount) AS TotalViews
     FROM (
         SELECT 
-            arrayJoin(splitByString('<>', assumeNotNull(Tags))) AS tag,
+            UNNEST(string_to_array(Tags, '<>')) AS tag,
             Score,
             ViewCount
         FROM 

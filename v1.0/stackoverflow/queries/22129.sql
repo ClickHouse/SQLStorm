@@ -35,7 +35,7 @@ ClosedPostHistory AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(C.Name))), ', ') AS CloseReasons
+        STRING_AGG(DISTINCT C.Name, ', ') AS CloseReasons
     FROM PostHistory PH
     JOIN CloseReasonTypes C ON (PH.Comment::jsonb)::text::int = C.Id
     WHERE PH.PostHistoryTypeId IN (10, 11) 

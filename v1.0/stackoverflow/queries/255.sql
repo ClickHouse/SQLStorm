@@ -66,7 +66,7 @@ SELECT
         ELSE 'Active' 
     END AS PostStatus,
     (SELECT COUNT(*) FROM Comments C WHERE C.PostId = PD.PostId) AS CommentCount,
-    arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
+    STRING_AGG(T.TagName, ', ') AS Tags
 FROM 
     PostDetails PD
 LEFT JOIN 

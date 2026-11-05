@@ -34,7 +34,7 @@ TopPosts AS (
 PostDetails AS (
     SELECT 
         TP.*,
-        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT T.TagName) AS Tags,
         COALESCE(SUM(V.BountyAmount), 0) AS TotalBounties
     FROM 
         TopPosts TP

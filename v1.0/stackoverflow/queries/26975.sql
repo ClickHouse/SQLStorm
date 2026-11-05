@@ -58,7 +58,7 @@ SELECT
     ps.AnswerCommentCount,
     ps.AnswerUpVotes,
     ps.AnswerDownVotes,
-    toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - ps.CreationDate)) AS AgeInSeconds
+    EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - ps.CreationDate)) AS AgeInSeconds
 FROM 
     PostStats ps
 WHERE 

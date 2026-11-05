@@ -19,14 +19,14 @@ WITH RankedPosts AS (
 ),
 TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag, 
+        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag, 
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2))))
+        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><'))
 ),
 TopTags AS (
     SELECT 
@@ -43,7 +43,7 @@ PostHistories AS (
         ph.PostId,
         COUNT(*) AS EditCount,
         MAX(ph.CreationDate) AS LastEditedDate,
-        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS EditHistory
+        STRING_AGG(pt.Name, ', ') AS EditHistory
     FROM 
         PostHistory ph
     JOIN 
@@ -69,7 +69,7 @@ FinalResults AS (
     LEFT JOIN 
         PostHistories e ON r.PostId = e.PostId
     JOIN 
-        TopTags t ON t.Tag = ANY (splitByString('><', assumeNotNull(substring(r.Tags, 2, length(r.Tags) - 2))))
+        TopTags t ON t.Tag = ANY (string_to_array(substring(r.Tags, 2, length(r.Tags) - 2), '><'))
     WHERE 
         r.Rank <= 5 
 )

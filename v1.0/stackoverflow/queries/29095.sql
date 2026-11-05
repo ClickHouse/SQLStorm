@@ -44,7 +44,7 @@ SELECT
     TU.ClosedQuestions,
     TU.TotalCloseVotes,
     (SELECT COUNT(*) FROM Tags T WHERE T.Count > 500) AS PopularTagsCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
+    (SELECT STRING_AGG(T.TagName, ', ') 
      FROM Tags T 
      JOIN Posts P ON P.Tags LIKE '%' || T.TagName || '%' 
      WHERE P.OwnerUserId = TU.UserId) AS UserTags

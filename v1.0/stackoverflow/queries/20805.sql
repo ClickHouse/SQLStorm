@@ -73,7 +73,7 @@ SELECT
     up.VoteCount,
     up.UpVoteCount,
     up.DownVoteCount,
-    datePart('year', AGE(up.CreationDate)) AS PostAgeInYears,
+    DATE_PART('year', AGE(up.CreationDate)) AS PostAgeInYears,
     CASE 
         WHEN up.Score > 10 THEN 'High Score'
         WHEN up.Score BETWEEN 5 AND 10 THEN 'Moderate Score'

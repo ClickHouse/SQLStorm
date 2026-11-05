@@ -44,7 +44,7 @@ HighReputationUsers AS (
 ClosedPostReasons AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CAST(CR.Name AS VARCHAR))), ', ') AS Reasons,
+        STRING_AGG(CAST(CR.Name AS VARCHAR), ', ') AS Reasons,
         COUNT(PH.Id) AS CloseCount
     FROM 
         PostHistory PH

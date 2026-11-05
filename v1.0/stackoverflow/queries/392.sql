@@ -55,7 +55,7 @@ SELECT
     hrp.CommentCount,
     COUNT(DISTINCT ph.UserId) AS UniqueEditors,
     MAX(ph.HistoryDate) AS LastEditDate,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS EditorNames
+    STRING_AGG(DISTINCT u.DisplayName, ', ') AS EditorNames
 FROM 
     HighestRankedPosts hrp
 LEFT JOIN 

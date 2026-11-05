@@ -30,7 +30,7 @@ TopQuestions AS (
         P.ViewCount,
         P.Score,
         P.AnswerCount,
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
+        string_agg(T.TagName, ', ') AS Tags
     FROM Posts AS P
     JOIN Tags AS T ON P.Tags LIKE '%' || T.TagName || '%'
     WHERE P.PostTypeId = 1 

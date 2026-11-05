@@ -40,7 +40,7 @@ SELECT
     tp.ViewCount,
     tp.OwnerReputation,
     tp.CommentsCount,
-    groupArray(assumeNotNull(t.TagName)) AS Tags,
+    ARRAY_AGG(t.TagName) AS Tags,
     (SELECT COUNT(*) 
      FROM Votes v 
      WHERE v.PostId = tp.PostId AND v.VoteTypeId = 2) AS UpVotes,

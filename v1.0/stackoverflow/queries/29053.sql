@@ -2,7 +2,7 @@ WITH PostTagCounts AS (
     SELECT 
         P.Id AS PostId,
         COUNT(T.TagName) AS TagCount,
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS AllTags
+        STRING_AGG(T.TagName, ', ') AS AllTags
     FROM Posts P
     LEFT JOIN Tags T ON POSITION(T.TagName IN P.Tags) > 0
     WHERE P.PostTypeId = 1 
@@ -12,7 +12,7 @@ UserBadges AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeList
+        STRING_AGG(B.Name, ', ') AS BadgeList
     FROM Users U
     LEFT JOIN Badges B ON U.Id = B.UserId
     GROUP BY U.Id
@@ -29,7 +29,7 @@ PostAnalytics AS (
         badges.BadgeCount,
         badges.BadgeList,
         (SELECT COUNT(*) FROM Comments C WHERE C.PostId = P.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT('VoterId: ', V.UserId, ' VoteType: ', VT.Name))), '; ') AS VoteDetails
+        STRING_AGG(CONCAT('VoterId: ', V.UserId, ' VoteType: ', VT.Name), '; ') AS VoteDetails
     FROM Posts P
     LEFT JOIN PostTagCounts tags ON P.Id = tags.PostId
     LEFT JOIN UserBadges badges ON P.OwnerUserId = badges.UserId

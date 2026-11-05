@@ -5,7 +5,7 @@ WITH RecursiveUserScores AS (
 ), 
 UserBadges AS (
     SELECT B.UserId, COUNT(*) AS BadgeCount, 
-           arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+           STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM Badges B
     GROUP BY B.UserId
 ),
@@ -17,11 +17,11 @@ RecentPosts AS (
     WHERE P.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'
 ),
 PopularTags AS (
-    SELECT TRIM(arrayJoin(splitByString(' ', assumeNotNull(P.Tags)))) AS TagName,
+    SELECT TRIM(unnest(string_to_array(P.Tags, ' '))) AS TagName,
            COUNT(*) AS TagCount
     FROM Posts P
     WHERE P.Tags IS NOT NULL
-    GROUP BY TRIM(arrayJoin(splitByString(' ', assumeNotNull(P.Tags))))
+    GROUP BY TRIM(unnest(string_to_array(P.Tags, ' ')))
     ORDER BY TagCount DESC
     LIMIT 10
 )
@@ -34,7 +34,7 @@ SELECT U.DisplayName, U.Reputation,
 FROM RecursiveUserScores U
 LEFT JOIN UserBadges UB ON U.UserId = UB.UserId
 LEFT JOIN RecentPosts RP ON U.UserId = RP.OwnerUserId AND RP.PostRank = 1
-LEFT JOIN PopularTags PT ON PT.TagName = ANY(splitByString(' ', assumeNotNull(RP.Tags)))
+LEFT JOIN PopularTags PT ON PT.TagName = ANY(string_to_array(RP.Tags, ' '))
 WHERE U.Reputation > 1000
   AND U.CreationDate <= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
 ORDER BY U.Reputation DESC, LastPostScore DESC

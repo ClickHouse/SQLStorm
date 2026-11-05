@@ -60,7 +60,7 @@ SELECT
 FROM UserStats U
 LEFT JOIN PostsStats P ON U.Id = P.LastEditedBy
 JOIN TopTags T ON T.TagName IN (
-    SELECT TRIM(arrayJoin(splitByString('<>', assumeNotNull(P.Tags))))
+    SELECT TRIM(UNNEST(STRING_TO_ARRAY(P.Tags, '<>')))
     FROM Posts P
     WHERE P.Tags IS NOT NULL
 )

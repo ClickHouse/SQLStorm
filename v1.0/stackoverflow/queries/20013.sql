@@ -30,7 +30,7 @@ PostVotes AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ht.Name)), ', ') AS HistoryTypes,
+        STRING_AGG(ht.Name, ', ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LastUpdated
     FROM PostHistory ph
     JOIN PostHistoryTypes ht ON ph.PostHistoryTypeId = ht.Id

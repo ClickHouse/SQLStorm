@@ -10,7 +10,7 @@ WITH PostDetails AS (
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -18,7 +18,7 @@ WITH PostDetails AS (
     LEFT JOIN 
         Votes v ON v.PostId = p.Id
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName) AS tag ON true
+        LATERAL (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName) AS tag ON true
     LEFT JOIN 
         Tags t ON t.TagName = tag.TagName
     WHERE 

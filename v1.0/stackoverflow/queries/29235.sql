@@ -9,8 +9,8 @@ WITH UserTags AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswersCount
     FROM Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
-    JOIN (
-        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName
+    JOIN LATERAL (
+        SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName
     ) t ON TRUE
     GROUP BY u.Id, u.DisplayName, t.TagName
 ),

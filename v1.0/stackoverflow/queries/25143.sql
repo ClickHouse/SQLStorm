@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2)))) AS Tag,
+        UNNEST(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><')) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -49,7 +49,7 @@ SELECT
     U.TotalScore,
     U.TotalPosts,
     COALESCE(UB.TotalBadges, 0) AS TotalBadges,
-    arrayStringConcat(groupArray(assumeNotNull(PT.Tag)), ', ') AS PopularTagsAssociated
+    STRING_AGG(PT.Tag, ', ') AS PopularTagsAssociated
 FROM 
     UserReputation U
 LEFT JOIN 

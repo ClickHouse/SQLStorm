@@ -45,7 +45,7 @@ SELECT
     pp.CommentCount,
     pp.UniqueVoters,
     pht.Name AS PostHistoryType,
-    arrayStringConcat(groupArray(assumeNotNull(h.Text)), '; ') AS HistoryComments
+    STRING_AGG(h.Text, '; ') AS HistoryComments
 FROM 
     PopularPosts pp
 LEFT JOIN 

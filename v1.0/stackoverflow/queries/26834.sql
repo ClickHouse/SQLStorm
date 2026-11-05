@@ -16,9 +16,9 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS TagName
+                UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS TagName
         ) tags ON TRUE
     WHERE 
         p.ViewCount > 100
@@ -42,7 +42,7 @@ WITH RankedPosts AS (
     SELECT 
         fp.*, 
         LAG(fp.CreationDate) OVER (ORDER BY fp.CreationDate) AS PreviousPostDate,
-        toUnixTimestamp((fp.CreationDate - LAG(fp.CreationDate) OVER (ORDER BY fp.CreationDate))) / 3600 AS HoursBetweenPosts
+        EXTRACT(EPOCH FROM (fp.CreationDate - LAG(fp.CreationDate) OVER (ORDER BY fp.CreationDate))) / 3600 AS HoursBetweenPosts
     FROM 
         FilteredPosts fp
 )

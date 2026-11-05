@@ -9,7 +9,7 @@ SELECT
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes, 
     COUNT(DISTINCT c.Id) AS CommentCount, 
     COUNT(DISTINCT b.Id) AS BadgeCount, 
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags
 FROM 
     Posts p
 JOIN 

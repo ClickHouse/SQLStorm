@@ -33,7 +33,7 @@ PostAggregates AS (
 ClosedPostHistory AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS CloseReasons,
+        STRING_AGG(DISTINCT pht.Name, ', ') AS CloseReasons,
         MIN(ph.CreationDate) AS FirstClosedDate
     FROM 
         PostHistory ph

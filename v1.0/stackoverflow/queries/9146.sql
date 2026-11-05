@@ -28,11 +28,11 @@ PostDetails AS (
         p.AnswerCount,
         p.CommentCount,
         p.OwnerUserId,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName, Id FROM Posts) t ON p.Id = t.Id
+        (SELECT unnest(string_to_array(Tags, '><')) AS TagName, Id FROM Posts) t ON p.Id = t.Id
     GROUP BY 
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.AnswerCount, p.CommentCount, p.OwnerUserId
 )

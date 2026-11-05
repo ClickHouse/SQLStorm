@@ -63,7 +63,7 @@ SELECT
         ) THEN 'Gold Badge Holder'
         ELSE 'No Gold Badge'
     END AS BadgeStatus,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(p.Title)), '; ') 
+    (SELECT STRING_AGG(p.Title, '; ') 
      FROM RankedPosts p 
      WHERE p.PostRank <= 5 AND p.PostId IN (
          SELECT PostId 

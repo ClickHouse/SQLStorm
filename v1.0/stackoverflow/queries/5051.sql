@@ -40,7 +40,7 @@ SELECT
     tp.CommentCount,
     tp.VoteCount,
     (SELECT 
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+        STRING_AGG(t.TagName, ', ') 
      FROM 
         Tags t 
      WHERE 

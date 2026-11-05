@@ -62,10 +62,10 @@ SELECT
         WHEN U.UpVotesReceived < U.DownVotesReceived THEN 'Negative'
         ELSE 'Neutral'
     END AS OverallEngagement,
-    arrayDistinct(groupArray(assumeNotNull(PT.Name))) AS PostTypesEngaged,
+    ARRAY_AGG(DISTINCT PT.Name) AS PostTypesEngaged,
     (
         SELECT 
-            arrayStringConcat(groupArray(assumeNotNull(CONCAT(PH.Comment, ' (', CAST(PH.CreationDate AS DATE), ')'))), '; ') 
+            STRING_AGG(CONCAT(PH.Comment, ' (', CAST(PH.CreationDate AS DATE), ')'), '; ') 
         FROM 
             PostHistory PH 
         WHERE 

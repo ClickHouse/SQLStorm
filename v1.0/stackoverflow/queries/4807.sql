@@ -58,7 +58,7 @@ SELECT
     tu.AnswerCount,
     tu.TotalScore,
     tu.AvgViewCount,
-    arrayDistinct(groupArray(assumeNotNull(upt.TagName))) AS TagsParticipatedIn,
+    array_agg(DISTINCT upt.TagName) AS TagsParticipatedIn,
     pt.UsageCount AS TagUsageCount
 FROM 
     TopUsers tu

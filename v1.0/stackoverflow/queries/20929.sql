@@ -40,7 +40,7 @@ TopRatedPosts AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId, 
-        arrayDistinct(groupArray(assumeNotNull(pht.Name))) AS HistoryTypes 
+        ARRAY_AGG(DISTINCT pht.Name) AS HistoryTypes 
     FROM 
         PostHistory ph
     JOIN 

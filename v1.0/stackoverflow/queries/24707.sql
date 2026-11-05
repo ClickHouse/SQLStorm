@@ -29,7 +29,7 @@ UserBadgeDetails AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 
@@ -41,7 +41,7 @@ PostComments AS (
     SELECT 
         C.PostId,
         COUNT(C.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(C.Text)), '; ') AS AllComments
+        STRING_AGG(C.Text, '; ') AS AllComments
     FROM 
         Comments C
     GROUP BY 

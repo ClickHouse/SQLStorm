@@ -16,7 +16,7 @@ ClosedPosts AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseCount,
-        arrayStringConcat(groupArray(assumeNotNull(CAST(PH.Comment AS VARCHAR))), '; ') AS CloseComments
+        STRING_AGG(CAST(PH.Comment AS VARCHAR), '; ') AS CloseComments
     FROM 
         PostHistory PH
     WHERE 

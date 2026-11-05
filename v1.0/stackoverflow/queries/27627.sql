@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         u.DisplayName AS OwnerDisplayName,
         COUNT(v.Id) AS VoteCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray,
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray,
         ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM p.CreationDate) ORDER BY COUNT(v.Id) DESC) AS PostRank
     FROM 
         Posts p
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId IN (2, 3) 
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag ON TRUE
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON tag = t.TagName
     WHERE 

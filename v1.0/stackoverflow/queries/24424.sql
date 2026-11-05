@@ -28,7 +28,7 @@ RecentPostActivity AS (
 PostCloseReasons AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CRT.Name)), ', ' ORDER BY CRT.Id) AS CloseReasonNames,
+        STRING_AGG(CRT.Name, ', ' ORDER BY CRT.Id) AS CloseReasonNames,
         COUNT(*) AS CloseCount
     FROM PostHistory PH
     JOIN CloseReasonTypes CRT ON CAST(PH.Comment AS INTEGER) = CRT.Id

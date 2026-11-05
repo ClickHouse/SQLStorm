@@ -20,7 +20,7 @@ ClosedPostStats AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasons,
+        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasons,
         MAX(ph.CreationDate) AS LastCloseDate
     FROM 
         PostHistory ph
@@ -35,7 +35,7 @@ ClosedPostStats AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') AS BadgeNames,
+        STRING_AGG(DISTINCT b.Name, ', ') AS BadgeNames,
         COUNT(b.Id) AS BadgeCount,
         MAX(b.Date) AS LastBadgeDate
     FROM 

@@ -24,7 +24,7 @@ WITH RankedPosts AS (
 
 TagSummary AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('>', assumeNotNull(Tags)))) AS TagName,
+        TRIM(unnest(string_to_array(Tags, '>'))) AS TagName,
         COUNT(PostId) AS PostCount,
         SUM(Score) AS TotalScore,
         SUM(ViewCount) AS TotalViews,
@@ -62,7 +62,7 @@ SELECT
 FROM 
     TopTags TT
 JOIN 
-    RankedPosts P ON TT.TagName = ANY(splitByString('>', assumeNotNull(P.Tags)))
+    RankedPosts P ON TT.TagName = ANY(string_to_array(P.Tags, '>'))
 WHERE 
     TT.Rank <= 5 
 ORDER BY 

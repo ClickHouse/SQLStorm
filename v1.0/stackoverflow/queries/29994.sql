@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
+        unnest(string_to_array(Tags, ',')) AS TagName,
         COUNT(*) AS PostCount,
         AVG(Score) AS AverageScore,
         SUM(ViewCount) AS TotalViews
@@ -28,7 +28,7 @@ TagStats AS (
     WHERE 
         TagRank <= 5 
     GROUP BY 
-        arrayJoin(splitByString(',', assumeNotNull(Tags)))
+        unnest(string_to_array(Tags, ','))
 ),
 UserActivity AS (
     SELECT 

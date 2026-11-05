@@ -2,7 +2,7 @@
 WITH TagSplits AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(TRIM(BOTH '<>' FROM p.Tags)))) AS TagName
+        UNNEST(string_to_array(TRIM(BOTH '<>' FROM p.Tags), '><')) AS TagName
     FROM 
         Posts p
     WHERE 
@@ -68,7 +68,7 @@ SELECT
     SUM(COALESCE(u.UpVotes, 0)) AS TotalUpVotes,
     SUM(COALESCE(u.DownVotes, 0)) AS TotalDownVotes,
     SUM(COALESCE(u.CloseVotes, 0)) AS TotalCloseVotes,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.TagName))), ', ') AS PopularTags
+    STRING_AGG(DISTINCT pt.TagName, ', ') AS PopularTags
 FROM 
     UserWithBadges ut
 LEFT JOIN 
@@ -76,7 +76,7 @@ LEFT JOIN
 LEFT JOIN 
     PopularTags pt ON pt.TagName IN (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(TRIM(BOTH '<>' FROM p.Tags)))) 
+            UNNEST(string_to_array(TRIM(BOTH '<>' FROM p.Tags), '><')) 
         FROM 
             Posts p 
         WHERE 

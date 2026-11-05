@@ -26,7 +26,7 @@ SELECT
     tu.PostCount,
     tu.TotalScore,
     tu.UserRank,
-    arrayStringConcat(groupArray(assumeNotNull(rp.Title)), ', ') AS TopPosts
+    STRING_AGG(rp.Title, ', ') AS TopPosts
 FROM TopUsers tu
 JOIN RankedPosts rp ON tu.OwnerDisplayName = rp.OwnerDisplayName
 WHERE tu.UserRank <= 10

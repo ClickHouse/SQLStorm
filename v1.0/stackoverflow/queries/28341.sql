@@ -1,7 +1,7 @@
 
 WITH TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('>><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName,
+        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '>><')) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
@@ -33,7 +33,7 @@ PostStatistics AS (
         P.CreationDate,
         COUNT(CASE WHEN C.PostId IS NOT NULL THEN 1 END) AS CommentCount,
         COUNT(DISTINCT CASE WHEN V.Id IS NOT NULL THEN V.Id END) AS VoteCount,
-        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - P.CreationDate)) / 3600) AS AvgHoursSinceCreation
+        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - P.CreationDate)) / 3600) AS AvgHoursSinceCreation
     FROM 
         Posts P
     LEFT JOIN 

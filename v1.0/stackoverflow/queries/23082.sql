@@ -20,7 +20,7 @@ PostHistoryRanked AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         COUNT(*) AS ChangeCount,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS CommentsHistory
+        STRING_AGG(ph.Comment, '; ') AS CommentsHistory
     FROM 
         PostHistory ph
     WHERE 

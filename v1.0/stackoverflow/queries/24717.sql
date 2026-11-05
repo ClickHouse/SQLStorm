@@ -46,7 +46,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS ClosureCounts,
-        arrayDistinct(groupArray(assumeNotNull(c.Name))) AS CloseReasonNames
+        ARRAY_AGG(DISTINCT c.Name) AS CloseReasonNames
     FROM 
         PostHistory ph
     JOIN 

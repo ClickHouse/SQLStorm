@@ -28,7 +28,7 @@ RecentPosts AS (
         Posts.Title, 
         Posts.CreationDate, 
         Posts.OwnerUserId,
-        toUnixTimestamp((CURRENT_TIMESTAMP - Posts.CreationDate)) / 60 AS PostAge,
+        EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - Posts.CreationDate)) / 60 AS PostAge,
         COUNT(Comments.Id) AS CommentsCount
     FROM Posts
     LEFT JOIN Comments ON Posts.Id = Comments.PostId

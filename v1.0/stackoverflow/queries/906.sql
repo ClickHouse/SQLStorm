@@ -35,7 +35,7 @@ SELECT
     COUNT(DISTINCT rp.Id) AS NumberOfPosts,
     COALESCE(SUM(uc.BadgeCount), 0) AS TotalBadges,
     SUM(pc.CommentCount) AS TotalComments,
-    arrayDistinct(groupArray(assumeNotNull(rp.Title))) AS LatestPostTitles,
+    ARRAY_AGG(DISTINCT rp.Title) AS LatestPostTitles,
     MAX(rp.Score) AS MaxPostScore,
     AVG(rp.ViewCount) AS AvgPostViews
 FROM Users u

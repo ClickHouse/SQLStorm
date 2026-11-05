@@ -61,7 +61,7 @@ SELECT
 FROM 
     RankedPosts rp
 JOIN 
-    TagStatistics ts ON ts.TagName IN (SELECT arrayJoin(splitByString('> <', assumeNotNull(rp.Tags)))) 
+    TagStatistics ts ON ts.TagName IN (SELECT unnest(string_to_array(rp.Tags, '> <'))) 
 JOIN 
     UserReputation ur ON ur.UserId = (SELECT OwnerUserId FROM Posts WHERE Id = rp.PostId)
 WHERE 

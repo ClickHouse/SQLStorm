@@ -40,14 +40,14 @@ SELECT
     fp.CreationDate,
     fp.CommentCount,
     fp.VoteCount,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
+    STRING_AGG(t.TagName, ', ') AS Tags,
     pht.Name AS PostHistoryTypeName
 FROM 
     FilteredPosts fp
 LEFT JOIN 
     Posts p ON fp.PostId = p.Id
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS TagName) AS t ON TRUE
+    LATERAL (SELECT unnest(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS TagName) AS t ON TRUE
 LEFT JOIN 
     PostHistory ph ON p.Id = ph.PostId
 LEFT JOIN 

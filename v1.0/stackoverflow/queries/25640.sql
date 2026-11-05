@@ -8,11 +8,11 @@ WITH RelevantPosts AS (
         p.LastActivityDate,
         p.OwnerUserId,
         p.ViewCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag_name ON TRUE
+        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag_name ON TRUE
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 
@@ -57,7 +57,7 @@ PostStatistics AS (
         ru.DownVotes,
         rp.ViewCount,
         rp.Tags,
-        toUnixTimestamp((rp.LastActivityDate - rp.CreationDate)) AS TimeToResponse
+        EXTRACT(EPOCH FROM (rp.LastActivityDate - rp.CreationDate)) AS TimeToResponse
     FROM 
         RelevantPosts rp
     JOIN 

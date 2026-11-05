@@ -4,7 +4,7 @@ WITH RankedPosts AS (
         p.Id AS post_id,
         p.Title,
         p.Tags, 
-        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))), 1) AS tag_count,
+        array_length(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><'), 1) AS tag_count,
         COUNT(DISTINCT c.Id) AS comment_count,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS upvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS downvotes,

@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.AnswerCount,
         p.CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
+        STRING_AGG(t.TagName, ', ') AS TagsList
     FROM 
         Posts p
     JOIN 

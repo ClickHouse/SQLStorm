@@ -6,7 +6,7 @@ SELECT
     u.DisplayName AS OwnerDisplayName, 
     p.Score, 
     p.ViewCount, 
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS _tags 
+    STRING_AGG(t.TagName, ', ') AS _tags 
 FROM 
     Posts p
 JOIN 

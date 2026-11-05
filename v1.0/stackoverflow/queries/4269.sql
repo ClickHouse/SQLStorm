@@ -51,10 +51,10 @@ SELECT
     ps.NetVotes,
     ps.Popularity,
     COALESCE((
-        SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ')
+        SELECT STRING_AGG(t.TagName, ', ')
         FROM Tags t
-        JOIN (
-            SELECT arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag
+        JOIN LATERAL (
+            SELECT unnest(string_to_array(p.Tags, '><')) AS tag
         ) AS split_tags ON t.TagName = split_tags.tag
         WHERE p.Id = ps.PostId
     ), 'No Tags') AS Tags

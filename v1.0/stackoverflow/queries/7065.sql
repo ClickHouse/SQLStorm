@@ -19,7 +19,7 @@ WITH UserStats AS (
 BadgeStats AS (
     SELECT 
         UserId,
-        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS Badges,
+        STRING_AGG(Name, ', ') AS Badges,
         COUNT(*) AS BadgeCount
     FROM 
         Badges 

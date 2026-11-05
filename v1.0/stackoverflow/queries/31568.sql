@@ -41,7 +41,7 @@ AggregatedPostLinks AS (
     SELECT 
         pl.PostId,
         COUNT(pl.RelatedPostId) AS TotalLinks,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(pl.RelatedPostId, ': ', l.Name))), ', ') AS RelatedPosts
+        STRING_AGG(CONCAT(pl.RelatedPostId, ': ', l.Name), ', ') AS RelatedPosts
     FROM 
         PostLinks pl
     JOIN 

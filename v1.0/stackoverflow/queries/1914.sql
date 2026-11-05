@@ -59,13 +59,13 @@ SELECT
         WHEN pd.CloseCount > 0 THEN 'Closed' 
         ELSE 'Active' 
     END AS PostStatus,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     PostDetails pd
 LEFT JOIN 
     Posts p ON pd.PostId = p.Id
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag) AS tag ON true
+    LATERAL (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag) AS tag ON true
 LEFT JOIN 
     Tags t ON LOWER(tag.tag) = LOWER(t.TagName)
 WHERE 

@@ -60,7 +60,7 @@ PostChanges AS (
 PostLinksAggregated AS (
     SELECT 
         pl.PostId,
-        groupArray(assumeNotNull(pl.RelatedPostId)) AS RelatedPosts
+        ARRAY_AGG(pl.RelatedPostId) AS RelatedPosts
     FROM 
         PostLinks pl
     GROUP BY 

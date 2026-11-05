@@ -54,10 +54,10 @@ FROM
 JOIN (
     SELECT 
         P.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagArray
+        STRING_AGG(T.TagName, ', ') AS TagArray
     FROM 
         Posts P
-        CROSS JOIN arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2)))) AS T(TagName)
+        CROSS JOIN LATERAL UNNEST(STRING_TO_ARRAY(SUBSTRING(P.Tags, 2, LENGTH(P.Tags) - 2), '><')) AS T(TagName)
     GROUP BY 
         P.Id
 ) AS Tags ON HSP.PostId = Tags.PostId

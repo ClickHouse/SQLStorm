@@ -20,7 +20,7 @@ WITH UserActivity AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(Tags))) AS tag,
+        unnest(string_to_array(Tags, '>')) AS tag,
         COUNT(*) AS tag_count
     FROM 
         Posts

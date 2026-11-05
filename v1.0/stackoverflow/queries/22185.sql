@@ -30,7 +30,7 @@ PostStats AS (
 ClosedPostReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS ClosedReasons
+        STRING_AGG(cr.Name, ', ') AS ClosedReasons
     FROM 
         PostHistory ph
     JOIN 

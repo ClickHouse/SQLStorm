@@ -2,14 +2,14 @@
 WITH UserStats AS (
     SELECT 
         COUNT(*) AS TotalUsers,
-        AVG(toUnixTimestamp((CURRENT_TIMESTAMP - CreationDate))) AS AvgUserAgeInSeconds
+        AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - CreationDate))) AS AvgUserAgeInSeconds
     FROM 
         Users
 ),
 PostStats AS (
     SELECT 
         COUNT(*) AS TotalPosts,
-        AVG(toUnixTimestamp((CURRENT_TIMESTAMP - CreationDate))) AS AvgPostAgeInSeconds
+        AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - CreationDate))) AS AvgPostAgeInSeconds
     FROM 
         Posts
 ),

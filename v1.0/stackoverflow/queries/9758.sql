@@ -50,7 +50,7 @@ SELECT
     END AS Sentiment,
     (
         SELECT 
-            arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+            STRING_AGG(DISTINCT t.TagName, ', ') 
         FROM 
             Tags t
         WHERE 

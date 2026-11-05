@@ -44,7 +44,7 @@ PostDetails AS (
         tp.Tags,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS RelatedTags
+        ARRAY_AGG(DISTINCT t.TagName) AS RelatedTags
     FROM 
         TopPosts tp
     LEFT JOIN 
@@ -52,7 +52,7 @@ PostDetails AS (
     LEFT JOIN 
         Votes v ON tp.PostId = v.PostId
     LEFT JOIN 
-        Tags t ON t.TagName = ANY(splitByString('><', assumeNotNull(tp.Tags))) 
+        Tags t ON t.TagName = ANY(string_to_array(tp.Tags, '><')) 
     GROUP BY 
         tp.PostId, tp.Title, tp.Body, tp.CreationDate, tp.Author, tp.Score, tp.ViewCount, tp.Tags
 )

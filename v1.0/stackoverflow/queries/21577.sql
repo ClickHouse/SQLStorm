@@ -7,15 +7,15 @@ WITH RankedPosts AS (
         p.ViewCount,
         U.Reputation AS UserReputation,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC, p.ViewCount DESC) AS RankScore,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
         Users U ON p.OwnerUserId = U.Id
     JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
+                unnest(string_to_array(p.Tags, '>')) AS TagName
         ) t ON TRUE
     WHERE 
         p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
@@ -67,7 +67,7 @@ SELECT
         ELSE 'Needs Attention'
     END AS EngagementLevel,
     CASE 
-        WHEN tp.Tags IS NOT NULL THEN length(splitByString(', ', assumeNotNull(tp.Tags)), 1) 
+        WHEN tp.Tags IS NOT NULL THEN ARRAY_LENGTH(string_to_array(tp.Tags, ', '), 1) 
         ELSE 0 
     END AS TagCount
 FROM 

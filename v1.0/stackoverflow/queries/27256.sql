@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         COUNT(c.Id) AS CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS Rank,
-        arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypeNames
+        ARRAY_AGG(DISTINCT pt.Name) AS PostTypeNames
     FROM 
         Posts p
     LEFT JOIN 
@@ -42,8 +42,8 @@ SELECT
     COUNT(DISTINCT tp.PostID) AS TotalPosts,
     SUM(tp.ViewCount) AS TotalViews,
     AVG(tp.Score) AS AverageScore,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.PostTypeNames::text))), ', ') AS PostTypes,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.Tags))), ', ') AS AllTags
+    STRING_AGG(DISTINCT tp.PostTypeNames::text, ', ') AS PostTypes,
+    STRING_AGG(DISTINCT tp.Tags, ', ') AS AllTags
 FROM 
     TopPosts tp
 JOIN 

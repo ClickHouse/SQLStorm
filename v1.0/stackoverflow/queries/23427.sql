@@ -20,14 +20,14 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
+        UNNEST(string_to_array(Tags, '><')) AS TagName,
         COUNT(*) AS TagCount
     FROM
         Posts
     WHERE
         PostTypeId = 1 
     GROUP BY
-        arrayJoin(splitByString('><', assumeNotNull(Tags)))
+        UNNEST(string_to_array(Tags, '><'))
     HAVING
         COUNT(*) >= 10
 ),

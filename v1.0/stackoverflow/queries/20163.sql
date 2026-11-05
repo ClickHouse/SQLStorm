@@ -20,7 +20,7 @@ PostHistoryDetails AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         ph.CreationDate,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS CommentsAggregate,
+        STRING_AGG(ph.Comment, '; ') AS CommentsAggregate,
         MAX(ph.UserDisplayName) FILTER (WHERE ph.UserId IS NOT NULL) AS LastEditor
     FROM 
         PostHistory ph

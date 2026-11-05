@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        length(splitByString('>', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2))), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '>'), 1) AS TagCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS UserPostRank,
         u.DisplayName AS AuthorDisplayName,
         u.Reputation

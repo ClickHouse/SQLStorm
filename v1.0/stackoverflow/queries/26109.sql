@@ -10,9 +10,9 @@ WITH TagCounts AS (
     JOIN 
         Posts p ON U.Id = p.OwnerUserId
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS Tag
+                unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag
         ) AS S ON TRUE
     WHERE 
         p.PostTypeId = 1 

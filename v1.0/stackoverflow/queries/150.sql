@@ -21,7 +21,7 @@ WITH RankedPosts AS (
     SELECT 
         ph.PostId,
         MIN(ph.CreationDate) AS FirstClosedDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasons
+        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

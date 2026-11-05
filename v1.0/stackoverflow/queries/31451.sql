@@ -57,7 +57,7 @@ WITH RankedPosts AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS TotalBadges,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 

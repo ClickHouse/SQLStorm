@@ -22,12 +22,12 @@ WITH PostStats AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
         Tags t ON t.TagName IN (
-            SELECT arrayJoin(splitByString('><', assumeNotNull(p.Tags)))
+            SELECT UNNEST(string_to_array(p.Tags, '><'))
         )
     GROUP BY 
         p.Id

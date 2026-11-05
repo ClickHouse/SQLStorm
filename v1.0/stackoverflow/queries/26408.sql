@@ -3,7 +3,7 @@ WITH RankedPosts AS (
         p.Id AS PostID,
         p.Title,
         p.Body,
-        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'), 1) AS TagCount,
         COUNT(DISTINCT c.Id) AS CommentCount,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank

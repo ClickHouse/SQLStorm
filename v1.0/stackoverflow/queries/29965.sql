@@ -2,7 +2,7 @@
 WITH PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS Tag
+        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -15,7 +15,7 @@ UserActivity AS (
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(CASE WHEN p.PostTypeId = 1 AND p.AcceptedAnswerId IS NOT NULL THEN 1 ELSE 0 END) AS QuestionsWithAcceptedAnswers,
         SUM(CASE WHEN p.ViewCount > 100 THEN 1 ELSE 0 END) AS HighViewQuestions,
-        arrayDistinct(groupArray(assumeNotNull(t.Tag))) AS TagsUsed
+        ARRAY_AGG(DISTINCT t.Tag) AS TagsUsed
     FROM 
         Users u
     JOIN 
@@ -44,7 +44,7 @@ UserTagActivity AS (
     FROM 
         UserActivity ua
     JOIN 
-        arrayJoin(ua.TagsUsed) AS pt(Tag) ON pt.Tag IS NOT NULL
+        UNNEST(ua.TagsUsed) AS pt(Tag) ON pt.Tag IS NOT NULL
     GROUP BY 
         ua.UserId, pt.Tag
 )
@@ -54,7 +54,7 @@ SELECT
     ua.TotalAnswers,
     ua.QuestionsWithAcceptedAnswers,
     ua.HighViewQuestions,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ut.Tag))), ', ') AS MostUsedTags
+    STRING_AGG(DISTINCT ut.Tag, ', ') AS MostUsedTags
 FROM 
     UserActivity ua
 JOIN 

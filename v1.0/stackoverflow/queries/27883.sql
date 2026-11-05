@@ -43,7 +43,7 @@ PostStatistics AS (
         p.ViewCount,
         p.Score,
         p.Tags,
-        arrayDistinct(groupArray(assumeNotNull(pi.LinkTypeId))) AS RelatedLinkTypes,
+        ARRAY_AGG(DISTINCT pi.LinkTypeId) AS RelatedLinkTypes,
         COUNT(c.Id) AS TotalComments,
         MAX(p.LastActivityDate) AS LastActivity
     FROM 

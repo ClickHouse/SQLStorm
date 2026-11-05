@@ -50,7 +50,7 @@ ActivityHistory AS (
         ph.CreationDate,
         ph.Comment,
         ph.PostHistoryTypeId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypeNames
+        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypeNames
     FROM
         PostHistory ph
     JOIN

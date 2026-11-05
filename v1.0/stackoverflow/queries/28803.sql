@@ -3,7 +3,7 @@ WITH RankedPosts AS (
         p.Id AS PostId,
         p.Title,
         p.Body,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
+        STRING_AGG(t.TagName, ', ') AS Tags,
         p.ViewCount,
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.ViewCount DESC) AS Rank
@@ -12,7 +12,7 @@ WITH RankedPosts AS (
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS tag ON TRUE
+        LATERAL unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -43,7 +43,7 @@ SELECT
      WHERE 
          c.PostId = tq.PostId) AS CommentCount,
     (SELECT 
-         arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
+         STRING_AGG(b.Name, ', ') 
      FROM 
          Badges b 
      JOIN 

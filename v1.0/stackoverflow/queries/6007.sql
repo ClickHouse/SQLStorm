@@ -36,7 +36,7 @@ PostComments AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM Posts p
     LEFT JOIN Tags t ON t.ExcerptPostId = p.Id
     WHERE p.PostTypeId = 1

@@ -15,7 +15,7 @@ TopUsers AS (
 ),
 UserBadges AS (
     SELECT U.Id AS UserId, 
-           arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames,
+           STRING_AGG(B.Name, ', ') AS BadgeNames,
            COUNT(B.Id) AS BadgeCount
     FROM Users U
     LEFT JOIN Badges B ON U.Id = B.UserId

@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
-        groupArray(assumeNotNull(t.TagName)) AS Tags
+        ARRAY_AGG(t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -39,7 +39,7 @@ UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS TotalBadges,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 

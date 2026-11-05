@@ -29,7 +29,7 @@ TopPosts AS (
 SELECT 
     u.Id AS UserId,
     u.DisplayName,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
     COALESCE(b.Class, 0) AS BadgeClass,
     tp.Title,
     tp.Score,

@@ -7,7 +7,7 @@ WITH PostTagProcessing AS (
         p.CreationDate,
         p.OwnerUserId,
         p.Tags,
-        length(splitByString('>', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '>'), 1) AS TagCount,
         COALESCE(u.DisplayName, 'Community User') AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
         COALESCE(SUM(v.BountyAmount), 0) AS TotalBounty

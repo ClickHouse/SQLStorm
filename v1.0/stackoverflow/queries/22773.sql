@@ -51,7 +51,7 @@ SELECT rp.PostId,
            ELSE 'Archived'
        END AS ReviewStatus,
        COALESCE(
-           (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+           (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
             FROM Posts p
             JOIN Tags t ON t.ExcerptPostId = p.Id
             WHERE p.Id = rp.PostId

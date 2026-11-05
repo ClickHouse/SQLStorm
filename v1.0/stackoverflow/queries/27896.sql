@@ -44,7 +44,7 @@ SELECT
     f.ViewCount,
     f.Score,
     f.AnswerCount,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS RelatedTags,
+    STRING_AGG(t.TagName, ', ') AS RelatedTags,
     COUNT(DISTINCT c.Id) AS CommentCount,
     COUNT(DISTINCT ph.Id) AS EditCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpvotes, 
@@ -56,7 +56,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory ph ON f.PostId = ph.PostId
 LEFT JOIN 
-    arrayJoin(splitByString(',', assumeNotNull(f.Tags))) AS tag_array ON TRUE
+    UNNEST(STRING_TO_ARRAY(f.Tags, ',')) AS tag_array ON TRUE
 LEFT JOIN 
     Tags t ON TRIM(tag_array) = t.TagName
 LEFT JOIN 

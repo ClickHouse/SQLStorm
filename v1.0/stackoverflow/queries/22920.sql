@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         COUNT(c.Id) AS CommentCount,
         DENSE_RANK() OVER (PARTITION BY pt.Id ORDER BY p.CreationDate DESC) AS RankPerType,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
@@ -16,9 +16,9 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags)-2)))) AS TagName
+                unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags)-2), '><')) AS TagName
         ) AS t ON true
     WHERE 
         p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')

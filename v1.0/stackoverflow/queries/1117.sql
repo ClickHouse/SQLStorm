@@ -68,13 +68,13 @@ SELECT
     ps.DownVotes,
     ps.NetVotes,
     ps.CommentStatus,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     PostSummaries ps
 LEFT JOIN 
     Posts p ON p.Id = ps.PostId
 LEFT JOIN 
-    arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag_name ON TRUE
+    LATERAL UNNEST(STRING_TO_ARRAY(p.Tags, '><')) AS tag_name ON TRUE
 LEFT JOIN 
     Tags t ON t.TagName = tag_name
 GROUP BY 

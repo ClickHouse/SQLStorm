@@ -31,7 +31,7 @@ SELECT
     ps.EditCount,
     ps.PostCreationDate,
     ps.LastActivityDate,
-    toUnixTimestamp((ps.LastActivityDate - ps.PostCreationDate)) AS ActivityDuration
+    EXTRACT(EPOCH FROM (ps.LastActivityDate - ps.PostCreationDate)) AS ActivityDuration
 FROM 
     PostStats ps
 ORDER BY 

@@ -29,7 +29,7 @@ WITH RankedPosts AS (
 ), ClosingReasons AS (
     SELECT
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ct.Name)), ', ') AS CloseReasons,
+        STRING_AGG(ct.Name, ', ') AS CloseReasons,
         MAX(ph.CreationDate) AS LastCloseDate
     FROM
         PostHistory ph

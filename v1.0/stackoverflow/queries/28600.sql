@@ -45,11 +45,11 @@ SELECT
     tp.CommentCount,
     tp.UpVotes,
     tp.DownVotes,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed
+    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed
 FROM 
     TopPosts tp
 LEFT JOIN 
-    arrayJoin(splitByString('><', assumeNotNull(tp.Tags))) AS tag ON TRUE
+    LATERAL UNNEST(string_to_array(tp.Tags, '><')) AS tag ON TRUE
 LEFT JOIN 
     Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
 GROUP BY 

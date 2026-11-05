@@ -30,7 +30,7 @@ PostHistoryDetails AS (
         ph.PostHistoryTypeId,
         COUNT(ph.Id) AS HistoryCount,
         MAX(ph.CreationDate) AS LastChangeDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), ', ') AS Comments
+        STRING_AGG(DISTINCT ph.Comment, ', ') AS Comments
     FROM PostHistory ph
     WHERE ph.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '5 years'
     GROUP BY ph.PostId, ph.PostHistoryTypeId

@@ -49,7 +49,7 @@ SELECT
         WHEN fp.UpVotes >= 10 THEN 'Popular'
         ELSE 'Regular'
     END AS PostStatus,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+    STRING_AGG(t.TagName, ', ') AS Tags
 FROM 
     FilteredPost fp
 LEFT JOIN 

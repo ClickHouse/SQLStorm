@@ -57,13 +57,13 @@ SELECT
         WHEN FU.Reputation >= 1000 THEN 'High Reputation'
         ELSE 'Moderate Reputation'
     END AS ReputationCategory,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagList
+    STRING_AGG(DISTINCT T.TagName, ', ') AS TagList
 FROM 
     FilteredUsers FU
 LEFT JOIN 
     Posts P ON FU.UserId = P.OwnerUserId
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString(', ', assumeNotNull(P.Tags))) AS TagName) AS T ON true
+    LATERAL (SELECT UNNEST(string_to_array(P.Tags, ', ')) AS TagName) AS T ON true
 GROUP BY 
     FU.UserId, FU.DisplayName, FU.Reputation, FU.UpVotesCount, FU.DownVotesCount, FU.TotalPosts, FU.TotalComments
 ORDER BY 

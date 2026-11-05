@@ -46,7 +46,7 @@ RecentChanges AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS ChangesCount,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.UserDisplayName, ' (', ph.EditComment, ')'))), '; ') AS ChangeDetails
+        STRING_AGG(CONCAT(ph.UserDisplayName, ' (', ph.EditComment, ')'), '; ') AS ChangeDetails
     FROM 
         PostHistoryDetails ph
     WHERE 

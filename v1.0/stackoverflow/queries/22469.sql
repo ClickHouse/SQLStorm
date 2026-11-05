@@ -17,7 +17,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeList
+        STRING_AGG(b.Name, ', ') AS BadgeList
     FROM 
         Badges b
     GROUP BY 
@@ -28,7 +28,7 @@ PostHistoryData AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         ph.CreationDate AS ChangeDate,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS Comments
+        STRING_AGG(ph.Comment, '; ') AS Comments
     FROM 
         PostHistory ph
     WHERE 

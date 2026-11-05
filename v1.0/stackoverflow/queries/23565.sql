@@ -30,7 +30,7 @@ WITH UserReputation AS (
         MIN(ph.CreationDate) AS FirstHistoryDate,
         MAX(ph.CreationDate) AS LastHistoryDate,
         COUNT(*) AS HistoryCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
+        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
     FROM PostHistory ph
     JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id
     GROUP BY ph.PostId

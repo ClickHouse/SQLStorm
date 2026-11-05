@@ -45,9 +45,9 @@ SELECT
         ELSE 'Less Popular'
     END AS PopularityIndicator,
     COALESCE((
-        SELECT arrayStringConcat(groupArray(assumeNotNull(gh.Tag)), ', ')
+        SELECT STRING_AGG(gh.Tag, ', ')
         FROM (
-            SELECT DISTINCT TRIM(arrayJoin(splitByString('><', assumeNotNull(p.Tags)))) AS Tag
+            SELECT DISTINCT TRIM(UNNEST(STRING_TO_ARRAY(p.Tags, '><'))) AS Tag
             FROM Posts p
             WHERE p.Id = rp.PostId
         ) gh

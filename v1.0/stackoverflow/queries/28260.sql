@@ -49,7 +49,7 @@ SELECT
     fp.ViewCount,
     fp.Score,
     fp.OwnerDisplayName,
-    arrayStringConcat(groupArray(assumeNotNull(ti.TagName)), ', ') AS AssociatedTags
+    STRING_AGG(ti.TagName, ', ') AS AssociatedTags
 FROM 
     FilteredPosts fp
 LEFT JOIN 

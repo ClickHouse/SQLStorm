@@ -50,7 +50,7 @@ PostHistoryDetail AS (
         ph.CreationDate AS HistoryCreationDate,
         ph.Comment AS CloseReason,
         COUNT(*) OVER (PARTITION BY ph.PostId) AS HistoryCount,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Text)), '; ') AS HistoricalTexts
+        STRING_AGG(ph.Text, '; ') AS HistoricalTexts
     FROM 
         PostHistory ph
     WHERE 

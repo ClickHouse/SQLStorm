@@ -51,7 +51,7 @@ SELECT
         WHEN tp.ViewCount BETWEEN 500 AND 1000 THEN 'Medium Traffic'
         ELSE 'Low Traffic'
     END AS TrafficClassification,
-    groupArray(assumeNotNull(t.TagName)) AS RelatedTags
+    ARRAY_AGG(t.TagName) AS RelatedTags
 FROM 
     TopPosts tp
 LEFT JOIN 
@@ -59,9 +59,9 @@ LEFT JOIN
 LEFT JOIN 
     Posts p ON tp.PostId = p.Id
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
+            unnest(string_to_array(p.Tags, ',')) AS TagName
     ) t ON TRUE
 GROUP BY 
     tp.PostId, tp.Title, tp.CreationDate, tp.Score, tp.ViewCount, tp.CommentCount, pvs.UpVotes, pvs.DownVotes

@@ -54,7 +54,7 @@ SELECT
     COALESCE(vs.DownVotes, 0) AS DownVotes,
     COALESCE(bk.BadgeCount, 0) AS UserBadgeCount,
     COALESCE(bk.MaxBadgeClass, 0) AS UserMaxBadgeClass,
-    groupArray(assumeNotNull(cpi.Comment)) AS CloseReasonComments
+    ARRAY_AGG(cpi.Comment) AS CloseReasonComments
 FROM 
     RankedPosts rp
 LEFT JOIN 

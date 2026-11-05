@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('>', assumeNotNull(trim(both '<>' from Tags)))) AS TagName,
+        unnest(string_to_array(trim(both '<>' from Tags), '>')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts

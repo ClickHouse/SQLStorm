@@ -5,7 +5,7 @@ WITH TagData AS (
         p.Title,
         p.OwnerUserId,
         p.Tags,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagNames,
+        ARRAY_AGG(DISTINCT t.TagName) AS TagNames,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT bh.Id) AS HistoryCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes
@@ -18,7 +18,7 @@ WITH TagData AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)))) AS tag ON tag IS NOT NULL
+        LATERAL UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON tag = t.TagName
     WHERE 

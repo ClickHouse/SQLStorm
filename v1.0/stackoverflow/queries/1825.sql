@@ -27,7 +27,7 @@ PostHistorySummary AS (
         ph.PostId,
         COUNT(*) AS EditCount,
         MAX(CASE WHEN ph.PostHistoryTypeId = 4 THEN ph.CreationDate END) AS LastEdited,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.UserDisplayName))), ', ') AS Editors
+        STRING_AGG(DISTINCT ph.UserDisplayName, ', ') AS Editors
     FROM 
         PostHistory ph
     GROUP BY 

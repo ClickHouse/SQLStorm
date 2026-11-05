@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank,
         COUNT(*) OVER (PARTITION BY p.OwnerUserId) AS TotalUserPosts,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS AssociatedTags
+        STRING_AGG(t.TagName, ', ') AS AssociatedTags
     FROM 
         Posts p
     LEFT JOIN 

@@ -46,7 +46,7 @@ SELECT
               WHERE v.PostId = rp.PostId 
                 AND v.VoteTypeId IN (2, 3, 4) 
              ), 0) AS VoteCount,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') 
+    (SELECT STRING_AGG(DISTINCT pht.Name, ', ') 
      FROM PostHistory ph
      JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id 
      WHERE ph.PostId = rp.PostId) AS PostHistoryActions,

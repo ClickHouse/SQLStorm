@@ -64,7 +64,7 @@ SELECT
         WHEN P.UpVotes - P.DownVotes < 0 THEN 'Negative'
         ELSE 'Neutral'
     END AS VoteSentiment,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') 
+    (SELECT STRING_AGG(Name, ', ') 
      FROM Badges B 
      WHERE B.UserId = U.Id
      GROUP BY B.UserId) AS Badges

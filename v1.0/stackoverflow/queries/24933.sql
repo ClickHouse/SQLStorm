@@ -31,9 +31,9 @@ UserReputation AS (
 ClosedPostReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.Comment IS NOT NULL THEN 
+        STRING_AGG(CASE WHEN ph.Comment IS NOT NULL THEN 
                 CONCAT('Reason: ', crt.Name, ' by ', ph.UserDisplayName) 
-            ELSE 'Closed without reason' END)), '; ') AS CloseReasons 
+            ELSE 'Closed without reason' END, '; ') AS CloseReasons 
     FROM 
         PostHistory ph
     LEFT JOIN 

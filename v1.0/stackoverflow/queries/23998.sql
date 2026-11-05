@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 UserWithBadges AS (
     SELECT 
         U.Id AS UserId,
-        groupArray(assumeNotNull(B.Name)) AS BadgeNames,
+        ARRAY_AGG(B.Name) AS BadgeNames,
         COUNT(B.Id) AS BadgeCount
     FROM 
         Users U
@@ -36,7 +36,7 @@ PostHistoryChanges AS (
         PH.PostId,
         PH.PostHistoryTypeId,
         COUNT(*) AS ChangeCount,
-        arrayDistinct(groupArray(assumeNotNull(PH.CreationDate ORDER BY PH.CreationDate))) AS ChangeTimestamps
+        ARRAY_AGG(DISTINCT PH.CreationDate ORDER BY PH.CreationDate) AS ChangeTimestamps
     FROM 
         PostHistory PH
     WHERE 

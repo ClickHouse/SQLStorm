@@ -40,7 +40,7 @@ SELECT
      FROM Votes v 
      WHERE v.UserId = tu.UserId 
      AND v.VoteTypeId IN (2, 3)) AS UpvotesDownvotesCount,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Tags))), ', ') 
+    (SELECT STRING_AGG(DISTINCT p.Tags, ', ') 
      FROM Posts p 
      WHERE p.OwnerUserId = tu.UserId 
      AND p.Tags IS NOT NULL) AS DistinctTags

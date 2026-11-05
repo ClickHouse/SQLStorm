@@ -58,7 +58,7 @@ SELECT
     ps.CommentCount,
     ps.VoteCount,
     ps.BadgeCount,
-    COALESCE(ROUND(AVG(toUnixTimestamp(ph.CreationDate) - toUnixTimestamp(ps.CreationDate)), 2), 0) AS AverageEditTime
+    COALESCE(ROUND(AVG(EXTRACT(EPOCH FROM ph.CreationDate) - EXTRACT(EPOCH FROM ps.CreationDate)), 2), 0) AS AverageEditTime
 FROM 
     PostStats ps
 LEFT JOIN 

@@ -10,8 +10,8 @@ WITH StringData AS (
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpvoteCount,
         COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownvoteCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsString
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsString
     FROM 
         Posts p
     LEFT JOIN 
@@ -25,7 +25,7 @@ WITH StringData AS (
     LEFT JOIN 
         CloseReasonTypes clr ON CAST(ph.Comment AS INTEGER) = clr.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag ON TRUE
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -47,7 +47,7 @@ SELECT
         WHEN CHAR_LENGTH(Body) > 500 THEN 'Long Body' 
         ELSE 'Short Body' 
     END AS BodyLengthCategory,
-    toUnixTimestamp((CAST('2024-10-01 12:34:56' AS timestamp) - CreationDate)) AS AgeInSeconds
+    EXTRACT(EPOCH FROM (CAST('2024-10-01 12:34:56' AS timestamp) - CreationDate)) AS AgeInSeconds
 FROM 
     StringData
 ORDER BY 

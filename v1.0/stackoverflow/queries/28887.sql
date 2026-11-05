@@ -28,7 +28,7 @@ PopularTags AS (
         COUNT(*) as TagCount
     FROM (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) as tag
+            UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) as tag
         FROM 
             Posts p
         WHERE 

@@ -27,14 +27,14 @@ WITH RecentQuestions AS (
 ),
 TagStats AS (
     SELECT 
-        LOWER(TRIM(arrayJoin(splitByString('> <', assumeNotNull(p.Tags))))) AS TagName,
+        LOWER(TRIM(UNNEST(STRING_TO_ARRAY(p.Tags, '> <')))) AS TagName,
         COUNT(p.Id) AS QuestionCount
     FROM 
         Posts p
     WHERE 
         p.PostTypeId = 1
     GROUP BY 
-        LOWER(TRIM(arrayJoin(splitByString('> <', assumeNotNull(p.Tags)))))
+        LOWER(TRIM(UNNEST(STRING_TO_ARRAY(p.Tags, '> <'))))
 ),
 UserVoteStats AS (
     SELECT 

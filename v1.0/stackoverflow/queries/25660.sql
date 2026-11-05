@@ -32,7 +32,7 @@ RankedVotes AS (
 ),
 PopularTags AS (
     SELECT
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(P.Tags)))) AS Tag,
+        TRIM(UNNEST(string_to_array(P.Tags, '><'))) AS Tag,
         COUNT(*) AS TagCount
     FROM
         Posts P

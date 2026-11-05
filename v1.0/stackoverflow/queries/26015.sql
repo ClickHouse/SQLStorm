@@ -38,8 +38,8 @@ SELECT
     R.Tags,
     COUNT(R.PostId) AS PostCount,
     AVG(R.TotalComments) AS AvgComments,
-    arrayStringConcat(groupArray(assumeNotNull(R.OwnerDisplayName)), ', ') AS Owners,
-    arrayStringConcat(groupArray(assumeNotNull(R.Title)), '; ') AS Titles
+    STRING_AGG(R.OwnerDisplayName, ', ') AS Owners,
+    STRING_AGG(R.Title, '; ') AS Titles
 FROM 
     FilteredRankedPosts R
 GROUP BY 

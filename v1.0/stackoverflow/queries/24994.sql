@@ -19,9 +19,9 @@ RecentUsers AS (
         u.Reputation,
         u.DisplayName,
         u.CreationDate,
-        NULLIF(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') FILTER (WHERE b.Class = 1), '') AS GoldBadges,
-        NULLIF(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') FILTER (WHERE b.Class = 2), '') AS SilverBadges,
-        NULLIF(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') FILTER (WHERE b.Class = 3), '') AS BronzeBadges
+        NULLIF(STRING_AGG(DISTINCT b.Name, ', ') FILTER (WHERE b.Class = 1), '') AS GoldBadges,
+        NULLIF(STRING_AGG(DISTINCT b.Name, ', ') FILTER (WHERE b.Class = 2), '') AS SilverBadges,
+        NULLIF(STRING_AGG(DISTINCT b.Name, ', ') FILTER (WHERE b.Class = 3), '') AS BronzeBadges
     FROM 
         Users u
     LEFT JOIN 

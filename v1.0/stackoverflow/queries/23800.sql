@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS RankByDate,
         COUNT(c.Id) AS CommentCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) - SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS NetVotes, 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
     FROM 
         Posts p
     LEFT JOIN 
@@ -17,9 +17,9 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString('<>,>', assumeNotNull(p.Tags))) AS TagName
+                unnest(string_to_array(p.Tags, '<>,>')) AS TagName
         ) t ON TRUE
     WHERE 
         p.PostTypeId IN (1, 2) 

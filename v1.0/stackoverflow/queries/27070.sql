@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName,
+        unnest(string_to_array(p.Tags, ',')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -39,14 +39,14 @@ PostStatistics AS (
         r.CreationDate,
         r.LastActivityDate,
         r.EngagementScore,
-        groupArray(assumeNotNull(t.TagName)) AS Tags,
+        ARRAY_AGG(t.TagName) AS Tags,
         r.PostRank
     FROM 
         RankedPosts r
     JOIN 
         Posts p ON r.PostId = p.Id
     JOIN 
-        PopularTags t ON t.TagName = ANY(splitByString(',', assumeNotNull(p.Tags)))
+        PopularTags t ON t.TagName = ANY(string_to_array(p.Tags, ','))
     GROUP BY 
         r.PostId, r.Title, r.OwnerDisplayName, r.CreationDate, r.LastActivityDate, r.EngagementScore, r.PostRank
 )

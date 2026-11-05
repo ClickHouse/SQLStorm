@@ -30,13 +30,13 @@ TopUsers AS (
 PostHistoryTags AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         PostHistory ph
     JOIN 
         Posts p ON ph.PostId = p.Id
     LEFT JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag(tagName) ON TRUE
+        UNNEST(string_to_array(p.Tags, ',')) AS tag(tagName) ON TRUE
     JOIN 
         Tags t ON t.TagName = TRIM(tag.tagName)
     WHERE 

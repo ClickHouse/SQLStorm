@@ -17,7 +17,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(p.Tags)))) AS TagName,
+        TRIM(UNNEST(string_to_array(p.Tags, '><'))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -59,7 +59,7 @@ SELECT
     rp.OwnerName,
     COALESCE(pwc.CommentCount, 0) AS CommentCount,
     COALESCE(cp.CloseCount, 0) AS CloseCount,
-    arrayDistinct(groupArray(assumeNotNull(pt.TagName))) AS AssociatedTags
+    ARRAY_AGG(DISTINCT pt.TagName) AS AssociatedTags
 FROM 
     RankedPosts rp
 LEFT JOIN 
@@ -69,7 +69,7 @@ LEFT JOIN
 LEFT JOIN 
     Posts p ON rp.PostId = p.Id
 LEFT JOIN 
-    PopularTags pt ON pt.TagName = ANY(splitByString('><', assumeNotNull(p.Tags)))
+    PopularTags pt ON pt.TagName = ANY(STRING_TO_ARRAY(p.Tags, '><'))
 WHERE 
     rp.Rank <= 5
 GROUP BY 

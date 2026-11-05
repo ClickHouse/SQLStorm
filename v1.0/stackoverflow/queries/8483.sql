@@ -34,7 +34,7 @@ SELECT
     tp.CreationDate,
     tp.OwnerDisplayName,
     tp.Score,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+    STRING_AGG(t.TagName, ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 

@@ -9,7 +9,7 @@ WITH RecentPosts AS (
         COALESCE(a.AnswerCount, 0) AS TotalAnswers,
         COALESCE(c.CommentCount, 0) AS TotalComments,
         COALESCE(f.FavoriteCount, 0) AS TotalFavorites,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AllTags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS AllTags
     FROM 
         Posts p
     JOIN 

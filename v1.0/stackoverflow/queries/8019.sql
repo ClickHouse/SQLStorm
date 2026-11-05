@@ -23,11 +23,11 @@ WITH RecentPosts AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        (SELECT arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag FROM Posts p) AS tag ON TRUE
+        (SELECT unnest(string_to_array(p.Tags, '>')) AS tag FROM Posts p) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

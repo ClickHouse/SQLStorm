@@ -42,7 +42,7 @@ PostHistoryStats AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         COUNT(*) AS ChangeCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS Comments
+        STRING_AGG(DISTINCT ph.Comment, '; ') AS Comments
     FROM 
         PostHistory ph
     WHERE 

@@ -18,14 +18,14 @@ WITH RankedPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2)))) AS Tag,
+        unnest(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><')) AS Tag,
         COUNT(*) AS PostCount,
         SUM(ViewCount) AS TotalViews,
         SUM(Score) AS TotalScore
     FROM 
         RankedPosts
     GROUP BY 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2))))
+        unnest(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><'))
 ),
 TopTags AS (
     SELECT 
@@ -45,7 +45,7 @@ SELECT
     t.TotalScore,
     t.ViewRank,
     t.ScoreRank,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(r.OwnerDisplayName)), ', ') FROM RankedPosts r WHERE r.Tags LIKE '%' || t.Tag || '%') AS TopPostOwners
+    (SELECT STRING_AGG(r.OwnerDisplayName, ', ') FROM RankedPosts r WHERE r.Tags LIKE '%' || t.Tag || '%') AS TopPostOwners
 FROM 
     TopTags t
 WHERE 

@@ -28,7 +28,7 @@ PostHistoryDetails AS (
         P.Title,
         PH.Comment,
         PH.CreationDate AS HistoryDate,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(NAME)), ', ') 
+        (SELECT STRING_AGG(NAME, ', ') 
          FROM PostHistoryTypes PHT 
          WHERE PHT.Id = PH.PostHistoryTypeId) AS HistoryType
     FROM PostHistory PH

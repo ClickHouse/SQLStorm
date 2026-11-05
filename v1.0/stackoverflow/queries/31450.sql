@@ -61,7 +61,7 @@ SELECT
     au.GoldBadges,
     au.SilverBadges,
     au.BronzeBadges,
-    groupArray(assumeNotNull(rp.Title)) AS RecentPostTitles
+    ARRAY_AGG(rp.Title) AS RecentPostTitles
 FROM 
     ActiveUsers au
 LEFT JOIN 

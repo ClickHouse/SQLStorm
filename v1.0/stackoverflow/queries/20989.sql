@@ -101,7 +101,7 @@ SELECT
     fr.RelatedPostCount,
     fr.DuplicateLinks,
     fr.AvgViewsPerPost,
-    'Link Types: ' || arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(lt.Name))), ', ' ORDER BY lt.Name) AS LinkTypesInfo
+    'Link Types: ' || STRING_AGG(DISTINCT lt.Name, ', ' ORDER BY lt.Name) AS LinkTypesInfo
 FROM 
     FinalResults fr
 LEFT JOIN 

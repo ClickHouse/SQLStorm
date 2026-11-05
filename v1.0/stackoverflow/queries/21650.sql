@@ -50,7 +50,7 @@ SELECT
     r.SilverBadgeCount,
     r.TotalPosts,
     r.MaxCommentsOnSinglePost,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
      FROM Tags t 
      WHERE t.ExcerptPostId IN (SELECT p.Id 
                                 FROM Posts p 

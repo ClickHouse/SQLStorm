@@ -48,11 +48,11 @@ WITH RankedPosts AS (
         END AS CommentStatus,
         COALESCE(
             (SELECT 
-                arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+                STRING_AGG(DISTINCT t.TagName, ', ') 
              FROM 
                 Tags t 
              JOIN 
-                arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag_name ON t.TagName = tag_name
+                UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag_name ON t.TagName = tag_name
              WHERE 
                 p.Id = fp.Id), 
             'No Tags') AS Tags

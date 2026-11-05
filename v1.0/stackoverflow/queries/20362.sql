@@ -59,7 +59,7 @@ SELECT
     SUM(CASE WHEN ps.IsAccepted = 1 THEN 1 ELSE 0 END) AS AcceptedPosts,
     SUM(ps.TotalBounty) AS TotalBounties,
     AVG(ps.UpVotes - ps.DownVotes) AS AverageVoteDifferential,
-    arrayStringConcat(groupArray(assumeNotNull(ps.Title)), '; ') AS PostTitles
+    STRING_AGG(ps.Title, '; ') AS PostTitles
 FROM UserPosts ps
 JOIN UserReputation ur ON ps.UserId = ur.Id
 WHERE ur.Reputation > 0

@@ -38,7 +38,7 @@ PostHistoryDetails AS (
         ph.PostHistoryTypeId,
         ph.UserId,
         ph.CreationDate,
-        toUnixTimestamp(ph.CreationDate) AS EditTimestamp,
+        EXTRACT(EPOCH FROM ph.CreationDate) AS EditTimestamp,
         CASE 
             WHEN ph.PostHistoryTypeId IN (10, 11) THEN 'Closed/Open'
             WHEN ph.PostHistoryTypeId = 12 THEN 'Deleted'

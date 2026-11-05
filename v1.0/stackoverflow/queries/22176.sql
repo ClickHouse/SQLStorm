@@ -27,7 +27,7 @@ PostVoteCounts AS (
 CloseReasonVotes AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CT.Name)), ', ') AS CloseReasons
+        STRING_AGG(CT.Name, ', ') AS CloseReasons
     FROM 
         PostHistory PH
     INNER JOIN 
@@ -40,7 +40,7 @@ CloseReasonVotes AS (
 UserBadges AS (
     SELECT 
         U.Id AS UserId,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames,
+        STRING_AGG(B.Name, ', ') AS BadgeNames,
         COUNT(B.Id) AS BadgeCount
     FROM 
         Users U

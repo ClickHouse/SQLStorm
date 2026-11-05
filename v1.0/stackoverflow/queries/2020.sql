@@ -44,9 +44,9 @@ SELECT
         WHEN tu.ScoreRank <= 10 THEN 'Top Contributor'
         ELSE 'Regular Contributor'
     END AS ContributorStatus,
-    COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ')
+    COALESCE((SELECT STRING_AGG(DISTINCT t.TagName, ', ')
                FROM Posts p
-               JOIN arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON t.TagName IS NOT NULL
+               JOIN UNNEST(string_to_array(p.Tags, ',')) AS t(TagName) ON t.TagName IS NOT NULL
                WHERE p.OwnerUserId = tu.UserId AND p.PostTypeId = 1), 'No Tags') AS TagsUsed
 FROM 
     TopUsers tu

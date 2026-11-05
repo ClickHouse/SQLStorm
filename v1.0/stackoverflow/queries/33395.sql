@@ -43,7 +43,7 @@ SELECT U.DisplayName,
          WHEN PS.PostCount > 0 THEN PS.DownVotes * 1.0 / PS.PostCount * 100
          ELSE 0
        END AS DownvotePercentage,
-       (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.Comment))), '; ') 
+       (SELECT STRING_AGG(DISTINCT PH.Comment, '; ') 
         FROM PostHistory PH 
         WHERE PH.UserId = U.Id AND PH.CreationDate > cast('2024-10-01' as date) - INTERVAL '1 year') AS RecentActivity
 FROM Users U

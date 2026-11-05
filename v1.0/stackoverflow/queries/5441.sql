@@ -26,14 +26,14 @@ WITH RankedPosts AS (
         u.Id, u.Reputation
 ), PopularTags AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName, 
+        UNNEST(STRING_TO_ARRAY(Tags, ',')) AS TagName, 
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         Tags IS NOT NULL
     GROUP BY 
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) 
+        UNNEST(STRING_TO_ARRAY(Tags, ',')) 
     ORDER BY 
         TagCount DESC
     LIMIT 10

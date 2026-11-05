@@ -10,7 +10,7 @@ WITH RankedPosts AS (
         COALESCE((SELECT COUNT(*) 
                   FROM Votes v 
                   WHERE v.PostId = p.Id AND v.VoteTypeId IN (2, 3)), 0) AS TotalVotes,
-        length(splitByString('><', assumeNotNull(COALESCE(p.Tags, ''))), 1) AS TagCount
+        ARRAY_LENGTH(string_to_array(COALESCE(p.Tags, ''), '><'), 1) AS TagCount
     FROM 
         Posts p
     WHERE 

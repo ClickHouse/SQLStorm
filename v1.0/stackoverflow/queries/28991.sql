@@ -24,7 +24,7 @@ KeywordStatistics AS (
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+        LATERAL unnest(string_to_array(p.Tags, ',')) AS t(TagName) ON TRUE
     GROUP BY 
         p.Id
 )

@@ -29,7 +29,7 @@ SELECT
     (SELECT COUNT(c.Id) 
      FROM Comments c 
      WHERE c.PostId = pp.Id) AS CommentCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(cht.Name)), ', ') 
+    (SELECT STRING_AGG(cht.Name, ', ') 
      FROM PostHistory ph
      JOIN PostHistoryTypes cht ON ph.PostHistoryTypeId = cht.Id
      WHERE ph.PostId = pp.Id) AS ChangeHistory

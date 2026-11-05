@@ -3,7 +3,7 @@ WITH CTE_UserBadges AS (
         U.Id AS UserId,
         U.Reputation,
         COUNT(B.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM Users U
     LEFT JOIN Badges B ON U.Id = B.UserId
     GROUP BY U.Id, U.Reputation

@@ -30,7 +30,7 @@ AggregatedPostStats AS (
         COUNT(DISTINCT V.Id) AS TotalVotes,
         AVG(
             CASE 
-                WHEN RP.PostTypeId = 1 THEN toUnixTimestamp((RP.LastActivityDate - RP.CreationDate)) 
+                WHEN RP.PostTypeId = 1 THEN EXTRACT(EPOCH FROM (RP.LastActivityDate - RP.CreationDate)) 
                 ELSE NULL 
             END
         ) AS AvgTimeToResponse
@@ -42,7 +42,7 @@ UserBadges AS (
     SELECT 
         B.UserId,
         COUNT(B.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM Badges B
     GROUP BY B.UserId
 )

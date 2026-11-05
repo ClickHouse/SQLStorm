@@ -3,7 +3,7 @@ WITH ProcessedTags AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS Tag
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -13,7 +13,7 @@ TagStatistics AS (
     SELECT 
         Tag,
         COUNT(*) AS TagCount,
-        arrayDistinct(groupArray(assumeNotNull(p.Id))) AS PostIds 
+        ARRAY_AGG(DISTINCT p.Id) AS PostIds 
     FROM 
         ProcessedTags pt
     JOIN 

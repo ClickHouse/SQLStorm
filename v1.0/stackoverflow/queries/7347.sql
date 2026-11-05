@@ -7,7 +7,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT C.Id) AS TotalComments,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes,
-        AVG(toUnixTimestamp((P.LastActivityDate - P.CreationDate)) / 3600) AS AvgPostAgeHours
+        AVG(EXTRACT(EPOCH FROM (P.LastActivityDate - P.CreationDate)) / 3600) AS AvgPostAgeHours
     FROM 
         Users U
     LEFT JOIN 

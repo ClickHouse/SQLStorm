@@ -61,8 +61,8 @@ SELECT
     AnswerCount,
     CommentCount,
     OwnerDisplayName,
-    arrayDistinct(groupArray(assumeNotNull(CommentText))) AS Comments,
-    arrayDistinct(groupArray(assumeNotNull(PostHistoryComment))) AS PostHistoryComments
+    ARRAY_AGG(DISTINCT CommentText) AS Comments,
+    ARRAY_AGG(DISTINCT PostHistoryComment) AS PostHistoryComments
 FROM 
     PostDetails
 GROUP BY 

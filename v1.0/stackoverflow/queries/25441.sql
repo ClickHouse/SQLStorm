@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 ),
 TagAnalytics AS (
     SELECT
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName,
+        UNNEST(string_to_array(Tags, ',')) AS TagName,
         COUNT(*) AS PostCount,
         SUM(ViewCount) AS TotalViews,
         MIN(CreationDate) AS FirstPostDate,

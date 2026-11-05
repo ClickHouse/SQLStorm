@@ -40,7 +40,7 @@ SELECT
     o.Reputation, 
     o.RankedPostCount, 
     p.Title,
-    COALESCE(arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', '), 'No Tags') AS Tags,
+    COALESCE(STRING_AGG(t.TagName, ', '), 'No Tags') AS Tags,
     COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 2) AS UpVotes,
     COUNT(v.Id) FILTER (WHERE v.VoteTypeId = 3) AS DownVotes
 FROM 

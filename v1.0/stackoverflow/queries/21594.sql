@@ -7,13 +7,13 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.CreationDate,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS Rank,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray
     FROM 
         Posts p
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)))) AS TagName) AS t ON TRUE
+        LATERAL (SELECT UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS TagName) AS t ON TRUE
     GROUP BY 
         p.Id, pt.Name, p.Title, p.Score, p.ViewCount, p.CreationDate
 ),

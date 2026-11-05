@@ -42,7 +42,7 @@ UserVotes AS (
 PostHistory AS (
     SELECT 
         PH.PostId,
-        groupArray(assumeNotNull(PH.Comment)) AS HistoryComments,
+        ARRAY_AGG(PH.Comment) AS HistoryComments,
         COUNT(PH.Id) AS EditCount
     FROM 
         PostHistory PH

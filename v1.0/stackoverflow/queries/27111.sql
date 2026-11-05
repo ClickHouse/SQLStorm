@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag
+        unnest(string_to_array(Tags, '><')) AS Tag
     FROM 
         RankedPosts
     WHERE 
@@ -48,11 +48,11 @@ SELECT
     rp.CreationDate,
     rp.Score,
     rp.ViewCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Tag))), ', ') AS PopularTags
+    STRING_AGG(DISTINCT pt.Tag, ', ') AS PopularTags
 FROM 
     RankedPosts rp
 JOIN 
-    PopularTags pt ON pt.Tag = ANY(splitByString('><', assumeNotNull(rp.Tags)))
+    PopularTags pt ON pt.Tag = ANY(string_to_array(rp.Tags, '><'))
 WHERE 
     rp.PostRank = 1
 GROUP BY 

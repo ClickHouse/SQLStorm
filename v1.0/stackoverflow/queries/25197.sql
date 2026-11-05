@@ -50,7 +50,7 @@ SELECT
     t.CommentCount,
     t.UpVoteCount,
     CONCAT('Total Score: ', (t.ViewCount + t.CommentCount + t.UpVoteCount + t.AcceptedAnswerScore)) AS TotalScore,
-    toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - t.CreationDate)) / 3600 AS AgeInHours
+    EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - t.CreationDate)) / 3600 AS AgeInHours
 FROM 
     TopPosts t
 ORDER BY 

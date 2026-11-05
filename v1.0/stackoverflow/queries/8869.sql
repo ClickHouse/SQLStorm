@@ -52,7 +52,7 @@ SELECT
     tu.PositiveQuestions,
     tu.TotalViews,
     COUNT(DISTINCT ah.PostId) AS ActivityCount,
-    AVG(toUnixTimestamp((CURRENT_TIMESTAMP - ah.CreationDate))) AS AvgTimeSinceLastActivity
+    AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - ah.CreationDate))) AS AvgTimeSinceLastActivity
 FROM 
     TopUsers tu
 JOIN 

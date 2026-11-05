@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray
     FROM 
         Posts p
     LEFT JOIN 

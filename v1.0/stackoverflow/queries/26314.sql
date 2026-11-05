@@ -10,7 +10,7 @@ WITH TagsCTE AS (
     FROM 
         Posts p
     JOIN 
-        (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag) AS tag ON TRUE
+        LATERAL (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 

@@ -30,10 +30,10 @@ PostComments AS (
 CloseReason AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE 
+        STRING_AGG(CASE 
             WHEN ph.Comment IS NULL THEN 'No reason given' 
             ELSE cr.Name 
-        END)), ', ') AS CloseReasons
+        END, ', ') AS CloseReasons
     FROM PostHistory ph
     LEFT JOIN CloseReasonTypes cr ON ph.Comment = CAST(cr.Id AS VARCHAR)
     WHERE ph.PostHistoryTypeId IN (10, 11)

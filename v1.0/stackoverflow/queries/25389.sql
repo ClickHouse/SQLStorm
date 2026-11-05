@@ -9,8 +9,8 @@ WITH UserTagCounts AS (
     FROM 
         Users u
     JOIN Posts p ON u.Id = p.OwnerUserId
-    JOIN (
-        SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS TagName
+    JOIN LATERAL (
+        SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS TagName
     ) t ON TRUE
     WHERE 
         p.PostTypeId = 1  
@@ -50,7 +50,7 @@ SELECT
     ru.TotalScore,
     COUNT(DISTINCT aph.PostId) AS EditedPostCount,
     MAX(aph.EditDate) AS LastEditDate,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(aph.Title))), ', ') AS EditedPostTitles
+    STRING_AGG(DISTINCT aph.Title, ', ') AS EditedPostTitles
 FROM 
     RankedUsers ru
 LEFT JOIN 

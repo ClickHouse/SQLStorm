@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.Score,
         p.Tags,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC) AS Rank,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS Contributors
+        STRING_AGG(DISTINCT u.DisplayName, ', ') AS Contributors
     FROM Posts p
     JOIN PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN Users u ON p.OwnerUserId = u.Id
@@ -29,7 +29,7 @@ TopContributors AS (
 PostTags AS (
     SELECT
         p.Id AS PostId,
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS Tag
+        unnest(string_to_array(p.Tags, ',')) AS Tag
     FROM Posts p
 )
 SELECT 

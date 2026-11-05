@@ -32,7 +32,7 @@ UserBadges AS (
     SELECT 
         UserId,
         COUNT(*) AS TotalBadges,
-        arrayStringConcat(groupArray(assumeNotNull(Name)), ', ') AS BadgeNames
+        STRING_AGG(Name, ', ') AS BadgeNames
     FROM 
         Badges
     GROUP BY 
@@ -45,7 +45,7 @@ PostsWithTitleReplies AS (
         p.Title,
         COALESCE((
             SELECT 
-                arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') 
+                STRING_AGG(c.Text, ' | ') 
             FROM 
                 Comments c 
             WHERE 

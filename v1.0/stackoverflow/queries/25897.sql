@@ -8,11 +8,11 @@ WITH RankedPosts AS (
         p.Score,
         p.AnswerCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS UserPostRank,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag_array ON TRUE
+        unnest(STRING_TO_ARRAY(p.Tags, '><')) AS tag_array ON TRUE
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag_array)
     WHERE 

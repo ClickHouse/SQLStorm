@@ -29,7 +29,7 @@ RecentPostStats AS (
     SELECT 
         p.OwnerUserId,
         COUNT(CASE WHEN p.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 1 END) AS RecentPostsCount,
-        AVG(toUnixTimestamp((p.LastActivityDate - p.CreationDate))/60) AS AvgMinutesToActivity,
+        AVG(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate))/60) AS AvgMinutesToActivity,
         MAX(p.Score) AS MaxPostScore
     FROM Posts p
     GROUP BY p.OwnerUserId

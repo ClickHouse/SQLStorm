@@ -23,7 +23,7 @@ PostVoteCounts AS (
 ClosedPostHistories AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS ClosedReasons
+        STRING_AGG(pt.Name, ', ') AS ClosedReasons
     FROM PostHistory ph
     JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
     WHERE ph.PostHistoryTypeId IN (10, 11) 

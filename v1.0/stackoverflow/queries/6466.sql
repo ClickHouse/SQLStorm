@@ -43,13 +43,13 @@ SELECT
     fp.Sentiment,
     u.DisplayName AS AuthorName,
     u.Reputation AS AuthorReputation,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ',') AS Tags
+    STRING_AGG(t.TagName, ',') AS Tags
 FROM 
     FilteredPosts fp
 JOIN 
     Users u ON u.Id = (SELECT OwnerUserId FROM Posts WHERE Id = fp.PostId)
 LEFT JOIN 
-    arrayJoin(splitByString('><', assumeNotNull(substring((SELECT Tags FROM Posts WHERE Id = fp.PostId), 2, length((SELECT Tags FROM Posts WHERE Id = fp.PostId))-2)))) AS t(TagName) ON t.TagName IS NOT NULL
+    LATERAL unnest(string_to_array(substring((SELECT Tags FROM Posts WHERE Id = fp.PostId), 2, length((SELECT Tags FROM Posts WHERE Id = fp.PostId))-2), '><')) AS t(TagName) ON t.TagName IS NOT NULL
 GROUP BY 
     fp.PostId, fp.Title, fp.CreationDate, fp.ViewCount, 
     fp.CommentCount, fp.UpVotes, fp.DownVotes, 

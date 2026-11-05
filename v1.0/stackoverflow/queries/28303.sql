@@ -25,11 +25,11 @@ TopTaggedPosts AS (
         rp.OwnerDisplayName,
         rp.ViewCount,
         rp.Score,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagList
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagList
     FROM 
         RankedPosts rp
     JOIN 
-        arrayJoin(splitByString('<>', assumeNotNull(rp.Tags))) AS tag ON tag IS NOT NULL
+        UNNEST(STRING_TO_ARRAY(rp.Tags, '<>')) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH '<>' FROM tag)
     WHERE 

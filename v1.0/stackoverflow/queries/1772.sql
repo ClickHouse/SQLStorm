@@ -50,7 +50,7 @@ SELECT
     pw.UserReputation,
     pw.BadgeCount,
     COUNT(*) FILTER (WHERE pw.Score > 10) AS HighScoringPosts,
-    groupArray(assumeNotNull(pw.Title)) AS PostTitles
+    ARRAY_AGG(pw.Title) AS PostTitles
 FROM 
     PostWithUserReputation pw
 GROUP BY 

@@ -8,7 +8,7 @@ WITH PostDetails AS (
         p.OwnerUserId,
         p.Score,
         p.ViewCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
+        STRING_AGG(t.TagName, ', ') AS TagsList
     FROM 
         Posts p
     LEFT JOIN 

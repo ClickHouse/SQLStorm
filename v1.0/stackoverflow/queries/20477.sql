@@ -23,7 +23,7 @@ PopularPosts AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS HistoryTypes,
+        STRING_AGG(pt.Name, ', ') AS HistoryTypes,
         COUNT(*) AS HistoryCount,
         MAX(ph.CreationDate) AS LastActionDate
     FROM PostHistory ph

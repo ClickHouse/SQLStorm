@@ -33,7 +33,7 @@ PostHistoryDetails AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         COUNT(*) AS VersionCount,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(CAST(ph.CreationDate AS DATE), ' ', ph.UserDisplayName, ': ', ph.Comment))), '; ') AS EditComments
+        STRING_AGG(CONCAT(CAST(ph.CreationDate AS DATE), ' ', ph.UserDisplayName, ': ', ph.Comment), '; ') AS EditComments
     FROM 
         PostHistory ph
     GROUP BY 

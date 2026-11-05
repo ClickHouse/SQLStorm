@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         P.CreationDate, 
         P.Score, 
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagsList
+        STRING_AGG(DISTINCT T.TagName, ', ') AS TagsList
     FROM 
         Posts P
     LEFT JOIN 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
+        UNNEST(string_to_array(P.Tags, '<>')) AS T(TagName) ON TRUE
     WHERE 
         P.PostTypeId = 1  
     GROUP BY 
@@ -25,8 +25,8 @@ WITH RankedPosts AS (
 PostHistoryContent AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(PH.CreationDate::TEXT)), ', ') AS RevisionDates,
-        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes,
+        STRING_AGG(PH.CreationDate::TEXT, ', ') AS RevisionDates,
+        STRING_AGG(PHT.Name, ', ') AS HistoryTypes,
         MAX(PH.CreationDate) AS LastModifiedDate
     FROM 
         PostHistory PH

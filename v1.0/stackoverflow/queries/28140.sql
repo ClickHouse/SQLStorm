@@ -3,11 +3,11 @@ WITH PostTagCount AS (
     SELECT 
         p.Id AS PostId,
         COUNT(DISTINCT t.TagName) AS TagCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p 
     INNER JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS t(TagName) ON TRUE
+        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS t(TagName) ON TRUE
     WHERE 
         p.PostTypeId = 1 
     GROUP BY 

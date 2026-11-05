@@ -55,7 +55,7 @@ BizarreLogic AS (
         SUM(CASE WHEN ups.TotalUpvotes > ups.TotalDownvotes THEN 1 ELSE 0 END) AS PositiveContributions,
         SUM(CASE WHEN ups.TotalDownvotes > ups.TotalUpvotes THEN 1 ELSE 0 END) AS NegativeContributions,
         COUNT(DISTINCT rp.PostId) AS ContributingPosts,
-        arrayStringConcat(groupArray(assumeNotNull(rp.Title)), '; ') AS PostTitles
+        STRING_AGG(rp.Title, '; ') AS PostTitles
     FROM 
         UserStats ups
     LEFT JOIN 

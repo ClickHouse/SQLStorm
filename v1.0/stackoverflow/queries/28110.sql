@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.Score,
         p.ViewCount,
-        length(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))), 1) AS TagCount,
+        ARRAY_LENGTH(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><'), 1) AS TagCount,
         RANK() OVER (ORDER BY p.Score DESC) AS ScoreRank
     FROM 
         Posts p
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag
+        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag
     FROM 
         RankedPosts
 ),

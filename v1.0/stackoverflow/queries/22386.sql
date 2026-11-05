@@ -40,7 +40,7 @@ HighScorePosts AS (
 SELECT 
     hsp.Title,
     COUNT(DISTINCT ph.PostId) AS RelatedPostCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ph.Comment))), '; ') AS CloseReasons,
+    STRING_AGG(DISTINCT ph.Comment, '; ') AS CloseReasons,
     hsp.Reputation * hsp.TotalComments AS EngagementScore
 FROM HighScorePosts hsp
 LEFT JOIN PostHistory ph ON hsp.PostId = ph.PostId

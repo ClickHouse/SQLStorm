@@ -52,7 +52,7 @@ PostHistoryInfo AS (
 SELECT 
     PM.*,
     COUNT(PHI.Comment) AS HistoryCount,
-    arrayStringConcat(groupArray(assumeNotNull(PHI.Comment)), '; ') FILTER (WHERE PHI.Comment IS NOT NULL) AS HistoryComments
+    STRING_AGG(PHI.Comment, '; ') FILTER (WHERE PHI.Comment IS NOT NULL) AS HistoryComments
 FROM 
     PostMetrics PM
 LEFT JOIN 

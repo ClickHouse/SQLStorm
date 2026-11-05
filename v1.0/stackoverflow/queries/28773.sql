@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         COUNT(c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         RANK() OVER (ORDER BY p.Score DESC, p.ViewCount DESC) AS Rank
     FROM 
         Posts p
@@ -59,7 +59,7 @@ SELECT
     trp.ViewCount,
     trp.CommentCount,
     trp.Tags,
-    arrayDistinct(groupArray(assumeNotNull(phi.UserDisplayName || ' - ' || phi.ChangeType || ' on ' || CAST(phi.ChangeDate AS DATE) || COALESCE(' (Reason: ' || phi.CloseReason || ')', '')))) AS History
+    ARRAY_AGG(DISTINCT phi.UserDisplayName || ' - ' || phi.ChangeType || ' on ' || CAST(phi.ChangeDate AS DATE) || COALESCE(' (Reason: ' || phi.CloseReason || ')', '')) AS History
 FROM 
     TopRankedPosts trp
 LEFT JOIN 

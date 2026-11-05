@@ -54,11 +54,11 @@ FROM
 LEFT JOIN
     (SELECT
         p.Id,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM
         Posts p
     JOIN
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2)))) AS tag ON tag IS NOT NULL
+        UNNEST(string_to_array(SUBSTRING(p.Tags, 2, LENGTH(p.Tags)-2), '><')) AS tag ON tag IS NOT NULL
     JOIN
         Tags t ON t.TagName = tag
     GROUP BY

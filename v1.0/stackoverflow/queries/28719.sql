@@ -19,14 +19,14 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(LEFT(Tags, LENGTH(Tags) - 2)))) AS TagName,
+        UNNEST(string_to_array(LEFT(Tags, LENGTH(Tags) - 2), '><')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1
     GROUP BY 
-        arrayJoin(splitByString('><', assumeNotNull(LEFT(Tags, LENGTH(Tags) - 2))))
+        UNNEST(string_to_array(LEFT(Tags, LENGTH(Tags) - 2), '><'))
 ),
 RecentEdits AS (
     SELECT 

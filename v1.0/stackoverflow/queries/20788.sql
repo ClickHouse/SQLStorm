@@ -35,7 +35,7 @@ PostTags AS (
     FROM 
         Posts p
     INNER JOIN 
-        arrayJoin(splitByString('> <', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS t(TagName) ON true
+        LATERAL unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '> <')) AS t(TagName) ON true
     GROUP BY 
         p.Id, t.TagName
 ),
@@ -48,7 +48,7 @@ TopPostStatistics AS (
         rp.Score,
         rp.UserReputation,
         cp.LastClosedDate,
-        arrayStringConcat(groupArray(assumeNotNull(pt.TagName)), ', ') AS Tags
+        STRING_AGG(pt.TagName, ', ') AS Tags
     FROM 
         RankedPosts rp
     LEFT JOIN 

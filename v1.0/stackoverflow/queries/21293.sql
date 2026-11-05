@@ -7,11 +7,11 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS rk,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS tags
+        ARRAY_AGG(DISTINCT t.TagName) AS tags
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(trim(both '{}' FROM p.Tags)))) AS t(TagName) ON true
+        UNNEST(string_to_array(trim(both '{}' FROM p.Tags), '><')) AS t(TagName) ON true
     WHERE 
         p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY 

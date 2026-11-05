@@ -40,7 +40,7 @@ RecentBadges AS (
 
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS Tag,
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag,
         COUNT(p.Id) AS PostCount
     FROM 
         Posts p

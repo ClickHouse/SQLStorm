@@ -9,7 +9,7 @@ SELECT
     u.Reputation AS OwnerReputation,
     COUNT(c.Id) AS CommentCount,
     COUNT(v.Id) AS VoteCount,
-    AVG(toUnixTimestamp(COALESCE(v.CreationDate, CURRENT_TIMESTAMP) - p.CreationDate)) AS AverageVoteTime
+    AVG(EXTRACT(EPOCH FROM COALESCE(v.CreationDate, CURRENT_TIMESTAMP) - p.CreationDate)) AS AverageVoteTime
 FROM 
     Posts p
 JOIN 

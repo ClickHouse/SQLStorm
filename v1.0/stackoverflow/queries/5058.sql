@@ -48,13 +48,13 @@ SELECT
         WHEN p.PostTypeId = 2 THEN 'Answer'
         ELSE 'Other'
     END AS PostType,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     TopRankedPosts trp
 JOIN 
     Posts p ON trp.PostId = p.Id
 LEFT JOIN 
-    arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag_array ON TRUE
+    UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag_array ON TRUE
 LEFT JOIN 
     Tags t ON t.TagName = tag_array
 GROUP BY 

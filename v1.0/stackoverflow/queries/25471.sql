@@ -35,7 +35,7 @@ TopPosts AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('> <', assumeNotNull(substring(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS Tag
+        UNNEST(string_to_array(substring(p.Tags, 2, LENGTH(p.Tags) - 2), '> <')) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -68,7 +68,7 @@ SELECT
     tp.AnswerCount AS TopPostAnswerCount,
     tp.CommentCount AS TopPostCommentCount,
     tp.CreationDate AS TopPostCreationDate,
-    arrayStringConcat(groupArray(assumeNotNull(pt.Tag)), ', ') AS AssociatedTags
+    STRING_AGG(pt.Tag, ', ') AS AssociatedTags
 FROM 
     UserVoteSummary uvs
 JOIN 

@@ -57,13 +57,13 @@ SELECT
         WHEN fp.LastVoteDate < TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '30 days' THEN 'Old Vote Activity'
         ELSE 'Recent Vote Activity'
     END AS VoteActivityStatus,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tg.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT tg.TagName, ', ') AS Tags
 FROM 
     FilteredPosts fp
     JOIN Users u ON fp.PostId = u.Id
     LEFT JOIN UserBadges ub ON u.Id = ub.UserId
-    LEFT JOIN (
-        SELECT arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
+    LEFT JOIN LATERAL (
+        SELECT UNNEST(string_to_array(p.Tags, ',')) AS TagName
         FROM Posts p
         WHERE p.Id = fp.PostId
     ) tg ON TRUE

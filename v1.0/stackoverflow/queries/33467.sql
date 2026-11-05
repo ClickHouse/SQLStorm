@@ -48,8 +48,8 @@ SELECT
     COALESCE(TAU.TotalAnswers, 0) AS TotalAnswers,
     COALESCE(TAU.TotalQuestions, 0) AS TotalQuestions,
     COALESCE(TAU.TotalViews, 0) AS TotalViews,
-    arrayStringConcat(groupArray(assumeNotNull(RPH.Comment)), '; ') AS RecentComments,
-    arrayStringConcat(groupArray(assumeNotNull(RPH.Title)), ', ') AS RecentPostsTitles
+    STRING_AGG(RPH.Comment, '; ') AS RecentComments,
+    STRING_AGG(RPH.Title, ', ') AS RecentPostsTitles
 FROM 
     Users U 
 LEFT JOIN 

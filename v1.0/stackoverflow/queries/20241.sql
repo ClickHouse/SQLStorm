@@ -25,11 +25,11 @@ WITH UserActivity AS (
 PostsWithTags AS (
     SELECT 
         P.*,
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagsAggregated
+        STRING_AGG(T.TagName, ', ') AS TagsAggregated
     FROM Posts P
-    LEFT JOIN (
+    LEFT JOIN LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2)))) AS TagName
+            unnest(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) AS TagName
     ) T ON TRUE
     GROUP BY P.Id
 ),

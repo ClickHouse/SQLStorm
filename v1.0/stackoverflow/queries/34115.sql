@@ -32,7 +32,7 @@ PostHistoryDetails AS (
         ph.PostHistoryTypeId,
         ph.CreationDate AS HistoryDate,
         ph.UserDisplayName,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS Comments
+        STRING_AGG(ph.Comment, ', ') AS Comments
     FROM 
         PostHistory ph
     WHERE 
@@ -71,7 +71,7 @@ SELECT
     COALESCE(fp.SilverBadges, 0) AS SilverBadges,
     COALESCE(fp.BronzeBadges, 0) AS BronzeBadges,
     MAX(fp.HistoryDate) AS LatestHistoryDate,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(fp.Comments))), ' | ') AS AllComments
+    STRING_AGG(DISTINCT fp.Comments, ' | ') AS AllComments
 FROM 
     FilteredPosts fp
 GROUP BY 

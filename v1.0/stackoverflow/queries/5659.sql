@@ -34,7 +34,7 @@ PostActivity AS (
 BadgeSummary AS (
     SELECT 
         B.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames,
+        STRING_AGG(B.Name, ', ') AS BadgeNames,
         MAX(B.Class) AS HighestBadgeClass
     FROM Badges B
     GROUP BY B.UserId

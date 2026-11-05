@@ -21,11 +21,11 @@ PostInfo AS (
         p.CreationDate,
         p.Score,
         COUNT(DISTINCT c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         ROW_NUMBER() OVER(PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
-    LEFT ARRAY JOIN splitByString('><', assumeNotNull(p.Tags)) AS tag
+    LEFT JOIN LATERAL unnest(string_to_array(p.Tags, '><')) AS tag ON TRUE
     LEFT JOIN Tags t ON tag = t.TagName
     GROUP BY p.Id, p.Title, p.CreationDate, p.Score, p.OwnerUserId
 ),

@@ -52,7 +52,7 @@ AggregatedHistory AS (
     SELECT 
         ph.PostId,
         MAX(ph.EditDate) AS LastEditDate,
-        arrayStringConcat(groupArray(assumeNotNull(ph.CloseReason)), ', ') AS CloseReasons
+        STRING_AGG(ph.CloseReason, ', ') AS CloseReasons
     FROM 
         PostHistoryData ph
     GROUP BY 

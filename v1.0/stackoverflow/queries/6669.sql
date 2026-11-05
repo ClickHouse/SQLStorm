@@ -41,7 +41,7 @@ SELECT
     tp.CommentCount,
     tp.OwnerDisplayName,
     COUNT(c.Id) AS CommentCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
@@ -49,7 +49,7 @@ LEFT JOIN
 LEFT JOIN 
     Posts p ON tp.PostId = p.Id
 LEFT JOIN 
-    (SELECT DISTINCT arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName) t ON true
+    LATERAL (SELECT DISTINCT unnest(string_to_array(p.Tags, '>')) AS TagName) t ON true
 GROUP BY 
     tp.PostId, tp.Title, tp.CreationDate, tp.Score, tp.ViewCount, tp.AnswerCount, tp.CommentCount, tp.OwnerDisplayName
 ORDER BY 

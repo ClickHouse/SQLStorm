@@ -44,7 +44,7 @@ SELECT
     tq.OwnerDisplayName,
     tq.Score,
     tq.CommentCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AssociatedTags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS AssociatedTags
 FROM 
     TopQuestions tq
 JOIN 

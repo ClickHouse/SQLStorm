@@ -72,7 +72,7 @@ SELECT
     pd.Upvotes,
     pd.Downvotes,
     pd.UserDisplayName,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT pt.TagName, ', ') AS Tags
 FROM 
     PostDetails pd
 LEFT JOIN 

@@ -16,7 +16,7 @@ PostStatistics AS (
 ),
 UserBadges AS (
     SELECT b.UserId, 
-           arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgesList,
+           STRING_AGG(b.Name, ', ') AS BadgesList,
            COUNT(b.Id) AS TotalBadges
     FROM Badges b
     GROUP BY b.UserId

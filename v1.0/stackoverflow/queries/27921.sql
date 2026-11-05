@@ -7,7 +7,7 @@ WITH RankedQuestions AS (
         P.Score,
         U.DisplayName AS OwnerName,
         COUNT(A.Id) AS AnswerCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
     FROM 
         Posts P
     LEFT JOIN 
@@ -15,9 +15,9 @@ WITH RankedQuestions AS (
     LEFT JOIN 
         Users U ON P.OwnerUserId = U.Id
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT 
-                TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2))))) AS TagName
+                TRIM(UNNEST(string_to_array(SUBSTRING(P.Tags FROM 2 FOR LENGTH(P.Tags) - 2), '><'))) AS TagName
         ) T ON TRUE
     WHERE 
         P.PostTypeId = 1 

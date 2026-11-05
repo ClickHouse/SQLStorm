@@ -48,7 +48,7 @@ PostHistoryDetails AS (
 BadgeHistory AS (
     SELECT 
         U.Id AS UserId,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgesAwarded
+        STRING_AGG(B.Name, ', ') AS BadgesAwarded
     FROM 
         Users U
     LEFT JOIN 

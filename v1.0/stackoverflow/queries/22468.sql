@@ -31,10 +31,10 @@ UserBadges AS (
 ClosedPosts AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE 
+        STRING_AGG(CASE 
                         WHEN PH.PostHistoryTypeId = 10 THEN 'Closed: ' || (SELECT Name FROM CloseReasonTypes WHERE Id = PH.Comment::integer)
                         ELSE NULL 
-                   END)), ', ') AS CloseComments
+                   END, ', ') AS CloseComments
     FROM 
         PostHistory PH
     WHERE 

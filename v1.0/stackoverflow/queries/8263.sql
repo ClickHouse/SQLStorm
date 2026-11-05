@@ -9,7 +9,7 @@ WITH PostStats AS (
         COUNT(DISTINCT C.Id) AS CommentCount,
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVoteCount,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVoteCount,
-        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT T.TagName) AS Tags
     FROM 
         Posts P
     LEFT JOIN 
@@ -17,7 +17,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
+        unnest(string_to_array(P.Tags, '><')) AS T(TagName) ON TRUE
     WHERE 
         P.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY 

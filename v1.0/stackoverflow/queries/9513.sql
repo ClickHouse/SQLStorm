@@ -11,7 +11,7 @@ WITH RankedPosts AS (
         p.FavoriteCount,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.Score DESC, p.CreationDate DESC) AS Rank,
         u.DisplayName AS OwnerDisplayName,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsList
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsList
     FROM 
         Posts p
     JOIN 
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS tag ON TRUE
+        unnest(string_to_array(p.Tags, '<>')) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON tag = t.TagName
     WHERE 

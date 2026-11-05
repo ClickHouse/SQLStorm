@@ -33,7 +33,7 @@ TagStats AS (
     FROM 
         RankedPosts RP
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(RP.Tags))) AS T(TagName) ON T.TagName IS NOT NULL
+        UNNEST(string_to_array(RP.Tags, '><')) AS T(TagName) ON T.TagName IS NOT NULL
     GROUP BY 
         T.TagName
 )

@@ -42,7 +42,7 @@ SELECT
         WHEN tp.CreationDate < CURRENT_DATE - INTERVAL '6 months' THEN 'Old'
         ELSE 'Recent'
     END AS PostAgeCategory,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     TopPosts tp
 JOIN 

@@ -12,7 +12,7 @@ WITH PostMetrics AS (
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 10 THEN 1 ELSE 0 END), 0) AS DeletionVotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 1 THEN 1 ELSE 0 END), 0) AS AcceptedVotes,
         pt.Name AS PostType,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -22,7 +22,7 @@ WITH PostMetrics AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tags_array ON TRUE
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tags_array ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = tags_array
     WHERE 

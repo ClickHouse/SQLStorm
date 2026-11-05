@@ -33,7 +33,7 @@ PostHistoryInfo AS (
         PH.PostId,
         MIN(PH.CreationDate) AS FirstEditDate,
         COUNT(PH.Id) AS EditCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PT.Name))), ', ') AS EditTypes
+        STRING_AGG(DISTINCT PT.Name, ', ') AS EditTypes
     FROM PostHistory PH
     JOIN PostHistoryTypes PT ON PH.PostHistoryTypeId = PT.Id
     GROUP BY PH.PostId

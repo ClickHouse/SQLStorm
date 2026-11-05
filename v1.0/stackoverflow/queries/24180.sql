@@ -58,7 +58,7 @@ SELECT
     rp.Upvotes,
     rp.Downvotes,
     (
-        SELECT arrayStringConcat(groupArray(assumeNotNull(HT.HistoryType)), ', ') 
+        SELECT STRING_AGG(HT.HistoryType, ', ') 
         FROM PostHistoryDetails HT 
         WHERE HT.PostId = rp.PostId AND HT.HistoryRank <= 5 
     ) AS RecentHistoryTypes,

@@ -15,7 +15,7 @@ UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -46,7 +46,7 @@ PopularPosts AS (
         p.ViewCount,
         p.Score,
         COALESCE((
-            SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ')
+            SELECT STRING_AGG(t.TagName, ', ')
             FROM Tags t
             WHERE p.Tags LIKE CONCAT('%', t.TagName, '%')
         ), 'No tags') AS Tags,

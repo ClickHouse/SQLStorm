@@ -51,7 +51,7 @@ SELECT
     U.DisplayName,
     U.Reputation,
     COUNT(DISTINCT b.Id) AS BadgeCount,
-    arrayDistinct(groupArray(assumeNotNull(b.Name))) AS BadgeNames
+    ARRAY_AGG(DISTINCT b.Name) AS BadgeNames
 FROM 
     FilteredPosts FP
 JOIN 

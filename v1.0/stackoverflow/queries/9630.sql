@@ -43,7 +43,7 @@ SELECT
     tp.VoteCount,
     COALESCE(u.DisplayName, 'Community User') AS OwnerDisplayName,
     COUNT(DISTINCT b.Id) AS BadgeCount,
-    arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostType
+    STRING_AGG(pt.Name, ', ') AS PostType
 FROM 
     TopPosts tp
 LEFT JOIN 

@@ -11,7 +11,7 @@ WITH PostStats AS (
         p.FavoriteCount,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END), 0) AS UpVotes,
         COALESCE(SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END), 0) AS DownVotes,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
         p.OwnerUserId
     FROM 
         Posts p
@@ -20,7 +20,7 @@ WITH PostStats AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag ON TRUE
+        UNNEST(string_to_array(p.Tags, ',')) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON tag = t.TagName
     GROUP BY 

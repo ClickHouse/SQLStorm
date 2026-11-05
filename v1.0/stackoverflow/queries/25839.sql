@@ -28,14 +28,14 @@ WITH PostDetails AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(LOWER(p.Tags)))) AS TagName,
+        UNNEST(string_to_array(LOWER(p.Tags), '><')) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts p
     WHERE 
         p.Tags IS NOT NULL
     GROUP BY 
-        arrayJoin(splitByString('><', assumeNotNull(LOWER(p.Tags))))
+        UNNEST(string_to_array(LOWER(p.Tags), '><'))
 ),
 TopTags AS (
     SELECT 
@@ -61,7 +61,7 @@ SELECT
 FROM 
     PostDetails pd
 JOIN 
-    TopTags tt ON tt.TagName = ANY(splitByString('><', assumeNotNull(pd.Tags)))
+    TopTags tt ON tt.TagName = ANY(string_to_array(pd.Tags, '><'))
 WHERE 
     tt.TagRank <= 5 
 ORDER BY 

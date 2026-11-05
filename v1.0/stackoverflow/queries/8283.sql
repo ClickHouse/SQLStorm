@@ -8,7 +8,7 @@ WITH LatestPosts AS (
         u.DisplayName AS OwnerDisplayName,
         COALESCE(AVG(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE NULL END), 0) AS AverageUpVotes, 
         COALESCE(COUNT(c.Id), 0) AS CommentCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -18,7 +18,7 @@ WITH LatestPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag_name(tag) ON tag_name.tag IS NOT NULL
+        UNNEST(STRING_TO_ARRAY(p.Tags, '><')) AS tag_name(tag) ON tag_name.tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag_name.tag
     WHERE 

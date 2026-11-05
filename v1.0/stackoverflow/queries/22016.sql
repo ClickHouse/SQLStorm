@@ -26,7 +26,7 @@ PostHistoryData AS (
     SELECT 
         ph.PostId,
         ph.PostHistoryTypeId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS Comments,
+        STRING_AGG(ph.Comment, ', ') AS Comments,
         COUNT(*) AS EditCount
     FROM PostHistory ph
     WHERE ph.CreationDate > TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '90 days' 

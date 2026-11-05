@@ -56,13 +56,13 @@ SELECT
     tp.OwnerDisplayName,
     tp.Score,
     tp.CommentCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS RelatedTags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS RelatedTags
 FROM 
     TopPosts tp
 LEFT JOIN 
     Posts post ON tp.PostId = post.Id
 LEFT JOIN 
-    arrayJoin(splitByString('><', assumeNotNull(post.Tags))) AS tag_name ON tag_name IS NOT NULL
+    UNNEST(string_to_array(post.Tags, '><')) AS tag_name ON tag_name IS NOT NULL
 LEFT JOIN 
     Tags t ON t.TagName = tag_name
 WHERE 

@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         COUNT(c.Id) AS CommentCount,
         COUNT(a.Id) AS AnswerCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS UniqueTags,
+        ARRAY_AGG(DISTINCT t.TagName) AS UniqueTags,
         ROW_NUMBER() OVER (ORDER BY COUNT(c.Id) DESC) AS CommentRank,
         ROW_NUMBER() OVER (ORDER BY COUNT(a.Id) DESC) AS AnswerRank
     FROM 
@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag ON TRUE
+        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON tag = t.TagName
     WHERE 

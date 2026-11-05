@@ -18,7 +18,7 @@ WITH RankedPosts AS (
 ),
 FrequentTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS Tag,
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts p
@@ -55,12 +55,12 @@ SELECT
     rp.ViewCount,
     COUNT(DISTINCT ft.Tag) AS FrequentTagCount,
     COUNT(DISTINCT cp.Id) AS ClosedPostCount,
-    arrayDistinct(groupArray(assumeNotNull(ft.Tag))) AS FrequentTags,
+    ARRAY_AGG(DISTINCT ft.Tag) AS FrequentTags,
     COUNT(DISTINCT cp.ModeratorDisplayName) AS UniqueModerators
 FROM 
     RankedPosts rp
 LEFT JOIN 
-    FrequentTags ft ON ft.Tag = ANY(splitByString('><', assumeNotNull(substring(rp.Tags, 2, length(rp.Tags)-2))))
+    FrequentTags ft ON ft.Tag = ANY(string_to_array(substring(rp.Tags, 2, length(rp.Tags)-2), '><'))
 LEFT JOIN 
     ClosedPosts cp ON rp.Id = cp.Id
 GROUP BY 

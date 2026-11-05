@@ -14,7 +14,7 @@ Post_Summary AS (
         p.Title,
         p.CreationDate,
         p.Score,
-        arrayDistinct(groupArray(assumeNotNull(t.normalized_tag_name))) AS associated_tags,
+        ARRAY_AGG(DISTINCT t.normalized_tag_name) AS associated_tags,
         COUNT(c.Id) AS comment_count,
         COUNT(DISTINCT ph.Id) AS history_count
     FROM 

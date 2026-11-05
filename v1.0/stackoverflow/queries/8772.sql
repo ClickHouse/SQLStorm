@@ -29,7 +29,7 @@ PostActivity AS (
     ORDER BY RP.Score DESC, RP.ViewCount DESC
 )
 SELECT PA.PostId, PA.Title, PA.CreationDate, PA.ViewCount, PA.Score, PA.AnswerCount, 
-       PA.DisplayName, arrayDistinct(groupArray(assumeNotNull(PA.BadgeName))) AS Badges
+       PA.DisplayName, ARRAY_AGG(DISTINCT PA.BadgeName) AS Badges
 FROM PostActivity PA
 GROUP BY PA.PostId, PA.Title, PA.CreationDate, PA.ViewCount, PA.Score, PA.AnswerCount, PA.DisplayName
 ORDER BY PA.Score DESC, PA.ViewCount DESC

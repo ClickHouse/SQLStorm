@@ -22,7 +22,7 @@ SELECT u.DisplayName,
        COALESCE(NULLIF(p.Title, ''), 'No Title') AS PostTitle,
        COUNT(c.Id) AS CommentCount,
        AVG(v.BountyAmount) AS AvgBounty,
-       arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+       ARRAY_AGG(DISTINCT t.TagName) AS Tags,
        RANK() OVER (PARTITION BY u.Id ORDER BY SUM(p.Score) DESC) AS UserScoreRank
 FROM Users u
 JOIN Posts p ON u.Id = p.OwnerUserId

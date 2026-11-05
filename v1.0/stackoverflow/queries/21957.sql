@@ -71,7 +71,7 @@ PostStatistics AS (
         COALESCE(PH.RecentHistoryCount, 0) AS RecentHistoryCount,
         (SELECT COUNT(DISTINCT c.Id) FROM Comments c WHERE c.PostId = p.Id) AS CommentCount,
         (SELECT SUM(V.BountyAmount) FROM Votes V WHERE V.PostId = p.Id AND V.VoteTypeId = 8) AS TotalBounty,
-        (SELECT arrayDistinct(groupArray(assumeNotNull(t.TagName))) FROM Tags t WHERE t.ExcerptPostId = p.Id) AS Tags
+        (SELECT ARRAY_AGG(DISTINCT t.TagName) FROM Tags t WHERE t.ExcerptPostId = p.Id) AS Tags
     FROM 
         Posts p
     LEFT JOIN 

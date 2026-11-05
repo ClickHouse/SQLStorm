@@ -8,14 +8,14 @@ WITH PostStatistics AS (
         P.AnswerCount,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
         P.CreationDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
     FROM 
         Posts P
     LEFT JOIN 
         Comments C ON P.Id = C.PostId
     LEFT JOIN 
         (SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, LENGTH(Tags) - 2)))) AS TagName,
+            unnest(string_to_array(substring(Tags, 2, LENGTH(Tags) - 2), '><')) AS TagName,
             PostId 
          FROM 
             Posts) T ON P.Id = T.PostId

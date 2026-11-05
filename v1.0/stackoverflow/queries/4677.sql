@@ -38,7 +38,7 @@ SELECT
     TU.DownVotes,
     TU.PostCount,
     (SELECT COUNT(*) FROM Comments C WHERE C.UserId = TU.UserId) AS CommentCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
+    (SELECT STRING_AGG(T.TagName, ', ') 
      FROM Tags T 
      JOIN Posts P ON T.Id = P.Id 
      WHERE P.OwnerUserId = TU.UserId) AS AssociatedTags

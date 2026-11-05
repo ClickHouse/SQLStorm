@@ -26,7 +26,7 @@ ClosedPosts AS (
     SELECT 
         PostId,
         CreationDate,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(Name)), ', ')
+        (SELECT STRING_AGG(Name, ', ')
          FROM CloseReasonTypes crt 
          WHERE crt.Id = CAST(SUBSTRING(comment, 1, 2) AS smallint)) AS CloseReasons
     FROM 

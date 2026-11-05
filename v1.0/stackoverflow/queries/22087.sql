@@ -47,7 +47,7 @@ TopCommenters AS (
 PostHistorySummary AS (
     SELECT 
         postId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name || ': ' || ph.CreationDate))), '; ') AS HistoryDetails
+        STRING_AGG(DISTINCT pht.Name || ': ' || ph.CreationDate, '; ') AS HistoryDetails
     FROM 
         PostHistory ph
     JOIN 

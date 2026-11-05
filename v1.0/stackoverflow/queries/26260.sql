@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         COUNT(DISTINCT a.Id) AS AnswerCount,
         ROW_NUMBER() OVER (ORDER BY p.Score DESC, p.ViewCount DESC) AS PostRank
     FROM 
@@ -14,7 +14,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Posts a ON p.Id = a.ParentId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS tag_name ON TRUE 
+        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag_name ON TRUE 
     JOIN 
         Tags t ON t.TagName = tag_name
     WHERE 

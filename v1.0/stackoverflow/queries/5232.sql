@@ -5,7 +5,7 @@ WITH UserReputation AS (
         U.DisplayName,
         U.Reputation,
         COUNT(B.Id) AS BadgeCount,
-        AVG(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - U.CreationDate)) / 86400) AS AccountAgeDays
+        AVG(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - U.CreationDate)) / 86400) AS AccountAgeDays
     FROM 
         Users U
     LEFT JOIN 

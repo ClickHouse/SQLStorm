@@ -6,7 +6,7 @@ WITH RankedTags AS (
     FROM 
         Posts 
     JOIN 
-        (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(Posts.Tags, 2, length(Posts.Tags) - 2)))) AS TagName) AS Tags ON true 
+        LATERAL (SELECT unnest(string_to_array(substring(Posts.Tags, 2, length(Posts.Tags) - 2), '><')) AS TagName) AS Tags ON true 
     WHERE 
         Posts.CreationDate >= (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY 
@@ -21,11 +21,11 @@ PopularPosts AS (
         Posts.Score, 
         Posts.ViewCount, 
         Posts.CreationDate, 
-        groupArray(assumeNotNull(Tags.TagName)) AS PostTags 
+        ARRAY_AGG(Tags.TagName) AS PostTags 
     FROM 
         Posts 
     JOIN 
-        (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(Posts.Tags, 2, length(Posts.Tags) - 2)))) AS TagName) AS Tags ON true 
+        LATERAL (SELECT unnest(string_to_array(substring(Posts.Tags, 2, length(Posts.Tags) - 2), '><')) AS TagName) AS Tags ON true 
     WHERE 
         Posts.PostTypeId = 1 
         AND Posts.Score > 10 
@@ -64,7 +64,7 @@ PostInsights AS (
     LEFT JOIN 
         Users ON Posts.OwnerUserId = Users.Id 
     LEFT JOIN 
-        RankedTags ON RankedTags.TagName = ANY(splitByString('>', assumeNotNull(Posts.Tags))) 
+        RankedTags ON RankedTags.TagName = ANY(string_to_array(Posts.Tags, '>')) 
     LEFT JOIN 
         UserEngagement ON UserEngagement.UserId = Posts.OwnerUserId 
     WHERE 

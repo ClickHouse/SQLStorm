@@ -21,7 +21,7 @@ TaggedPosts AS (
     SELECT 
         rp.Id,
         rp.Title,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
+        STRING_AGG(t.TagName, ', ') AS Tags,
         rp.OwnerDisplayName,
         rp.CreationDate,
         rp.Score,
@@ -31,7 +31,7 @@ TaggedPosts AS (
     FROM 
         RankedPosts rp
     JOIN 
-        (SELECT arrayJoin(splitByString(' ', assumeNotNull(rp.Title))) AS TagName) t ON t.TagName IS NOT NULL
+        LATERAL (SELECT unnest(string_to_array(rp.Title, ' ')) AS TagName) t ON t.TagName IS NOT NULL
     GROUP BY 
         rp.Id, rp.Title, rp.OwnerDisplayName, rp.CreationDate, rp.Score, rp.ViewCount, rp.AnswerCount, rp.RankScore
 )

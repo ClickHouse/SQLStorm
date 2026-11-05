@@ -23,7 +23,7 @@ WITH UserStatistics AS (
 CloseReasonSummary AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN PHT.Name IS NOT NULL THEN PHT.Name END)), ', ') AS CloseReasons,
+        STRING_AGG(CASE WHEN PHT.Name IS NOT NULL THEN PHT.Name END, ', ') AS CloseReasons,
         COUNT(DISTINCT PH.UserId) AS NumOfCloseVotes
     FROM 
         PostHistory PH

@@ -1,14 +1,14 @@
 
 WITH TagCount AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2))))) AS TagName,
+        TRIM(UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><'))) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1  
     GROUP BY 
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))))
+        TRIM(UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')))
 ),
 TopTags AS (
     SELECT 

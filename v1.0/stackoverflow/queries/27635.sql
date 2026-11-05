@@ -36,7 +36,7 @@ FilteredPosts AS (
         
         EXISTS (
             SELECT 1
-            FROM arrayJoin(splitByString('>', assumeNotNull(rp.Tags))) AS tag
+            FROM unnest(string_to_array(rp.Tags, '>')) AS tag
             WHERE tag IN ('sql', 'postgresql', 'database')
         )
 )
@@ -47,7 +47,7 @@ SELECT
     p.CommentCount,
     p.UniqueVoteCount,
     (SELECT COUNT(*) FROM PostHistory ph WHERE ph.PostId = p.PostId) AS EditHistoryCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') 
+    (SELECT STRING_AGG(b.Name, ', ') 
         FROM Badges b 
         JOIN Users u ON b.UserId = u.Id 
         WHERE u.DisplayName = p.OwnerDisplayName) AS OwnerBadges

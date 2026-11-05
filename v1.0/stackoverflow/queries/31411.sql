@@ -34,7 +34,7 @@ SELECT
     COALESCE(p.PostCount, 0) AS TotalPosts,
     COALESCE(pc.CommentCount, 0) AS TotalComments,
     ROW_NUMBER() OVER (PARTITION BY u.Id ORDER BY u.CreationDate DESC) AS UserRank,
-    arrayStringConcat(groupArray(assumeNotNull(tags.TagName)), ', ') AS Tags,
+    STRING_AGG(tags.TagName, ', ') AS Tags,
     MAX(v.BountyAmount) AS MaxBounty
 FROM 
     Users u
@@ -74,7 +74,7 @@ LEFT JOIN (
     FROM 
         Posts pt
     CROSS JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(pt.Tags))) AS t(TagName)
+        UNNEST(STRING_TO_ARRAY(pt.Tags, '><')) AS t(TagName)
 ) tags ON tags.Id = (
     SELECT 
         p.Id

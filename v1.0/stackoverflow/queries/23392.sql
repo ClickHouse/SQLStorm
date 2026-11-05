@@ -53,7 +53,7 @@ PostAnalysis AS (
         rp.Score,
         ut.Reputation AS UserReputation,
         pt.Name AS PostTypeName,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tg.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT tg.TagName, ', ') AS Tags
     FROM 
         RankedPosts rp
     JOIN 

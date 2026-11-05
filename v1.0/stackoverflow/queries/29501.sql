@@ -5,7 +5,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
         ROW_NUMBER() OVER (ORDER BY p.Score DESC, p.ViewCount DESC) AS Rank
@@ -44,10 +44,12 @@ SELECT
     tp.Score, 
     tp.CommentCount, 
     tp.VoteCount, 
-    arrayStringConcat(groupArray(assumeNotNull(tag)), ', ') AS TagList
+    STRING_AGG(tag, ', ') AS TagList
 FROM 
     TopPosts tp
-ARRAY JOIN tp.Tags AS tagGROUP BY 
+CROSS JOIN 
+    unnest(tp.Tags) AS tag
+GROUP BY 
     tp.PostId, tp.Title, tp.CreationDate, tp.ViewCount, tp.Score, tp.CommentCount, tp.VoteCount
 ORDER BY 
     tp.Score DESC, tp.ViewCount DESC;

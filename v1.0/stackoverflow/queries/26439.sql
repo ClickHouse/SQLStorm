@@ -34,13 +34,13 @@ TaggedPosts AS (
         rp.Author,
         rp.AnswerCount,
         rp.AvgBounty,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS AssociatedTags
+        STRING_AGG(t.TagName, ', ') AS AssociatedTags
     FROM 
         RankedPosts rp
     JOIN 
-        (
+        LATERAL (
             SELECT 
-                arrayJoin(splitByString(',', assumeNotNull(rp.Tags))) AS TagName
+                UNNEST(STRING_TO_ARRAY(rp.Tags, ',')) AS TagName
         ) t ON TRUE
     GROUP BY 
         rp.PostId, rp.Title, rp.Body, rp.Tags, rp.CreationDate, rp.LastActivityDate, rp.Author, rp.AnswerCount, rp.AvgBounty
@@ -53,7 +53,7 @@ PostStats AS (
         p.AnswerCount,
         p.AvgBounty,
         p.AssociatedTags,
-        toUnixTimestamp(cast('2024-10-01 12:34:56' as timestamp) - p.LastActivityDate) AS DaysSinceLastActivity
+        EXTRACT(EPOCH FROM cast('2024-10-01 12:34:56' as timestamp) - p.LastActivityDate) AS DaysSinceLastActivity
     FROM 
         TaggedPosts p
 )

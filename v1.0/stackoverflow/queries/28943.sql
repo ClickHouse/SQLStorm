@@ -1,7 +1,7 @@
 WITH TagsSplit AS (
     SELECT 
         Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS TagName
+        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS TagName
     FROM Posts
     WHERE Tags IS NOT NULL
 ),

@@ -8,13 +8,13 @@ WITH RankedPosts AS (
         p.CreationDate,
         u.Reputation AS OwnerReputation,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
-        groupArray(assumeNotNull(t.TagName)) AS Tags
+        ARRAY_AGG(t.TagName) AS Tags
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     JOIN 
-        arrayJoin(splitByString('> <', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS t(TagName) ON true
+        LATERAL UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '> <')) AS t(TagName) ON true
     WHERE 
         p.CreationDate > CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'
     GROUP BY 

@@ -6,7 +6,7 @@ WITH RecentPosts AS (
         p.Score,
         p.ViewCount,
         COALESCE(CAST(NULLIF(p.OwnerUserId, -1) AS INT), -1) AS ActualOwnerUserId,
-        groupArray(assumeNotNull(t.TagName)) AS TagsArray
+        ARRAY_AGG(t.TagName) AS TagsArray
     FROM Posts p
     LEFT JOIN Tags t ON POSITION(t.TagName IN p.Tags) > 0 
     WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 month'

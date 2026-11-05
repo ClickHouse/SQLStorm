@@ -31,7 +31,7 @@ SELECT
     (SELECT COUNT(*)
      FROM Comments c
      WHERE c.PostId = rp.Id) AS CommentCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(CONCAT(u.DisplayName, ' - ', b.Name))), ', ') 
+    (SELECT STRING_AGG(CONCAT(u.DisplayName, ' - ', b.Name), ', ') 
      FROM Badges b
      JOIN Users u ON b.UserId = u.Id
      WHERE u.Id IN (SELECT DISTINCT OwnerUserId 

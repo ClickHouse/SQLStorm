@@ -26,11 +26,11 @@ WITH RankedPosts AS (
 TagsArray AS (
     SELECT 
         p.PostId, 
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
+        STRING_AGG(t.TagName, ', ') AS TagsList
     FROM 
         RankedPosts p
     CROSS JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS tag
+        UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag
     JOIN 
         Tags t ON t.TagName = TRIM(tag) 
     GROUP BY 

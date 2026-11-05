@@ -54,7 +54,7 @@ SELECT
     ub.NetVotes,
     CONCAT('User ', ub.DisplayName, ' has ', ub.RecentPostCount, ' recent posts with a net vote score of ', ub.NetVotes) AS UserSummary,
     (
-        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(pd.NormalizedTags AS VARCHAR)))), ', ')
+        SELECT STRING_AGG(DISTINCT CAST(pd.NormalizedTags AS VARCHAR), ', ')
         FROM RecentPostStats pd
         WHERE pd.PostId IN (SELECT PostId FROM RecentPostStats rs WHERE rs.OwnerDisplayName = ub.DisplayName)
     ) AS TagsSummary

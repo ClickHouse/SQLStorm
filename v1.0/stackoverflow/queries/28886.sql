@@ -68,7 +68,7 @@ SELECT
     pwvcs.TotalDownvotes,
     pwvcs.TotalComments,
     (pwvcs.TotalUpvotes - pwvcs.TotalDownvotes) AS NetScore,
-    (toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - pwvcs.CreationDate)) / 86400) AS AgeInDays
+    (EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - pwvcs.CreationDate)) / 86400) AS AgeInDays
 FROM 
     PostWithVoteAndCommentStats pwvcs
 WHERE 

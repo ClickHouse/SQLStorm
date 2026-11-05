@@ -51,17 +51,17 @@ SELECT
         WHEN ua.BadgeCount > 5 THEN 'Enthusiast'
         ELSE 'Newcomer'
     END AS UserCategory,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS AssociatedTags,
+    ARRAY_AGG(DISTINCT t.TagName) AS AssociatedTags,
     COUNT(DISTINCT v.Id) AS VoteCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT(vt.Name, ' (', v.CreationDate, ')')))), '; ') AS LatestVotes
+    STRING_AGG(DISTINCT CONCAT(vt.Name, ' (', v.CreationDate, ')'), '; ') AS LatestVotes
 FROM UserAggregates ua
 LEFT JOIN Posts p ON ua.Id = p.OwnerUserId
 LEFT JOIN Votes v ON p.Id = v.PostId
 LEFT JOIN VoteTypes vt ON v.VoteTypeId = vt.Id
-LEFT JOIN (
+LEFT JOIN LATERAL (
     SELECT 
         t.TagName
-    FROM arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS t(TagName)
+    FROM UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS t(TagName)
 ) t ON true
 GROUP BY ua.Id, ua.DisplayName, ua.Reputation, ua.BadgeCount, ua.TotalPosts, ua.Questions, ua.Answers, ua.AverageViews, ua.LastPostDate
 HAVING COUNT(DISTINCT p.Id) > 0

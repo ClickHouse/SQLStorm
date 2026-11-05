@@ -16,12 +16,12 @@ WITH RankedPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('|', assumeNotNull(p.Tags))) AS TagName,
+        unnest(string_to_array(p.Tags, '|')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p
     GROUP BY 
-        arrayJoin(splitByString('|', assumeNotNull(p.Tags)))
+        unnest(string_to_array(p.Tags, '|'))
     HAVING 
         COUNT(*) > 5
 ),

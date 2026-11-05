@@ -52,7 +52,7 @@ PostScoreAnalysis AS (
     JOIN 
         PostTypes pt ON pt.Id = rp.PostTypeId
     JOIN 
-        arrayJoin(splitByString(' ', assumeNotNull(rp.Body))) AS word ON LOWER(word) NOT IN ('the', 'is', 'and', 'or', 'to', 'of', 'in')  
+        UNNEST(STRING_TO_ARRAY(rp.Body, ' ')) AS word ON LOWER(word) NOT IN ('the', 'is', 'and', 'or', 'to', 'of', 'in')  
     JOIN 
         PopularTags t ON t.TagName LIKE '%' || word || '%'
 )
@@ -63,7 +63,7 @@ SELECT
     p.Score,
     p.AnswerCount,
     p.PostCategory,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.TagName))), ', ') AS AssociatedTags
+    STRING_AGG(DISTINCT p.TagName, ', ') AS AssociatedTags
 FROM 
     PostScoreAnalysis p
 GROUP BY 

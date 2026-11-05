@@ -41,7 +41,7 @@ PostDetails AS (
         ui.CommentCount AS InteractionCommentCount,
         ui.UpVoteCount,
         ui.DownVoteCount,
-        length(splitByString(',', assumeNotNull(rp.Tags)), 1) AS TagCount
+        ARRAY_LENGTH(STRING_TO_ARRAY(rp.Tags, ','), 1) AS TagCount
     FROM 
         RankedPosts rp
     JOIN 

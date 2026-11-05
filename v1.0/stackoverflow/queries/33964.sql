@@ -46,7 +46,7 @@ ClosedPostHistory AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.Comment, ' on ', ph.CreationDate))), '; ') AS ClosureDetails
+        STRING_AGG(CONCAT(ph.Comment, ' on ', ph.CreationDate), '; ') AS ClosureDetails
     FROM 
         PostHistory ph
     WHERE 

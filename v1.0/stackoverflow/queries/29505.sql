@@ -7,7 +7,7 @@ WITH RecentPosts AS (
         p.Score,
         p.ViewCount,
         p.Tags,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagList,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagList,
         COUNT(c.Id) AS CommentCount,
         COUNT(a.Id) AS AnswerCount
     FROM 

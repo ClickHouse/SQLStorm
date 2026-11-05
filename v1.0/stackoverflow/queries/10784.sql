@@ -17,7 +17,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes V ON P.Id = V.PostId
 LEFT JOIN 
-    arrayJoin(splitByString('><', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
+    UNNEST(string_to_array(P.Tags, '><')) AS T(TagName) ON TRUE
 WHERE 
     P.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '30 days'
 GROUP BY 

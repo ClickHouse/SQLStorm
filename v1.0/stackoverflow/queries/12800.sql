@@ -13,7 +13,7 @@ WITH PostEdits AS (
 EditDurations AS (
     SELECT 
         PostId,
-        toUnixTimestamp((NextEditDate - EditDate)) AS EditDurationSeconds
+        EXTRACT(EPOCH FROM (NextEditDate - EditDate)) AS EditDurationSeconds
     FROM 
         PostEdits
     WHERE 

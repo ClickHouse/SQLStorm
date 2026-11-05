@@ -67,7 +67,7 @@ SELECT
         WHEN tgt.HistoryDate IS NOT NULL THEN 'Edited'
         ELSE 'New'
     END AS PostStatus,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags
 FROM 
     TopPosts tgt
 LEFT JOIN 

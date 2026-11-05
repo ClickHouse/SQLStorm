@@ -28,8 +28,8 @@ SELECT
     CommentCount, 
     VoteCount, 
     LastHistoryActionDate,
-    toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - PostCreationDate)) AS AgeInSeconds,
-    toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - LastHistoryActionDate)) AS LastActionLagInSeconds
+    EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - PostCreationDate)) AS AgeInSeconds,
+    EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - LastHistoryActionDate)) AS LastActionLagInSeconds
 FROM 
     Benchmark
 ORDER BY 

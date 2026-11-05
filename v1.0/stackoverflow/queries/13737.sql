@@ -4,7 +4,7 @@ SELECT
     P.ViewCount AS NumberOfViews,
     P.Score AS QuestionScore,
     A.CreationDate AS AnswerDate,
-    toUnixTimestamp((A.CreationDate - P.CreationDate)) AS ResponseTimeInSeconds,
+    EXTRACT(EPOCH FROM (A.CreationDate - P.CreationDate)) AS ResponseTimeInSeconds,
     A.Score AS AnswerScore,
     U.DisplayName AS AnswererDisplayName
 FROM 

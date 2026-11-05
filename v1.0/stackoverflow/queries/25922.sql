@@ -40,7 +40,7 @@ PopularTags AS (
         Tag
     FROM (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(LOWER(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2))))) AS Tag
+            UNNEST(string_to_array(LOWER(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)), '><')) AS Tag
         FROM 
             Posts p
         WHERE 

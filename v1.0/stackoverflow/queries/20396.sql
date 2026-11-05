@@ -22,7 +22,7 @@ PostDetails AS (
     WHERE rp.UserPostRank <= 5
 ),
 RecentBadges AS (
-    SELECT b.UserId, arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+    SELECT b.UserId, STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM Badges b
     WHERE b.Date >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY b.UserId

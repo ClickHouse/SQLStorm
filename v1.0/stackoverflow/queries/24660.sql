@@ -34,7 +34,7 @@ TopUserPosts AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
+        STRING_AGG(b.Name, ', ') AS BadgeNames,
         COUNT(CASE WHEN b.Class = 1 THEN 1 END) AS GoldCount
     FROM 
         Badges b

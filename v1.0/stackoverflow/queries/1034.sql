@@ -47,7 +47,7 @@ SELECT
     rp.CreationDate,
     rp.Score,
     rp.CommentCount,
-    groupArray(assumeNotNull(pt.TagName)) AS AssociatedTags,
+    ARRAY_AGG(pt.TagName) AS AssociatedTags,
     CASE 
         WHEN ur.ReputationRank <= 10 THEN 'Top Contributor'
         WHEN ur.ReputationRank BETWEEN 11 AND 50 THEN 'Veteran Contributor'

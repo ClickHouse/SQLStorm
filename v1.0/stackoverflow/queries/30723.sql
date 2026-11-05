@@ -18,7 +18,7 @@ UserBadgesCTE AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 
@@ -41,7 +41,7 @@ ModifiedPosts AS (
     SELECT 
         PH.PostId,
         MAX(CASE WHEN PH.PostHistoryTypeId IN (4, 5) THEN PH.CreationDate END) AS LastModifiedDate,
-        arrayStringConcat(groupArray(assumeNotNull(PH.UserDisplayName)), ', ') AS Editors
+        STRING_AGG(PH.UserDisplayName, ', ') AS Editors
     FROM 
         PostHistory PH
     GROUP BY 

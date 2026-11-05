@@ -23,7 +23,7 @@ PostDetails AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 

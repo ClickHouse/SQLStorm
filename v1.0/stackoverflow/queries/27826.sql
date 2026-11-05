@@ -29,7 +29,7 @@ UserReputation AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS Tag
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS Tag
     FROM 
         Posts p
     WHERE 
@@ -55,7 +55,7 @@ SELECT
     rp.Body,
     rp.CreationDate,
     rp.Score,
-    groupArray(assumeNotNull(mt.Tag)) AS PopularTags
+    array_agg(mt.Tag) AS PopularTags
 FROM 
     RankedPosts rp
 JOIN 

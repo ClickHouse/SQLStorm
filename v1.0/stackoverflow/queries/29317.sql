@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         u.DisplayName AS Author,
         p.ViewCount,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
+        STRING_AGG(t.TagName, ', ') AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS Rank
     FROM 
         Posts p
@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2)))) AS tag_id ON true
+        UNNEST(STRING_TO_ARRAY(SUBSTRING(p.Tags, 2, LENGTH(p.Tags) - 2), '><')) AS tag_id ON true
     LEFT JOIN 
         Tags t ON t.TagName = tag_id
     WHERE 

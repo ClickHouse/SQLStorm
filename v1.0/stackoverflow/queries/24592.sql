@@ -24,7 +24,7 @@ PostHistorySummary AS (
     SELECT
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        arrayStringConcat(groupArray(assumeNotNull(ph.UserDisplayName)), ', ' ORDER BY ph.CreationDate DESC) AS Editors
+        STRING_AGG(ph.UserDisplayName, ', ' ORDER BY ph.CreationDate DESC) AS Editors
     FROM
         PostHistory ph
     WHERE

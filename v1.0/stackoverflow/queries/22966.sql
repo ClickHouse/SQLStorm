@@ -102,7 +102,7 @@ SELECT
         WHEN fm.BadgeCount BETWEEN 1 AND 3 THEN 'Few Badges'
         ELSE 'Many Badges'
     END AS BadgeCategory,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') 
+    (SELECT STRING_AGG(TagName, ', ') 
      FROM Tags 
      WHERE TagName LIKE '%' || fm.DisplayName || '%' 
      LIMIT 5) AS RelatedTags

@@ -21,7 +21,7 @@ PostSummary AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        COALESCE(arrayDistinct(groupArray(assumeNotNull(t.TagName))) FILTER (WHERE t.TagName IS NOT NULL), ARRAY[]::VARCHAR[]) AS Tags,
+        COALESCE(ARRAY_AGG(DISTINCT t.TagName) FILTER (WHERE t.TagName IS NOT NULL), ARRAY[]::VARCHAR[]) AS Tags,
         SUM(rv.UpVotes) AS TotalUpVotes,
         COUNT(c.Id) AS CommentCount,
         COALESCE(MAX(b.Class), 0) AS HighestBadgeClass

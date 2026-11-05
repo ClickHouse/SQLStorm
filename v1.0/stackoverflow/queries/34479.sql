@@ -9,14 +9,14 @@ WITH RankedPosts AS (
         p.Score,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS ScoreRank,
         COUNT(c.Id) AS CommentCount,
-        groupArray(assumeNotNull(t.TagName)) AS Tags
+        ARRAY_AGG(t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        (SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName) AS t ON TRUE
+        LATERAL (SELECT 
+            unnest(string_to_array(p.Tags, '><')) AS TagName) AS t ON TRUE
     WHERE 
         p.CreationDate >= DATE '2024-10-01' - INTERVAL '1 year' 
     GROUP BY 

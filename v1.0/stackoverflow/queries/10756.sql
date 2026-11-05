@@ -8,7 +8,7 @@ WITH PostStats AS (
         p.Score,
         p.ViewCount,
         COUNT(DISTINCT b.Id) AS BadgeCount,
-        toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate)) AS PostAgeInSeconds
+        EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - p.CreationDate)) AS PostAgeInSeconds
     FROM 
         Posts p
     LEFT JOIN 

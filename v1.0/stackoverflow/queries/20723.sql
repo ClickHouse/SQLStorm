@@ -20,7 +20,7 @@ BadgeStats AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS Badges
+        STRING_AGG(B.Name, ', ') AS Badges
     FROM 
         Users U
     LEFT JOIN 

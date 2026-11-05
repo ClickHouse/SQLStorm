@@ -56,7 +56,7 @@ FinalBenchmark AS (
         fp.TotalVotes,
         fp.CreationDate,
         fp.LastActivityDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tc.TagName))), ', ') AS RelatedTags
+        STRING_AGG(DISTINCT tc.TagName, ', ') AS RelatedTags
     FROM 
         FilteredPosts fp
     LEFT JOIN 

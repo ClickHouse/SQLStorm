@@ -52,7 +52,7 @@ SELECT
     pu.VoteNet,
     pu.TotalPosts,
     pu.ReputationRank,
-    groupArray(assumeNotNull(ps.Title)) AS RecentPosts
+    ARRAY_AGG(ps.Title) AS RecentPosts
 FROM 
     PopularUsers pu
 JOIN 

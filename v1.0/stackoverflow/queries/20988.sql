@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.PostTypeId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS UserRank,
         COALESCE(pc.ClosedDate, '9999-12-31') AS LastClosedDate,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray
     FROM 
         Posts p
     LEFT JOIN 

@@ -53,7 +53,7 @@ TopPosts AS (
 PostComments AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS Comments
+        STRING_AGG(c.Text, ' | ') AS Comments
     FROM 
         Posts p
     LEFT JOIN 

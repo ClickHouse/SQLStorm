@@ -42,8 +42,8 @@ SELECT
     U.BadgeCount,
     U.NetVotes,
     U.TotalViews,
-    arrayDistinct(groupArray(assumeNotNull(P.Title))) AS TopPosts,
-    arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS AssociatedTags
+    ARRAY_AGG(DISTINCT P.Title) AS TopPosts,
+    ARRAY_AGG(DISTINCT T.TagName) AS AssociatedTags
 FROM 
     TopUsers U
 LEFT JOIN 

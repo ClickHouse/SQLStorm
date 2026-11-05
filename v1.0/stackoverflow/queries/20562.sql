@@ -64,14 +64,14 @@ SELECT
         WHEN rp.RankByScore = 1 THEN 'Top Scored'
         ELSE 'Regular Post'
     END AS PostCategory,
-    arrayStringConcat(groupArray(assumeNotNull('Tag: ' || t.TagName)), ', ') AS Tags
+    STRING_AGG('Tag: ' || t.TagName, ', ') AS Tags
 FROM RankedPosts rp
 JOIN UserReputation ur ON ur.UserId = rp.OwnerUserId
 LEFT JOIN PostHistoryDetail phd ON phd.PostId = rp.PostId
 LEFT JOIN PostVoteStats pvs ON pvs.PostId = rp.PostId
-LEFT JOIN (
+LEFT JOIN LATERAL (
     SELECT 
-        DISTINCT arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
+        DISTINCT UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS TagName
     FROM Posts p 
     WHERE p.Id = rp.PostId
 ) AS t ON TRUE

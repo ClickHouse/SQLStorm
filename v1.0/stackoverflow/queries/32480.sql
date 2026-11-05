@@ -52,7 +52,7 @@ SELECT
     pm.VoteCount,
     pm.TotalViews,
     pm.TotalScore,
-    (SELECT groupArray(assumeNotNull(ph.Comment ORDER BY ph.CreationDate DESC)) 
+    (SELECT ARRAY_AGG(ph.Comment ORDER BY ph.CreationDate DESC) 
      FROM RecursivePostHistory ph 
      WHERE ph.PostId = pm.PostId) AS RecentHistoryComments
 FROM Users u

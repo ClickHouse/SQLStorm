@@ -53,7 +53,7 @@ SELECT
         ELSE 'Low Rated'
     END AS RatingCategory,
     (SELECT 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+        STRING_AGG(DISTINCT t.TagName, ', ') 
      FROM 
         Tags t 
      JOIN 

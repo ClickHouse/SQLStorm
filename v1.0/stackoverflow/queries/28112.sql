@@ -27,7 +27,7 @@ WITH RankedPosts AS (
 ),
 UniqueTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS Tag
+        UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS Tag
     FROM 
         RankedPosts
     WHERE 
@@ -53,11 +53,11 @@ PostStatistics AS (
         rp.HasAcceptedAnswer,
         rp.ViewCount,
         rp.Score,
-        arrayDistinct(groupArray(assumeNotNull(tf.Tag))) AS PopularTags
+        ARRAY_AGG(DISTINCT tf.Tag) AS PopularTags
     FROM 
         RankedPosts rp
     LEFT JOIN 
-        TagFrequency tf ON tf.Tag = ANY(splitByString('><', assumeNotNull(SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags) - 2))))
+        TagFrequency tf ON tf.Tag = ANY(STRING_TO_ARRAY(SUBSTRING(rp.Tags, 2, LENGTH(rp.Tags) - 2), '><'))
     GROUP BY 
         rp.PostId, rp.Title, rp.OwnerDisplayName, rp.CreationDate, rp.HasAcceptedAnswer, rp.ViewCount, rp.Score
 )

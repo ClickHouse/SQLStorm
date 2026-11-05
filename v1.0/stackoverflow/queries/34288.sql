@@ -21,7 +21,7 @@ UserBadges AS (
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
         MAX(b.Date) AS LastBadgeDate,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 

@@ -39,7 +39,7 @@ FilteredPosts AS (
 PostComments AS (
     SELECT 
         fp.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ' ORDER BY c.CreationDate) AS AllComments
+        STRING_AGG(c.Text, ' | ' ORDER BY c.CreationDate) AS AllComments
     FROM 
         FilteredPosts fp
     LEFT JOIN 

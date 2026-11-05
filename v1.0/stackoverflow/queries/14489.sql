@@ -7,7 +7,7 @@ SELECT
     p.ViewCount,
     COUNT(DISTINCT c.Id) AS CommentCount,
     COUNT(DISTINCT v.Id) AS VoteCount,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags
 FROM 
     Posts p
 LEFT JOIN 
@@ -15,7 +15,7 @@ LEFT JOIN
 LEFT JOIN 
     Votes v ON p.Id = v.PostId
 LEFT JOIN 
-    arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag(tag) ON TRUE
+    UNNEST(string_to_array(p.Tags, ',')) AS tag(tag) ON TRUE
 LEFT JOIN 
     Tags t ON t.TagName = TRIM(BOTH ' ' FROM tag.tag)
 WHERE 

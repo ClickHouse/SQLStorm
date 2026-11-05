@@ -38,7 +38,7 @@ UserReputation AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS Comments,
+        STRING_AGG(ph.Comment, ', ') AS Comments,
         MIN(ph.CreationDate) AS FirstEditDate,
         MAX(ph.CreationDate) AS LastEditDate,
         COUNT(*) AS EditCount

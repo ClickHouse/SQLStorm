@@ -21,7 +21,7 @@ PostMetrics AS (
         ph.PostHistoryTypeId,
         ph.CreationDate AS HistoryDate,
         ph.Comment,
-        toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - ph.CreationDate)) AS AgeInSeconds,
+        EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - ph.CreationDate)) AS AgeInSeconds,
         CASE 
             WHEN ph.PostHistoryTypeId IN (10, 11) THEN 'Close'
             ELSE 'Edit'

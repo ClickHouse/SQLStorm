@@ -40,7 +40,7 @@ SELECT
     tp.CommentCount,
     tp.UpVotes,
     tp.DownVotes,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+    (SELECT STRING_AGG(t.TagName, ', ') 
      FROM Tags t 
      JOIN Posts p ON p.Id = t.ExcerptPostId 
      WHERE p.Id = tp.PostId) AS Tags,

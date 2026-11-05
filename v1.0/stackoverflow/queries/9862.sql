@@ -51,7 +51,7 @@ SELECT
     tp.OwnerDisplayName,
     tp.CommentCount,
     tp.VoteCount,
-    COALESCE(NULLIF((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+    COALESCE(NULLIF((SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
                      FROM Tags t 
                      WHERE t.ExcerptPostId = tp.PostId), ''), 'No Tags') AS Tags
 FROM 

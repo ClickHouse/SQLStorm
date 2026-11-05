@@ -23,7 +23,7 @@ WITH RecentActivity AS (
 ),
 TagMetrics AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS Tag,
+        unnest(string_to_array(Tags, ',')) AS Tag,
         COUNT(*) AS PostCount,
         SUM(CommentCount) AS TotalComments,
         SUM(UpVotes) AS TotalUpVotes,

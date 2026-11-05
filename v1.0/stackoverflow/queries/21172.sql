@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ClosedPostReasons AS (
     SELECT 
         ph.PostId,
-        groupArray(assumeNotNull(cr.Name)) AS CloseReasons
+        ARRAY_AGG(cr.Name) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -36,7 +36,7 @@ PostTagCounts AS (
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS tag ON true 
+        unnest(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag ON true 
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 

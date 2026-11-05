@@ -39,7 +39,7 @@ ActiveUsers AS (
 RelatedPosts AS (
     SELECT 
         pl.PostId,
-        COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(p.Title)), ', ')
+        COALESCE((SELECT STRING_AGG(p.Title, ', ')
                    FROM Posts p
                    JOIN PostLinks pl2 ON pl2.RelatedPostId = p.Id
                    WHERE pl2.PostId = pl.PostId), 'No Related Posts') AS RelatedPostTitles

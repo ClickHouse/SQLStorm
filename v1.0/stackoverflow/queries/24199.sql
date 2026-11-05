@@ -80,7 +80,7 @@ SELECT
     DENSE_RANK() OVER (ORDER BY U.Reputation DESC) AS ReputationRank,
     COUNT(DISTINCT PH.PostId) FILTER (WHERE PH.HistoryType = 'Close/Reopen') AS CloseReopenCount,
     COUNT(DISTINCT PH.PostId) FILTER (WHERE PH.HistoryType = 'Delete/Undelete') AS DeleteUndeleteCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.UserDisplayName))), ', ') AS RelatedUserNames
+    STRING_AGG(DISTINCT PH.UserDisplayName, ', ') AS RelatedUserNames
 FROM 
     UserStatistics U
 JOIN 

@@ -65,7 +65,7 @@ FinalResult AS (
         pd.VoteCount,
         pd.UpVoteCount,
         pd.DownVoteCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(td.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT td.TagName, ', ') AS Tags,
         CASE 
             WHEN pd.CloseReason IS NOT NULL THEN 'Closed: ' || pd.CloseReason 
             ELSE 'Open' 

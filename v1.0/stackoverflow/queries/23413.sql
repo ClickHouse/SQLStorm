@@ -21,7 +21,7 @@ WITH RankedPosts AS (
 ClosedPosts AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS CloseReasons
+        STRING_AGG(ph.Comment, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     WHERE 
@@ -41,15 +41,15 @@ SELECT
         WHEN rp.MostActivePostForUser = 1 THEN 'User''s Most Active Post'
         ELSE 'Regular Post'
     END AS PostStatus,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     RankedPosts rp
 LEFT JOIN 
     ClosedPosts cp ON rp.PostId = cp.PostId
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
+            unnest(string_to_array(p.Tags, '><')) AS TagName
         FROM 
             Posts p
         WHERE 

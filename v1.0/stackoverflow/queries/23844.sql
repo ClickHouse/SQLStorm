@@ -33,7 +33,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         ph.CreationDate,
-        arrayStringConcat(groupArray(assumeNotNull(ct.Name)), ', ') AS CloseReasons
+        STRING_AGG(ct.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -54,7 +54,7 @@ SELECT
     rp.PostId,
     rp.Title AS PostTitle,
     rp.Score,
-    datePart('epoch', TIMESTAMP '2024-10-01 12:34:56' - rp.CreationDate) AS PostAgeInSeconds,
+    DATE_PART('epoch', TIMESTAMP '2024-10-01 12:34:56' - rp.CreationDate) AS PostAgeInSeconds,
     cp.CloseReasons
 FROM 
     UserBadges up

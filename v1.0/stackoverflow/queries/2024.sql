@@ -53,7 +53,7 @@ SELECT
     COALESCE(RB.BadgeCount, 0) AS RecentBadgeCount,
     TU.AvgScore,
     (SELECT COUNT(*) FROM Comments C WHERE C.UserId = TU.UserId) AS TotalComments,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(CAST(PH.UserDisplayName AS VARCHAR))), ', ') 
+    (SELECT STRING_AGG(CAST(PH.UserDisplayName AS VARCHAR), ', ') 
      FROM PostHistory PH 
      WHERE PH.UserId = TU.UserId 
      AND PH.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year') AS RecentEditors

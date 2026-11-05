@@ -44,7 +44,7 @@ PostWithVotes AS (
 PostHistoryDetail AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(pht.Name, ': ', ph.Comment))), '; ') AS HistoryComments
+        STRING_AGG(CONCAT(pht.Name, ': ', ph.Comment), '; ') AS HistoryComments
     FROM 
         PostHistory ph
     JOIN 

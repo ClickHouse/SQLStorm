@@ -20,7 +20,7 @@ WITH UserStats AS (
 BadgesByType AS (
     SELECT 
         U.Id AS UserId,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames,
+        STRING_AGG(B.Name, ', ') AS BadgeNames,
         COUNT(CASE WHEN B.Class = 1 THEN 1 END) AS GoldCount, 
         COUNT(CASE WHEN B.Class = 2 THEN 1 END) AS SilverCount,
         COUNT(CASE WHEN B.Class = 3 THEN 1 END) AS BronzeCount
@@ -35,7 +35,7 @@ PostHistorySummary AS (
     SELECT 
         PH.UserId,
         PH.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes,
+        STRING_AGG(PHT.Name, ', ') AS HistoryTypes,
         COUNT(PH.Id) AS HistoryCount
     FROM 
         PostHistory PH

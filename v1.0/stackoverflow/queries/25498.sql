@@ -26,7 +26,7 @@ WITH FilteredPosts AS (
 TagStatistics AS (
     SELECT 
         p.Id AS PostId,
-        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', assumeNotNull(p.Tags)))) AS Tag, 
+        TRIM(BOTH '<>' FROM UNNEST(string_to_array(p.Tags, '><'))) AS Tag, 
         COUNT(*) AS TagUsageCount
     FROM 
         Posts p

@@ -23,7 +23,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -32,7 +32,7 @@ UserBadges AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ' ORDER BY ph.CreationDate DESC) AS CloseReasons
+        STRING_AGG(cr.Name, ', ' ORDER BY ph.CreationDate DESC) AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

@@ -40,7 +40,7 @@ TopUsers AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(p.Tags)))) AS Tag,
+        TRIM(UNNEST(string_to_array(p.Tags, '><'))) AS Tag,
         COUNT(*) AS UsageCount
     FROM 
         Posts p
@@ -69,7 +69,7 @@ FROM
 JOIN 
     PopularTags pt ON pt.Tag IN (
         SELECT 
-            TRIM(arrayJoin(splitByString('><', assumeNotNull(p.Tags))))
+            TRIM(UNNEST(string_to_array(p.Tags, '><')))
         FROM 
             Posts p
         WHERE 

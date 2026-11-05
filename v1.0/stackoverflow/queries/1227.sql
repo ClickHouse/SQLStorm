@@ -5,7 +5,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT p.Id) AS TotalPosts,
         COUNT(DISTINCT c.Id) AS TotalComments,
         SUM(CASE WHEN v.VoteTypeId IN (2, 3) THEN 1 ELSE 0 END) AS TotalVotes,
-        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - u.CreationDate))) AS AvgAccountAgeInSec
+        AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - u.CreationDate))) AS AvgAccountAgeInSec
     FROM 
         Users u
     LEFT JOIN 

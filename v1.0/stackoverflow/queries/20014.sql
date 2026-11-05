@@ -65,13 +65,13 @@ SELECT
         WHEN pd.Score < 0 THEN 'Negative Score'
         ELSE 'Positive Score'
     END AS ScoreStatus,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(SUBSTRING(t.TagName, 2, LENGTH(t.TagName) - 2)))), ',') AS Tags
+    STRING_AGG(DISTINCT SUBSTRING(t.TagName, 2, LENGTH(t.TagName) - 2), ',') AS Tags
 FROM 
     PostDetails pd
 LEFT JOIN 
     (SELECT 
          PostId, 
-         arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TagName
+         UNNEST(STRING_TO_ARRAY(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS TagName
      FROM 
          Posts) t ON pd.PostId = t.PostId
 GROUP BY 

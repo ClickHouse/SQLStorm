@@ -23,7 +23,7 @@ BadgesRanked AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -32,7 +32,7 @@ BadgesRanked AS (
 PostDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(pt.Name AS VARCHAR)))), ', ') AS PostHistoryTypes,
+        STRING_AGG(DISTINCT CAST(pt.Name AS VARCHAR), ', ') AS PostHistoryTypes,
         MAX(ph.CreationDate) AS LastUpdate
     FROM 
         PostHistory ph

@@ -8,7 +8,7 @@ WITH PostStats AS (
         AVG(COALESCE(p.AnswerCount, 0)) AS AvgAnswers,
         AVG(COALESCE(p.CommentCount, 0)) AS AvgComments,
         AVG(COALESCE(p.FavoriteCount, 0)) AS AvgFavorites,
-        AVG(COALESCE(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate)), 0)) AS AvgPostAgeSeconds
+        AVG(COALESCE(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - p.CreationDate)), 0)) AS AvgPostAgeSeconds
     FROM 
         Posts p
     WHERE 

@@ -35,7 +35,7 @@ TopPosts AS (
 SELECT 
     tp.*, 
     COUNT(c.Id) AS TotalComments, 
-    arrayDistinct(groupArray(assumeNotNull(tg.TagName))) AS TagNames,
+    ARRAY_AGG(DISTINCT tg.TagName) AS TagNames,
     COALESCE(
         (SELECT COUNT(*) FROM Votes v WHERE v.PostId = tp.PostId AND v.VoteTypeId = 2), 0
     ) AS Upvotes,
@@ -47,7 +47,7 @@ FROM
 LEFT JOIN 
     Comments c ON tp.PostId = c.PostId
 LEFT JOIN 
-    (SELECT pt.Id, arrayJoin(splitByString('><', assumeNotNull(pt.Tags))) AS TagName
+    (SELECT pt.Id, unnest(string_to_array(pt.Tags, '><')) AS TagName
      FROM Posts pt) tg ON tp.PostId = tg.Id
 GROUP BY 
     tp.PostId, tp.Title, tp.CreationDate, tp.Score, tp.ViewCount, tp.AnswerCount, tp.CommentCount, tp.OwnerDisplayName

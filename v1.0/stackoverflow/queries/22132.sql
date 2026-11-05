@@ -77,12 +77,12 @@ SELECT
         ELSE 'Open'
     END AS PostStatus,
     CONCAT('User: ', fs.OwnerDisplayName, ' asked: ', fs.Title) AS FullDescription,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsUsed
+    ARRAY_AGG(DISTINCT t.TagName) AS TagsUsed
 FROM 
     FinalSelection fs
-    LEFT JOIN (
+    LEFT JOIN LATERAL (
         SELECT 
-            arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName
+            unnest(string_to_array(p.Tags, ',')) AS TagName
         FROM 
             Posts p
         WHERE 

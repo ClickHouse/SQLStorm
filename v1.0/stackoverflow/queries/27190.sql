@@ -6,7 +6,7 @@ WITH UserActivity AS (
         COUNT(DISTINCT p.Id) AS TotalPosts,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS Questions,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS Answers,
-        AVG(toUnixTimestamp((CURRENT_TIMESTAMP - p.CreationDate)) / 60) AS AvgPostAgeMinutes,
+        AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - p.CreationDate)) / 60) AS AvgPostAgeMinutes,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS Upvotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS Downvotes
     FROM

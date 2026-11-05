@@ -29,7 +29,7 @@ PostStats AS (
         P.LastActivityDate,
         U.DisplayName AS OwnerDisplayName,
         P.LastEditorDisplayName,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
+        (SELECT STRING_AGG(T.TagName, ', ') 
          FROM Tags T 
          WHERE P.Tags LIKE '%' || T.TagName || '%') AS Tags 
     FROM Posts P
@@ -40,7 +40,7 @@ HistoricalEdits AS (
         PH.PostId,
         COUNT(PH.Id) AS EditCount,
         MAX(PH.CreationDate) AS LastEditDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PH.Comment))), '; ') AS EditComments
+        STRING_AGG(DISTINCT PH.Comment, '; ') AS EditComments
     FROM PostHistory PH
     GROUP BY PH.PostId
 )

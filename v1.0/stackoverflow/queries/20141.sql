@@ -37,7 +37,7 @@ UserPerformance AS (
         PA.AverageScore,
         CASE 
             WHEN PA.LastPostActivity IS NULL THEN NULL 
-            ELSE datePart('day', cast('2024-10-01 12:34:56' as timestamp) - PA.LastPostActivity) 
+            ELSE DATE_PART('day', cast('2024-10-01 12:34:56' as timestamp) - PA.LastPostActivity) 
         END AS DaysSinceLastPost
     FROM 
         UserBadges UB

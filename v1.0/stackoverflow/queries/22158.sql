@@ -75,7 +75,7 @@ JOIN
         WHERE Id = rp.PostId
     )
 LEFT JOIN
-    TagUsage tu ON tu.TagName = ANY(splitByString('>', assumeNotNull(rp.Tags)))
+    TagUsage tu ON tu.TagName = ANY(string_to_array(rp.Tags, '>'))
 WHERE
     rp.PostTypeId = 1 
     AND (su.PostsCount > 1 OR su.TotalBounties > 0) 

@@ -31,7 +31,7 @@ SELECT
      FROM Votes v 
      WHERE v.PostId = r.PostId 
        AND v.VoteTypeId IN (2, 3)) AS TotalVotes, 
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(b.Name))), ', ') 
+    (SELECT STRING_AGG(DISTINCT b.Name, ', ') 
      FROM Badges b 
      WHERE b.UserId = u.Id) AS UserBadges
 FROM 

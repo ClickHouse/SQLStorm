@@ -8,7 +8,7 @@ SELECT
     COUNT(c.Id) AS CommentCount,
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
-    AVG(COALESCE(toUnixTimestamp((h.CreationDate - p.CreationDate)), 0)) AS AverageEditTime,
+    AVG(COALESCE(EXTRACT(EPOCH FROM (h.CreationDate - p.CreationDate)), 0)) AS AverageEditTime,
     MAX(h.CreationDate) AS LastEditDate
 FROM 
     Posts p

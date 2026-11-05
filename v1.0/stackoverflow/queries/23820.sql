@@ -26,7 +26,7 @@ PostHistorySummary AS (
     SELECT ph.PostId,
            ph.PostHistoryTypeId,
            COUNT(*) AS HistoryCount,
-           arrayStringConcat(groupArray(assumeNotNull(ph.UserDisplayName)), ', ' ORDER BY ph.CreationDate ASC) AS Editors
+           STRING_AGG(ph.UserDisplayName, ', ' ORDER BY ph.CreationDate ASC) AS Editors
     FROM PostHistory ph
     WHERE ph.CreationDate >= '2024-10-01 12:34:56'::timestamp - INTERVAL '2 years'
     GROUP BY ph.PostId, ph.PostHistoryTypeId

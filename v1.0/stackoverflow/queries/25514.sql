@@ -23,9 +23,9 @@ PostTagStats AS (
     SELECT 
         P.Id AS PostId,
         COUNT(DISTINCT T.TagName) AS TagCount,
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
+        STRING_AGG(T.TagName, ', ') AS Tags
     FROM Posts P
-    JOIN arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS T(TagName) 
+    JOIN UNNEST(string_to_array(P.Tags, '>')) AS T(TagName) 
     ON T.TagName IS NOT NULL
     GROUP BY P.Id
 ),

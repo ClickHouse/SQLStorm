@@ -38,11 +38,11 @@ SELECT
     tp.CommentCount, 
     tp.VoteCount, 
     tp.LastEditDate, 
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName, p.Id 
+    (SELECT UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS TagName, p.Id 
      FROM Posts p) AS tag_arr ON tp.PostId = tag_arr.Id
 LEFT JOIN 
     Tags t ON t.TagName = tag_arr.TagName

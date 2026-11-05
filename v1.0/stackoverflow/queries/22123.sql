@@ -59,7 +59,7 @@ MergedInfo AS (
 SELECT 
     mi.PostId,
     mi.Title,
-    COALESCE(CAST(toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - mi.CreationDate)) / 3600 AS INT), 0) AS AgeInHours,
+    COALESCE(CAST(EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - mi.CreationDate)) / 3600 AS INT), 0) AS AgeInHours,
     mi.ViewCount,
     mi.Score,
     mi.RankScore,
@@ -67,13 +67,13 @@ SELECT
     mi.TotalBounties,
     mi.PostedQuestions,
     mi.ScoreCategory,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+    STRING_AGG(t.TagName, ', ') AS Tags
 FROM 
     MergedInfo mi
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('<>', assumeNotNull(Tags))) AS TagName
+            unnest(string_to_array(Tags, '<>')) AS TagName
         FROM 
             Posts 
         WHERE 

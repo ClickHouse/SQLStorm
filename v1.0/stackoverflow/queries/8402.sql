@@ -28,11 +28,11 @@ PostAnalytics AS (
         P.Score,
         P.ViewCount,
         COALESCE(P.AcceptedAnswerId, 0) AS AcceptedAnswerId,
-        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT T.TagName) AS Tags
     FROM 
         Posts P
     LEFT JOIN 
-        (SELECT DISTINCT arrayJoin(splitByRegexp('[><]', P.Tags)) AS TagName) AS T ON TRUE
+        (SELECT DISTINCT unnest(regexp_split_to_array(P.Tags, '[><]')) AS TagName) AS T ON TRUE
     WHERE 
         P.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY 

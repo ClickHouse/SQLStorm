@@ -43,7 +43,7 @@ SELECT
         WHEN CD.RecentPostsCount = 0 THEN 'No posts in the last 30 days'
         ELSE 'Active user'
     END AS ActivityStatus,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
+    (SELECT STRING_AGG(T.TagName, ', ') 
      FROM Tags T 
      WHERE T.WikiPostId IS NOT NULL) AS PopularTags,
     (SELECT COUNT(*) 

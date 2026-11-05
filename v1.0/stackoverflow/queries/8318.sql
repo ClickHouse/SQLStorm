@@ -33,11 +33,11 @@ PostStats AS (
 TagStats AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tagList ON TRUE
+        UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tagList ON TRUE
     JOIN 
         Tags t ON t.TagName = TRIM(BOTH ' ' FROM tagList) AND t.Count > 10
     GROUP BY 

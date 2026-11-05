@@ -44,7 +44,7 @@ PopularQuestions AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS ReasonNames
+        STRING_AGG(cr.Name, ', ') AS ReasonNames
     FROM 
         PostHistory ph
     INNER JOIN 

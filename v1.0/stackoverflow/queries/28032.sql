@@ -37,7 +37,7 @@ FilteredPosts AS (
             WHEN rp.ViewCount BETWEEN 500 AND 1000 THEN 'Medium Engagement'
             ELSE 'Low Engagement' 
         END AS EngagementLevel,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
+        STRING_AGG(t.TagName, ', ') AS TagsList
     FROM 
         RankedPosts rp
     LEFT JOIN 

@@ -22,7 +22,7 @@ WITH RankedPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('<>', assumeNotNull(Tags))) AS TagName,
+        UNNEST(string_to_array(Tags, '<>')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         RankedPosts
@@ -53,7 +53,7 @@ PostDetails AS (
     FROM 
         RankedPosts rp
     JOIN 
-        PopularTags pt ON pt.TagName IN (SELECT * FROM arrayJoin(splitByString('<>', assumeNotNull(rp.Tags))))
+        PopularTags pt ON pt.TagName IN (SELECT * FROM UNNEST(string_to_array(rp.Tags, '<>')))
 )
 SELECT 
     pd.OwnerDisplayName,
@@ -61,8 +61,8 @@ SELECT
     SUM(pd.ViewCount) AS TotalViews,
     AVG(pd.Score) AS AverageScore,
     SUM(pd.AnswerCount) AS TotalAnswers,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pd.TagName))), ', ') AS Tags,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT('Rank: ', pd.TagRank, ' Tag: ', pd.TagName)))), '; ') AS TagRanks
+    STRING_AGG(DISTINCT pd.TagName, ', ') AS Tags,
+    STRING_AGG(DISTINCT CONCAT('Rank: ', pd.TagRank, ' Tag: ', pd.TagName), '; ') AS TagRanks
 FROM 
     PostDetails pd
 GROUP BY 

@@ -28,7 +28,7 @@ VoteStatistics AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayDistinct(groupArray(assumeNotNull(TRIM(Tags.TagName)))) AS TagList
+        ARRAY_AGG(DISTINCT TRIM(Tags.TagName)) AS TagList
     FROM 
         Posts p
     LEFT JOIN 

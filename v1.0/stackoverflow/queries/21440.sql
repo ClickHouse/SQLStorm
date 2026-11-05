@@ -26,7 +26,7 @@ WITH RankedPosts AS (
 PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS CommentsAggregate,
+        STRING_AGG(ph.Comment, '; ') AS CommentsAggregate,
         MAX(ph.CreationDate) AS LastUpdate
     FROM 
         PostHistory ph

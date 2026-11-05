@@ -40,7 +40,7 @@ UserPostCounts AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag,
+        UNNEST(string_to_array(Tags, '><')) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -75,7 +75,7 @@ SELECT
     phs.LastChangeDate,
     phs.EditorCount,
     (SELECT 
-        arrayStringConcat(groupArray(assumeNotNull(t.Tag)), ', ' ORDER BY t.TagCount DESC)
+        STRING_AGG(t.Tag, ', ' ORDER BY t.TagCount DESC)
      FROM 
         TopTags t) AS TopTags
 FROM 

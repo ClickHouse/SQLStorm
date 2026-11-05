@@ -37,7 +37,7 @@ TagStats AS (
 FilteredComments AS (
     SELECT 
         c.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' ') AS AllComments,
+        STRING_AGG(c.Text, ' ') AS AllComments,
         COUNT(*) AS CommentCount
     FROM 
         Comments c

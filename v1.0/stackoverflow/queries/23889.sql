@@ -31,7 +31,7 @@ PostHistoryDetails AS (
     SELECT 
         ph.PostId,
         MAX(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN ph.CreationDate END) AS ClosedOrReopenedAt,
-        arrayDistinct(groupArray(assumeNotNull(ch.Name))) AS CloseReasons
+        ARRAY_AGG(DISTINCT ch.Name) AS CloseReasons
     FROM 
         PostHistory ph
     LEFT JOIN 
@@ -46,7 +46,7 @@ PopularPosts AS (
         rp.CleanTags,
         us.Reputation,
         ps.ClosedOrReopenedAt,
-        length(ps.CloseReasons, 1) AS CloseReasonCount,
+        array_length(ps.CloseReasons, 1) AS CloseReasonCount,
         CASE WHEN rp.ViewCount > 1000 THEN 'High Traffic' ELSE 'Normal Traffic' END AS TrafficLabel,
         RANK() OVER (ORDER BY us.Views DESC, rp.ViewCount DESC) AS ViewRank
     FROM 

@@ -39,7 +39,7 @@ TopPosts AS (
 ProcessedTags AS (
     SELECT 
         PostId,
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS Tag
+        UNNEST(string_to_array(Tags, ',')) AS Tag
     FROM 
         TopPosts
 )
@@ -49,7 +49,7 @@ SELECT
     tp.UpVoteCount,
     tp.DownVoteCount,
     tp.CommentCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Tag))), ', ') AS DistinctTags
+    STRING_AGG(DISTINCT p.Tag, ', ') AS DistinctTags
 FROM 
     TopPosts tp
 JOIN 

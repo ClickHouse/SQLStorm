@@ -26,11 +26,11 @@ WITH RankedPosts AS (
 TrimmedTags AS (
     SELECT 
         PostId,
-        arrayStringConcat(groupArray(assumeNotNull(TRIM(t.TagName))), ', ') AS CleanedTags
+        STRING_AGG(TRIM(t.TagName), ', ') AS CleanedTags
     FROM 
         RankedPosts rp
     CROSS JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(rp.Tags))) AS raw_tags(tag)
+        unnest(string_to_array(rp.Tags, '>')) AS raw_tags(tag)
     JOIN 
         Tags t ON TRIM(raw_tags.tag) = t.TagName
     GROUP BY 

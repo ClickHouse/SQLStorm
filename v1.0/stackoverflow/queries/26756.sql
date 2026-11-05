@@ -40,7 +40,7 @@ TaggedQuestions AS (
 ),
 MostCommonTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString(',', assumeNotNull(Tags)))) AS TagName,
+        TRIM(unnest(string_to_array(Tags, ','))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         TaggedQuestions

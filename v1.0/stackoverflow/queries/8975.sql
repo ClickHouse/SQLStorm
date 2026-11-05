@@ -65,7 +65,7 @@ SELECT
         WHEN ps.Score > 0 THEN 'Moderate'
         ELSE 'Less Popular'
     END AS Popularity,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+    (SELECT STRING_AGG(t.TagName, ', ') 
      FROM Tags t 
      WHERE t.ExcerptPostId = ps.PostId) AS Tags
 FROM 

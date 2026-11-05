@@ -51,7 +51,7 @@ SELECT
         WHEN ps.TotalPosts > 0 THEN ps.TotalDownvotes::decimal / ps.TotalPosts 
         ELSE 0 
     END AS DownvoteRatio,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') FROM PostTypes pt 
+    (SELECT STRING_AGG(DISTINCT pt.Name, ', ') FROM PostTypes pt 
      JOIN Posts p ON p.PostTypeId = pt.Id 
      WHERE p.OwnerUserId = (SELECT MIN(u.Id) FROM Users u WHERE u.DisplayName = ps.OwnerDisplayName)
     ) AS PostTypes

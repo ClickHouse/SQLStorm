@@ -33,7 +33,7 @@ PostStatistics AS (
         P.Score,
         P.AnswerCount,
         P.CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT T.TagName) AS Tags
     FROM 
         Posts P
     JOIN 

@@ -58,7 +58,7 @@ SELECT
     cpd.DownVotes,
     cpd.TagCount,
     cpd.CloseVotes,
-    datePart('day', cpd.LastChangeDate - cpd.FirstChangeDate) AS DurationInDays
+    DATE_PART('day', cpd.LastChangeDate - cpd.FirstChangeDate) AS DurationInDays
 FROM 
     ClosedPostDetails cpd
 WHERE 

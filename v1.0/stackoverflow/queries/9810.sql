@@ -57,7 +57,7 @@ SELECT
     COUNT(DISTINCT PS.PostId) AS ContributionPosts,
     SUM(PS.Score) AS TotalScore,
     SUM(PS.CommentCount) AS TotalComments,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CAST(EXTRACT(YEAR FROM PS.CreationDate) AS TEXT)))), ', ') AS ActiveYears
+    STRING_AGG(DISTINCT CAST(EXTRACT(YEAR FROM PS.CreationDate) AS TEXT), ', ') AS ActiveYears
 FROM 
     TopUsers TU
 JOIN 

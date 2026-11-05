@@ -24,7 +24,7 @@ PostDetails AS (
         (SELECT COUNT(C.Id) 
          FROM Comments C 
          WHERE C.PostId = P.Id) AS CommentCount,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
+        (SELECT STRING_AGG(T.TagName, ', ') 
          FROM Tags T 
          WHERE T.WikiPostId = P.Id) AS TagNames
     FROM 

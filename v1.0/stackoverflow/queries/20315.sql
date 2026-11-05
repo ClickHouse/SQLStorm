@@ -25,7 +25,7 @@ PinnedQuestions AS (
         p.Id AS PostId,
         p.Title,
         p.CreationDate,
-        groupArray(assumeNotNull(t.TagName)) AS Tags,
+        ARRAY_AGG(t.TagName) AS Tags,
         (SELECT COUNT(*) FROM Comments c WHERE c.PostId = p.Id) AS CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS RecentPostRank
     FROM Posts p
@@ -38,7 +38,7 @@ PinnedQuestions AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames,
+        STRING_AGG(b.Name, ', ') AS BadgeNames,
         COUNT(b.Id) AS BadgeCount,
         MAX(b.Class) AS HighestBadgeClass
     FROM Badges b

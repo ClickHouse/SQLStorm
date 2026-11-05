@@ -26,7 +26,7 @@ UserStats AS (
 TaggedPosts AS (
     SELECT 
         P.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags)-2)))) AS Tag
+        unnest(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><')) AS Tag
     FROM 
         Posts P
     WHERE 
@@ -58,7 +58,7 @@ JOIN
     UserStats US ON US.UserId = RP.PostId 
 LEFT JOIN (
     SELECT 
-        TP.PostId, arrayStringConcat(groupArray(assumeNotNull(TP.Tag)), ', ') AS PosterGroup 
+        TP.PostId, STRING_AGG(TP.Tag, ', ') AS PosterGroup 
     FROM 
         TaggedPosts TP
     GROUP BY 

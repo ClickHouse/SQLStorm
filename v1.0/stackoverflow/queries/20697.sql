@@ -70,7 +70,7 @@ SELECT
         ELSE 'No Badge' 
     END AS UserBadgeStatus,
     (SELECT COUNT(*) FROM Comments WHERE UserId = fs.UserId AND CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '7 days') AS RecentCommentsCount,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Tags))), ', ') 
+    (SELECT STRING_AGG(DISTINCT p.Tags, ', ') 
      FROM Posts p 
      WHERE p.OwnerUserId = fs.UserId 
        AND p.PostTypeId = 1 

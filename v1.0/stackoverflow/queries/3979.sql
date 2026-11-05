@@ -94,7 +94,7 @@ SELECT
     fr.PopularPosts,
     fr.AverageScore,
     fr.EngagementLevel,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostTypeNames
+    STRING_AGG(DISTINCT pt.Name, ', ') AS PostTypeNames
 FROM 
     FinalResults fr
 LEFT JOIN 

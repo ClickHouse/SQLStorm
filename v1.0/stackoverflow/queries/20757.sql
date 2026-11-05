@@ -2,7 +2,7 @@ WITH UserBadges AS (
     SELECT 
         U.Id AS UserId,
         COUNT(B.Id) AS TotalBadges,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM Users U
     LEFT JOIN Badges B ON U.Id = B.UserId
     WHERE U.Reputation > 1000
@@ -24,7 +24,7 @@ ClosedPosts AS (
     SELECT 
         PH.PostId,
         PH.CreationDate,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN C.PostId IS NOT NULL THEN 'Closed' ELSE 'Active' END)), ' | ') AS PostStatus
+        STRING_AGG(CASE WHEN C.PostId IS NOT NULL THEN 'Closed' ELSE 'Active' END, ' | ') AS PostStatus
     FROM PostHistory PH
     LEFT JOIN Comments C ON PH.PostId = C.PostId 
     WHERE PH.PostHistoryTypeId IN (10, 11)

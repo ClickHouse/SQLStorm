@@ -52,7 +52,7 @@ SELECT
     PS.CloseActions,
     PS.EditSuggestions,
     (SELECT 
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') 
+        STRING_AGG(B.Name, ', ') 
      FROM 
         Badges B 
      WHERE 

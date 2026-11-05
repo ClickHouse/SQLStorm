@@ -25,7 +25,7 @@ PopularTags AS (
         COUNT(*) AS TagCount
     FROM (
         SELECT 
-            arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag
+            UNNEST(string_to_array(p.Tags, '>')) AS tag
         FROM 
             Posts p
         WHERE 
@@ -55,13 +55,13 @@ SELECT
     COALESCE(ut.GoldBadges, 0) AS GoldBadges,
     COALESCE(ut.SilverBadges, 0) AS SilverBadges,
     COALESCE(ut.BronzeBadges, 0) AS BronzeBadges,
-    arrayStringConcat(groupArray(assumeNotNull(pt.Tag)), ', ') AS PopularTags
+    STRING_AGG(pt.Tag, ', ') AS PopularTags
 FROM 
     RankedPosts rp
 LEFT JOIN 
     UserBadges ut ON rp.Id = ut.UserId
 LEFT JOIN 
-    PopularTags pt ON pt.Tag IN (SELECT arrayJoin(splitByString(' ', assumeNotNull(rp.Title))))
+    PopularTags pt ON pt.Tag IN (SELECT UNNEST(string_to_array(rp.Title, ' ')))
 WHERE 
     rp.Score >= 10 AND 
     rp.CommentCount > 5

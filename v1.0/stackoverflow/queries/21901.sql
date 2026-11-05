@@ -34,7 +34,7 @@ ActiveBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
@@ -69,7 +69,7 @@ SELECT
         WHEN ra.LastActivityDate IS NULL THEN 'Inactive'
         ELSE 'Active'
     END AS UserStatus,
-    arrayDistinct(groupArray(assumeNotNull(rp.Title))) FILTER (WHERE rp.Rank <= 5) AS TopPosts
+    ARRAY_AGG(DISTINCT rp.Title) FILTER (WHERE rp.Rank <= 5) AS TopPosts
 FROM 
     Users u
 LEFT JOIN 

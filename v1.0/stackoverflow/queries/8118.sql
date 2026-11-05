@@ -44,7 +44,7 @@ UserPostDetails AS (
         SUM(PA.ViewCount) AS TotalPostViews,
         SUM(PA.Score) AS TotalPostScore,
         AVG(PA.HistoryChanges) AS AvgPostHistoryChanges,
-        arrayDistinct(groupArray(assumeNotNull(PA.CloseReason))) AS CloseReasons
+        ARRAY_AGG(DISTINCT PA.CloseReason) AS CloseReasons
     FROM UserStatistics US
     JOIN PostAggregate PA ON US.UserId = PA.PostId
     GROUP BY US.UserId, US.DisplayName
@@ -59,7 +59,9 @@ SELECT
     U.TotalDownvotes,
     UPD.TotalPostViews,
     UPD.TotalPostScore,
-    UPD.AvgPostHistoryChanges ARRAY JOIN UPD.CloseReasons AS CloseReasonFROM UserStatistics U
+    UPD.AvgPostHistoryChanges,
+    UNNEST(UPD.CloseReasons) AS CloseReason 
+FROM UserStatistics U
 JOIN UserPostDetails UPD ON U.UserId = UPD.UserId
 ORDER BY U.Reputation DESC, U.TotalPosts DESC
 LIMIT 100;

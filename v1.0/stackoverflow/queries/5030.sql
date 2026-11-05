@@ -23,7 +23,7 @@ WITH RankedPosts AS (
         p.Id, p.Title, p.CreationDate, p.Score, p.ViewCount, p.PostTypeId
 ), PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS Tag,
+        UNNEST(string_to_array(Tags, '><')) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         Posts

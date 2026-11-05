@@ -23,7 +23,7 @@ WITH UserReputation AS (
 ), CloseReasons AS (
     SELECT 
         Ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(Cr.Name)), ', ') AS CloseReasonNames
+        STRING_AGG(Cr.Name, ', ') AS CloseReasonNames
     FROM PostHistory Ph
     JOIN CloseReasonTypes Cr ON CAST(Ph.Comment AS INTEGER) = Cr.Id
     WHERE Ph.PostHistoryTypeId = 10  
@@ -59,7 +59,7 @@ SELECT
     ps.MaxBadgeClass,
     COUNT(ps.PostId) AS TotalPosts,
     SUM(COALESCE(ps.Score, 0)) AS TotalScore,
-    arrayStringConcat(groupArray(assumeNotNull(ps.CloseReasonNames)), '; ') AS AllCloseReasons
+    STRING_AGG(ps.CloseReasonNames, '; ') AS AllCloseReasons
 FROM PostSummary ps
 GROUP BY 
     ps.DisplayName, 

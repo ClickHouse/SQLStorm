@@ -2,11 +2,11 @@ WITH PostTagCounts AS (
     SELECT 
         p.Id AS PostId,
         COUNT(DISTINCT t.TagName) AS UniqueTagCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagList
+        STRING_AGG(t.TagName, ', ') AS TagList
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS t(TagName) ON true
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS t(TagName) ON true
     GROUP BY 
         p.Id
 ), UserReputation AS (
@@ -26,7 +26,7 @@ WITH PostTagCounts AS (
     SELECT 
         b.UserId,
         COUNT(*) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -36,7 +36,7 @@ WITH PostTagCounts AS (
         ph.PostId,
         ph.UserId AS EditsByUserId,
         ph.CreationDate AS EditDate,
-        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostHistoryTypeNames,
+        STRING_AGG(pt.Name, ', ') AS PostHistoryTypeNames,
         COUNT(*) AS EditCount
     FROM 
         PostHistory ph

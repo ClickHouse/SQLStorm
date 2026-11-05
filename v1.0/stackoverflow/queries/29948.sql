@@ -32,7 +32,7 @@ TaggedPosts AS (
     JOIN 
         Posts p ON rp.PostId = p.Id
     JOIN 
-        (SELECT arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS tag) AS tag_table ON TRUE
+        LATERAL (SELECT unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag) AS tag_table ON TRUE
     JOIN 
         Tags t ON t.TagName = tag_table.tag
     WHERE 
@@ -44,7 +44,7 @@ PostMetrics AS (
         COUNT(tp.PostId) AS TotalPosts,
         AVG(tp.ViewCount) AS AvgViews,
         SUM(tp.Score) AS TotalScore,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tp.TagName))), ', ') AS PopularTags
+        STRING_AGG(DISTINCT tp.TagName, ', ') AS PopularTags
     FROM 
         TaggedPosts tp
     GROUP BY 

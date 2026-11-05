@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 CloseReasons AS (
     SELECT 
         ph.PostId, 
-        arrayDistinct(groupArray(assumeNotNull(crt.Name))) AS CloseReasonNames
+        ARRAY_AGG(DISTINCT crt.Name) AS CloseReasonNames
     FROM 
         PostHistory ph
     JOIN 
@@ -52,7 +52,7 @@ HighScoringQuestions AS (
 PostDetails AS (
     SELECT 
         hsq.*,
-        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+        (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
          FROM Tags t 
          WHERE t.ExcerptPostId = hsq.PostId) AS Tags
     FROM 
@@ -71,7 +71,7 @@ SELECT
         WHEN pd.CloseReasons != '{}' THEN 'Closed'
         ELSE 'Open'
     END AS PostStatus,
-    ROUND(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - pd.CreationDate)) / 3600, 2) AS AgeInHours
+    ROUND(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - pd.CreationDate)) / 3600, 2) AS AgeInHours
 FROM 
     PostDetails pd
 WHERE 

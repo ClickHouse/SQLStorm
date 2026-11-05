@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.Score,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray,
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray,
         RANK() OVER (PARTITION BY p.PostTypeId ORDER BY p.ViewCount DESC) AS ViewRank
     FROM 
         Posts p
@@ -18,7 +18,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS tag_name ON TRUE
+        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON tag_name = t.TagName
     WHERE 
@@ -58,12 +58,13 @@ SELECT
     a.TotalPosts,
     a.TotalComments,
     a.AvgViewCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed
+    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed
 FROM 
     Analytics a
 LEFT JOIN 
     TopViewedPosts tp ON tp.OwnerDisplayName = a.OwnerDisplayName
-LEFT ARRAY JOIN tp.TagsArray AS TagName
+LEFT JOIN 
+    UNNEST(tp.TagsArray) AS t(TagName) ON TRUE
 GROUP BY 
     a.OwnerDisplayName, a.TotalPosts, a.TotalComments, a.AvgViewCount
 ORDER BY 

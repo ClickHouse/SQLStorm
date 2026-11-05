@@ -62,7 +62,7 @@ SELECT
     US.TotalViews,
     US.ContributionLevel,
     COALESCE((
-        SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
+        SELECT STRING_AGG(T.TagName, ', ') 
         FROM Tags T 
         JOIN Posts P ON T.ExcerptPostId = P.Id 
         WHERE P.OwnerUserId = US.UserId

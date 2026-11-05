@@ -27,12 +27,12 @@ WITH FilteredPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(trim(both '<>' from Tags)))) AS TagName,
+        unnest(string_to_array(trim(both '<>' from Tags), '><')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         FilteredPosts
     GROUP BY 
-        arrayJoin(splitByString('><', assumeNotNull(trim(both '<>' from Tags))))
+        unnest(string_to_array(trim(both '<>' from Tags), '><'))
 ),
 TopTags AS (
     SELECT 
@@ -57,7 +57,7 @@ SELECT
 FROM 
     FilteredPosts fp
 JOIN 
-    TopTags tt ON tt.TagName = ANY(splitByString('><', assumeNotNull(trim(both '<>' from fp.Tags))))
+    TopTags tt ON tt.TagName = ANY(string_to_array(trim(both '<>' from fp.Tags), '><'))
 WHERE 
     tt.TagRank <= 5 
 ORDER BY 

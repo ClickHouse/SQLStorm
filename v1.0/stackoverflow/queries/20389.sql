@@ -41,7 +41,7 @@ VoteAggregation AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS HistoryTypes,
+        STRING_AGG(pt.Name, ', ') AS HistoryTypes,
         MAX(ph.CreationDate) AS LastUpdate
     FROM 
         PostHistory ph

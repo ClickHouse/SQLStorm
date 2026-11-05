@@ -35,7 +35,7 @@ TopPosts AS (
 TagsExploded AS (
     SELECT 
         tp.PostId,
-        arrayJoin(splitByString('><', assumeNotNull(tp.Tags))) AS Tag
+        unnest(string_to_array(tp.Tags, '><')) AS Tag
     FROM 
         TopPosts tp
 ),

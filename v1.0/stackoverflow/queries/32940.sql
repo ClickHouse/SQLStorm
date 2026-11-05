@@ -49,7 +49,7 @@ SELECT
      FROM Comments c 
      WHERE c.PostId = tp.PostId) AS CommentCount,
     (
-        SELECT arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ')
+        SELECT STRING_AGG(b.Name, ', ')
         FROM Badges b 
         WHERE b.UserId IN (SELECT OwnerUserId FROM Posts WHERE Id = tp.PostId)
     ) AS OwnerBadges

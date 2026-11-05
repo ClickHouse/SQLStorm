@@ -41,7 +41,7 @@ TopPosts AS (
 PostComments AS (
     SELECT 
         c.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS AllComments
+        STRING_AGG(c.Text, ' | ') AS AllComments
     FROM 
         Comments c
     GROUP BY 

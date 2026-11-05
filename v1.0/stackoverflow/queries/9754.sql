@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     JOIN 
@@ -16,7 +16,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag ON TRUE
+        UNNEST(string_to_array(p.Tags, '><')) AS tag ON TRUE
     JOIN 
         Tags t ON t.TagName = tag
     WHERE 

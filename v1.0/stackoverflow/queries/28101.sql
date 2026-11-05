@@ -6,7 +6,7 @@ WITH FilteredPosts AS (
         p.CreationDate,
         p.Tags,
         p.OwnerUserId,
-        LENGTH(arrayStringConcat(groupArray(assumeNotNull(p.Tags)), ',')) AS TagCount,
+        LENGTH(STRING_AGG(p.Tags, ',')) AS TagCount,
         p.Body
     FROM 
         Posts p

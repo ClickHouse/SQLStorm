@@ -62,9 +62,9 @@ LEFT JOIN
 LEFT JOIN 
     Posts AS p ON fp.PostId = p.Id
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName
+            unnest(string_to_array(p.Tags, '><')) AS TagName
     ) AS t ON TRUE
 WHERE 
     p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days'

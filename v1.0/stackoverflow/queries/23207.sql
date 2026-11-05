@@ -35,12 +35,12 @@ UserPostStats AS (
         COALESCE(SUM(CASE WHEN P.Score > 0 THEN 1 ELSE 0 END), 0) AS PositivePosts,
         COALESCE(SUM(CASE WHEN P.Score < 0 THEN 1 ELSE 0 END), 0) AS NegativePosts,
         COALESCE(AVG(P.Score), 0) AS AvgScore,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagsUsed
+        STRING_AGG(DISTINCT T.TagName, ', ') AS TagsUsed
     FROM Users U
     JOIN Posts P ON U.Id = P.OwnerUserId
-    LEFT JOIN (
+    LEFT JOIN LATERAL (
         SELECT 
-            arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS TagName
+            unnest(string_to_array(P.Tags, ',')) AS TagName
     ) AS T ON TRUE
     GROUP BY U.DisplayName
 )

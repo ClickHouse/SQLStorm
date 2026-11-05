@@ -46,14 +46,14 @@ PostVotes AS (
 PostHistoryWithTags AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
+        STRING_AGG(t.TagName, ', ') AS Tags,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph
     JOIN 
         Posts p ON ph.PostId = p.Id
     LEFT JOIN 
-        arrayJoin(splitByString('<>', assumeNotNull(p.Tags))) AS tag ON tag IS NOT NULL 
+        UNNEST(string_to_array(p.Tags, '<>')) AS tag ON tag IS NOT NULL 
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 

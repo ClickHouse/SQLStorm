@@ -29,7 +29,7 @@ PostHistoryDetails AS (
         ph.PostHistoryTypeId,
         ph.UserId,
         ph.CreationDate,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.UserDisplayName, ' - ', ph.Comment))), '; ') AS Comments
+        STRING_AGG(CONCAT(ph.UserDisplayName, ' - ', ph.Comment), '; ') AS Comments
     FROM PostHistory ph
     WHERE ph.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY ph.PostId, ph.PostHistoryTypeId, ph.UserId, ph.CreationDate

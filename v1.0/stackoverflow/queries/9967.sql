@@ -44,7 +44,7 @@ SELECT
         WHEN T.PostRank <= 10 THEN 'Top Contributor'
         ELSE 'Moderate Contributor'
     END AS ContributionCategory,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(P.Title)), '; ') 
+    (SELECT STRING_AGG(P.Title, '; ') 
      FROM Posts P 
      WHERE P.OwnerUserId = T.UserId) AS PostTitles
 FROM 

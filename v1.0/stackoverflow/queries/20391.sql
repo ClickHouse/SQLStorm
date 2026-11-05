@@ -91,7 +91,7 @@ SELECT
     fr.TotalBadges,
     fr.TotalGoldBadges,
     fr.InterestLevel,
-    arrayStringConcat(groupArray(assumeNotNull(tt.TagName)), ', ') AS AssociatedTags
+    string_agg(tt.TagName, ', ') AS AssociatedTags
 FROM 
     FinalResults fr
 LEFT JOIN 

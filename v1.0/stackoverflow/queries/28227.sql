@@ -53,11 +53,11 @@ SELECT
         WHEN tp.Score > 0 THEN 'Popular'
         ELSE 'New'
     END AS PostCategory,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 
-    arrayJoin(splitByString('> <', assumeNotNull(substring(tp.Body, 2, length(tp.Body)-2)))) AS tag ON tag LIKE 'tag-%'  
+    unnest(string_to_array(substring(tp.Body, 2, length(tp.Body)-2), '> <')) AS tag ON tag LIKE 'tag-%'  
 LEFT JOIN 
     Tags t ON LOWER(t.TagName) = LOWER(tag)  
 GROUP BY 

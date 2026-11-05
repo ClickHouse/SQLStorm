@@ -8,7 +8,7 @@ SELECT
     SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpvoteCount,
     SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownvoteCount,
     COALESCE(SUM(b.Class), 0) AS TotalBadges,
-    AVG(toUnixTimestamp((c.CreationDate - p.CreationDate))) AS AvgTimeToFirstComment
+    AVG(EXTRACT(EPOCH FROM (c.CreationDate - p.CreationDate))) AS AvgTimeToFirstComment
 FROM 
     Users u
 JOIN 

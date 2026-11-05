@@ -27,7 +27,7 @@ UserBadges AS (
 RecentComments AS (
     SELECT 
         c.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS CommentTexts,
+        STRING_AGG(c.Text, ' | ') AS CommentTexts,
         COUNT(c.Id) AS CommentCount
     FROM 
         Comments c

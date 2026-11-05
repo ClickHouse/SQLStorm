@@ -51,7 +51,7 @@ UsersRanked AS (
 PostedTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS Tag
+        unnest(string_to_array(p.Tags, '><')) AS Tag
     FROM 
         Posts p
 ),

@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         u.DisplayName AS OwnerDisplayName,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS RankPerUser,
         COUNT(v.Id) AS VoteCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     JOIN 
@@ -15,7 +15,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId AND v.VoteTypeId = 2  
     LEFT JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+        unnest(string_to_array(p.Tags, '>')) AS t(TagName) ON TRUE
     WHERE 
         p.CreationDate >= cast('2024-10-01' as date) - INTERVAL '30 days' 
     GROUP BY 

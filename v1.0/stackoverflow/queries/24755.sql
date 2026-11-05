@@ -21,7 +21,7 @@ PostHistorySummary AS (
         ph.PostId,
         COUNT(*) AS RevisionCount,
         MAX(ph.CreationDate) AS LastRevisionDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CASE WHEN pht.Name IS NOT NULL THEN pht.Name END))), ', ') AS ChangeTypes
+        STRING_AGG(DISTINCT CASE WHEN pht.Name IS NOT NULL THEN pht.Name END, ', ') AS ChangeTypes
     FROM 
         PostHistory ph
     LEFT JOIN 

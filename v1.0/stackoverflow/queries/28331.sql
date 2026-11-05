@@ -14,14 +14,14 @@ WITH UserBadges AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Posts.Tags))) AS TagName,
+        UNNEST(string_to_array(Posts.Tags, '><')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
     WHERE 
         PostTypeId = 1 
     GROUP BY 
-        arrayJoin(splitByString('><', assumeNotNull(Posts.Tags)))
+        UNNEST(string_to_array(Posts.Tags, '><'))
     ORDER BY 
         TagCount DESC
     LIMIT 10

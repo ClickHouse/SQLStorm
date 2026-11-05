@@ -25,7 +25,7 @@ WITH PostDetails AS (
 ),
 TagDetails AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags) - 2)))) AS Tag,
+        unnest(string_to_array(substring(Tags, 2, length(Tags) - 2), '><')) AS Tag,
         Id AS PostId
     FROM 
         Posts

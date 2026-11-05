@@ -35,7 +35,7 @@ UserActivity AS (
 ClosedPostReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
+        STRING_AGG(cr.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -74,7 +74,7 @@ SELECT
         WHEN fr.CloseReasons = 'No Close Reasons' THEN 'Active' 
         ELSE 'Closed' 
     END AS PostStatus,
-    toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - fr.CreationDate)) / 3600 AS AgeInHours
+    EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - fr.CreationDate)) / 3600 AS AgeInHours
 FROM 
     FinalResults fr
 ORDER BY 

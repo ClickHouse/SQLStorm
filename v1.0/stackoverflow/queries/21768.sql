@@ -22,11 +22,11 @@ PostDetails AS (
         COALESCE(p.AcceptedAnswerId, -1) AS AcceptedAnswerId,
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN ph.PostHistoryTypeId = 10 THEN 1 ELSE 0 END) AS CloseCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsList
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsList
     FROM Posts p
     LEFT JOIN Comments c ON p.Id = c.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    LEFT JOIN (SELECT * FROM arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS t(TagName)) t ON TRUE
+    LEFT JOIN LATERAL (SELECT * FROM unnest(string_to_array(p.Tags, ',')) AS t(TagName)) t ON TRUE
     WHERE p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '1 year'
     GROUP BY p.Id, p.Title, p.OwnerUserId, p.CreationDate, p.ViewCount, p.AcceptedAnswerId
 ),

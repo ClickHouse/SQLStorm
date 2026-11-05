@@ -42,7 +42,7 @@ PostVotes AS (
 PostHistorySummary AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostHistoryTypes,
+        STRING_AGG(pt.Name, ', ') AS PostHistoryTypes,
         MIN(ph.CreationDate) AS FirstChangeDate,
         MAX(ph.CreationDate) AS LastChangeDate,
         COUNT(*) AS TotalHistoryChanges,

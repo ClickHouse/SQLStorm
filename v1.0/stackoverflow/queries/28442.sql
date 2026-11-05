@@ -49,7 +49,7 @@ UserBadgeStats AS (
 PostTagStats AS (
     SELECT 
         rp.PostId,
-        arrayJoin(splitByString('>', assumeNotNull(rp.Tags))) AS TagName
+        unnest(string_to_array(rp.Tags, '>')) AS TagName
     FROM 
         RankedPosts rp
 ),
@@ -77,7 +77,7 @@ SELECT
         WHEN ub.HighestBadgeClass = 3 THEN 'Bronze'
         ELSE 'No Badge'
     END AS HighestBadge,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(TagName)), ', ') FROM TagUsageCount WHERE UsageCount > 5 LIMIT 5) AS PopularTags
+    (SELECT STRING_AGG(TagName, ', ') FROM TagUsageCount WHERE UsageCount > 5 LIMIT 5) AS PopularTags
 FROM 
     TopUsers tu
 LEFT JOIN 

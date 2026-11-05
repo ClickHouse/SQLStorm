@@ -23,7 +23,7 @@ PostHistorySummary AS (
         PH.PostId,
         COUNT(PH.Id) AS EditCount,
         MAX(PH.CreationDate) AS LastEditDate,
-        arrayStringConcat(groupArray(assumeNotNull(PH.Comment)), '; ') AS EditComments
+        STRING_AGG(PH.Comment, '; ') AS EditComments
     FROM 
         PostHistory PH
     GROUP BY 
@@ -71,7 +71,7 @@ SELECT
         WHEN PD.ViewCount IS NULL THEN 'Unobserved Views' 
         ELSE 'Observed Views'
     END AS ViewObservation,
-    length(splitByString('; ', assumeNotNull(PD.EditComments)), 1) AS NumberOfDistinctComments,
+    ARRAY_LENGTH(STRING_TO_ARRAY(PD.EditComments, '; '), 1) AS NumberOfDistinctComments,
     (
         SELECT COUNT(*)
         FROM Comments C 

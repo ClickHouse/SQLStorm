@@ -57,7 +57,7 @@ SELECT
     OwnerDisplayName,
     CreationDate,
     Score,
-    arrayStringConcat(groupArray(assumeNotNull(BadgeName)), ', ') AS BadgeNames,
+    STRING_AGG(BadgeName, ', ') AS BadgeNames,
     COUNT(DISTINCT BadgeName) AS BadgeCount
 FROM 
     PostsWithBadges

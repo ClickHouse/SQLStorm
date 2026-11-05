@@ -24,7 +24,7 @@ ClosedPostHistory AS (
         PH.UserId, 
         COUNT(PH.Id) AS ClosedPostCount,
         SUM(CASE WHEN PH.CreationDate > cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days' THEN 1 ELSE 0 END) AS RecentClosedPosts,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(P.Title))), ', ') AS ClosedPostTitles
+        STRING_AGG(DISTINCT P.Title, ', ') AS ClosedPostTitles
     FROM PostHistory PH
     JOIN Posts P ON PH.PostId = P.Id
     WHERE PH.PostHistoryTypeId IN (10, 11) 

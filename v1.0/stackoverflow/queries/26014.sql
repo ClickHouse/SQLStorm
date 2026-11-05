@@ -4,7 +4,7 @@ WITH PostTags AS (
         p.Title,
         p.Body,
         p.Tags,
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName
+        UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS TagName
     FROM 
         Posts p
     WHERE 

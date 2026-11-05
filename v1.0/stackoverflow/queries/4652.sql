@@ -41,13 +41,13 @@ SELECT
         WHEN UV.UpVotesCount - UV.DownVotesCount BETWEEN 50 AND 100 THEN 'Moderately Active'
         ELSE 'Less Active'
     END AS ActivityLevel,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT T.TagName, ', ') AS Tags
 FROM UserVotes UV
 JOIN Users U ON U.Id = UV.UserId
 LEFT JOIN RecentPosts RP ON RP.Rn = 1 
 LEFT JOIN ClosedPosts CP ON CP.PostId = RP.PostId
 LEFT JOIN Posts P ON P.OwnerUserId = U.Id
-LEFT JOIN arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
+LEFT JOIN UNNEST(STRING_TO_ARRAY(P.Tags, ',')) AS T(TagName) ON TRUE
 WHERE UV.PostsCount > 5
 GROUP BY U.DisplayName, UV.UpVotesCount, UV.DownVotesCount, RP.Title, RP.Score, CP.CloseCount
 HAVING COUNT(DISTINCT P.Id) > 2

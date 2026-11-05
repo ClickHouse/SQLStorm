@@ -23,7 +23,7 @@ PostAggregates AS (
         MAX(ViewCount) AS MaxViews,
         SUM(CASE WHEN Score > 0 THEN 1 ELSE 0 END) AS PositiveScores,
         SUM(CASE WHEN Score < 0 THEN 1 ELSE 0 END) AS NegativeScores,
-        arrayStringConcat(groupArray(assumeNotNull(Tags)), ', ') AS AllTags
+        STRING_AGG(Tags, ', ') AS AllTags
     FROM 
         RankedPosts
     GROUP BY 

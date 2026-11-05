@@ -3,7 +3,7 @@ WITH TagStatistics AS (
     SELECT 
         t.TagName,
         COUNT(p.Id) AS PostCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.OwnerDisplayName))), ', ') AS Contributors,
+        STRING_AGG(DISTINCT p.OwnerDisplayName, ', ') AS Contributors,
         SUM(CASE WHEN p.PostTypeId = 1 THEN 1 ELSE 0 END) AS QuestionCount,
         SUM(CASE WHEN p.PostTypeId = 2 THEN 1 ELSE 0 END) AS AnswerCount
     FROM 
@@ -34,7 +34,7 @@ PostAgeAnalysis AS (
     SELECT 
         p.Id,
         p.Title,
-        toUnixTimestamp((TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) / 86400 AS AgeInDays,
+        EXTRACT(EPOCH FROM (TIMESTAMP '2024-10-01 12:34:56' - p.CreationDate)) / 86400 AS AgeInDays,
         COUNT(c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes

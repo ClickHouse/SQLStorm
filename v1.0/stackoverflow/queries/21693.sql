@@ -23,7 +23,7 @@ PostStatistics AS (
 BadgesForUsers AS (
     SELECT
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeList,
+        STRING_AGG(b.Name, ', ') AS BadgeList,
         COUNT(b.Id) AS BadgeCount
     FROM Badges b
     GROUP BY b.UserId
@@ -32,7 +32,7 @@ CloseReasonSummary AS (
     SELECT
         ph.UserId,
         COUNT(ph.Id) AS CloseCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(cr.Name))), ', ') AS CloseReasonNames
+        STRING_AGG(DISTINCT cr.Name, ', ') AS CloseReasonNames
     FROM PostHistory ph
     JOIN CloseReasonTypes cr ON ph.Comment::int = cr.Id
     WHERE ph.PostHistoryTypeId = 10  

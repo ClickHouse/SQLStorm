@@ -25,7 +25,7 @@ SELECT
             WHEN bp.ViewCount > 1000 THEN 1 
             ELSE 0 
         END) AS HighViewCountPosts,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsUsed
+    STRING_AGG(DISTINCT t.TagName, ', ') AS TagsUsed
 FROM 
     Users u
 LEFT JOIN 
@@ -35,7 +35,7 @@ LEFT JOIN
 LEFT JOIN 
     RankedPosts bp ON u.Id = bp.OwnerUserId AND bp.ScoreRank <= 5
 LEFT JOIN 
-    arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(bp.Tags, 2, LENGTH(bp.Tags) - 2)))) AS t(TagName) ON true
+    UNNEST(STRING_TO_ARRAY(SUBSTRING(bp.Tags, 2, LENGTH(bp.Tags) - 2), '><')) AS t(TagName) ON true
 WHERE 
     u.Reputation > 1000
 GROUP BY 

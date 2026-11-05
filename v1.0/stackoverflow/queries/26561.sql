@@ -6,15 +6,15 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         COUNT(v.Id) AS VoteCount,
         COUNT(c.Id) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
         Votes v ON p.Id = v.PostId 
     LEFT JOIN 
         Comments c ON p.Id = c.PostId 
-
-        LEFT ARRAY JOIN splitByString('>', assumeNotNull(p.Tags)) AS TagName
+    LEFT JOIN 
+        LATERAL (SELECT UNNEST(string_to_array(p.Tags, '>')) AS TagName) t ON TRUE
     WHERE 
         p.PostTypeId = 1  
     GROUP BY 

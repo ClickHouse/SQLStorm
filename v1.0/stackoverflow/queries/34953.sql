@@ -8,11 +8,11 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS Rank,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        (SELECT arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag) AS tag ON tag IS NOT NULL
+        LATERAL (SELECT UNNEST(string_to_array(p.Tags, '>')) AS tag) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     GROUP BY 

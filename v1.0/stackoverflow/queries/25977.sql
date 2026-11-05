@@ -28,7 +28,7 @@ TopPosts AS (
 
 TagAnalysis AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags) - 2)))) AS TagName,
+        unnest(string_to_array(substring(P.Tags, 2, length(P.Tags) - 2), '><')) AS TagName,
         COUNT(*) AS PostCount
     FROM Posts P
     WHERE P.PostTypeId = 1

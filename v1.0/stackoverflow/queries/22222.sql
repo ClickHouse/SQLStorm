@@ -20,7 +20,7 @@ WITH RankedPosts AS (
 ), ClosureReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS ClosureReasons
+        STRING_AGG(cr.Name, ', ') AS ClosureReasons
     FROM PostHistory ph
     JOIN CloseReasonTypes cr ON ph.Comment = CAST(cr.Id AS VARCHAR)
     WHERE ph.PostHistoryTypeId = 10

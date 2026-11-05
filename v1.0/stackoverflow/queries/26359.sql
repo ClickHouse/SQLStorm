@@ -31,7 +31,7 @@ WITH RecentPosts AS (
 ),
 TopTags AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS Tag,
+        unnest(string_to_array(Tags, ',')) AS Tag,
         COUNT(*) AS TagCount
     FROM 
         RecentPosts
@@ -48,11 +48,11 @@ AggStats AS (
         SUM(rp.CommentCount) AS TotalComments,
         SUM(rp.VoteCount) AS TotalVotes,
         SUM(rp.AnswerCount) AS TotalAnswers,
-        arrayDistinct(groupArray(assumeNotNull(tt.Tag))) AS TopTags
+        ARRAY_AGG(DISTINCT tt.Tag) AS TopTags
     FROM 
         RecentPosts rp
     LEFT JOIN 
-        TopTags tt ON tt.Tag = ANY(splitByString(',', assumeNotNull(rp.Tags)))
+        TopTags tt ON tt.Tag = ANY(string_to_array(rp.Tags, ','))
     GROUP BY 
         rp.OwnerDisplayName
 )

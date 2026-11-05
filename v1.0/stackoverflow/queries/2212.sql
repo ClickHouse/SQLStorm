@@ -52,7 +52,7 @@ SELECT
     ur.Upvotes,
     ur.Downvotes,
     COALESCE((
-        SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(tt.TagName))), ', ')
+        SELECT STRING_AGG(DISTINCT tt.TagName, ', ')
         FROM Tags tt
         JOIN Posts tp ON tp.Tags LIKE CONCAT('%', tt.TagName, '%')
         WHERE tp.Id = ps.PostId

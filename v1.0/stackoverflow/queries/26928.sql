@@ -6,11 +6,11 @@ WITH PostTagCounts AS (
         P.OwnerDisplayName,
         P.ViewCount,
         COUNT(T.TagName) AS TagCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagList
+        STRING_AGG(DISTINCT T.TagName, ', ') AS TagList
     FROM
         Posts P
     LEFT JOIN
-        arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags)-2)))) AS tag (TagName) ON TRUE
+        UNNEST(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><')) AS tag (TagName) ON TRUE
     LEFT JOIN
         Tags T ON T.TagName = tag.TagName
     WHERE

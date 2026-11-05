@@ -31,7 +31,7 @@ SELECT
     rp.AnswerCount,
     rp.UpVotes,
     rp.DownVotes,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     RankedPosts rp 
 JOIN 
@@ -44,7 +44,7 @@ JOIN
             Id = rp.PostId
     )
 LEFT JOIN 
-    arrayJoin(splitByString('><', assumeNotNull(rp.Tags))) AS tagArray ON TRUE
+    UNNEST(STRING_TO_ARRAY(rp.Tags, '><')) AS tagArray ON TRUE
 JOIN 
     Tags t ON t.TagName = tagArray 
 WHERE 

@@ -6,7 +6,7 @@ WITH TagStats AS (
         SUM(COALESCE(P.ViewCount, 0)) AS TotalViews,
         SUM(COALESCE(P.Score, 0)) AS TotalScore,
         AVG(COALESCE(P.ANSWERCOUNT, 0)) AS AvgAnswerCount,
-        arrayDistinct(groupArray(assumeNotNull(U.DisplayName))) AS ContributingUsers
+        ARRAY_AGG(DISTINCT U.DisplayName) AS ContributingUsers
     FROM 
         Tags T
     LEFT JOIN 

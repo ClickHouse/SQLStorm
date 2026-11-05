@@ -40,7 +40,7 @@ SELECT
     tp.UpVoteCount,
     tp.DownVoteCount,
     tp.AcceptedCount,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
      FROM Tags t 
      JOIN Posts p ON p.Tags LIKE CONCAT('%<', t.TagName, '>%')
      WHERE p.Id = tp.PostId) AS Tags

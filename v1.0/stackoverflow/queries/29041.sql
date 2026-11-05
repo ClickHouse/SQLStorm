@@ -6,14 +6,14 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         u.DisplayName AS OwnerDisplayName,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray,
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC, p.ViewCount DESC) AS Rank
     FROM 
         Posts p
     JOIN 
         Users u ON p.OwnerUserId = u.Id
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS tag ON tag IS NOT NULL
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 
@@ -40,10 +40,11 @@ SELECT
     COUNT(DISTINCT tp.PostId) AS PostCount,
     SUM(tp.ViewCount) AS TotalViews,
     SUM(tp.Score) AS TotalScore,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS AllTags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS AllTags
 FROM 
     TopPosts tp
-LEFT ARRAY JOIN tp.TagsArray AS TagName
+LEFT JOIN 
+    unnest(tp.TagsArray) AS t(TagName) ON TRUE
 GROUP BY 
     tp.OwnerDisplayName
 ORDER BY 

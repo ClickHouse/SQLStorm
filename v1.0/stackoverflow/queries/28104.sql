@@ -20,7 +20,7 @@ WITH PostDetails AS (
         P.CommentCount,
         P.FavoriteCount,
         P.ClosedDate,
-        length(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags)-2))), 1) AS TagCount
+        ARRAY_LENGTH(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><'), 1) AS TagCount
     FROM 
         Posts P
     JOIN 
@@ -36,11 +36,11 @@ TagConversion AS (
         P.BodyLength,
         P.TitleLength,
         P.TagCount,
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagList
+        STRING_AGG(T.TagName, ', ') AS TagList
     FROM 
         PostDetails P
     LEFT JOIN 
-        Tags T ON (T.TagName = ANY(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags)-2)))))  
+        Tags T ON (T.TagName = ANY(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><')))  
     GROUP BY 
         P.PostId, P.Author, P.PostType, P.BodyLength, P.TitleLength, P.TagCount
 )

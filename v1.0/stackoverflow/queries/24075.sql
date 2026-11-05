@@ -18,7 +18,7 @@ UserBadges AS (
     SELECT 
         u.Id AS UserId,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 
@@ -30,7 +30,7 @@ UserBadges AS (
 PostHistoryInfo AS (
     SELECT 
         ph.PostId,
-        arrayDistinct(groupArray(assumeNotNull(pht.Name))) AS PostHistoryTypes,
+        ARRAY_AGG(DISTINCT pht.Name) AS PostHistoryTypes,
         MAX(ph.CreationDate) AS LastEditDate
     FROM 
         PostHistory ph

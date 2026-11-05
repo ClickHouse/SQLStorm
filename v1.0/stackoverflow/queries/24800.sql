@@ -27,7 +27,7 @@ PostStatistics AS (
         SUM(rp.UpVoteCount) AS TotalUpVotes,
         SUM(rp.DownVoteCount) AS TotalDownVotes,
         AVG(rp.Score) AS AvgScore,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.Title))), '; ') AS PostTitles,
+        STRING_AGG(DISTINCT rp.Title, '; ') AS PostTitles,
         SUM(CASE 
             WHEN rp.CommentCount > 0 THEN 1 
             ELSE 0 
@@ -40,7 +40,7 @@ PostStatistics AS (
 UserBadges AS (
     SELECT 
         u.Id AS UserId,
-        groupArray(assumeNotNull(b.Name)) AS BadgeNames,
+        ARRAY_AGG(b.Name) AS BadgeNames,
         COUNT(b.Id) AS BadgeCount
     FROM 
         Users u

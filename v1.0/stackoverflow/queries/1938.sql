@@ -42,7 +42,7 @@ SELECT
         WHEN tp.CommentCount IS NULL THEN 'No Comments Yet'
         ELSE CAST(tp.CommentCount AS TEXT)
     END AS CommentsStatus,
-    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(name)), ', ') 
+    COALESCE((SELECT STRING_AGG(name, ', ') 
                FROM PostHistory ph 
                JOIN PostHistoryTypes pht ON ph.PostHistoryTypeId = pht.Id 
                WHERE ph.PostId = tp.PostId AND pht.Name LIKE '%Edit%'), 'No Edits') AS EditHistory

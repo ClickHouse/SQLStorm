@@ -21,7 +21,7 @@ WITH RECURSIVE UserActivity AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('<>', assumeNotNull(Tags))) AS TagName,
+        UNNEST(string_to_array(Tags, '<>')) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts
@@ -37,7 +37,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 

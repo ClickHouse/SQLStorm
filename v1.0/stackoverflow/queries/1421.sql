@@ -31,9 +31,9 @@ SELECT
     T.DisplayName,
     T.Score,
     T.Rank,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(TT.TagName)), ', ') 
+    (SELECT STRING_AGG(TT.TagName, ', ') 
      FROM Tags TT 
-     WHERE TT.Id IN (SELECT DISTINCT CAST(arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS INTEGER))
+     WHERE TT.Id IN (SELECT DISTINCT CAST(UNNEST(string_to_array(P.Tags, '<>')) AS INTEGER))
                     AND P.OwnerUserId IS NOT NULL
                     AND P.AnswerCount > 0) AS Tags
 FROM 

@@ -53,13 +53,13 @@ SELECT
         WHEN FP.UpvoteCount < FP.DownvoteCount THEN 'Unpopular'
         ELSE 'Neutral'
     END AS PopularityStatus,
-    arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS AssociatedTags
+    STRING_AGG(T.TagName, ', ') AS AssociatedTags
 FROM 
     FilteredPosts FP
 LEFT JOIN 
     Posts P ON FP.PostId = P.Id
 LEFT JOIN 
-    (SELECT DISTINCT arrayJoin(splitByString('>', assumeNotNull(P.Tags))) AS TagName FROM Posts P) T ON TRUE
+    (SELECT DISTINCT UNNEST(string_to_array(P.Tags, '>')) AS TagName FROM Posts P) T ON TRUE
 GROUP BY 
     FP.PostId, FP.Title, FP.Author, FP.CreationDate, FP.ViewCount, FP.CommentCount, FP.UpvoteCount, FP.DownvoteCount
 ORDER BY 

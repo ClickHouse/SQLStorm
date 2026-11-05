@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS Tag
+        UNNEST(string_to_array(p.Tags, '><')) AS Tag
     FROM 
         Posts p
 ),
@@ -37,7 +37,7 @@ QuestionSummary AS (
         rp.AnswerCount,
         rp.Score,
         rp.OwnerDisplayName,
-        arrayStringConcat(groupArray(assumeNotNull(pt.Tag)), ', ') AS Tags
+        STRING_AGG(pt.Tag, ', ') AS Tags
     FROM 
         RankedPosts rp
     LEFT JOIN 

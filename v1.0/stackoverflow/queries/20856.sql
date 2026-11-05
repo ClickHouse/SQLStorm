@@ -42,7 +42,7 @@ OutstandingBadges AS (
 PostHistoryDetails AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.UserDisplayName, ' (', ph.CreationDate, ') - ', ph.Comment))), ' | ') AS EditHistory
+        STRING_AGG(CONCAT(ph.UserDisplayName, ' (', ph.CreationDate, ') - ', ph.Comment), ' | ') AS EditHistory
     FROM 
         PostHistory ph
     WHERE 

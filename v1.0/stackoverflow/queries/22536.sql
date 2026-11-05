@@ -59,7 +59,7 @@ SELECT
         WHEN cd.Reputation BETWEEN 5000 AND 10000 THEN 'Veteran'
         ELSE 'Newbie'
     END AS UserLevel,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(p.Tags))), ', ' ORDER BY p.Tags) AS PopularTags
+    STRING_AGG(DISTINCT p.Tags, ', ' ORDER BY p.Tags) AS PopularTags
 FROM CombinedData cd
 LEFT JOIN Posts p ON p.OwnerUserId = cd.UserId
 GROUP BY 

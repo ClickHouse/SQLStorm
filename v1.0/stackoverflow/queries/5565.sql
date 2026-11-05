@@ -38,7 +38,7 @@ SELECT
     tp.*, 
     COALESCE(u.DisplayName, 'Community User') AS Owner,
     COUNT(b.Id) AS BadgeCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags 
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags 
 FROM 
     TopPosts tp
 LEFT JOIN 

@@ -30,7 +30,7 @@ PostFeedback AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LastEditDate,
-        arrayDistinct(groupArray(assumeNotNull(ph.Comment))) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11, 52, 53)) AS CloseRevisions,
+        ARRAY_AGG(DISTINCT ph.Comment) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11, 52, 53)) AS CloseRevisions,
         COUNT(DISTINCT c.Id) AS CommentCount
     FROM 
         PostHistory ph

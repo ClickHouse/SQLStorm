@@ -69,7 +69,7 @@ FROM
     PostStatistics ps
 LEFT JOIN 
     (SELECT DISTINCT 
-         arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName, 
+         unnest(string_to_array(p.Tags, '>')) AS TagName, 
          p.Id AS PostID
      FROM 
          Posts p 

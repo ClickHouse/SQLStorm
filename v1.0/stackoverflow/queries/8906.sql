@@ -39,7 +39,7 @@ TopRankedPosts AS (
 PostDetails AS (
     SELECT 
         trp.*,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         TopRankedPosts trp
     LEFT JOIN (

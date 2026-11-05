@@ -43,7 +43,7 @@ SELECT
     t.UpVotes,
     t.DownVotes,
     t.CloseReopenCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.UserDisplayName))), ', ') AS Commenters
+    STRING_AGG(DISTINCT c.UserDisplayName, ', ') AS Commenters
 FROM 
     TopPosts t
 LEFT JOIN 

@@ -52,7 +52,7 @@ SELECT
     ps.DownVotes,
     ps.ApprovalRate,
     COALESCE(pt.Name, 'No Post Type') AS PostTypeName,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+    (SELECT STRING_AGG(t.TagName, ', ') 
      FROM Tags t 
      JOIN Posts p2 ON p2.Tags LIKE '%' || t.TagName || '%' 
      WHERE p2.Id = ps.PostId) AS Tags,

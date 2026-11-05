@@ -5,7 +5,7 @@ SELECT
     COUNT(PH.Id) AS EditCount,
     SUM(CASE WHEN PH.PostHistoryTypeId IN (4, 5, 6) THEN 1 ELSE 0 END) AS TitleBodyTagEdits,
     SUM(CASE WHEN PH.PostHistoryTypeId IN (10, 11, 12) THEN 1 ELSE 0 END) AS ClosureReopenCount,
-    AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - PH.CreationDate))) AS AverageTimeBetweenEdits
+    AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - PH.CreationDate))) AS AverageTimeBetweenEdits
 FROM 
     Users U
 JOIN 

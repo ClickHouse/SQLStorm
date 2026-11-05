@@ -44,7 +44,7 @@ PostWithComments AS (
         tp.OwnerDisplayName,
         tp.OwnerReputation,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' | ') AS CommentTexts 
+        STRING_AGG(c.Text, ' | ') AS CommentTexts 
     FROM 
         TopPosts tp
     LEFT JOIN 

@@ -7,7 +7,7 @@ WITH PostWithTags AS (
         p.ViewCount,
         p.AnswerCount,
         p.CommentCount,
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2)))) AS Tag
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS Tag
     FROM 
         Posts p
     WHERE 

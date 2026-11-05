@@ -30,7 +30,7 @@ TopPosts AS (
 ),
 PopularTags AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName
+        UNNEST(string_to_array(Tags, '><')) AS TagName
     FROM 
         Posts
     WHERE 

@@ -39,7 +39,7 @@ SELECT
     PHD.HistoryType,
     PHD.EditDate
 FROM UserVoteStats UVS
-FULL OUTER JOIN PopularPosts PP ON UVS.UserId = (SELECT U.Id FROM Users U ORDER BY rand() LIMIT 1)
+FULL OUTER JOIN PopularPosts PP ON UVS.UserId = (SELECT U.Id FROM Users U ORDER BY RANDOM() LIMIT 1)
 LEFT JOIN PostHistoryDetails PHD ON PP.PostId = PHD.PostId
 WHERE UVS.Upvotes > UVS.Downvotes
   AND (PHD.Comment IS NOT NULL OR PHD.HistoryType IS NOT NULL)

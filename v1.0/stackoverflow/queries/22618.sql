@@ -44,7 +44,7 @@ SELECT
     END AS PopularityStatus,
     CASE 
         WHEN phd.FirstEditDate IS NOT NULL 
-         THEN toUnixTimestamp((phd.LastEditDate - phd.FirstEditDate)) / 3600
+         THEN EXTRACT(EPOCH FROM (phd.LastEditDate - phd.FirstEditDate)) / 3600
          ELSE NULL 
     END AS HoursBetweenFirstAndLastEdit
 FROM 

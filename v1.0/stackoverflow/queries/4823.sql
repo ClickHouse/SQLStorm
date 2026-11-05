@@ -30,7 +30,7 @@ RecentPostHistory AS (
     SELECT 
         ph.PostId,
         MAX(ph.CreationDate) AS LatestHistoryDate,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes
+        STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes
     FROM 
         PostHistory ph
     JOIN 

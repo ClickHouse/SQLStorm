@@ -26,7 +26,7 @@ PostHistoryDetails AS (
         ph.CreationDate AS HistoryDate,
         ph.UserId,
         p.Title AS PostTitle,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(u.DisplayName, 'Anonymous')))), ', ') AS Editors
+        STRING_AGG(DISTINCT COALESCE(u.DisplayName, 'Anonymous'), ', ') AS Editors
     FROM 
         PostHistory ph
     JOIN 

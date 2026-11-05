@@ -6,12 +6,12 @@ WITH RankedPosts AS (
         p.OwnerUserId,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.Score DESC) AS RankByScore,
         COUNT(v.Id) AS VoteCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS TagsAggregated,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS TagsAggregated,
         MAX(CASE WHEN ph.PostHistoryTypeId = 10 THEN ph.CreationDate END) AS LastClosedDate
     FROM Posts p
     LEFT JOIN Votes v ON p.Id = v.PostId
     LEFT JOIN PostHistory ph ON p.Id = ph.PostId
-    LEFT JOIN arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+    LEFT JOIN unnest(string_to_array(p.Tags, '>')) AS t(TagName) ON TRUE
     WHERE p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 year'
     GROUP BY p.Id, p.Score, p.OwnerUserId
 ),

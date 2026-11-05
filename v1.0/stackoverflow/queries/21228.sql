@@ -49,7 +49,7 @@ UserPostStats AS (
 RecentResponses AS (
     SELECT 
         p.Id AS PostId,
-        COALESCE(toUnixTimestamp((p.LastActivityDate - p.CreationDate)), 0) AS TimeToResponse,
+        COALESCE(EXTRACT(EPOCH FROM (p.LastActivityDate - p.CreationDate)), 0) AS TimeToResponse,
         u.DisplayName AS Responder
     FROM 
         Posts p

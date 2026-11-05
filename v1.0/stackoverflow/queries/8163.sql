@@ -25,7 +25,7 @@ MostActiveUsers AS (
 ),
 TopTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(Tags)))) AS TagName,
+        TRIM(UNNEST(string_to_array(Tags, '><'))) AS TagName,
         COUNT(*) AS TagCount
     FROM Posts
     WHERE PostTypeId = 1

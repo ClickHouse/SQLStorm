@@ -24,7 +24,7 @@ WITH FilteredPosts AS (
 ),
 TagStats AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS Tag
+        unnest(string_to_array(Tags, ',')) AS Tag
     FROM 
         FilteredPosts
 ),
@@ -45,12 +45,12 @@ SELECT
     fp.CommentCount,
     fp.UpVotes,
     fp.DownVotes,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ta.Tag))), ', ') AS Tags,
+    STRING_AGG(DISTINCT ta.Tag, ', ') AS Tags,
     COUNT(ta.Tag) AS UniqueTagCount
 FROM 
     FilteredPosts fp
 LEFT JOIN 
-    TagAggregate ta ON ta.Tag = ANY(splitByString(',', assumeNotNull(fp.Tags)))
+    TagAggregate ta ON ta.Tag = ANY(string_to_array(fp.Tags, ','))
 GROUP BY 
     fp.PostId, fp.Title, fp.CreationDate, fp.Author, fp.CommentCount, fp.UpVotes, fp.DownVotes
 ORDER BY 

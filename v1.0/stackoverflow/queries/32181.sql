@@ -9,7 +9,7 @@ WITH RankedPosts AS (
         p.AnswerCount,
         p.CommentCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -56,7 +56,7 @@ AggregatedPostHistory AS (
     SELECT 
         p.PostId,
         MAX(ph.EditDate) AS LastEditDate,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.UserDisplayName, ' - ', ph.EditComment))), '; ') AS EditsDetails
+        STRING_AGG(CONCAT(ph.UserDisplayName, ' - ', ph.EditComment), '; ') AS EditsDetails
     FROM 
         TopPosts p
     LEFT JOIN 

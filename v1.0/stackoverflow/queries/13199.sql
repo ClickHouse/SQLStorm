@@ -29,11 +29,11 @@ PostEngagement AS (
         P.FavoriteCount,
         P.CreationDate,
         P.LastActivityDate,
-        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT T.TagName) AS Tags
     FROM 
         Posts P
     LEFT JOIN 
-        arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS Tag ON TRUE
+        unnest(string_to_array(P.Tags, '<>')) AS Tag ON TRUE
     JOIN 
         Tags T ON T.TagName = Tag
     WHERE 

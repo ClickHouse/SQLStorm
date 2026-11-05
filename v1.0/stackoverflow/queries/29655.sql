@@ -8,7 +8,7 @@ WITH RankedPosts AS (
         pt.Name AS PostType,
         COUNT(c.Id) AS CommentCount,
         COUNT(DISTINCT v.Id) AS VoteCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS Rnk
     FROM 
         Posts p
@@ -19,7 +19,7 @@ WITH RankedPosts AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS t(TagName) ON t.TagName IS NOT NULL
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')) AS t(TagName) ON t.TagName IS NOT NULL
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     WHERE 
@@ -33,7 +33,7 @@ TopPostAuthors AS (
         rp.OwnerDisplayName,
         SUM(rp.CommentCount) AS TotalComments,
         SUM(rp.VoteCount) AS TotalVotes,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.PostType))), ', ') AS PostTypes,
+        STRING_AGG(DISTINCT rp.PostType, ', ') AS PostTypes,
         COUNT(rp.PostId) AS PostCount
     FROM 
         RankedPosts rp
@@ -48,7 +48,7 @@ SELECT
     tpa.TotalComments,
     tpa.TotalVotes,
     tpa.PostTypes,
-    arrayDistinct(groupArray(assumeNotNull(rp.Tags))) AS AllTags
+    ARRAY_AGG(DISTINCT rp.Tags) AS AllTags
 FROM 
     TopPostAuthors tpa
 JOIN 

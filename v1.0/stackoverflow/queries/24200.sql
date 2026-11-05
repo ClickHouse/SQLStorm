@@ -21,7 +21,7 @@ WITH RankedPosts AS (
 TaggedPosts AS (
     SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS TagName
+        unnest(string_to_array(p.Tags, '>')) AS TagName
     FROM 
         Posts p
     WHERE 
@@ -31,7 +31,7 @@ ClosedPosts AS (
     SELECT 
         ph.PostId,
         ph.CreationDate AS CloseDate,
-        arrayStringConcat(groupArray(assumeNotNull(cr.Name)), ', ') AS CloseReasons
+        STRING_AGG(cr.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

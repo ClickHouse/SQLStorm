@@ -38,7 +38,7 @@ TopQuestions AS (
 ),
 TagAnalytics AS (
     SELECT 
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(Tags)))) AS TagName, 
+        TRIM(unnest(string_to_array(Tags, '><'))) AS TagName, 
         COUNT(TQ.PostId) AS TotalQuestions,
         SUM(TQ.CommentCount) AS TotalComments,
         SUM(TQ.UpvoteCount) AS TotalUpvotes,
@@ -46,7 +46,7 @@ TagAnalytics AS (
     FROM
         TopQuestions TQ
     GROUP BY 
-        TRIM(arrayJoin(splitByString('><', assumeNotNull(Tags))))
+        TRIM(unnest(string_to_array(Tags, '><')))
 )
 SELECT 
     ta.TagName,

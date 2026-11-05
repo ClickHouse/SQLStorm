@@ -18,7 +18,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
@@ -57,7 +57,7 @@ LEFT JOIN
 LEFT JOIN 
     TagStatistics ts ON ts.TagName IN (
         SELECT 
-            arrayJoin(splitByString('><', assumeNotNull(rp.Tags))) 
+            UNNEST(string_to_array(rp.Tags, '><')) 
         FROM 
             RankedPosts 
         WHERE 

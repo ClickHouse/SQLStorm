@@ -8,7 +8,7 @@ WITH RecentPosts AS (
         u.DisplayName AS OwnerDisplayName,
         COUNT(c.Id) AS CommentCount,
         COUNT(v.Id) AS VoteCount,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -17,8 +17,8 @@ WITH RecentPosts AS (
         Comments c ON p.Id = c.PostId
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
-
-        LEFT ARRAY JOIN splitByString('><', assumeNotNull(p.Tags)) AS TagName
+    LEFT JOIN 
+        LATERAL (SELECT unnest(string_to_array(p.Tags, '><')) AS TagName) t ON TRUE
     WHERE 
         p.CreationDate >= TIMESTAMP '2024-10-01 12:34:56' - INTERVAL '1 month'
     GROUP BY 

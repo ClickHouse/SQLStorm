@@ -39,7 +39,7 @@ SELECT
     tp.ViewCount,
     tp.CommentCount,
     tp.VoteCount,
-    arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostTypeNames
+    STRING_AGG(pt.Name, ', ') AS PostTypeNames
 FROM 
     TopPosts tp
 JOIN 

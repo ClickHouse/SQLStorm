@@ -42,9 +42,9 @@ PostsWithTag AS (
     SELECT 
         P.Id,
         P.Title,
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS Tags
+        STRING_AGG(T.TagName, ', ') AS Tags
     FROM Posts P
-    LEFT JOIN arrayJoin(splitByString('<>', assumeNotNull(P.Tags))) AS T(TagName) ON TRUE
+    LEFT JOIN LATERAL UNNEST(STRING_TO_ARRAY(P.Tags, '<>')) AS T(TagName) ON TRUE
     GROUP BY P.Id, P.Title
 )
 SELECT 

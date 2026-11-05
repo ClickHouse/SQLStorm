@@ -17,7 +17,7 @@ RecentBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 
@@ -29,7 +29,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN c.UserDisplayName IS NOT NULL THEN c.UserDisplayName ELSE 'Unknown User' END)), ', ') AS Commenters
+        STRING_AGG(CASE WHEN c.UserDisplayName IS NOT NULL THEN c.UserDisplayName ELSE 'Unknown User' END, ', ') AS Commenters
     FROM 
         Comments c
     GROUP BY 

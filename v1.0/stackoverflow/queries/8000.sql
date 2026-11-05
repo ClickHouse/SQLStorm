@@ -37,7 +37,7 @@ SELECT
     tp.DownVoteCount,
     (tp.UpVoteCount - tp.DownVoteCount) AS NetVoteScore,
     (SELECT 
-         arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+         STRING_AGG(t.TagName, ', ') 
      FROM 
          Tags t 
      WHERE 

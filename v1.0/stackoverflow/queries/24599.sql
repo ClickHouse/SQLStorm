@@ -48,7 +48,7 @@ PostAnalytics AS (
         SUM(CASE WHEN V.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN V.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes,
         SUM(CASE WHEN PH.PostHistoryTypeId = 10 THEN 1 ELSE 0 END) AS ClosureCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(U.DisplayName))), ', ') AS UpvotedUsernames
+        STRING_AGG(DISTINCT U.DisplayName, ', ') AS UpvotedUsernames
     FROM
         Posts P
     LEFT JOIN
@@ -74,7 +74,7 @@ SELECT
     RP.CreationDate AS RecentPostDate,
     RP.Score AS RecentPostScore,
     RP.ViewCount AS RecentPostViewCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ')
+    (SELECT STRING_AGG(T.TagName, ', ')
      FROM TopTags T WHERE T.TagRank <= 5) AS TopTags,
     PA.CommentCount,
     PA.UpVotes,

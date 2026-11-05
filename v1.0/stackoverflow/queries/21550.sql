@@ -55,7 +55,7 @@ MouseOverDetails AS (
 UserBadges AS (
     SELECT 
         u.Id AS UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Users u
     LEFT JOIN 

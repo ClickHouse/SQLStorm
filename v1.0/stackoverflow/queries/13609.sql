@@ -8,7 +8,7 @@ SELECT
     COUNT(v.Id) AS VoteCount,
     COUNT(c.Id) AS CommentCount,
     COUNT(b.Id) AS BadgeCount,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
     u.Reputation,
     u.DisplayName AS OwnerDisplayName,
     u.Location
@@ -23,7 +23,7 @@ LEFT JOIN
 LEFT JOIN 
     Badges b ON u.Id = b.UserId
 LEFT JOIN 
-    arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag_name ON true
+    UNNEST(STRING_TO_ARRAY(p.Tags, ',')) AS tag_name ON true
 LEFT JOIN 
     Tags t ON t.TagName = tag_name
 WHERE 

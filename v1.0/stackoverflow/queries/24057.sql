@@ -35,7 +35,7 @@ PostCommentCounts AS (
 PostBadges AS (
     SELECT 
         b.UserId, 
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     WHERE 

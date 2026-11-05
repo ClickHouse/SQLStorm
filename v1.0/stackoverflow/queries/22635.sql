@@ -55,7 +55,7 @@ WHERE
     rp.PostRank = 1
     AND (rp.Score IS NULL OR rp.Score > 10)
     AND rp.ViewCount IS NOT NULL
-    AND (datePart('dow', rp.CreationDate) IN (0, 6) OR (EXTRACT(HOUR FROM rp.CreationDate) BETWEEN 8 AND 18))
+    AND (DATE_PART('dow', rp.CreationDate) IN (0, 6) OR (EXTRACT(HOUR FROM rp.CreationDate) BETWEEN 8 AND 18))
 ORDER BY 
     tu.UserRank, rp.ViewCount DESC
 LIMIT 100;

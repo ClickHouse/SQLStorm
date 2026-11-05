@@ -44,7 +44,7 @@ ClosureReasons AS (
     SELECT 
         PH.PostId,
         COUNT(*) AS CloseCount,
-        arrayStringConcat(groupArray(assumeNotNull(CAST(CRT.Name AS TEXT))), ', ') AS ClosureReasons
+        STRING_AGG(CAST(CRT.Name AS TEXT), ', ') AS ClosureReasons
     FROM 
         PostHistory PH
     JOIN 

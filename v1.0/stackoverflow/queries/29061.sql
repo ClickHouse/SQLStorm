@@ -1,7 +1,7 @@
 WITH PostTagArray AS (
     SELECT 
         P.Id AS PostId,
-        arrayJoin(splitByString('><', assumeNotNull(substring(Tags, 2, length(Tags)-2)))) AS Tag
+        UNNEST(string_to_array(substring(Tags, 2, length(Tags)-2), '><')) AS Tag
     FROM 
         Posts P
     WHERE 
@@ -30,7 +30,7 @@ QuestionTitles AS (
     SELECT 
         P.Id AS QuestionId,
         P.Title,
-        arrayDistinct(groupArray(assumeNotNull(T.Tag))) AS RelatedTags
+        ARRAY_AGG(DISTINCT T.Tag) AS RelatedTags
     FROM 
         Posts P
     JOIN 

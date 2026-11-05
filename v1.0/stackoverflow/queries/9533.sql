@@ -45,7 +45,7 @@ SELECT
     tp.CommentCount,
     tp.UpVotes,
     tp.DownVotes,
-    COALESCE((SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+    COALESCE((SELECT STRING_AGG(t.TagName, ', ') 
                FROM Posts p 
                JOIN Tags t ON p.Tags LIKE '%' || t.TagName || '%' 
                WHERE p.Id = tp.PostId), 'No Tags') AS Tags

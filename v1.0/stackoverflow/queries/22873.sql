@@ -28,7 +28,7 @@ UserVoteStats AS (
 PostTagSummary AS (
     SELECT 
         p.Id AS PostId,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsAssociated,
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsAssociated,
         COUNT(DISTINCT c.Id) AS CommentCount,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS TotalUpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS TotalDownVotes
@@ -39,7 +39,7 @@ PostTagSummary AS (
     LEFT JOIN 
         Votes v ON p.Id = v.PostId
     LEFT JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+        unnest(string_to_array(p.Tags, '><')) AS t(TagName) ON TRUE
     GROUP BY 
         p.Id
 )

@@ -21,7 +21,7 @@ PostVoteSummary AS (
 ),
 PostHistorySummary AS (
     SELECT ph.PostId,
-           arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS HistoryTypes,
+           STRING_AGG(DISTINCT pht.Name, ', ') AS HistoryTypes,
            MAX(ph.CreationDate) AS LastActivityDate,
            COUNT(ph.Id) AS HistoryCount
     FROM PostHistory ph

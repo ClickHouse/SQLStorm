@@ -29,7 +29,7 @@ RecentBadges AS (
     SELECT 
         b.UserId, 
         COUNT(*) AS BadgeCount, 
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM Badges b
     WHERE b.Date >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '6 months' 
     GROUP BY b.UserId

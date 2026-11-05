@@ -7,7 +7,7 @@ WITH UserStatistics AS (
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(COALESCE(P.Score, 0)) AS TotalScore,
-        AVG(toUnixTimestamp((cast('2024-10-01 12:34:56' as timestamp) - U.CreationDate)) / 3600) AS AvgAccountAgeHours
+        AVG(EXTRACT(EPOCH FROM (cast('2024-10-01 12:34:56' as timestamp) - U.CreationDate)) / 3600) AS AvgAccountAgeHours
     FROM Users U
     LEFT JOIN Posts P ON U.Id = P.OwnerUserId
     GROUP BY U.Id, U.DisplayName, U.Reputation
@@ -46,7 +46,7 @@ SELECT
         WHEN U.AvgAccountAgeHours > 0 THEN ROUND(U.Reputation / U.AvgAccountAgeHours, 2)
         ELSE NULL 
     END AS ReputationPerHour,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') 
+    (SELECT STRING_AGG(B.Name, ', ') 
      FROM Badges B 
      WHERE B.UserId = U.UserId 
      AND B.Class = 1) AS GoldBadges

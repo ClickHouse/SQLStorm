@@ -7,7 +7,7 @@ WITH PopularTags AS (
     FROM 
         Tags t
     JOIN 
-        Posts p ON t.Id = ANY(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))::int[])
+        Posts p ON t.Id = ANY(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')::int[])
     GROUP BY 
         t.TagName
     HAVING 
@@ -46,7 +46,7 @@ RecentPosts AS (
     LEFT JOIN 
         Posts a ON p.AcceptedAnswerId = a.Id
     JOIN 
-        Tags t ON t.Id = ANY(splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))::int[])
+        Tags t ON t.Id = ANY(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '><')::int[])
     WHERE 
         p.CreationDate >= cast('2024-10-01 12:34:56' as timestamp) - INTERVAL '30 days'
 ),
@@ -57,7 +57,7 @@ PostAnalytics AS (
         rp.CreationDate,
         rp.CommentCount,
         rp.HasAcceptedAnswer,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT pt.TagName, ', ') AS Tags
     FROM 
         RecentPosts rp
     JOIN 

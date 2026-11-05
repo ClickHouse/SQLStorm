@@ -31,7 +31,7 @@ PostsWithBadges AS (
         p.Title,
         p.Score,
         p.ViewCount,
-        arrayDistinct(groupArray(assumeNotNull(b.Name))) AS BadgeNames
+        ARRAY_AGG(DISTINCT b.Name) AS BadgeNames
     FROM 
         Posts p
     LEFT JOIN 

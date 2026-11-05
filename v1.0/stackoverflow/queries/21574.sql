@@ -55,7 +55,7 @@ SELECT
         WHEN cp.CloseCount IS NULL THEN 'Not Closed'
         ELSE 'Closed'
     END AS ClosureStatus,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     UserActivity up
 JOIN 
@@ -65,7 +65,7 @@ LEFT JOIN
 LEFT JOIN 
     Posts p ON rp.PostId = p.Id
 LEFT JOIN 
-    (SELECT arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS TagName) AS t ON TRUE
+    LATERAL (SELECT UNNEST(string_to_array(p.Tags, '><')) AS TagName) AS t ON TRUE
 WHERE 
     up.Reputation >= 1000
 GROUP BY 

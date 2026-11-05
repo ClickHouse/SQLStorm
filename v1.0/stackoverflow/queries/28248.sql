@@ -47,7 +47,7 @@ SELECT
     trp.CreationDate,
     trp.Score,
     COUNT(rph.PostId) AS RecentHistoryCount,
-    arrayStringConcat(groupArray(assumeNotNull(rph.HistoryType || ': ' || rph.HistoryDetails)), '; ') AS RecentHistoryDetails
+    STRING_AGG(rph.HistoryType || ': ' || rph.HistoryDetails, '; ') AS RecentHistoryDetails
 FROM TopRankedPosts trp
 LEFT JOIN RecentPostHistory rph ON trp.PostId = rph.PostId
 GROUP BY 

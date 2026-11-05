@@ -20,7 +20,7 @@ WITH RankedPosts AS (
     SELECT 
         ph.PostId,
         COUNT(*) AS CloseReasonsCount,
-        arrayStringConcat(groupArray(assumeNotNull(crt.Name)), ', ') AS CloseReasons
+        STRING_AGG(crt.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 
@@ -31,7 +31,7 @@ WITH RankedPosts AS (
         ph.PostId
 ), TopTags AS (
     SELECT 
-        arrayJoin(splitByString(',', assumeNotNull(Tags))) AS TagName
+        UNNEST(STRING_TO_ARRAY(Tags, ',')) AS TagName
     FROM 
         RankedPosts
     WHERE 
@@ -51,7 +51,7 @@ FROM
 LEFT JOIN 
     CloseStats ct ON rp.PostId = ct.PostId
 JOIN 
-    TopTags tt ON tt.TagName = ANY(splitByString(',', assumeNotNull(rp.Tags)))
+    TopTags tt ON tt.TagName = ANY(STRING_TO_ARRAY(rp.Tags, ','))
 WHERE 
     rp.TagRank = 1
 ORDER BY 

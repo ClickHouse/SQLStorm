@@ -25,7 +25,7 @@ WITH RankedPosts AS (
 ),
 TagStats AS (
     SELECT 
-        TRIM(BOTH '<>' FROM arrayJoin(splitByString('><', assumeNotNull(p.Tags)))) AS Tag,
+        TRIM(BOTH '<>' FROM unnest(string_to_array(p.Tags, '><'))) AS Tag,
         COUNT(*) AS PostCount
     FROM 
         Posts p
@@ -57,7 +57,7 @@ TopPostsByTag AS (
     JOIN 
         Posts p ON rp.PostID = p.Id
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS rt(Tag) ON TRUE
+        LATERAL unnest(string_to_array(p.Tags, '><')) AS rt(Tag) ON TRUE
     JOIN 
         TopTags tt ON rt.Tag = tt.Tag
     WHERE 
@@ -66,7 +66,7 @@ TopPostsByTag AS (
 
 SELECT 
     t.Tag,
-    arrayStringConcat(groupArray(assumeNotNull(tp.OwnerDisplayName || ': ' || tp.Title)), '; ') AS TopPosts
+    STRING_AGG(tp.OwnerDisplayName || ': ' || tp.Title, '; ') AS TopPosts
 FROM 
     TopPostsByTag tp
 JOIN 

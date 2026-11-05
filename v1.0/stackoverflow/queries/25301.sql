@@ -47,12 +47,12 @@ SELECT
     t.CommentCount,
     t.AnswerCount,
     t.PostMonth,
-    arrayDistinct(groupArray(assumeNotNull(tr.TagName))) AS Tags
+    ARRAY_AGG(DISTINCT tr.TagName) AS Tags
 FROM
     TopPosts t
 LEFT JOIN
     (SELECT 
-        DISTINCT arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags, 2, LENGTH(Tags) - 2)))) AS TagName
+        DISTINCT UNNEST(string_to_array(SUBSTRING(Tags, 2, LENGTH(Tags) - 2), '><')) AS TagName
      FROM 
         Posts) tr ON tr.TagName ILIKE '%' || t.Tags || '%'
 GROUP BY

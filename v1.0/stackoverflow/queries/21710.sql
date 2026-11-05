@@ -57,7 +57,7 @@ SELECT
         WHEN rp.Score < 0 THEN 'Negative'
         ELSE 'Unrated'
     END AS PostStatus,
-    arrayStringConcat(groupArray(assumeNotNull(rp.SafeTags)), ', ') AS TagsList
+    STRING_AGG(rp.SafeTags, ', ') AS TagsList
 FROM 
     RankedPosts rp
 LEFT JOIN 

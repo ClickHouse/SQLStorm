@@ -39,7 +39,7 @@ SELECT
     fp.*, 
     COUNT(b.Id) AS BadgeCount,
     SUM(CASE WHEN bh.PostHistoryTypeId = 10 THEN 1 ELSE 0 END) AS CloseCount,
-    arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ', ') AS PostTypeNames
+    STRING_AGG(pt.Name, ', ') AS PostTypeNames
 FROM 
     FilteredPosts fp
 LEFT JOIN 

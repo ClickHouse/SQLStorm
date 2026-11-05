@@ -21,7 +21,7 @@ PostStatistics AS (
         SUM(COALESCE(P.ViewCount, 0)) AS TotalViews,
         COUNT(DISTINCT CASE WHEN P.PostTypeId = 1 THEN P.Id END) AS QuestionsCount,
         COUNT(DISTINCT CASE WHEN P.PostTypeId = 2 THEN P.Id END) AS AnswersCount,
-        AVG(toUnixTimestamp((CURRENT_TIMESTAMP - P.CreationDate)) / 60) AS AvgPostAgeInMinutes
+        AVG(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - P.CreationDate)) / 60) AS AvgPostAgeInMinutes
     FROM Posts P
     GROUP BY P.OwnerUserId
 ),

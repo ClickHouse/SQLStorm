@@ -40,7 +40,7 @@ PostWithBadges AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        arrayDistinct(groupArray(assumeNotNull(b.Name))) AS Badges
+        ARRAY_AGG(DISTINCT b.Name) AS Badges
     FROM 
         Posts p
     LEFT JOIN 

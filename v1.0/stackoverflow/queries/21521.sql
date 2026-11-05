@@ -33,7 +33,7 @@ HistoricChanges AS (
     SELECT
         PH.PostId,
         MAX(PH.CreationDate) AS LastChangeDate,
-        arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS ChangeTypes
+        STRING_AGG(PHT.Name, ', ') AS ChangeTypes
     FROM
         PostHistory PH
     JOIN
@@ -79,11 +79,11 @@ FROM
 LEFT JOIN
     (SELECT 
         P.Id, 
-        arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagName
+        STRING_AGG(T.TagName, ', ') AS TagName
      FROM 
         Posts P
      LEFT JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS tag_array ON tag_array IS NOT NULL
+        UNNEST(STRING_TO_ARRAY(P.Tags, ',')) AS tag_array ON tag_array IS NOT NULL
      LEFT JOIN 
         Tags T ON T.TagName = TRIM(tag_array)
      GROUP BY 

@@ -7,13 +7,13 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY pt.Name ORDER BY p.CreationDate DESC) AS RN,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagList
+        STRING_AGG(t.TagName, ', ') AS TagList
     FROM 
         Posts p
     JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('>><<', assumeNotNull(p.Tags))) AS t(TagName) ON TRUE
+        UNNEST(STRING_TO_ARRAY(p.Tags, '>><<')) AS t(TagName) ON TRUE
     WHERE 
         p.CreationDate > (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year')
     GROUP BY 

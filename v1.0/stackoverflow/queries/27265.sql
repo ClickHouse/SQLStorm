@@ -3,7 +3,7 @@ WITH UserBadges AS (
         u.Id AS UserId,
         u.DisplayName,
         COUNT(b.Id) AS BadgeCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges
+        STRING_AGG(b.Name, ', ') AS Badges
     FROM 
         Users u
     LEFT JOIN 
@@ -18,7 +18,7 @@ PopularPosts AS (
         p.Score,
         p.ViewCount,
         p.AnswerCount,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 

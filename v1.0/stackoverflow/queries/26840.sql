@@ -17,7 +17,7 @@ WITH RankedPosts AS (
 TagSplit AS (
     SELECT 
         rp.PostId,
-        arrayJoin(splitByString('><', assumeNotNull(rp.Tags))) AS Tag, 
+        UNNEST(string_to_array(rp.Tags, '><')) AS Tag, 
         rp.Title,
         rp.CreationDate,
         rp.ViewCount,

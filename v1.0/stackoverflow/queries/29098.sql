@@ -33,7 +33,7 @@ CloseReasonsAnalysis AS (
     SELECT 
         p.Id AS PostId,
         COUNT(ph.Id) AS CloseReasonCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(c.Name))), ', ') AS CloseReasons
+        STRING_AGG(DISTINCT c.Name, ', ') AS CloseReasons
     FROM 
         Posts p
     LEFT JOIN 

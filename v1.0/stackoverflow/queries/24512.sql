@@ -23,7 +23,7 @@ PostDetails AS (
 ),
 PostHistoryDetails AS (
     SELECT PH.PostId, MAX(PH.CreationDate) AS LastHistoryDate, 
-           arrayStringConcat(groupArray(assumeNotNull(PHT.Name)), ', ') AS HistoryTypes
+           STRING_AGG(PHT.Name, ', ') AS HistoryTypes
     FROM PostHistory PH
     JOIN PostHistoryTypes PHT ON PH.PostHistoryTypeId = PHT.Id
     GROUP BY PH.PostId
@@ -40,7 +40,7 @@ SELECT A.Id AS UserId, A.DisplayName, A.Reputation,
        AVG(FP.PostScore) AS AveragePostScore,
        MIN(FP.CreationDate) AS FirstActivePost,
        MAX(FP.CreationDate) AS LastActivePost,
-       arrayStringConcat(groupArray(assumeNotNull(FP.Title)), '; ') AS AllActivePostTitles
+       STRING_AGG(FP.Title, '; ') AS AllActivePostTitles
 FROM ActiveUsers A
 LEFT JOIN FilteredPosts FP ON FP.OwnerUserId = A.Id
 WHERE A.RecentActivity > 0

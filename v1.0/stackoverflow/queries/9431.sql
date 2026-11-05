@@ -43,7 +43,7 @@ PostHistoryStats AS (
         ph.PostId,
         COUNT(ph.Id) AS EditCount,
         MAX(ph.CreationDate) AS LastEditDate,
-        arrayDistinct(groupArray(assumeNotNull(pht.Name))) AS HistoryTypes
+        ARRAY_AGG(DISTINCT pht.Name) AS HistoryTypes
     FROM 
         PostHistory ph
     JOIN 

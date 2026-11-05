@@ -56,7 +56,7 @@ SELECT
     COUNT(A.PostId) AS TotalPosts,
     AVG(A.Reputation) AS AvgReputation,
     SUM(A.CommentCount) AS TotalComments,
-    arrayStringConcat(groupArray(assumeNotNull(A.Title)), ', ') AS PostTitles,
+    STRING_AGG(A.Title, ', ') AS PostTitles,
     MAX(A.PostRank) AS HighestPostRank
 FROM 
     ActivePostStats A

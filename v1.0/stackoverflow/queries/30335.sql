@@ -42,7 +42,7 @@ WITH RECURSIVE PostHierarchy AS (
 ), ClosedPostReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ctr.Name))), ', ') AS CloseReasons
+        STRING_AGG(DISTINCT ctr.Name, ', ') AS CloseReasons
     FROM 
         PostHistory ph
     JOIN 

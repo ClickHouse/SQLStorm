@@ -7,11 +7,11 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.CreationDate DESC) AS Rank,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     JOIN 
-        arrayJoin(splitByString('><', assumeNotNull(p.Tags))) AS tag ON tag IS NOT NULL
+        LATERAL unnest(string_to_array(p.Tags, '><')) AS tag ON tag IS NOT NULL
     JOIN 
         Tags t ON t.TagName = TRIM(both '<>' FROM tag)
     GROUP BY 

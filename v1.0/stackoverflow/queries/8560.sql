@@ -30,7 +30,7 @@ UserStats AS (
 ),
 PopularTags AS (
     SELECT 
-        TRIM(arrayJoin(splitByString(',', assumeNotNull(p.Tags)))) AS TagName,
+        TRIM(UNNEST(STRING_TO_ARRAY(p.Tags, ','))) AS TagName,
         COUNT(*) AS TagCount
     FROM 
         Posts p

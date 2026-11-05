@@ -67,7 +67,7 @@ SELECT
         WHEN pd.UpVotes - pd.DownVotes > 0 THEN 'Positive Engagement'
         ELSE 'Low Engagement'
     END AS EngagementLevel,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') AS PostType
+    STRING_AGG(DISTINCT pt.Name, ', ') AS PostType
 FROM 
     PostDetails pd
 JOIN 

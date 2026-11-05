@@ -46,7 +46,7 @@ SELECT
     tp.DownVotes,
     tp.CommentCount,
     COALESCE(AVG(b.Class), 0) AS AverageBadgeClass,
-    COALESCE(arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(REPLACE(t.TagName, '<', '&lt;')))), ', '), '') AS AssociatedTags
+    COALESCE(STRING_AGG(DISTINCT REPLACE(t.TagName, '<', '&lt;'), ', '), '') AS AssociatedTags
 FROM 
     TopPosts tp
 LEFT JOIN 

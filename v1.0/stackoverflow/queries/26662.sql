@@ -25,7 +25,7 @@ WITH RecentPosts AS (
 ExplodedTags AS (
     SELECT 
         rp.PostId,
-        arrayJoin(splitByString('><', assumeNotNull(rp.Tags))) AS TagName  
+        unnest(string_to_array(rp.Tags, '><')) AS TagName  
     FROM 
         RecentPosts rp
 ),

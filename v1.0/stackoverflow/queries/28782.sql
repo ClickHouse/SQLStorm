@@ -49,7 +49,7 @@ SELECT
     fp.CommentCount,
     fp.UpVotes,
     fp.DownVotes,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Name))), ', ') AS EditTypes
+    STRING_AGG(DISTINCT pht.Name, ', ') AS EditTypes
 FROM 
     FilteredPosts fp
 LEFT JOIN 

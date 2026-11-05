@@ -9,11 +9,11 @@ WITH PostDetails AS (
         p.AnswerCount,
         p.CommentCount,
         u.DisplayName AS OwnerDisplayName,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS TagsArray,
+        ARRAY_AGG(DISTINCT t.TagName) AS TagsArray,
         COALESCE(SUM(CASE WHEN pt.Id IN (1, 2) THEN 1 ELSE 0 END), 0) AS PostVoteCount
     FROM Posts p
     JOIN Users u ON p.OwnerUserId = u.Id
-    LEFT ARRAY JOIN splitByString('><', assumeNotNull(substring(p.Tags, 2, length(p.Tags) - 2))) AS tag
+    LEFT JOIN UNNEST(string_to_array(substring(p.Tags, 2, length(p.Tags) - 2), '><')) AS tag ON TRUE
     LEFT JOIN Tags t ON t.TagName = tag
     LEFT JOIN Votes pt ON pt.PostId = p.Id
     WHERE p.CreationDate >= CAST('2024-10-01 12:34:56' AS TIMESTAMP) - INTERVAL '1 year'

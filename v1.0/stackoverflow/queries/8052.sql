@@ -48,7 +48,7 @@ SELECT
     tp.UpVotes,
     tp.DownVotes,
     COUNT(pht.Id) AS EditCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pht.Comment))), '; ') AS EditComments
+    STRING_AGG(DISTINCT pht.Comment, '; ') AS EditComments
 FROM 
     TopPosts tp
 LEFT JOIN 

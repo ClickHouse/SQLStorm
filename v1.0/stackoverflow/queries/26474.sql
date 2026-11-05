@@ -45,7 +45,7 @@ SELECT
     rp.CommentCount,
     rp.AnswerCount,
     rp.Rank,
-    arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges 
+    STRING_AGG(b.Name, ', ') AS Badges 
 FROM 
     RankedPosts rp
 LEFT JOIN 

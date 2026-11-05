@@ -73,13 +73,13 @@ SELECT
         WHEN pwb.Score > 10 AND pwb.TotalBadges > 5 THEN 'Highly Active Contributor'
         ELSE 'Regular Contributor'
     END AS ContributorStatus,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(COALESCE(t.TagName, 'No Tags')))), ', ') AS AssociatedTags
+    STRING_AGG(DISTINCT COALESCE(t.TagName, 'No Tags'), ', ') AS AssociatedTags
 FROM 
     PostsWithBadges pwb
 LEFT JOIN 
     (SELECT 
         p.Id AS PostId,
-        arrayJoin(splitByString('>', assumeNotNull(substring(p.Tags, 2, length(p.Tags)-2)))) AS TagName
+        unnest(string_to_array(substring(p.Tags, 2, length(p.Tags)-2), '>')) AS TagName
      FROM 
         Posts p
      WHERE 

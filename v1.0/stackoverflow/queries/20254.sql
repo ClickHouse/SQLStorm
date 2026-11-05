@@ -39,7 +39,7 @@ PostHistoryDetails AS (
         ph.PostId,
         ph.CreationDate,
         ph.Comment AS CloseReason,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), '; ') AS EditComments,
+        STRING_AGG(ph.Comment, '; ') AS EditComments,
         MAX(ph.CreationDate) FILTER (WHERE ph.PostHistoryTypeId IN (10, 11, 12)) AS LastActionDate
     FROM 
         PostHistory ph

@@ -65,7 +65,7 @@ SELECT
 FROM 
     ClosedPosts cp
 LEFT JOIN 
-    RecursiveTagCounts RTC ON RTC.TagName IN (SELECT value FROM arrayJoin(splitByString(' ', assumeNotNull(cp.Title))) AS value)  
+    RecursiveTagCounts RTC ON RTC.TagName IN (SELECT value FROM UNNEST(string_to_array(cp.Title, ' ')) AS value)  
 WHERE 
     cp.LastClosedDate >= CURRENT_DATE - INTERVAL '30 days'  
 ORDER BY 

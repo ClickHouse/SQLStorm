@@ -38,7 +38,7 @@ PostLinksSummary AS (
     SELECT 
         pl.PostId,
         COUNT(pl.RelatedPostId) AS RelatedPostsCount,
-        arrayDistinct(groupArray(assumeNotNull(pl.LinkTypeId))) AS LinkTypes
+        ARRAY_AGG(DISTINCT pl.LinkTypeId) AS LinkTypes
     FROM 
         PostLinks pl
     GROUP BY 

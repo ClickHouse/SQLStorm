@@ -57,7 +57,7 @@ SELECT
         ELSE 'Established User'
     END AS UserReputationCategory,
     (SELECT COUNT(*) FROM Posts p2 WHERE p2.OwnerUserId = tp.OwnerUserId AND p2.CreationDate < tp.CreationDate) AS PostsBeforeCurrent,
-    (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') 
+    (SELECT STRING_AGG(DISTINCT t.TagName, ', ') 
      FROM Tags t 
      JOIN Posts p3 ON p3.Tags LIKE '%' || t.TagName || '%' 
      WHERE p3.Id = tp.PostId) AS TagsUsed

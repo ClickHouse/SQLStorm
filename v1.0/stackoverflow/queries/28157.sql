@@ -73,7 +73,7 @@ SELECT
     mdp.CommentCount,
     mdp.UpVotes,
     (SELECT 
-        arrayStringConcat(groupArray(assumeNotNull(HistoryType || ': ' || CAST(HistoryDate AS TEXT))), '; ') 
+        STRING_AGG(HistoryType || ': ' || CAST(HistoryDate AS TEXT), '; ') 
      FROM 
         PostHistoryDetails 
      WHERE 

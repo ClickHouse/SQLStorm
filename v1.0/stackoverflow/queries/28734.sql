@@ -32,7 +32,7 @@ WITH FilteredPosts AS (
 ),
 TagStatistics AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName,
+        UNNEST(string_to_array(Tags, '><')) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         FilteredPosts
@@ -57,7 +57,7 @@ PostEngagement AS (
     LEFT JOIN 
         Votes v ON fp.PostId = v.PostId AND v.VoteTypeId IN (2, 3) 
     LEFT JOIN 
-        TagStatistics ts ON ts.TagName = ANY(splitByString('><', assumeNotNull(fp.Tags)))
+        TagStatistics ts ON ts.TagName = ANY(string_to_array(fp.Tags, '><'))
     GROUP BY 
         fp.PostId, fp.Title, fp.ViewCount, fp.Score, ts.PostCount
 )

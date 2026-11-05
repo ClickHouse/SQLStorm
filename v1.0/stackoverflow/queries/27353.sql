@@ -42,7 +42,7 @@ HighRankedPosts AS (
 ),
 TagCounts AS (
     SELECT 
-        arrayJoin(splitByString('><', assumeNotNull(TRIM(BOTH '<>' FROM Tags)))) AS TagName,
+        UNNEST(string_to_array(TRIM(BOTH '<>' FROM Tags), '><')) AS TagName,
         COUNT(*) AS PostCount
     FROM 
         HighRankedPosts

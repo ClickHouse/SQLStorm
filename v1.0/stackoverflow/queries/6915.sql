@@ -56,7 +56,7 @@ RecentPostHistories AS (
 SELECT 
     u.DisplayName,
     COUNT(DISTINCT rp.PostId) AS RecentPostCount,
-    AVG(datePart('epoch', cast('2024-10-01 12:34:56' as timestamp) - rp.CreationDate)) AS AvgDaysSincePost,
+    AVG(DATE_PART('epoch', cast('2024-10-01 12:34:56' as timestamp) - rp.CreationDate)) AS AvgDaysSincePost,
     MAX(rp.Comment) AS MostRecentComment,
     SUM(rp.UserRank) AS TotalRank
 FROM 

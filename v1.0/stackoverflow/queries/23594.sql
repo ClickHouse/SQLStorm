@@ -38,7 +38,7 @@ UserActivity AS (
 PostHistoryAggregate AS (
     SELECT 
         ph.PostId,
-        arrayDistinct(groupArray(assumeNotNull(pht.Name))) AS HistoryTypes,
+        ARRAY_AGG(DISTINCT pht.Name) AS HistoryTypes,
         COUNT(*) AS TotalChanges
     FROM 
         PostHistory ph

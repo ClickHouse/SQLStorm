@@ -6,7 +6,7 @@ WITH PostStats AS (
         P.Score,
         P.ViewCount,
         COUNT(CASE WHEN C.Id IS NOT NULL THEN 1 END) AS CommentCount,
-        arrayDistinct(groupArray(assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2) ORDER BY SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS TagsList,
+        ARRAY_AGG(DISTINCT SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2) ORDER BY SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)) AS TagsList,
         U.DisplayName AS OwnerDisplayName,
         U.Reputation AS OwnerReputation
     FROM 

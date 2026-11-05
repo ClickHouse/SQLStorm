@@ -19,7 +19,7 @@ WITH RankedPosts AS (
 ProcessedTags AS (
     SELECT 
         PostId,
-        arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2)))) AS Tag
+        UNNEST(string_to_array(SUBSTRING(Tags FROM 2 FOR LENGTH(Tags) - 2), '><')) AS Tag
     FROM 
         RankedPosts
     WHERE 
@@ -57,7 +57,7 @@ FinalBenchmark AS (
 )
 SELECT 
     *,
-    toUnixTimestamp((CAST('2024-10-01 12:34:56' AS TIMESTAMP) - CreationDate)) AS AgeInSeconds
+    EXTRACT(EPOCH FROM (CAST('2024-10-01 12:34:56' AS TIMESTAMP) - CreationDate)) AS AgeInSeconds
 FROM 
     FinalBenchmark
 ORDER BY 

@@ -23,13 +23,13 @@ ProcessedTags AS (
         Tag
     FROM 
         RankedPosts pt,
-        arrayJoin(splitByString('>', assumeNotNull(SUBSTRING(pt.Tags, 2, LENGTH(pt.Tags) - 2)))) AS Tag
+        UNNEST(string_to_array(SUBSTRING(pt.Tags, 2, LENGTH(pt.Tags) - 2), '>')) AS Tag
 ),
 TagStatistics AS (
     SELECT 
         p.Tag,
         COUNT(*) AS TagCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(rp.Title))), '; ') AS RelatedPostTitles
+        STRING_AGG(DISTINCT rp.Title, '; ') AS RelatedPostTitles
     FROM 
         ProcessedTags p
     JOIN 

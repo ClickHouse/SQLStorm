@@ -47,15 +47,15 @@ SELECT
         WHEN fp.Score IS NOT NULL THEN fp.Score * 100.0 / NULLIF((SELECT SUM(Score) FROM Posts), 0)
         ELSE NULL
     END AS ScorePercentage,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     FilteredPosts fp
 LEFT JOIN 
     Posts p ON fp.PostId = p.Id
 LEFT JOIN 
-    (
+    LATERAL (
         SELECT 
-            TRIM(arrayJoin(splitByString('<>', assumeNotNull(p.Tags)))) AS TagName
+            TRIM(unnest(string_to_array(p.Tags, '<>'))) AS TagName
     ) t ON TRUE
 GROUP BY 
     fp.PostId, fp.Title, fp.CreationDate, fp.Score, fp.ViewCount, fp.UpVotes, fp.DownVotes, fp.CommentCount

@@ -47,7 +47,7 @@ SELECT
     rp.AnswerCount,
     rp.BadgeCount,
     rp.CreationDate,
-    arrayStringConcat(groupArray(assumeNotNull(rt.Name)), ', ') AS RelatedTypes
+    STRING_AGG(rt.Name, ', ') AS RelatedTypes
 FROM 
     RankedPosts rp
 LEFT JOIN 

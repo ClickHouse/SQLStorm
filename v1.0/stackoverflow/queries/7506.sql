@@ -10,8 +10,8 @@ WITH RecentPosts AS (
         p.AnswerCount, 
         p.CommentCount, 
         p.FavoriteCount,
-        arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypes,
-        arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags
+        ARRAY_AGG(DISTINCT pt.Name) AS PostTypes,
+        ARRAY_AGG(DISTINCT t.TagName) AS Tags
     FROM 
         Posts p
     JOIN 
@@ -19,7 +19,7 @@ WITH RecentPosts AS (
     LEFT JOIN 
         PostTypes pt ON p.PostTypeId = pt.Id
     LEFT JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag ON tag IS NOT NULL
+        UNNEST(string_to_array(p.Tags, '>')) AS tag ON tag IS NOT NULL
     LEFT JOIN 
         Tags t ON t.TagName = tag
     WHERE 

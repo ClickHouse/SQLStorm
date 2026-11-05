@@ -35,7 +35,7 @@ FROM UserPostStats ups
 LEFT JOIN (
     SELECT 
         UserId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT('Post ID: ', PostId, ' - Title: ', Title, ' (', Comment, ')'))), '; ') AS RecentActivity
+        STRING_AGG(CONCAT('Post ID: ', PostId, ' - Title: ', Title, ' (', Comment, ')'), '; ') AS RecentActivity
     FROM RecentPostHistories
     WHERE LatestHistory = 1
     GROUP BY UserId

@@ -56,7 +56,7 @@ RecentPostsWithTags AS (
         p.Id AS PostId,
         p.Title,
         pt.Name AS PostType,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 

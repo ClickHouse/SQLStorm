@@ -43,11 +43,11 @@ PostComments AS (
 PostTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+        STRING_AGG(t.TagName, ', ') AS Tags
     FROM 
         Posts p
     JOIN 
-        (SELECT arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS TagName) AS t ON TRUE
+        LATERAL (SELECT UNNEST(string_to_array(p.Tags, ',')) AS TagName) AS t ON TRUE
     GROUP BY 
         p.Id
 )

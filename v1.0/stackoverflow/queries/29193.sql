@@ -29,7 +29,7 @@ SELECT
     rp.VoteCount,
     (
         SELECT 
-            arrayStringConcat(groupArray(assumeNotNull(CONCAT(c.UserDisplayName, ': ', c.Text))), '; ')
+            STRING_AGG(CONCAT(c.UserDisplayName, ': ', c.Text), '; ')
         FROM 
             Comments c 
         WHERE 
@@ -37,7 +37,7 @@ SELECT
     ) AS Comments,
     (
         SELECT 
-            arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.CreationDate, ' - ', pht.Name, ': ', ph.Text))), '; ')
+            STRING_AGG(CONCAT(ph.CreationDate, ' - ', pht.Name, ': ', ph.Text), '; ')
         FROM 
             PostHistory ph
         JOIN 

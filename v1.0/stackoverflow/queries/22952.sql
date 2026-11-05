@@ -19,7 +19,7 @@ CloseReasonAggregates AS (
         PH.UserId,
         PH.PostHistoryTypeId,
         COUNT(*) AS CloseReasonCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CR.Name))), ', ') AS CloseReasons
+        STRING_AGG(DISTINCT CR.Name, ', ') AS CloseReasons
     FROM PostHistory PH
     JOIN CloseReasonTypes CR ON CAST(PH.Comment AS INT) = CR.Id
     WHERE PH.PostHistoryTypeId = 10 

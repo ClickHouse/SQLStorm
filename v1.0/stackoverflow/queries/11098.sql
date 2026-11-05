@@ -6,7 +6,7 @@ SELECT
     p.ViewCount,
     COUNT(DISTINCT c.Id) AS CommentCount,
     SUM(v.BountyAmount) AS TotalBounty,
-    arrayDistinct(groupArray(assumeNotNull(t.TagName))) AS Tags,
+    ARRAY_AGG(DISTINCT t.TagName) AS Tags,
     u.DisplayName AS OwnerDisplayName,
     u.Reputation AS OwnerReputation,
     ph.CreationDate AS LastHistoryUpdate
@@ -21,7 +21,7 @@ LEFT JOIN
 LEFT JOIN 
     PostHistory ph ON p.Id = ph.PostId
 LEFT JOIN 
-    arrayJoin(splitByString('><', assumeNotNull(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2)))) AS tag_name ON TRUE
+    UNNEST(string_to_array(SUBSTRING(p.Tags FROM 2 FOR LENGTH(p.Tags) - 2), '><')) AS tag_name ON TRUE
 LEFT JOIN 
     Tags t ON tag_name = t.TagName
 WHERE 

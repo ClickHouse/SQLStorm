@@ -23,7 +23,7 @@ PostHistoryWithTags AS (
         ph.PostId,
         ph.CreationDate,
         p.Title,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
         COUNT(bp.Id) FILTER (WHERE bp.Id IS NOT NULL) AS BadgesCount
     FROM 
         PostHistory ph

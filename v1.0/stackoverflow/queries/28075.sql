@@ -14,7 +14,7 @@ WITH PostSummary AS (
         PH.CreationDate AS LastEditDate,
         PT.Name AS PostTypeName,
         (SELECT COUNT(*) FROM PostHistory PH2 WHERE PH2.PostId = P.Id) AS EditCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') AS TagList
+        STRING_AGG(DISTINCT T.TagName, ', ') AS TagList
     FROM Posts P
     JOIN Users U ON P.OwnerUserId = U.Id
     JOIN PostHistory PH ON P.Id = PH.PostId

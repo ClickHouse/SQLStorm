@@ -37,7 +37,7 @@ PostCloseReasons AS (
 TaggedPosts AS (
     SELECT 
         rp.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsAgg
+        STRING_AGG(t.TagName, ', ') AS TagsAgg
     FROM 
         RankedPosts rp
     LEFT JOIN 

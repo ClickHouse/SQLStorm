@@ -39,10 +39,10 @@ PostInteraction AS (
         fp.Score,
         fp.ViewCount,
         fp.AverageBountyAmount,
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+        (SELECT STRING_AGG(t.TagName, ', ') 
          FROM Tags t 
-         JOIN (
-             SELECT arrayJoin(splitByString(' ', assumeNotNull(fp.Title))) AS Tag 
+         JOIN LATERAL (
+             SELECT UNNEST(string_to_array(fp.Title, ' ')) AS Tag 
          ) AS split_tags ON t.TagName = split_tags.Tag) AS TagsList
     FROM 
         FilteredPosts fp

@@ -6,7 +6,7 @@ WITH RankedPosts AS (
         p.CreationDate,
         p.ViewCount,
         p.Score,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags,
+        STRING_AGG(t.TagName, ', ') AS Tags,
         ROW_NUMBER() OVER (PARTITION BY CASE 
                                              WHEN pt.Name = 'Question' THEN 'Questions'
                                              WHEN pt.Name = 'Answer' THEN 'Answers'

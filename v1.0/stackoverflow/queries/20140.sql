@@ -22,7 +22,7 @@ PostHistoryStats AS (
         COUNT(*) AS HistoryActions,
         MAX(CASE WHEN PH.PostHistoryTypeId = 10 THEN 1 ELSE 0 END) AS ClosedPost,
         MAX(CASE WHEN PH.PostHistoryTypeId = 11 THEN 1 ELSE 0 END) AS ReopenedPost,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(PHT.Name))), ', ') AS HistoryTypes
+        STRING_AGG(DISTINCT PHT.Name, ', ') AS HistoryTypes
     FROM 
         PostHistory PH
     INNER JOIN 

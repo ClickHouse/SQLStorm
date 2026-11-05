@@ -63,11 +63,11 @@ PostWithTags AS (
     SELECT 
         p.Id AS PostId,
         p.Title,
-        groupArray(assumeNotNull(t.TagName)) AS Tags
+        ARRAY_AGG(t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
-        arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tag ON TRUE
+        UNNEST(STRING_TO_ARRAY(p.Tags, '>')) AS tag ON TRUE
     LEFT JOIN 
         Tags t ON tag = t.TagName
     WHERE 

@@ -37,7 +37,7 @@ RecentClosedPosts AS (
         p.Title,
         ph.CreationDate AS ClosedDate,
         ph.UserDisplayName AS ClosedBy,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), '; ') AS CloseComments
+        STRING_AGG(c.Text, '; ') AS CloseComments
     FROM 
         Posts p
     INNER JOIN 

@@ -53,7 +53,7 @@ SELECT
     ur.GoldBadges,
     ur.SilverBadges,
     ur.BronzeBadges,
-    arrayStringConcat(groupArray(assumeNotNull(pc.Text)), '; ') AS RecentComments
+    STRING_AGG(pc.Text, '; ') AS RecentComments
 FROM 
     RankedPosts rp
 JOIN 

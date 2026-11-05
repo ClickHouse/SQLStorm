@@ -38,7 +38,7 @@ UserComments AS (
     SELECT 
         c.UserId,
         COUNT(*) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ', ') AS CommentTexts
+        STRING_AGG(c.Text, ', ') AS CommentTexts
     FROM 
         Comments c
     JOIN 

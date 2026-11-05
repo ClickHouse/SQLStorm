@@ -27,7 +27,7 @@ TopTags AS (
         TRIM(SUBSTRING(tag FROM 2 FOR LENGTH(tag) -2)) AS TagName
     FROM 
         RankedPosts,
-        arrayJoin(splitByString('><', assumeNotNull(Tags))) AS tag
+        UNNEST(string_to_array(Tags, '><')) AS tag
 ),
 MostCommonTags AS (
     SELECT 
@@ -48,7 +48,7 @@ SELECT
     rp.Score,
     rp.ViewCount,
     rp.CommentCount,
-    arrayStringConcat(groupArray(assumeNotNull(mct.TagName)), ', ') AS PopularTags
+    STRING_AGG(mct.TagName, ', ') AS PopularTags
 FROM 
     RankedPosts rp
 JOIN 

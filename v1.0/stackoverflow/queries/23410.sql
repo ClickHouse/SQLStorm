@@ -39,8 +39,8 @@ PostSummary AS (
         PT.Name AS PostType,
         P.Score,
         COALESCE(PT.Name, 'Unknown') AS TypeNameFallback, 
-        (SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(TagName))), ', ') 
-         FROM Tags T WHERE T.Id IN (SELECT arrayJoin(splitByString(',', assumeNotNull(P.Tags)))::int)) AS TagList
+        (SELECT STRING_AGG(DISTINCT TagName, ', ') 
+         FROM Tags T WHERE T.Id IN (SELECT UNNEST(string_to_array(P.Tags, ','))::int)) AS TagList
     FROM 
         Posts P
     LEFT JOIN 
@@ -49,7 +49,7 @@ PostSummary AS (
 ClosedPostReasons AS (
     SELECT 
         PH.PostId,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(C.Name))), ', ') AS CloseReasons
+        STRING_AGG(DISTINCT C.Name, ', ') AS CloseReasons
     FROM 
         PostHistory PH
     JOIN 

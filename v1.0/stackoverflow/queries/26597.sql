@@ -63,7 +63,7 @@ SELECT
     UA.TotalViews,
     UA.TotalScore,
     UA.ScoreRank,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
+    (SELECT STRING_AGG(T.TagName, ', ') 
      FROM Tags T 
      JOIN Posts P ON P.Tags LIKE '%' || T.TagName || '%' 
      WHERE P.OwnerUserId = UA.UserId AND P.PostTypeId = 1) AS PopularTags

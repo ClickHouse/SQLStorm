@@ -9,7 +9,7 @@ WITH PostStats AS (
         COUNT(DISTINCT c.Id) AS CommentCount,
         COALESCE(AVG(v.BountyAmount) FILTER (WHERE v.VoteTypeId IN (8, 9)), 0) AS AverageBounty,
         SUM(CASE WHEN ph.PostHistoryTypeId IN (10, 11) THEN 1 ELSE 0 END) AS CloseActions,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -19,7 +19,7 @@ WITH PostStats AS (
     LEFT JOIN 
         PostHistory ph ON ph.PostId = p.Id
     LEFT JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag_name ON TRUE
+        LATERAL UNNEST(string_to_array(p.Tags, ',')) AS tag_name ON TRUE
     LEFT JOIN 
         Tags t ON t.TagName = TRIM(tag_name)
     WHERE 

@@ -31,7 +31,7 @@ PostClosureHistory AS (
     SELECT 
         ph.UserId,
         COUNT(*) AS CloseVotes,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(ct.Name))), ', ') AS CloseReasonNames
+        STRING_AGG(DISTINCT ct.Name, ', ') AS CloseReasonNames
     FROM 
         PostHistory ph
     JOIN 

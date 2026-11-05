@@ -42,9 +42,9 @@ SELECT
     TP.ViewCount,
     TP.Owner,
     TP.CommentCount,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') 
+    (SELECT STRING_AGG(T.TagName, ', ') 
      FROM Tags T 
-     JOIN arrayJoin(splitByString('><', assumeNotNull(substring(P.Tags, 2, length(P.Tags)-2)))) AS tag ON T.TagName = tag 
+     JOIN LATERAL unnest(string_to_array(substring(P.Tags, 2, length(P.Tags)-2), '><')) AS tag ON T.TagName = tag 
      WHERE P.Id = TP.PostId) AS TagsList
 FROM 
     TopPosts TP

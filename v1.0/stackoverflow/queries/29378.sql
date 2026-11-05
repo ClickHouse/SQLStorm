@@ -4,7 +4,7 @@ WITH RankedPosts AS (
         p.Id AS PostId,
         p.Title,
         p.Body,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
         COUNT(c.Id) AS CommentCount,
         COUNT(a.Id) AS AnswerCount,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS UserPostRank,

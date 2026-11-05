@@ -34,7 +34,7 @@ PostComments AS (
     SELECT 
         c.PostId,
         COUNT(c.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(c.Text)), ' ') AS AllComments
+        STRING_AGG(c.Text, ' ') AS AllComments
     FROM 
         Comments c
     GROUP BY 
@@ -43,7 +43,7 @@ PostComments AS (
 PostHistoryAggregated AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CONCAT(ph.CreationDate, ' - ', ph.Comment))), ' | ') AS EditHistory
+        STRING_AGG(CONCAT(ph.CreationDate, ' - ', ph.Comment), ' | ') AS EditHistory
     FROM 
         PostHistory ph
     WHERE 

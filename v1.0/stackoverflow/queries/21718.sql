@@ -16,8 +16,8 @@ WITH RankedPosts AS (
 CloseAndEditHistory AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN pt.Name = 'Post Closed' THEN ph.Comment ELSE NULL END)), '; ') AS CloseReasons,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN pt.Name LIKE 'Edit %' THEN ph.Text ELSE NULL END)), '; ') AS EditHistory,
+        STRING_AGG(CASE WHEN pt.Name = 'Post Closed' THEN ph.Comment ELSE NULL END, '; ') AS CloseReasons,
+        STRING_AGG(CASE WHEN pt.Name LIKE 'Edit %' THEN ph.Text ELSE NULL END, '; ') AS EditHistory,
         MAX(ph.CreationDate) AS LastActivityDate
     FROM 
         PostHistory ph

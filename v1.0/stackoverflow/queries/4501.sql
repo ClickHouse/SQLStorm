@@ -38,7 +38,7 @@ SELECT
         WHEN tu.TotalAnswers > tu.TotalQuestions THEN 'Answers Dominant'
         ELSE 'Balanced'
     END AS PostTypeBalance,
-    COALESCE((SELECT arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(pt.Name))), ', ') 
+    COALESCE((SELECT STRING_AGG(DISTINCT pt.Name, ', ') 
               FROM PostHistory ph
               JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
               WHERE ph.UserId = tu.UserId), 'No Activity') AS RecentActivity

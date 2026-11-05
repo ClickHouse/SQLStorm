@@ -39,13 +39,13 @@ SELECT
     tp.ViewCount,
     tp.Score,
     tp.CommentCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags
 FROM 
     TopPosts tp
 JOIN 
     Users u ON tp.PostId IN (SELECT p.Id FROM Posts p WHERE p.OwnerUserId = u.Id)
 LEFT JOIN 
-    arrayJoin(splitByString(',', assumeNotNull((SELECT p.Tags FROM Posts p WHERE p.Id = tp.PostId)))) AS tag ON TRUE
+    UNNEST(STRING_TO_ARRAY((SELECT p.Tags FROM Posts p WHERE p.Id = tp.PostId), ',')) AS tag ON TRUE
 LEFT JOIN 
     Tags t ON tag = t.TagName
 GROUP BY 

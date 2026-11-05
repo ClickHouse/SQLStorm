@@ -5,7 +5,7 @@ WITH RecentPosts AS (
         p.Tags,
         p.CreationDate,
         COUNT(a.Id) AS AnswerCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(u.DisplayName))), ', ') AS TopContributors,
+        STRING_AGG(DISTINCT u.DisplayName, ', ') AS TopContributors,
         COALESCE(MAX(v.CreationDate), '1900-01-01') AS LastVoteDate
     FROM 
         Posts p

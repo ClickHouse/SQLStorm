@@ -67,7 +67,7 @@ SELECT
         WHEN cd.CommentCount > 0 THEN 'Has Comments'
         ELSE 'No Comments'
     END AS CommentStatus,
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+    (SELECT STRING_AGG(t.TagName, ', ') 
      FROM Tags t 
      JOIN Posts p ON p.Id = cd.PostId 
      WHERE p.Tags IS NOT NULL AND POSITION(t.TagName IN p.Tags) > 0) AS AssociatedTags

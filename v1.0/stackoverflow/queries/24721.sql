@@ -36,15 +36,15 @@ TopComments AS (
 PostsWithTags AS (
     SELECT 
         p.Id AS PostId,
-        arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS TagsList
+        STRING_AGG(t.TagName, ', ') AS TagsList
     FROM 
         Posts p
     LEFT JOIN 
-        (
+        LATERAL (
             SELECT 
                 t.TagName 
             FROM 
-                arrayJoin(splitByString('>', assumeNotNull(p.Tags))) AS tags_array(tag) 
+                UNNEST(string_to_array(p.Tags, '>')) AS tags_array(tag) 
             JOIN 
                 Tags t ON t.TagName = tags_array.tag
         ) t ON true

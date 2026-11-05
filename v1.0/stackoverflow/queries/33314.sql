@@ -25,7 +25,7 @@ RecentVotes AS (
 UserBadges AS (
     SELECT 
         U.Id AS UserId,
-        arrayStringConcat(groupArray(assumeNotNull(B.Name)), ', ') AS BadgeNames
+        STRING_AGG(B.Name, ', ') AS BadgeNames
     FROM 
         Users U
     LEFT JOIN 

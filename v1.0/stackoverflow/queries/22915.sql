@@ -70,7 +70,7 @@ SELECT
         WHEN CD.CloseReason = 'Not Closed' AND CD.Reputation > 1000 THEN 'Eligible for Promotion'
         ELSE 'Not Eligible for Promotion' 
     END AS PromotionStatus,
-    arrayStringConcat(groupArray(assumeNotNull(T.TagName)), ', ') AS TagsList
+    STRING_AGG(T.TagName, ', ') AS TagsList
 FROM CombinedData CD
 LEFT JOIN (
     SELECT 

@@ -38,7 +38,7 @@ ActiveUsers AS (
 UserBadges AS (
     SELECT 
         b.UserId,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS Badges,
+        STRING_AGG(b.Name, ', ') AS Badges,
         MAX(CASE WHEN b.Class = 1 THEN 'Gold' END) AS GoldCount,
         MAX(CASE WHEN b.Class = 2 THEN 'Silver' END) AS SilverCount,
         MAX(CASE WHEN b.Class = 3 THEN 'Bronze' END) AS BronzeCount

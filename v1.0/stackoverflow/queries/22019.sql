@@ -20,7 +20,7 @@ UserBadges AS (
     SELECT 
         b.UserId,
         COUNT(b.Id) AS BadgesCount,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS BadgeNames
+        STRING_AGG(b.Name, ', ') AS BadgeNames
     FROM 
         Badges b
     GROUP BY 
@@ -29,7 +29,7 @@ UserBadges AS (
 CloseReasons AS (
     SELECT 
         ph.PostId,
-        arrayStringConcat(groupArray(assumeNotNull(CASE WHEN ph.Comment IS NOT NULL THEN CONCAT('Closed for: ', cr.Name) END)), ', ') AS CloseReason
+        STRING_AGG(CASE WHEN ph.Comment IS NOT NULL THEN CONCAT('Closed for: ', cr.Name) END, ', ') AS CloseReason
     FROM 
         PostHistory ph
     JOIN 

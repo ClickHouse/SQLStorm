@@ -36,7 +36,7 @@ SELECT
     tp.UpvoteCount, 
     tp.CommentCount, 
     tp.BadgeCount,
-    arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Tags
+    STRING_AGG(t.TagName, ', ') AS Tags
 FROM 
     TopPosts tp
 LEFT JOIN 

@@ -47,7 +47,7 @@ SELECT
         ELSE 'Inactive'
     END AS ActivityLevel,
     COALESCE(SUM(b.Id), 0) AS TotalBadges,
-    arrayDistinct(groupArray(assumeNotNull(pt.Name))) AS PostTypes
+    ARRAY_AGG(DISTINCT pt.Name) AS PostTypes
 FROM 
     UserPostDetails ud
 LEFT JOIN 

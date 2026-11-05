@@ -21,7 +21,7 @@ TopPosts AS (
         rp.CreationDate,
         rp.OwnerUserId,
         rp.Tags,
-        arrayStringConcat(groupArray(assumeNotNull(b.Name)), ', ') AS UserBadges
+        STRING_AGG(b.Name, ', ') AS UserBadges
     FROM 
         RankedPosts rp
     LEFT JOIN 

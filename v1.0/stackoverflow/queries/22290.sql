@@ -64,11 +64,11 @@ SELECT
         ELSE 'Low Reputation'
     END AS ReputationCategory,
     (SELECT 
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(T.TagName))), ', ') 
+        STRING_AGG(DISTINCT T.TagName, ', ') 
      FROM 
         Posts P
      JOIN 
-        arrayJoin(splitByString(',', assumeNotNull(P.Tags))) AS Tag ON TRUE
+        UNNEST(string_to_array(P.Tags, ',')) AS Tag ON TRUE
      JOIN 
         Tags T ON T.TagName = Tag 
      WHERE 

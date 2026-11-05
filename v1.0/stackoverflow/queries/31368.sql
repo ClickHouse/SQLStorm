@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.Score,
         p.ViewCount,
         ROW_NUMBER() OVER (PARTITION BY p.PostTypeId ORDER BY p.Score DESC) AS Rank,
-        groupArray(assumeNotNull(t.TagName)) AS Tags
+        ARRAY_AGG(t.TagName) AS Tags
     FROM 
         Posts p
     LEFT JOIN 
@@ -49,7 +49,7 @@ SELECT
     rp.CreationDate,
     COALESCE(rp.Rank, 0) AS PostRank,
     COALESCE(up.UpvoteCount, 0) AS UpvoteCount,
-    arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+    STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
     COUNT(rph.UserId) AS HistoryChanges
 FROM 
     RankedPosts rp
@@ -57,7 +57,8 @@ LEFT JOIN
     PostUpvotes up ON rp.PostId = up.PostId
 LEFT JOIN 
     RecentPostHistory rph ON rp.PostId = rph.PostId
-LEFT ARRAY JOIN rp.Tags AS TagName
+LEFT JOIN 
+    UNNEST(rp.Tags) AS t(TagName) ON TRUE
 WHERE 
     (rp.Rank <= 10 OR rp.Score >= 100) 
 GROUP BY 

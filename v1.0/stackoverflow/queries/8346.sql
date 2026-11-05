@@ -45,11 +45,11 @@ SELECT
 FROM 
     TopPosts tp
     JOIN Posts p ON tp.PostId = p.Id
-    CROSS JOIN (
+    CROSS JOIN LATERAL (
         SELECT 
-            arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') AS Name
+            STRING_AGG(t.TagName, ', ') AS Name
         FROM 
-            arrayJoin(splitByString(',', assumeNotNull(p.Tags))) AS tag
+            unnest(string_to_array(p.Tags, ',')) AS tag
             JOIN Tags t ON TRIM(tag) = t.TagName
     ) AS t
 WHERE 

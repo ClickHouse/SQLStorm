@@ -19,7 +19,7 @@ PopularTags AS (
         tag, 
         COUNT(tag) AS TagCount
     FROM 
-        (SELECT arrayJoin(splitByString('> <', assumeNotNull(Trim(both '<>' FROM p.Tags)))) AS tag
+        (SELECT unnest(string_to_array(Trim(both '<>' FROM p.Tags), '> <')) AS tag
          FROM Posts p
          WHERE p.PostTypeId = 1) AS Tags
     GROUP BY 

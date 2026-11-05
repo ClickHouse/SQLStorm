@@ -37,7 +37,7 @@ PostHistoryDetails AS (
         ph.PostId,
         ph.PostHistoryTypeId,
         MAX(ph.CreationDate) AS LastModified,
-        arrayStringConcat(groupArray(assumeNotNull(ph.Comment)), ', ') AS CommentsMade,
+        STRING_AGG(ph.Comment, ', ') AS CommentsMade,
         COUNT(*) AS HistoryCount
     FROM 
         PostHistory ph

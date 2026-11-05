@@ -10,7 +10,7 @@ WITH PostStatistics AS (
         p.CommentCount,
         p.FavoriteCount,
         COUNT(c.Id) AS TotalComments,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
         COALESCE(MAX(b.Class), 0) AS HighestBadgeClass,
         SUM(CASE WHEN v.VoteTypeId = 2 THEN 1 ELSE 0 END) AS UpVotes,
         SUM(CASE WHEN v.VoteTypeId = 3 THEN 1 ELSE 0 END) AS DownVotes

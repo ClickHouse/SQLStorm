@@ -44,7 +44,7 @@ TopPosts AS (
         p.CommentCount,
         u.DisplayName AS author_name,
         p.CreationDate,
-        arrayDistinct(groupArray(assumeNotNull(LOWER(TRIM(tag.tagName))))) AS tags
+        ARRAY_AGG(DISTINCT LOWER(TRIM(tag.tagName))) AS tags
     FROM 
         Posts AS p
     JOIN 

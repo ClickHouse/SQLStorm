@@ -37,7 +37,7 @@ SELECT
     tp.OwnerDisplayName,
     tp.CommentCount,
     
-    (SELECT arrayStringConcat(groupArray(assumeNotNull(t.TagName)), ', ') 
+    (SELECT STRING_AGG(t.TagName, ', ') 
      FROM Tags t 
      WHERE t.WikiPostId = tp.PostId) AS Tags,
     

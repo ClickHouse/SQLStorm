@@ -44,7 +44,7 @@ SELECT
         ELSE 'No Comments'
     END AS CommentStatus,
     COALESCE(
-        (SELECT arrayStringConcat(groupArray(assumeNotNull(pt.Name)), ',' ORDER BY pt.Name)
+        (SELECT STRING_AGG(pt.Name, ',' ORDER BY pt.Name)
          FROM PostHistory ph 
          JOIN PostHistoryTypes pt ON ph.PostHistoryTypeId = pt.Id
          WHERE ph.PostId = rp.Id

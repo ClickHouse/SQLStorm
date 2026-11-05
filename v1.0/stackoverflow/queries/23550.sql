@@ -9,7 +9,7 @@ WITH UserEngagement AS (
         SUM(CASE WHEN P.PostTypeId = 2 THEN 1 ELSE 0 END) AS TotalAnswers,
         SUM(CASE WHEN P.PostTypeId = 1 THEN 1 ELSE 0 END) AS TotalQuestions,
         MAX(P.CreationDate) AS LastPostDate,
-        arrayDistinct(groupArray(assumeNotNull(T.TagName))) AS TagsUsed
+        ARRAY_AGG(DISTINCT T.TagName) AS TagsUsed
     FROM 
         Users U
     LEFT JOIN 
@@ -17,7 +17,7 @@ WITH UserEngagement AS (
     LEFT JOIN 
         Votes V ON P.Id = V.PostId AND V.VoteTypeId IN (8, 9) 
     LEFT JOIN
-        (SELECT Id, arrayJoin(splitByString('><', assumeNotNull(Tags))) AS TagName FROM Posts WHERE Tags IS NOT NULL) T ON T.Id = P.Id
+        (SELECT Id, UNNEST(string_to_array(Tags, '><')) AS TagName FROM Posts WHERE Tags IS NOT NULL) T ON T.Id = P.Id
     GROUP BY 
         U.Id, U.DisplayName, U.Reputation
 ),

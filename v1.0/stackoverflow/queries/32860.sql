@@ -52,7 +52,7 @@ PostHistoryDetails AS (
         ph.CreationDate AS HistoryDate,
         p.Title AS PostTitle,
         COUNT(ph.Id) AS EditCount,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(CONCAT_WS(' ', u.DisplayName, ph.Comment)))), ', ') AS Comments
+        STRING_AGG(DISTINCT CONCAT_WS(' ', u.DisplayName, ph.Comment), ', ') AS Comments
     FROM 
         PostHistory ph
     JOIN 

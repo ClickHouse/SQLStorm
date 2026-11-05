@@ -20,7 +20,7 @@ PostComments AS (
     SELECT 
         C.PostId,
         COUNT(C.Id) AS CommentCount,
-        arrayStringConcat(groupArray(assumeNotNull(C.Text)), '; ') AS Comments
+        STRING_AGG(C.Text, '; ') AS Comments
     FROM 
         Comments C
     GROUP BY 

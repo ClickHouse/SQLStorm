@@ -23,7 +23,7 @@ WITH RankedPosts AS (
 ), RecentBadges AS (
     SELECT 
         B.UserId,
-        groupArray(assumeNotNull(B.Name ORDER BY B.Date DESC)) AS RecentBadgeNames
+        ARRAY_AGG(B.Name ORDER BY B.Date DESC) AS RecentBadgeNames
     FROM 
         Badges B
     WHERE 
@@ -56,7 +56,7 @@ SELECT
     tp.UpVoteCount,
     tp.DownVoteCount,
     CASE 
-        WHEN length(tp.RecentBadges, 1) > 0 THEN 
+        WHEN array_length(tp.RecentBadges, 1) > 0 THEN 
             'Recent badges: ' || array_to_string(tp.RecentBadges, ', ')
         ELSE 
             'No recent badges for the owner'

@@ -7,7 +7,7 @@ WITH RankedPosts AS (
         p.ViewCount,
         p.Score,
         p.Body,
-        arrayStringConcat(arrayDistinct(groupArray(assumeNotNull(t.TagName))), ', ') AS Tags,
+        STRING_AGG(DISTINCT t.TagName, ', ') AS Tags,
         U.DisplayName AS OwnerName,
         ROW_NUMBER() OVER (PARTITION BY p.OwnerUserId ORDER BY p.CreationDate DESC) AS PostRank
     FROM
